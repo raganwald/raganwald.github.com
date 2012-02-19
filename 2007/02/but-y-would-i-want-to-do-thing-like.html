@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Tuesday, February 06, 2007</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="117073854086425300">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html" title="permanent link">But Y would I want to do a thing like this?</a></span>
-					<div style="clear:both;"></div><blockquote><br />  Choose life. Choose a job. Choose a starter home. Choose dental insurance, leisure wear and matching luggage. Choose your future. But <a href="http://en.wikipedia.org/wiki/Y_combinator" title="Y combinator">Y</a> would <a href="http://en.wikipedia.org/wiki/Combinatory_logic#Examples_of_combinators" title="Identity combinator">I</a> want to do a thing like that?<br /></blockquote>Writing about <a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">first-class functions</a> and their <a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html">compatibility with object-oriented programming</a> naturally leads to the <a href="http://en.wikipedia.org/wiki/Y_combinator">Y combinator</a>. And that is the point where eyes glaze over and soft, snoring sounds rise from RSS readers everywhere.<br /><br />But please bear with me, this essay is not really about the Y combinator, it&#8217;s about learning new things and expanding our capacity to think.<br /><br /><strong>Sharpening the saw</strong><br /><br />Years ago I picked up Steven Covey&#8217;s book <a href="http://www.amazon.com/gp/product/0743269519?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0743269519">The 7 Habits of Highly Effective People</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0743269519" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />. If the book is a test out of seven, I really wasn&#8217;t doing very well.<br /><br />If you&#8217;ve read the book, you probably remember that he talked about &#8220;Sharpening the Saw,&#8221; investing in your own abilities. That&#8217;s incredibly important, but I don&#8217;t need to tell you that. If you exercise with programming katas, or learn a new programming language once a year, or pick up a book like <a href="http://www.amazon.com/gp/product/0262562146?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0262562146">The Reasoned Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262562146" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> <em>and actually go through the exercises</em>, then you are already in the top 1% of software developers for personal skills improvement. (Sorry, certifications <em>don&#8217;t count</em>. They are the classic case of doing the wrong thing for the wrong reason!)<br /><br />New ideas&#8212;by which I mean, new to you&#8212;are an important way to sharpen your saw. If for no other reason than this: the brain needs regular exercise to perform at or near its potential. Learning new things keeps you sharp, even if you don&#8217;t directly use the things you learned.<br /><br />Others have suggested that learning Lisp is beneficial to your programming skills in its own right. That&rsquo;s one good way to sharpen your saw. But I add to that an important caveat: to obtain the deepest benefit from learning a new language, you must learn to think in the new language, not just learn to translate your favourite programming language syntax and idioms into it.<br /><br /><strong>Think different</strong><br /><br />The interesting thing about that is that almost by definition, if you see something in, say, Lisp that solves a problem you already have, you won&#8217;t learn much from the Lisp code. It is tempting to think that Lisp (or any other language) will somehow do what you&#8217;re already doing in some wonderfully magic way that is obviously better. But no, that isn&#8217;t how it really works.<br /><br />For your problems are tuned to your existing tools. You simply can&#8217;t imagine problems that your tools can&#8217;t solve well, much less can&#8217;t solve at all. That&#8217;s why there are so few continuation-based web servers. Who&#8217;s going to invent one unless they have a programming paradigm with continuations?<br /><br /><div class="book"><a href="http://www.amazon.com/gp/product/0192801422?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0192801422"><img border="0" src="http://weblog.raganwald.com/uploaded_images/to_mock_a_mockingbird-785706"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0192801422" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><a href="http://www.amazon.com/gp/product/0192801422?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0192801422">To Mock a Mockingbird</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0192801422" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />: The most enjoyable text on the subject of combinatory logic ever written. What other textbook features starlings, kestrels, and other songbirds?<br /></div>And worse, when a new tool is applied to a problem you think you know well, you will probably dismiss the things the new tool does well. Look at how many people dismiss brevity of code. Note that all of the people ignore the statistics about the constant ratio between bugs and lines of code use verbose languages. Look at how many people dismiss continuation-based servers as a design approach. Note that all of them use programming languages bereft of control flow abstractions.<br /><br />Thus, to truly learn a new tool, you must not just learn the new tool, you must <em>apply it to new kinds of problems</em>. It&#8217;s no good learning to replace simple iteration with first-class functions: all you&#8217;ve learned is syntax. To really learn first-class functions, you must seek out problems that aren&#8217;t easily solved with iteration.<br /><br /><strong>The Why of Y</strong><br /><br />Which leads me back to fixed point combinators. They appear to have no practical (as in making money) use. And that&#8217;s why I&#8217;m suggesting to you that you figure out how to make one in your language of choice. The very fact that the problem is far outside of your realm of &#8220;practicality&#8221; guarantees that you will learn something. You won&#8217;t be simply applying your same-old, same-old techniques and patterns to a slightly new problem.<br /><br />Start your research with Richard P. Gabriel&#8217;s <a href="http://www.dreamsongs.com/NewFiles/WhyOfY.pdf">The Why of Y</a>. Try porting his examples directly to your favourite programming language. If what you want to use is too brain-damaged to support closures, you may need to do a little greenspunning and build a little <a href="http://en.wikipedia.org/wiki/Function_object">functor</a> infrastructure.<br /><br />Don&#8217;t be dissuaded if you have to follow the functor route: you are learning far more about your language and about programming in general than the shmoes that settle for learning five new buzzwords related to the latest WS-* interoperability with XPath 3.x.<br /><br />If you prefer a <a href="http://weblog.raganwald.com/2007/02/its-monday-its-snowing-and-im-actually.html">fun</a> approach to learning, you can do not better than Raymond Smullyan&#8217;s <a href="http://www.amazon.com/gp/product/0192801422?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0192801422">To Mock a Mockingbird</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0192801422" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />: an enjoyable romp through the world of combinatory logic. After reading this book, you will have mastered the S, K, I, Y, and other combinators. Added bonuses include a safe that can only be opened by applying G&ouml;del&#8217;s Incompleteness Theorem to its combination. How can you read this book and <em>not</em> learn?<br /><br /><strong>Eating my own dog food</strong><br /><br />I thought of a few things to say along these lines last week and then I abruptly realizing I was asking you to &#8220;Do as I say, not as I do.&#8221; What good is recycling problems I first encountered in University textbooks two decades ago? I put this post aside and set to work on a problem of my own.<br /><br />I set out to write a function for making recursive functions&#8212;a function <a href="http://en.wikipedia.org/wiki/Extensional_equality">extensionally equal</a> to the Y combinator&#8212;in Ruby. The ultimate goal is to take something like:<br /><br /><pre><code>lambda { |f| lambda { |n| n.zero? &amp;&amp; 1 or f.call(n-1) } }<br /></code></pre><br /><br />And be able to have it call itself recursively. In this case, to compute the <code>factorial</code> function.<br /><br />This is trivial, given that Ruby supports named recursion, but if you want to write a fixed-point combinator you want to write a function that makes recursive functions <em>without using the host language&rsquo;s support for named recursive calls</em>. In other words, you are bootstrapping named recursion out of anonymous first-class functions.<sup>1</sup><br /><br />There are important theoretical implications of being able to do this, but the killer reason to try it is to learn.<br /><br />I started my quest for a function for making recursive functions with a rather trivial observation based on OO programming and the Curry function:<br /><br /><pre><code>require 'test/unit'<br /><br />class ExempliGratia &lt; Test::Unit::TestCase<br /><br />  CURRY = lambda { |f, a| lambda { |*b| f.call(a, *b) } }<br /><br />  def test_recursive_curry<br />    maker = lambda { |func_with_me|<br />      CURRY.call(func_with_me, func_with_me)<br />    }<br />    assert_equal(120, maker.call(lambda { |me, n| n.zero? &amp;&amp; 1 or n * me.call(me, n-1) }).call(5))<br />  end<br /><br />end<br /></code></pre><br /><br />In OO some language implementations, <code>this</code> (or <code>self</code>) is a hidden parameter passed to each method. Thus, there&#8217;s a parameter&#8212;<code>me</code> in the example code&#8212;that is added for handling recursion. If you write a recursive function&#8212;like the venerable <code>factorial</code>&#8212;with the extra <code>me</code> parameter, a trivial currying operation evaluates it recursively without any need for names.<br /><br />This is obviously deficient. As noted above, we want to write <code>factorial</code> like so:<br /><br /><pre><code>lambda { |n| n.zero? &amp;&amp; 1 or f.call(n-1) }<br /></code></pre><br /><br />We&#8217;ll need an <code>f</code> from somewhere, and just as our Scheme colleagues do, we&#8217;ll bind one as a parameter in an enclosing lambda. So we want to write:<br /><br /><pre><code>lambda { |f| lambda { |n| n.zero? &amp;&amp; 1 or f.call(n-1) } }<br /></code></pre><br /><br />And somehow this should be transformed into a working <code>factorial</code> function. For the test-driven crowd, we want to write:<br /><br /><pre><code>def test_clean_up_loose_ends<br />  maker = ...<br /><br />  factorial = maker.call(<br />    lambda { |f| lambda { |n| n.zero? &amp;&amp; 1 or n * f.call(n-1) } }<br />  )<br />  assert_equal(120, factorial.call(5))<br /><br />  iterative_factorial = maker.call(<br />    lambda { |f| lambda { |n, acc| n.zero? &amp;&amp; acc or f.call(n - 1, n * acc) } }<br />  )<br />  tail_factorial = lambda { |n| iterative_factorial.call(n, 1) }<br />  assert_equal(120, tail_factorial.call(5))<br />end<br /></code></pre><br /><br />Of course, we need some code for <code>maker</code>. And the <code>iterative_factorial</code> case shows that <code>maker</code> works for functions with more than one parameter. The solution I came up with is:<br /><br /><pre><code>CURRY = lambda { |f, a| lambda { |*b| f.call(a, *b) } }<br />maker = lambda { |f|<br />       lambda { |func_with_me| CURRY.call(func_with_me, func_with_me) }.call(<br />            CURRY.call(lambda { |inner_func, me, *args|<br />                        inner_func.call(CURRY.call(me, me)).call(*args) }, f)) }<br /></code></pre><br /><br />The source code with each transformation from beginning to end is <a href="http://raganwald.com/source/curry_combinator.html">here</a> (I strongly suspect that this &#8220;curry combinator&#8221; is actually the Y combinator with a huge amount of cruft hanging off it).<br /><br />Unique or derivative, crap or craft, the process of getting it to work has enriched my mind by forcing me outside of my usual problem space. I still can&rsquo;t think of a practical application for what I&rsquo;ve just written. But I know I&rsquo;ve stretched myself.<br /><br />And now back to you: perhaps you&rsquo;re rushing off to try to implement a fixed-point combinator from first principles. Perhaps your plan is to code the canonical examples in your usual language. Those are both good paths. But whether you follow them today or not, remember the underlying principle exemplified by the fixed-point combinator:<br /><br /><em>Do not dismiss impractical or weird problems. While you may not have an immediate application for the code you write to solve such problems, you are maximizing your learning when you venture outside of your usual problem space.</em><br /><br /><hr/><br /><ol><li>Named recursion is stuff like <code>foo = lambda { |...| foo.call(:bar) }</code>. It takes advantage of the host language&rsquo;s variable binding to recurse. If you want anonymous recursion, you should be able to assign the same <code>lambda</code> to another name and have it work just as well, as in: <code>fufu = lambda { |...| foo.call(:bar) }</code>. That won&rsquo;t work if you are relying on Ruby&rsquo;s name for <code>foo</code>.</li></ol><br />p.s. Don&rsquo;t miss <a href="http://weblog.raganwald.com/2007/02/guest-blogger-tom-moertel-derives-y.html">Tom Moertel&rsquo;s derivation of the Y combinator in Ruby</a>.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/lispy.html">lispy</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/passion.html">passion</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/ruby.html">ruby</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html" title="permanent link">But Y would I want to do a thing like this?</a></span>
+					<div style="clear:both;"></div><blockquote><br />  Choose life. Choose a job. Choose a starter home. Choose dental insurance, leisure wear and matching luggage. Choose your future. But <a href="http://en.wikipedia.org/wiki/Y_combinator" title="Y combinator">Y</a> would <a href="http://en.wikipedia.org/wiki/Combinatory_logic#Examples_of_combinators" title="Identity combinator">I</a> want to do a thing like that?<br /></blockquote>Writing about <a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">first-class functions</a> and their <a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html">compatibility with object-oriented programming</a> naturally leads to the <a href="http://en.wikipedia.org/wiki/Y_combinator">Y combinator</a>. And that is the point where eyes glaze over and soft, snoring sounds rise from RSS readers everywhere.<br /><br />But please bear with me, this essay is not really about the Y combinator, it&#8217;s about learning new things and expanding our capacity to think.<br /><br /><strong>Sharpening the saw</strong><br /><br />Years ago I picked up Steven Covey&#8217;s book <a href="http://www.amazon.com/gp/product/0743269519?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0743269519">The 7 Habits of Highly Effective People</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0743269519" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />. If the book is a test out of seven, I really wasn&#8217;t doing very well.<br /><br />If you&#8217;ve read the book, you probably remember that he talked about &#8220;Sharpening the Saw,&#8221; investing in your own abilities. That&#8217;s incredibly important, but I don&#8217;t need to tell you that. If you exercise with programming katas, or learn a new programming language once a year, or pick up a book like <a href="http://www.amazon.com/gp/product/0262562146?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0262562146">The Reasoned Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262562146" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> <em>and actually go through the exercises</em>, then you are already in the top 1% of software developers for personal skills improvement. (Sorry, certifications <em>don&#8217;t count</em>. They are the classic case of doing the wrong thing for the wrong reason!)<br /><br />New ideas&#8212;by which I mean, new to you&#8212;are an important way to sharpen your saw. If for no other reason than this: the brain needs regular exercise to perform at or near its potential. Learning new things keeps you sharp, even if you don&#8217;t directly use the things you learned.<br /><br />Others have suggested that learning Lisp is beneficial to your programming skills in its own right. That&rsquo;s one good way to sharpen your saw. But I add to that an important caveat: to obtain the deepest benefit from learning a new language, you must learn to think in the new language, not just learn to translate your favourite programming language syntax and idioms into it.<br /><br /><strong>Think different</strong><br /><br />The interesting thing about that is that almost by definition, if you see something in, say, Lisp that solves a problem you already have, you won&#8217;t learn much from the Lisp code. It is tempting to think that Lisp (or any other language) will somehow do what you&#8217;re already doing in some wonderfully magic way that is obviously better. But no, that isn&#8217;t how it really works.<br /><br />For your problems are tuned to your existing tools. You simply can&#8217;t imagine problems that your tools can&#8217;t solve well, much less can&#8217;t solve at all. That&#8217;s why there are so few continuation-based web servers. Who&#8217;s going to invent one unless they have a programming paradigm with continuations?<br /><br /><div class="book"><a href="http://www.amazon.com/gp/product/0192801422?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0192801422"><img border="0" src="http://raganwald.github.com/uploaded_images/to_mock_a_mockingbird-785706"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0192801422" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><a href="http://www.amazon.com/gp/product/0192801422?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0192801422">To Mock a Mockingbird</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0192801422" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />: The most enjoyable text on the subject of combinatory logic ever written. What other textbook features starlings, kestrels, and other songbirds?<br /></div>And worse, when a new tool is applied to a problem you think you know well, you will probably dismiss the things the new tool does well. Look at how many people dismiss brevity of code. Note that all of the people ignore the statistics about the constant ratio between bugs and lines of code use verbose languages. Look at how many people dismiss continuation-based servers as a design approach. Note that all of them use programming languages bereft of control flow abstractions.<br /><br />Thus, to truly learn a new tool, you must not just learn the new tool, you must <em>apply it to new kinds of problems</em>. It&#8217;s no good learning to replace simple iteration with first-class functions: all you&#8217;ve learned is syntax. To really learn first-class functions, you must seek out problems that aren&#8217;t easily solved with iteration.<br /><br /><strong>The Why of Y</strong><br /><br />Which leads me back to fixed point combinators. They appear to have no practical (as in making money) use. And that&#8217;s why I&#8217;m suggesting to you that you figure out how to make one in your language of choice. The very fact that the problem is far outside of your realm of &#8220;practicality&#8221; guarantees that you will learn something. You won&#8217;t be simply applying your same-old, same-old techniques and patterns to a slightly new problem.<br /><br />Start your research with Richard P. Gabriel&#8217;s <a href="http://www.dreamsongs.com/NewFiles/WhyOfY.pdf">The Why of Y</a>. Try porting his examples directly to your favourite programming language. If what you want to use is too brain-damaged to support closures, you may need to do a little greenspunning and build a little <a href="http://en.wikipedia.org/wiki/Function_object">functor</a> infrastructure.<br /><br />Don&#8217;t be dissuaded if you have to follow the functor route: you are learning far more about your language and about programming in general than the shmoes that settle for learning five new buzzwords related to the latest WS-* interoperability with XPath 3.x.<br /><br />If you prefer a <a href="http://raganwald.github.com/2007/02/its-monday-its-snowing-and-im-actually.html">fun</a> approach to learning, you can do not better than Raymond Smullyan&#8217;s <a href="http://www.amazon.com/gp/product/0192801422?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0192801422">To Mock a Mockingbird</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0192801422" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />: an enjoyable romp through the world of combinatory logic. After reading this book, you will have mastered the S, K, I, Y, and other combinators. Added bonuses include a safe that can only be opened by applying G&ouml;del&#8217;s Incompleteness Theorem to its combination. How can you read this book and <em>not</em> learn?<br /><br /><strong>Eating my own dog food</strong><br /><br />I thought of a few things to say along these lines last week and then I abruptly realizing I was asking you to &#8220;Do as I say, not as I do.&#8221; What good is recycling problems I first encountered in University textbooks two decades ago? I put this post aside and set to work on a problem of my own.<br /><br />I set out to write a function for making recursive functions&#8212;a function <a href="http://en.wikipedia.org/wiki/Extensional_equality">extensionally equal</a> to the Y combinator&#8212;in Ruby. The ultimate goal is to take something like:<br /><br /><pre><code>lambda { |f| lambda { |n| n.zero? &amp;&amp; 1 or f.call(n-1) } }<br /></code></pre><br /><br />And be able to have it call itself recursively. In this case, to compute the <code>factorial</code> function.<br /><br />This is trivial, given that Ruby supports named recursion, but if you want to write a fixed-point combinator you want to write a function that makes recursive functions <em>without using the host language&rsquo;s support for named recursive calls</em>. In other words, you are bootstrapping named recursion out of anonymous first-class functions.<sup>1</sup><br /><br />There are important theoretical implications of being able to do this, but the killer reason to try it is to learn.<br /><br />I started my quest for a function for making recursive functions with a rather trivial observation based on OO programming and the Curry function:<br /><br /><pre><code>require 'test/unit'<br /><br />class ExempliGratia &lt; Test::Unit::TestCase<br /><br />  CURRY = lambda { |f, a| lambda { |*b| f.call(a, *b) } }<br /><br />  def test_recursive_curry<br />    maker = lambda { |func_with_me|<br />      CURRY.call(func_with_me, func_with_me)<br />    }<br />    assert_equal(120, maker.call(lambda { |me, n| n.zero? &amp;&amp; 1 or n * me.call(me, n-1) }).call(5))<br />  end<br /><br />end<br /></code></pre><br /><br />In OO some language implementations, <code>this</code> (or <code>self</code>) is a hidden parameter passed to each method. Thus, there&#8217;s a parameter&#8212;<code>me</code> in the example code&#8212;that is added for handling recursion. If you write a recursive function&#8212;like the venerable <code>factorial</code>&#8212;with the extra <code>me</code> parameter, a trivial currying operation evaluates it recursively without any need for names.<br /><br />This is obviously deficient. As noted above, we want to write <code>factorial</code> like so:<br /><br /><pre><code>lambda { |n| n.zero? &amp;&amp; 1 or f.call(n-1) }<br /></code></pre><br /><br />We&#8217;ll need an <code>f</code> from somewhere, and just as our Scheme colleagues do, we&#8217;ll bind one as a parameter in an enclosing lambda. So we want to write:<br /><br /><pre><code>lambda { |f| lambda { |n| n.zero? &amp;&amp; 1 or f.call(n-1) } }<br /></code></pre><br /><br />And somehow this should be transformed into a working <code>factorial</code> function. For the test-driven crowd, we want to write:<br /><br /><pre><code>def test_clean_up_loose_ends<br />  maker = ...<br /><br />  factorial = maker.call(<br />    lambda { |f| lambda { |n| n.zero? &amp;&amp; 1 or n * f.call(n-1) } }<br />  )<br />  assert_equal(120, factorial.call(5))<br /><br />  iterative_factorial = maker.call(<br />    lambda { |f| lambda { |n, acc| n.zero? &amp;&amp; acc or f.call(n - 1, n * acc) } }<br />  )<br />  tail_factorial = lambda { |n| iterative_factorial.call(n, 1) }<br />  assert_equal(120, tail_factorial.call(5))<br />end<br /></code></pre><br /><br />Of course, we need some code for <code>maker</code>. And the <code>iterative_factorial</code> case shows that <code>maker</code> works for functions with more than one parameter. The solution I came up with is:<br /><br /><pre><code>CURRY = lambda { |f, a| lambda { |*b| f.call(a, *b) } }<br />maker = lambda { |f|<br />       lambda { |func_with_me| CURRY.call(func_with_me, func_with_me) }.call(<br />            CURRY.call(lambda { |inner_func, me, *args|<br />                        inner_func.call(CURRY.call(me, me)).call(*args) }, f)) }<br /></code></pre><br /><br />The source code with each transformation from beginning to end is <a href="http://raganwald.com/source/curry_combinator.html">here</a> (I strongly suspect that this &#8220;curry combinator&#8221; is actually the Y combinator with a huge amount of cruft hanging off it).<br /><br />Unique or derivative, crap or craft, the process of getting it to work has enriched my mind by forcing me outside of my usual problem space. I still can&rsquo;t think of a practical application for what I&rsquo;ve just written. But I know I&rsquo;ve stretched myself.<br /><br />And now back to you: perhaps you&rsquo;re rushing off to try to implement a fixed-point combinator from first principles. Perhaps your plan is to code the canonical examples in your usual language. Those are both good paths. But whether you follow them today or not, remember the underlying principle exemplified by the fixed-point combinator:<br /><br /><em>Do not dismiss impractical or weird problems. While you may not have an immediate application for the code you write to solve such problems, you are maximizing your learning when you venture outside of your usual problem space.</em><br /><br /><hr/><br /><ol><li>Named recursion is stuff like <code>foo = lambda { |...| foo.call(:bar) }</code>. It takes advantage of the host language&rsquo;s variable binding to recurse. If you want anonymous recursion, you should be able to assign the same <code>lambda</code> to another name and have it work just as well, as in: <code>fufu = lambda { |...| foo.call(:bar) }</code>. That won&rsquo;t work if you are relying on Ruby&rsquo;s name for <code>foo</code>.</li></ol><br />p.s. Don&rsquo;t miss <a href="http://raganwald.github.com/2007/02/guest-blogger-tom-moertel-derives-y.html">Tom Moertel&rsquo;s derivation of the Y combinator in Ruby</a>.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/lispy.html">lispy</a>, <a rel='tag' href="http://raganwald.github.com/labels/passion.html">passion</a>, <a rel='tag' href="http://raganwald.github.com/labels/popular.html">popular</a>, <a rel='tag' href="http://raganwald.github.com/labels/ruby.html">ruby</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html" title="permanent link">12:06 AM</a>
+						&para; <a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html" title="permanent link">12:06 AM</a>
 
 					 
 				</span> 
@@ -44,119 +44,119 @@
 						
 							<div class="blogComment">
 								<a name="117074736960624468"></a> 				I should have avoided the temptation, but <EM>noooooo</EM> I just had to check Google Reader on the way to bed. And then I stumbled upon your irresistible Y-combinator post.  And then instead of sleeping I started writing code.<BR/><BR/>It's all your fault.   ;-)<BR/><BR/>Anyway, Haskell makes for a tiny Y combinator:<BR/><BR/>    y f = f (y f)<BR/><BR/>I wasn't able to make a Ruby version that small, but what I ended up with was satisfyingly concise:<BR/><BR/>    def y(&f)<BR/>      lambda { |*args| f[y(&f)][*args] }<BR/>    end<BR/><BR/>It works pretty much like you would expect:<BR/><BR/>    fac      = y { |rec| lambda { |n|     n < 2 ? 1   : n * rec[n-1]    } }<BR/>    acc_fac  = y { |rec| lambda { |n,acc| n < 2 ? acc : rec[n-1, n*acc] } }<BR/>    tail_fac = lambda { |n| acc_fac[n, 1] }<BR/><BR/>    fac[5]        # ==> 120<BR/>    tail_fac[5]   # ==> 120<BR/><BR/>Cheers! --Tom<BR/><BR/>P.S.  Sorry about the formatting.  I couldn't figure out how to quote code.  Feel free to edit the post to fix things up.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170747360000#c117074736960624468" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://blog.moertel.com/" rel="nofollow">Tom Moertel</a> : 2:36 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170747360000#c117074736960624468" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://blog.moertel.com/" rel="nofollow">Tom Moertel</a> : 2:36 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117074736960624468" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117076789353904396"></a> 				Tom:<BR/><BR/>Your concise version seems to involve a recursive <I>definition</I>: the method <B>y</B> seems to call itself in its body.<BR/><BR/>Can you rewrite it to eliminate the self-call?<BR/><BR/>Note that the canonical Y combinator and the curry combinator do not call themselves.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170767880000#c117076789353904396" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:18 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170767880000#c117076789353904396" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:18 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117076789353904396" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117076946033082921"></a> 				What a coincidence! I just started reading "To Mock a Mockingbird" last night, based on an earlier recommendation you made.<BR/><BR/>My first reaction: I find it surprisingly hard, even compared to Smullyan's other puzzle books. But it's very interesting, and it will obviously provide an <I>alarmingly</I> thorough grounding in combinatorial logic.<BR/><BR/>Oddly, I've never learned to love puzzles. Exotic programming languages? Sure. Code katas? Useful. Strange math? I'm finally learning to love it, and it's a lot of fun.<BR/><BR/>But puzzles have never really clicked for me. And so my interviewing style skews the same way: Coding exercises, design problems, project management questions, but no logic puzzles.<BR/><BR/>Questions for the readers: Is the love of puzzles something you were born with? Or something you learned? In your experience, is puzzle-solving ability a reliable indicator programming skill? What about the other way around?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170769440000#c117076946033082921" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 8:44 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170769440000#c117076946033082921" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 8:44 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117076946033082921" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117077010333848683"></a> 				Reg: <I>Can you rewrite it to eliminate the self-call?</I><BR/><BR/>Not in Haskell, at least not without getting some data structures involved.<BR/><BR/>The problem: You can't write the U combinator in Haskell (it won't typecheck), so there's no way to get "fix e = (U I) (U e)" to expand.<BR/><BR/>Haskell corresponds to the strongly-typed lambda calculus, and the only fixpoints are those provided by the language itself, either in Tom's "y f = f (y f)", or in "data" definitions.<BR/><BR/>I've heard you can build a Y-combinator of sorts using the latter, but never actually tried it.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170770100000#c117077010333848683" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 8:55 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170770100000#c117077010333848683" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 8:55 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117077010333848683" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117078027484084815"></a> 				Eric: I'm the same way about puzzles. The Y combinator was a mildly interesting toy to me, sort of like a Rubik's cube or a crossword puzzle. I could play with it for a few minutes, but it couldn't really hold my attention.<BR/><BR/>What really put me over the top about learning it was when I started writing a parser combinator library. If you write those combinator as recursive functions, then left-recursion will make the parser loop, and I found that really inelegant. But if you write a customized recursion combinator, your recursive parser can check to ensure you're making progress through the stream, and abort if you start to loop. Writing such a combinator requires understanding how the Y combinator works, and that gave me the energy to really dig into it. <BR/><BR/>My learning methodology is to read very broadly but shallowly to get a big store of ideas I've heard about (as contrasted with ideas I really understand). Then, when I write some code that seems inelegant to me, I'll try and pattern match against the things I've read about, and rummage for some applicable-sounding ideas. Then, I'll study them in depth to figure out how to write something more general. <BR/><BR/>I think this is a less common style among hacker types, who generally find intrinsic excitement in puzzles. For example, this year's ICFP contest was an enormous home-run hit, but it was one that left me a little cold (even though the guys who did it put in an <EM>awesome</EM> amount of effort to make it cool).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170780240000#c117078027484084815" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09691828772507600568" rel="nofollow">Neel Krishnaswami</a> : 11:44 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170780240000#c117078027484084815" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09691828772507600568" rel="nofollow">Neel Krishnaswami</a> : 11:44 AM</div>
 
 								<span class="item-control blog-admin pid-409915442"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117078027484084815" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117078073758838309"></a> 				Ah.  I didn't realize the part of the challenge was to limit myself to lambda-calculus features.  (I'm still going to use Ruby's splat operator, however.)  Alright, then, let's work it through...<BR/><BR/>Here's my original Ruby definition:<BR/><BR/>    def y(&f)<BR/>      lambda { |*args| f[y(&f)][*args] }<BR/>    end<BR/><BR/>To get rid of the recursive call y(&f), let's replace it with a variable yf, whose value we'll say is magically equivalent to the result of the recursive call.  To effect the binding of yf, we'll need to wrap the method body in a new lambda expression and pass in the magic value:<BR/><BR/>    def y(&f)<BR/>      lambda { |yf|<BR/>        lambda { |*args| f[yf[yf]][*args] }<BR/>      }[ <<< placeholder for yf: we'll fill this hole next >>> ]<BR/>    end<BR/><BR/>So, what value should we pass in for yf?  Because the variable represents the value that would have been computed by calling y(&f), which is just the body of the y method, we can fill the hole with a duplicate of the body:<BR/><BR/>    def y(&f)<BR/>      lambda { |yf|<BR/>        lambda { |*args| f[yf[yf]][*args] }<BR/>      }[ lambda { |yf| lambda { |*args| f[yf[yf]][*args] } } ]<BR/>    end<BR/><BR/>And we have our Y combinator:<BR/><BR/>    fac = y { |rec| lambda { |n| n < 2 ? 1 : n * rec[n-1] } }<BR/>    fac[5]  # ==> 120<BR/><BR/>While the combinator works, its implementation repeats itself: there are two copies of the lambda expression<BR/><BR/>    lambda { |yf| lambda { |*args| f[yf[yf]][*args] } }<BR/><BR/>in the method body.  To factor them out, let's let the variable x represent this expression.  Then the method body simplifies to x[x], which is very satisfying.  To set x to the correct value, however, we need to add a wrapper lambda that binds x to the original expression.  Putting it all together, we arrive at the final version:<BR/><BR/>    def y(&f)<BR/>      lambda { |x| x[x] } [ <BR/>        lambda { |yf| lambda { |*args| f[yf[yf]][*args] } } ]<BR/>    end<BR/><BR/>And it, too, works:<BR/><BR/>    acc_fac  = y { |rec| lambda { |n,acc| n < 2 ? acc : rec[n-1, n*acc] } }<BR/>    tail_fac = lambda { |n| acc_fac[n, 1] }<BR/>    tail_fac[5]   # ==> 120<BR/><BR/>Cheers! --Tom<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170780720000#c117078073758838309" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://blog.moertel.com/" rel="nofollow">Tom Moertel</a> : 11:52 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170780720000#c117078073758838309" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://blog.moertel.com/" rel="nofollow">Tom Moertel</a> : 11:52 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117078073758838309" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117078202710461909"></a> 				Without having looked at the problem too deeply, it occurs to me that the Y Combinator is basically the same problem as a program that reproduces its own source code.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170781980000#c117078202710461909" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07299732457242903370" rel="nofollow">Damien</a> : 12:13 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170781980000#c117078202710461909" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07299732457242903370" rel="nofollow">Damien</a> : 12:13 PM</div>
 
 								<span class="item-control blog-admin pid-575250849"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117078202710461909" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117079252819055848"></a> 				This is fun. :)<BR/><BR/>Here's an JavaScript implementation:<BR/>// helper function to convert arguments object to an array<BR/>function itoa(i,start) {<BR/>    var a=[];<BR/>    for(var x = start ? start : 0 ; x < i.length; x++) a.push(i[x]);<BR/>    return a;<BR/>};<BR/>// another helper to implement currying<BR/>function curry(func, arg) { <BR/>    return function() {<BR/>        return func.apply(Function(), [arg].concat(itoa(arguments)));<BR/>    }<BR/>};<BR/>// And here's Y, we need those helpers here<BR/>function Y(f) {<BR/>    return function(h) {<BR/>        return curry(h, h);<BR/>    }( curry(function(f, self) {<BR/>            return f(curry(self, self)).apply(Function(), itoa(arguments,2));<BR/>        }, f)<BR/>    )<BR/>};<BR/>// Just to show it works<BR/>fact = Y( function (recursion) { return function(n) { return n < 2 ? 1 : n*recursion(n-1); } });<BR/>print(fact(5)); // prints 120<BR/><BR/>And Python:<BR/># Try to use Python 2.5's builtin curry<BR/>try: from functools import partial<BR/>except ImportError: partial = lambda f, a: lambda *args: f(a, *args)<BR/># Y<BR/>def Y(f):<BR/> return (lambda h: partial(h,h ))(<BR/>  partial(lambda f, self, *args: f(partial(self,self))(*args), f) )<BR/># Works<BR/>fact = Y(lambda self: lambda n: n < 2 and 1 or n*self(n-1))<BR/>print fact(5) # 120<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170792480000#c117079252819055848" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Ants Aasma</span> : 3:08 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170792480000#c117079252819055848" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Ants Aasma</span> : 3:08 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117079252819055848" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117079273958827166"></a> 				Ants:<BR/><BR/>May I repost yur solutions? if so, do you have an URL for attribution?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170792720000#c117079273958827166" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:12 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170792720000#c117079273958827166" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:12 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117079273958827166" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117079461019968199"></a> 				Sure. I don't have an URL though.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170794580000#c117079461019968199" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Ants Aasma</span> : 3:43 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170794580000#c117079461019968199" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Ants Aasma</span> : 3:43 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117079461019968199" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117080308279477867"></a> 				"You simply can’t imagine problems that your tools can’t solve well, much less can’t solve at all."<BR/><BR/>Interesting take on the Sapir-Whorf hypothesis there.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170803040000#c117080308279477867" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02024907923214468515" rel="nofollow">Adam</a> : 6:04 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170803040000#c117080308279477867" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02024907923214468515" rel="nofollow">Adam</a> : 6:04 PM</div>
 
 								<span class="item-control blog-admin pid-271482851"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117080308279477867" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117080745954171520"></a> 				Nice reference, I hope you have better friends than Mark Renton.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170807420000#c117080745954171520" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02586023781945095350" rel="nofollow">David Seruyange</a> : 7:17 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170807420000#c117080745954171520" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02586023781945095350" rel="nofollow">David Seruyange</a> : 7:17 PM</div>
 
 								<span class="item-control blog-admin pid-265360868"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117080745954171520" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117090670078344685"></a> 				Worth reading:<BR/><BR/><A HREF="http://undefined.com/ia/2007/02/07/hrmmm/" REL="nofollow">Hrmmm</A>.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170906660000#c117090670078344685" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:51 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170906660000#c117090670078344685" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:51 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117090670078344685" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117092016440480523"></a> 				I wrote a similar post about building "basic" programming abstractions -- booleans, integers, lists and recursion -- in the untyped lambda calculus using a subset of scheme.  Take a <A HREF="http://www.onebadseed.com/blog/?p=34" REL="nofollow">look</A>.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170920160000#c117092016440480523" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://onebadseed.com/blog" rel="nofollow">Cotton Seed</a> : 2:36 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1170920160000#c117092016440480523" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://onebadseed.com/blog" rel="nofollow">Cotton Seed</a> : 2:36 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117092016440480523" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5930162665578767104"></a> 				Here's my version of Y in Ruby:<BR/><BR/>Y = proc {<BR/>  |f|<BR/><BR/>  proc {<BR/>    |g|<BR/>    g[g] }.call(<BR/>                proc {<BR/>                  |h|<BR/><BR/>                  proc {<BR/>                    |n|<BR/><BR/>                    (f[h[h]])[n]<BR/>                  }<BR/>                })<BR/>}<BR/><BR/>Using Y to define factorial:<BR/><BR/>fac = Y[<BR/>        proc {<BR/>          |h|<BR/><BR/>          proc {<BR/>            |n|<BR/>            if n < 2 then<BR/>              1<BR/>            else<BR/>              n * h[n - 1]<BR/>            end<BR/>          }<BR/>        }]<BR/><BR/>puts fac[5]   # prints 120<BR/><BR/>Admittedly it's not as general as your Y: the recursvie function defined takes one and only one argument. But this should be easy to fix using *args forms.<BR/><BR/>You can read my blog entry to see how I derived this implementation:<BR/><A HREF="http://www.feiling.org/blogentries/show/16" REL="nofollow"><BR/>http://www.feiling.org/blogentries/show/16</A><br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1174081200000#c5930162665578767104" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.feiling.org/" rel="nofollow">Fei Ling</a> : 5:40 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1174081200000#c5930162665578767104" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.feiling.org/" rel="nofollow">Fei Ling</a> : 5:40 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5930162665578767104" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5603742545592985852"></a> 				I was prompted by this post to explore a similar topic in scheme  See my <A HREF="http://seanfritz.blogspot.com/2008/01/i-was-recently-reading-reg-braithwaites.html" REL="nofollow">blog entry</A><br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1200002820000#c5603742545592985852" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02498110256682690030" rel="nofollow">Sean Fritz</a> : 5:07 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1200002820000#c5603742545592985852" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02498110256682690030" rel="nofollow">Sean Fritz</a> : 5:07 PM</div>
 
 								<span class="item-control blog-admin pid-21348953"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5603742545592985852" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7923700450932155228"></a> 				> That’s why there are so few continuation-based HTTP servers.<BR/><BR/>That's funny, I thought it was because HTTP is a <I>stateless</I> protocol. =)<BR/><BR/>Great post though.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1200950820000#c7923700450932155228" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12517691336187602116" rel="nofollow">Phil</a> : 4:27 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html?showComment=1200950820000#c7923700450932155228" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12517691336187602116" rel="nofollow">Phil</a> : 4:27 PM</div>
 
 								<span class="item-control blog-admin pid-761066368"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7923700450932155228" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -167,7 +167,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -221,25 +221,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -247,17 +247,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -267,17 +267,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -285,19 +285,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -305,18 +305,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -324,15 +324,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -341,101 +341,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Saturday, October 27, 2007</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="6254612993372428372">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2007/10/stringtoproc.html" title="permanent link">String#to_proc</a></span>
-					<div style="clear:both;"></div><i>Breaking news! The irb enhancement gem <a href="http://weblog.raganwald.com/2007/12/utility-belt.html">Utility Belt</a> includes String#to_proc</i><br /><br />String#to_proc is an addition to Ruby&rsquo;s core String class to enable <a href="http://rickyclarkson.blogspot.com/2007/09/point-free-programming-in-java-7-beyond.html">point-free</a> <a href="http://en.wikipedia.org/wiki/Hylomorphism_(computer_science)">hylomorphisms</a>&hellip;<br /><br />I&rsquo;ll start again. String#to_proc adds a method to Ruby&rsquo;s core String class to make lots of mapping and reducing operations more compact and <em>easier to read</em> by removing boilerplate and focusing on what is to be done. In many cases, the existing black syntax is just fine. But in a few cases, String#to_proc can make an expression <em>even simpler</em>.<br /><br />String#to_proc is a port of the String Lambdas from Oliver Steele&#8217;s <a href="http://osteele.com/sources/javascript/functional/" title="Functional Javascript">Functional Javascript</a> library. I have modified the syntax to reflect how String#to_proc works in Ruby.<br /><br />We&rsquo;ll start with the examples from String Lambdas so you can see what is actually going on. Then we&rsquo;ll look at how to use the <code>&</code> coercion to make working with arrays really simple.<br /><br /><code>to_proc</code> creates a function from a string that contains a single expression. This function can then be applied to an argument list, either immediately:<br /><pre><code><br />'x+1'.to_proc[2];<br />     → 3<br />'x+2*y'.to_proc[2, 3];<br />     → 8<br /></code></pre>or (more usefully) later:<br /><pre><code><br />square = 'x*x'.to_proc;<br />square(3);<br />     → 9<br />square(4);<br />     → 16<br /></code></pre><strong>Explicit parameters</strong><br /><br />If the string contains a <code>-&gt;</code>, this separates the parameters from the body.<br /><pre><code><br />'x y -&gt; x+2*y'.to_proc[2, 3];<br />     → 8<br />'y x -&gt; x+2*y'.to_proc[2, 3];<br />     → 7<br /></code></pre>Otherwise, if the string contains a <code>_</code>, it&#8217;s a unary function and <code>_</code> is name of the parameter:<br /><pre><code><br />'_+1'.to_proc[2];<br />     → 3<br />'_*_'.to_proc[3];<br />     → 9<br /></code></pre><strong>Implicit parameters</strong><br /><br />If the string doesn&#8217;t specify explicit parameters, they are implicit.<br /><br />If the string starts with an operator or relation besides <code>-</code>, or ends with an operator or relation, then its implicit arguments are placed at the beginning and/or end:<br /><pre><code><br />'*2'.to_proc[2];<br />     → 4<br />'/2'.to_proc[4];<br />     → 2<br />'2/'.to_proc[4];<br />     → 0.5<br />'/'.to_proc[2, 4];<br />     → 0.5<br /></code></pre>&#8217;.&#8217; counts as a right operator:<br /><pre><code><br />'.abs'.to_proc[-1];<br /> → 1<br /></code></pre>Otherwise, the variables in the string, in order of occurrence, are its parameters.<br /><pre><code><br />'x+1'.to_proc[2];<br />     → 3<br />'x*x'.to_proc[3];<br />     → 9<br />'x + 2*y'.to_proc[1, 2];<br />     → 5<br />'y + 2*x'.to_proc[1, 2];<br />     → 5<br /></code></pre><strong>Chaining</strong><br /><br />Chain <code>-&gt;</code> to create curried functions.<br /><pre><code><br />'x y -&gt; x+y'.to_proc[2, 3];<br />     → 5<br />'x -&gt; y -&gt; x+y'.to_proc[2][3];<br />     → 5<br />plus_two = 'x -&gt; y -&gt; x+y'.to_proc[2];<br />plus_two[3]<br />     → 5<br /></code></pre><strong>Using String#to_proc in Idiomatic Ruby</strong><br /><br />Ruby on Rails popularized <code>Symbol#to_proc</code>, so much so that <a href="http://eigenclass.org/hiki.rb?Changes+in+Ruby+1.9#l168" title="Changes in Ruby 1.9">it will be part of Ruby 1.9</a>.<br /><br />If you like:<br /><pre><code><br />%w[dsf fgdg fg].map(&amp;:capitalize)<br />    → ["Dsf", "Fgdg", "Fg"]<br /></code></pre>then <code>%w[dsf fgdg fg].map(&amp;'.capitalize')</code> isn&#8217;t much of an improvement.<br /><br />But what about doubling every value in a list:<br /><pre><code><br />(1..5).map &amp;'*2'<br />    → [2, 4, 6, 8, 10]<br /></code></pre>Or folding a list:<br /><pre><code><br />(1..5).inject &amp;'+'<br />    → 15<br /></code></pre>Or having fun with factorial:<br /><pre><code><br />factorial = "(1.._).inject &amp;'*'".to_proc<br />factorial[5]<br />    → 120<br /></code></pre>String#to_proc, in combination with <code>&amp;</code> coercing a value into a proc, lets you write compact maps, injections, selections, detections (and many others!) when you only need a simple expression.<br /><br />Caveats: String#to_proc uses <code>eval</code>. Cue the chorus of people&#8212;pounding away on quad 3Ghz systems&#8212;complaining about the performance. You&#8217;re an adult. Decide for yourself whether this is an issue. After <a href="http://www.yourdictionary.com/wotd/wotd.pl?word=manky">mankying</a> things about to deduce the parameters, String#to_proc evaluates its expression in a different binding than where you wrote the String. This matters if you include free variables. My thinking is that it ceases to be a simple, easy-to-understand hack and becomes a cyrptic nightmare once you get too fancy.<br /><br /><blockquote>You know that Voight-Kampff test of yours&#8230; did you ever take that test yourself?</blockquote><div style="text-align: right;">&#8212;Rachael, Blade Runner</div><br /><br />I have been using <a href="http://osteele.com/sources/javascript/functional/" title="Functional Javascript">Functional Javascript</a> for quite some time now, and I use the String Lambdas a lot. However, Ruby and Javascript are very different languages. Once you get out of the browser&#8217;s DOM, Javascript is a lot cleaner and more elegant than Ruby. For example, you don&#8217;t need to memorize the difference between a block, a lambda, and a proc. Javascript just has functions.<br /><br />However, Javascript is more verbose: Whereas in Ruby you can write <code>[1, 2, 3].map { |x| x*2 }</code>, if Javascript had a <code>map</code> method for arrays, you would still have to write <code>[1, 2, 3].map(function (x) { return x*2; })</code>. So it&#8217;s a big win to make Javascript less verbose: code is easier to read at a glance when you don&#8217;t have to wade through jillions of function keywords.<br /><br />Nevertheless, I still find myself itching for the String Lambdas when I&#8217;m writing Ruby code. It may be a matter of questionable taste, but for certain extremely simple expressions, I vastly prefer the point-free style. <code>(-3..3).map &amp;:abs</code> is shorter than <code>(-3..3).map { |x| x.abs }</code>.<br /><br />It is also cleaner to me. <code>abs</code> is a <em>message</em>, especially in a language like Ruby that supports the sending arbitrary messages named by symbols. Writing <code>(-3..3).map &amp;:abs</code> looks very much like sending the <code>abs</code> message to everything in the list. I don&#8217;t need an <code>x</code> in there to tell me that.<br /><br />Thus, I obviously like <code>(-3..3).map &amp;'.abs'</code>. But I like <code>(1..5).map &amp;'*2'</code> for the same reason. It isn&#8217;t just shorter, it hides a temporary variable that really doesn&#8217;t mean Jack to me when I&#8217;m reading the code. And quite honestly, <code>(1..10).inject { |acc, mem| acc + mem }</code> raises more questions than it answers about what <code>inject</code> does and how it does it. <code>(1..10).inject &amp;'+'</code> gets right down to business for me. I&#8217;d prefer that it be called &#8220;fold,&#8221; but the raw, naked <code>+</code> seems to describe what I want <em>done</em> instead of how I want the computer to do it.<br /><br />Symbol#to_proc also supports named parameters, either through implication (<code>&amp;'x+y'</code>) or with the arrow (<code>'x y -&gt; x*y'</code>). I haven&#8217;t thought of a case where that would be a win over using a Ruby block: <code>{ |x, y| x*y }</code>.<br /><br />I&#8217;m divided about the underscore notation. It seems like a good compromise for expressions where there is a single parameter and it doesn&#8217;t fall on the left or the right side of an expression. Standardizing on an unusual variable name is, I think, a win. Underscore often means a &#8220;hole&#8221; in an expression or a computation, so it feels like a good fit. I would honestly much rather see something like: <code>&amp;'(1/_)+1'</code> than <code>&amp;'(1/x)+1'</code>. The underscore jumps out in an obvious way, and it wouldn&#8217;t be magically clearer to write <code>{ |x| (1/x)+1 }</code>.<br /><br />That being said, I haven&#8217;t actually written an underscore expression yet in actual code, so far I&#8217;m getting by using the point-free expressions to simplify things and using Ruby blocks for everything else.<br /><br /><strong>RSpec</strong><pre><code><br />describe "String to Proc" do<br /><br />  before(:all) do<br />    @one2five = 1..5<br />  end<br /><br />  it "should handle simple arrow notation" do<br />    @one2five.map(&amp;'x -&gt; x + 1').should eql(@one2five.map { |x| x + 1 })<br />    @one2five.map(&amp;'x -&gt; x*x').should eql(@one2five.map { |x| x*x })<br />    @one2five.inject(&amp;'x y -&gt; x*y').should eql(@one2five.inject { |x,y| x*y })<br />    'x y -&gt; x**y'.to_proc()[2,3].should eql(lambda { |x,y| x**y }[2,3])<br />    'y x -&gt; x**y'.to_proc()[2,3].should eql(lambda { |y,x| x**y }[2,3])<br />  end<br /><br />  it "should handle chained arrows" do<br />    'x -&gt; y -&gt; x**y'.to_proc()[2][3].should eql(lambda { |x| lambda { |y| x**y } }[2][3])<br />    'x -&gt; y z -&gt; y**(z-x)'.to_proc()[1][2,3].should eql(lambda { |x| lambda { |y,z| y**(z-x) } }[1][2,3])<br />  end<br /><br />  it "should handle the default parameter" do<br />    @one2five.map(&amp;'2**_/2').should eql(@one2five.map { |x| 2**x/2 })<br />    @one2five.select(&amp;'_%2==0').should eql(@one2five.select { |x| x%2==0 })<br />  end<br /><br />  it "should handle point-free notation" do<br />    @one2five.inject(&amp;'*').should eql(@one2five.inject { |mem, var| mem * var })<br />    @one2five.select(&amp;'&gt;2').should eql(@one2five.select { |x| x&gt;2 })<br />    @one2five.select(&amp;'2&lt;').should eql(@one2five.select { |x| 2&lt;x })<br />    @one2five.map(&amp;'2*').should eql(@one2five.map { |x| 2*x })<br />    (-3..3).map(&amp;'.abs').should eql((-3..3).map { |x| x.abs })<br />  end<br /><br />  it "should handle implied parameters as best it can" do<br />    @one2five.inject(&amp;'x*y').should eql(@one2five.inject(&amp;'*'))<br />    'x**y'.to_proc()[2,3].should eql(8)<br />    'y**x'.to_proc()[2,3].should eql(8)<br />  end<br /><br />end</code></pre>Go ahead, download the <a href="http://raganwald.com/source/string_to_proc.rb.html">source code</a> for yourself.<br /><hr/><em>Update: <a href="http://weblog.raganwald.com/2007/11/fun-with-symboltoproc.html">Reg smacks himself in the head!</a></em><br /><br />I had a look at the source code for <code>Symbol#to_proc</code>:<pre><code><br />class Symbol<br />  # Turns the symbol into a simple proc, which is especially useful for enumerations. Examples:<br />  #<br />  #   # The same as people.collect { |p| p.name }<br />  #   people.collect(&:name)<br />  #<br />  #   # The same as people.select { |p| p.manager? }.collect { |p| p.salary }<br />  #   people.select(&:manager?).collect(&:salary)<br />  def to_proc<br />    Proc.new { |*args| args.shift.__send__(self, *args) }<br />  end<br />end<br /></code></pre>Look at that: Although the examples are all of unary messages like <code>.name</code>, the lambdas created handle methods with arguments. And since almost everything in Ruby is a method, including operators like <code>+</code>&hellip; You can use Symbol#to_proc to do some of the point-free stuff I like:<pre><code><br />[1, 2, 3, 4, 5].inject(&:+)<br />     → 15<br />[{ :foo => 1 }, { :bar => 2 }, { :blitz => 3 }].inject &:merge<br />     → {:foo=>1, :bar=>2, :blitz=>3}<br /></code></pre><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/lispy.html">lispy</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/ruby.html">ruby</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2007/10/stringtoproc.html" title="permanent link">String#to_proc</a></span>
+					<div style="clear:both;"></div><i>Breaking news! The irb enhancement gem <a href="http://raganwald.github.com/2007/12/utility-belt.html">Utility Belt</a> includes String#to_proc</i><br /><br />String#to_proc is an addition to Ruby&rsquo;s core String class to enable <a href="http://rickyclarkson.blogspot.com/2007/09/point-free-programming-in-java-7-beyond.html">point-free</a> <a href="http://en.wikipedia.org/wiki/Hylomorphism_(computer_science)">hylomorphisms</a>&hellip;<br /><br />I&rsquo;ll start again. String#to_proc adds a method to Ruby&rsquo;s core String class to make lots of mapping and reducing operations more compact and <em>easier to read</em> by removing boilerplate and focusing on what is to be done. In many cases, the existing black syntax is just fine. But in a few cases, String#to_proc can make an expression <em>even simpler</em>.<br /><br />String#to_proc is a port of the String Lambdas from Oliver Steele&#8217;s <a href="http://osteele.com/sources/javascript/functional/" title="Functional Javascript">Functional Javascript</a> library. I have modified the syntax to reflect how String#to_proc works in Ruby.<br /><br />We&rsquo;ll start with the examples from String Lambdas so you can see what is actually going on. Then we&rsquo;ll look at how to use the <code>&</code> coercion to make working with arrays really simple.<br /><br /><code>to_proc</code> creates a function from a string that contains a single expression. This function can then be applied to an argument list, either immediately:<br /><pre><code><br />'x+1'.to_proc[2];<br />     → 3<br />'x+2*y'.to_proc[2, 3];<br />     → 8<br /></code></pre>or (more usefully) later:<br /><pre><code><br />square = 'x*x'.to_proc;<br />square(3);<br />     → 9<br />square(4);<br />     → 16<br /></code></pre><strong>Explicit parameters</strong><br /><br />If the string contains a <code>-&gt;</code>, this separates the parameters from the body.<br /><pre><code><br />'x y -&gt; x+2*y'.to_proc[2, 3];<br />     → 8<br />'y x -&gt; x+2*y'.to_proc[2, 3];<br />     → 7<br /></code></pre>Otherwise, if the string contains a <code>_</code>, it&#8217;s a unary function and <code>_</code> is name of the parameter:<br /><pre><code><br />'_+1'.to_proc[2];<br />     → 3<br />'_*_'.to_proc[3];<br />     → 9<br /></code></pre><strong>Implicit parameters</strong><br /><br />If the string doesn&#8217;t specify explicit parameters, they are implicit.<br /><br />If the string starts with an operator or relation besides <code>-</code>, or ends with an operator or relation, then its implicit arguments are placed at the beginning and/or end:<br /><pre><code><br />'*2'.to_proc[2];<br />     → 4<br />'/2'.to_proc[4];<br />     → 2<br />'2/'.to_proc[4];<br />     → 0.5<br />'/'.to_proc[2, 4];<br />     → 0.5<br /></code></pre>&#8217;.&#8217; counts as a right operator:<br /><pre><code><br />'.abs'.to_proc[-1];<br /> → 1<br /></code></pre>Otherwise, the variables in the string, in order of occurrence, are its parameters.<br /><pre><code><br />'x+1'.to_proc[2];<br />     → 3<br />'x*x'.to_proc[3];<br />     → 9<br />'x + 2*y'.to_proc[1, 2];<br />     → 5<br />'y + 2*x'.to_proc[1, 2];<br />     → 5<br /></code></pre><strong>Chaining</strong><br /><br />Chain <code>-&gt;</code> to create curried functions.<br /><pre><code><br />'x y -&gt; x+y'.to_proc[2, 3];<br />     → 5<br />'x -&gt; y -&gt; x+y'.to_proc[2][3];<br />     → 5<br />plus_two = 'x -&gt; y -&gt; x+y'.to_proc[2];<br />plus_two[3]<br />     → 5<br /></code></pre><strong>Using String#to_proc in Idiomatic Ruby</strong><br /><br />Ruby on Rails popularized <code>Symbol#to_proc</code>, so much so that <a href="http://eigenclass.org/hiki.rb?Changes+in+Ruby+1.9#l168" title="Changes in Ruby 1.9">it will be part of Ruby 1.9</a>.<br /><br />If you like:<br /><pre><code><br />%w[dsf fgdg fg].map(&amp;:capitalize)<br />    → ["Dsf", "Fgdg", "Fg"]<br /></code></pre>then <code>%w[dsf fgdg fg].map(&amp;'.capitalize')</code> isn&#8217;t much of an improvement.<br /><br />But what about doubling every value in a list:<br /><pre><code><br />(1..5).map &amp;'*2'<br />    → [2, 4, 6, 8, 10]<br /></code></pre>Or folding a list:<br /><pre><code><br />(1..5).inject &amp;'+'<br />    → 15<br /></code></pre>Or having fun with factorial:<br /><pre><code><br />factorial = "(1.._).inject &amp;'*'".to_proc<br />factorial[5]<br />    → 120<br /></code></pre>String#to_proc, in combination with <code>&amp;</code> coercing a value into a proc, lets you write compact maps, injections, selections, detections (and many others!) when you only need a simple expression.<br /><br />Caveats: String#to_proc uses <code>eval</code>. Cue the chorus of people&#8212;pounding away on quad 3Ghz systems&#8212;complaining about the performance. You&#8217;re an adult. Decide for yourself whether this is an issue. After <a href="http://www.yourdictionary.com/wotd/wotd.pl?word=manky">mankying</a> things about to deduce the parameters, String#to_proc evaluates its expression in a different binding than where you wrote the String. This matters if you include free variables. My thinking is that it ceases to be a simple, easy-to-understand hack and becomes a cyrptic nightmare once you get too fancy.<br /><br /><blockquote>You know that Voight-Kampff test of yours&#8230; did you ever take that test yourself?</blockquote><div style="text-align: right;">&#8212;Rachael, Blade Runner</div><br /><br />I have been using <a href="http://osteele.com/sources/javascript/functional/" title="Functional Javascript">Functional Javascript</a> for quite some time now, and I use the String Lambdas a lot. However, Ruby and Javascript are very different languages. Once you get out of the browser&#8217;s DOM, Javascript is a lot cleaner and more elegant than Ruby. For example, you don&#8217;t need to memorize the difference between a block, a lambda, and a proc. Javascript just has functions.<br /><br />However, Javascript is more verbose: Whereas in Ruby you can write <code>[1, 2, 3].map { |x| x*2 }</code>, if Javascript had a <code>map</code> method for arrays, you would still have to write <code>[1, 2, 3].map(function (x) { return x*2; })</code>. So it&#8217;s a big win to make Javascript less verbose: code is easier to read at a glance when you don&#8217;t have to wade through jillions of function keywords.<br /><br />Nevertheless, I still find myself itching for the String Lambdas when I&#8217;m writing Ruby code. It may be a matter of questionable taste, but for certain extremely simple expressions, I vastly prefer the point-free style. <code>(-3..3).map &amp;:abs</code> is shorter than <code>(-3..3).map { |x| x.abs }</code>.<br /><br />It is also cleaner to me. <code>abs</code> is a <em>message</em>, especially in a language like Ruby that supports the sending arbitrary messages named by symbols. Writing <code>(-3..3).map &amp;:abs</code> looks very much like sending the <code>abs</code> message to everything in the list. I don&#8217;t need an <code>x</code> in there to tell me that.<br /><br />Thus, I obviously like <code>(-3..3).map &amp;'.abs'</code>. But I like <code>(1..5).map &amp;'*2'</code> for the same reason. It isn&#8217;t just shorter, it hides a temporary variable that really doesn&#8217;t mean Jack to me when I&#8217;m reading the code. And quite honestly, <code>(1..10).inject { |acc, mem| acc + mem }</code> raises more questions than it answers about what <code>inject</code> does and how it does it. <code>(1..10).inject &amp;'+'</code> gets right down to business for me. I&#8217;d prefer that it be called &#8220;fold,&#8221; but the raw, naked <code>+</code> seems to describe what I want <em>done</em> instead of how I want the computer to do it.<br /><br />Symbol#to_proc also supports named parameters, either through implication (<code>&amp;'x+y'</code>) or with the arrow (<code>'x y -&gt; x*y'</code>). I haven&#8217;t thought of a case where that would be a win over using a Ruby block: <code>{ |x, y| x*y }</code>.<br /><br />I&#8217;m divided about the underscore notation. It seems like a good compromise for expressions where there is a single parameter and it doesn&#8217;t fall on the left or the right side of an expression. Standardizing on an unusual variable name is, I think, a win. Underscore often means a &#8220;hole&#8221; in an expression or a computation, so it feels like a good fit. I would honestly much rather see something like: <code>&amp;'(1/_)+1'</code> than <code>&amp;'(1/x)+1'</code>. The underscore jumps out in an obvious way, and it wouldn&#8217;t be magically clearer to write <code>{ |x| (1/x)+1 }</code>.<br /><br />That being said, I haven&#8217;t actually written an underscore expression yet in actual code, so far I&#8217;m getting by using the point-free expressions to simplify things and using Ruby blocks for everything else.<br /><br /><strong>RSpec</strong><pre><code><br />describe "String to Proc" do<br /><br />  before(:all) do<br />    @one2five = 1..5<br />  end<br /><br />  it "should handle simple arrow notation" do<br />    @one2five.map(&amp;'x -&gt; x + 1').should eql(@one2five.map { |x| x + 1 })<br />    @one2five.map(&amp;'x -&gt; x*x').should eql(@one2five.map { |x| x*x })<br />    @one2five.inject(&amp;'x y -&gt; x*y').should eql(@one2five.inject { |x,y| x*y })<br />    'x y -&gt; x**y'.to_proc()[2,3].should eql(lambda { |x,y| x**y }[2,3])<br />    'y x -&gt; x**y'.to_proc()[2,3].should eql(lambda { |y,x| x**y }[2,3])<br />  end<br /><br />  it "should handle chained arrows" do<br />    'x -&gt; y -&gt; x**y'.to_proc()[2][3].should eql(lambda { |x| lambda { |y| x**y } }[2][3])<br />    'x -&gt; y z -&gt; y**(z-x)'.to_proc()[1][2,3].should eql(lambda { |x| lambda { |y,z| y**(z-x) } }[1][2,3])<br />  end<br /><br />  it "should handle the default parameter" do<br />    @one2five.map(&amp;'2**_/2').should eql(@one2five.map { |x| 2**x/2 })<br />    @one2five.select(&amp;'_%2==0').should eql(@one2five.select { |x| x%2==0 })<br />  end<br /><br />  it "should handle point-free notation" do<br />    @one2five.inject(&amp;'*').should eql(@one2five.inject { |mem, var| mem * var })<br />    @one2five.select(&amp;'&gt;2').should eql(@one2five.select { |x| x&gt;2 })<br />    @one2five.select(&amp;'2&lt;').should eql(@one2five.select { |x| 2&lt;x })<br />    @one2five.map(&amp;'2*').should eql(@one2five.map { |x| 2*x })<br />    (-3..3).map(&amp;'.abs').should eql((-3..3).map { |x| x.abs })<br />  end<br /><br />  it "should handle implied parameters as best it can" do<br />    @one2five.inject(&amp;'x*y').should eql(@one2five.inject(&amp;'*'))<br />    'x**y'.to_proc()[2,3].should eql(8)<br />    'y**x'.to_proc()[2,3].should eql(8)<br />  end<br /><br />end</code></pre>Go ahead, download the <a href="http://raganwald.com/source/string_to_proc.rb.html">source code</a> for yourself.<br /><hr/><em>Update: <a href="http://raganwald.github.com/2007/11/fun-with-symboltoproc.html">Reg smacks himself in the head!</a></em><br /><br />I had a look at the source code for <code>Symbol#to_proc</code>:<pre><code><br />class Symbol<br />  # Turns the symbol into a simple proc, which is especially useful for enumerations. Examples:<br />  #<br />  #   # The same as people.collect { |p| p.name }<br />  #   people.collect(&:name)<br />  #<br />  #   # The same as people.select { |p| p.manager? }.collect { |p| p.salary }<br />  #   people.select(&:manager?).collect(&:salary)<br />  def to_proc<br />    Proc.new { |*args| args.shift.__send__(self, *args) }<br />  end<br />end<br /></code></pre>Look at that: Although the examples are all of unary messages like <code>.name</code>, the lambdas created handle methods with arguments. And since almost everything in Ruby is a method, including operators like <code>+</code>&hellip; You can use Symbol#to_proc to do some of the point-free stuff I like:<pre><code><br />[1, 2, 3, 4, 5].inject(&:+)<br />     → 15<br />[{ :foo => 1 }, { :bar => 2 }, { :blitz => 3 }].inject &:merge<br />     → {:foo=>1, :bar=>2, :blitz=>3}<br /></code></pre><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/lispy.html">lispy</a>, <a rel='tag' href="http://raganwald.github.com/labels/popular.html">popular</a>, <a rel='tag' href="http://raganwald.github.com/labels/ruby.html">ruby</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2007/10/stringtoproc.html" title="permanent link">11:22 AM</a>
+						&para; <a href="http://raganwald.github.com/2007/10/stringtoproc.html" title="permanent link">11:22 AM</a>
 
 					 
 				</span> 
@@ -44,161 +44,161 @@
 						
 							<div class="blogComment">
 								<a name="6640984640734673916"></a> 				Now write it for us in Java ;)<BR/><BR/>Very nice though. I'm always happy to trade performance for readability as long as the former isn't already scarce<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193515200000#c6640984640734673916" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11730826719862467406" rel="nofollow">crayz</a> : 4:00 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193515200000#c6640984640734673916" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11730826719862467406" rel="nofollow">crayz</a> : 4:00 PM</div>
 
 								<span class="item-control blog-admin pid-1422544751"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6640984640734673916" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8928399181510470107"></a> 				<I>Now write it for us in Java</I><BR/><BR/>You have to write for your audience. I would never write (1..5).map &'*2' in Java when I could write ListFactoryFactory.getListFactoryFromResource(new ResourceName('com.javax.magnitudes.integers').setLowerBound(1).setUpperBound(5).setStep(1).applyFunctor(new Functor () { public void eval (x) { return x * 2; } }))<BR/><BR/>I'm simplifying, of course, I've left out the security and logging wrappers.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193527560000#c8928399181510470107" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:26 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193527560000#c8928399181510470107" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:26 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8928399181510470107" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4902935597295356874"></a> 				This is really cool, but why do you use<BR/><BR/>"".respond_to? :to_proc<BR/><BR/>when you could use<BR/><BR/>public_method_defined? :to_proc<BR/><BR/>not necessarily a criticism - I don't know if pmd? is a Rails-ism, or how it is performance-wise - it just seems semantically cleaner to compare method existence rather than popping out of the abstraction stack to an instance method.<BR/><BR/>I might be splitting hairs.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193538420000#c4902935597295356874" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 10:27 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193538420000#c4902935597295356874" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 10:27 PM</div>
 
 								<span class="item-control blog-admin pid-855033878"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4902935597295356874" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6671257396547793189"></a> 				also, I refactored it:<BR/><BR/>http://pastie.caboo.se/111620<BR/><BR/>but being an RSpec n00b I'm getting "0 examples 0 failures" on the spec for some reason.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193539260000#c6671257396547793189" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 10:41 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193539260000#c6671257396547793189" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 10:41 PM</div>
 
 								<span class="item-control blog-admin pid-855033878"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6671257396547793189" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5067694622529232460"></a> 				I submitted it to refactormycode.com, which will make it a whole lot easier for anyone to suggest modifications :-) You just need an OpenID.<BR/>See http://refactormycode.com/codes/114-string-to_proc-by-reginald-braithwaite<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193553000000#c5067694622529232460" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://webmat.wordpress.com" rel="nofollow">Mathieu Martin</a> : 2:30 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193553000000#c5067694622529232460" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://webmat.wordpress.com" rel="nofollow">Mathieu Martin</a> : 2:30 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5067694622529232460" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4865894776098241083"></a> 				Stripping out "arguments" (in the long regex) before determining the list of parameter names looks like an artifact from Functional Javascript that's not necessary in ruby.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193553540000#c4865894776098241083" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">brett</span> : 2:39 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193553540000#c4865894776098241083" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">brett</span> : 2:39 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4865894776098241083" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1960489207185324281"></a> 				to be honest... this actually looks complicated :(<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193579400000#c1960489207185324281" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:50 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193579400000#c1960489207185324281" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:50 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1960489207185324281" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4590068192968029112"></a> 				two more things: I actually disagree about the use of underscore, because underscore is already a special variable in IRB, and because it looks Perlish. and if you want inject to be called fold, just alias fold inject. anyway, I have this in my .irbrc, but I skipped the underscore part, so I'm just going to test what happens.<BR/><BR/>oh, ok, it works, because of the string interpolation, but it still makes me antsy. might have to change it later on.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193585040000#c4590068192968029112" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 11:24 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193585040000#c4590068192968029112" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 11:24 AM</div>
 
 								<span class="item-control blog-admin pid-855033878"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4590068192968029112" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7066356398753424165"></a> 				<I>I actually disagree about the use of underscore, because underscore is already a special variable in IRB</I><BR/><BR/>Well, to each their own. Decide for yourself whether you like the Perlisms in Ruby or the Smalltalkisms or the Lispisms.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193594820000#c7066356398753424165" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:07 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193594820000#c7066356398753424165" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:07 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7066356398753424165" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4644064554563311089"></a> 				<I>Stripping out "arguments" (in the long regex) before determining the list of parameter names looks like an artifact from Functional Javascript that's not necessary in ruby.</I><BR/><BR/>True, and I'm experimenting with removing the entire first regex.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193594880000#c4644064554563311089" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:08 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193594880000#c4644064554563311089" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:08 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4644064554563311089" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1220764624666928259"></a> 				<I>it just seems semantically cleaner to compare method existence rather than popping out of the abstraction stack to an instance method.</I><BR/><BR/>Whatever floats your boat, help yourself.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193595180000#c1220764624666928259" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:13 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193595180000#c1220764624666928259" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:13 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1220764624666928259" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8542087908989607738"></a> 				You seem to have made a minor mistake in your example:<BR/><BR/>----<BR/>Otherwise, if the string contains a _, it’s a unary function and _ is name of the parameter:<BR/><BR/><BR/>'_ -> _+1'.to_proc[2];<BR/>     → 3<BR/>'_ -> _*_'.to_proc[3];<BR/>     → 9<BR/>----<BR/><BR/>These should be:<BR/>'_+1'.to_proc[2];<BR/>'_*_'.to_proc[3];<BR/>...in order to match the sentence :)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193605620000#c8542087908989607738" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02727258157936734796" rel="nofollow">Porges</a> : 5:07 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193605620000#c8542087908989607738" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02727258157936734796" rel="nofollow">Porges</a> : 5:07 PM</div>
 
 								<span class="item-control blog-admin pid-1262720777"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8542087908989607738" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1316451190955458356"></a> 				Kudos! Really cool! I'm adding it to my Ruby kit. Thanks a lot, man :)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193607840000#c1316451190955458356" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11422582567411281599" rel="nofollow">Aquarius</a> : 5:44 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193607840000#c1316451190955458356" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11422582567411281599" rel="nofollow">Aquarius</a> : 5:44 PM</div>
 
 								<span class="item-control blog-admin pid-1438655975"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1316451190955458356" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3933496783556926219"></a> 				Mmmmmm .... Ruby Injection.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193633340000#c3933496783556926219" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:49 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193633340000#c3933496783556926219" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:49 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3933496783556926219" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5396125717814635928"></a> 				"After manking things"? I'm guessing typo...<BR/><BR/>Great article (as usual), though.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193659860000#c5396125717814635928" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01541692139806137936" rel="nofollow">Adam C.</a> : 8:11 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193659860000#c5396125717814635928" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01541692139806137936" rel="nofollow">Adam C.</a> : 8:11 AM</div>
 
 								<span class="item-control blog-admin pid-1501373153"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5396125717814635928" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6140872561421738675"></a> 				manking => should have been mankying or mankeying. <BR/><BR/>Thanks!<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193667360000#c6140872561421738675" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:16 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193667360000#c6140872561421738675" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:16 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6140872561421738675" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3806607351509397036"></a> 				(1..5).map &'*2'<BR/>    → [2, 4, 6, 8, 10]<BR/><BR/>vs.<BR/><BR/>(1..5).map {|x| 2*x}<BR/>    → [2, 4, 6, 8, 10]<BR/><BR/>C'mon.  The second is clearer and  cleaner.<BR/><BR/>You're solving a problem that's just not there.  If this solves a real problem, post some code that makes that point.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193674320000#c3806607351509397036" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:12 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193674320000#c3806607351509397036" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:12 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3806607351509397036" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="124203238893529842"></a> 				Dear anonymnous:<BR/><BR/>(1..5).map {|x| 2*x}<BR/>→ [2, 4, 6, 8, 10]<BR/><BR/>This says: "Map a function over a collection. The function sends the message '* argument' to the number two."<BR/><BR/>(1..5).map &'*2'<BR/>→ [2, 4, 6, 8, 10]<BR/><BR/>This says: "Map the message '*2' over a collection."<BR/><BR/>Or if you prefer functions, it maps "the function *2" over a collection. One function, conceptually.<BR/><BR/>That is a very different thing than lambda { |x| x*2 }. Forget the keyword, it isn't required when you're using a block. But { |x| x*2 } is NOT the function *2. It's a function that takes an argument and THEN invokes *2 on it. There are two functions, *2 and a wrapper around it.<BR/><BR/>This is much more strongly demonstrated with the reductions like (1..5).inject &'*'. This discards all parameters and wrappers and gets right down to business: Apply the raw operator * to the collection. Again, (1..5).inject { |acc, mem| acc*mem } has two functions: the wrapper and the *. Don't you want to just talk about the *?<BR/><BR/>If you called me on the telephone and described the algorithm, wouldn't you say "The product of the numbers from one to five?" Would you really say "apply a function that takes two arguments and returns the product of the arguments?" Product already <I>is</I> a function that returns the product of its arguments!<BR/><BR/>Is that a problem? Not to you, it isn't. So there is no need for you to use this approach.<BR/><BR/>But for my sense of aesthetic, the illusion of discarding the wrapper is cleaner and more direct.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193675160000#c124203238893529842" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:26 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193675160000#c124203238893529842" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:26 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=124203238893529842" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7182586265854333028"></a> 				Nice trick! However as always the idea was discussed before :-)<BR/><BR/>http://blog.codahale.com/2006/08/01/stupid-ruby-tricks-stringto_proc/<BR/><BR/>(Less powerful and more simple implementation)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193768280000#c7182586265854333028" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11961060382150110204" rel="nofollow">martink</a> : 2:18 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193768280000#c7182586265854333028" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11961060382150110204" rel="nofollow">martink</a> : 2:18 PM</div>
 
 								<span class="item-control blog-admin pid-1641339136"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7182586265854333028" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7840636731746430628"></a> 				Because my diseased brain wants to store Procs in a database:<BR/>http://pastie.caboo.se/112718<BR/><BR/>Now to tie these two ideas together... like peanut butter and jelly in the same jar.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1193839980000#c7840636731746430628" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">andrew</span> : 10:13 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1193839980000#c7840636731746430628" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">andrew</span> : 10:13 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7840636731746430628" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5333501149929011750"></a> 				The only reason why I'm hesitant to use this is that the correct binding context is only set when a block is passed. <BR/><BR/>The only way I've found to get the caller's binding is through a <A HREF="http://extensions.rubyforge.org/rdoc/classes/Binding.html#M000022" REL="nofollow">continuation hack</A> that obviously won't work in JRuby or Ruby 1.9. Matz has <A HREF="http://www.ruby-forum.com/topic/67255#87780" REL="nofollow">hinted</A> that this will be easy in the future.<BR/><BR/>Until then, this is just a tad bit leaky for me. I'm sold on the idea and I know it already works in most of the situations I would use it in. However, when I use it I want to be able to apply it with reckless abandon (within the limits of good taste and readability, of course).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1194980820000#c5333501149929011750" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09978112515173586772" rel="nofollow">Sofal</a> : 2:07 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1194980820000#c5333501149929011750" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09978112515173586772" rel="nofollow">Sofal</a> : 2:07 PM</div>
 
 								<span class="item-control blog-admin pid-278936696"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5333501149929011750" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5183740141873904412"></a> 				Sofal:<BR/><BR/>I thought about that for a while, and I included a hack so that you can pass the current binding to the to_proc method if you really want.<BR/><BR/>However, I didn't include support for Binding.of_caller. I considered making it work if you have Binding.of_caller defined, but after some thought, I dropped it.<BR/><BR/>This is a bit Python-ish, but it forces you to use String lambdas when you have something really short and simple, and to use blocks or lambdas when you need something more complex.<BR/><BR/>I would like to be able to write stuff like foo.map &'+ bar', and perhaps Ruby 1.9 will make that possible one day.<BR/><BR/>But for now, this does work for simple cases.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1194981300000#c5183740141873904412" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:15 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1194981300000#c5183740141873904412" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:15 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5183740141873904412" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7024091783621115178"></a> 				This is fantastic.  I've missed the simplicity of HOF present in other languages but not in Ruby and this makes it mostly better.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/stringtoproc.html?showComment=1195248060000#c7024091783621115178" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12562549053270419902" rel="nofollow">Code Monkey</a> : 4:21 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/stringtoproc.html?showComment=1195248060000#c7024091783621115178" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12562549053270419902" rel="nofollow">Code Monkey</a> : 4:21 PM</div>
 
 								<span class="item-control blog-admin pid-258873199"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7024091783621115178" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -209,7 +209,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -263,25 +263,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -289,17 +289,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -309,17 +309,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -327,19 +327,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -347,18 +347,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -366,15 +366,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -383,101 +383,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

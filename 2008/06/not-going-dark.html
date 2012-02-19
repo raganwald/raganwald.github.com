@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Tuesday, June 17, 2008</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="6708145457801438905">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2008/06/not-going-dark.html" title="permanent link">Not going dark</a></span>
-					<div style="clear:both;"></div>Rubyforge is now hosting an &ldquo;initial pre-release of a preview of an alpha of an undocumented proof-of-concept&rdquo; of the <a href="http://rewrite.rubyforge.org/">rewrite</a> gem. More on this presently, but the important (and really the only thing of interest) about rewrite is that when you use rewrite to write:<br /><br /><em>Person.find_by_last_name("Braithwaite").andand.first_name</em><br /><br />...You are not opening the Object, Person or Nil classes to add an andand method, nor are you creating a weird temporary BlankSlate object. Rewrite does its thing by rewriting Ruby code: it performs <em>syntactic</em> metaprogramming, much as Lisp macros rewrite Lisp code.<br /><br /><strong>what problem does rewrite solve?</strong><br /><br />Recall that when you use the &ldquo;standard&rdquo; implementation of things like <a href="http://andand.rubyforge.org">andand</a> or <a href="http://ozmm.org/posts/try.html">try</a>, you are openly modifying core classes like Object.<br /><br />Therefore, you are reaching out and touching every line of code in your project. You probably aren&rsquo;t breaking everything, but even if the chance of introducing a bug by adopting something like &ldquo;try&rdquo; is infinitesimal for each source code file in your project, the chance grows greater and greater as your application grows.<br /><br />The problem is that you are introducing a change on Object, and everything depends on Object. This is very different than introducing a change in your code. In that case, only the other bits of code that directly depend on your code are at risk.<br /><br />Also, imagine if you introduce try and are careful not to break anything. Now somebody else wakes up one day and decides they need a method that works like Prototype&rsquo;s <a href="http://www.prototypejs.org/api/utility/try-these">Try.these</a>. They call it &ldquo;try.&rdquo; They just broke your code, dude! Not only are you making everything dependant upon your version of try, but your code is dependent upon everyone else not breaking try as well. It&rsquo;s a train-wreck waiting to happen.<br /><br />Rewrite restricts things like andand or try to your code and your code alone. Sure, if you introduce a bug in your code, you may break things that directly depend on your code. But if you introduce &ldquo;try&rdquo; using rewrite instead of modifying Object, you will not reach out across your project and break something entirely unrelated that happens to have defined its own version of try in a completely different way.<br /><br /><strong>how does it work?</strong><br /><br />Rewrite takes your code, converts it to an sexp with Parse Tree, then rewrites the sexp using one or more rewriters you specify. Finally, it converts the sexp back to Ruby with Ruby2Ruby and evals it. It does this when the code is first read, not every time it is invoked, so we mitigate the &ldquo;do not use andand in a tight loop&rdquo; problem.<br /><br />For example, rewrite converts this:<pre><code><br />emails.find_by_email(email).try(:destroy)</code></pre>Into:<pre><code><br />lambda { |receiver, method|<br />   receiver.send(method) if receiver.respond_to? method<br /> }.call(emails.find_by_email(email), :destroy)</code></pre>And this:<pre><code><br /> numbers.andand.inject(base_sum()) { |total, number| total + number }</code></pre>Into:<pre><code><br /> lambda { |__1234567890__|<br />   if __1234567890__.nil?<br />     nil<br />   else<br />     __1234567890__.inject(base_sum()) { |total, number| total + number }<br />   end<br /> }.call(numbers)</code></pre>Note that with the examples, the names &ldquo;andand&rdquo; and &ldquo;try&rdquo; completely go away. If someone else defines a try method elsewhere, it will not affect your code because your code never executes a method called try.<br /><br /><strong>the most important open problem to solve in this area</strong><br /><br />At the moment that is a huge PITA when creating new rewriters. I don&rsquo;t think that <a href="http://ola-bini.blogspot.com/2008/06/applications-and-libraries.html" title="Applications and Libraries">it's OK that a language makes it harder for a library creator than for an application developer</a>, so I am working on making it easy to write things like andand or try.<br /><br /><strong>puzzles for language weenies</strong><br /><br />Note that the andand example above uses gemsym for its parameter while the try example does not. <a title="Macros, Hygiene, and Call By Name in Ruby" href="http://weblog.raganwald.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html">Why</a>? What could break if it used a name like &ldquo;receiver?&rdquo; If you can figure out the salient difference between these two example rewrites, you can probably explain why rewriting try produces exactly the same semantics as the original open classes implementation, but rewriting andand produces a subtle change in semantics.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2008/06/not-going-dark.html" title="permanent link">Not going dark</a></span>
+					<div style="clear:both;"></div>Rubyforge is now hosting an &ldquo;initial pre-release of a preview of an alpha of an undocumented proof-of-concept&rdquo; of the <a href="http://rewrite.rubyforge.org/">rewrite</a> gem. More on this presently, but the important (and really the only thing of interest) about rewrite is that when you use rewrite to write:<br /><br /><em>Person.find_by_last_name("Braithwaite").andand.first_name</em><br /><br />...You are not opening the Object, Person or Nil classes to add an andand method, nor are you creating a weird temporary BlankSlate object. Rewrite does its thing by rewriting Ruby code: it performs <em>syntactic</em> metaprogramming, much as Lisp macros rewrite Lisp code.<br /><br /><strong>what problem does rewrite solve?</strong><br /><br />Recall that when you use the &ldquo;standard&rdquo; implementation of things like <a href="http://andand.rubyforge.org">andand</a> or <a href="http://ozmm.org/posts/try.html">try</a>, you are openly modifying core classes like Object.<br /><br />Therefore, you are reaching out and touching every line of code in your project. You probably aren&rsquo;t breaking everything, but even if the chance of introducing a bug by adopting something like &ldquo;try&rdquo; is infinitesimal for each source code file in your project, the chance grows greater and greater as your application grows.<br /><br />The problem is that you are introducing a change on Object, and everything depends on Object. This is very different than introducing a change in your code. In that case, only the other bits of code that directly depend on your code are at risk.<br /><br />Also, imagine if you introduce try and are careful not to break anything. Now somebody else wakes up one day and decides they need a method that works like Prototype&rsquo;s <a href="http://www.prototypejs.org/api/utility/try-these">Try.these</a>. They call it &ldquo;try.&rdquo; They just broke your code, dude! Not only are you making everything dependant upon your version of try, but your code is dependent upon everyone else not breaking try as well. It&rsquo;s a train-wreck waiting to happen.<br /><br />Rewrite restricts things like andand or try to your code and your code alone. Sure, if you introduce a bug in your code, you may break things that directly depend on your code. But if you introduce &ldquo;try&rdquo; using rewrite instead of modifying Object, you will not reach out across your project and break something entirely unrelated that happens to have defined its own version of try in a completely different way.<br /><br /><strong>how does it work?</strong><br /><br />Rewrite takes your code, converts it to an sexp with Parse Tree, then rewrites the sexp using one or more rewriters you specify. Finally, it converts the sexp back to Ruby with Ruby2Ruby and evals it. It does this when the code is first read, not every time it is invoked, so we mitigate the &ldquo;do not use andand in a tight loop&rdquo; problem.<br /><br />For example, rewrite converts this:<pre><code><br />emails.find_by_email(email).try(:destroy)</code></pre>Into:<pre><code><br />lambda { |receiver, method|<br />   receiver.send(method) if receiver.respond_to? method<br /> }.call(emails.find_by_email(email), :destroy)</code></pre>And this:<pre><code><br /> numbers.andand.inject(base_sum()) { |total, number| total + number }</code></pre>Into:<pre><code><br /> lambda { |__1234567890__|<br />   if __1234567890__.nil?<br />     nil<br />   else<br />     __1234567890__.inject(base_sum()) { |total, number| total + number }<br />   end<br /> }.call(numbers)</code></pre>Note that with the examples, the names &ldquo;andand&rdquo; and &ldquo;try&rdquo; completely go away. If someone else defines a try method elsewhere, it will not affect your code because your code never executes a method called try.<br /><br /><strong>the most important open problem to solve in this area</strong><br /><br />At the moment that is a huge PITA when creating new rewriters. I don&rsquo;t think that <a href="http://ola-bini.blogspot.com/2008/06/applications-and-libraries.html" title="Applications and Libraries">it's OK that a language makes it harder for a library creator than for an application developer</a>, so I am working on making it easy to write things like andand or try.<br /><br /><strong>puzzles for language weenies</strong><br /><br />Note that the andand example above uses gemsym for its parameter while the try example does not. <a title="Macros, Hygiene, and Call By Name in Ruby" href="http://raganwald.github.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html">Why</a>? What could break if it used a name like &ldquo;receiver?&rdquo; If you can figure out the salient difference between these two example rewrites, you can probably explain why rewriting try produces exactly the same semantics as the original open classes implementation, but rewriting andand produces a subtle change in semantics.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2008/06/not-going-dark.html" title="permanent link">11:30 PM</a>
+						&para; <a href="http://raganwald.github.com/2008/06/not-going-dark.html" title="permanent link">11:30 PM</a>
 
 					 
 				</span> 
@@ -44,133 +44,133 @@
 						
 							<div class="blogComment">
 								<a name="3095150702660762394"></a> 				Very cool - can't wait to start hacking on this.<BR/><BR/>I tried grabbing the gem, though, and there was no lib dir, or really anything but the tests. Also, the svn url listed on rubyforge doesn't seem to exist.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1213793280000#c3095150702660762394" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05451810286359750753" rel="nofollow">James Golick</a> : 8:48 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1213793280000#c3095150702660762394" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05451810286359750753" rel="nofollow">James Golick</a> : 8:48 AM</div>
 
 								<span class="item-control blog-admin pid-186734474"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3095150702660762394" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7064494364770340657"></a> 				If you're concerned with namespace conflicts, why not just do something like the following? Try.new(emails.find_by_email(email)).destroy<BR/><BR/>Except for readability concerns, would it not be equivalent without all the metaprogramming stuff?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1213795380000#c7064494364770340657" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08879068973806468678" rel="nofollow">codebrulee</a> : 9:23 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1213795380000#c7064494364770340657" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08879068973806468678" rel="nofollow">codebrulee</a> : 9:23 AM</div>
 
 								<span class="item-control blog-admin pid-982709926"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7064494364770340657" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="15493088320190191"></a> 				<I>I tried grabbing the gem, though, and there was no lib dir, or really anything but the tests.</I><BR/><BR/>Ah! I suppose that I really must populate manifest.txt before running rake deploy.<BR/><BR/>Please try it now, although I cannot take responsibility for anything that happens if you actually try this on your code.<BR/><BR/>I know that the MIT License already says that, but this time I really, really, really mean it.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1213798260000#c15493088320190191" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:11 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1213798260000#c15493088320190191" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:11 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=15493088320190191" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1364377302115430399"></a> 				<I>Except for readability concerns, would it not be equivalent?</I><BR/><BR/>I think that readability concerns are the only thing at stake here. if they weren&rsquo;t, we could just as easily write:<BR/><BR/>email_model = emails.find_by_email(email)<BR/>email_model.destroy if email_model.respond_to? :destroy<BR/><BR/>Also, there are some other things where the readability difference is incredibly substantial. More on this as I work towards the Ruby.rewrite(Ruby) presentation at RubyFringe.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1213798440000#c1364377302115430399" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:14 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1213798440000#c1364377302115430399" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:14 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1364377302115430399" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5293753469663258043"></a> 				Looking forward to hearing more of your thoughts on readability with this stuff...<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1213799280000#c5293753469663258043" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08879068973806468678" rel="nofollow">codebrulee</a> : 10:28 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1213799280000#c5293753469663258043" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08879068973806468678" rel="nofollow">codebrulee</a> : 10:28 AM</div>
 
 								<span class="item-control blog-admin pid-982709926"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5293753469663258043" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4920384606990599812"></a> 				Seems a lot of trouble to go through just to get Scala's lexically scoped class extensions.  :-)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1213804620000#c4920384606990599812" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://www.codecommit.com/blog/" rel="nofollow">Daniel</a> : 11:57 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1213804620000#c4920384606990599812" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://www.codecommit.com/blog/" rel="nofollow">Daniel</a> : 11:57 AM</div>
 
 								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4920384606990599812" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5004631070097051089"></a> 				Daniel:<BR/><BR/>In all seriousness, this goes from &ldquo;interesting, possibly useful&rdquo; to &ldquo;disruptive&rdquo; if I can succeed in making rewriters easy to write.<BR/><BR/>Until then, this is a lot like arguing about Ruby the language. if I show a programmer Enumerable#map, he can say that his existing language has for loops. But If I show him how he can write his own methods that take blocks as arguments, a light goes on.<BR/><BR/>Likewise, implementing things like andand and try using rewriters is not the goal. Nor is it really the goal to help people implement one-liner syntactic rewriters.<BR/><BR/>The goal is to make it easy for people to invent entirely new things.<BR/><BR/>Some of those new things could be implemented with Scala&rsquo;s existing semantics. Some of them could be implemented with C#&rsquo;s existing semantics too.<BR/><BR/>I have no idea where this could go, but it is generally a mistake to look at something and think it has no potential because you can replicate its early results with something that already exists.<BR/><BR/>In the early days, you use a new tool to replicate existing phenomena because that is all you know how to imagine. But as you get familiar with the new tool, new possibilities occur to you and you take it in new directions.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1213805520000#c5004631070097051089" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:12 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1213805520000#c5004631070097051089" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:12 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5004631070097051089" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8735528294840765543"></a> 				I suppose if you're already doing something in Ruby, or for some reason must use Ruby this is fantastic to have. On the other hand it is syntactically very awkward compared to the similar Lisp expression.  Lisp is so much faster and has infinitely more tractable syntax.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1213822800000#c8735528294840765543" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06436230729235118612" rel="nofollow">rob</a> : 5:00 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1213822800000#c8735528294840765543" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06436230729235118612" rel="nofollow">rob</a> : 5:00 PM</div>
 
 								<span class="item-control blog-admin pid-975516716"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8735528294840765543" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2057002253577168982"></a> 				Rob:<BR/><BR/>My experience with Lisp is that statements of the following form are nearly always true:<BR/><BR/><I>I suppose if you're already doing something in Language X, or for some reason must use Language X, Feature Y is fantastic to have. On the other hand it is syntactically very awkward/semantically less clean compared to the similar Lisp expression.</I><BR/><BR/>Nevertheless, I am <I>choosing</I> to write in Ruby at the moment of my own free will, and since I am making that choice, I also choose to sharpen my Ruby saw while I am at it :-)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1213826460000#c2057002253577168982" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:01 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1213826460000#c2057002253577168982" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:01 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2057002253577168982" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2942787937385261680"></a> 				<I>Therefore, you are reaching out and touching every line of code in your project. You probably aren’t breaking everything, but even if the chance of introducing a bug by adopting something like “try” is infinitesimal for each source code file in your project, the chance grows greater and greater as your application grows.</I><BR/><BR/>I'm not sure I buy this. First, a piece of code is either buggy or it's not. The number of places it's used doesn't affect its bugginess. #try and #andand are simple enough that you don't need too many code paths to find a bug in debug.<BR/><BR/>Second, while someone writing their own #try might be conceivable, is it really very likely that someone would use #andand for a method name? And in the very unlikely event that they did, wouldn't any reasonable test suite catch this problem immediately?<BR/><BR/>So while the rewrite stuff sounds cool and useful, I don't accept some of the assumptions the article is based on.<BR/><BR/>///ark<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1213833000000#c2942787937385261680" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02127515951021050033" rel="nofollow">Mark Wilden</a> : 7:50 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1213833000000#c2942787937385261680" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02127515951021050033" rel="nofollow">Mark Wilden</a> : 7:50 PM</div>
 
 								<span class="item-control blog-admin pid-1491074819"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2942787937385261680" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5698517906717024418"></a> 				I would be very interested in seeing a ruby-to-(real)-sexprs compiler that could be used to do interesting things with scheme and/or lisp backends.<BR/><BR/>This just seems like halfway hackery to me, though it is kinda fun.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1213838100000#c5698517906717024418" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00841137599327072247" rel="nofollow">Justin George</a> : 9:15 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1213838100000#c5698517906717024418" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00841137599327072247" rel="nofollow">Justin George</a> : 9:15 PM</div>
 
 								<span class="item-control blog-admin pid-500954088"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5698517906717024418" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5889091478458572836"></a> 				Mark: I don't understand your point at all. You point out that #try is a grenade that could potentially blow up in your face. You say #andand is a bit less combustible. If there exists an example of a situation where it is a problem, then it is a problem.<BR/><BR/>Also: you say that a test case will find the bug quickly. Then what? What happens when I try to import a large and crucial PDF generator or symbolic math library into my large and pre-existing application and find a conflict? What does it cost to rewrite one or the other? <BR/><BR/>I have no idea in the abstract and therefore I cannot give a predictable answer to my boss about what it will cost to integrate a new library. "Should be a day's work...unless there is a name clash that requires me to rewrite tens of thousands of lines of code in which case it is months of work."<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1213886340000#c5889091478458572836" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15412258048017521995" rel="nofollow">Paul Prescod</a> : 10:39 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1213886340000#c5889091478458572836" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15412258048017521995" rel="nofollow">Paul Prescod</a> : 10:39 AM</div>
 
 								<span class="item-control blog-admin pid-664672124"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5889091478458572836" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2201332639327320912"></a> 				On the problem of global overloading, I remember seeing something on the ruby mailing list about namespaces. (Years ago, after 1.8, before Rails)<BR/><BR/>When you open a class inside a namespace, the changes you make there only affect code that runs under the same namespace.<BR/><BR/>So you can create MyPrettyApp namespace, open and change Object there, and I can create my InsanelyGreatLib namespace and make my own mess with Object and you can use my lib in your app and we'll all be happy.<BR/><BR/>Sorta like scala's thing, I believe.<BR/><BR/>Does anybody know whatever happened to that idea?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1214358720000#c2201332639327320912" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02363798132253736067" rel="nofollow">Caio</a> : 9:52 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1214358720000#c2201332639327320912" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02363798132253736067" rel="nofollow">Caio</a> : 9:52 PM</div>
 
 								<span class="item-control blog-admin pid-385419299"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2201332639327320912" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7347665363975337330"></a> 				I like the direction namespaces represent, although my impression is that once you get past the really trivial examples, namespaces could become really, really complicated, really, really quickly.<BR/><BR/>So a well-designed namespaces feature would be terrific, while a poorly-designed namespaces feature would be just like Java Generics: really pretty for the demo--making sure collections are homogenous--but excruciating in real life.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1214401740000#c7347665363975337330" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:49 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1214401740000#c7347665363975337330" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:49 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7347665363975337330" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4540621030361708269"></a> 				<span class="deleted-comment">This post has been removed by the author.</span><br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1214664180000#c4540621030361708269" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08526932276340666808" rel="nofollow">chocolateboy</a> : 10:43 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1214664180000#c4540621030361708269" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08526932276340666808" rel="nofollow">chocolateboy</a> : 10:43 AM</div>
 
 								<span class="item-control blog-admin "><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4540621030361708269" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7224300086235006812"></a> 				I implemented something similar that allowed you to do something along the lines of:<BR/><BR/>scope = Scope.new(String => Facets::String, Fixnum => [ MyFixnum, Math ])<BR/><BR/>scope.lexical do<BR/>&nbsp;&nbsp;&nbsp;&nbsp;42.sqrt<BR/>&nbsp;&nbsp;&nbsp;&nbsp;"my_str".camelcase<BR/>end<BR/><BR/>scope.dynamic do<BR/>&nbsp;&nbsp;&nbsp;&nbsp;42.sin<BR/>&nbsp;&nbsp;&nbsp;&nbsp;"my_str".to_rx<BR/>end<BR/><BR/>But it went out of scope (pun intended) the day Binding.of_caller died.<BR/><BR/>It was also slow as it had to install and uninstall bindings for each block.<BR/><BR/>Your approach looks much cleaner and much faster.<BR/><BR/>If you're not familiar with them, you might want to take a look at <A HREF="http://fluid.rubyforge.org/" REL="nofollow">Fluid</A> and <A HREF="http://www.wobblini.net/ruby/behaviors" REL="nofollow">Behaviors</A>.<BR/><BR/>And what's with all the references to our smart cousin Scala? Where's the love for our cute baby daughter Groovy and its <A HREF="http://groovy.codehaus.org/Groovy+Categories" REL="nofollow">categories</A>? :-)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1214664600000#c7224300086235006812" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08526932276340666808" rel="nofollow">chocolateboy</a> : 10:50 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1214664600000#c7224300086235006812" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08526932276340666808" rel="nofollow">chocolateboy</a> : 10:50 AM</div>
 
 								<span class="item-control blog-admin pid-755563370"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7224300086235006812" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="276059266616309571"></a> 				Also, with lexically-scoped monkey patching, you don't need andand. You can just splice in a version of NilClass#method_missing that returns self:<BR/><BR/>class MyNilClass<BR/>&nbsp;&nbsp;&nbsp;&nbsp;def method_missing(*args)<BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self<BR/>&nbsp;&nbsp;&nbsp;&nbsp;end<BR/>end<BR/><BR/>scope = Scope.new(NilClass => MyNilClass)<BR/><BR/>scope.lexical do<BR/>&nbsp;&nbsp;&nbsp;&nbsp;test = { 'foo' => 1, 'bar' => 2 }<BR/>&nbsp;&nbsp;&nbsp;&nbsp;puts test['baz']['whatever'] # => nil<BR/>end<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1214666040000#c276059266616309571" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08526932276340666808" rel="nofollow">chocolateboy</a> : 11:14 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1214666040000#c276059266616309571" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08526932276340666808" rel="nofollow">chocolateboy</a> : 11:14 AM</div>
 
 								<span class="item-control blog-admin pid-755563370"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=276059266616309571" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
-								<a name="3502197639506389297"></a> 				ChcolateBoy:<BR/><BR/>We have walked <A HREF="http://raganwald.com/source/dsl_and_let.html" REL="nofollow">similar paths</A>. The limitation I encountered was this: If I patch a class or an object within my scope, what is the behaviour of objects of that class within methods I am not defining?<BR/><BR/>For example, if I patch NilClass just so that I can avoid andand, do all the nils in the program have this behaviour while my code is executing within the scope? If so, we have a leak.<BR/><BR/>Also, and this is a small point, patching NilClass gives a very different set of semantics than andand. As discussed in <A HREF="http://weblog.raganwald.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html" REL="nofollow">another post</A>, andand using rewrite has call-by-name semantics. Also, and this may matter, all methods should return nil, not just those that Nil doesn&rsquo;t support.<BR/><BR/>So nil.to_s => '' but nil.andand.to_s => nil<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1214674800000#c3502197639506389297" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:40 PM</div>
+								<a name="3502197639506389297"></a> 				ChcolateBoy:<BR/><BR/>We have walked <A HREF="http://raganwald.com/source/dsl_and_let.html" REL="nofollow">similar paths</A>. The limitation I encountered was this: If I patch a class or an object within my scope, what is the behaviour of objects of that class within methods I am not defining?<BR/><BR/>For example, if I patch NilClass just so that I can avoid andand, do all the nils in the program have this behaviour while my code is executing within the scope? If so, we have a leak.<BR/><BR/>Also, and this is a small point, patching NilClass gives a very different set of semantics than andand. As discussed in <A HREF="http://raganwald.github.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html" REL="nofollow">another post</A>, andand using rewrite has call-by-name semantics. Also, and this may matter, all methods should return nil, not just those that Nil doesn&rsquo;t support.<BR/><BR/>So nil.to_s => '' but nil.andand.to_s => nil<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1214674800000#c3502197639506389297" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:40 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3502197639506389297" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6551220695959039832"></a> 				<I>We have walked similar paths. The limitation I encountered was this: If I patch a class or an object within my scope, what is the behaviour of objects of that class within methods I am not defining?</I><BR/><BR/><I>For example, if I patch NilClass just so that I can avoid andand, do all the nils in the program have this behaviour while my code is executing within the scope? If so, we have a leak.</I><BR/><BR/>The way scope.rb handles this is to 1) create a local variable in the block with eval 2) install the custom methods and 3) when those methods are called, check to see if they're in the correct lexical scope by looking up the sentinel variable in the caller's bindings (using Binding.of_caller or, now, ruby-debug). If the sentinel variable isn't defined, then fallback to the original method:<BR/><BR/>b = Debugger.current_context.binding_n(0)<BR/>vars = eval("local_variables()", b)<BR/>if vars.include? sentinel<BR/>&nbsp;&nbsp;&nbsp;&nbsp;# correct scope - call the patched method<BR/>else<BR/>&nbsp;&nbsp;&nbsp;&nbsp;# not in scope - fallback to the original method<BR/>end<BR/><BR/><I>Also, and this is a small point, patching NilClass gives a very different set of semantics than andand. As discussed in another post, andand using rewrite has call-by-name semantics. Also, and this may matter, all methods should return nil, not just those that Nil doesn’t support.</I><BR/><BR/><I>So nil.to_s => '' but nil.andand.to_s => nil</I><BR/><BR/>Fair enough. I haven't played with andand, to be honest. But it looks like rewrite holds a lot more promise than just providing a hygienic implementation of andand, however useful that might be.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/not-going-dark.html?showComment=1214740020000#c6551220695959039832" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08526932276340666808" rel="nofollow">chocolateboy</a> : 7:47 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/not-going-dark.html?showComment=1214740020000#c6551220695959039832" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08526932276340666808" rel="nofollow">chocolateboy</a> : 7:47 AM</div>
 
 								<span class="item-control blog-admin pid-755563370"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6551220695959039832" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -181,7 +181,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -235,25 +235,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -261,17 +261,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -281,17 +281,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -299,19 +299,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -319,18 +319,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -338,15 +338,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -355,101 +355,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

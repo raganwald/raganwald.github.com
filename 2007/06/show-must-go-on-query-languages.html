@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Tuesday, June 19, 2007</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="4454536830391197779">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html" title="permanent link">The Show Must Go On: Query Languages</a></span>
+					<a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html" title="permanent link">The Show Must Go On: Query Languages</a></span>
 					<div style="clear:both;"></div><em>This is my first really technical post since coming to grips with the end of my side project. It isn&#8217;t my best writing about programming by a long shot, but I wanted to remind myself&#8212;and you if you need reminding&#8212;that no matter what happens with the business of software, the programming of software is still damn interesting.</em><br /><br />Here is some JavaScript flavoured with <a href="http://www.prototypejs.org/" title="Prototype JavaScript framework: Easy Ajax and DOM manipulation for dynamic web applications">Prototype</a> goodness:<br /><br /><pre><code>$$('a').select(<br />    function (anchor) {<br />        return anchor.href &amp;&amp; !anchor.onclick &amp;&amp;<br />            anchor.href.match(/^https?:\/\/(?!(.*bigco\.com.*)|(localhost.*)$).*$/i);<br />    }<br />    ).each (<br />        function (anchor) {<br />            external_url = anchor.href;<br />            anchor.onclick = function () {<br />                doSomethingWhenUserClicksOffSiteLink(external_url);<br />            };<br />            anchor.href='#';<br />        }<br />        );<br /></code></pre><br />This code finds all of the anchors (<code>&lt;a href="..."&gt;...&lt;/a&gt;</code>) that lead off the BigCo site and changes them to have an <code>onclick</code> handler. You might use something like this to log outgoing clicks so you can judge the popularity of links, for example.<br /><br />The first thing you might notice is the <a href="http://www.smalltalk.org/">Smalltalk</a>-style methods&#8212;<code>select</code> and <code>each</code>&#8212;for handling collections. If you like Smalltalk (or Ruby) style collection methods, Prototype gives them to you. If you haven&#8217;t seen this kind of JavaScript before, the thing that will probably stand out is the use of anonymous functions as parameters for <code>select</code> and <code>each</code>.<br /><br />The thing about this code that grabbed my attention is the use of two different embedded languages. If you aren&#8217;t familiar with Prototype, <code>$$</code> is a function that takes a <a href="http://en.wikipedia.org/wiki/Cascading_Style_Sheets#Selectors_.26_Pseudo_Classes" title="Cascading Style Sheets - Wikipedia, the free encyclopedia">CSS Selector</a> as an argument and returns an array of elements matching the selector. In this case, we&#8217;re simply asking for every anchor (&#8220;a&#8221;). But we could ask for every anchor inside of a specific <code>div</code>, or every anchor of a specific class, or almost anything else you might want to use.<br /><br />CSS selectors are a kind of <a href="http://en.wikipedia.org/wiki/Query_language" title="Query language - Wikipedia, the free encyclopedia">query language</a> specifically optimized for applying styles to DOM elements in web pages. But Prototype (and several other JavaScript libraries like <a href="http://digitarald.de/journal/selector-sugar-for-mootools/" title="digitarald » Selector Sugar for MooTools">Mootools</a>) make CSS Selectors a general purpose tool. The <a href="http://groovy.codehaus.org/" title="Groovy - Home">Groovy Language</a> provides a similar feature called <a href="http://groovy.codehaus.org/GPath" title="Groovy - GPath">GPath</a>, a means of querying object networks using a language very similar to <a href="http://www.w3.org/TR/xpath" title="XML Path Language (XPath)">XPath</a>.<br /><br />(I personally think GPath is the most interesting thing about Groovy&#8212;having an object query language &#8220;baked in&#8221; changes the way you think about writing programs, much as SQL changes the way you think about using databases. Or it would if you were brought up on non-relational databases, or if you have been eating of the <a href="http://en.wikipedia.org/wiki/Object-relational_mapping" title="Object-relational mapping - Wikipedia, the free encyclopedia">ORM</a> fruit that leads to <a href="http://blogs.tedneward.com/2006/06/26/The+Vietnam+Of+Computer+Science.aspx" title="Interoperability Happens - The Vietnam of Computer Science">madness</a>.)<br /><br /><div class="book"><em><hr/><a href="http://www.amazon.com/gp/product/0596528124?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0596528124"><img border="0" src="/uploaded_images/mastering_regular_expressions.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0596528124" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br />Regular expressions allow you to code complex and subtle text processing that you never imagined could be automated. They can be used to craft elegant solutions to a wide range of problems. Once you've mastered regular expressions, they'll become an invaluable part of your toolkit. You will wonder how you ever got by without them. <a href="http://www.amazon.com/gp/product/0596528124?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0596528124">Mastering Regular Expressions</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0596528124" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> is the book to get you there.<br /><hr/></em></div>Any ways, <code>$$('a')</code> really changes everything. It&#8217;s not such a big whup in this particular snippet of code, but think about the separation of concerns here: if you do want to change the elements you are manipulating you change one place. You don&#8217;t have to restructure a pile of loops and conditionals.<br /><br />Which leads to the <em>other</em> embedded language, a rather popular one known as a <a href="http://en.wikipedia.org/wiki/Regular_expression" title="Regular expression - Wikipedia, the free encyclopedia">Regular Expression</a>: <code>/^https?:\/\/(?!(.*bigco\.com.*)|(localhost.*)$).*$/i</code>. Regular expressions are inscrutable to most programmers: if you don&#8217;t use them on a daily basis, you are in danger of losing the knack of writing them. And I&#8217;m not sure if anyone has the knack of reading them. What does <code>/^1?$|^(11+?)\1+$/'</code> match, and why is it famous?<br /><br />That being said, as inscrutable as they may be, it is very powerful to wrap all your string matching up into a single blob where you can put it in one place. Having loops and scanners and parsers breaking URLs up and looking at individual pieces obscures the intent of your code.<br /><br /><strong>He had a hat!</strong> (<a href="http://daringfireball.net/2007/06/itunes_plus_metadata" title="Daring Fireball: Regarding iTunes Plus Metadata">John Gruber</a>)<br /><br />Having had a taste of embedded query languages, I&#8217;m left with a hunger for more. Quite honestly, I may be thinking of solutions in want of problems, or perhaps it is effete aesthetics, but the more I think about it, the more the following questions bug me:<br /><br />Why aren&#8217;t patterns <em>first class values</em>? Obviously, you can assign them to variables and return them from functions. But can I take them apart? Can I compose them? Is there a query language for extracting pieces of a query? Queries (be they regular expressions, XPath, or CSS Selectors) ought to be structures that can be manipulated just like the DOM or like object networks.<br /><br />Why don&#8217;t we have better support for transforming structures with embedded languages? Regular expressions lead the way here: there&#8217;s a powerful feature for using a regular expression to take a string apart and put it back together in a different order, or with new bits added to it. And SQL is fully integrated, there&#8217;s a natural syntax for updates integrated with queries.<br /><br />Where&#8217;s the same facility for object networks? Right now I can use CSS selectors from Prototype to find elements and builders from <a href="http://script.aculo.us/" title="script.aculo.us - web 2.0 javascript">Scriptaculous</a> to modify the DOM. Or I can use <a href="http://jquery.com/">JQuery</a> (thanks, David) to do all my DOM manipulation in one go. That&rsquo;s terrific, it&rsquo;s <em>even better</em> than the snippet above. But...<br /><br />Why can&#8217;t I use the same power for transforming JSON or my own objects? It&rsquo;s like regular expressions: once you taste the power with strings, you want to use them with arrays. Once you use XPath with XML, you want to use GPath with graphs of objects.<br /><br />Once I get going, my mind immediately jumps a level from things that would be useful to things that would be cool for the sake of being cool (and nothing else): With OO, we&#8217;re hung up on <em>messages</em>. But those messages are ridiculously primitive! A verb and a bunch of parameters that are usually nouns. Imagine a meta-language where each receiver could interpret <em>its own language</em>. So strings would interpret regular expressions, and DOMs would interpret XPath and/or CSS Selectors. What we call a type or an interface today&#8212;a set of verbs with rules for the accompanying parameters&#8212;would be replaced by a set of languages receivers understand.<br /><br />I have some vacation time coming in a few months. Now I have something to think about!<br /><br /><hr /><br />Now, I have asked a lot of &#8220;why can&#8217;t I&#8230;&#8221; questions. I hope I get a lot of comments saying &#8220;You can, check out the KulTulz library for JavaScript, or the Mazenblitz Macro Package for Common Lisp, or even RTFM about Ruby&#8230;&#8221; What libraries, languages, and packages provide the kind of features I&rsquo;m daydreaming about?<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html" title="permanent link">9:24 AM</a>
+						&para; <a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html" title="permanent link">9:24 AM</a>
 
 					 
 				</span> 
@@ -44,154 +44,154 @@
 						
 							<div class="blogComment">
 								<a name="7882268477009815964"></a> 				Isn't JQuery very close to what you want for javascript?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182264240000#c7882268477009815964" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 10:44 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182264240000#c7882268477009815964" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 10:44 AM</div>
 
 								<span class="item-control blog-admin pid-188006248"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7882268477009815964" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4110396207184483617"></a> 				Good call!<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182264480000#c4110396207184483617" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:48 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182264480000#c4110396207184483617" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:48 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4110396207184483617" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="725086861056304906"></a> 				Looking at GPath, I'm somewhat skeptical. I don't think I like that the same notation is used for accessing a property and mapping that property access over a collection. I still prefer comprehensions. :-)<BR/><BR/>Maybe I'm missing something though.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182265980000#c725086861056304906" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 11:13 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182265980000#c725086861056304906" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 11:13 AM</div>
 
 								<span class="item-control blog-admin pid-188006248"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=725086861056304906" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8635156789743238962"></a> 				I'm looking to build into CouchDb a regular expression syntax for JSON.<BR/><BR/>I hate XML and CouchDb is going to switch to JSON documents instead of XML. I want the built-in query language to support JSON syntax natively and also have a regular expression syntax as well.<BR/><BR/>I've played with coming up with my own syntax, but it's hard to find anything that looks readable. I could use some help.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182267180000#c8635156789743238962" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07299732457242903370" rel="nofollow">Damien</a> : 11:33 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182267180000#c8635156789743238962" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07299732457242903370" rel="nofollow">Damien</a> : 11:33 AM</div>
 
 								<span class="item-control blog-admin pid-575250849"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8635156789743238962" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2681918577381139755"></a> 				"So strings would interpret regular expressions, and DOMs would interpret XPath and/or CSS Selectors."<BR/><BR/>XPath support is baked into DOM level 3 (most DOMs, though, implement level 2). REXML has some XPath support built in, though I don't know how complete it is. The Rails 1.2 HTML DOM has support for CSS selectors, which proves pretty useful for testings (search for "assert_select").<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182267720000#c2681918577381139755" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://labnotes.org" rel="nofollow">Assaf</a> : 11:42 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182267720000#c2681918577381139755" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://labnotes.org" rel="nofollow">Assaf</a> : 11:42 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2681918577381139755" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3846315033568752095"></a> 				What does that reg-exp match and why is it famous?  The \1 inside of the matching part is throwing me off.  I've tried to google / ask friends and have come up with nothing.<BR/><BR/>Any hints would be lovely.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182267900000#c3846315033568752095" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17622652320471746903" rel="nofollow">John</a> : 11:45 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182267900000#c3846315033568752095" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17622652320471746903" rel="nofollow">John</a> : 11:45 AM</div>
 
 								<span class="item-control blog-admin pid-1471048113"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3846315033568752095" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="9197962476321501876"></a> 				The regular expression? It's a classic. Here's a hint: search for <A HREF="http://www.google.ca/search?hl=en&safe=off&q=abigail+regular+expression" REL="nofollow">abigail, regular, and expression</A>.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182271080000#c9197962476321501876" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:38 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182271080000#c9197962476321501876" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:38 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9197962476321501876" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8088263221242005776"></a> 				Apache Commons has the <A HREF="http://jakarta.apache.org/commons/jxpath/" REL="nofollow">JXPath</A> library , which enabled you to apply XPath queries to Java object graphs.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182272460000#c8088263221242005776" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Caleb Powell</span> : 1:01 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182272460000#c8088263221242005776" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Caleb Powell</span> : 1:01 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8088263221242005776" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8517894559283726992"></a> 				Perl hase <A HREF="http://search.cpan.org/~samtregar/Class-XPath-1.4/XPath.pm" REL="nofollow">Class-XPath</A> as well.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182277560000#c8517894559283726992" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13997665757224485193" rel="nofollow">JohnSeq</a> : 2:26 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182277560000#c8517894559283726992" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13997665757224485193" rel="nofollow">JohnSeq</a> : 2:26 PM</div>
 
 								<span class="item-control blog-admin pid-142807850"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8517894559283726992" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8662487804341664770"></a> 				What about LINQ? SQL, XQUERY-like and object graph query...<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182278940000#c8662487804341664770" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11581788810445263130" rel="nofollow">Ben</a> : 2:49 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182278940000#c8662487804341664770" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11581788810445263130" rel="nofollow">Ben</a> : 2:49 PM</div>
 
 								<span class="item-control blog-admin pid-2141381352"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8662487804341664770" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2125462200154719740"></a> 				Only loosely related, but Hpricot might be worth a look for some of the same goodness for Ruby.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182280500000#c2125462200154719740" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08160479191349243750" rel="nofollow">stefan</a> : 3:15 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182280500000#c2125462200154719740" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08160479191349243750" rel="nofollow">stefan</a> : 3:15 PM</div>
 
 								<span class="item-control blog-admin pid-2068937393"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2125462200154719740" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7571272913391769728"></a> 				that regular expression matches numbers that are not prime.<BR/><BR/>basically instead of a decimal number like '7', you feed it that many 1's.<BR/><BR/>so 7 becomes '1111111'<BR/><BR/>then the regex uses groups and lookaheads to try and get a group of 1's to match at the beginning, and then have that same group match multiple times all the way to the end.  if it matches evenly, essentially you have just found a factor of the number.<BR/><BR/>ie for 1111111<BR/><BR/>first it checks if it's just 1, since 1 isn't prime.  there's not just 1 "1" so it's not prime.  then it tries to match groups of "11".<BR/>so it matches [11][11][11] but then there's still a 1 left on the end so no match.  then it tries to match groups of "111" and gets [111][111]1, so no match.  then it tries to match groups of 4, gets [1111]111 no match, and so on.  <BR/><BR/>it never finds a group that matches and then matches again cleanly all the way to the end, hence the number has no factors other than 1 and itself (it is prime)<BR/><BR/>so that explains what it does but i don't know why it's famous.  maybe just for being so damn clever.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182284880000#c7571272913391769728" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10222444849619506986" rel="nofollow">dunno_squat</a> : 4:28 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182284880000#c7571272913391769728" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10222444849619506986" rel="nofollow">dunno_squat</a> : 4:28 PM</div>
 
 								<span class="item-control blog-admin pid-1291069631"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7571272913391769728" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3264513422883238447"></a> 				Also consider tuple-spaces (Linda).<BR/><BR/>Erlangs pattern matching.<BR/><BR/>Prolog as a pattern matching language.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182308280000#c3264513422883238447" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.redmountainsw.com/wordpress" rel="nofollow">Chui</a> : 10:58 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182308280000#c3264513422883238447" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.redmountainsw.com/wordpress" rel="nofollow">Chui</a> : 10:58 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3264513422883238447" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1457325889878811303"></a> 				FWIW, take a look at <A HREF="http://www.perl.com/pub/a/2002/06/04/apo5.html" REL="nofollow">Perl 6 grammars</A>.<BR/><BR/>(That article is 5 years old; thank goodness we’re <EM>finally</EM> closing in on an actual implementation. Considering that the entire project has only a handful of core members and none of them have really been able to make it their full time concern…)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182310260000#c1457325889878811303" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://plasmasturm.org/" rel="nofollow">Aristotle Pagaltzis</a> : 11:31 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182310260000#c1457325889878811303" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://plasmasturm.org/" rel="nofollow">Aristotle Pagaltzis</a> : 11:31 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1457325889878811303" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1091965147679567675"></a> 				Messages of verb, object are primitive, (text adventures, anyone?) but since the verb can be 'parse', and the object something that represents a {set,list,bag,tree} of instructions....  That's the interpreter pattern, I think.<BR/><BR/>I DO wish for more support for writing parsers, however. I seem to be very weak at that, and apart from Bison's parallelism, we don't seem to have got much beyond YACC in the last 20-odd years.  That shows how good YACC is, of course, but getting the grammars correct, and enabling them to give useful error messages, still feels like hard work.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182339000000#c1091965147679567675" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18101912901267399873" rel="nofollow">hgs</a> : 7:30 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182339000000#c1091965147679567675" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18101912901267399873" rel="nofollow">hgs</a> : 7:30 AM</div>
 
 								<span class="item-control blog-admin pid-1671203119"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1091965147679567675" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="547598818970732203"></a> 				I completely understand your desire for manipulating queries.  I want exactly that for TSQL, so that I can analyze my DB code, determine how the data flow, etc.  At some point I'll figure out the TSQL grammar (MS won't provide it).<BR/><BR/>My company's main product actually does a bit of what you're talking about with the queries it allows the user to generate, in particular, when generating editable pivot-table-style grids.  It's pretty sweet, albeit a bit confusing at times.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182361320000#c547598818970732203" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18395549142176242491" rel="nofollow">labreuer</a> : 1:42 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182361320000#c547598818970732203" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18395549142176242491" rel="nofollow">labreuer</a> : 1:42 PM</div>
 
 								<span class="item-control blog-admin pid-751782126"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=547598818970732203" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8695986877829718586"></a> 				In terms of generating parsers, I think parser combinators like Parsec are a significant improvement over tools like yacc. In particular, they let parsers be first class objects of the language which you can fiddle with at your whim. Dynamic grammar combination is a really nice feature.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182374400000#c8695986877829718586" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 5:20 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182374400000#c8695986877829718586" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 5:20 PM</div>
 
 								<span class="item-control blog-admin pid-188006248"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8695986877829718586" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2428079910088250455"></a> 				@David R. MacIver: That sounds interesting, but I'm barely even a beginner in Haskell, and my grasp of monads is similar to my grasp of a wet bar of soap :-) (just when I think I've got hold of the idea it slips...). Have you any pointers to introductory material on Parser Combinators for languages with a less functional style?  Hopefully they'll be of use to other readers...<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182432300000#c2428079910088250455" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18101912901267399873" rel="nofollow">hgs</a> : 9:25 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182432300000#c2428079910088250455" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18101912901267399873" rel="nofollow">hgs</a> : 9:25 AM</div>
 
 								<span class="item-control blog-admin pid-1671203119"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2428079910088250455" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7569119450817324506"></a> 				Short version: Err, no, not really. :-) I'm far from an expert myself.<BR/><BR/>There are some <A HREF="http://cvs.haskell.org/cgi-bin/cvsweb.cgi/fptools/libraries/parsec/examples/" REL="nofollow">reasonably good</A> examples in the parsec source directories. There's <A HREF="http://jparsec.codehaus.org/" REL="nofollow">JParsec</A> which is a port of Parsec to Java (I've not used it, because I fear how  awful such a concept could be. For all I know it's alright, but I suspect it isn't...)<BR/><BR/>The problem with parser combinators in a less functional style is that combinators are an inherently functional concept. As the great Dr Seuss once said: "A parser for things, is a function from strings, to lists, of pairs, of strings and things". :-) Parser combinators provide primitive parser functions as a starting point and higher order functions for combining simple parsers into more complicated ones.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182518280000#c7569119450817324506" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 9:18 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182518280000#c7569119450817324506" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 9:18 AM</div>
 
 								<span class="item-control blog-admin pid-188006248"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7569119450817324506" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3702581859199015962"></a> 				So instead of thinking of a grammar as a graph to be searched you think of it as a set of (mutually recursive) functions yielding lists, and this all get monadic to wrap what most languages would keep as "state", shift/reduce etc?<BR/>When I saw "combinator" I was thinking of the Y combinator, which I still don't grok.<BR/><BR/>Thank you<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182535440000#c3702581859199015962" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18101912901267399873" rel="nofollow">hgs</a> : 2:04 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182535440000#c3702581859199015962" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18101912901267399873" rel="nofollow">hgs</a> : 2:04 PM</div>
 
 								<span class="item-control blog-admin pid-1671203119"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3702581859199015962" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
-								<a name="1047872016443443207"></a> 				hgs:<BR/><BR/>I don't really grok combinators in all of their glory either. I feel like a Parrot repeating what it has heard without understanding.<BR/><BR/>Here's my attempt:<BR/><BR/><A HREF="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html" REL="nofollow">But Y would I want to do a thing like this?</A><br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182536040000#c1047872016443443207" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:14 PM</div>
+								<a name="1047872016443443207"></a> 				hgs:<BR/><BR/>I don't really grok combinators in all of their glory either. I feel like a Parrot repeating what it has heard without understanding.<BR/><BR/>Here's my attempt:<BR/><BR/><A HREF="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html" REL="nofollow">But Y would I want to do a thing like this?</A><br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182536040000#c1047872016443443207" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:14 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1047872016443443207" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7488806486032798733"></a> 				hgs: That's essentially right, yes.<BR/><BR/>Really combinators aren't so scary. Even the Y combinator is positively friendly when you get used to it. <BR/><BR/>All a combinator is is a higher order function which is useful for building other higher order functions. Looked at the right way, this is nothing more than control flow. if statements, while or for loops, etc. can all be regarded as forms of combinators (blurring the line between 'blocks' and 'functions' here, but if you're a Ruby or Smalltalk fan I'm sure you won't mind that. :-) ). <BR/><BR/>Once actions and control flow become first class, thinking about this sort of things becomes more prevalent. Hence you can build powerful abstractions where <A HREF="http://www.randomhacks.net/articles/2007/02/22/bayes-rule-and-drug-tests" REL="nofollow">if statements get replaced</A> with Bayes rule, or parser oriented control flow statements. Monads crop up a lot in this because control flow is frequently sequencing oriented (do this thing and feed the results into that thing), which is one of the big abstractions which they're useful at dealing with.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/06/show-must-go-on-query-languages.html?showComment=1182543180000#c7488806486032798733" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 4:13 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/06/show-must-go-on-query-languages.html?showComment=1182543180000#c7488806486032798733" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 4:13 PM</div>
 
 								<span class="item-control blog-admin pid-188006248"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7488806486032798733" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -202,7 +202,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -256,25 +256,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -282,17 +282,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -302,17 +302,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -320,19 +320,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -340,18 +340,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -359,15 +359,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -376,101 +376,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

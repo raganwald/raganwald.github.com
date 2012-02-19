@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Monday, January 07, 2008</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="3737446643639700029">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html" title="permanent link">A programming language cannot be better without being unintuitive</a></span>
-					<div style="clear:both;"></div><blockquote>Optimising your notation to not confuse people in the first 10 minutes of seeing it but to hinder readability ever after is a really bad mistake.</blockquote><div>&mdash;David MacIver, via <a href="http://rickyclarkson.blogspot.com/2008/01/in-defence-of-0l-in-scala.html">In Defence of (0/:l)(_+_) in Scala</a></div><br />Or as Jef Raskin put it:<br /><br /><blockquote>The impression that the phrase &#8220;this interface feature is intuitive&#8221; leaves is that the interface works the way the user does, that normal human &#8220;intuition&#8221; suffices to use it, that neither training nor rational thought is necessary, and that it will feel &#8220;natural.&#8221; We are said to &#8220;intuit&#8221; a concept when we seem to suddenly understand it without any apparent effort or previous exposure to the idea.<br />  <br />It is clear that a user interface feature is &#8220;intuitive&#8221; insofar as it resembles or is identical to something the user has already learned. In short, &#8220;intuitive&#8221; in this context is an almost exact synonym of &#8220;familiar.&#8221;<br />  <br />The term &#8220;intuitive&#8221; is associated with approval when applied to an interface, but this association and the magazines’ rating systems raise the issue of the tension between improvement and familiarity. As an interface designer I am often asked to design a &#8220;better&#8221; interface to some product. Usually one can be designed such that, in terms of learning time, eventual speed of operation (productivity), decreased error rates, and ease of implementation it is superior to competing or the client’s own products. Even where my proposals are seen as significant improvements, they are often rejected nonetheless on the grounds that they are not intuitive.<br /><br />It is a classic &#8220;catch 22.&#8221; The client wants something that is significantly superior to the competition. But if superior, it cannot be the same, so it must be different (typically the greater the improvement, the greater the difference). Therefore it cannot be intuitive, that is, familiar. What the client usually wants is an interface with at most marginal differences that, somehow, makes a major improvement. This can be achieved only on the rare occasions where the original interface has some major flaw that is remedied by a minor fix.</blockquote><div>&mdash;Jef Raskin, <a href="http://www.asktog.com/papers/raskinintuit.html">Intuitive Equals Familiar</a></div><br /><br />Complaining that a programming language &ldquo;Violates the Principle of Least Surprise&rdquo; is a complaint that it fails to appeal at first glance, without any training or investigation. But if a new language is &ldquo;intuitive,&rdquo; it can only offer you a marginal improvement over the languages you already know well.<br /><br />You needn&rsquo;t look at functional langauges like Scala to see this at work. Is Ruby&rsquo;s for loop an improvement over Java? By how much? Ruby&rsquo;s big win over Java in that regard is the ease with which you can use <a title="An Introduction to Ruby's Enumerable Module" href="http://jamesgolick.com/2008/1/6/an-introduction-to-ruby-s-enumerable-module">Enumerable&rsquo;s collect, select, detect, and inject methods</a>. Which, of course, are not <em>familiar</em> to the programmer with a grounding in for loops. They require study to understand. But once understood, they make code easier to read thereafter.<br /><br /><hr/><br /><em>post scriptum</em>:<br /><br />As Justin points out in the comments, the real meaning of the &ldquo;Principle of Least Surprise&rdquo; is that languages should be <em>consistent</em>. The principle applies to how the language behaves when you already know something about it. So if you see <code>(_+_)</code>, the questions is whether this makes sense if you already know that underscore is a function parameter.<br /><br /><em>And more</em>: <a href="http://weblog.raganwald.com/2008/01/word-intuitive-isnt.html">The word "intuitive"... isn't.</a><br /><br /><em>And even more, from Matz in Japanese</em>: <a href="http://www.rubyist.net/~matz/20080108.html#p02">http://www.rubyist.net/~matz/20080108.html#p02</a><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html" title="permanent link">A programming language cannot be better without being unintuitive</a></span>
+					<div style="clear:both;"></div><blockquote>Optimising your notation to not confuse people in the first 10 minutes of seeing it but to hinder readability ever after is a really bad mistake.</blockquote><div>&mdash;David MacIver, via <a href="http://rickyclarkson.blogspot.com/2008/01/in-defence-of-0l-in-scala.html">In Defence of (0/:l)(_+_) in Scala</a></div><br />Or as Jef Raskin put it:<br /><br /><blockquote>The impression that the phrase &#8220;this interface feature is intuitive&#8221; leaves is that the interface works the way the user does, that normal human &#8220;intuition&#8221; suffices to use it, that neither training nor rational thought is necessary, and that it will feel &#8220;natural.&#8221; We are said to &#8220;intuit&#8221; a concept when we seem to suddenly understand it without any apparent effort or previous exposure to the idea.<br />  <br />It is clear that a user interface feature is &#8220;intuitive&#8221; insofar as it resembles or is identical to something the user has already learned. In short, &#8220;intuitive&#8221; in this context is an almost exact synonym of &#8220;familiar.&#8221;<br />  <br />The term &#8220;intuitive&#8221; is associated with approval when applied to an interface, but this association and the magazines’ rating systems raise the issue of the tension between improvement and familiarity. As an interface designer I am often asked to design a &#8220;better&#8221; interface to some product. Usually one can be designed such that, in terms of learning time, eventual speed of operation (productivity), decreased error rates, and ease of implementation it is superior to competing or the client’s own products. Even where my proposals are seen as significant improvements, they are often rejected nonetheless on the grounds that they are not intuitive.<br /><br />It is a classic &#8220;catch 22.&#8221; The client wants something that is significantly superior to the competition. But if superior, it cannot be the same, so it must be different (typically the greater the improvement, the greater the difference). Therefore it cannot be intuitive, that is, familiar. What the client usually wants is an interface with at most marginal differences that, somehow, makes a major improvement. This can be achieved only on the rare occasions where the original interface has some major flaw that is remedied by a minor fix.</blockquote><div>&mdash;Jef Raskin, <a href="http://www.asktog.com/papers/raskinintuit.html">Intuitive Equals Familiar</a></div><br /><br />Complaining that a programming language &ldquo;Violates the Principle of Least Surprise&rdquo; is a complaint that it fails to appeal at first glance, without any training or investigation. But if a new language is &ldquo;intuitive,&rdquo; it can only offer you a marginal improvement over the languages you already know well.<br /><br />You needn&rsquo;t look at functional langauges like Scala to see this at work. Is Ruby&rsquo;s for loop an improvement over Java? By how much? Ruby&rsquo;s big win over Java in that regard is the ease with which you can use <a title="An Introduction to Ruby's Enumerable Module" href="http://jamesgolick.com/2008/1/6/an-introduction-to-ruby-s-enumerable-module">Enumerable&rsquo;s collect, select, detect, and inject methods</a>. Which, of course, are not <em>familiar</em> to the programmer with a grounding in for loops. They require study to understand. But once understood, they make code easier to read thereafter.<br /><br /><hr/><br /><em>post scriptum</em>:<br /><br />As Justin points out in the comments, the real meaning of the &ldquo;Principle of Least Surprise&rdquo; is that languages should be <em>consistent</em>. The principle applies to how the language behaves when you already know something about it. So if you see <code>(_+_)</code>, the questions is whether this makes sense if you already know that underscore is a function parameter.<br /><br /><em>And more</em>: <a href="http://raganwald.github.com/2008/01/word-intuitive-isnt.html">The word "intuitive"... isn't.</a><br /><br /><em>And even more, from Matz in Japanese</em>: <a href="http://www.rubyist.net/~matz/20080108.html#p02">http://www.rubyist.net/~matz/20080108.html#p02</a><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html" title="permanent link">10:51 AM</a>
+						&para; <a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html" title="permanent link">10:51 AM</a>
 
 					 
 				</span> 
@@ -44,147 +44,147 @@
 						
 							<div class="blogComment">
 								<a name="1469051604762750176"></a> 				> not “intuitive” to the programmer<BR/><BR/>It would be so nice to get beyond the scare quotes:<BR/><BR/>not <I>familiar</I> to the programmer<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199724180000#c1469051604762750176" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02902123247585964087" rel="nofollow">Isaac Gouy</a> : 11:43 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199724180000#c1469051604762750176" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02902123247585964087" rel="nofollow">Isaac Gouy</a> : 11:43 AM</div>
 
 								<span class="item-control blog-admin pid-1563044148"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1469051604762750176" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5350880121992494725"></a> 				Isaac, how nice to hear from you. As you command, so shall it be done.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199724240000#c5350880121992494725" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:44 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199724240000#c5350880121992494725" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:44 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5350880121992494725" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3484417301485410633"></a> 				I am under the impression that the "Principle of Least Surprise" has been taken to mean three completely different things<BR/>1) Least surprise to a random person. This is what you seem to be criticizing.<BR/>2) Least surprise to the language designer. That is, a language that works roughly how the designer envisages, without flow on effects that surprise the language designer. This is the stated design philosophy of a number of languages designed initially for their designers' use.<BR/>3) Least surprise in an information theoretic sense; that is, the conditionalised probability on the portion of language known of the way something has been done should decrease as the portion of the language known increases, and should have a low upper bound after the portion of language known is above some epsilon. This is the principle that I take to be in play, which means that consistency (in an aesthetic sense; that is, where inductive reasoning about the system will eventually supervene upon deductive reasoning) is a priori connected to least surprise, in that they should (if we live in a universe that makes sense, which is not something that I feel we can proveably prove) entail each other.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199724960000#c3484417301485410633" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17408768504753604778" rel="nofollow">Justin</a> : 11:56 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199724960000#c3484417301485410633" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17408768504753604778" rel="nofollow">Justin</a> : 11:56 AM</div>
 
 								<span class="item-control blog-admin pid-1324166128"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3484417301485410633" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2184997334055367992"></a> 				Justin:<BR/><BR/>I definitely criticize the use of definition 1. Well, I don't criticize  it so much as underscore Raskin's point that you are limiting its upside.<BR/><BR/>It might be a valid design decision in a case where you are shooting for popularity amongst people who do not have the time or inclination to look beyond the surface.<BR/><BR/>As long as we don't claim that familiarity for the random person is equivalent to long-term benefit, I'm a happy guy.<BR/><BR/>The other definitions are much more interesting, they speak to feelings of consistency or stability.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199725260000#c2184997334055367992" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:01 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199725260000#c2184997334055367992" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:01 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2184997334055367992" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6584169531731141104"></a> 				reginald braithwaite: (3) speaks to the Kantian in me. Just to further elaborate perhaps unnecessarily, what (3) above says is that, give a subset of the programming language greater than epsilon, we can reason about the language inductively with a reasonable likelyhood of being correct; that is, we can expect the language to behave how we think it should, and we will not often be wrong. This does not supervene upon the language being familiar, but on the language being consistent. The conflation comes in as people may incorrectly include their knowledge of other programming languages into their knowledge of the programming language of interest, meaning that anything that is different will be inconsistent, and thus infinitely surprising.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199725740000#c6584169531731141104" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17408768504753604778" rel="nofollow">Justin</a> : 12:09 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199725740000#c6584169531731141104" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17408768504753604778" rel="nofollow">Justin</a> : 12:09 PM</div>
 
 								<span class="item-control blog-admin pid-1324166128"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6584169531731141104" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2589003216601550044"></a> 				I think your point applies more to semantics and not syntax.<BR/><BR/>Just because %$%EW#$#-W##@(%) is not familiar doesn't mean its necessarily better or more powerful than the syntactically longer version.<BR/><BR/>The underlying semantics and idioms should be markedly different, which is why your example with Ruby functional iterators is a good one: its a library which meshes with the language features.<BR/><BR/>Great blog, as usual.<BR/>Cheers.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199733120000#c2589003216601550044" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05855835756433708505" rel="nofollow">DavidM</a> : 2:12 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199733120000#c2589003216601550044" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05855835756433708505" rel="nofollow">DavidM</a> : 2:12 PM</div>
 
 								<span class="item-control blog-admin pid-586991991"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2589003216601550044" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5375267039190686014"></a> 				"It is clear that a user interface feature is “intuitive” insofar as it resembles or is identical to something the user has already learned."<BR/><BR/>So we say that the UI has an affordance.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199734740000#c5375267039190686014" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02996372167263331045" rel="nofollow">dehora</a> : 2:39 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199734740000#c5375267039190686014" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02996372167263331045" rel="nofollow">dehora</a> : 2:39 PM</div>
 
 								<span class="item-control blog-admin pid-103811462"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5375267039190686014" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7238106590078634604"></a> 				What would the solution be anyway?  Remove the /: shorthand?<BR/><BR/>Too many languages these days try to protect the programmer from himself.  From the forced exception handling of java to the idiotic forced indentation of python.<BR/><BR/>It's like removing words from English in order to remove ambiguity.  Double plus ungood.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199737440000#c7238106590078634604" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 3:24 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199737440000#c7238106590078634604" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 3:24 PM</div>
 
 								<span class="item-control blog-admin pid-2050274566"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7238106590078634604" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6172583018345959239"></a> 				"A programming language cannot be better without being unintuitive"<BR/><BR/>This statement applies to all programming languages, so we should apply it to Lisp. In what unintuitive way should Lisp be improved? What other language beats Lisp (in one area) thanks to a greater willingness to have unintuitive features?<BR/><BR/>BTW I actually think you're essentially right, and these questions have answers, because intuitiveness today (a function of our existing ideas) is not a reliable guide to what is good.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199737500000#c6172583018345959239" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17472135050734758065" rel="nofollow">Elliot</a> : 3:25 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199737500000#c6172583018345959239" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17472135050734758065" rel="nofollow">Elliot</a> : 3:25 PM</div>
 
 								<span class="item-control blog-admin pid-1079996340"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6172583018345959239" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7566520151919985912"></a> 				Elliot:<BR/><BR/>One of the dangers in arguing about Lisp is the temptation to slip into the Turing Tar Pit where the Lisper claims "You can do that in Lisp by creating a new language based on Lisp."<BR/><BR/>Lisp is a chameleon!<BR/><BR/>But I can provide an example for the sake of contemplation: Lazy evaluation (which began in certain Lisp dialects and can be implemented easily in Lisp) provides an improvement in certain FP when elevated to a built-in feature of the language.<BR/><BR/>This is not to suggest that Haskell is overall superior to Common Lisp, but for certain things, I believe it is an improvement.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199737800000#c7566520151919985912" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:30 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199737800000#c7566520151919985912" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:30 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7566520151919985912" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="9113084215443631174"></a> 				Personally, I don't find  (0/:l)(_+_) intuitive at all.  I think it's a prime example for badly written unreadable code.<BR/><BR/>It's no fault of Scala though, the first time I saw it, I also read it as colon-one instead of colon-ell, and even the ell doesn't say much.<BR/><BR/>In expanded form, (0/:list)(_+_), it starts to make sense, for one knowing that the 0 is applied to a list, and the function applied to that.<BR/><BR/>If badly written examples are indication for languages being non-intuitive, then languages with substantial code bases (*cough*Java*cough*) are the worst offenders.<BR/><BR/>And while we're at it, here's my least-intuitive contribution:<BR/><BR/>_="_=%p;$><<_%%_";$><<_%_<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199743560000#c9113084215443631174" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://assaf.labnotes.org/" rel="nofollow">Assaf</a> : 5:06 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199743560000#c9113084215443631174" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://assaf.labnotes.org/" rel="nofollow">Assaf</a> : 5:06 PM</div>
 
 								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9113084215443631174" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5178541688275507313"></a> 				I think you may be setting up a strawman here. You can define "intuitive" to mean familiar and then argue it into the ground, I agree, though I rarely hear anyone who I consider reasonable use the term that way.<BR/><BR/>A more useful definition for "intuitive" is "not easily expressed linguistically." Given this definition, we want user interfaces to be intuitive (in fact, this is the entire reason to have GUIs). A programming language is a user interface. Therefore, we want programming languages to be intuitive.<BR/><BR/>For example, why do we prefer "foreach" over "for?" It's hard to explain, but we do. It's "intuitively" better. Of course, <I>I</I> can explain why it is better - it more directly corresponds to the concept of iterating over a list, is less verbose, it is unambiguous, it is readable, etc. Then again, I think about programming languages a lot. Your "usual" programmer might not know why they like it better, they just do. They would call it "intuitively better." <BR/><BR/>In conclusion - "intuitive" does not mean "familiar" except to the layman. Familiar bad, intuitive good.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199776980000#c5178541688275507313" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07773108899149984548" rel="nofollow">Chris</a> : 2:23 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199776980000#c5178541688275507313" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07773108899149984548" rel="nofollow">Chris</a> : 2:23 AM</div>
 
 								<span class="item-control blog-admin pid-176406213"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5178541688275507313" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6769193056168942776"></a> 				I disagree. Intuitive designs are not necessarily familiar: they're discoverable, guessable.<BR/><BR/>Dehora used the right term - an intuitive system is one that provides "affordances": visual hints that evoke conventions the user already knows, letting him guess how something will behave without actually trying it.<BR/><BR/>(For example, a button is intuitive: you press it. A button-like object that needed to be dragged would be unintuitive.)<BR/><BR/>Now, of course, you're right to some extent - for someone to "get" such a hint, they need to be familiar with the convention it's trying to evoke.<BR/><BR/>Basically, a system can be unfamiliar but intuitive, if it presents familiar _components_ in a new, but discoverable, way.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199787660000#c6769193056168942776" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09919006779080998004" rel="nofollow">Laurie Cheers</a> : 5:21 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199787660000#c6769193056168942776" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09919006779080998004" rel="nofollow">Laurie Cheers</a> : 5:21 AM</div>
 
 								<span class="item-control blog-admin pid-569099421"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6769193056168942776" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3204687872280095923"></a> 				Echoing Dehora and laurie:<BR/><BR/>"What Makes a Design Seem 'Intuitive'?" by Jared M. Spool<BR/>http://www.uie.com/articles/design_intuitive/<BR/><BR/>He argues (convincingly) that intuitive means either:<BR/><BR/>* familiar<BR/>* or able to be learned effortlessly<BR/><BR/>or to be exact:<BR/><BR/>"Condition #1:<BR/>Both the current knowledge point and the target knowledge point are identical. When the user walks up to the design, they know everything they need to operate it and complete their objective.<BR/><BR/>Condition #2:<BR/>The current knowledge point and the target knowledge point are separate, but the user is completely unaware the design is helping them bridge the gap. The user is being trained, but in a way that seems natural."<BR/><BR/>In this scenario a well designed language can be more different from the status quo, and therefore more "better", while still not scaring people off than one that ignores this principle.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199796600000#c3204687872280095923" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12818596351896427249" rel="nofollow">david</a> : 7:50 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199796600000#c3204687872280095923" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12818596351896427249" rel="nofollow">david</a> : 7:50 AM</div>
 
 								<span class="item-control blog-admin pid-804496158"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3204687872280095923" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1297915542227631594"></a> 				I always found "violating the principal of least surprise" to be very important BUT within the context of the current language, not within the context of all languages. Look at Java, for example, it's riddled with inconsistencies. Sometimes it's .size() and sometimes it's .length() and sometimes it's .length, and don't even get me started about the damn Calendar class. <BR/><BR/>Different classes performing the same conceptual operation within a language should use the same syntax to do it, thus not "surprising" you  every time and making you constantly have to check the docs (or rely on the crutch of your IDE) for the less frequently used classes.<BR/><BR/>This familiarity is an incredible feature and doesn't hamper innovation in any way. You're free to add new things that act in new ways, but if you're doing the <I>same</I> thing then don't surprise me with a different API for it.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199798400000#c1297915542227631594" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10810086465593823277" rel="nofollow">masukomi</a> : 8:20 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199798400000#c1297915542227631594" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10810086465593823277" rel="nofollow">masukomi</a> : 8:20 AM</div>
 
 								<span class="item-control blog-admin pid-1199065691"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1297915542227631594" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3193604908515144416"></a> 				You forgot to mention that sometimes it's getLength()...<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199804040000#c3193604908515144416" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09919006779080998004" rel="nofollow">Laurie Cheers</a> : 9:54 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199804040000#c3193604908515144416" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09919006779080998004" rel="nofollow">Laurie Cheers</a> : 9:54 AM</div>
 
 								<span class="item-control blog-admin pid-569099421"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3193604908515144416" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
-								<a name="2576338187684798218"></a> 				<A HREF="http://weblog.raganwald.com/2008/01/word-intuitive-isnt.html" REL="nofollow">The word "intuitive"... isn't.</A><br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199807700000#c2576338187684798218" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:55 AM</div>
+								<a name="2576338187684798218"></a> 				<A HREF="http://raganwald.github.com/2008/01/word-intuitive-isnt.html" REL="nofollow">The word "intuitive"... isn't.</A><br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199807700000#c2576338187684798218" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:55 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2576338187684798218" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5758852879516882924"></a> 				Just to nitpick a bit, it is possible to be radically different and yet more familiar/intuitive. The original mac was more familiar/intuitive because it used metaphors from a completely different domain that the user was already familiar with. Similarly, languages with an algebraic syntax are more familiar/intuitive to those who have been taught that syntax in school.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199811720000#c5758852879516882924" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15412258048017521995" rel="nofollow">Paul Prescod</a> : 12:02 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199811720000#c5758852879516882924" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15412258048017521995" rel="nofollow">Paul Prescod</a> : 12:02 PM</div>
 
 								<span class="item-control blog-admin pid-664672124"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5758852879516882924" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6419776639850937626"></a> 				Paul:<BR/><BR/>The debate about the Macintosh design is an interesting one, and I have a bottle of Single Malt ready so that we can sit down and draw it out enjoyably.<BR/><BR/>There are many factors in play. yes, they tried to use familiar objects as metaphors. But as Raskin explains in his article, many things were extremely unfamiliar, such as the mouse.<BR/><BR/>And a huge part of its success was actually the consistency across applications, which speaks to what some of the other people are saying here.<BR/><BR/>As I say in the follow-up, I really believe that intuitive equals someone's subjective impression of good design, it is the consequence of design choices, not a choice itself.<BR/><BR/>And that subjective impression is strongly driven by familiarity.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199812020000#c6419776639850937626" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:07 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199812020000#c6419776639850937626" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:07 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6419776639850937626" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2268210105802674981"></a> 				Bill and Laurie are right ... discoverable & guessable == intuitive.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199820240000#c2268210105802674981" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01765211985760464677" rel="nofollow">Brandon Corfman</a> : 2:24 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199820240000#c2268210105802674981" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01765211985760464677" rel="nofollow">Brandon Corfman</a> : 2:24 PM</div>
 
 								<span class="item-control blog-admin pid-37552936"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2268210105802674981" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7070825263871581449"></a> 				Intuition comes from being able to make decisions without conscious processing, which relies on the brain's pattern matching ability, and those patterns have to be learned.  Something may appear intuitive at first if you learned the patterns, or they were easy to grasp.  When you look at a mouse, it's not intuitive how it would be used: do you wave it in the air? point it at the screen?  But once you know, the pattern is easy and immediate that it quickly becomes intuitive.<BR/><BR/>Familiarity is not sufficient for something to be intuitive.  It can be familiar yet with no clear patterns emerging, take an incredible amount of time to become intuitive.  And intuitive can be wrong, sometimes deadly wrong.  Our intuition tells us, when we approach a turn too fast to step on the breaks, which matches our experience in most driving situations.  Not so with a bike, slowing down forces a wider turn, if you're approaching too fast -- step on the gas.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/programming-language-cannot-be-better.html?showComment=1199820900000#c7070825263871581449" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://assaf.labnotes.org/" rel="nofollow">Assaf</a> : 2:35 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/programming-language-cannot-be-better.html?showComment=1199820900000#c7070825263871581449" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://assaf.labnotes.org/" rel="nofollow">Assaf</a> : 2:35 PM</div>
 
 								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7070825263871581449" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -195,7 +195,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -249,25 +249,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -275,17 +275,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -295,17 +295,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -313,19 +313,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -333,18 +333,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -352,15 +352,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -369,101 +369,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

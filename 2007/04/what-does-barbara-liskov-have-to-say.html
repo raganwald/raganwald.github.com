@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Sunday, April 15, 2007</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="2836775033960947170">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html" title="permanent link">What does Barbara Liskov have to say about Equality in Java?</a></span>
-					<div style="clear:both;"></div>Erick Reid posted some code showing his <a href="http://erickreid.blogspot.com/2008/06/sourcecode-generation-of-good-equals.html">standard implementations of <code>equals</code> and <code>hashCode</code> in Java</a> (updated link). His implementations draw heavily on Joshua Bloch&#8217;s principles. I think he&rsquo;s done a great job in implementing the Java standard implementation of equality. On the other hand, I&rsquo;m a little disquieted by the way equality works in Java.<br /><br />Here&#8217;s a shorter version of his equality method for a class, <code>TempBean</code>, that has members <code>_foo</code>, and <code>_bar</code>:<br /><pre><code><br />public boolean equals(Object object) {<br />  if (object != this) {<br />    if (object != null && getClass().equals(object.getClass())) {<br />      final TempBean other = (TempBean) object;<br />      return (_foo == null ? other._foo == null : _foo.equals(other._foo)) &&<br />          (_bar == null ? other._bar == null : _bar.equals(other._bar));<br />    }<br />    return false;<br />  }<br />  return true;<br />}<br /></code></pre><br />The interesting part for me is the test for class equality: <code>getClass().equals(object.getClass())</code>. Compare and contrast to:<br /><pre><code><br />public boolean equals(Object object) {<br />  if (object != this) {<br />    if (object != null &amp;&amp; object instanceof TempBean) {<br />      final TempBean other = (TempBean) object;<br />      return (_foo == null ? other._foo == null : _foo.equals(other._foo)) &amp;&amp;<br />          (_bar == null ? other._bar == null : _bar.equals(other._bar));<br />    }<br />    return false;<br />  }<br />  return true;<br />}<br /></code></pre><br />This works when <code>object</code> is a <code>TempBean</code>. That&#8217;s almost the same as the first code. It&#8217;s different when <code>object</code> is an instance of <code>TempBean</code> but not a <code>TempBean</code>.<br /><br />For example:<br /><pre><code><br />void doSomethingSeussian (final TempBean thingOne) {<br />    final TempBean thingTwo = TempBean.getThingFromBox(/* ... */);<br /><br />    if (thingTwo.equals(thingOne)) {<br />        // ...<br />    }<br />}<br /></code></pre><br /><code>thingTwo</code> is obviously a <code>TempBean</code>. Or is it? What does the factory method <code>getThingFromBox</code> do? And what if <code>thingOne</code> is an instance of a <em>subclass</em> of <code>TempBean</code>? What if it has exactly the same <code>_foo</code> and <code>_bar</code> as <code>thingTwo</code>? Why isn&#8217;t it <code>equals</code>? <br /><br />Does this sound farfetched? What if it doesn&#8217;t even have any different members, it only varies in some subtle implementation way? For example, what if <code>thingOne</code> is a <code>ThreadSafeTempBean</code> that guarantees thread safety in a way that is otherwise transparent to clients? Or a <code>MockTempBean</code> that is used for unit tests?<br /><br /><strong>All equalities are equal, but some are more equal than others</strong><br /><br />If you program in Java, you probably already know that <code>==</code> is not the same thing as <code>equals</code>. One measures <em>identity </em>, whether two objects are the exact same identical object in memory at the same location. (Unless they are those dratted primitives, in which case it measures <em>value equality</em>). Identity is almost useless in Java, it breaks all over the place, and that&rsquo;s why it&rsquo;s rightfully rare.<br /><br />Value equality is where the interesting problem lies. There are two kinds of value equalities: physical equality (&ldquo;these two are identical copies of the same object in every respect&rdquo;) and logical equality (&ldquo;for my purposes, these two are equivalent&rdquo;).<br /><br /><div class="book"><a name="evtst|a|0262561158" href="http://www.amazon.com/gp/product/0262561158?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262561158"><img src="http://weblog.raganwald.com/uploaded_images/a_little_java-777624.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262561158" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br /><br /><a name="evtst|a|0262561158" href="http://www.amazon.com/gp/product/0262561158?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262561158">A Little Java, a Few Patterns</a> is brought to you by the authors of <a href="http://www.amazon.com/gp/product/0262560992?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0262560992">The Little Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0262560992" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, a book that teaches recursion and first-class functions, as well as <a href="http://www.amazon.com/gp/product/026256114X?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=026256114X">The Little MLer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=026256114X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, a book that teaches you how to design programs with a powerful strong, static type system.<br /><br />So it is no surprise to discover that their book about Java eschews the same old, same old Hello World approach in favour of teaching deep ideas about Object-Oriented design and Pattern-Oriented design using Java as the language of instruction.<br /><br /></div>The basic problem here is that <code>equals</code> captures physical equality, which ignores the <a href="http://en.wikipedia.org/wiki/Liskov_substitution_principle" title="Liskov substitution principle">Liskov Substitution Principle</a>, one of the fundamental principles in OO design. It is leaking the implementation, just like a <a href="http://www.joelonsoftware.com/articles/LeakyAbstractions.html" title="The Law of Leaky Abstractions - Joel on Software">leaky abstraction</a>.<br /><br />(I think a lot of the problem starts when people conflate interfaces with classes. There&#8217;s a big difference between saying &#8220;this is the interface TempBean, and here is how to tell if any two TempBeans are equals to each other&#8221; and saying &#8220;this is an implementation of a TempBean, and if you want to know whether it is the exact same thing as another implementation, here is how to do it.&#8221;<br /><br />The former ought to be very common, and the latter quite rare in OO programs.)<br /><br />It isn&#8217;t easy to fix the physical equality problem. If you use the second form of code, you get an equals method that is not <a href="http://en.wikipedia.org/wiki/Symmetric_relation">symmetric</a> (thanks, Marc!). In the examples above, <code>thingOne.eqauls(thingTwo)</code> is not always the same as <code>thingTwo.equals(thingOne)</code>! And if you&rsquo;re implementing a <code>HashMap</code>, which kind of equality do you want to use for deciding whether a key is already in the collection?<br /><br />This last question is another way of pointing out that equality is not an easy thing to define if you mix the notion of polymorphism into a language. Do you always want logical equality? I can easily think of code that would break horribly if you made a <code>HashMap</code> that respected the Liskov Substitution Principle for keys. And I can also think of code where I want a map or set that respects the Liskov substitution principle.<br /><br /><strong>What can we do about this?</strong><br /><br />To make equality adhere to the Liskov Substitution Method in a language like Java, you can&#8217;t make it an object method. One of the other cherished notions in OO design is that every object ought to know everything about its behaviour. But this objects can&#8217;t know how much detail a client wants in making the comparison.<br /><br />The piece of code that ought to know how to compare two <code>TempBeans</code> is the <code>TempBean</code> class (which is also the <code>TempBean</code> interface in Java, but Java doesn&#8217;t allow code in interfaces). We&#8217;re off to a good start, the code for <code>equals</code> is in the TempBean class. But where we went wrong is making it an instance method. What happens if it&#8217;s a <em>static</em> method?<br /><pre><code><br />public static boolean equivalent(TeampBean left, TempBean right) {<br />  if (left != right) {<br />    if (left != null &amp;&amp; right != null) {<br />      return (left._foo == null ? right._foo == null : left._foo.equals(right._foo)) &amp;&amp;<br />          (left._bar == null ? right._bar == null :left. _bar.equals(right._bar));<br />    }<br />    return false;<br />  }<br />  return true;<br />}<br /></code></pre><br />Now you can write code like:<br /><pre><code><br />void doSomethingSeussian (final TempBean thingOne) {<br />    final TempBean thingTwo = TempBean.getThingFromBox(/* ... */);<br /><br />    if (TempBean.equivalent(thingTwo, thingOne)) {<br />        // ...<br />    }<br />}<br /></code></pre><br />Without worrying about whether either variable holds a <code>TempBean</code>, a <code>ThreadSafeTempBean</code>, or a <code>MockTempBean</code>. It&#8217;s true that sometimes you care very deeply about the difference. But most of the time, you probably do not, and using an <code>equals</code> method that does care is wrong.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/java.html">java</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html" title="permanent link">What does Barbara Liskov have to say about Equality in Java?</a></span>
+					<div style="clear:both;"></div>Erick Reid posted some code showing his <a href="http://erickreid.blogspot.com/2008/06/sourcecode-generation-of-good-equals.html">standard implementations of <code>equals</code> and <code>hashCode</code> in Java</a> (updated link). His implementations draw heavily on Joshua Bloch&#8217;s principles. I think he&rsquo;s done a great job in implementing the Java standard implementation of equality. On the other hand, I&rsquo;m a little disquieted by the way equality works in Java.<br /><br />Here&#8217;s a shorter version of his equality method for a class, <code>TempBean</code>, that has members <code>_foo</code>, and <code>_bar</code>:<br /><pre><code><br />public boolean equals(Object object) {<br />  if (object != this) {<br />    if (object != null && getClass().equals(object.getClass())) {<br />      final TempBean other = (TempBean) object;<br />      return (_foo == null ? other._foo == null : _foo.equals(other._foo)) &&<br />          (_bar == null ? other._bar == null : _bar.equals(other._bar));<br />    }<br />    return false;<br />  }<br />  return true;<br />}<br /></code></pre><br />The interesting part for me is the test for class equality: <code>getClass().equals(object.getClass())</code>. Compare and contrast to:<br /><pre><code><br />public boolean equals(Object object) {<br />  if (object != this) {<br />    if (object != null &amp;&amp; object instanceof TempBean) {<br />      final TempBean other = (TempBean) object;<br />      return (_foo == null ? other._foo == null : _foo.equals(other._foo)) &amp;&amp;<br />          (_bar == null ? other._bar == null : _bar.equals(other._bar));<br />    }<br />    return false;<br />  }<br />  return true;<br />}<br /></code></pre><br />This works when <code>object</code> is a <code>TempBean</code>. That&#8217;s almost the same as the first code. It&#8217;s different when <code>object</code> is an instance of <code>TempBean</code> but not a <code>TempBean</code>.<br /><br />For example:<br /><pre><code><br />void doSomethingSeussian (final TempBean thingOne) {<br />    final TempBean thingTwo = TempBean.getThingFromBox(/* ... */);<br /><br />    if (thingTwo.equals(thingOne)) {<br />        // ...<br />    }<br />}<br /></code></pre><br /><code>thingTwo</code> is obviously a <code>TempBean</code>. Or is it? What does the factory method <code>getThingFromBox</code> do? And what if <code>thingOne</code> is an instance of a <em>subclass</em> of <code>TempBean</code>? What if it has exactly the same <code>_foo</code> and <code>_bar</code> as <code>thingTwo</code>? Why isn&#8217;t it <code>equals</code>? <br /><br />Does this sound farfetched? What if it doesn&#8217;t even have any different members, it only varies in some subtle implementation way? For example, what if <code>thingOne</code> is a <code>ThreadSafeTempBean</code> that guarantees thread safety in a way that is otherwise transparent to clients? Or a <code>MockTempBean</code> that is used for unit tests?<br /><br /><strong>All equalities are equal, but some are more equal than others</strong><br /><br />If you program in Java, you probably already know that <code>==</code> is not the same thing as <code>equals</code>. One measures <em>identity </em>, whether two objects are the exact same identical object in memory at the same location. (Unless they are those dratted primitives, in which case it measures <em>value equality</em>). Identity is almost useless in Java, it breaks all over the place, and that&rsquo;s why it&rsquo;s rightfully rare.<br /><br />Value equality is where the interesting problem lies. There are two kinds of value equalities: physical equality (&ldquo;these two are identical copies of the same object in every respect&rdquo;) and logical equality (&ldquo;for my purposes, these two are equivalent&rdquo;).<br /><br /><div class="book"><a name="evtst|a|0262561158" href="http://www.amazon.com/gp/product/0262561158?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262561158"><img src="http://raganwald.github.com/uploaded_images/a_little_java-777624.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262561158" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br /><br /><a name="evtst|a|0262561158" href="http://www.amazon.com/gp/product/0262561158?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262561158">A Little Java, a Few Patterns</a> is brought to you by the authors of <a href="http://www.amazon.com/gp/product/0262560992?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0262560992">The Little Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0262560992" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, a book that teaches recursion and first-class functions, as well as <a href="http://www.amazon.com/gp/product/026256114X?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=026256114X">The Little MLer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=026256114X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, a book that teaches you how to design programs with a powerful strong, static type system.<br /><br />So it is no surprise to discover that their book about Java eschews the same old, same old Hello World approach in favour of teaching deep ideas about Object-Oriented design and Pattern-Oriented design using Java as the language of instruction.<br /><br /></div>The basic problem here is that <code>equals</code> captures physical equality, which ignores the <a href="http://en.wikipedia.org/wiki/Liskov_substitution_principle" title="Liskov substitution principle">Liskov Substitution Principle</a>, one of the fundamental principles in OO design. It is leaking the implementation, just like a <a href="http://www.joelonsoftware.com/articles/LeakyAbstractions.html" title="The Law of Leaky Abstractions - Joel on Software">leaky abstraction</a>.<br /><br />(I think a lot of the problem starts when people conflate interfaces with classes. There&#8217;s a big difference between saying &#8220;this is the interface TempBean, and here is how to tell if any two TempBeans are equals to each other&#8221; and saying &#8220;this is an implementation of a TempBean, and if you want to know whether it is the exact same thing as another implementation, here is how to do it.&#8221;<br /><br />The former ought to be very common, and the latter quite rare in OO programs.)<br /><br />It isn&#8217;t easy to fix the physical equality problem. If you use the second form of code, you get an equals method that is not <a href="http://en.wikipedia.org/wiki/Symmetric_relation">symmetric</a> (thanks, Marc!). In the examples above, <code>thingOne.eqauls(thingTwo)</code> is not always the same as <code>thingTwo.equals(thingOne)</code>! And if you&rsquo;re implementing a <code>HashMap</code>, which kind of equality do you want to use for deciding whether a key is already in the collection?<br /><br />This last question is another way of pointing out that equality is not an easy thing to define if you mix the notion of polymorphism into a language. Do you always want logical equality? I can easily think of code that would break horribly if you made a <code>HashMap</code> that respected the Liskov Substitution Principle for keys. And I can also think of code where I want a map or set that respects the Liskov substitution principle.<br /><br /><strong>What can we do about this?</strong><br /><br />To make equality adhere to the Liskov Substitution Method in a language like Java, you can&#8217;t make it an object method. One of the other cherished notions in OO design is that every object ought to know everything about its behaviour. But this objects can&#8217;t know how much detail a client wants in making the comparison.<br /><br />The piece of code that ought to know how to compare two <code>TempBeans</code> is the <code>TempBean</code> class (which is also the <code>TempBean</code> interface in Java, but Java doesn&#8217;t allow code in interfaces). We&#8217;re off to a good start, the code for <code>equals</code> is in the TempBean class. But where we went wrong is making it an instance method. What happens if it&#8217;s a <em>static</em> method?<br /><pre><code><br />public static boolean equivalent(TeampBean left, TempBean right) {<br />  if (left != right) {<br />    if (left != null &amp;&amp; right != null) {<br />      return (left._foo == null ? right._foo == null : left._foo.equals(right._foo)) &amp;&amp;<br />          (left._bar == null ? right._bar == null :left. _bar.equals(right._bar));<br />    }<br />    return false;<br />  }<br />  return true;<br />}<br /></code></pre><br />Now you can write code like:<br /><pre><code><br />void doSomethingSeussian (final TempBean thingOne) {<br />    final TempBean thingTwo = TempBean.getThingFromBox(/* ... */);<br /><br />    if (TempBean.equivalent(thingTwo, thingOne)) {<br />        // ...<br />    }<br />}<br /></code></pre><br />Without worrying about whether either variable holds a <code>TempBean</code>, a <code>ThreadSafeTempBean</code>, or a <code>MockTempBean</code>. It&#8217;s true that sometimes you care very deeply about the difference. But most of the time, you probably do not, and using an <code>equals</code> method that does care is wrong.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/java.html">java</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html" title="permanent link">9:40 PM</a>
+						&para; <a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html" title="permanent link">9:40 PM</a>
 
 					 
 				</span> 
@@ -44,196 +44,196 @@
 						
 							<div class="blogComment">
 								<a name="3142619975577552174"></a> 				The whole LSP thing in Java is interesting. I've just written something about it and how it relates to duck typing in Java.<BR/><BR/>http://www.kirit.com/Walking%2C%20talking%20and%20quacking%20in%20Java<BR/><BR/>In truth the only way to fully reconcile any non-identity notion of equality with LSP is to have the terms of equality determined by the client code, i.e. where the equality test is used.<BR/><BR/>If identity is broken as you say it is (and I don't know enough Java to really know) then Java is conflating value and object semantics. This of course is why the distinction between object and value semantics is important and why solving the equality test problem in Java looks to be so hard.<BR/><BR/>Any test that is devised within an object using value semantics where the object itself logically follows object semantics is doomed to fail for a lot of uses.<BR/><BR/>The best way out of it would be to fix the use of identity in Java, but that might just not be possible.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176701520000#c3142619975577552174" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02188707816239176630" rel="nofollow">Kirit Sælensminde</a> : 1:32 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176701520000#c3142619975577552174" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02188707816239176630" rel="nofollow">Kirit Sælensminde</a> : 1:32 AM</div>
 
 								<span class="item-control blog-admin pid-1683405536"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3142619975577552174" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3734500106107000772"></a> 				Although it doesn't do much good in Java proper, this is one of the things I found most pleasant when I was still coding in Nice (the language, not the city). Multiple dispatch provides a very elegant solution to this problem, because you can define equals(TempBean, TempBean) and then SubclassOfTempBean can override not only equals (SubclassOfTempBean, TempBean) but also equals (TempBean, SubclassOfTempBean), so that when the more specific class is present on the right hand argument of equals, the overridden method is used.<BR/><BR/>There are a number of cases where this helps a lot.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176709140000#c3734500106107000772" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 3:39 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176709140000#c3734500106107000772" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 3:39 AM</div>
 
 								<span class="item-control blog-admin pid-188006248"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3734500106107000772" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4513666504049723936"></a> 				That equals method you quote, while certainly fine, should be generated by your IDE; they do that sort of thing automatically and can ensure that the accompanying hashCode() is in lockstep.<BR/><BR/>Speaking of hashCode, you forgot something rather critical:<BR/><BR/>Any attempt to offload Equivalency Testing to a separate codebase (much like java.util.Comparator offloads ordering of objects to a separate implementation, so that you can sort or create TreeSets/TreeMaps (maps/sets that sort themselves as you add items to it) according to an ordering of your own liking) must by neccessity include custom hashCode() code, or you will never be able to use this equivalency test for hashmaps or hashsets. That'd be a rather enormous and unhappy restriction.<BR/><BR/>I certainly thing it would be prudent to add an Equivalent class that is analogout to Comparator, and have versions of HashSet, HashMap, and various 'contains' methods in the Collections API that use it, but this Equivalent interface must force the programming to supply both an equals and a hashing algorithm, or its mostly useless.<BR/><BR/>How do other languages 'solve' this problem?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176716940000#c4513666504049723936" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.zwitserloot.com/" rel="nofollow">Reinier Zwitserloot</a> : 5:49 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176716940000#c4513666504049723936" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.zwitserloot.com/" rel="nofollow">Reinier Zwitserloot</a> : 5:49 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4513666504049723936" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4473475225471831962"></a> 				"How do other languages 'solve' this problem?"<BR/><BR/>Most other languages don't have the problem to start with. You can find it though in other languages that confuse value and object semantics.<BR/><BR/>Javascript is an extreme example of this and is one reason why it is hard to use for anything really complex. Smalltalk suffers to a lesser extent because it maintains object identity, but often makes true value semantics hard.<BR/><BR/>It is much easier to handle values in an system that maintains identity than it is to handle identity in one that loses it.<BR/><BR/>I don't really know what Reg means when he says identity in Java is broken or in what way. I'd like to see a deeper explanation of what he means.<BR/><BR/>The usual way to deal with it though is to use an extra level of indirection - introduce smart pointers that can be copied and dealt with as values but can find the unique object when required. You then get effective identity back again. My guess is that if you were to analyse Java O/RM solutions this is the approach that they take (assuming that it is a problem of identity confusion).<BR/><BR/>Of course if the problem is actually that the class designs are broken in that they confuse object and value semantics within the object ecology then there is little hope of avoiding confusion in the use of those objects.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176725760000#c4473475225471831962" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02188707816239176630" rel="nofollow">Kirit Sælensminde</a> : 8:16 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176725760000#c4473475225471831962" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02188707816239176630" rel="nofollow">Kirit Sælensminde</a> : 8:16 AM</div>
 
 								<span class="item-control blog-admin pid-1683405536"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4473475225471831962" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6065430485087821702"></a> 				Kirit:<BR/><BR/>Maybe I should choose my words more carefully! I may revise that paragraph after I've finished my espresso.<BR/><BR/>What I meant was, <I>identity is almost never what you want in Java</I>. I consider it a design flaw that the easiest thing to use, the == operator, is of little use to everyday programmers.<BR/><BR/>It's very hard to use identity in non-trivial programs. As you point out, you need to be very careful that when you construct two objects that represent the same "thing," that you make sure they are represented using the same object.<BR/><BR/>For example, the Java compiler tries to do this with String constants, so that when you write "Hello World" in two places you get  the same string.<BR/><BR/>But will "Hello " + "World" be identical to "Hello World"? If not, why not?<BR/><BR/>Horribly broken? Perhaps I overstated it. But it looks very much to me like identity in Java is an obscure concept of great interest to people building infrastructure (like ORMs) and almost off-limits to everyday programming.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176728460000#c6065430485087821702" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:01 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176728460000#c6065430485087821702" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:01 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6065430485087821702" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5314697395705999808"></a> 				Back when I took a class that used Liskov's textbook, we were taught that Java's class system doesn't fully support the LSP, because it didn't handle contravariance properly.  That is: According to the LSP, if C2 is a subclass of C1 and D2 is a subclass of D1, and there's a method in D1 that returns an object of class C2, then a method with the same name in D2 can return an object of class C1.  But Java required the return type of the method in the subclass to be exactly the same as the return type of the method with the same name in the superclass.<BR/><BR/>Has this changed with Java generics?  Can you declare "&lt;T extends C2> method();" in D1 and then declare "&lt;T extends C1> method();" in D2?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176731040000#c5314697395705999808" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://dynamic.ropine.com/yesh/" rel="nofollow">Seth Gordon</a> : 9:44 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176731040000#c5314697395705999808" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://dynamic.ropine.com/yesh/" rel="nofollow">Seth Gordon</a> : 9:44 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5314697395705999808" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4825053920525845648"></a> 				OK Reg. I understand what's going on a lot better now. Never discount the likely hood of me misreading something :-)<BR/><BR/>As somebody who has built a large and complex O/RM and web framework in C++ (not as stupid as it at first seems) object identity is something that I've had to think about very hard so people using the system don't have to.<BR/><BR/>This seems to be something that C++ does get right.<BR/><BR/>std::string str( "Hello world" );<BR/>assert( str == "Hello world" );<BR/>assert( str == std::string( "Hello" ) + " world" );<BR/><BR/>This fails horribly if you insist on using C idioms in C++, but so long as you are writing modern C++ everything works pretty well.<BR/><BR/>The reason is that the difference between the value and object semantics is explicit in the syntax.<BR/><BR/>I've been working off and on to write an article exploring these things in more depth - and they do need quite some depth to be understood fully. It's been taking a while, but this Java stuff is useful extra input.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176731520000#c4825053920525845648" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02188707816239176630" rel="nofollow">Kirit Sælensminde</a> : 9:52 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176731520000#c4825053920525845648" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02188707816239176630" rel="nofollow">Kirit Sælensminde</a> : 9:52 AM</div>
 
 								<span class="item-control blog-admin pid-1683405536"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4825053920525845648" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5616536665991849162"></a> 				As Keith pointed out over on PRC, Scheme has four different predicates for object equality/equivalence:<BR/><BR/><A HREF="http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-9.html#%_sec_6.1" REL="nofollow">Scheme's equivalence predicates</A><br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176733800000#c5616536665991849162" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:30 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176733800000#c5616536665991849162" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:30 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5616536665991849162" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="982908020048136766"></a> 				Seth:<BR/><BR/>As of Java 1.5 return types of overridden methods are covariant. i.e. you can declare the return type of the overridden version to be any subtype of the return type of the method it overrides.<BR/><BR/>Perhaps slightly unfortunately, although the return types are covariant the argument types are not contravariant. You can't broaden the argument type of the overridden method (or rather, you can, but it will be a separate overload rather than overriding the parent).<BR/><BR/>reginald: <BR/><BR/>It's mostly irrelevant to your point, but "hello " + "world" actually will be == to "hello world", because the compiler collapses string literals together when you concatenate them.  <BR/><BR/>On the other hand, String is a final class, so doesn't really run into the equals problem anyway.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176735120000#c982908020048136766" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 10:52 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176735120000#c982908020048136766" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 10:52 AM</div>
 
 								<span class="item-control blog-admin pid-188006248"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=982908020048136766" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4343181475200502616"></a> 				Oh, incidentally, I disagree that == is rarely what you want.<BR/><BR/>For mutable objects, value equality is a very dangerous thing to use. Reference equality makes much more sense. Consequently, I often would choose not to override equals from the default implementation for my objects unless they were immutable.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176735240000#c4343181475200502616" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 10:54 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176735240000#c4343181475200502616" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 10:54 AM</div>
 
 								<span class="item-control blog-admin pid-188006248"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4343181475200502616" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1295421988173855683"></a> 				Did I mix up covariance and contravariance <I>again</I>? Crap.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176735300000#c1295421988173855683" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://dynamic.ropine.com/yesh/" rel="nofollow">Seth Gordon</a> : 10:55 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176735300000#c1295421988173855683" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://dynamic.ropine.com/yesh/" rel="nofollow">Seth Gordon</a> : 10:55 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1295421988173855683" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="635586432973231258"></a> 				Crap, I forgot that compiler optimization. I guess I should revise my comment to throw in some indirection like a variable.<BR/><BR/>Actually, this kind of strengthens my point, I think.<BR/><BR/>You shouldn't have to know in your head that "Hello " + "World" is == "Hello World" but that something more complicated like "Hello World".substring(0) is only == "Hello World" with a certain level of optimization turned on.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176735600000#c635586432973231258" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:00 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176735600000#c635586432973231258" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:00 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=635586432973231258" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8013425913300439286"></a> 				Would you be very upset with me if I pointed out that the String implementation includes a special case that actually means that myString.substring(0) == myString? :-)<BR/><BR/>(I agree this doesn't in any way negatively impact your point and in fact strengthens it. I'm just being pedantic).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176736140000#c8013425913300439286" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 11:09 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176736140000#c8013425913300439286" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 11:09 AM</div>
 
 								<span class="item-control blog-admin pid-188006248"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8013425913300439286" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2838685623856745201"></a> 				No, it doesn't upset me. Thanks goodness this isn't one of those evil "Wheel of Fortune" job interviews!<BR/><BR/>I accept that I haven't been paying close attention to the exact semantics of string identity in the JVM.<BR/><BR/>So I may not have been able to cook up a really simple example (my next attempt would have been "Idempotent Hello World".substring(11)...).<BR/><BR/>But perhaps someone can set me straight on the general case: is it the case that two strings that print the same are always identical?<BR/><BR/>Or just the case that the compiler happens to reuse the same string constants where it can, possibly for memory optimization purposes, but the language makes no such guarantee and therefore you are not safe using == for strings even though you are safe using == for primitives like ints.<BR/><BR/>Which brings up another question: if == always works for ints, des it always work for Integers?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176736980000#c2838685623856745201" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:23 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176736980000#c2838685623856745201" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:23 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2838685623856745201" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4943507227452649103"></a> 				Equality predicates is one area where I really wish more languages would use three-valued logic.  It would be nice if these functions could distinguish between "definitely equal", "definitely not equal", and "heck if I know".<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176737160000#c4943507227452649103" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://dynamic.ropine.com/yesh/" rel="nofollow">Seth Gordon</a> : 11:26 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176737160000#c4943507227452649103" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://dynamic.ropine.com/yesh/" rel="nofollow">Seth Gordon</a> : 11:26 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4943507227452649103" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2386614620536921047"></a> 				The language makes very few guarantees about == for String. It just happens to do a lot of clever reuse of strings in order to minimise instantiation of String objects. <BR/><BR/>What is guaranteed is that for any representation of a String there is a canonical interned String. Two strings which have the same value will have == interned strings.<BR/><BR/>So "hello world" == myHelloWorld.intern() but there is no guarantee that it == myHelloWorld. In situations where you want to use == to compare Strings for performance reasons you should intern() all your strings. Some XML parsers do this. You need to be very careful when doing this though because it will chew through your memory like anything.<BR/><BR/>The situation is even more awful for Integers. :)<BR/><BR/>If your Integer objects lie between -128 and 127 then two Integer objects representing the same value will usually be the same object. Outside of this range no guarantees are made.<BR/><BR/>In particular, Integer.valueOf(128) != Integer.valueOf(128).<BR/><BR/>However 128 == Integer.valueOf(128). This is because Integers get unboxed to ints rather for operators, rather than the other way around. (Which is why myInteger == 0 will throw a NPE if myInteger is null).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176738480000#c2386614620536921047" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 11:48 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176738480000#c2386614620536921047" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 11:48 AM</div>
 
 								<span class="item-control blog-admin pid-188006248"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2386614620536921047" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="541848526462848617"></a> 				Thanks Raganwald, you have justified my complete avoidance of equals(): There are too many possible interpretations of "equals" to allow equals() in the core libraries.  <BR/><BR/>Yes, my code is full of "a.compareTo(b)==0"<BR/>Yes, I have my own collections library, but I have had them since them since 1.1 days. <BR/><BR/>Like you suggest, I make my own comparison methods to define what I mean by "equals".  I sometimes provide an intern() method to map "equal" objects to a canonical representative for identity comparisons.  This allows me to use == more than most.  <BR/><BR/>On another note: Just say "Hello " + "World" != "Hello World" without compiler optimizations.<BR/><BR/><BR/><BR/>David R. MacIver: Multiple dispatch does not solve the problem any better than single dispatch does.  As you can see from erick reid's code, he is dispatching on the parameters too.  I will admit language support for multiple dispatch is cleaner, but it does not solve the confusion of "equals".<BR/><BR/>Furthermore, contravariant parameter overloading, in an OO environment,  is WRONG! :)  http://www.arcavia.com/kyle/Analysis/Covariant%20Specialization.html<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176740100000#c541848526462848617" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Kyle Lahnakoski</span> : 12:15 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176740100000#c541848526462848617" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Kyle Lahnakoski</span> : 12:15 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=541848526462848617" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5204896547553716244"></a> 				Reminder: comments can include links, but it isn't automatic. You have to use an HTML "a" tag.<BR/><BR/><A HREF="http://www.kirit.com/Walking%2C%20talking%20and%20quacking%20in%20Java" REL="nofollow">Walking, talking and quacking in Java</A><BR/><BR/><A HREF="http://www.arcavia.com/kyle/Analysis/Covariant%20Specialization" REL="nofollow">Covariant Specialization</A><br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176740460000#c5204896547553716244" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:21 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176740460000#c5204896547553716244" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:21 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5204896547553716244" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6962663345807459718"></a> 				There's still the confusion over what equals should mean, but it eliminates the implementation difficulties.<BR/><BR/>The issue is that if I define a class Foo with equals I can define a default implementation for equals.<BR/><BR/>The problem is that I don't know at this time what subclasses are going to do to this class. It may be perfectly valid for them to continue using the equals implementation I provide, or it may not. There is *no* way to know this  in advance.<BR/><BR/>With multiple dispatch when you subclass you can modify the behaviour of the original equals when applied to an argument of my subclass, so can mitigate this problem greatly.<BR/><BR/>Essentially there are two issues here:<BR/><BR/>a) Making value equality work properly in an environment with subtyping is hard, particularly when also worrying about reference equality.<BR/><BR/>b) Single dispatch makes it very hard to provide a decent implementation of value equality which interacts well with subtyping.<BR/><BR/>Multiple dispatch eliminates b) while doing nothing to alleviate a).<BR/><BR/>I didn't really follow the argument for why contravariant parameter subtyping is wrong in an OO environment. (Java programmer or not, I still think like a functional programmer most of the time). I'll read through it in more detail later.<BR/><BR/>P.S. I swear the captcha gets longer with each post I make...<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176741120000#c6962663345807459718" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 12:32 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176741120000#c6962663345807459718" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 12:32 PM</div>
 
 								<span class="item-control blog-admin pid-188006248"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6962663345807459718" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5099846756403512941"></a> 				Just to clarify:<BR/><BR/>"Hello" != new String("Hello");<BR/>Integer.valueOf(0) != new Integer(0);<BR/><BR/>Because "Hello" and Integer.valueOf(0) return interned instances, whereas new String() and new Integer() return new instances, therefore they have different identity.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176746100000#c5099846756403512941" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12222332277082884293" rel="nofollow">Matthew</a> : 1:55 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176746100000#c5099846756403512941" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12222332277082884293" rel="nofollow">Matthew</a> : 1:55 PM</div>
 
 								<span class="item-control blog-admin pid-75043425"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5099846756403512941" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8955927037067177474"></a> 				@Reginald:<BR/><BR/>This is <EM>always</EM> false:<BR/><BR/>new String("asdf") == new String("asdf")<BR/><BR/>as is<BR/><BR/>new String("asdf") == "asdf"<BR/><BR/>Likewise in the case of Integers: if you <EM>new</EM> them both, or even one of them, then <STRONG>==</STRONG> can never be true.<BR/><BR/>If you don't use <EM>new</EM>, then it matters how they were actually created behind the scenes -- specifically, whether objects are ever reused or a request for an object always results in a new object.<BR/><BR/>For example, if you look inside java.lang.Integer at the following method:<BR/><BR/>public static Integer valueOf(int i);<BR/><BR/>you can see that the class maintains a cache of integer objects for values from -128 to +127. If you call Integer.valueOf(121) twice, you get the same object (== on objects would be true), but if you call Integer.valueOf(129) twice, you get two different objects.<BR/><BR/>In all these cases, you should be using .equals for comparisons, so whether it's the same object or not doesn't matter.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176770820000#c8955927037067177474" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01963831188473263515" rel="nofollow">j.k.</a> : 8:47 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176770820000#c8955927037067177474" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01963831188473263515" rel="nofollow">j.k.</a> : 8:47 PM</div>
 
 								<span class="item-control blog-admin pid-2079613674"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8955927037067177474" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8021298167425470919"></a> 				> I certainly thing it would be prudent to add an Equivalent class that is analogout to Comparator, and have versions of HashSet, HashMap, and various 'contains' methods in the Collections API that use it, but this Equivalent interface must force the programming to supply both an equals and a hashing algorithm, or its mostly useless.<BR/><BR/>This has been discussed here: http://forums.java.net/jive/thread.jspa?messageID=104566. It would be a good candidate for a contribution: http://jdk-collaboration.dev.java.net/<BR/><BR/>Matthias<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176812040000#c8021298167425470919" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16326405235666413306" rel="nofollow">Matthias</a> : 8:14 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176812040000#c8021298167425470919" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16326405235666413306" rel="nofollow">Matthias</a> : 8:14 AM</div>
 
 								<span class="item-control blog-admin pid-2049511623"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8021298167425470919" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8848944389173739960"></a> 				A couple of people have suggested that your IDE ought to handle equals and hashCode for you.<BR/><BR/>If the IDE can, why can't the language just do it?  Seems to me like all objects should automatically override equals with the "obvious" definition automatically, and not even let you override it, forcing you to use a more descriptive name if your equals is not equality.<BR/><BR/>Hash tables and such could always take predicates to do the hashing and equality checks that would default to calling the (now compiler-generated) equals and hashCode methods.<BR/><BR/>I suppose, though, that caches and such would need custom equals.  How about letting you disable equals for a class (at compile-time), in which case members of that class wouldn't be taken into account by the automatically generated equals and hashCode?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176822480000#c8848944389173739960" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06716998796508539165" rel="nofollow">me22</a> : 11:08 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176822480000#c8848944389173739960" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06716998796508539165" rel="nofollow">me22</a> : 11:08 AM</div>
 
 								<span class="item-control blog-admin pid-766177989"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8848944389173739960" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6313812142191253398"></a> 				<I>A couple of people have suggested that your IDE ought to handle equals and hashCode for you.<BR/><BR/>If the IDE can, why can't the language just do it?</I><BR/><BR/>Of course, Java <B>does</B> do it, however it does it in such a way that the default implementation in the Object class is unworkable for most purposes.<BR/><BR/>Now that being said, you may want to build your own definition, perhaps an ObjectWithSensibleEqualitySemantics that has a good defaulty equals and hashCode implementation.<BR/><BR/>Only now, you cannot use it much because Java prohibits multiple inheritance or mixins.<BR/><BR/>For all of the complaints about C++ MI being "too hard to use properly," MI works incredibly well when you design a program to have small classes that each have one specific responsibility, such as providing just the default equality and hash code methods.<BR/><BR/>See also Ruby's mixins.<BR/><BR/>FWIW, I strongly dislike the idea (joke!) of the IDE doing it. This is called scaffolding or static code generation. So what happens when you modify a class to add or remove members. Does your IDE remember to update the equality and hashcode methods?<BR/><BR/>This has to be baked into the language or do something at run time with reflection to have a ghost of a chance of working properly.<BR/><BR/>In the post, I suggested TempBean.equivalent(...). If you like Java Generics, you might prefer:<BR/><BR/>EqualityLibrary.equivalent(TempBean.class, foo, bar).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176823080000#c6313812142191253398" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:18 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176823080000#c6313812142191253398" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:18 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6313812142191253398" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7207442384830281660"></a> 				Small suggested correction:  when you say that equality is non-reflexive in Java, the example you give demonstrates that it is (in some situations) non-symmetrical.<BR/><BR/>For those who need a refresher, reflexive means x == x, whereas symmetrical means x == y implies that  y == x.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176863160000#c7207442384830281660" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Marc Hamann</span> : 10:26 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176863160000#c7207442384830281660" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Marc Hamann</span> : 10:26 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7207442384830281660" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7422894076210130539"></a> 				Reginald,<BR/><BR/>you're contradicting yourself. In your post you explain very well why object equality depends on the client: "But this objects can’t know how much detail a client wants in making the comparison."<BR/><BR/>In your last comment, however, you want a mechanism to mix-in an equality method into objects.<BR/><BR/>We should instead go for equivalence objects (like Comparator, just with hashCode), usable in HashMap, and the system should provide a useful implementation of those _per class_:<BR/><BR/>interface Equivalence&lt;T> {<BR/>  public boolean eq(T one, T two);<BR/>  public int hash(T instance);<BR/>}<BR/><BR/>class Class&lt;T> {<BR/>  public final Equivalence&lt;T> EQ; // builtin, same as the IDE <BR/>// generates today<BR/>};<BR/><BR/>So we can do SomeBean.class.EQ.eq(bean1, bean2).<BR/><BR/>or do a <BR/><BR/>new HashMap&lt;SomeBean, String>(SomeBean.class.EQ);<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176898980000#c7422894076210130539" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16326405235666413306" rel="nofollow">Matthias</a> : 8:23 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176898980000#c7422894076210130539" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16326405235666413306" rel="nofollow">Matthias</a> : 8:23 AM</div>
 
 								<span class="item-control blog-admin pid-2049511623"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7422894076210130539" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2141108813737756620"></a> 				No contradiction!<BR/><BR/>When I say that mixins or MI plus reflection would be helpful for defining useful default semantics, what makes you think we are talking about instance methods?<BR/><BR/>Oh right... in addition to not allowing mixing in of implementation semantics, Java also does not allow any kind of class-level implementation inheritance: Static methods are really global procedures with some name space dressing.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176902820000#c2141108813737756620" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:27 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1176902820000#c2141108813737756620" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:27 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2141108813737756620" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5766611233945247753"></a> 				i started a new blog and have reposted the utility code this posting references: http://erickreid.blogspot.com/2008/06/sourcecode-generation-of-good-equals.html<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1214017800000#c5766611233945247753" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06687543687239198812" rel="nofollow">erickreid</a> : 11:10 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html?showComment=1214017800000#c5766611233945247753" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06687543687239198812" rel="nofollow">erickreid</a> : 11:10 PM</div>
 
 								<span class="item-control blog-admin pid-620669648"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5766611233945247753" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -244,7 +244,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -298,25 +298,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -324,17 +324,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -344,17 +344,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -362,19 +362,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -382,18 +382,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -401,15 +401,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -418,101 +418,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

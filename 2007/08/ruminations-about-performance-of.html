@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Sunday, August 26, 2007</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="4181946194975037390">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2007/08/ruminations-about-performance-of.html" title="permanent link">Ruminations about the performance of anonymous functions in naive Javascript implementations</a></span>
-					<div style="clear:both;"></div><a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html" title="raganwald: Block-Structured Javascript">Block-Structured Javascript</a> (better known as the <em>Module Idiom</em>) looks like this:<br /><pre><code><br /> (function () {<br />    var something_or_other;<br />    // code elided<br />    return something_or_other;<br /> })()<br /></code></pre><br />This creates a new, anonymous function with its own local scope. Whenever this code is execututed, the interpreter creates a function record in its memory. The exact same thing happens if you create a function and bind it to a variable with <code>var foo = function (...) { ... };</code>.<br /><br /><div class="book"><em><hr><br /><a name="evtst|a|026256100X" href="http://www.amazon.com/gp/product/026256100X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256100X"><img src="http://weblog.raganwald.com/uploaded_images/seasoned_schemer.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256100X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br /><br /><a name="evtst|a|026256100X" href="http://www.amazon.com/gp/product/026256100X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256100X">The Seasoned Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256100X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is devoted to the myriad uses of first class functions. Luckily for us, the ideas in this provocative book map directly to Javascript (see the plug for <a name="evtst|a|0521545668" href="http://www.amazon.com/gp/product/0521545668?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521545668">Lisp in Small Pieces</a> below).<br /><br />When you close the back cover you will be able to compose programs from functions in powerful new ways, and you can use these new techniques in Scheme, Ruby, and Javascript immediately.<br /><hr></em></div>Now let&rsquo;s consider another common pattern, the <em>Inner Function</em>: we have a function, and the function needs a helper function. We define the helper function inside our function to make our code more <em>encapsulated</em>:<br /><pre><code><br /> var factorial = function (n) {<br />     var factorial_acc = function (acc, m) {<br />         if (0 == m) {<br />             return acc;<br />         } else {<br />             return factorial_acc(m * acc, m - 1);<br />         }<br />     };<br />     return factorial_acc(1, n);<br /> };<br /></code></pre><br />What happens when we invoke <code>factorial</code> it six times?<br /><br />When the interpreter first encounters the code defining <code>factorial</code>, it creates a function and assigns it to the variable <code>factorial</code>. Then each time we invoke the <code>factorial</code> function, the interpreter creates a new function record for <code>factorial_acc</code>. So in total, the interpreter creates <em>seven</em> functions in memory, not two.<br /><br /><strong>hand-rolling</strong><br /><br />If this code needed hand optimization, you might want to consider ‘lifting&rsquo; the definition of <code>factorial_acc</code> outside of factorial, so it doesn&rsquo;t get recreated with every invocation:<br /><pre><code><br /> var factorial_acc = function (acc, m) {<br />     if (0 == m) {<br />         return acc;<br />     } else {<br />         return factorial_acc(m * acc, m - 1);<br />     }<br /> };<br /> var factorial = function (n) {<br />     return factorial_acc(1, n);<br /> };<br /></code></pre><br />This produces exactly the same result as our Inner Function version. <code>factorial_acc</code> doesn&rsquo;t use any of <code>factorial</code>&rsquo;s parameters or variables, so it does not really need to be inside its scope to produce the correct result.<br /><br />Now you only need two function records, not seven. Two is cheaper than seven. The problem with this approach is that you are proliferating names. If you are binding functions to names in the global environment, it quickly becomes crowded. And you also have a readability issue. Does anything else need to use <code>factorial_acc</code>? The original code made it very obvious that <code>factorial_acc</code> is only ever used by <code>factorial</code>.<br /><br />A block can help. Yes, the cause of our performance consideration—dynamically creating functions—can actually be part of the solution:<br /><pre><code><br /> var factorial = (function () {<br />     var factorial_acc = function (acc, m) {<br />         if (0 == m) {<br />             return acc;<br />         } else {<br />             return factorial_acc(m * acc, m - 1);<br />         }<br />     };<br />     return function (n) {<br />         return factorial_acc(1, n);<br />     }<br /> })();<br /></code></pre><br />Now what happens? Well, we create an anonymous function for our block. One function record. Within that block&rsquo;s execution, we create two more functions,  one assigned to the variable <code>factorial_acc</code>, and one returned from the block (and then assigned to the variable <code>factorial</code>). This code creates three function records, which is still much better than seven.<br /><br />As a correspondent summarized in email, &ldquo;we&rsquo;ve shown how to replace a simple function containing an inner function with a block call that returns a closure referencing the inner function so as to avoid re-defining it on each call. That&rsquo;s all there is to it.&rdquo;<br /><br />(By the way, <a href="http://crockford.com/">Douglas Crockford</a> has done a very good job of explaining this idiom in Javascript, and named it the <em>Module Pattern</em>. Here&rsquo;s <a href="http://www.wait-till-i.com/index.php?p=467">a discussion</a> with particular emphasis on OO-style programming. And here&rsquo;s <a href="http://yuiblog.com/blog/2007/06/12/module-pattern/">a really detailed examination</a> from the YUI team.)<br /><br />So should you always rewrite inner functions to use a block like this?<br /><br />I don&rsquo;t personally fool around with this kind of hand optimization willy-nilly (Of course, you may find the block version more readable than the inner function version. If you do, it&rsquo;s a win to write it that way). It has a cost: in a more complex function, defining helpers outside of the function may be moving them further away from where they are used, which is a loss for readibility. If you prefer the inner function version, you should be very sure you have a performance problem before you leap to the conclusion that you should rewrite it.<br /><br /><strong>a heuristic for automatic optimization of inner functions and blocks</strong><br /><br />Lisp implementations have been optimizing this kind of code, automatically, for decades. That&rsquo;s because Lisp programmers have been writing programs in this style for decades, either directly or using macros like <code>let</code>. Here&rsquo;s the basic heuristic:<br /><br /><div class="book"><em><hr><br /><a name="evtst|a|0521545668" href="http://www.amazon.com/gp/product/0521545668?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521545668"><img src="/uploaded_images/lisp_in_small_pieces.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0521545668" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br /><br /><a name="evtst|a|0521545668" href="http://www.amazon.com/gp/product/0521545668?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521545668">Lisp in Small Pieces</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0521545668" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is one of the most important books about Javascript ever written. WTF!? may be your first thought. Hold on. Javascript at its heart, a very Lisp-like language with C syntax. So understanding Lisp helps you understand Javascript.<br /><br />What makes <a name="evtst|a|0521545668" href="http://www.amazon.com/gp/product/0521545668?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521545668">Lisp in Small Pieces</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0521545668" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> special for Javascript programmers is that it illustrates the principles underlying Lisp (and therefore Javascript) by creating a series of implementations, each of which illustrates the basic mechanisms in the language.<br /><br />These deep ideas are exactly the things that make Javascript different from other C-syntax languages like Java or Visual Basic. This book, more than any other, will take your understanding from knowing what works on the surface to understanding why and how it works.<br /><hr></em></div><ul><li>Find every <code>function</code> invocation that is nested inside another <code>function</code>.</li><br /><li>Analyze all of its variable references lexically. If there are no references to a parameter or local variable of its immediate parent,<sup><font size="1">1</font></sup> promote the function by defining it in its grand-parent and assigning the definition to a new variable in the grand-parent.</li><br /><li>Replace the original definition in the parent with a reference to the variable you just created in the grand-parent.</li><br /><li>Repeat until all functions are either global or refer to variables in their immediate parent functions.</li></ul><br />There&rsquo;s also a well-know optimization for making blocks themselves free or nearly free: <a href="http://en.wikipedia.org/wiki/Lambda_lifting" title="Lambda lifting - Wikipedia, the free encyclopedia">lambda lifting</a>. So before optimizing things prematurely, test your implementation and see if it is already fast enough for your purposes.<br /><br />You may discover that you don&rsquo;t save anything by rewriting things yourself. (You may make your code slower: some optimizations rely on knowing the exact scope of the code being optimized. If you proliferate names by lifting things yourself, the optimizer may not be able to use all of its tricks.)<br /><br />These techniques have been known for <em>twenty-five years</em>. If a <a href="http://en.wikipedia.org/wiki/Internet_explorer" title="Internet Explorer - Wikipedia, the free encyclopedia">Javascript implementation that you are forced to target</a> doesn&rsquo;t include it, why not demand that the implementers get with the program and, you know, use some of the stuff we&rsquo;ve known about programming for almost as long as they&rsquo;ve been alive? Especially if they brag about their prowess at creating programming languages?<br /><br /><strong>conclusion: nice-to-know, but not essential</strong><br /><br />My personal conclusion is that the behaviour of a naïve implementation is a &ldquo;nice-to-know.&rdquo; I don&rsquo;t personally worry about optimizing it until I have a known performance issue, at which point it is essential to test to see whether some of the hand-optimizations will actually help.<br /><br />YMMV.<br /><hr><br />1. Full closures make things tricky:<br /><br />Functions that refer to variables in their immediate parent scope are much trickier to optimize away. Sometimes, such a function is supposed to be created anew for each invocation of its parent.  For example, if you want to construct a bank balance thingy without using objects, you might write:<br /><pre><code><br />    function (balance) {<br />      return function (amount) {<br />          balance = balance + amount;<br />          return balance;<br />        };<br />    };<br /></code></pre><br />You pass in an initial balance, and it gives you a single function that you can use to deposit (pass a positive number), withdraw (pass a negative number), or check the balance (pass zero). It returns the updated balance in each case.<br /><br />The inner anonymous function cannot be lifted or optimized away because of its reference to <code>balance</code> in its parent and because the function can be shown to &ldquo;escape&rdquo; its parent.<br /><br />Whereas in this contrived example:<br /><pre><code><br />    function (balance, owner) {<br />      return function (amount) {<br />          return {<br />              new_balance: (function () {<br />                  if (balance + amount &gt;= 0)<br />                      return balance + amount;<br />                  else return balance;<br />              })(),<br />              account_owner: owner<br />          }<br />        };<br />    };<br /></code></pre><br />Although the inner function still cannot be optimized away, the block within it can be lifted into the inner function and removed, producing:<br /><pre><code><br />    function (balance, owner) {<br />      return function (amount) {<br />          var __temp;<br />          if (balance + amount &gt;= 0)<br />              __temp = balance + amount;<br />          else __temp = balance; <br />          return {<br />              new_balance: __temp,<br />              account_owner: owner<br />          }<br />        };<br />    };<br /></code></pre><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/lispy.html">lispy</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2007/08/ruminations-about-performance-of.html" title="permanent link">Ruminations about the performance of anonymous functions in naive Javascript implementations</a></span>
+					<div style="clear:both;"></div><a href="http://raganwald.github.com/2007/08/block-structured-javascript.html" title="raganwald: Block-Structured Javascript">Block-Structured Javascript</a> (better known as the <em>Module Idiom</em>) looks like this:<br /><pre><code><br /> (function () {<br />    var something_or_other;<br />    // code elided<br />    return something_or_other;<br /> })()<br /></code></pre><br />This creates a new, anonymous function with its own local scope. Whenever this code is execututed, the interpreter creates a function record in its memory. The exact same thing happens if you create a function and bind it to a variable with <code>var foo = function (...) { ... };</code>.<br /><br /><div class="book"><em><hr><br /><a name="evtst|a|026256100X" href="http://www.amazon.com/gp/product/026256100X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256100X"><img src="http://raganwald.github.com/uploaded_images/seasoned_schemer.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256100X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br /><br /><a name="evtst|a|026256100X" href="http://www.amazon.com/gp/product/026256100X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256100X">The Seasoned Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256100X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is devoted to the myriad uses of first class functions. Luckily for us, the ideas in this provocative book map directly to Javascript (see the plug for <a name="evtst|a|0521545668" href="http://www.amazon.com/gp/product/0521545668?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521545668">Lisp in Small Pieces</a> below).<br /><br />When you close the back cover you will be able to compose programs from functions in powerful new ways, and you can use these new techniques in Scheme, Ruby, and Javascript immediately.<br /><hr></em></div>Now let&rsquo;s consider another common pattern, the <em>Inner Function</em>: we have a function, and the function needs a helper function. We define the helper function inside our function to make our code more <em>encapsulated</em>:<br /><pre><code><br /> var factorial = function (n) {<br />     var factorial_acc = function (acc, m) {<br />         if (0 == m) {<br />             return acc;<br />         } else {<br />             return factorial_acc(m * acc, m - 1);<br />         }<br />     };<br />     return factorial_acc(1, n);<br /> };<br /></code></pre><br />What happens when we invoke <code>factorial</code> it six times?<br /><br />When the interpreter first encounters the code defining <code>factorial</code>, it creates a function and assigns it to the variable <code>factorial</code>. Then each time we invoke the <code>factorial</code> function, the interpreter creates a new function record for <code>factorial_acc</code>. So in total, the interpreter creates <em>seven</em> functions in memory, not two.<br /><br /><strong>hand-rolling</strong><br /><br />If this code needed hand optimization, you might want to consider ‘lifting&rsquo; the definition of <code>factorial_acc</code> outside of factorial, so it doesn&rsquo;t get recreated with every invocation:<br /><pre><code><br /> var factorial_acc = function (acc, m) {<br />     if (0 == m) {<br />         return acc;<br />     } else {<br />         return factorial_acc(m * acc, m - 1);<br />     }<br /> };<br /> var factorial = function (n) {<br />     return factorial_acc(1, n);<br /> };<br /></code></pre><br />This produces exactly the same result as our Inner Function version. <code>factorial_acc</code> doesn&rsquo;t use any of <code>factorial</code>&rsquo;s parameters or variables, so it does not really need to be inside its scope to produce the correct result.<br /><br />Now you only need two function records, not seven. Two is cheaper than seven. The problem with this approach is that you are proliferating names. If you are binding functions to names in the global environment, it quickly becomes crowded. And you also have a readability issue. Does anything else need to use <code>factorial_acc</code>? The original code made it very obvious that <code>factorial_acc</code> is only ever used by <code>factorial</code>.<br /><br />A block can help. Yes, the cause of our performance consideration—dynamically creating functions—can actually be part of the solution:<br /><pre><code><br /> var factorial = (function () {<br />     var factorial_acc = function (acc, m) {<br />         if (0 == m) {<br />             return acc;<br />         } else {<br />             return factorial_acc(m * acc, m - 1);<br />         }<br />     };<br />     return function (n) {<br />         return factorial_acc(1, n);<br />     }<br /> })();<br /></code></pre><br />Now what happens? Well, we create an anonymous function for our block. One function record. Within that block&rsquo;s execution, we create two more functions,  one assigned to the variable <code>factorial_acc</code>, and one returned from the block (and then assigned to the variable <code>factorial</code>). This code creates three function records, which is still much better than seven.<br /><br />As a correspondent summarized in email, &ldquo;we&rsquo;ve shown how to replace a simple function containing an inner function with a block call that returns a closure referencing the inner function so as to avoid re-defining it on each call. That&rsquo;s all there is to it.&rdquo;<br /><br />(By the way, <a href="http://crockford.com/">Douglas Crockford</a> has done a very good job of explaining this idiom in Javascript, and named it the <em>Module Pattern</em>. Here&rsquo;s <a href="http://www.wait-till-i.com/index.php?p=467">a discussion</a> with particular emphasis on OO-style programming. And here&rsquo;s <a href="http://yuiblog.com/blog/2007/06/12/module-pattern/">a really detailed examination</a> from the YUI team.)<br /><br />So should you always rewrite inner functions to use a block like this?<br /><br />I don&rsquo;t personally fool around with this kind of hand optimization willy-nilly (Of course, you may find the block version more readable than the inner function version. If you do, it&rsquo;s a win to write it that way). It has a cost: in a more complex function, defining helpers outside of the function may be moving them further away from where they are used, which is a loss for readibility. If you prefer the inner function version, you should be very sure you have a performance problem before you leap to the conclusion that you should rewrite it.<br /><br /><strong>a heuristic for automatic optimization of inner functions and blocks</strong><br /><br />Lisp implementations have been optimizing this kind of code, automatically, for decades. That&rsquo;s because Lisp programmers have been writing programs in this style for decades, either directly or using macros like <code>let</code>. Here&rsquo;s the basic heuristic:<br /><br /><div class="book"><em><hr><br /><a name="evtst|a|0521545668" href="http://www.amazon.com/gp/product/0521545668?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521545668"><img src="/uploaded_images/lisp_in_small_pieces.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0521545668" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br /><br /><a name="evtst|a|0521545668" href="http://www.amazon.com/gp/product/0521545668?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521545668">Lisp in Small Pieces</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0521545668" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is one of the most important books about Javascript ever written. WTF!? may be your first thought. Hold on. Javascript at its heart, a very Lisp-like language with C syntax. So understanding Lisp helps you understand Javascript.<br /><br />What makes <a name="evtst|a|0521545668" href="http://www.amazon.com/gp/product/0521545668?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521545668">Lisp in Small Pieces</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0521545668" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> special for Javascript programmers is that it illustrates the principles underlying Lisp (and therefore Javascript) by creating a series of implementations, each of which illustrates the basic mechanisms in the language.<br /><br />These deep ideas are exactly the things that make Javascript different from other C-syntax languages like Java or Visual Basic. This book, more than any other, will take your understanding from knowing what works on the surface to understanding why and how it works.<br /><hr></em></div><ul><li>Find every <code>function</code> invocation that is nested inside another <code>function</code>.</li><br /><li>Analyze all of its variable references lexically. If there are no references to a parameter or local variable of its immediate parent,<sup><font size="1">1</font></sup> promote the function by defining it in its grand-parent and assigning the definition to a new variable in the grand-parent.</li><br /><li>Replace the original definition in the parent with a reference to the variable you just created in the grand-parent.</li><br /><li>Repeat until all functions are either global or refer to variables in their immediate parent functions.</li></ul><br />There&rsquo;s also a well-know optimization for making blocks themselves free or nearly free: <a href="http://en.wikipedia.org/wiki/Lambda_lifting" title="Lambda lifting - Wikipedia, the free encyclopedia">lambda lifting</a>. So before optimizing things prematurely, test your implementation and see if it is already fast enough for your purposes.<br /><br />You may discover that you don&rsquo;t save anything by rewriting things yourself. (You may make your code slower: some optimizations rely on knowing the exact scope of the code being optimized. If you proliferate names by lifting things yourself, the optimizer may not be able to use all of its tricks.)<br /><br />These techniques have been known for <em>twenty-five years</em>. If a <a href="http://en.wikipedia.org/wiki/Internet_explorer" title="Internet Explorer - Wikipedia, the free encyclopedia">Javascript implementation that you are forced to target</a> doesn&rsquo;t include it, why not demand that the implementers get with the program and, you know, use some of the stuff we&rsquo;ve known about programming for almost as long as they&rsquo;ve been alive? Especially if they brag about their prowess at creating programming languages?<br /><br /><strong>conclusion: nice-to-know, but not essential</strong><br /><br />My personal conclusion is that the behaviour of a naïve implementation is a &ldquo;nice-to-know.&rdquo; I don&rsquo;t personally worry about optimizing it until I have a known performance issue, at which point it is essential to test to see whether some of the hand-optimizations will actually help.<br /><br />YMMV.<br /><hr><br />1. Full closures make things tricky:<br /><br />Functions that refer to variables in their immediate parent scope are much trickier to optimize away. Sometimes, such a function is supposed to be created anew for each invocation of its parent.  For example, if you want to construct a bank balance thingy without using objects, you might write:<br /><pre><code><br />    function (balance) {<br />      return function (amount) {<br />          balance = balance + amount;<br />          return balance;<br />        };<br />    };<br /></code></pre><br />You pass in an initial balance, and it gives you a single function that you can use to deposit (pass a positive number), withdraw (pass a negative number), or check the balance (pass zero). It returns the updated balance in each case.<br /><br />The inner anonymous function cannot be lifted or optimized away because of its reference to <code>balance</code> in its parent and because the function can be shown to &ldquo;escape&rdquo; its parent.<br /><br />Whereas in this contrived example:<br /><pre><code><br />    function (balance, owner) {<br />      return function (amount) {<br />          return {<br />              new_balance: (function () {<br />                  if (balance + amount &gt;= 0)<br />                      return balance + amount;<br />                  else return balance;<br />              })(),<br />              account_owner: owner<br />          }<br />        };<br />    };<br /></code></pre><br />Although the inner function still cannot be optimized away, the block within it can be lifted into the inner function and removed, producing:<br /><pre><code><br />    function (balance, owner) {<br />      return function (amount) {<br />          var __temp;<br />          if (balance + amount &gt;= 0)<br />              __temp = balance + amount;<br />          else __temp = balance; <br />          return {<br />              new_balance: __temp,<br />              account_owner: owner<br />          }<br />        };<br />    };<br /></code></pre><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/lispy.html">lispy</a>, <a rel='tag' href="http://raganwald.github.com/labels/popular.html">popular</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2007/08/ruminations-about-performance-of.html" title="permanent link">11:44 AM</a>
+						&para; <a href="http://raganwald.github.com/2007/08/ruminations-about-performance-of.html" title="permanent link">11:44 AM</a>
 
 					 
 				</span> 
@@ -44,21 +44,21 @@
 						
 							<div class="blogComment">
 								<a name="4927586230474726545"></a> 				programming.reddit.com has an interesting comment on <A HREF="http://programming.reddit.com/info/2j426/comments/c2j6zy" REL="nofollow">how <B>eval</B> makes automatic optimization difficult</A>.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/08/ruminations-about-performance-of.html?showComment=1188268740000#c4927586230474726545" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:39 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/ruminations-about-performance-of.html?showComment=1188268740000#c4927586230474726545" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:39 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4927586230474726545" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1216224308980080889"></a> 				Nice post.  Will search for stupid anonymous functions in my code.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/08/ruminations-about-performance-of.html?showComment=1188276540000#c1216224308980080889" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://arsenalist.com" rel="nofollow">zarar</a> : 12:49 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/ruminations-about-performance-of.html?showComment=1188276540000#c1216224308980080889" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://arsenalist.com" rel="nofollow">zarar</a> : 12:49 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1216224308980080889" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1794402693489500"></a> 				Since when is Visual Basic a "C-syntax language"?<BR/><BR/>I demand you retract that statement!<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/08/ruminations-about-performance-of.html?showComment=1188305640000#c1794402693489500" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06115180196173160813" rel="nofollow">Matt</a> : 8:54 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/ruminations-about-performance-of.html?showComment=1188305640000#c1794402693489500" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06115180196173160813" rel="nofollow">Matt</a> : 8:54 AM</div>
 
 								<span class="item-control blog-admin pid-1158092527"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1794402693489500" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -69,7 +69,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -123,25 +123,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -149,17 +149,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -169,17 +169,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -187,19 +187,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -207,18 +207,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -226,15 +226,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -243,101 +243,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

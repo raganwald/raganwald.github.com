@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Wednesday, May 09, 2007</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="3249831202425873324">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html" title="permanent link">Hard-Core Concurrency Considerations</a></span>
-					<div style="clear:both;"></div><a href="http://www.peerbox.com:8668/space/start">Kevin Greer</a> responded to <a href="http://weblog.raganwald.com/2007/04/haskell-not-just-for-language-weenies.html" title="Don't have a COW, man? What Haskell teaches us about writing Enterprise-scale software">What Haskell teaches us about writing Enterprise-scale software</a> with some insightful emails about the pros and cons of using purely functional data structures for managing concurrency in a multi-processor environment. I&#8217;ve reproduced them (with his permission) below.<br /><br />Now, your first reaction might be, &#8220;Ah, Reg is not nearly as smart as he thinks he is.&#8221;<br /><br />If you feel like giving me some credit, you can keep in mind that I was not writing the definitive essay on designing concurrent software, just pointing out some interesting overlaps between what I consider to be the most academic programming language around and the most practical requirements in business applications.<br /><br />But there&#8217;s something more important to take from this.<br /><br />The original post was a response to someone asking whether there was any value to the stuff you read on <a href="http://programming.reddit.com/" title="reddit.com: programming - what&#39;s new online">programming.reddit.com</a>. His query was whether reading about Haskell was <em>practical</em>. My response was, yes it is, and here are some examples of where functional data structures have an analogue in concurrent data structures. My thesis (that&#8217;s a two dollar word for &#8220;point&#8221;) was that many &#8220;impractical&#8221; things have a lot to teach us about things we will encounter in the pragmatic &#8220;<a href="http://weblog.raganwald.com/2006/09/business-programming-simply-isnt-that.html">real world</a>.&#8221;<br /><br /><div class="book"><hr/><em><a href="http://www.amazon.com/gp/product/0321349601?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0321349601"><img border="0" src="/uploaded_images/java_concurrency.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0321349601" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br /><a href="http://www.amazon.com/gp/product/0321349601?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0321349601">Java Concurrency in Practice</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0321349601" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> is written by the people who actually designed and implemented the concurrency features in Java 5 and 6. If you are writing Java programs for two, four, eight, or more cores and CPUs (and isn&rsquo;t that practically all server-side Java development?), owning and reading this book should be the very next step in your professional development.</em><hr/><br /><br /></div>Of course, most people read <a href="http://weblog.raganwald.com/2007/04/haskell-not-just-for-language-weenies.html" title="Don't have a COW, man? What Haskell teaches us about writing Enterprise-scale software">the post</a> and thought, &#8220;Cool, some neat stuff about concurrency.&#8221; Nothing wrong with that. If you value tips on concurrent programming (and <a href="http://weblog.raganwald.com/2006/09/surfs-up.html" title="raganwald: Surf's Up!">I certainly do</a>), you&#8217;ll find Kevin&#8217;s emails very insightful.<br /><br />And if you are still wondering whether you should look at &#8220;impractical&#8221; and &#8220;academic&#8221; material like Haskell, Erlang, or other things not being promoted by MegloSoft, consider that one of the papers Kevin cites describes a data structure running on a 768 CPU system. Is this in a University lab somewhere? No, it is in a company that promotes itself as an Enterprise-Scale Java company.<br /><br />You simply can&#8217;t assume that everything the industry tells you to learn is everything you need. Or that any one source (Cool! <a href="http://weblog.raganwald.com/" title="raganwald">Raganwald</a> has a new post on <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html" title="raganwald: Haskell, Ruby and Infinity">Lazy Evaluation</a>) has the definitive answer.<br /><br />You need to commit to <em>life-long learning</em> to be a software developer. Some of that learning is straightforward MSDN Magazine stuff, simple updates to things you already know. And some of that learning is a little further out on the curve.<br /><br />Without further ado, here is one of the most comprehensive technical replies to a post on my blog I&#8217;ve received to date.<br /><br /><strong>Concurrency Considerations</strong><br /><br />Hi Reg,<br /><br />I was just reading your article on concurrent collections and have a few comments:<br /><br /><ol><li>Just because readers do not update the structure doesn’t mean that they don’t need to synchronize.  This belief is a common source of concurrency bugs on multi-processor systems.<br /><br />Unless you synchronize on the root of your data-structure (or declare it as volatile), you can’t be sure that your cache doesn’t have a stale version of the data (which may have been updated by another processor).  You don’t need to synchronize for the entire life of the method, as you would by declaring the method synchronized, but you still need to synchronize on the memory access.  You hold the lock for a shorter period of time, thus allowing for better concurrency, but you still have to sync.<br /><br />If you fail to synchronize your memory (or declare it as volatile), then your code will work correctly on a single CPU machine but will fail when you add more CPU’s (it will work on multi-core machines provided that the cores share the same cache).  If you have a recursive datastructure (like a tree) then you will need to actually synchronize on each level/node, unless of course you use a purely functional data-structure, in which case, you’ll only need to synchronize on the root.<br /><br />Given that you need to make a quick sync anyway, this approach is not much better than just using a ReadWrite-lock (it is slightly better because you can start updating before the readers finish reading (not a big deal for get()’s but potentially a big deal for iterators()), but then again updates are more expensive because of the copying).</li><br /><li>I don’t think that you should be using Haskell as a model of “Enterprise-scale” anything.  “Enterprise-scale software” usually entails “Enterprise-scale hardware” which  means, among other things, multiple-CPU’s.  The problem is that Haskell purely-functional model doesn’t support multiple-CPU’s (it’s true, check the literature (except for specialized pipelined architectures, but not in the general case)).<br /><br />The whole processing “state” is essentially one large purely-functional data-structure.  The problem of synchronizing your data-structure appears to be eliminated, but it has really just been moved up to the top-level “state” structure (monad), where the problem is actually compounded.  This is worse, because not only would you need to lock your structure in order to make an update, but you would in fact need to lock “the whole world”.<br /><br />Some people will advocate launching one process per CPU and then using message passing to communicate between them.  This is just a very inefficient (many orders of magnitude slower) way of pushing the synchronization issue off onto the OS/Network-stack.  (Q: What do multi-core systems mean for the future viability of Haskell?)</li><br /><li>You forgot to mention the common technique of using “striping” to improve concurrency.   Basically,  what you do is create multiple sub-datastructures which each contain only a sub-set of the data.    You can partition the data based on the hash of the key being stored.  You then wrap the whole thing up so that it still has the same interface as the single data-structure.<br /><br />The advantage of this approach is that when you use a ReadWrite lock you only need to lock a small portion of the data-structure, rather than the whole thing.   This allows multiple updates to be performed in parallel.  This is how Java’s concurrent collections work.  See:  <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/ConcurrentHashMap.html" title="ConcurrentHashMap (Java 2 Platform SE 5.0)">ConcurrentHashMap</a>: Java creates 16 sub-structures by default but you can increase the number when even more concurrency is required.</li><br /><li>Have a look at <a href="http://www.azulsystems.com/events/javaone_2007/2007_LockFreeHash.pdf">Azul’s non-blocking HashMap implementation</a>.   They can do 1.2 billion hashMap operations per second (with 1% of 12 million/sec of those being updates) on a 768 cpu machine (the standard Java <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/ConcurrentHashMap.html" title="ConcurrentHashMap (Java 2 Platform SE 5.0)">ConcurrentHashMap</a> still does half a billion ops/sec which isn’t bad either) .  This shows how scalable non-functional methods can be.<br /><br />I’ve never read of any Haskell or other purely-functional implementation being able to scale to anywhere near these numbers.</li></ol><br /><div class="book"><hr/><em><a href="http://www.amazon.com/gp/product/193435600X?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=193435600X"><img border="0" src="/uploaded_images/programming_erlang.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=193435600X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br />There&rsquo;s <strong>another</strong> entire world of concurrency control, the world of independent actors communicating with fault-tolerant protocols. The world of Erlang. You can pre-order the most hotly anticipated book on the subject, <a href="http://www.amazon.com/gp/product/193435600X?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=193435600X">Programming Erlang: Software for a Concurrent World</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=193435600X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, the definitive reference from the language's creator, Joe Armstrong.</em><hr/><br /><br /></div>Summary: <em>Using a purely-functional data-structure does make it easier to support multiple readers, but you still need to sync briefly at the “top” of the structure.  Striping has the added advantage of also supporting multiple-writers as well, and in practice, this is a much bigger win.  Haskell is inherently limited to a single CPU, which doesn’t  match modern hardware; especially of the “enterprise” class.  Shared-memory models of concurrency have demonstrated much better performance than purely-functional models.</em>  <br /><br />Best Regards,<br /><br />Kevin Greer<br /><br />p.s. I've actually implemented a b-tree structure for very large data-sets and chose to use a purely-functional data-structure myself.  My reason for doing so was that I have some very long-running read operations (~8 hours) and I obviously can't afford a ReadWrite lock that's going to starve writer threads for that long.<br /><br />Another nice advantage of using purely-functional data-structures is that they make it easy to implement temporal-databases that let you perform time-dependent queries.<br /><br />I just wanted to point out that if all you have is quick-reads then purely-functional is no different than a simple ReadWrite lock and that a super-pure implementation, as with Haskell, doesn't scale to multiple-CPU's or to highly concurrent updates.  However, it can be used to good effect in combination with striping or other techniques.<br /><br />(A tangential note: Java's GC is getting so good in recent releases that P-F data-structures are becoming much more efficient (given that P-F generates more garbage).)<br /><br />p.p.s. One more advantage of functional data-structures (the largest advantage for me actually):<br /><br />They map well to log(or journal)-based storage.  Functional data-structures never update old data, but instead, just create new versions.  If your data-structure uses disk-based storage then this means that you never need to go back and overwrite your file; you only need to append data to the end of the file.  This has two advantages:<br /><br /><ol><li>This works well with the physical characteristics of hard-disks.  They have incredibly high transfer rates (10&#8217;s of Megs/sec) but very slow seek times (~ 200 seeks/sec if 5ms access time).  If you are adding say 1k objects to a data-structure which requires 2 updates on average to a file then you&#8217;re looking at about 100 updates per second.  If on the other-hand you write all of these updates to the end of the file then you&#8217;re looking at say 20,000 updates per second!</li><br /><li>You can&#8217;t corrupt old data with interrupted writes.  The old data is always still there.  The only place that a corruption occur is at the end of the file, in which case you just scan backwards until you find the previous good head of your data-structure.</li></ol><br /><hr/><br /><em>This is fantastic stuff to share, thanks, Kevin!<br /><br />What other tips can readers contribute for people building highly concurrent software (besides the frequent use of JProbe Threadalyzer, of course)? What online resources (papers, articles, books) do readers recommend for the professional developer?</em><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/java.html">java</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/passion.html">passion</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html" title="permanent link">Hard-Core Concurrency Considerations</a></span>
+					<div style="clear:both;"></div><a href="http://www.peerbox.com:8668/space/start">Kevin Greer</a> responded to <a href="http://raganwald.github.com/2007/04/haskell-not-just-for-language-weenies.html" title="Don't have a COW, man? What Haskell teaches us about writing Enterprise-scale software">What Haskell teaches us about writing Enterprise-scale software</a> with some insightful emails about the pros and cons of using purely functional data structures for managing concurrency in a multi-processor environment. I&#8217;ve reproduced them (with his permission) below.<br /><br />Now, your first reaction might be, &#8220;Ah, Reg is not nearly as smart as he thinks he is.&#8221;<br /><br />If you feel like giving me some credit, you can keep in mind that I was not writing the definitive essay on designing concurrent software, just pointing out some interesting overlaps between what I consider to be the most academic programming language around and the most practical requirements in business applications.<br /><br />But there&#8217;s something more important to take from this.<br /><br />The original post was a response to someone asking whether there was any value to the stuff you read on <a href="http://programming.reddit.com/" title="reddit.com: programming - what&#39;s new online">programming.reddit.com</a>. His query was whether reading about Haskell was <em>practical</em>. My response was, yes it is, and here are some examples of where functional data structures have an analogue in concurrent data structures. My thesis (that&#8217;s a two dollar word for &#8220;point&#8221;) was that many &#8220;impractical&#8221; things have a lot to teach us about things we will encounter in the pragmatic &#8220;<a href="http://raganwald.github.com/2006/09/business-programming-simply-isnt-that.html">real world</a>.&#8221;<br /><br /><div class="book"><hr/><em><a href="http://www.amazon.com/gp/product/0321349601?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0321349601"><img border="0" src="/uploaded_images/java_concurrency.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0321349601" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br /><a href="http://www.amazon.com/gp/product/0321349601?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0321349601">Java Concurrency in Practice</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0321349601" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> is written by the people who actually designed and implemented the concurrency features in Java 5 and 6. If you are writing Java programs for two, four, eight, or more cores and CPUs (and isn&rsquo;t that practically all server-side Java development?), owning and reading this book should be the very next step in your professional development.</em><hr/><br /><br /></div>Of course, most people read <a href="http://raganwald.github.com/2007/04/haskell-not-just-for-language-weenies.html" title="Don't have a COW, man? What Haskell teaches us about writing Enterprise-scale software">the post</a> and thought, &#8220;Cool, some neat stuff about concurrency.&#8221; Nothing wrong with that. If you value tips on concurrent programming (and <a href="http://raganwald.github.com/2006/09/surfs-up.html" title="raganwald: Surf's Up!">I certainly do</a>), you&#8217;ll find Kevin&#8217;s emails very insightful.<br /><br />And if you are still wondering whether you should look at &#8220;impractical&#8221; and &#8220;academic&#8221; material like Haskell, Erlang, or other things not being promoted by MegloSoft, consider that one of the papers Kevin cites describes a data structure running on a 768 CPU system. Is this in a University lab somewhere? No, it is in a company that promotes itself as an Enterprise-Scale Java company.<br /><br />You simply can&#8217;t assume that everything the industry tells you to learn is everything you need. Or that any one source (Cool! <a href="http://raganwald.github.com/" title="raganwald">Raganwald</a> has a new post on <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html" title="raganwald: Haskell, Ruby and Infinity">Lazy Evaluation</a>) has the definitive answer.<br /><br />You need to commit to <em>life-long learning</em> to be a software developer. Some of that learning is straightforward MSDN Magazine stuff, simple updates to things you already know. And some of that learning is a little further out on the curve.<br /><br />Without further ado, here is one of the most comprehensive technical replies to a post on my blog I&#8217;ve received to date.<br /><br /><strong>Concurrency Considerations</strong><br /><br />Hi Reg,<br /><br />I was just reading your article on concurrent collections and have a few comments:<br /><br /><ol><li>Just because readers do not update the structure doesn’t mean that they don’t need to synchronize.  This belief is a common source of concurrency bugs on multi-processor systems.<br /><br />Unless you synchronize on the root of your data-structure (or declare it as volatile), you can’t be sure that your cache doesn’t have a stale version of the data (which may have been updated by another processor).  You don’t need to synchronize for the entire life of the method, as you would by declaring the method synchronized, but you still need to synchronize on the memory access.  You hold the lock for a shorter period of time, thus allowing for better concurrency, but you still have to sync.<br /><br />If you fail to synchronize your memory (or declare it as volatile), then your code will work correctly on a single CPU machine but will fail when you add more CPU’s (it will work on multi-core machines provided that the cores share the same cache).  If you have a recursive datastructure (like a tree) then you will need to actually synchronize on each level/node, unless of course you use a purely functional data-structure, in which case, you’ll only need to synchronize on the root.<br /><br />Given that you need to make a quick sync anyway, this approach is not much better than just using a ReadWrite-lock (it is slightly better because you can start updating before the readers finish reading (not a big deal for get()’s but potentially a big deal for iterators()), but then again updates are more expensive because of the copying).</li><br /><li>I don’t think that you should be using Haskell as a model of “Enterprise-scale” anything.  “Enterprise-scale software” usually entails “Enterprise-scale hardware” which  means, among other things, multiple-CPU’s.  The problem is that Haskell purely-functional model doesn’t support multiple-CPU’s (it’s true, check the literature (except for specialized pipelined architectures, but not in the general case)).<br /><br />The whole processing “state” is essentially one large purely-functional data-structure.  The problem of synchronizing your data-structure appears to be eliminated, but it has really just been moved up to the top-level “state” structure (monad), where the problem is actually compounded.  This is worse, because not only would you need to lock your structure in order to make an update, but you would in fact need to lock “the whole world”.<br /><br />Some people will advocate launching one process per CPU and then using message passing to communicate between them.  This is just a very inefficient (many orders of magnitude slower) way of pushing the synchronization issue off onto the OS/Network-stack.  (Q: What do multi-core systems mean for the future viability of Haskell?)</li><br /><li>You forgot to mention the common technique of using “striping” to improve concurrency.   Basically,  what you do is create multiple sub-datastructures which each contain only a sub-set of the data.    You can partition the data based on the hash of the key being stored.  You then wrap the whole thing up so that it still has the same interface as the single data-structure.<br /><br />The advantage of this approach is that when you use a ReadWrite lock you only need to lock a small portion of the data-structure, rather than the whole thing.   This allows multiple updates to be performed in parallel.  This is how Java’s concurrent collections work.  See:  <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/ConcurrentHashMap.html" title="ConcurrentHashMap (Java 2 Platform SE 5.0)">ConcurrentHashMap</a>: Java creates 16 sub-structures by default but you can increase the number when even more concurrency is required.</li><br /><li>Have a look at <a href="http://www.azulsystems.com/events/javaone_2007/2007_LockFreeHash.pdf">Azul’s non-blocking HashMap implementation</a>.   They can do 1.2 billion hashMap operations per second (with 1% of 12 million/sec of those being updates) on a 768 cpu machine (the standard Java <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/ConcurrentHashMap.html" title="ConcurrentHashMap (Java 2 Platform SE 5.0)">ConcurrentHashMap</a> still does half a billion ops/sec which isn’t bad either) .  This shows how scalable non-functional methods can be.<br /><br />I’ve never read of any Haskell or other purely-functional implementation being able to scale to anywhere near these numbers.</li></ol><br /><div class="book"><hr/><em><a href="http://www.amazon.com/gp/product/193435600X?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=193435600X"><img border="0" src="/uploaded_images/programming_erlang.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=193435600X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br />There&rsquo;s <strong>another</strong> entire world of concurrency control, the world of independent actors communicating with fault-tolerant protocols. The world of Erlang. You can pre-order the most hotly anticipated book on the subject, <a href="http://www.amazon.com/gp/product/193435600X?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=193435600X">Programming Erlang: Software for a Concurrent World</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=193435600X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, the definitive reference from the language's creator, Joe Armstrong.</em><hr/><br /><br /></div>Summary: <em>Using a purely-functional data-structure does make it easier to support multiple readers, but you still need to sync briefly at the “top” of the structure.  Striping has the added advantage of also supporting multiple-writers as well, and in practice, this is a much bigger win.  Haskell is inherently limited to a single CPU, which doesn’t  match modern hardware; especially of the “enterprise” class.  Shared-memory models of concurrency have demonstrated much better performance than purely-functional models.</em>  <br /><br />Best Regards,<br /><br />Kevin Greer<br /><br />p.s. I've actually implemented a b-tree structure for very large data-sets and chose to use a purely-functional data-structure myself.  My reason for doing so was that I have some very long-running read operations (~8 hours) and I obviously can't afford a ReadWrite lock that's going to starve writer threads for that long.<br /><br />Another nice advantage of using purely-functional data-structures is that they make it easy to implement temporal-databases that let you perform time-dependent queries.<br /><br />I just wanted to point out that if all you have is quick-reads then purely-functional is no different than a simple ReadWrite lock and that a super-pure implementation, as with Haskell, doesn't scale to multiple-CPU's or to highly concurrent updates.  However, it can be used to good effect in combination with striping or other techniques.<br /><br />(A tangential note: Java's GC is getting so good in recent releases that P-F data-structures are becoming much more efficient (given that P-F generates more garbage).)<br /><br />p.p.s. One more advantage of functional data-structures (the largest advantage for me actually):<br /><br />They map well to log(or journal)-based storage.  Functional data-structures never update old data, but instead, just create new versions.  If your data-structure uses disk-based storage then this means that you never need to go back and overwrite your file; you only need to append data to the end of the file.  This has two advantages:<br /><br /><ol><li>This works well with the physical characteristics of hard-disks.  They have incredibly high transfer rates (10&#8217;s of Megs/sec) but very slow seek times (~ 200 seeks/sec if 5ms access time).  If you are adding say 1k objects to a data-structure which requires 2 updates on average to a file then you&#8217;re looking at about 100 updates per second.  If on the other-hand you write all of these updates to the end of the file then you&#8217;re looking at say 20,000 updates per second!</li><br /><li>You can&#8217;t corrupt old data with interrupted writes.  The old data is always still there.  The only place that a corruption occur is at the end of the file, in which case you just scan backwards until you find the previous good head of your data-structure.</li></ol><br /><hr/><br /><em>This is fantastic stuff to share, thanks, Kevin!<br /><br />What other tips can readers contribute for people building highly concurrent software (besides the frequent use of JProbe Threadalyzer, of course)? What online resources (papers, articles, books) do readers recommend for the professional developer?</em><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/java.html">java</a>, <a rel='tag' href="http://raganwald.github.com/labels/passion.html">passion</a>, <a rel='tag' href="http://raganwald.github.com/labels/popular.html">popular</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html" title="permanent link">2:17 PM</a>
+						&para; <a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html" title="permanent link">2:17 PM</a>
 
 					 
 				</span> 
@@ -44,112 +44,112 @@
 						
 							<div class="blogComment">
 								<a name="3945131648563660862"></a> 				That was indeed a very interesting email, but I'm a bit confused regarding his assertion about Haskell. A quick Google turned up a paper at http://research.microsoft.com/~tharris/papers/2005-haskell.pdf that describes a technique for lock-free evaluation of shared thunks that was developed to let GHC run on multiple cores. They quote an average time cost of going from single core to multicore of 6%, much less than the potential gains for parallel evaluation.<BR/><BR/>Of course, this doesn't solve the problem (introduced by laziness) of trying to preemptively evaluate thunks that might be useful in the future. This is what is needed in order to get real speedup from multicore, but at least the common cases should be caught by the usual strictness analyses.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178742000000#c3945131648563660862" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05003540528496327090" rel="nofollow">Omega Prime</a> : 4:20 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178742000000#c3945131648563660862" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05003540528496327090" rel="nofollow">Omega Prime</a> : 4:20 PM</div>
 
 								<span class="item-control blog-admin pid-825896549"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3945131648563660862" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="386150550637555546"></a> 				"Unless you synchronize on the root of your data-structure (or declare it as volatile), you can’t be sure that your cache doesn’t have a stale version of the data (which may have been updated by another processor)."<BR/><BR/>Uh, am I missing something here? This is why cache coherence protocols exist. Or am is this on some sort of weird machine that doesn't make guarantees about your view of memory?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178746860000#c386150550637555546" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:41 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178746860000#c386150550637555546" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:41 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=386150550637555546" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3239297680458908097"></a> 				Huh? I think he's about 5 years out of date on Haskell concurrency research.<BR/><BR/>The Haskell community is pursuing a two-prong approach to concurrency.<BR/><BR/>1. <A HREF="http://research.microsoft.com/~simonpj/papers/stm/index.htm" REL="nofollow">Software Transactional Memory</A> replaces the traditional "locks and semaphores" approach. STM is a good fit for Haskell, and the general technique scales to a 100+ cores. (E-mail me and I'll pull together a bibliography.)<BR/><BR/>2. <A HREF="http://haskell.org/haskellwiki/GHC/Data_Parallel_Haskell" REL="nofollow">Nested Data Parallelism</A>, combined with aggressive fusion, provides a lovely programming model for "embarrassingly parallel" tasks. The Haskell implementation is still a work-in-progress, but it looks like it will be sweet.<BR/><BR/>Haskell is convenient for this type of research, because it <I>isn't</I> a purely-functional language--instead, it has a purely-functional core which you can supplement with state mechanisms of your choice.<BR/><BR/>And Haskell's not the only almost-purely-functional language with great scalability results. Erlang has a severely-restricted notion of state, and it's legendary for its scalability.<BR/><BR/>I'd love to know what results your correspondent is hinting at, because I'm frankly a bit confused.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178750220000#c3239297680458908097" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 6:37 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178750220000#c3239297680458908097" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 6:37 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3239297680458908097" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6956002492802260950"></a> 				Argh. The phrase "great scalability results" in the previous comment was intended to refer to Erlang, not Haskell. Haskell sees little use on massively concurrent hardware, but not, I would argue, because it has poorly-chosen concurrency primitives. (One real obstacle to high-performance Haskell is <A HREF="http://users.aber.ac.uk/afc/papers/ClareKingPADL2003abs.html" REL="nofollow">lazy evaluation</A>.)<BR/><BR/>Anyway, here's an STM scalability paper:<BR/><BR/>Harris and Fraser, <A HREF="http://citeseer.ist.psu.edu/harris03language.html" REL="nofollow">Language Support for Lightweight Transactions</A>.<BR/><BR/>This paper benchmarks Java's ConcurrentHashMap against a simple Java STM hashmap. They're running on a 106-processor ccNUMA machine, utilizing slightly less than half the cores. And the STM implementation does just fine, even though it is far simpler than ConcurrentHashMap.<BR/><BR/>I also have a draft paper by Robert Ennals which reaches 90 cores (with high contention) on the same machine, also with good results. Google doesn't seem to have a working link.<BR/><BR/>So I would argue that Haskell's concurrency problems lie elsewhere, not with the choice of STM and NDP as concurrency models.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178752500000#c6956002492802260950" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 7:15 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178752500000#c6956002492802260950" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 7:15 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6956002492802260950" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1322641603931617507"></a> 				@anonymous<BR/><BR/>Cache coherence protocols only apply to shared memory, but there is usually a level of cache that isn't shared, which is closer to each individual processor.  A strong (totally coherent) memory model have slower performance.  Stale data usually needs to be considered, because the memory models of modern systems are weak.  I've even seen problems with stale data in managed .NET code running on a single processor, but with Hyperthreading.  A memory barrier resolved the issue.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178757240000#c1322641603931617507" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01397923226681545085" rel="nofollow">N432</a> : 8:34 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178757240000#c1322641603931617507" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01397923226681545085" rel="nofollow">N432</a> : 8:34 PM</div>
 
 								<span class="item-control blog-admin pid-1174617581"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1322641603931617507" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1220980319007727911"></a> 				@"Some people will advocate launching one process per CPU and then using message passing to communicate between them. This is just a very inefficient (many orders of magnitude slower) way of pushing the synchronization issue off onto the OS/Network-stack."<BR/><BR/>I'm like "some people", except that I  advocate using threads (not processes), and storing the messages (often just function pointers) in a simple queue.  This is more efficient than using interprocess communication.<BR/><BR/>I don't just advocate message passing for its performance, it is also easy for humans to conceptualize.  When threads share state inside locks, they are increasing the scope of that state to multiple threads.  Personally, I have difficulty understanding a variable when its scope surpasses a function, let alone a thread.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178758560000#c1220980319007727911" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01397923226681545085" rel="nofollow">N432</a> : 8:56 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178758560000#c1220980319007727911" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01397923226681545085" rel="nofollow">N432</a> : 8:56 PM</div>
 
 								<span class="item-control blog-admin pid-1174617581"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1220980319007727911" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1741470331041924262"></a> 				Kevin Greer basically described the disk storage design of CouchDb, as well my reasoning for the design.<BR/><BR/>It's also similar to how PostGreSQL is designed. I had a chance to talk with Dr. Stonebraker about it at his office in MIT.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178758800000#c1741470331041924262" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07299732457242903370" rel="nofollow">Damien</a> : 9:00 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178758800000#c1741470331041924262" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07299732457242903370" rel="nofollow">Damien</a> : 9:00 PM</div>
 
 								<span class="item-control blog-admin pid-575250849"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1741470331041924262" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6348633606393141572"></a> 				@n432<BR/><BR/>"I've even seen problems with stale data in managed .NET code running on a single processor, but with Hyperthreading. A memory barrier resolved the issue."<BR/><BR/>If it's occuring on a single core after turning on Hyperthreading, then "stale data" certainly isn't the problem. <A HREF="http://arstechnica.com/articles/paedia/cpu/hyperthreading.ars/5" REL="nofollow">Logical processors share the cache</A> (look at the "Caching and SMT" part).<BR/><BR/>Moreover, if you're using a cache coherency scheme, smaller caches are usually subsets of larger caches. That, and using write-back caching means that the large caches can handle coherency without much additional bus traffic, and make assurances about the contents of more smaller caches.<BR/><BR/>"Stale data usually needs to be considered, because the memory models of modern systems are weak."<BR/><BR/>What are you talking about? Intel, AMD, and co. go to incredible lengths to give a unified view of memory. You may not be able to do complex operations atomically (use a CAS if you want a guarantee), but the view of memory <I>is</I> unified. Even big NUMA machines go to incredible lengths to ensure coherency, even at the expense of the occasional tremendously painful memory access latency.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178780580000#c6348633606393141572" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 3:03 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178780580000#c6348633606393141572" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 3:03 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6348633606393141572" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2986306868393980648"></a> 				I think that Kevin's email, while valuable, misses a very important point relating to the future of concurrent programming. The challenge is not simply to be able to "do concurrency" -- we already know that all the things Kevin mentioned are possible in mainstream languages such as Java and C#. The challenge is to make it less fricking difficult and error prone!<BR/><BR/>What Azul and others have done is amazing, but in the future we can't delegate all our programming to the geniuses at Azul. In imperative languages with a simple lock-based approach to concurrency, it is EXTREMELY hard even for very experienced developers to write concurrent code that is free of deadlocks, race conditions, priority inversion and starvation. Furthermore all those bugs tend to appear ONLY once the code has gone into production, and it is fantastically difficult to find and fix those bugs.<BR/><BR/>We really need to find structures that let programmers reason intuitively about concurrent programming, and in which it is hard to do the wrong thing rather than hard to do the wrong thing. Haskell offers two great solutions which fulfill this need: Software Transactional Memory (STM) and Nested Data Parallelism (NDP). Interestingly both of these techniques are much harder to implement in an imperative language than in a lazy, purely functional language like Haskell. In a direct contradiction to Kevin's assertions, I believe that Haskell is now one of the best languages for enterprise scalability (along with Erlang).<BR/><BR/>Incidentally if any of your readers live near London (UK) and would like to attend a talk by Simon Peyton Jones, who is working on implementing both STM and NDP in Haskell, they should come to the inaugural meeting of the London Haskell User Group. More details at http://www.londonhug.net/<BR/><BR/>Neil<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178802600000#c2986306868393980648" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08588098030811273044" rel="nofollow">Neil Bartlett</a> : 9:10 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178802600000#c2986306868393980648" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08588098030811273044" rel="nofollow">Neil Bartlett</a> : 9:10 AM</div>
 
 								<span class="item-control blog-admin pid-1940407784"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2986306868393980648" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5851520851970191928"></a> 				I'll respond to multiple posts at once.<BR/><BR/>Omega Prime:<BR/><BR/> Yes, there has been some recent research on adding shared-memory multi-processor parallelism to Haskell but this is still in the early stages.  The authors of the paper that you mention cite their work as “preliminary but promising” and it was only on a two CPU machine.  It is based on Software Transactional Memory (STM) which is still very much an area of open research and it’s not yet clear when, if ever, this will become a viable solution.     This may become a viable solution in the future, but it certainly isn’t yet. (One disadvantage of STM is that it doesn’t scale well when you have a lot of concurrent writes.  This isn’t a problem if you can partition your threads to work in different areas but my original email to Reg was about what to do when you do have a  need for concurrent updates.<BR/><BR/> There was also work done about a decade ago on concurrent Haskell based on MPP. This is similar to Erlang and has the disadvantage of not taking advantage of shared-memory on multi-core machines.   It would be hard to build a system capable of handling the > 1 billion msgs/sec that would be required to match Azul’s concurrent hashmap. <BR/><BR/>See: http://citeseer.ist.psu.edu/246155.html<BR/><BR/>Anonymous:<BR/><BR/>“Uh, am I missing something here? This is why cache coherence protocols exist. Or am is this on some sort of weird machine that doesn't make guarantees about your view of memory?”<BR/><BR/>Yes, you are missing something: registers.  While memory may exhibit cache coherence, registers don’t.   For obvious performance reasons, Java use registers instead of memory whenever it can.  When it does this, you lose cache consistency.  This is why Java has the ‘volatile’ keyword to prevent certain variables from being cached in registers.<BR/><BR/>As I mentioned in my original email, this very common misconception is a great source of concurrency bugs.<BR/><BR/>You can find more information about Java’s memory model here:<BR/><BR/>http://www.cs.umd.edu/~pugh/java/memoryModel/<BR/><BR/><BR/>emk:<BR/><BR/>“embarrassingly parallel” tasks (like computer graphics, finite element analysis, etc.), have never been a problem given that the individual threads can work relatively independently (usually, with something like channels/pipelines between them).    As you say the “Haskell implementation is still a work-in-progress”.   These may very well turn out to be great future solutions, but certainly not “Enterprise-Scale” solutions for *today*.<BR/><BR/>Ironically, if you look at where STM has been <A HREF="http://tcc.stanford.edu/publications/tcc_pldi2006_talk.pdf" REL="nofollow">shown to scale</A>, it’s with a procedural language implementing non-functional data-structures.  This doesn’t mean that you’ll be able to transfer this success to Haskell given that Haskell will need to obviously use purely-functional data-structures (PFDS).  STM’s rely on updates being independent most of the time but PFDS guarantee that the only thing that you update is your root/world/top-data-structure.  STM’s may turn out to be much more successful with languages like Java than with languages like Haskell. <BR/><BR/>My point was really, that yes there are things to be learned from functional data-structures, Haskell has yet to demonstrate its ability to effectively scale to the level required for enterprise-scale systems (my “opinion” is that it never will, but the “fact” is, that it hasn’t yet).<BR/><BR/><BR/> N432:<BR/><BR/>I’m also a big advocate of shared-memory (multi-threaded) message passing solutions for concurrency.  In Java this can be done with Channels.   There are a lot of other techniques that I use besides what I mentioned in the original post but the original conversation was about functional data-structures for concurrency.<BR/><BR/> <BR/>Neil Bartlett:<BR/><BR/>“I think that Kevin's email, while valuable, misses a very important point relating to the future of concurrent programming.”<BR/><BR/>I’m writing and deploying enterprise-scale solutions today, and for that, I need solutions that work today, not in the future.   I keep an eye on what’s being worked on (STM, shared-nothing) and what has been worked on (Actors, functional programming) for ideas on how to do things better today, and I’ve had a lot of success at incorporating these ideas into Java-based solutions today.<BR/><BR/>“The challenge is not simply to be able to "do concurrency" -- we already know that all the things Kevin mentioned are possible in mainstream languages such as Java and C#. The challenge is to make it less fricking difficult and error prone!”<BR/><BR/>We don’t actually have many problems with concurrency now that we have a suitable set of higher-level abstractions:<BR/>- FoldReduce (not to be confused with MapReduce)<BR/>- ThreadLocal Storage<BR/>- Thread Pools<BR/>- Futures<BR/>- Message Passing, Asynchronous Channels, Pipelines, Reactive Programming<BR/>- Parallel Functors<BR/>- Scheduled Jobs<BR/>- Concurrent Collections<BR/>- Socket Components<BR/><BR/>We (the developers at my company) very rarely need to work with Threads, mutexes, or synchronized blocks directly anymore.  Yes, somebody needs to build these abstractions, just as somebody needs to build the compiler, but we’re at the point now that most developers shouldn’t have to worry about the low-level concurrency constructs.<BR/><BR/>“I believe that Haskell is now one of the best languages for enterprise scalability.”<BR/><BR/>What do you base this on?  How many such systems have you deployed or seen deployed?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178811600000#c5851520851970191928" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.peerbox.com:8668/space/start" rel="nofollow">Kevin Greer</a> : 11:40 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178811600000#c5851520851970191928" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.peerbox.com:8668/space/start" rel="nofollow">Kevin Greer</a> : 11:40 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5851520851970191928" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7474574160968345648"></a> 				Now that the subject has been hit, I've always wondered: are there any arguments against a (lot) of striping ? I'm currently in the process of implementing a cache which is going to be used by many many reader threads on a 8-core machine, and was considering to implement this cache with a 256-way striping implementation (as in, using the last byte of the identification number to determine which container to look into).<BR/><BR/>Now, I am aware of the extra memory footprint this will bring along, but this is irrelevant compared to the amount of elements to be stored inside the cache (around 5 million). <BR/><BR/>Are there any arguments against using a 256-way striping solution, compared to, for example, an 8-way solution ?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178819040000#c7474574160968345648" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:44 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178819040000#c7474574160968345648" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:44 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7474574160968345648" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6078601906429349285"></a> 				<I>are there any arguments against a (lot) of striping?</I><BR/><BR/>I am not speaking from hard-core experience here, but based on some modeling that I did when designing a distributed system, and a lot of speculative day-dreaming, you might want to think about (or better still, <B>measure</B>) the balance between operations that permute and operations that don't permute collections.<BR/><BR/>In essence, when you have a collection striped or distributed (whether across threads or machines a'la MapReduce), some operations preserve the distribution of data, and some permute it.<BR/><BR/>So if you have a Set, and you want to perform the Union or Intersection of that Set with another Set, this operation probably does not perform any permutation: everything in the result is in the same "stripe" as the portion of the input needed to calculate it.<BR/><BR/>But consider two Sets of numbers and you perform some operation like addition. Now the results might be in different "stripes." This creates a permutation.<BR/><BR/>That might be expensive, because it involves communication and synchronization between threads, processes, or systems, where operations within a thread are very cheap.<BR/><BR/>I am probably using the wrong word when I say "permutation," but I latched upon it when thinking about sorting large data sets that are distributed across systems.<BR/><BR/>Instead of measuring the number of operations, I needed two measurements: operations and messages. The messages are invariably much more expensive than the operations.<BR/><BR/>JM2C, I did not do extensive research.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178819760000#c6078601906429349285" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:56 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178819760000#c6078601906429349285" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:56 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6078601906429349285" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2892019395384760087"></a> 				"are there any arguments against a (lot) of striping?"<BR/><BR/>Heavily striped objects are slower to create and slower to garbage-collect.  For short-lived, lightly-concurrent objects you may be better off at actually reducing the concurrency factor.  For long-lived objects however I don't see any problem.  (I saw in one of the Azul benchmarks that they set the concurrency level to 4096.)<BR/><BR/>The best way to tell what level of striping is best for your application is to benchmark it with various settings.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178820900000#c2892019395384760087" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.peerbox.com:8668/space/start" rel="nofollow">Kevin Greer</a> : 2:15 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178820900000#c2892019395384760087" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.peerbox.com:8668/space/start" rel="nofollow">Kevin Greer</a> : 2:15 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2892019395384760087" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="309967008235940155"></a> 				Kevin: Thanks for the fascinating response! I agree that for near-term work on 100+ cores, Java's an excellent choice, and that Haskell isn't ready for this kind of application.<BR/><BR/>And you're also right about the limits of purely functional programming.<BR/><BR/>But Haskell's STM isn't purely functional. In fact, it supports mutable variables, imperative code, and all the standard techniques found in ordinary languages. (The syntax is shamefully ugly, but everything's there.)<BR/><BR/>The <I>unusual</I> thing about Haskell's STM support is that "mutable state" is (conceptually) all part of a library. If you don't like transactional state, you can replace it with something else--perhaps a protocol for updating lock-free variables. You design it (and hack it into GHC), and the type-checker enforces it.<BR/><BR/>So Haskell concurrency research is all over the map, with a regular zoo of different approaches. This includes work on <A HREF="http://raintown.org/lava/" REL="nofollow">hardware description languages</A>, and there's a few people <A HREF="http://www.yar.nu/macke/hspark/" REL="nofollow">starting to poke at GPUs</A> (much more work in the latter area is needed, perhaps once NDP is finished).<BR/><BR/>Any long-term strategy for concurrency will need to deal with these kinds of issues--a 500+ CPU ccNUMA machine is almost civilized compared to the 8 special-purpose cores on a Cell, or the headaches of an FPGA. And these are very hard architectures to target with the current Java toolset.<BR/><BR/>So from a research perspective, Haskell is a great place to study concurrency, because it gives you fine-grained control over what kind of state you want to support.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178821740000#c309967008235940155" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 2:29 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178821740000#c309967008235940155" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 2:29 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=309967008235940155" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5229503278225711370"></a> 				kevin greer:<BR/><BR/>Thanks for the link to the Java memory model info. It cleared everything up. In context, I hadn't realized that that bit of commentary was specific to weak memory models.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178905680000#c5229503278225711370" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:48 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1178905680000#c5229503278225711370" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:48 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5229503278225711370" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3214345618954925355"></a> 				There is forkOS that is smp enabled in ghc.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/05/hard-core-concurrency-considerations.html?showComment=1183507320000#c3214345618954925355" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">george</span> : 8:02 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/hard-core-concurrency-considerations.html?showComment=1183507320000#c3214345618954925355" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">george</span> : 8:02 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3214345618954925355" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -160,7 +160,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -214,25 +214,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -240,17 +240,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -260,17 +260,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -278,19 +278,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -298,18 +298,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -317,15 +317,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -334,101 +334,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

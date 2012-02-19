@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Tuesday, April 03, 2007</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="2987910296742350048">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2007/04/hypergame-ii.html" title="permanent link">Hypergame II</a></span>
-					<div style="clear:both;"></div><em>Reg! An occasional rant on etiquette is interesting, but I read your blog to reconnect with my love of software. Do you still love what you do, or have you turned into one of those incoherent rage artists that has nothing better to do than stir up wasp nests and trade flames on programming.reddit.com?</em><br /><br />Err, thanks. I&#8217;ve been chewing <a href="http://weblog.raganwald.com/2007/03/programmers-are-sages.html">Kibble</a> for a few days, and I needed to get back to what I love.<sup>1</sup> So here&#8217;s a meandering dump of something on my mind. There is no particular point to this post, it&#8217;s just a way I have of reminding myself how much fun being well enough to wonder &#8220;why?&#8221; really is.<br /><br /><hr /><br /><br />My <a href="http://xraylab.org" title="Paul Davies">brother-in-law</a> was in town this past weekend, and we enjoyed a Sunday afternoon game of <a href="http://www.amazon.com/gp/product/B00000JZG7?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=B00000JZG7">Acquire</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=B00000JZG7" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />. Formal games are much on my mind lately, thanks to the last Amazon delivery dropping <a href="http://www.amazon.com/gp/product/1568811276?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1568811276">On Numbers and Games</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=1568811276" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> on my doorstep.<br /><br />Thinking about games reminded me William Zwicker&#8217;s <a href="http://weblog.raganwald.com/2007/04/repost-hypergame-and-infinity.html">Hypergame</a> pseudo-paradox, and that made me wonder how to describe it using programs instead of games. I came up with the following:<br /><br />&ldquo;You have a computer. By which I mean any computer, real, imaginary, even an idealized <a href="http://en.wikipedia.org/wiki/Turing_machine" title="Turing machine - Wikipedia, the free encyclopedia">Turing machine</a>. It runs programs, obviously. Now programs on this computer are finite or infinite. By which I mean, a finite program <em>always</em> halts eventually, and an infinite program does not always halt eventually. Note that an infinite program might halt or it might not. perhaps it contains some randomization element. Perhaps it has different inputs that cause it to do different things.<br /><br />&ldquo;Now let&#8217;s posit the idea of an algorithm that can examine a program for this machine and determine whether it is finite or infinite. Note that this algorithm need not be a program that runs on the machine, we allow that it can live &#8220;outside&#8221; the machine.<br /><br />&ldquo;I ask you this question: the computer you are thinking of, can we write a <em>bootstrap program</em> (or &#8220;bootstrapper&#8221;) for this computer? In other words, can we write a program that loads and executes other programs? Or more generally, does this computer support self-reference in programs?<br /><br />&ldquo;Consider a general bootstrapper for the computer. Is it a finite program or an infinite program? Obviously, it is an infinite program, because it can load and execute any other program, and if it loads an infinite program, then its own execution will be infinite.<br /><br />&ldquo;But what if we write a restricted version of the bootstrapper: it will only load <em>finite</em> programs. Maybe we mark those programs with a special bit, maybe it just trusts us not to cheat and give it an infinite program.<br /><br /><strong>Is the restricted bootstrapper a finite program</strong>?<br /><br />&ldquo;If it only loads finite programs, you would think it is finite. After all, it loads and executes a program that runs in finite time, so it must execute in finite time. But if that&#8217;s the case, why can&#8217;t the restricted boostrapper load <em>itself</em>? It loads and runs finite programs, and if it&#8217;s a finite program then it can load and execute itself!<br /><br />&ldquo;In that case, it isn&#8217;t a finite program. Whew! Wait a second, if it isn&#8217;t a finite program, then the pseudo-paradox disappears, and we&#8217;re back to the fact that it must run in finite time. So it <em>is</em> a finite program!&rdquo;<br /><br />Well, there are lots of ways to explain this, and they&#8217;re all interesting. You can posit that the <a href="http://en.wikipedia.org/wiki/Halting_problem" title="Halting problem - Wikipedia, the free encyclopedia">halting problem</a> is undecidable, as <a href="http://www.amazon.com/gp/product/0802775802?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0802775802" title="Alan Turing: The Enigma">Alan Turing</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0802775802" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> did. If so, we have just proven it for an interesting case, where we allow the computation of whether a program halts outside of the computation space of our machine.<br /><br />You can also note that the problem goes away if our computer is too simple to allow self-reference. That&#8217;s an important result in its own right.<br /><br />You can wonder whether &#8220;finite&#8221; is one of those things that has at least three states: true, false, and &#8220;strange.&#8221; Does allowing &#8220;strange&#8221; as the result of your &#8220;finite test algorithm&#8221; remove the paradox?<br /><br /><hr /><br /><ol><li>Speaking of which, <a href="http://www.amazon.com/gp/product/0521663504?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0521663504">Purely Functional Data Structures</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0521663504" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> arrived in the mail and I&#8217;m looking forward to writing about <a href="http://weblog.raganwald.com/2007/04/haskell-not-just-for-language-weenies.html" title="What Haskell teaches us about writing Enterprise-scale software">the relationship between Copy on Write semantics and Multi-Version Concurrency-Control protocols for arbitrating shared-memory threaded applications</a>.</li><br /></ol><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2007/04/hypergame-ii.html" title="permanent link">Hypergame II</a></span>
+					<div style="clear:both;"></div><em>Reg! An occasional rant on etiquette is interesting, but I read your blog to reconnect with my love of software. Do you still love what you do, or have you turned into one of those incoherent rage artists that has nothing better to do than stir up wasp nests and trade flames on programming.reddit.com?</em><br /><br />Err, thanks. I&#8217;ve been chewing <a href="http://raganwald.github.com/2007/03/programmers-are-sages.html">Kibble</a> for a few days, and I needed to get back to what I love.<sup>1</sup> So here&#8217;s a meandering dump of something on my mind. There is no particular point to this post, it&#8217;s just a way I have of reminding myself how much fun being well enough to wonder &#8220;why?&#8221; really is.<br /><br /><hr /><br /><br />My <a href="http://xraylab.org" title="Paul Davies">brother-in-law</a> was in town this past weekend, and we enjoyed a Sunday afternoon game of <a href="http://www.amazon.com/gp/product/B00000JZG7?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=B00000JZG7">Acquire</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=B00000JZG7" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />. Formal games are much on my mind lately, thanks to the last Amazon delivery dropping <a href="http://www.amazon.com/gp/product/1568811276?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1568811276">On Numbers and Games</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=1568811276" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> on my doorstep.<br /><br />Thinking about games reminded me William Zwicker&#8217;s <a href="http://raganwald.github.com/2007/04/repost-hypergame-and-infinity.html">Hypergame</a> pseudo-paradox, and that made me wonder how to describe it using programs instead of games. I came up with the following:<br /><br />&ldquo;You have a computer. By which I mean any computer, real, imaginary, even an idealized <a href="http://en.wikipedia.org/wiki/Turing_machine" title="Turing machine - Wikipedia, the free encyclopedia">Turing machine</a>. It runs programs, obviously. Now programs on this computer are finite or infinite. By which I mean, a finite program <em>always</em> halts eventually, and an infinite program does not always halt eventually. Note that an infinite program might halt or it might not. perhaps it contains some randomization element. Perhaps it has different inputs that cause it to do different things.<br /><br />&ldquo;Now let&#8217;s posit the idea of an algorithm that can examine a program for this machine and determine whether it is finite or infinite. Note that this algorithm need not be a program that runs on the machine, we allow that it can live &#8220;outside&#8221; the machine.<br /><br />&ldquo;I ask you this question: the computer you are thinking of, can we write a <em>bootstrap program</em> (or &#8220;bootstrapper&#8221;) for this computer? In other words, can we write a program that loads and executes other programs? Or more generally, does this computer support self-reference in programs?<br /><br />&ldquo;Consider a general bootstrapper for the computer. Is it a finite program or an infinite program? Obviously, it is an infinite program, because it can load and execute any other program, and if it loads an infinite program, then its own execution will be infinite.<br /><br />&ldquo;But what if we write a restricted version of the bootstrapper: it will only load <em>finite</em> programs. Maybe we mark those programs with a special bit, maybe it just trusts us not to cheat and give it an infinite program.<br /><br /><strong>Is the restricted bootstrapper a finite program</strong>?<br /><br />&ldquo;If it only loads finite programs, you would think it is finite. After all, it loads and executes a program that runs in finite time, so it must execute in finite time. But if that&#8217;s the case, why can&#8217;t the restricted boostrapper load <em>itself</em>? It loads and runs finite programs, and if it&#8217;s a finite program then it can load and execute itself!<br /><br />&ldquo;In that case, it isn&#8217;t a finite program. Whew! Wait a second, if it isn&#8217;t a finite program, then the pseudo-paradox disappears, and we&#8217;re back to the fact that it must run in finite time. So it <em>is</em> a finite program!&rdquo;<br /><br />Well, there are lots of ways to explain this, and they&#8217;re all interesting. You can posit that the <a href="http://en.wikipedia.org/wiki/Halting_problem" title="Halting problem - Wikipedia, the free encyclopedia">halting problem</a> is undecidable, as <a href="http://www.amazon.com/gp/product/0802775802?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0802775802" title="Alan Turing: The Enigma">Alan Turing</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0802775802" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> did. If so, we have just proven it for an interesting case, where we allow the computation of whether a program halts outside of the computation space of our machine.<br /><br />You can also note that the problem goes away if our computer is too simple to allow self-reference. That&#8217;s an important result in its own right.<br /><br />You can wonder whether &#8220;finite&#8221; is one of those things that has at least three states: true, false, and &#8220;strange.&#8221; Does allowing &#8220;strange&#8221; as the result of your &#8220;finite test algorithm&#8221; remove the paradox?<br /><br /><hr /><br /><ol><li>Speaking of which, <a href="http://www.amazon.com/gp/product/0521663504?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0521663504">Purely Functional Data Structures</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0521663504" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> arrived in the mail and I&#8217;m looking forward to writing about <a href="http://raganwald.github.com/2007/04/haskell-not-just-for-language-weenies.html" title="What Haskell teaches us about writing Enterprise-scale software">the relationship between Copy on Write semantics and Multi-Version Concurrency-Control protocols for arbitrating shared-memory threaded applications</a>.</li><br /></ol><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2007/04/hypergame-ii.html" title="permanent link">6:57 PM</a>
+						&para; <a href="http://raganwald.github.com/2007/04/hypergame-ii.html" title="permanent link">6:57 PM</a>
 
 					 
 				</span> 
@@ -44,14 +44,14 @@
 						
 							<div class="blogComment">
 								<a name="4153694478486199091"></a> 				Excellent.  Acquire was one of the games my family played when I was a kid, although it was the venerable 3M Bookshelf Games version as opposed to the more modern Avalon Hill version.  Don't tell me you also have  <A HREF="http://www.boardgamegeek.com/game/949" REL="nofollow">Twixt</A>, too...<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/hypergame-ii.html?showComment=1175666760000#c4153694478486199091" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://mult.ifario.us" rel="nofollow">Paul Brown</a> : 2:06 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/hypergame-ii.html?showComment=1175666760000#c4153694478486199091" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://mult.ifario.us" rel="nofollow">Paul Brown</a> : 2:06 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4153694478486199091" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="823846708731026677"></a> 				Paul:<BR/><BR/>I play the 3M version, and like it immensely. If your travels bring you to Toronto...<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/hypergame-ii.html?showComment=1175882940000#c823846708731026677" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:09 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/hypergame-ii.html?showComment=1175882940000#c823846708731026677" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:09 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=823846708731026677" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -62,7 +62,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -116,25 +116,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -142,17 +142,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -162,17 +162,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -180,19 +180,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -200,18 +200,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -219,15 +219,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -236,101 +236,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

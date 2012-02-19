@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Friday, March 24, 2006</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="114322745914091238">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html" title="permanent link">I'll take Static Typing for $800, Alex.</a></span>
-					<div style="clear:both;"></div>There’s an argument that static typing prevents errors by detecting them at compile and/or edit time. In a trivial sense, this is absolutely true. You can, for example, write a Java program with such an error and watch Eclipse highlight the offence.<br /><br />The interesting thing I’ve noticed is that many of the people in favour of static typing are arguing from a position of “Do what I say, not as I do.”<br /><br />I don’t mean that they program in Python. I mean that when I ask them whether they would have typing troubles in a dynamic language, their answer is often “<em>well, I wouldn’t, but every business needs hordes of monkey/offshore/intern/new graduate programmers who do make these errors</em>.”<br /><br /><blockquote>“People shouldn’t be able to open my classes.” “They need compile time type checking so the app doesn’t blow up.” “Extending system libraries is bad.”<br /><br />Concerns like these all seem to boil down to one major theme: The people I work with are stupid.</blockquote><div style="text-align: right;">—<a href="http://evang.eli.st/blog/2007/1/22/java-people-must-be-stupid">Java People Must Be Stupid</a>, Pat Maddox<br /></div><br /><blockquote>It’s not really stupid people, it’s people who’ve accepted a stupid idea. Java’s design is based on the idea that a language can prevent misuse by making bad things hard to do. It’s defensive thinking.<br /></blockquote><div style="text-align: right;">—<a href="http://gilesbowkett.blogspot.com/2007/01/favor.html">A Favour</a>, Giles Bowkett<br /></div><br />Let’s stop worrying about errors we don’t actually make. Let’s stop worrying about errors some hypothetical junior, error-prone programmer might make.<br /><br />Here’s an interesting question: what sorts of typing errors do experienced, intelligent programmers actually make? And what sorts of typing errors sneak through unit tests and even QA and into production? And most especially, what sorts of typing errors have catastrophic consequences in production?<br /><br />Now those are interesting errors. Those are worth worrying about. I’ll go further: those are worth static typing.<br /><br />Here’s one from my actual, hands on experience. Distinguishing escaped from unescaped strings. I don’t know if I’m using the right words here: I’m thinking of a typical XML or XHTML application where some of the time a string is just a string, but some of the time it has a bunch of its characters replaced or escaped with special entities.<br /><br /><blockquote>Another case of escaped and unescaped strings concerns safely composing SQL queries and updates (another <a href="http://blog.moertel.com/articles/2006/10/18/a-type-based-solution-to-the-strings-problem">solved problem</a> in other languages). The argument is always in favour of using library functions that do the conversion for you, like <code>PreparedStaement</code>. If you think about it, that’s no damn good. What that does is treat everything like an unsafe String and only convert it at the very last second.<br /><br />If you’re going to do any fancy SQL composition, you can only do it with stuff that isn’t a user value, so you have to keep track of escaped and unescaped strings <strong>anyways</strong>. And finally, your libraries still have all the unsafe APIs that don’t perform the conversion for you, so you are relying on your iron will and self-discipline to prevent errors, rather than having the compiler perform what is really a rather trivial check.<br /><br />I have no problem with relying on iron will and self-discipline to eliminate errors. But if your argument is that iron will is appropriate for preventing SQL injection attacks, why isn’t iron will appropriate for preventing trivial type errors that would result in a <code>MethodNotImplemented</code> exception? </blockquote>I’m not alone in considering this a problem. Web applications that screw this up are vulnerable to cross site scripting (XSS) attacks. This is very bad, and if static typing could help I’d eagerly embrace it.<br /><br /><div style="margin: 0pt 0pt 10px 10px; width: 240px; float: right; text-align: center; font-size: 85%;"><a href="http://www.amazon.com/gp/product/0262561158?ie=UTF8&tag=raganwald001-20&amp;linkCode=as2&camp=1789&amp;creative=9325&creativeASIN=0262561158"><img src="http://weblog.raganwald.com/uploaded_images/a_little_java-777624.jpg" border="0" /></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&o=1&amp;a=0262561158" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1" /><em><br /><br /><a href="http://www.amazon.com/gp/product/0262561158?ie=UTF8&tag=raganwald001-20&amp;linkCode=as2&camp=1789&amp;creative=9325&amp;creativeASIN=0262561158">A Little Java, a Few Patterns</a>: The authors of The Little Schemer and The Little MLer bring deep and important insights to the Java language. Every serious Java programmer should own a copy.</em></div>How could static typing help? Well, imagine if you designate some strings as escaped and some as unescaped. So our type hierarchy is that there is String, <code>UnescapedString extends String</code>, and <code>EscapedString extends String</code>. (Actually, I’d prefer interfaces if I were designing a Java-like language, but that’s by the by).<br /><br />Now there are certain critical places where we would need to harden our application. The first is everywhere we get strings from users. These strings, just like <code>tainted</code> or <code>unsafe</code> variables in scripting languages like PHP, need to be <code>UnescapedStrings</code>. We would type our methods accordingly (in Java, this could be accomplished with annotations). For example, anything snarfed from the <code>HttpRequest</code> object is an <code>UnescapedString</code>.<br /><br />Then when we present strings, we type the methods as taking <code>EscapedStrings</code> only. If we try to pass a POS (Plain Old String) or <code>UnescapedString</code> to a method parameterized by an <code>EscapedString</code>, we get a compile time error.<br /><br />To get around the errors, we need to escape our strings. We do that by writing a conversion method somewhere that, you guessed it, takes an <code>UnescapedString</code> as a parameter and returns an <code>EscapedString</code>.<br /><br />Naturally our application would be full of bookkeeping annotations as we keep track of which strings are escaped and which aren’t. But my gut feeling is that catching this kind of error at compile time would be worth it.<br /><br />Here’s another error that I think is worth the effort of static typing. The bane of my existence when maintaining legacy Java code: <code>NullPointerExceptions</code>.<br /><br />This is actually a solved problem in languages like Haskell. Static typing can easily distinguish between methods that might return a null (like getting a column from a database row) and variables that must not contain a null. The compiler can and should force you to write code that handles the null case.<br /><br /><div style="margin: 0pt 10px 10px 0pt; width: 240px; float: left; text-align: center; font-size: 85%;"><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FLittle-MLer-Matthias-Felleisen%2Fdp%2F026256114X%2Fsr%3D1-1%2Fqid%3D1165759722%3Fie%3DUTF8%26s%3Dbooks&amp;amp;amp;amp;amp;amp;tag=raganwald001-20&linkCode=ur2&amp;camp=1789&creative=9325"><img style="cursor: pointer;" src="http://weblog.raganwald.com/uploaded_images/little_mler-705423.jpg" alt="" border="0" height="180" width="180" /></a><em><br /><br /><a href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FLittle-MLer-Matthias-Felleisen%2Fdp%2F026256114X%2Fsr%3D1-1%2Fqid%3D1165759722%3Fie%3DUTF8%26s%3Dbooks&amp;amp;amp;amp;amp;amp;tag=raganwald001-20&linkCode=ur2&amp;camp=1789&creative=9325">The Little MLer</a> introduces ML (and Ocaml) through a series of entertaining and straightforward exercises leading up to the construction of the Y Combinator.<br /><br />With ML and Ocaml you can design rich types that fit the domain model and all types are checked at compile time through type inference.</em></div>Here’s my question to my fellow Java programmers: why do we tolerate a compiler that forces us to type some things as <code>BigDecimals</code> and some things as <code>Integers</code>, but we don’t insist that the compiler catch places where we aren’t checking for <code>null</code>?<br /><br />These are just two places where static typing could help experienced programmers solve problems that plague real, production code. I’m all for static typing, if it can help me with the errors I actually encounter.<br /><br />That being said, there is a lot of work being done in this area, although obviously not by Sun or Microsoft (to be specific, not by their <a href="http://msdn.microsoft.com/vcsharp/">C#</a> team). As mentioned, Haskell and several other languages provide static typing that is sophisticated enough to prevent errors like this.<br /><br />I’m not even close to being the first person to notice the problem:<br /><ul><br /><li><a href="http://www.joelonsoftware.com/">Joel Spolsky</a> described using naming conventions to highlight errors like this. It’s interesting that <a href="http://en.wikipedia.org/wiki/Hungarian_notation">Hungarian Notation</a> was invented for this kind of thing, but somehow a Cargo Cult has arisen around Systems Hungarian where programmers use it for things like marking integers, a fact that the compiler and IDE already know, but don’t use it for domain-specific things like whether a string is safe.</li><br /><li>Tim Sweeney of <a href="http://www.epicgames.com/">Epic Games</a> wrote an incredibly lucid wish list for <a href="http://lambda-the-ultimate.org/node/1277">The Next Mainstream Programming Language</a>, where he discusses in detail the exact issues his team has faced building and maintaining Unreal. His presentation is available in PowerPoint and PDF formats. He has given a lot of thought to how static typing could help build and maintain huge, complex, commercial applications.</li><br /></ul>Okay, back to Earth. What can we do about this?<br /><br />Here are my specific suggestions:<br /><ol><br /><li>Stop worrying about the theoretical errors we don’t actually make. We unit test, we review our code. We’re not concerned with obvious, superficial problems.</li><br /><li>Agitate for language features that can help us solve these important problems. If the next version of javac can do escape analysis, it can identify potential null pointer exceptions, possibly through inference so we don’t even have to type more code.</li><br /><li>Educate ourselves about the bleeding edge of language development. No, that isn’t C# 3.0, Common Lisp, or Ruby 2.0. It’s <a href="http://www.ml.com/">ML</a>, <a href="http://www.haskell.org/">Haskell</a>, <a href="http://www.erlang.org/">Erlang</a>, and a bunch of other things I need to learn. We may not be able to use Haskell to build Yet Another Boring Web Commerce Application, but we might learn enough to use a new naming convention or possible to write a string container that enforces escaped safety.</li></ol><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html" title="permanent link">I'll take Static Typing for $800, Alex.</a></span>
+					<div style="clear:both;"></div>There’s an argument that static typing prevents errors by detecting them at compile and/or edit time. In a trivial sense, this is absolutely true. You can, for example, write a Java program with such an error and watch Eclipse highlight the offence.<br /><br />The interesting thing I’ve noticed is that many of the people in favour of static typing are arguing from a position of “Do what I say, not as I do.”<br /><br />I don’t mean that they program in Python. I mean that when I ask them whether they would have typing troubles in a dynamic language, their answer is often “<em>well, I wouldn’t, but every business needs hordes of monkey/offshore/intern/new graduate programmers who do make these errors</em>.”<br /><br /><blockquote>“People shouldn’t be able to open my classes.” “They need compile time type checking so the app doesn’t blow up.” “Extending system libraries is bad.”<br /><br />Concerns like these all seem to boil down to one major theme: The people I work with are stupid.</blockquote><div style="text-align: right;">—<a href="http://evang.eli.st/blog/2007/1/22/java-people-must-be-stupid">Java People Must Be Stupid</a>, Pat Maddox<br /></div><br /><blockquote>It’s not really stupid people, it’s people who’ve accepted a stupid idea. Java’s design is based on the idea that a language can prevent misuse by making bad things hard to do. It’s defensive thinking.<br /></blockquote><div style="text-align: right;">—<a href="http://gilesbowkett.blogspot.com/2007/01/favor.html">A Favour</a>, Giles Bowkett<br /></div><br />Let’s stop worrying about errors we don’t actually make. Let’s stop worrying about errors some hypothetical junior, error-prone programmer might make.<br /><br />Here’s an interesting question: what sorts of typing errors do experienced, intelligent programmers actually make? And what sorts of typing errors sneak through unit tests and even QA and into production? And most especially, what sorts of typing errors have catastrophic consequences in production?<br /><br />Now those are interesting errors. Those are worth worrying about. I’ll go further: those are worth static typing.<br /><br />Here’s one from my actual, hands on experience. Distinguishing escaped from unescaped strings. I don’t know if I’m using the right words here: I’m thinking of a typical XML or XHTML application where some of the time a string is just a string, but some of the time it has a bunch of its characters replaced or escaped with special entities.<br /><br /><blockquote>Another case of escaped and unescaped strings concerns safely composing SQL queries and updates (another <a href="http://blog.moertel.com/articles/2006/10/18/a-type-based-solution-to-the-strings-problem">solved problem</a> in other languages). The argument is always in favour of using library functions that do the conversion for you, like <code>PreparedStaement</code>. If you think about it, that’s no damn good. What that does is treat everything like an unsafe String and only convert it at the very last second.<br /><br />If you’re going to do any fancy SQL composition, you can only do it with stuff that isn’t a user value, so you have to keep track of escaped and unescaped strings <strong>anyways</strong>. And finally, your libraries still have all the unsafe APIs that don’t perform the conversion for you, so you are relying on your iron will and self-discipline to prevent errors, rather than having the compiler perform what is really a rather trivial check.<br /><br />I have no problem with relying on iron will and self-discipline to eliminate errors. But if your argument is that iron will is appropriate for preventing SQL injection attacks, why isn’t iron will appropriate for preventing trivial type errors that would result in a <code>MethodNotImplemented</code> exception? </blockquote>I’m not alone in considering this a problem. Web applications that screw this up are vulnerable to cross site scripting (XSS) attacks. This is very bad, and if static typing could help I’d eagerly embrace it.<br /><br /><div style="margin: 0pt 0pt 10px 10px; width: 240px; float: right; text-align: center; font-size: 85%;"><a href="http://www.amazon.com/gp/product/0262561158?ie=UTF8&tag=raganwald001-20&amp;linkCode=as2&camp=1789&amp;creative=9325&creativeASIN=0262561158"><img src="http://raganwald.github.com/uploaded_images/a_little_java-777624.jpg" border="0" /></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&o=1&amp;a=0262561158" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1" /><em><br /><br /><a href="http://www.amazon.com/gp/product/0262561158?ie=UTF8&tag=raganwald001-20&amp;linkCode=as2&camp=1789&amp;creative=9325&amp;creativeASIN=0262561158">A Little Java, a Few Patterns</a>: The authors of The Little Schemer and The Little MLer bring deep and important insights to the Java language. Every serious Java programmer should own a copy.</em></div>How could static typing help? Well, imagine if you designate some strings as escaped and some as unescaped. So our type hierarchy is that there is String, <code>UnescapedString extends String</code>, and <code>EscapedString extends String</code>. (Actually, I’d prefer interfaces if I were designing a Java-like language, but that’s by the by).<br /><br />Now there are certain critical places where we would need to harden our application. The first is everywhere we get strings from users. These strings, just like <code>tainted</code> or <code>unsafe</code> variables in scripting languages like PHP, need to be <code>UnescapedStrings</code>. We would type our methods accordingly (in Java, this could be accomplished with annotations). For example, anything snarfed from the <code>HttpRequest</code> object is an <code>UnescapedString</code>.<br /><br />Then when we present strings, we type the methods as taking <code>EscapedStrings</code> only. If we try to pass a POS (Plain Old String) or <code>UnescapedString</code> to a method parameterized by an <code>EscapedString</code>, we get a compile time error.<br /><br />To get around the errors, we need to escape our strings. We do that by writing a conversion method somewhere that, you guessed it, takes an <code>UnescapedString</code> as a parameter and returns an <code>EscapedString</code>.<br /><br />Naturally our application would be full of bookkeeping annotations as we keep track of which strings are escaped and which aren’t. But my gut feeling is that catching this kind of error at compile time would be worth it.<br /><br />Here’s another error that I think is worth the effort of static typing. The bane of my existence when maintaining legacy Java code: <code>NullPointerExceptions</code>.<br /><br />This is actually a solved problem in languages like Haskell. Static typing can easily distinguish between methods that might return a null (like getting a column from a database row) and variables that must not contain a null. The compiler can and should force you to write code that handles the null case.<br /><br /><div style="margin: 0pt 10px 10px 0pt; width: 240px; float: left; text-align: center; font-size: 85%;"><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FLittle-MLer-Matthias-Felleisen%2Fdp%2F026256114X%2Fsr%3D1-1%2Fqid%3D1165759722%3Fie%3DUTF8%26s%3Dbooks&amp;amp;amp;amp;amp;amp;tag=raganwald001-20&linkCode=ur2&amp;camp=1789&creative=9325"><img style="cursor: pointer;" src="http://raganwald.github.com/uploaded_images/little_mler-705423.jpg" alt="" border="0" height="180" width="180" /></a><em><br /><br /><a href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FLittle-MLer-Matthias-Felleisen%2Fdp%2F026256114X%2Fsr%3D1-1%2Fqid%3D1165759722%3Fie%3DUTF8%26s%3Dbooks&amp;amp;amp;amp;amp;amp;tag=raganwald001-20&linkCode=ur2&amp;camp=1789&creative=9325">The Little MLer</a> introduces ML (and Ocaml) through a series of entertaining and straightforward exercises leading up to the construction of the Y Combinator.<br /><br />With ML and Ocaml you can design rich types that fit the domain model and all types are checked at compile time through type inference.</em></div>Here’s my question to my fellow Java programmers: why do we tolerate a compiler that forces us to type some things as <code>BigDecimals</code> and some things as <code>Integers</code>, but we don’t insist that the compiler catch places where we aren’t checking for <code>null</code>?<br /><br />These are just two places where static typing could help experienced programmers solve problems that plague real, production code. I’m all for static typing, if it can help me with the errors I actually encounter.<br /><br />That being said, there is a lot of work being done in this area, although obviously not by Sun or Microsoft (to be specific, not by their <a href="http://msdn.microsoft.com/vcsharp/">C#</a> team). As mentioned, Haskell and several other languages provide static typing that is sophisticated enough to prevent errors like this.<br /><br />I’m not even close to being the first person to notice the problem:<br /><ul><br /><li><a href="http://www.joelonsoftware.com/">Joel Spolsky</a> described using naming conventions to highlight errors like this. It’s interesting that <a href="http://en.wikipedia.org/wiki/Hungarian_notation">Hungarian Notation</a> was invented for this kind of thing, but somehow a Cargo Cult has arisen around Systems Hungarian where programmers use it for things like marking integers, a fact that the compiler and IDE already know, but don’t use it for domain-specific things like whether a string is safe.</li><br /><li>Tim Sweeney of <a href="http://www.epicgames.com/">Epic Games</a> wrote an incredibly lucid wish list for <a href="http://lambda-the-ultimate.org/node/1277">The Next Mainstream Programming Language</a>, where he discusses in detail the exact issues his team has faced building and maintaining Unreal. His presentation is available in PowerPoint and PDF formats. He has given a lot of thought to how static typing could help build and maintain huge, complex, commercial applications.</li><br /></ul>Okay, back to Earth. What can we do about this?<br /><br />Here are my specific suggestions:<br /><ol><br /><li>Stop worrying about the theoretical errors we don’t actually make. We unit test, we review our code. We’re not concerned with obvious, superficial problems.</li><br /><li>Agitate for language features that can help us solve these important problems. If the next version of javac can do escape analysis, it can identify potential null pointer exceptions, possibly through inference so we don’t even have to type more code.</li><br /><li>Educate ourselves about the bleeding edge of language development. No, that isn’t C# 3.0, Common Lisp, or Ruby 2.0. It’s <a href="http://www.ml.com/">ML</a>, <a href="http://www.haskell.org/">Haskell</a>, <a href="http://www.erlang.org/">Erlang</a>, and a bunch of other things I need to learn. We may not be able to use Haskell to build Yet Another Boring Web Commerce Application, but we might learn enough to use a new naming convention or possible to write a string container that enforces escaped safety.</li></ol><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/popular.html">popular</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html" title="permanent link">2:10 PM</a>
+						&para; <a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html" title="permanent link">2:10 PM</a>
 
 					 
 				</span> 
@@ -44,238 +44,238 @@
 						
 							<div class="blogComment">
 								<a name="114340972251686073"></a> 				* The escaped and unescaped strings...  While explicit static typing may somewhat help you there, dynamically typed langage don't "lose" either. Check Ruby, Ruby objects have a taintedness flag that you can check for, and with a pair of commands you can change Ruby's level of security so that it forbids more and more operations to tainted objects. Problem solved, no static typing used.<BR/><BR/>* NPE issue, check the Nice language, it runs on the JVM and it has two kinds of "types": nullable and not nullable. I guess you know how they behave already<BR/><BR/>* Whatever you'd like to see, Lisp is still the cutting edge, it has always be and it will probably always be. If only because anything you create for another language you can trivially include to Lisp and Lisp dialects via the use of macros<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143409680000#c114340972251686073" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 4:48 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143409680000#c114340972251686073" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 4:48 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114340972251686073" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114341433594214977"></a> 				Very nice.  Yes, typing should be higher level than just some machine architecture detail.<BR/><BR/>For example... perhaps typing variables not as just a number, but as 'meters' or 'feet' might have saved the Mars Climate Orbiter.  Also: subtracting two dates makes sense, adding two dates doesn't.  So, put physical units of measurement in a type system.<BR/><BR/>Tagging strings with the character set could make internationalization easier.  "utf-8" vs. "iso-latin1"<BR/><BR/>To the point: a static type system as you describe should be layered, to allow for more than one interpretation of the actual variable.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143414300000#c114341433594214977" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:05 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143414300000#c114341433594214977" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:05 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114341433594214977" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114341609829942918"></a> 				The sun crew is working on a language called 'FORTRESS'. One of its features is relations between types, allowing you to declare a variable as containing 'miles', another as containing 'kilometers', and setting up a conversion routine.<BR/><BR/>As far as non-nullable goes, java 1.6 should have the features for an annotation to cover it.<BR/><BR/>And as far as your main argument goes: You're forgetting one extremely major benefit of static typing:<BR/><BR/>It makes picking up new libraries an absolute breeze, because your IDE knows exactly what you can call.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143416040000#c114341609829942918" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17839525473387640986" rel="nofollow">Reinier Zwitserloot</a> : 6:34 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143416040000#c114341609829942918" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17839525473387640986" rel="nofollow">Reinier Zwitserloot</a> : 6:34 PM</div>
 
 								<span class="item-control blog-admin pid-356686094"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114341609829942918" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114341827453472708"></a> 				Yes, Java should have nullable types like Nice, but there's a lot you can do without switching languages.  For example, every web app I've seen has to manipulate lots of identifiers but few programs have an Id class, let alone EmployeeId.  They often just use ints and strings.  Introduce the right low-level types and move some methods around, and you'd be surprised how much clearer your code gets.  String escaping can also be a solved problem if you do it right.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143418260000#c114341827453472708" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 7:11 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143418260000#c114341827453472708" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 7:11 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114341827453472708" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114341916519261375"></a> 				<A HREF="http://www.lambdassociates.org/" REL="nofollow">Qi</A> seems like it may be the the bleeding edge. It's Lisp-based, with features imported from newer functional languages, and a Turing-complete type system.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143419160000#c114341916519261375" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://foobar.infogami.com" rel="nofollow">Zak</a> : 7:26 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143419160000#c114341916519261375" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://foobar.infogami.com" rel="nofollow">Zak</a> : 7:26 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114341916519261375" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114342047642679208"></a> 				More than one person has said that a benefit of static typing is that IDEs  provide some content assistance.<BR/><BR/>This is (a) off-topic. It's as if I said "trucks consume more gasoline than station wagons" and someone says "trucks provide a higher viewpoint for the driver." True, but off topic.<BR/><BR/>I'm not writing a post that says dynamic typing is better than static typing under every circumstance, for every programmer, on every project.<BR/><BR/>(b) it only seems to be true to you, only because no-one has written AND POPULARIZED a really good content assist IDE for languages like Ruby and Python.<BR/><BR/>Here's an exercise for everyone who likes Eclipse's support for Java: explain why you cannot provide the same or better support for a Ruby, SmallTalk, or Python program that has the same structure as a Java program.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143420420000#c114342047642679208" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:47 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143420420000#c114342047642679208" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:47 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114342047642679208" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114342080324044518"></a> 				About the tainted flag, and evey equivalent feature in languages like PHP.<BR/><BR/>This is not the same thing as static analysis, although it's better than crossing your fingers and praying. The point of static analysis is to prove that it will never happen, not just catch it at run time.<BR/><BR/>If it is acceptable to catch it at run time, then I jump to a previous post--A "fair and balanced" look at the static vs. dynamic typing schism"--and say let's just stick with run time type checking.<BR/><BR/>What I was trying to say in this post (perhaps poorly) was that if I had to put up with all the noise of static typing, then at least help me with issues I think are serious: that extra signal would make up for the incredible amount of noise!<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143420780000#c114342080324044518" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:53 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143420780000#c114342080324044518" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:53 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114342080324044518" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114342512217124158"></a> 				languages with pattern matching, like ML, make you handle the null pointer case. When you write down your patterns, if you leave one out (corresponding to forgetting about the null pointer), you get a warning/error.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143425100000#c114342512217124158" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:05 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143425100000#c114342512217124158" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:05 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114342512217124158" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114343446418884302"></a> 				In a dynamically-typed language like Smaltalk, there is a technique for handling the NullReferenceExceptions called the Null Object Pattern [1]. It offers a way to deal with null exceptions without needing static typing.<BR/><BR/>Some people might disagree and say that this technique will only sweep the problems under the rug, but maybe with some real-world experiment, we can truly find out the pros & cons to a proposition like this.<BR/><BR/>[1] http://www.smalltalkpro.com/general.html<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143434460000#c114343446418884302" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13843763027842460609" rel="nofollow">Duncan</a> : 11:41 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143434460000#c114343446418884302" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13843763027842460609" rel="nofollow">Duncan</a> : 11:41 PM</div>
 
 								<span class="item-control blog-admin pid-247815683"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114343446418884302" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114343875247623898"></a> 				coding in ml (the ocaml variant) is a joy for certain kinds of problems -- when it compiles, it almost always works, and when it doesnt work, it usually is the problem with the algorithm -- not a coding bug. <BR/><BR/>the other advantage of coding in ocaml is that you can express more algorithm per line of code, i.e., you can be very productive.<BR/><BR/>that said, there are  many problems for which ocaml is a misfit (those that involve i/o),<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143438720000#c114343875247623898" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:52 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143438720000#c114343875247623898" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:52 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114343875247623898" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114345772155471407"></a> 				What about removing null from the language.  There wouldn't be any more null pointer errors if you forced progeammers to make explicit null objects.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143457680000#c114345772155471407" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:08 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143457680000#c114345772155471407" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:08 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114345772155471407" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114345981014566117"></a> 				>> It makes picking up new libraries an <BR/>>> absolute breeze, because your IDE knows <BR/>>> exactly what you can call.<BR/>Doesn't have a leg to stand, check Smalltalk, it's a dynamically typed langage and yet it's varions IDEs are some of the most advanced ever.<BR/><BR/>In fact, Eclipse (for example) was started by Smalltalk "refugees" that wanted the power of the Smalltalk IDEs back. Smalltalk systems had autocompletion, refactoring (hell, the Smalltalk guys <I>invented</I> refactoring), doits (basically, executing only part of what you coded, select a snipped of code and execute it alone), and since Smalltalk IDEs are smalltalk systems you can even edit them on the fly (think Eclipse plugins but without the need of a specific environment and without the need to restart every time you changed something).<BR/><BR/>And even then, the current Smalltalk IDEs pale compared to the ones that were running in the 80s at Xerox PARC on Alto and Dorado machines.<BR/><BR/>Static typing isn't <I>better</I> for IDEs, it doesn't bring the IDE any more <I>potential</I> power (if anything, it gives the IDE much less potential), it just makes coding the IDE easier.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143459780000#c114345981014566117" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:43 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143459780000#c114345981014566117" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:43 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114345981014566117" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114346874630369379"></a> 				I think you're missing the point by saying "Unit tests will catch the trivial errors that involve static types".<BR/>I prefer to think of the static type system as a way to write unit tests really conveniently and briefly.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143468720000#c114346874630369379" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14355589013774099034" rel="nofollow">Laurie Cheers</a> : 9:12 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143468720000#c114346874630369379" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14355589013774099034" rel="nofollow">Laurie Cheers</a> : 9:12 AM</div>
 
 								<span class="item-control blog-admin pid-1752579193"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114346874630369379" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114346922917483837"></a> 				Type declarations should be optional. If you're like me, you want your code to be "right". (that means clean, readable, etc...and not only working)<BR/>To get right code, you'll have to rewrite a program many times. So most code will be thrown away. Do you really want to type all those type declarations just to throw them away later?<BR/><BR/>There are many solutions:<BR/><BR/>1. The CL way: you can add type declarations if you want, but they are not required<BR/><BR/>2. The Ruby/Python way: no type declarations at all<BR/><BR/>3. The Haskell way: (nearly) no type declarations, these will be inferred by the compiler<BR/><BR/>And about escaped/unescaped strings: if you add the these subclasses to your program you're aware of the problem anyway, so if would be trivial to solve without these subclasses. (by tainting objects for example).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143469200000#c114346922917483837" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Jules</span> : 9:20 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143469200000#c114346922917483837" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Jules</span> : 9:20 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114346922917483837" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114347087744247375"></a> 				<I>I prefer to think of the static type system as a way to write unit tests really conveniently and briefly.</I><BR/><BR/>I agree in theory. In practice, the statement hinges on your perception of what is "brief" and how much syntactic overhead the language forces down your throat.<BR/><BR/>For example, ML and Haskell use type inference to minimzie the number of declarations you have to make. That's good.<BR/><BR/>M$'s latest vapourware, C# 3.0, promises a very limited inference facility using the <B>var</B> keyword. James Gosling said he considered this facility for Java using two new assignment operations, "assign and type" and "assign final and type".<BR/><BR/>But whether we like or dislike the static typing enforced by Blubs like Java or C#, all I'm saying is that I think that catching certain semantic problems like nulls and unsecaped strings is <I>more important</I>.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143470820000#c114347087744247375" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:47 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143470820000#c114347087744247375" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:47 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114347087744247375" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114347132485190429"></a> 				<I>And about escaped/unescaped strings: if you add the these subclasses to your program you're aware of the problem anyway, so if would be trivial to solve without these subclasses. (by tainting objects for example).</I><BR/><BR/>The problem with tainting objects is that you require 100% unit test branch coverage to be sure that the runtime checking has caught every possible problem.<BR/><BR/>I'm not claiming that I don't like runtime checking, or that the benefits of a dynamic language when used properly don't outweigh the edge cases where static checking would help. (Nor am I claiming the reverse).<BR/><BR/>My simple statement is that I would consider static typing as practiced in high-noise type systems like Java or C# worthwhile if it could solve these types of problems for <B>me</B>.<BR/><BR/>For pedants, my claim is an if, not an if and only if.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143471300000#c114347132485190429" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:55 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143471300000#c114347132485190429" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:55 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114347132485190429" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114347295725610255"></a> 				Consider this Haskell code:<BR/><BR/>fac 1 = 1<BR/>fac x = x * fac (x - 1)<BR/><BR/>This is a factorial function. GHC (a Haskell compiler infers this type:<BR/><BR/>fac :: (Num a) => a -> a<BR/><BR/>This means that it takes a number and returns a number.<BR/><BR/>To make the code better, you could add this declaration:<BR/><BR/>fac :: (Integral a) => a -> a<BR/><BR/>If you do, fac will only accept integral numbers, so:<BR/><BR/>fac 0.2<BR/><BR/>Will give you a compile time error. (note that this makes sense, because fac 0.2 will never reach the base case fac 1 = 1.<BR/><BR/>This is very nice, not only because the type declaration is optional, but because it has a nice and readable syntax too.<BR/><BR/>But even Haskell's type system has limitations:<BR/><BR/>fac (-5)<BR/><BR/>will loop forever (until you get stack overflow: fac is not tail recursive).<BR/><BR/>To prevent this, you have to add a guard:<BR/><BR/>fac x | x > 0 = x * fac (x - 1)<BR/><BR/>This makes the factorial function more difficult to understand. You have to decide how far you want to go.<BR/><BR/>In a system where most types can be inferred, static typing is nice. But I would rather use Ruby and unit test everything than C# with verbose type declarations (at least for prototyping, if you need more speed, you have no choice).<BR/><BR/>ps:<BR/><BR/>if you write the factorial function like this:<BR/><BR/>fac x = product [1..x]<BR/><BR/>fac 0.2<BR/>and:<BR/>fac (-5)<BR/><BR/>return 1, not correct, but no stack overflow.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143472920000#c114347295725610255" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Jules</span> : 10:22 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143472920000#c114347295725610255" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Jules</span> : 10:22 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114347295725610255" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114355676380346392"></a> 				>I think you're missing the point by saying "Unit tests will catch the trivial errors that involve static types".<BR/>>I prefer to think of the static type system as a way to write unit tests really conveniently and briefly.<BR/><BR/>But unit tests catch so much more than static typing. So it's like you're just happy with settling for less safety. If you take the route of writing unit tests to statically typed programs, you actually pay twice for the bugs that can be caught by either unit tests or statical typing.<BR/><BR/>I don't believe that there exists a programmer who *only* writes bugs that can be caught by static typing. So if you like to take the "lets pray my program doesn't crash" route, static typing may be a good choice for you; At least the language then forces you to add some simple tests to your code. But if you take the route of testing everything to get greater safety, static typing will give no benefit -- only additional work.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143556740000#c114355676380346392" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:39 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143556740000#c114355676380346392" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:39 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114355676380346392" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114357906279632417"></a> 				"I mean that when I ask them whether they would have typing troubles in a dynamic language, their answer is often 'well, I wouldn't, but every business needs hordes of monkey/offshore/intern/new graduate programmers who do make these errors.'"<BR/><BR/>Weird. When I use static typing it is to catch errors I'm afraid I'm going to make. Usually they aren't just typos, though. It's forgetting that I need a conversion or just plain using the wrong variable.<BR/><BR/>That said, I'm always surprised by how few type mismatch errors I have when I use a dynamically typed language.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143579060000#c114357906279632417" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Robert Fisher</span> : 3:51 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1143579060000#c114357906279632417" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Robert Fisher</span> : 3:51 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114357906279632417" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114658253966864249"></a> 				> unit tests catch so much more than static typing.<BR/><BR/>I would say that unit tests catch a different set of error than static typing.<BR/><BR/>Your unit tests tells you that in the execution path tested, everything works as expected: good for checking that normal case works, not so good to protect yourself against an attacker which will try to use uncommon execution path to abuse your program.<BR/><BR/>Static typing gives you some (small) assurance that hold true in any case.<BR/><BR/>With local type inference being fashionable (removing a lot of clutter in variable declaration), the only downside I can think about static typing is that it is often used as an excure to avoid unit testing..<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1146582480000#c114658253966864249" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:08 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1146582480000#c114658253966864249" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:08 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114658253966864249" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114666879193228654"></a> 				"I mean that when I ask them whether they would have typing troubles in a dynamic language, their answer is often 'well, I wouldn't, but every business needs hordes of monkey/offshore/intern/new graduate programmers who do make these errors.'"<BR/><BR/>Dude.  I make simple spelling typos *all the time*.  I **constantly** get NameErrors and AttributeErrors and arguments-in-the-wrong-order errors when I program in Python (which is pretty common; it's my language of choice).<BR/><BR/>I'm working on a JavaScript project right now, and I often find that my code is calling frob.asyncDoStuff() when the method is actually called doStuffAsync(); or that I'm doing "throw FrobError(msg)" when I mean "throw new FrobError(msg)".<BR/><BR/>I actually do have a test suite with some 300 tests.  I run it frequently.  But it doesn't cover every path through every method.  It certainly doesn't cover "this should never happen, build a comprehensive error message so Jason can usefully debug this" paths, arguably the most important ones to get right the first time.  And it already takes a lot longer to run the tests than it would take to compile a whole C# project of comparable complexity.<BR/><BR/>These aren't deep bugs, but they are so very, very common (and such understandable mistakes) that I have a hard time believing they're only hit by monkeys, interns, and me.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1146668760000#c114666879193228654" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03968844388108605008" rel="nofollow">jto</a> : 11:06 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1146668760000#c114666879193228654" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03968844388108605008" rel="nofollow">jto</a> : 11:06 AM</div>
 
 								<span class="item-control blog-admin pid-1149439850"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114666879193228654" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114666940994249244"></a> 				Anonymous wrote:<BR/>'Tagging strings with the character set could make internationalization easier. "utf-8" vs. "iso-latin1"'<BR/><BR/>Using static typing for this seems impossible.  In applications where character sets matter, the encoding is often known only at runtime.<BR/><BR/>If you *do* know your input is always going to be latin-1 or whatever, you should just convert it to unicode on input, e.g. using a FileReader or an XML parser or any of a dozen other methods.  Thereafter, as long as it's in memory, character set is not an issue.<BR/><BR/>A basic understanding of Unicode is the cure.  Not static typing.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1146669360000#c114666940994249244" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03968844388108605008" rel="nofollow">jto</a> : 11:16 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1146669360000#c114666940994249244" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03968844388108605008" rel="nofollow">jto</a> : 11:16 AM</div>
 
 								<span class="item-control blog-admin pid-1149439850"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114666940994249244" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114667488829220904"></a> 				JTO:<BR/><BR/>Dude. Of course everyone makes some errors. Even me. So Dude. Chill.<BR/><BR/>;-)<BR/><BR/>Seriously, I said above: "all I'm saying is that I think that catching certain semantic problems like nulls and unsecaped strings is more important [than catching type errors]."<BR/><BR/>And I'm also saying that the overhead may not be worth it. By overhead, I mean both the restrictions against certain types of dynamic programming as well as the typorrhea in the code.<BR/><BR/>It isn't for me. One of the reasons it isn't is that when I have the type of errors you mention, my experience is that they are *very* easy to find and fix.<BR/><BR/>I lament the fact that static analysis could identify errors that are hard to find and fix, but it doesn't.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1146674880000#c114667488829220904" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:48 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1146674880000#c114667488829220904" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:48 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114667488829220904" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="115025996921286349"></a> 				I'm not sure if this is fundamentally important, but anyone actually implementing the EscapedString/UnescapedString idea on a website would need to consider which method of escaping or encoding is needed.  Escape quotation marks with backslashes?  Double up the single quotes?  URL encoding?  HTML encoding?  Trying to insert a string into single- or double-quoted javascript string?  Perhaps you could make each of these into different subclasses of String.<BR/><BR/>I can see how using classes like UntrustedUserInputString and HopefullyDefangedString help you keep tabs on whether dangerous input has been considered, but I don't see much reduction in overall complexity.  This may create new ways for me to shoot myself in the foot.<BR/><BR/>This is just off the top of my head, but I'd rather add methods like .getURLEncodedString() and .getJavascriptSingleQuotedString() to the String class and have the respective code aware of what kind of protection is needed.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1150259940000#c115025996921286349" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://david.sickmiller.com" rel="nofollow">David Sickmiller</a> : 12:39 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1150259940000#c115025996921286349" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://david.sickmiller.com" rel="nofollow">David Sickmiller</a> : 12:39 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115025996921286349" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="115028533972280474"></a> 				<I>can see how using classes like UntrustedUserInputString and HopefullyDefangedString help you keep tabs on whether dangerous input has been considered, but I don't see much reduction in overall complexity.</I><BR/><BR/>I agree, you won't see a reduction in overall complexity: it's a trade-off. You increase the program <A HREF="www.braithwaite-lee.com/weblog/2006/01/finding-signal-to-noise-ratio-in-never.html" REL="nofollow">noise</A> in exchange for reducing or eliminating a bug you may consider serious.<BR/><BR/>This is, IMO, the same trade-off you make when using strong, static typing. Extra noise in exchange for safety.<BR/><BR/>I was trying to say that for me, the trade-off is not particularly beneficial for the current types offered by languages such as Java, but I would reconsider the value of static typing if I could discover safety and null pointer bugs at compile time.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1150285320000#c115028533972280474" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:42 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1150285320000#c115028533972280474" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:42 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115028533972280474" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="115920094056367513"></a> 				Where can i find an IDE for Smalltalk that has every feature of Eclipse? Why aren't there IDEs like that for Ruby and/or Python? I don't really care why, just give it to me and i'll start  coding in the language, 'cause Java sure isn't perfect. But until then I'll use Java+Eclipse.<BR/><BR/>I guess You could write an equally brilliant IDE for C/C++ but where the hell is it? Well I guess C++ is too complex for such an IDE, so <I>"it just makes coding the IDE easier"</I> IS important after all isn't it?<BR/><BR/>So I LOVE Java! But not for Java as a language ('cause it's crap) and not for Java as a VM ('cause I don't like VMs in general) and not for Java as a religion (I'm not religious) but Java's tools sure do the job and I'm lovin' it as I would love any other language for such a toolset.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1159200900000#c115920094056367513" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:15 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1159200900000#c115920094056367513" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:15 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115920094056367513" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="115920163138107423"></a> 				<I>Where can i find an IDE for Smalltalk that has every feature of Eclipse?</I><BR/><BR/>What an interesting question. I think Eclipse-lovers will find this interesting: <A HREF="http://en.wikipedia.org/wiki/VisualAge" REL="nofollow">VisualAge on Wikipedia</A>.<BR/><BR/>The short version is that Eclipse began its life as a tool for SmallTalk, <I>written in SmallTalk</I>.<BR/><BR/>Today, it is still available. You'll also find refactoring Smalltalk browsers available in the public domain and from commercial SmallTalk vendors.<BR/><BR/>Try googling <A HREF="http://www.google.com/search?hl=en&q=smalltalk+refactoring+browser" REL="nofollow"><I>smalltalk refactoring browser</I></A>.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1159201620000#c115920163138107423" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:27 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1159201620000#c115920163138107423" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:27 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115920163138107423" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="115920326222713997"></a> 				Yeah, okay, but where can I find an IDE that I could use or at least try without first buying (even that's not an option with IBMs VisualAge). And although Eclipse might be derived from a Smalltalk IDE, Eclipse before 3.0 was quite a crap frankly. So I'm not sure VisualAge would be worth it...<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1159203240000#c115920326222713997" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:54 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1159203240000#c115920326222713997" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:54 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115920326222713997" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116901065059103303"></a> 				I've used both VisualAge Smalltalk and Eclipse for several years, and worked closely on other projects with the people who developed both IDEs.  Here are some random impressions:<BR/><BR/>(1) Eclipse is more powerful than VA Smalltalk.  It has stronger browsing support, better refactorings, and better task management (perspectives/editor pinning/fast outline/Open Type/and so on)<BR/>(2) Smalltalk is considered a better language by most of the original Smalltalkers who moved on to do the Java work<BR/>(3) The static typing helps Eclipse know things about your code that it would not otherwise be able to know (like when you invoke code assist in the parameter list of a SetParent(Foo) method, it knows to propose variables whose types are derived from Foo, but not variables of some other type Bar).<BR/>(4) Eclipse takes away some of the pain of doing Java.  It manages imports for you.  You can override methods easily using code assist.  You can Refactor>Move or Refactor>Rename just about anything.  It can extract interfaces, modify method signatures up and down the heirarchy, search for all declarations/references/implementors in a project or heirarchy, perform quick fixes for errors, and so on.  It really is less painful than most statically typed languages.  It's not as good as a REPL loop, but its about half way there from the other extreme of manually compiling your C++ code.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1169010600000#c116901065059103303" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:10 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1169010600000#c116901065059103303" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:10 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116901065059103303" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116907797027354355"></a> 				I don't make a lot of typos (thanks to Emacs autocompletion), and I unit test heavily, so I have very little need for type-checking when working in Ruby or Lisp. I think Ruby metaprogramming, in particular, hits a sweet spot in the design space, and it wouldn't work with stronger types.<BR/><BR/>But when programming in Haskell, I've come to love two aspects of (very) strong typing:<BR/><BR/>1) Hoogle, the Haskell search engine, allows me to search the standard libraries using approximate type signatures.  This is really useful, because Haskell has 15 bazillion higher-order library functions, and I often need to find one that solves a particular problem. I especially miss Hoogle when I'm working in Scheme, for some reason.<BR/><BR/>2) Haskell's type system provides a safety net when I'm trying to do insane higher-order stuff, such puzzling out what comonads actually do, or trying to translate bits of category theory into running code.  This doesn't really apply to production code (where there's little need for such crazy abstractions), but it's nice when the compiler can keep all the meta-levels straight, and explain to me what some higher-order function actually <I>does.</I> Haskell lets me experiment with ideas that I can't even keep straight in Lisp.<BR/><BR/>And as for Java: Eclipse refactoring support really is awesome, and it's hard to make something like that 100% accurate without fairly strong types. I know how to get it 90% right for a language like Ruby using type inference, but there's a big difference between 90% and 100% in terms of maintaining "flow." So if killer refactoring support is more important to you than, say, Ruby-style metaprogramming, then you might favor Java for this reason.<BR/><BR/>So, yeah, I'm feeling a bit self-contradictory on the typing issue lately. :-)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1169077920000#c116907797027354355" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 6:52 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1169077920000#c116907797027354355" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 6:52 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116907797027354355" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116908266628409052"></a> 				Emk:<BR/><BR/>Thanks for sharing your experience, it's good to hear a perspective from someone who seems to be committed to both sides of the divide (as opposed to committed to one and just playing with the other).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1169082660000#c116908266628409052" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:11 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1169082660000#c116908266628409052" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:11 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116908266628409052" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116992880591091472"></a> 				For the feet/metres issue, the people on the <A HREF="http://www.boost.org/" REL="nofollow">Boost</A> mailing list are busy developing a template system (there are 2 different alpha implementations already) that do compile-time dimensional analysis.<BR/><BR/>It means that if you accidently do<BR/>quantity&lt;length&gt; pos = myvelocity / mytime;, you get a compile-time error. (You should have done quantity&lt;length&gt; pos = myvelocity * mytime;)<BR/><BR/>They also handle units, so<BR/>quantity&lt;length&gt; = 2 * metres;<BR/>Will give a different value from<BR/>quantity&lt;length&gt; = 2 * feet;<BR/>And will either add conversion factors as necessary or will force you to use some wort of unit_cast to make the conversion explicit.<BR/><BR/>And thanks to templates, the checking is done entirely at compile-time, so there's zero runtime cost.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1169928780000#c116992880591091472" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">me22</span> : 3:13 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1169928780000#c116992880591091472" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">me22</span> : 3:13 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116992880591091472" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="9023127069471195091"></a> 				In answer to the request for a Haskell solution, see <A HREF="http://blog.moertel.com/articles/2006/10/18/a-type-based-solution-to-the-strings-problem" REL="nofollow">this</A> blog entry. (Not by me, I hasten to add).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1175790780000#c9023127069471195091" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.kantaka.co.uk/" rel="nofollow">Phil Armstrong</a> : 12:33 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1175790780000#c9023127069471195091" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.kantaka.co.uk/" rel="nofollow">Phil Armstrong</a> : 12:33 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9023127069471195091" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1592527760435370770"></a> 				"To get around the errors, we need to escape our strings. We do that by writing a conversion method somewhere that, you guessed it, takes an UnescapedString as a parameter and returns an EscapedString.<BR/><BR/>Naturally our application would be full of bookkeeping annotations as we keep track of which strings are escaped and which aren’t."<BR/><BR/>Or not. Why not, instead of having the compiler throw an error, have it fix the problem for you? Declare a converter function for UnescapedString to EscapedString, - or any other type pair of your choice - and have it used implicitly whenever you pass Type A to something that is expecting Type B. <BR/><BR/>In fact, doesn't nearly every language already do something like this when you pass a number to print()?<BR/><BR/>Clearly not safe in all cases - and for cases where you don't want it, you just don't define a converter function, or flag the function(s) where you don't want it to happen - then you still get the error.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1200056400000#c1592527760435370770" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04820194790550072204" rel="nofollow">AlanL</a> : 8:00 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html?showComment=1200056400000#c1592527760435370770" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04820194790550072204" rel="nofollow">AlanL</a> : 8:00 AM</div>
 
 								<span class="item-control blog-admin pid-579038376"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1592527760435370770" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -286,7 +286,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -340,25 +340,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -366,17 +366,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -386,17 +386,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -404,19 +404,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -424,18 +424,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -443,15 +443,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -460,101 +460,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

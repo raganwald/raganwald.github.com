@@ -43,7 +43,7 @@
 <body>
 
 	<div id="leftcontent">
-			<img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/><br/>
 <!--
 <div style="background-color:black; text-align: center; color: white; padding: 10px 10px 10px 10px;">
@@ -60,11 +60,11 @@
 			<div class="Post"><a name="113760257639104711">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/01/eq-lisp-0.html" title="permanent link">(eq? 'lisp  0)</a></span>
-					<div style="clear:both;"></div>I just <a href="http://www.jimloy.com/math/zero0.htm">read</a> (via Jim Loy's <a href="http://www.jimloy.com/math/math.htm">math pages</a>) that it took Europe approximately <span style="font-style: italic;">five centuries</span> to adopt <a href="http://en.wikipedia.org/wiki/0_%28number%29">zero</a> and the Hindu-Arabic numbering system. ("from about <acronym title="1200">twelve hundred</acronym> when Fibonacci introduced Hindu-Arabic numbers to Europe, to about <acronym title="1700">seventeen hundred</acronym> when they became popular").<br /><br />So... <a href="http://planet.lisp.org/">Lisp</a> has only been around since <acronym title="1959">nineteen fifty-nine</acronym> or so, <span style="font-style: italic;">not even five decades</span>. We may have to wait another <acronym title="454">four hundred and fifty-four</acronym> years before every programming language embraces program/data equivalence, bottom-up programming, functional programming, macros, and even parentheses.<br /><br />As Jim points out, many people exposed to the new system may not have seen the advantages. Their existing zero-less numbering systems suited their existing needs just fine. This argument struck me as familiar.<br /><br /><a href="http://www.braithwaite-lee.com/weblog/2006/01/finding-signal-to-noise-ratio-in-never.html">Plus ça change... (plus c'est la même chose)</a>.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/lispy.html">lispy</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2006/01/eq-lisp-0.html" title="permanent link">(eq? 'lisp  0)</a></span>
+					<div style="clear:both;"></div>I just <a href="http://www.jimloy.com/math/zero0.htm">read</a> (via Jim Loy's <a href="http://www.jimloy.com/math/math.htm">math pages</a>) that it took Europe approximately <span style="font-style: italic;">five centuries</span> to adopt <a href="http://en.wikipedia.org/wiki/0_%28number%29">zero</a> and the Hindu-Arabic numbering system. ("from about <acronym title="1200">twelve hundred</acronym> when Fibonacci introduced Hindu-Arabic numbers to Europe, to about <acronym title="1700">seventeen hundred</acronym> when they became popular").<br /><br />So... <a href="http://planet.lisp.org/">Lisp</a> has only been around since <acronym title="1959">nineteen fifty-nine</acronym> or so, <span style="font-style: italic;">not even five decades</span>. We may have to wait another <acronym title="454">four hundred and fifty-four</acronym> years before every programming language embraces program/data equivalence, bottom-up programming, functional programming, macros, and even parentheses.<br /><br />As Jim points out, many people exposed to the new system may not have seen the advantages. Their existing zero-less numbering systems suited their existing needs just fine. This argument struck me as familiar.<br /><br /><a href="http://www.braithwaite-lee.com/weblog/2006/01/finding-signal-to-noise-ratio-in-never.html">Plus ça change... (plus c'est la même chose)</a>.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/lispy.html">lispy</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/01/eq-lisp-0.html" title="permanent link">11:21 AM</a>
+						&para; <a href="http://raganwald.github.com/2006/01/eq-lisp-0.html" title="permanent link">11:21 AM</a>
 
 					 
 				</span> 
@@ -84,11 +84,11 @@
 			<div class="Post"><a name="113630985287415026">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html" title="permanent link">Finding the Signal-to-Noise Ratio in the Never-Ending Language Debate</a></span>
-					<div style="clear:both;"></div>Once again the web is buzzing with one of the most boring debates ever, namely "what's the best programming language?" I will not rehash the arguments. I'll try to restrain myself to stating my position, giving my reasons, and then toss in speculation on why a certain web framework is growing like wildfire.<br /><br />My position is simple: <span style="font-weight: bold;">the language operating at the highest level of abstraction while not suffering from project-killing defects is the one I want to use</span>. My algorithm is simple: throw away languages that will scuttle my project, and pick the highest level language out of those that remain. (I'm not going to discuss defects. They are a matter of taste and lead us down an unhappy path.)<br /><br />I believe that programming is an idiomatic activity. We learn idioms and then apply a kind of pattern-matching to recognise problems that can be solved with an idiom we already know. Some idioms are easier to express than others in each programming language. (Does the Weak <a href="http://en.wikipedia.org/wiki/Sapir-Whorf_Hypothesis">Sapir-Whorf Hypothesis</a> apply to programming?)<br /><br />Sure, all languages are Turing Complete and therefore equivalent in theory, but in practice you might find that the only way to express an idiom from Language A in Language B is to write a A->B compiler or interpreter in B.<br /><blockquote>  Greenspun's Tenth Rule of Programming: "Any sufficiently complicated C or Fortran program contains an ad-hoc, informally-specified, bug-ridden, slow implementation of half of Common Lisp."</blockquote>Does that sound too academic? Consider this: how would you write a <a href="http://en.wikipedia.org/wiki/Continuation">continuation</a>-based framework (like <a href="http://seaside.st/">Seaside</a>) in <a href="http://rifers.org/wiki/display/RIFE/Web+continuations">Java</a>?<br /><br />This, incidentally, is why the language debate will never end. Programmers naturally learn and know the idioms <a href="http://en.wikipedia.org/wiki/Affordance">afforded</a> by their language. So when you say "In my language I can very easily do X and Y," the programmers using other languages always say "But nobody needs X or Y. We're busy doing Z."<br /><br />So let's talk about idioms instead of so-called features like syntax. What does it mean for one language to be "higher level" than another? To have a "higher level of abstraction"? My own interpretation is simple:<br /><br />One language is higher-level than another if it expresses more idioms in fewer bits than the other language. Or fewer lines of code. Or fewer symbols. There's a really simple language idiom for this: Programs in a higher-level language have a high <a href="http://catb.org/%7Eesr/jargon/html/S/signal-to-noise-ratio.html">signal to noise ratio</a>.<br /><br />For example, there are these "design patterns" that all of the COBOL^H^H^H^H^H Java programmers like to use. One of these is called <a href="http://128.42.6.89/JavaResources/DesignPatterns/VisitorPattern.htm">Visitor</a>: "<span style="font-style: italic;">One key advantage of using the Visitor Pattern is        that adding new operations to perform upon your data structure is very        easy. All you have to do is create a new Visitor and define the operation        there.  This is the result of the very distinct separation of variant        and invariant behavior in the    Visitor pattern.   The invariant behaviors are represented by the data  structure elements and    the abstract Visitor.   The variant behaviors are encapsulated in the concrete Visitors.</span>"<br /><br />Got that? How many lines of code do you need in Java? Here's how you express the Java idiom of the Visitor pattern in Ruby:<br /><br /><span style="font-family:courier new;">concrete.each { |thingy| visitor.visit thingy }</span><br /><br />Do you think I'm making this thing about brevity up?<br /><br />Here's something I found this morning. This fellow is explaining why interviewees can use any language they like to solve a problem, provided it's black:<br /><blockquote>When I interview someone, I usually let them use the language of their choice with between C, C++, C# and Java... It's not that I have something against Ruby or other fourth generation languages, but I found that these languages work at a level of abstraction that is a little too high to give me a meaningful insight on the candidate for a forty-five minute interview.  There are plenty of very interesting problems that are hard to solve even in Ruby or Python (and actually, it's quite likely this is the kind of problem that the candidate will be struggling with if she gets hired), but formulating the question and writing the solution would take several hours.<br /><div style="text-align: right;"><a href="http://beust.com/weblog/archives/000352.html">The Language of Interviews</a><br /></div></blockquote>Let me see if I can condense this: there is a class of problems that are non-trivial to solve in C# and Java but are trivial in Ruby and Python. Hot <a href="http://www.randsinrepose.com/archives/2006/01/01/swear_a_bit.html">damn</a>, I could have skipped writing this whole thing and simply posted the quote.<br /><br />(By the way, do you buy that something non-trivial to solve in Ruby must necessarily require hours to explain and to write out? Neither do I. I am not bashing the post here. That point is really a very small aside. But I don't have any trouble thinking of Ruby, Python, or Lisp problems that would require only a few minutes to explain and would be appropriate for an interview.)<br /><br />Now, there's some idea that you can build your own idioms in any programming language. We have various names for the technique (like procedures, subroutines, objects, modules, and macros), but the argument is that you can build up a library or framework of idioms and then you can ultimately express yourself with startling brevity.<br /><br />So some state that all languages are equal because if something is difficult to express you build your new idioms into the language and presto, you have a high signal-to-noise ratio in your programs.<br /><br />This argument has a major, glaring, flaw: <span style="font-style: italic;">the mechanism for building idioms in each language is an idiom itself, and it tends to be the most rigidly limiting idiom on the language</span>. C++ is a language for defining abstract data types that look just like built in types. In SmallTalk everything is an object that belongs to a class. And so on. Let's call this the language's "meta-idiom."<br /><br />The argument about idioms applies to meta-idioms. So if you want to build new idioms in a language, you need to use its meta-idioms. Some languages provide higher signal-to-noise on meta-idioms than others. Some languages make it easier to construct your own idioms than others. So even though all languages may provide some mechanism for raising the signal-to-noise ratio, not all are equal when it comes to using their mechanisms.<br /><br />So, I've written that I believe that not all languages are equal. I've written that I believe that an important metric for comparing languages is the signal-to-noise ratio, as measured by the brevity of expressing idioms. Now I will conclude by revisiting the affordances argument.<br /><br />Some languages make it easier to express some idioms than others. How? See the paragraph above about signal-to-noise ratio. Given that some things are easier than others in each language, wouldn't you expect that <span style="font-weight: bold;">there will be a very few languages that can express an order of magnitude more idioms in an order of magnitude less code than the 'average' language</span>?<br /><br />(If you don't think so, why not? Doesn't practically everything you've ever seen operate on a power law distribution? Why should programming languages be different?)<br /><br />So, I expect that some languages will do a better job of expressing a larger set of idioms than others. Now, here's the key question: does the number of idioms that a language affords <span style="font-style: italic;">matter</span>?<br /><br />I diverge from the wise men who write <a href="http://paulgraham.com/articles.html">essays </a>on this topic. I think it matters to me, but it is unlikely to sway anyone's decision. My simple observation is that programmers develop and use idioms that are easy to express in their language. They 'cut with the grain.'<br /><br />When considering one language over another, my first consideration, naturally, is with the idioms I already know. Does the new language help? This consideration is exactly like almost any other "upgrade" consideration. When considering an upgrade, the first thing you want to do is solve an existing problem.<br /><blockquote>When I purchased an iMac for my home, I had no need for playing DVD's. So I was very close to buying the 17" model. Luckily, I purchased the 20" model so I would have more desktop for programming. I already had a 17" monitor on my development box, and it was starting to feel cramped. Now that I have the 20" iMac, I love watching DVD's on it and I'm very happy I didn't settle for the model that seemed to suit what I thought I would need.<br /></blockquote>Once you're satisfied that the upgrade meets your needs and solves a problem, you go ahead. Later on, you'll discover a whole new world of features. These grow on you, until one day you ask yourself how you ever lived without them.<br /><br />And so it is with programming languages. I can write about meta-programming in Ruby and Scheme for six more posts, but if you aren't meta-programming now, my guess is that you won't switch. You simply don't think in terms of that idiom, so you perceive it to be a "nice to have," but not essential.<br /><br />What will get you to move up the ladder is when someone shows you how to solve an existing problem in fewer bits. This, you can recognise. Did I say signal-to-noise? Imagine your favourite music on AM radio in your grandparents' car. Now imagine you hear it on a beautiful stereo. More signal! Less noise!<br /><br />But you aren't going to switch because someone says "if you think listening to music is fantastic, just wait until you hook up a keyboard and use GarageBand to compose music..." That simply doesn't mean anything to you until you've already bought your new iMac.<br /><br />So although I fervently believe that a better language will allow you to express more idioms than you are currently using, I know that you are unlikely to switch for that reason. So I'm not going to write about how cool it is that someone could add "acts_as_versioned" to the Rails framework. You probably only care about whether "acts_as_versioned" saves you a ton of boilerplate versioning data in your application.<br /><br />Speaking of Rails, I'm going to conclude with my take on one reason why <a href="http://rubyonrails.org/">Rails</a> is taking off and Seaside is not. Rails allows programmers to express the idioms they already know (relational databases, web-backed MVC, stateless event handling plus a global session store) in fewer bits.<br /><br />Seaside provides a whole new idiom, continuations, that IMO is more powerful. I think you end up with an even higher signal-to-noise ratio with a Seaside app than with a Rails app. Why? Because continuations afford you a much higher degree of controller reuse.<br /><br />Now, here's the catch: if you try to imagine your current application running on both Rails and on Seaside, you probably won't see much difference between the two (although they'll both be an order of magnitude better than ASP.NET). They will look the same because you designed your application with idioms that both Rails and Seaside support.<br /><br />To get a big win, you'd have to rethink your application's flow and logic. You'd have to "think in Seaside." And you're not going to do that. So you pick Rails, like so many others have picked it, because it looks just like your ASP app, only all the noise has gone away. It's all signal, baby.<br /><br />Now, do you see the thing here? Ruby has been around for a while, but nobody switched. Why? Because they couldn't see how its new idioms would help them. Every time a programmer considered switching from <a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html">Blub</a> to Ruby, she was presented with all these new idioms, like dynamic types. None of this meant anything to her, because they didn't appear to make the idioms she already knew more compact. No win.<br /><br />But now she looks and she sees her existing web idioms, and she sees them expressed with way fewer bits, and she is suddenly prepared to learn this Ruby thing if it will let her say:<br /><br /><pre>class Language &lt; ActiveRecord::Base<br />has_and_belongs_to_many :idioms<br />end<br /></pre><br />Happy New Year!<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/ruby.html">ruby</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2006/01/finding-signal-to-noise-ratio-in-never.html" title="permanent link">Finding the Signal-to-Noise Ratio in the Never-Ending Language Debate</a></span>
+					<div style="clear:both;"></div>Once again the web is buzzing with one of the most boring debates ever, namely "what's the best programming language?" I will not rehash the arguments. I'll try to restrain myself to stating my position, giving my reasons, and then toss in speculation on why a certain web framework is growing like wildfire.<br /><br />My position is simple: <span style="font-weight: bold;">the language operating at the highest level of abstraction while not suffering from project-killing defects is the one I want to use</span>. My algorithm is simple: throw away languages that will scuttle my project, and pick the highest level language out of those that remain. (I'm not going to discuss defects. They are a matter of taste and lead us down an unhappy path.)<br /><br />I believe that programming is an idiomatic activity. We learn idioms and then apply a kind of pattern-matching to recognise problems that can be solved with an idiom we already know. Some idioms are easier to express than others in each programming language. (Does the Weak <a href="http://en.wikipedia.org/wiki/Sapir-Whorf_Hypothesis">Sapir-Whorf Hypothesis</a> apply to programming?)<br /><br />Sure, all languages are Turing Complete and therefore equivalent in theory, but in practice you might find that the only way to express an idiom from Language A in Language B is to write a A->B compiler or interpreter in B.<br /><blockquote>  Greenspun's Tenth Rule of Programming: "Any sufficiently complicated C or Fortran program contains an ad-hoc, informally-specified, bug-ridden, slow implementation of half of Common Lisp."</blockquote>Does that sound too academic? Consider this: how would you write a <a href="http://en.wikipedia.org/wiki/Continuation">continuation</a>-based framework (like <a href="http://seaside.st/">Seaside</a>) in <a href="http://rifers.org/wiki/display/RIFE/Web+continuations">Java</a>?<br /><br />This, incidentally, is why the language debate will never end. Programmers naturally learn and know the idioms <a href="http://en.wikipedia.org/wiki/Affordance">afforded</a> by their language. So when you say "In my language I can very easily do X and Y," the programmers using other languages always say "But nobody needs X or Y. We're busy doing Z."<br /><br />So let's talk about idioms instead of so-called features like syntax. What does it mean for one language to be "higher level" than another? To have a "higher level of abstraction"? My own interpretation is simple:<br /><br />One language is higher-level than another if it expresses more idioms in fewer bits than the other language. Or fewer lines of code. Or fewer symbols. There's a really simple language idiom for this: Programs in a higher-level language have a high <a href="http://catb.org/%7Eesr/jargon/html/S/signal-to-noise-ratio.html">signal to noise ratio</a>.<br /><br />For example, there are these "design patterns" that all of the COBOL^H^H^H^H^H Java programmers like to use. One of these is called <a href="http://128.42.6.89/JavaResources/DesignPatterns/VisitorPattern.htm">Visitor</a>: "<span style="font-style: italic;">One key advantage of using the Visitor Pattern is        that adding new operations to perform upon your data structure is very        easy. All you have to do is create a new Visitor and define the operation        there.  This is the result of the very distinct separation of variant        and invariant behavior in the    Visitor pattern.   The invariant behaviors are represented by the data  structure elements and    the abstract Visitor.   The variant behaviors are encapsulated in the concrete Visitors.</span>"<br /><br />Got that? How many lines of code do you need in Java? Here's how you express the Java idiom of the Visitor pattern in Ruby:<br /><br /><span style="font-family:courier new;">concrete.each { |thingy| visitor.visit thingy }</span><br /><br />Do you think I'm making this thing about brevity up?<br /><br />Here's something I found this morning. This fellow is explaining why interviewees can use any language they like to solve a problem, provided it's black:<br /><blockquote>When I interview someone, I usually let them use the language of their choice with between C, C++, C# and Java... It's not that I have something against Ruby or other fourth generation languages, but I found that these languages work at a level of abstraction that is a little too high to give me a meaningful insight on the candidate for a forty-five minute interview.  There are plenty of very interesting problems that are hard to solve even in Ruby or Python (and actually, it's quite likely this is the kind of problem that the candidate will be struggling with if she gets hired), but formulating the question and writing the solution would take several hours.<br /><div style="text-align: right;"><a href="http://beust.com/weblog/archives/000352.html">The Language of Interviews</a><br /></div></blockquote>Let me see if I can condense this: there is a class of problems that are non-trivial to solve in C# and Java but are trivial in Ruby and Python. Hot <a href="http://www.randsinrepose.com/archives/2006/01/01/swear_a_bit.html">damn</a>, I could have skipped writing this whole thing and simply posted the quote.<br /><br />(By the way, do you buy that something non-trivial to solve in Ruby must necessarily require hours to explain and to write out? Neither do I. I am not bashing the post here. That point is really a very small aside. But I don't have any trouble thinking of Ruby, Python, or Lisp problems that would require only a few minutes to explain and would be appropriate for an interview.)<br /><br />Now, there's some idea that you can build your own idioms in any programming language. We have various names for the technique (like procedures, subroutines, objects, modules, and macros), but the argument is that you can build up a library or framework of idioms and then you can ultimately express yourself with startling brevity.<br /><br />So some state that all languages are equal because if something is difficult to express you build your new idioms into the language and presto, you have a high signal-to-noise ratio in your programs.<br /><br />This argument has a major, glaring, flaw: <span style="font-style: italic;">the mechanism for building idioms in each language is an idiom itself, and it tends to be the most rigidly limiting idiom on the language</span>. C++ is a language for defining abstract data types that look just like built in types. In SmallTalk everything is an object that belongs to a class. And so on. Let's call this the language's "meta-idiom."<br /><br />The argument about idioms applies to meta-idioms. So if you want to build new idioms in a language, you need to use its meta-idioms. Some languages provide higher signal-to-noise on meta-idioms than others. Some languages make it easier to construct your own idioms than others. So even though all languages may provide some mechanism for raising the signal-to-noise ratio, not all are equal when it comes to using their mechanisms.<br /><br />So, I've written that I believe that not all languages are equal. I've written that I believe that an important metric for comparing languages is the signal-to-noise ratio, as measured by the brevity of expressing idioms. Now I will conclude by revisiting the affordances argument.<br /><br />Some languages make it easier to express some idioms than others. How? See the paragraph above about signal-to-noise ratio. Given that some things are easier than others in each language, wouldn't you expect that <span style="font-weight: bold;">there will be a very few languages that can express an order of magnitude more idioms in an order of magnitude less code than the 'average' language</span>?<br /><br />(If you don't think so, why not? Doesn't practically everything you've ever seen operate on a power law distribution? Why should programming languages be different?)<br /><br />So, I expect that some languages will do a better job of expressing a larger set of idioms than others. Now, here's the key question: does the number of idioms that a language affords <span style="font-style: italic;">matter</span>?<br /><br />I diverge from the wise men who write <a href="http://paulgraham.com/articles.html">essays </a>on this topic. I think it matters to me, but it is unlikely to sway anyone's decision. My simple observation is that programmers develop and use idioms that are easy to express in their language. They 'cut with the grain.'<br /><br />When considering one language over another, my first consideration, naturally, is with the idioms I already know. Does the new language help? This consideration is exactly like almost any other "upgrade" consideration. When considering an upgrade, the first thing you want to do is solve an existing problem.<br /><blockquote>When I purchased an iMac for my home, I had no need for playing DVD's. So I was very close to buying the 17" model. Luckily, I purchased the 20" model so I would have more desktop for programming. I already had a 17" monitor on my development box, and it was starting to feel cramped. Now that I have the 20" iMac, I love watching DVD's on it and I'm very happy I didn't settle for the model that seemed to suit what I thought I would need.<br /></blockquote>Once you're satisfied that the upgrade meets your needs and solves a problem, you go ahead. Later on, you'll discover a whole new world of features. These grow on you, until one day you ask yourself how you ever lived without them.<br /><br />And so it is with programming languages. I can write about meta-programming in Ruby and Scheme for six more posts, but if you aren't meta-programming now, my guess is that you won't switch. You simply don't think in terms of that idiom, so you perceive it to be a "nice to have," but not essential.<br /><br />What will get you to move up the ladder is when someone shows you how to solve an existing problem in fewer bits. This, you can recognise. Did I say signal-to-noise? Imagine your favourite music on AM radio in your grandparents' car. Now imagine you hear it on a beautiful stereo. More signal! Less noise!<br /><br />But you aren't going to switch because someone says "if you think listening to music is fantastic, just wait until you hook up a keyboard and use GarageBand to compose music..." That simply doesn't mean anything to you until you've already bought your new iMac.<br /><br />So although I fervently believe that a better language will allow you to express more idioms than you are currently using, I know that you are unlikely to switch for that reason. So I'm not going to write about how cool it is that someone could add "acts_as_versioned" to the Rails framework. You probably only care about whether "acts_as_versioned" saves you a ton of boilerplate versioning data in your application.<br /><br />Speaking of Rails, I'm going to conclude with my take on one reason why <a href="http://rubyonrails.org/">Rails</a> is taking off and Seaside is not. Rails allows programmers to express the idioms they already know (relational databases, web-backed MVC, stateless event handling plus a global session store) in fewer bits.<br /><br />Seaside provides a whole new idiom, continuations, that IMO is more powerful. I think you end up with an even higher signal-to-noise ratio with a Seaside app than with a Rails app. Why? Because continuations afford you a much higher degree of controller reuse.<br /><br />Now, here's the catch: if you try to imagine your current application running on both Rails and on Seaside, you probably won't see much difference between the two (although they'll both be an order of magnitude better than ASP.NET). They will look the same because you designed your application with idioms that both Rails and Seaside support.<br /><br />To get a big win, you'd have to rethink your application's flow and logic. You'd have to "think in Seaside." And you're not going to do that. So you pick Rails, like so many others have picked it, because it looks just like your ASP app, only all the noise has gone away. It's all signal, baby.<br /><br />Now, do you see the thing here? Ruby has been around for a while, but nobody switched. Why? Because they couldn't see how its new idioms would help them. Every time a programmer considered switching from <a href="http://raganwald.github.com/2006/10/are-we-blub-programmers.html">Blub</a> to Ruby, she was presented with all these new idioms, like dynamic types. None of this meant anything to her, because they didn't appear to make the idioms she already knew more compact. No win.<br /><br />But now she looks and she sees her existing web idioms, and she sees them expressed with way fewer bits, and she is suddenly prepared to learn this Ruby thing if it will let her say:<br /><br /><pre>class Language &lt; ActiveRecord::Base<br />has_and_belongs_to_many :idioms<br />end<br /></pre><br />Happy New Year!<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/popular.html">popular</a>, <a rel='tag' href="http://raganwald.github.com/labels/ruby.html">ruby</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html" title="permanent link">12:24 PM</a>
+						&para; <a href="http://raganwald.github.com/2006/01/finding-signal-to-noise-ratio-in-never.html" title="permanent link">12:24 PM</a>
 
 					 
 				</span> 
@@ -149,25 +149,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -175,17 +175,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -202,13 +202,13 @@
 <input type="hidden" name="item_number" value="DoubleEspresso">
 <input type="hidden" name="amount" value="3.15">
 <input type="hidden" name="no_shipping" value="0">
-<input type="hidden" name="logo_custom" value="http://weblog.raganwald.com/uploaded_images/coffeecup.png">
+<input type="hidden" name="logo_custom" value="http://raganwald.github.com/uploaded_images/coffeecup.png">
 <input type="hidden" name="no_note" value="1">
 <input type="hidden" name="currency_code" value="USD">
 <input type="hidden" name="tax" value="0">
 <input type="hidden" name="lc" value="CA">
 <input type="hidden" name="bn" value="PP-DonationsBF">
-<input type="image" src="http://weblog.raganwald.com/uploaded_images/coffeecup.png" width="64" height="64" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+<input type="image" src="http://raganwald.github.com/uploaded_images/coffeecup.png" width="64" height="64" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
 <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
 </form></div>If you enjoy reading my weblog, please consider <a href="#"
 title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript: document.DoubleEspresso.submit();">buying me a Darkhorse Double Espresso, for just $3.15</a>
@@ -222,17 +222,17 @@ title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -240,19 +240,19 @@ title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -260,18 +260,18 @@ title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -279,15 +279,15 @@ title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -296,103 +296,103 @@ title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
-		<script type="text/javascript" language="Javascript">if (location.href.indexOf("archive")!=-1) document.write("<strong><a href=\"http://weblog.raganwald.com/welcome.html\">Current Posts</a></strong>");</script>
+		<script type="text/javascript" language="Javascript">if (location.href.indexOf("archive")!=-1) document.write("<strong><a href=\"http://raganwald.github.com/index.html\">Current Posts</a></strong>");</script>
 		<br/></p>
 		<br/>
 

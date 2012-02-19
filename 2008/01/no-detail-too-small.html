@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Sunday, January 20, 2008</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="6800389244013907031">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html" title="permanent link">No Detail Too Small</a></span>
-					<div style="clear:both;"></div>Expression-oriented programming (also known as functional or side-effect-free programming, although the three things are related, not synonymous) is a wonderful way to make calculations easier to understand and maintain. However, sometimes deeply nested function calls or mixing function calls with method invocations can make an expression difficult to understand at a glance. Here is a tip for refactoring your expressions so they are easier to read.<br /><br />Expressions naturally form a tree, with values at the leaves and function calls or method invocations at each node. In this post, I&rsquo;ll be talking about the simplest form of expression, a <em>pipeline</em>. A pipeline is an expression that does not branch: a value (or often collection of values) is transformed by two or more  function calls or method invocations in succession. Here&rsquo;s a slightly obfuscated example of a pipeline working with collections from one of <a href="http://www.mcommons.com/jobs.html" title="Mobile Commons is Hiring">our</a> Rails applications:<br /><pre><code><br />widget.fizz.fizz_buzzes.select { |fizz_buzz| <br /> fizz_buzz.widgets_column_name =~ /^special_.*/ <br />}.map { |fizz_buzz|<br /> widget.attribute_present?(fizz_buzz.widgets_column_name) &&<br />   { fizz_buzz.label => widget.send(fizz_buzz.widgets_column_name) } ||<br />   {}<br />}.inject({}, &:merge)</code></pre><br />While the details don&rsquo;t make much sense out of context, the overall pattern ought to be familiar as an example of the MapReduce pattern (without the distributed processing, of course).<br /><br />Pipelines read from right-to-left, left-to-right, or both. For example, this set of three nested function calls reads from right-to-left:<br /><pre><code><br />sum_numbers.call(square_numbers.call(odd_numbers.call(1..100)))</code></pre><br />If I try to read it from left-to-right, it&#8217;s sounds like a caricature of speech: &#8220;The sum of the squares of the odd numbers from one to one hundred.&#8221; You can&#8217;t figure it out unless you build an abstract syntax tree in your head and then evaluate it with a stack machine. Having to emulate a computer to figure out what something means is not a good sign.  it reads much easier from right-to-left: &#8220;Take the numbers from one to one hundred. Select the odd ones. Square them. And finally, take the sum.&#8221;<br /><br />Popular languages like Ruby make it easy to write expressions that read from left-to-right directly: here&#8217;s an example from Ruby 1.9 (or with Symbol#to_proc):<br /><pre><code><br />(1..100).select(&amp;:odd?).map { |n| n*n }.inject(&amp;:+)<br />    =&gt; 166650</code></pre><br />Object orientation&#8217;s emphasis on nouns at the expense of verbs has its issues. But when a computation really is a step-wise transformation of data, I find that chaining methods makes code a lot easier to understand than nesting functions. On the other hand, I prefer nesting functions when the expression has more of a tree form.<br /><br />But whichever direction you prefer, I find it very difficult to read code that mixes directions in the same expression:<br /><pre><code><br />square_elements = lambda { ... } # content elided<br />square_elements.call((1..100).select(&amp;:odd?)).inject(&amp;:+)</code></pre><br />You go left-to-right to select odd members, then back left to square them, then right to sum them. I find this much more confusing than either the nested functions or the chained method calls.<br /><br /><strong>Object#into</strong><br /><br />A little while ago, I saw John Carter define factorial in Ruby as a <a href="http://lambda-the-ultimate.org/node/1480#comment-17040" title="ruby vs python | Lambda the Ultimate">method</a> in the Integer class:<br /><pre><code><br />class Integer<br />  def factorial<br />    return 1 if self &lt;= 1<br />    self * (self-1).factorial<br />  end<br />end</code></pre><br />My first reaction was to think that adding factorial as a method was an idea from <a href="http://www.amazon.com/gp/product/1594568545?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1594568545" title="Chessmen of Mars">another planet</a>:<sup><font size="-2">1</font></sup> why should integers know how to answer their own factorials? This seemed like a classic case of <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html" title="Too much of a good thing: not all functions should be object methods">a function that should not be an object method</a>. But nevertheless, having calculations be methods instead of functions lets you write a certain type of expression consistently from left-to-right (<code>5.succ.factorial.succ.odd</code>) instead of mixing directions (<code>factorial.call(5.succ).succ.odd?</code>).<br /><br />All the same, there are good reasons why we don&#8217;t overload numeric classes with every possible calculation and formula. So what can we do? How about:<br /><pre><code><br />class Object<br />    def into expr = nil<br />        expr.nil? ? yield(self) : expr.to_proc.call(self)<br />    end<br />end</code></pre><br />Now, snarfing <a href="http://www.eecs.harvard.edu/~cduan/technical/ruby/ycombinator.shtml" title="A Use of the Y Combinator in Ruby">Charles Duan&#8217;s code</a>, we can write:<br /><pre><code><br />y = proc { |generator|<br />    proc { |x|<br />        proc { |*args|<br />            generator.call(x.call(x)).call(*args)<br />        }<br />    }.call(proc { |x|<br />        proc { |*args|<br />            generator.call(x.call(x)).call(*args)<br />        }<br />    })<br />}<br /><br />factorial = y.call(proc { |callback|<br />    proc { |arg|<br />        if arg.zero?  then 1<br />        else          arg * callback.call(arg - 1)<br />        end<br />    }<br />})</code></pre><br />Which lets us write:<br /><pre><code><br />5.succ.into(factorial).succ.odd?<br />    =&gt; true</code></pre><br />I read this as &#8220;Start with five, get its successor, put that into the factorial proc, take the result&#8217;s successor, and answer whether it is odd.&#8221; The whole thing reads in one consistent style, you aren&#8217;t mixing left-to-right method chaining with right-to-left nesting functions. I wouldn&#8217;t go crazy with Object#into in a program, but if you have an expression that is predominately chaining methods, Object#into can make it consistent and improve its readability.<br /><br /><strong>Function Composition</strong><br /><br />There is more than one way to skin a cat. If <code>f(g(h(value)))</code> is too constricting, we can <a href="http://blog.moertel.com/articles/2006/04/07/composing-functions-in-ruby" title="Composing functions in Ruby">compose</a> functions instead of nesting them. So we can write:<br /><pre><code><br />class Proc<br />  def self.compose(f, g)<br />    lambda { |*args| f[g[*args]] }<br />  end<br />  def *(g) # Tom's origional composition operator<br />    Proc.compose(self, g)<br />  end<br />  def |(g) # The reverse composition operator, mimicing a pipe<br />    Proc.compose(g, self)<br />  end<br />end<br /><br />plus1 = lambda { |n| n + 1 }<br />squared = lambda { |n| n * n }<br />minus1 = lambda { |n| n - 1 }</code></pre><br />This allows us to write <code>(minus1 | squared | plus1).call(5)</code>, which puts <em>almost</em> everything in left-to-right order. Hey, remember Object#into? Why don&#8217;t we try it?<br /><pre><code><br />5.into(minus1 | squared | plus1)</code></pre><br />That saves us from writing <code>5.into(minus1).into(squared).into(plus1)</code> if we find three instances of &#8220;into&#8221; a little noisy. Composing functions using <code>*</code> lets us maintain right-to-left order and composing functions with <code>|</code> lets us create left-to-right order when we are making a &#8220;pipeline&#8221; of expressions.<br /><br /><strong>Summary</strong><br /><br />In the end, this is a very trivial idea: When an expression can be written so that it reads consistently from left-to-right or consistently from right-to-left, do so. The code will be easier to read.<br /><br /><hr><ol><li>Uh, yes, I am familiar with Smalltalk. I&rsquo;m thinking that my opinion of my ability to make a joke far exceeds my actual ability: the phrase is meant as a pun on Edgar Rice Burroughs&rsquo;s Barsoomian Tales, featuring the Warlord John Carter. But all that being said, regardless of how OO you want to get, I am not convinced that objects are responsible for <em>every</em> operation that can possibly be performed on them.</li></ol><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2008/01/no-detail-too-small.html" title="permanent link">No Detail Too Small</a></span>
+					<div style="clear:both;"></div>Expression-oriented programming (also known as functional or side-effect-free programming, although the three things are related, not synonymous) is a wonderful way to make calculations easier to understand and maintain. However, sometimes deeply nested function calls or mixing function calls with method invocations can make an expression difficult to understand at a glance. Here is a tip for refactoring your expressions so they are easier to read.<br /><br />Expressions naturally form a tree, with values at the leaves and function calls or method invocations at each node. In this post, I&rsquo;ll be talking about the simplest form of expression, a <em>pipeline</em>. A pipeline is an expression that does not branch: a value (or often collection of values) is transformed by two or more  function calls or method invocations in succession. Here&rsquo;s a slightly obfuscated example of a pipeline working with collections from one of <a href="http://www.mcommons.com/jobs.html" title="Mobile Commons is Hiring">our</a> Rails applications:<br /><pre><code><br />widget.fizz.fizz_buzzes.select { |fizz_buzz| <br /> fizz_buzz.widgets_column_name =~ /^special_.*/ <br />}.map { |fizz_buzz|<br /> widget.attribute_present?(fizz_buzz.widgets_column_name) &&<br />   { fizz_buzz.label => widget.send(fizz_buzz.widgets_column_name) } ||<br />   {}<br />}.inject({}, &:merge)</code></pre><br />While the details don&rsquo;t make much sense out of context, the overall pattern ought to be familiar as an example of the MapReduce pattern (without the distributed processing, of course).<br /><br />Pipelines read from right-to-left, left-to-right, or both. For example, this set of three nested function calls reads from right-to-left:<br /><pre><code><br />sum_numbers.call(square_numbers.call(odd_numbers.call(1..100)))</code></pre><br />If I try to read it from left-to-right, it&#8217;s sounds like a caricature of speech: &#8220;The sum of the squares of the odd numbers from one to one hundred.&#8221; You can&#8217;t figure it out unless you build an abstract syntax tree in your head and then evaluate it with a stack machine. Having to emulate a computer to figure out what something means is not a good sign.  it reads much easier from right-to-left: &#8220;Take the numbers from one to one hundred. Select the odd ones. Square them. And finally, take the sum.&#8221;<br /><br />Popular languages like Ruby make it easy to write expressions that read from left-to-right directly: here&#8217;s an example from Ruby 1.9 (or with Symbol#to_proc):<br /><pre><code><br />(1..100).select(&amp;:odd?).map { |n| n*n }.inject(&amp;:+)<br />    =&gt; 166650</code></pre><br />Object orientation&#8217;s emphasis on nouns at the expense of verbs has its issues. But when a computation really is a step-wise transformation of data, I find that chaining methods makes code a lot easier to understand than nesting functions. On the other hand, I prefer nesting functions when the expression has more of a tree form.<br /><br />But whichever direction you prefer, I find it very difficult to read code that mixes directions in the same expression:<br /><pre><code><br />square_elements = lambda { ... } # content elided<br />square_elements.call((1..100).select(&amp;:odd?)).inject(&amp;:+)</code></pre><br />You go left-to-right to select odd members, then back left to square them, then right to sum them. I find this much more confusing than either the nested functions or the chained method calls.<br /><br /><strong>Object#into</strong><br /><br />A little while ago, I saw John Carter define factorial in Ruby as a <a href="http://lambda-the-ultimate.org/node/1480#comment-17040" title="ruby vs python | Lambda the Ultimate">method</a> in the Integer class:<br /><pre><code><br />class Integer<br />  def factorial<br />    return 1 if self &lt;= 1<br />    self * (self-1).factorial<br />  end<br />end</code></pre><br />My first reaction was to think that adding factorial as a method was an idea from <a href="http://www.amazon.com/gp/product/1594568545?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1594568545" title="Chessmen of Mars">another planet</a>:<sup><font size="-2">1</font></sup> why should integers know how to answer their own factorials? This seemed like a classic case of <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html" title="Too much of a good thing: not all functions should be object methods">a function that should not be an object method</a>. But nevertheless, having calculations be methods instead of functions lets you write a certain type of expression consistently from left-to-right (<code>5.succ.factorial.succ.odd</code>) instead of mixing directions (<code>factorial.call(5.succ).succ.odd?</code>).<br /><br />All the same, there are good reasons why we don&#8217;t overload numeric classes with every possible calculation and formula. So what can we do? How about:<br /><pre><code><br />class Object<br />    def into expr = nil<br />        expr.nil? ? yield(self) : expr.to_proc.call(self)<br />    end<br />end</code></pre><br />Now, snarfing <a href="http://www.eecs.harvard.edu/~cduan/technical/ruby/ycombinator.shtml" title="A Use of the Y Combinator in Ruby">Charles Duan&#8217;s code</a>, we can write:<br /><pre><code><br />y = proc { |generator|<br />    proc { |x|<br />        proc { |*args|<br />            generator.call(x.call(x)).call(*args)<br />        }<br />    }.call(proc { |x|<br />        proc { |*args|<br />            generator.call(x.call(x)).call(*args)<br />        }<br />    })<br />}<br /><br />factorial = y.call(proc { |callback|<br />    proc { |arg|<br />        if arg.zero?  then 1<br />        else          arg * callback.call(arg - 1)<br />        end<br />    }<br />})</code></pre><br />Which lets us write:<br /><pre><code><br />5.succ.into(factorial).succ.odd?<br />    =&gt; true</code></pre><br />I read this as &#8220;Start with five, get its successor, put that into the factorial proc, take the result&#8217;s successor, and answer whether it is odd.&#8221; The whole thing reads in one consistent style, you aren&#8217;t mixing left-to-right method chaining with right-to-left nesting functions. I wouldn&#8217;t go crazy with Object#into in a program, but if you have an expression that is predominately chaining methods, Object#into can make it consistent and improve its readability.<br /><br /><strong>Function Composition</strong><br /><br />There is more than one way to skin a cat. If <code>f(g(h(value)))</code> is too constricting, we can <a href="http://blog.moertel.com/articles/2006/04/07/composing-functions-in-ruby" title="Composing functions in Ruby">compose</a> functions instead of nesting them. So we can write:<br /><pre><code><br />class Proc<br />  def self.compose(f, g)<br />    lambda { |*args| f[g[*args]] }<br />  end<br />  def *(g) # Tom's origional composition operator<br />    Proc.compose(self, g)<br />  end<br />  def |(g) # The reverse composition operator, mimicing a pipe<br />    Proc.compose(g, self)<br />  end<br />end<br /><br />plus1 = lambda { |n| n + 1 }<br />squared = lambda { |n| n * n }<br />minus1 = lambda { |n| n - 1 }</code></pre><br />This allows us to write <code>(minus1 | squared | plus1).call(5)</code>, which puts <em>almost</em> everything in left-to-right order. Hey, remember Object#into? Why don&#8217;t we try it?<br /><pre><code><br />5.into(minus1 | squared | plus1)</code></pre><br />That saves us from writing <code>5.into(minus1).into(squared).into(plus1)</code> if we find three instances of &#8220;into&#8221; a little noisy. Composing functions using <code>*</code> lets us maintain right-to-left order and composing functions with <code>|</code> lets us create left-to-right order when we are making a &#8220;pipeline&#8221; of expressions.<br /><br /><strong>Summary</strong><br /><br />In the end, this is a very trivial idea: When an expression can be written so that it reads consistently from left-to-right or consistently from right-to-left, do so. The code will be easier to read.<br /><br /><hr><ol><li>Uh, yes, I am familiar with Smalltalk. I&rsquo;m thinking that my opinion of my ability to make a joke far exceeds my actual ability: the phrase is meant as a pun on Edgar Rice Burroughs&rsquo;s Barsoomian Tales, featuring the Warlord John Carter. But all that being said, regardless of how OO you want to get, I am not convinced that objects are responsible for <em>every</em> operation that can possibly be performed on them.</li></ol><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html" title="permanent link">8:50 AM</a>
+						&para; <a href="http://raganwald.github.com/2008/01/no-detail-too-small.html" title="permanent link">8:50 AM</a>
 
 					 
 				</span> 
@@ -44,84 +44,84 @@
 						
 							<div class="blogComment">
 								<a name="2512274894482700139"></a> 				This is where I'm really jealous of Haskell's easy functional composition:<BR/><BR/>let z = (+1) >>> fact >>> (+1) >>> odd<BR/>z 5<BR/><BR/>And I'm sure there's a way to get 5 in front of that, I just don't know what it is.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html?showComment=1200843900000#c2512274894482700139" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 10:45 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/no-detail-too-small.html?showComment=1200843900000#c2512274894482700139" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 10:45 AM</div>
 
 								<span class="item-control blog-admin pid-831715508"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2512274894482700139" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2804868573711306568"></a> 				Bill:<BR/><BR/>Thanks for your comment! Does Haskell's point-free syntax permit even more remarkably concise composition?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html?showComment=1200847020000#c2804868573711306568" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:37 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/no-detail-too-small.html?showComment=1200847020000#c2804868573711306568" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:37 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2804868573711306568" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2074960415616278259"></a> 				Yeah, there's some really neat things you can do with it; I learned a lot from <A HREF="http://programming.reddit.com/info/64f2g/comments/" REL="nofollow">this reddit thread</A>.<BR/><BR/>Another neat point is that (+1) is not a +1 function as commonly defined in lisp; it's the *actual* plus operator curried with a 1. Which is super cool.<BR/><BR/>What I really want is a duck-typed language with functional composition abilities like Haskell; I'm cooking up a blog on that.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html?showComment=1200847200000#c2074960415616278259" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 11:40 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/no-detail-too-small.html?showComment=1200847200000#c2074960415616278259" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 11:40 AM</div>
 
 								<span class="item-control blog-admin pid-831715508"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2074960415616278259" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7286329285284013043"></a> 				Yeah, you can also write the following:<BR/><BR/>let z = odd . (+ 1) . fact . (+ 1) <BR/>z 5<BR/><BR/>(The dot meaning functional composition in Haskell, just in case you didn't know)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html?showComment=1200851460000#c7286329285284013043" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://cypher23.myopenid.com/" rel="nofollow">cypher</a> : 12:51 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/no-detail-too-small.html?showComment=1200851460000#c7286329285284013043" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://cypher23.myopenid.com/" rel="nofollow">cypher</a> : 12:51 PM</div>
 
 								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7286329285284013043" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1384215845300927882"></a> 				So to play Smalltalk's advocate: why *shouldn't* we "overload numeric classes with every possible calculation and formula"?  It drives me nuts that in Ruby, for example, numbers know how to square themselves (10 ** 2) but not how to take their own square root (Math.sqrt(100)).  <BR/><BR/>Purely from a pragmatic software engineering standpoint: when you have so many different data types (small integers, large integers, floats, scaled decimals, complex numbers, amounts of money...) which respond to the same set of operations, it seems foolish not to take advantage of method dispatch to allow a different/optimized implementation of each operation for each type of numeric value.<BR/><BR/>Instead, what happens?  You get awful hacks like this from complex.rb:<BR/><BR/>module Math<BR/>  alias sqrt! sqrt<BR/>  # Redefined to handle a Complex argument.<BR/>  def sqrt(z)<BR/>    if Complex.generic?(z)<BR/>      if z >= 0<BR/> sqrt!(z)<BR/>      else<BR/> Complex(0,sqrt!(-z))<BR/>      end<BR/>    else<BR/>      if z.image < 0<BR/> sqrt(z.conjugate).conjugate<BR/>      else<BR/> r = z.abs<BR/> x = z.real<BR/> Complex( sqrt!((r+x)/2), sqrt!((r-x)/2) )<BR/>      end<BR/>    end<BR/>  end<BR/>end<BR/><BR/>Oh good - now what happens when someone else wants to redefine it, too?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html?showComment=1200863340000#c1384215845300927882" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04032163316817028890" rel="nofollow">Avi</a> : 4:09 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/no-detail-too-small.html?showComment=1200863340000#c1384215845300927882" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04032163316817028890" rel="nofollow">Avi</a> : 4:09 PM</div>
 
 								<span class="item-control blog-admin pid-1629964001"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1384215845300927882" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3671663496056165299"></a> 				Avi:<BR/><BR/>I see a case that <I>if</I> we only have single-dispatch, and <I>if</I> the only dispatch mechanism is a method invocation, <I>then</I> classes should be heavyweight <I>because</I> the alternatives are worse.<BR/><BR/>And given that Ruby apes Smalltalk in many ways, I wouldn’t stay up nights being an angry blogger if factorial were added to Integer in the standard library.<BR/><BR/>But yes, I would prefer a more elegant way to put the less commonly used Integer functions elsewhere so that its “intellectual surface area” is smaller.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html?showComment=1200864240000#c3671663496056165299" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:24 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/no-detail-too-small.html?showComment=1200864240000#c3671663496056165299" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:24 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3671663496056165299" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3110261524901963454"></a> 				Reginald:<BR/><BR/>Things definitely change in a multiple-dispatch world; if we're talking about CLOS or Dylan, the design space looks quite different.  And if we're talking about Java, which is IMO broken by not having open classes, then we're in trouble.  But at least in the context of Ruby, Smalltalk, C# and Objective-C, it seems that maybe we agree :).<BR/><BR/>I'm a little suspicious of a concept like the "intellectual surface area" of Integer, though, because I think that is (and should be) a moving target depending on what packages you have loaded.  The more relevant surface area seems to me to be at the package level: if I load a package, I have to know what new classes and methods it introduces, regardless of  the class it adds them to.  If I don't load that package (say I don't load a math package because I don't need factorial or sqrt) then I don't need to know about those methods at all.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html?showComment=1200873660000#c3110261524901963454" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04032163316817028890" rel="nofollow">Avi</a> : 7:01 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/no-detail-too-small.html?showComment=1200873660000#c3110261524901963454" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04032163316817028890" rel="nofollow">Avi</a> : 7:01 PM</div>
 
 								<span class="item-control blog-admin pid-1629964001"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3110261524901963454" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="780940158801440569"></a> 				Avi:<BR/><BR/>I agree 100% with your suggestion that the important thing is which packages you load.<BR/><BR/>It is trivial to build a 'package' in Ruby that opens Integer and adds math methods to it. That gives you some of the advantages you mentioned, such as leveraging implementation optimizations, without turning the standard library into a swiss army knife of capabilities.<BR/><BR/>I have an unfinished post where I laud open classes while lamenting their "globality." I would love to be able to decorate Hash, Integer, Object, Proc, and lots of other things but only in the context of a specific class.<BR/><BR/>Take adding * to Proc for composition. What happens if my code does that but someone else's code adds * to Proc meaning produce the Cartesian product of the results of the two Procs?<BR/><BR/>I wish that it was possible for both pieces of code to happily co-exist.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html?showComment=1200874680000#c780940158801440569" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:18 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/no-detail-too-small.html?showComment=1200874680000#c780940158801440569" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:18 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=780940158801440569" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1971829203067461490"></a> 				It seems to me that this issue is solved fairly neatly in Scala via their "implicit conversion" feature.<BR/><BR/><I>What happens if my code does that but someone else's code adds * to Proc meaning produce the Cartesian product of the results of the two Procs?</I><BR/><BR/>Your code would define an implicit conversion to a "RegProc" which has a "*-for-composition" operator, and Avi's code would have the other implicit conversion to an "AviProc" whose * means the Cartesian product.<BR/><BR/><I>I wish that it was possible for both pieces of code to happily co-exist.</I><BR/><BR/>At least in this case, they could co-exist without further ado in separate parts of your application.  In order to get them to coexist in the same scope, a little more work might be required (changing half of the call sites to disambiguate the intent).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html?showComment=1200878880000#c1971829203067461490" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04517193778611033674" rel="nofollow">Douglas</a> : 8:28 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/no-detail-too-small.html?showComment=1200878880000#c1971829203067461490" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04517193778611033674" rel="nofollow">Douglas</a> : 8:28 PM</div>
 
 								<span class="item-control blog-admin pid-1624068200"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1971829203067461490" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6628489716750863388"></a> 				Dave Thomas has another solution doing pipelines using Ruby1.9's fiber: http://pragdave.blogs.pragprog.com/pragdave/2007/12/pipelines-using.html<BR/><BR/>part2: http://pragdave.blogs.pragprog.com/pragdave/2008/01/pipelines-using.html<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html?showComment=1200899100000#c6628489716750863388" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15272240304009312979" rel="nofollow">Apple</a> : 2:05 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/no-detail-too-small.html?showComment=1200899100000#c6628489716750863388" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15272240304009312979" rel="nofollow">Apple</a> : 2:05 AM</div>
 
 								<span class="item-control blog-admin pid-1358723746"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6628489716750863388" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6938736160150883516"></a> 				The Smalltalker's answer would be that using * is a bad idea in both of those cases - much better to be explicit and use #compose: in the one case and #cartesianProduct: in the other.  And if you end up with two packages that both define #cartesianProduct: in conflicting ways on the same class, well, then you have a bigger problem than namespacing will solve.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html?showComment=1200902640000#c6938736160150883516" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04032163316817028890" rel="nofollow">Avi</a> : 3:04 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/no-detail-too-small.html?showComment=1200902640000#c6938736160150883516" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04032163316817028890" rel="nofollow">Avi</a> : 3:04 AM</div>
 
 								<span class="item-control blog-admin pid-1629964001"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6938736160150883516" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="26767432397601324"></a> 				Avi:<BR/><BR/>The issue of * vs. "compose" is interesting, but a much larger discussion of readability and trade-offs. Let's stick to the semantics. Even if both methods are named "compose" or "cartesianProduct," you can have two people write them such that they are broadly the same but differ in minor details, causing conflicts.<BR/><BR/>This will certainly be the case for anything non-trivial. For example, Ruby's Symbol#to_proc allows you to use a symbol representing a method with any arity, however all of the documented examples I found concerned methods taking no parameters.<BR/><BR/>It is included as part of Ruby on Rails and will be in Ruby 1.9, but otherwise if you want it you must copy and paste or roll your own.<BR/><BR/>What happens if someone rolls their own based on the informal examples and documents on the web? Their version would be incomplete and clash with anyone using &:merge or &:+.<BR/><BR/>We can blame them for a buggy implementation, but that bothers me: their implementation works for all of the code they wrote, how are we supposed to co&ouml;rdinate everyone's requirements for a method in an open class?<BR/><BR/>I don't have an answer, but I do stand by the thought that this is a problem with open classes: their global nature. Most of the time when I extend an open class, I am making changes that are really private to my use.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/01/no-detail-too-small.html?showComment=1200918900000#c26767432397601324" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:35 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/no-detail-too-small.html?showComment=1200918900000#c26767432397601324" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:35 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=26767432397601324" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -132,7 +132,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -186,25 +186,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -212,17 +212,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -232,17 +232,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -250,19 +250,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -270,18 +270,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -289,15 +289,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -306,101 +306,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Wednesday, November 22, 2006</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="116423826413955025">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html" title="permanent link">The significance of the meta-circular interpreter</a></span>
-					<div style="clear:both;"></div>A <a href="http://en.wikipedia.org/wiki/Self-interpreter">self-interpreter</a> is a &#8220;programming language interpreter written in the language it interprets.&#8221; A <a href="http://en.wikipedia.org/wiki/Metacircular_Interpreter">meta-circular interpreter</a> is a special case of a self-interpreter that applies only to programs where the primary representation of the program is a primitive data type in the language itself (this property is called homoiconicity). Lisp is such a language because Lisp programs are lists of symbols and other lists. XSLT is such a language because XSLT programs are written in XML.<br /><br />(If you have ever written an XSLT that transforms other XSLTs, then you immediately grasp the advantage of a meta-circular interpreter over an &#8216;ordinary&#8217; self-interpreter: it is not just possible, but it is <em>easy</em> to write programs that write programs, because you don't have to fiddle with transforming each program into an abstract data structure (typically a tree) that can be manipulated by your program.)<br /><br />This is interesting to both language theoreticians and hobbyists. But does it matter to those of us trying to get things done? What is the significance of meta-circular interpreters and self-interpreters?<br /><br />The short answer is that if you are working on meta-programming, a self-interpreter makes all things not just possible, but practical. The lack of such an interpreter places a limit on how much you can accomplish using your implementation language.<br /><br /><h4 id="meta-programming">Meta-programming</h4>Let&#8217;s start our examination of the significance of self-interpreters with a review of meta-programming, or bottom-up programming. This is the practice of constructing a programming language tailored to your problem space. You get your language&#8217;s basics working by building it on top of a base, or <em>implementation language</em>, and then you build your solution in your <em>solution language</em>.<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://weblog.raganwald.com/uploaded_images/men_with_tools-706630.jpg"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;" src="http://weblog.raganwald.com/uploaded_images/men_with_tools-798729.jpg" border="0" alt="" /></a>While meta-programming, you are working on two tiers either simultaneously or alternately: you work on expressing your solution in your solution language, and you work on the implementation (whether that be fun stuff like making it expressive or plumbing stuff like making it fast enough to be practical) in your implementation language.<br /><br />An important and popular sub-domain of meta-programming is the practice of writing <a href="http://en.wikipedia.org/wiki/Domain-specific_programming_language">Domain-Specific Languages</a> or DSLs. DSLs are solution languages tailored to resemble as closely as possible the human jargon of &#8220;domain experts.&#8221;<br /><br />(<a href="http://www.jroller.com/page/obie">Obie Fernandez</a> has an excellent <a href="http://obiefernandez.com/presentations/obie_fernandez-agile_dsl_development_in_ruby.pdf" title="Building Domain Specific Languages in Ruby">presentation</a> on the rationale for and construction of DSLs.)<br /><br />DSLs are commonly cited as useful in areas where programmers who are not domain experts collaborate with domain experts who are not programmer. In my own experience, DSLs are also valuable even when the programmers are themselves the domain experts. My rule of thumb for whether a DSL would be worthy of consideration is to ask how two programmers discussing the solution to a problem over an IM client would talk. If their language would closely resemble the natural constructs and idioms of their chosen implementation language, there is no need for a DSL.<br /><br />This is not always the case. A very classic example is that of SQL. SQL is a DSL designed for programmers to express relational algebra rather than the imperative steps for performing queries and updates. Although complex cases are impenetrable to the journeyman, its general form closely follows the way even a non-technical person would express their thoughts about data that is stored in tables.<br /><br />Another example of a successful DSL for programmers is the regular expression engine present in almost every language (whether baked in or as a commonly available library). Programmers do not discuss searching for text patterns in terms of backtracking and lookup tables and loops unless they are implementing a search library themselves.<br /><br />Programmers talk about <em>matching the string &#8216;Nokia&#8217; followed by four digits, a forward slash, and two numbers separated by a period</em> in the User-Agent Header. Regular expressions, while imperfect, match the way programmers think and talk about text matching much more closely than writing out the most efficient steps using <code>strstr</code> and <code>for</code> loops.<br /><br /><h4 id="what_about_the_meta_circular_interpreter">What about the meta-circular interpreter?</h4>Meta-circular interpreters are nothing new. Lisp is most famous for its <a href="http://weblog.raganwald.com/2005/03/page-thirteen.html">meta-circular interpreter</a>. But do you know that one of the world&#8217;s most popular programming languages has the next best thing, a self-interpreter? The C programming language&#8217;s compiler is written in C. That&#8217;s interesting. But why is it significant?<br /><br />Well, instead of heading up the &#8216;power continuum&#8217; and talking about Lisp, let&#8217;s stay with C for a moment. If you&#8217;re a C programmer and you become very, very interested in building a better programming language, you have in your hands the tool to make changes as you see fit.<br /><br />You might, for example, start with a pre-processor and implement the first version of your C++ language by mechanically translating a C++ program to C. Or you might bootstrap your C++ language by writing a compiler for C++ in C. Because you have in your hands all of the tools for going from source to running program, you can enhance and change its behaviour exactly as you please.<br /><br />When a language is not implemented in itself, you have limitations on your ability to create new forms. One might argue that Lisp&#8217;s macros make it possible to build any other language paradigm on top of Lisp. This is partially correct, however macros alone are not a complete answer. Macros act to rewrite local sections of programs.<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/gp/product/0521545668/104-5191901-1508708?ie=UTF8&tag=raganwald-store-20&linkCode=xm2&creativeASIN=0521545668"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;" src="http://weblog.raganwald.com/uploaded_images/lisp-768094.jpg" border="0" alt="" /></a>You cannot&#8212;to my knowledge&#8212;take a dialect of Lisp that does not support tail recursion and use macros to execute tail calls in constant space without rewriting every function using your macro. A similar argument holds for using <a href="http://library.readscheme.org/page6.html">macros to implement continuations</a>. You must manually rewrite every function using your macros if you want to change the global behaviour of your program.<br /><br />Manually <em>blank</em> every <em>blank</em>. This sounds an awful lot like something we can automate. Automatically transforming entire programs is the province of interpreters and compilers, isn&#8217;t it?  If you wish to perform transformations that are global in scope, you want a custom interpreter. Of course, you can write one from scratch in your implementation language.<br /><br />But&#8230; This sounds like we are headed towards the <a href="http://weblog.raganwald.com/2004/10/beware-of-turing-tar-pit.html">Turing Tar Pit</a>. Isn&#8217;t it much easier to use the interpreter that&#8217;s built in? Implementation languages that provide an interpreter or compiler for themselves provide an industrial-strength, debugged platform for the construction of solution languages.<br /><br />This is the other half of the power of Lisp: if you want to change deeper fundamental language features like whether you have a Lisp-1 or a Lisp-n, or whether all evaluation is lazy, or&#8230;, or&#8230;, or&#8230; you can, because Lisp interprets Lisp and Lisp compiles Lisp.<br /><br />It is this reason that languages like Ruby, which is implemented mainly in C, provide less maximum power than languages like <a href="http://www.squeak.org/" title="Squeak">Smalltalk</a>, which is <a href="http://users.ipa.net/~dwighth/squeak/oopsla_squeak.html">implemented mainly in&#8230; Smalltalk</a>. For example, there is talk&#8212;at this time&#8212;that continuations will be <acronym title="like the Income Tax is temporary?">temporarily</acronym> dropped from Ruby 1.9. If you have an application making heavy use of continuations, what is your upgrade path?<br /><br />Of course, not everyone <a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html" title="Are we Blub programmers?">thinks they need</a> all of a more powerful meta-programming implementation. You will have to decide for yourself whether a language without a meta-circular evaluator or self-interpreter offers other benefits that outweigh this significant feature.<br /><br /><h4 id="serving the self-interpreter to your canine companion">Serving the self-interpreter to your canine companion</h4>As Simen pointed out in a <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html#116429036918590040">comment</a>,  Ruby does have a third-party project to interpret Ruby in Ruby called <a href="http://blog.fallingsnow.net/rubinius/">Rubinus</a>. Assuming it graduates from its current status as an experimental work-in-progress, how is this different from having a self-interpreter baked into the language?<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://weblog.raganwald.com/uploaded_images/climbers_dog-765949.jpg"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;" src="http://weblog.raganwald.com/uploaded_images/climbers_dog-763491.jpg" border="0" alt="" /></a>When a language is built on top of a self-interpreter, the language designers are forced to <a href="http://en.wikipedia.org/wiki/Dogfooding">eat their own dog food</a>.<br /><br />Now it is not correct to say that Matz does not use Ruby. He does, and so he does eat his own dog food. And for the domains where he uses Ruby, he has optimized Ruby to be a useful tool. But since he <em>doesn&#8217;t use Ruby to build Ruby</em>, he does not have the same incentive to tune Ruby for the purpose of building languages.<br /><br />An obvious example is Ruby&#8217;s performance. It is perfectly fine for <a href="http://rubyonrails.org">building CRUD applications</a>. However, it lacks really high performance when working with complex data structures in memory. This is the kind of thing that an interpreter or compiler has to do when parsing code or managing <a href="http://ce.sharif.edu/~dic-ads/d.php?ref=1&origin=stack&r=cactusstack.7.">cactus stacks</a>.<br /><br />Imagine what would have happened had Matz become impatient waiting for Ruby to interpret itself when he was first building the language? I suggest that the implementation and language would both be tweaked to bring performance up an order of magnitude or more. Programmers are notoriously impatient with slow tools.<br /><br />The implementation is not the only thing that improves when a language designer eats her own dog food by baking a self-interpreter into the language. The design of the language itself changes. Larry Wall has said that &#8220;Languages differ not so much in what they make possible, but in what they make easy.&#8221; When a designer builds their new language in itself, the language invariably makes building languages easy.<br /><br />So I suggest that the presence of a self-interpreter <em>baked right into the language, not bolted on as an after-thought</em> forces a language to be useful for building solution languages.<br /><br />(<em>This is not a broad criticism of Ruby, or a suggestion that Ruby is not an excellent tool for building a wide variety of useful solution languages. I&#8217;m just trying to point out the salient distinction between baking a self-interpreter into a language from the beginning and bolting one on the side.</em>)<br /><br /><h4 id="but_i8217m_a_tool_maven_not_a_language_maven">But I&#8217;m a tool maven, not a language maven</h4>Of course <a href="http://www.zwitserloot.com/">you</a> are. So tell me, how does <a href="http://www.eclipse.org/">Eclipse</a> do all of its magic with <a href="http://www.java.com/">Java</a>, a language lacking a self-interpreter?<br /><br />The answer is <a href="http://www.eclipse.org/articles/Article-JavaCodeManipulation_AST/index.html">here</a>. The Eclipse team based Eclipse on VisualAge for Smalltalk. They were more than familiar with the benefits of having a self-interpreter, so they wrote most of one in themselves, in Java. Self-interpreters are also the basis for building advanced tools.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/lispy.html">lispy</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html" title="permanent link">The significance of the meta-circular interpreter</a></span>
+					<div style="clear:both;"></div>A <a href="http://en.wikipedia.org/wiki/Self-interpreter">self-interpreter</a> is a &#8220;programming language interpreter written in the language it interprets.&#8221; A <a href="http://en.wikipedia.org/wiki/Metacircular_Interpreter">meta-circular interpreter</a> is a special case of a self-interpreter that applies only to programs where the primary representation of the program is a primitive data type in the language itself (this property is called homoiconicity). Lisp is such a language because Lisp programs are lists of symbols and other lists. XSLT is such a language because XSLT programs are written in XML.<br /><br />(If you have ever written an XSLT that transforms other XSLTs, then you immediately grasp the advantage of a meta-circular interpreter over an &#8216;ordinary&#8217; self-interpreter: it is not just possible, but it is <em>easy</em> to write programs that write programs, because you don't have to fiddle with transforming each program into an abstract data structure (typically a tree) that can be manipulated by your program.)<br /><br />This is interesting to both language theoreticians and hobbyists. But does it matter to those of us trying to get things done? What is the significance of meta-circular interpreters and self-interpreters?<br /><br />The short answer is that if you are working on meta-programming, a self-interpreter makes all things not just possible, but practical. The lack of such an interpreter places a limit on how much you can accomplish using your implementation language.<br /><br /><h4 id="meta-programming">Meta-programming</h4>Let&#8217;s start our examination of the significance of self-interpreters with a review of meta-programming, or bottom-up programming. This is the practice of constructing a programming language tailored to your problem space. You get your language&#8217;s basics working by building it on top of a base, or <em>implementation language</em>, and then you build your solution in your <em>solution language</em>.<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://raganwald.github.com/uploaded_images/men_with_tools-706630.jpg"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;" src="http://raganwald.github.com/uploaded_images/men_with_tools-798729.jpg" border="0" alt="" /></a>While meta-programming, you are working on two tiers either simultaneously or alternately: you work on expressing your solution in your solution language, and you work on the implementation (whether that be fun stuff like making it expressive or plumbing stuff like making it fast enough to be practical) in your implementation language.<br /><br />An important and popular sub-domain of meta-programming is the practice of writing <a href="http://en.wikipedia.org/wiki/Domain-specific_programming_language">Domain-Specific Languages</a> or DSLs. DSLs are solution languages tailored to resemble as closely as possible the human jargon of &#8220;domain experts.&#8221;<br /><br />(<a href="http://www.jroller.com/page/obie">Obie Fernandez</a> has an excellent <a href="http://obiefernandez.com/presentations/obie_fernandez-agile_dsl_development_in_ruby.pdf" title="Building Domain Specific Languages in Ruby">presentation</a> on the rationale for and construction of DSLs.)<br /><br />DSLs are commonly cited as useful in areas where programmers who are not domain experts collaborate with domain experts who are not programmer. In my own experience, DSLs are also valuable even when the programmers are themselves the domain experts. My rule of thumb for whether a DSL would be worthy of consideration is to ask how two programmers discussing the solution to a problem over an IM client would talk. If their language would closely resemble the natural constructs and idioms of their chosen implementation language, there is no need for a DSL.<br /><br />This is not always the case. A very classic example is that of SQL. SQL is a DSL designed for programmers to express relational algebra rather than the imperative steps for performing queries and updates. Although complex cases are impenetrable to the journeyman, its general form closely follows the way even a non-technical person would express their thoughts about data that is stored in tables.<br /><br />Another example of a successful DSL for programmers is the regular expression engine present in almost every language (whether baked in or as a commonly available library). Programmers do not discuss searching for text patterns in terms of backtracking and lookup tables and loops unless they are implementing a search library themselves.<br /><br />Programmers talk about <em>matching the string &#8216;Nokia&#8217; followed by four digits, a forward slash, and two numbers separated by a period</em> in the User-Agent Header. Regular expressions, while imperfect, match the way programmers think and talk about text matching much more closely than writing out the most efficient steps using <code>strstr</code> and <code>for</code> loops.<br /><br /><h4 id="what_about_the_meta_circular_interpreter">What about the meta-circular interpreter?</h4>Meta-circular interpreters are nothing new. Lisp is most famous for its <a href="http://raganwald.github.com/2005/03/page-thirteen.html">meta-circular interpreter</a>. But do you know that one of the world&#8217;s most popular programming languages has the next best thing, a self-interpreter? The C programming language&#8217;s compiler is written in C. That&#8217;s interesting. But why is it significant?<br /><br />Well, instead of heading up the &#8216;power continuum&#8217; and talking about Lisp, let&#8217;s stay with C for a moment. If you&#8217;re a C programmer and you become very, very interested in building a better programming language, you have in your hands the tool to make changes as you see fit.<br /><br />You might, for example, start with a pre-processor and implement the first version of your C++ language by mechanically translating a C++ program to C. Or you might bootstrap your C++ language by writing a compiler for C++ in C. Because you have in your hands all of the tools for going from source to running program, you can enhance and change its behaviour exactly as you please.<br /><br />When a language is not implemented in itself, you have limitations on your ability to create new forms. One might argue that Lisp&#8217;s macros make it possible to build any other language paradigm on top of Lisp. This is partially correct, however macros alone are not a complete answer. Macros act to rewrite local sections of programs.<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/gp/product/0521545668/104-5191901-1508708?ie=UTF8&tag=raganwald-store-20&linkCode=xm2&creativeASIN=0521545668"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;" src="http://raganwald.github.com/uploaded_images/lisp-768094.jpg" border="0" alt="" /></a>You cannot&#8212;to my knowledge&#8212;take a dialect of Lisp that does not support tail recursion and use macros to execute tail calls in constant space without rewriting every function using your macro. A similar argument holds for using <a href="http://library.readscheme.org/page6.html">macros to implement continuations</a>. You must manually rewrite every function using your macros if you want to change the global behaviour of your program.<br /><br />Manually <em>blank</em> every <em>blank</em>. This sounds an awful lot like something we can automate. Automatically transforming entire programs is the province of interpreters and compilers, isn&#8217;t it?  If you wish to perform transformations that are global in scope, you want a custom interpreter. Of course, you can write one from scratch in your implementation language.<br /><br />But&#8230; This sounds like we are headed towards the <a href="http://raganwald.github.com/2004/10/beware-of-turing-tar-pit.html">Turing Tar Pit</a>. Isn&#8217;t it much easier to use the interpreter that&#8217;s built in? Implementation languages that provide an interpreter or compiler for themselves provide an industrial-strength, debugged platform for the construction of solution languages.<br /><br />This is the other half of the power of Lisp: if you want to change deeper fundamental language features like whether you have a Lisp-1 or a Lisp-n, or whether all evaluation is lazy, or&#8230;, or&#8230;, or&#8230; you can, because Lisp interprets Lisp and Lisp compiles Lisp.<br /><br />It is this reason that languages like Ruby, which is implemented mainly in C, provide less maximum power than languages like <a href="http://www.squeak.org/" title="Squeak">Smalltalk</a>, which is <a href="http://users.ipa.net/~dwighth/squeak/oopsla_squeak.html">implemented mainly in&#8230; Smalltalk</a>. For example, there is talk&#8212;at this time&#8212;that continuations will be <acronym title="like the Income Tax is temporary?">temporarily</acronym> dropped from Ruby 1.9. If you have an application making heavy use of continuations, what is your upgrade path?<br /><br />Of course, not everyone <a href="http://raganwald.github.com/2006/10/are-we-blub-programmers.html" title="Are we Blub programmers?">thinks they need</a> all of a more powerful meta-programming implementation. You will have to decide for yourself whether a language without a meta-circular evaluator or self-interpreter offers other benefits that outweigh this significant feature.<br /><br /><h4 id="serving the self-interpreter to your canine companion">Serving the self-interpreter to your canine companion</h4>As Simen pointed out in a <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html#116429036918590040">comment</a>,  Ruby does have a third-party project to interpret Ruby in Ruby called <a href="http://blog.fallingsnow.net/rubinius/">Rubinus</a>. Assuming it graduates from its current status as an experimental work-in-progress, how is this different from having a self-interpreter baked into the language?<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://raganwald.github.com/uploaded_images/climbers_dog-765949.jpg"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;" src="http://raganwald.github.com/uploaded_images/climbers_dog-763491.jpg" border="0" alt="" /></a>When a language is built on top of a self-interpreter, the language designers are forced to <a href="http://en.wikipedia.org/wiki/Dogfooding">eat their own dog food</a>.<br /><br />Now it is not correct to say that Matz does not use Ruby. He does, and so he does eat his own dog food. And for the domains where he uses Ruby, he has optimized Ruby to be a useful tool. But since he <em>doesn&#8217;t use Ruby to build Ruby</em>, he does not have the same incentive to tune Ruby for the purpose of building languages.<br /><br />An obvious example is Ruby&#8217;s performance. It is perfectly fine for <a href="http://rubyonrails.org">building CRUD applications</a>. However, it lacks really high performance when working with complex data structures in memory. This is the kind of thing that an interpreter or compiler has to do when parsing code or managing <a href="http://ce.sharif.edu/~dic-ads/d.php?ref=1&origin=stack&r=cactusstack.7.">cactus stacks</a>.<br /><br />Imagine what would have happened had Matz become impatient waiting for Ruby to interpret itself when he was first building the language? I suggest that the implementation and language would both be tweaked to bring performance up an order of magnitude or more. Programmers are notoriously impatient with slow tools.<br /><br />The implementation is not the only thing that improves when a language designer eats her own dog food by baking a self-interpreter into the language. The design of the language itself changes. Larry Wall has said that &#8220;Languages differ not so much in what they make possible, but in what they make easy.&#8221; When a designer builds their new language in itself, the language invariably makes building languages easy.<br /><br />So I suggest that the presence of a self-interpreter <em>baked right into the language, not bolted on as an after-thought</em> forces a language to be useful for building solution languages.<br /><br />(<em>This is not a broad criticism of Ruby, or a suggestion that Ruby is not an excellent tool for building a wide variety of useful solution languages. I&#8217;m just trying to point out the salient distinction between baking a self-interpreter into a language from the beginning and bolting one on the side.</em>)<br /><br /><h4 id="but_i8217m_a_tool_maven_not_a_language_maven">But I&#8217;m a tool maven, not a language maven</h4>Of course <a href="http://www.zwitserloot.com/">you</a> are. So tell me, how does <a href="http://www.eclipse.org/">Eclipse</a> do all of its magic with <a href="http://www.java.com/">Java</a>, a language lacking a self-interpreter?<br /><br />The answer is <a href="http://www.eclipse.org/articles/Article-JavaCodeManipulation_AST/index.html">here</a>. The Eclipse team based Eclipse on VisualAge for Smalltalk. They were more than familiar with the benefits of having a self-interpreter, so they wrote most of one in themselves, in Java. Self-interpreters are also the basis for building advanced tools.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/lispy.html">lispy</a>, <a rel='tag' href="http://raganwald.github.com/labels/popular.html">popular</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html" title="permanent link">6:23 PM</a>
+						&para; <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html" title="permanent link">6:23 PM</a>
 
 					 
 				</span> 
@@ -44,56 +44,56 @@
 						
 							<div class="blogComment">
 								<a name="116427305344902198"></a> 				Well, as a Lisper, I am really bored by those pop languages called Ruby and Python reinventing the Lisp wheel and making a lot of noise around that.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html?showComment=1164273000000#c116427305344902198" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 4:10 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html?showComment=1164273000000#c116427305344902198" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 4:10 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116427305344902198" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116427753651916947"></a> 				Do you Lispers really think that  constantly making smart-ass comments about the allegedly superiority of Lisp makes you more liked? <BR/><BR/>I wouldn't use Lisp just because of the arrogance of it's community - even if the language would be able to hold the promises of it's followers (which it can't).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html?showComment=1164277500000#c116427753651916947" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:25 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html?showComment=1164277500000#c116427753651916947" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:25 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116427753651916947" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116427996504177924"></a> 				piss of jerk....<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html?showComment=1164279960000#c116427996504177924" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:06 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html?showComment=1164279960000#c116427996504177924" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:06 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116427996504177924" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116429036918590040"></a> 				"It is this reason that languages like Ruby, which is implemented mainly in C, provide less maximum power than languages like Smalltalk, which is implemented mainly in… Smalltalk. For example, there is talk—at this time—that continuations will be temporarily dropped from Ruby 1.9. If you have an application making heavy use of continuations, what is your upgrade path?"<BR/><BR/>Ruby now has <A HREF="http://blog.fallingsnow.net/rubinius/" REL="nofollow">Rubinius</A>, which is written in Ruby, and it <A HREF="http://blog.fallingsnow.net/2006/10/30/continuations-additional-stability-and-clean-ups/" REL="nofollow">has continuations</A>.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html?showComment=1164290340000#c116429036918590040" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Simen</span> : 8:59 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html?showComment=1164290340000#c116429036918590040" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Simen</span> : 8:59 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116429036918590040" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116429162500203234"></a> 				Heh, I feel like I am trying to be friends with two people who have gone through a bitter break-up!<BR/><BR/>How do I let you know I like you, Mr. Lisp as well as you, Ms Ruby, even though you seem to be quite upset with each other?<BR/><BR/>How do invite you both to my weblog party, but somehow keep one of you in the kitchen and the other in the living room so that you can each have a good time without going at it hammer and tongs?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html?showComment=1164291600000#c116429162500203234" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:20 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html?showComment=1164291600000#c116429162500203234" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:20 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116429162500203234" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116429205592082880"></a> 				Now about <EM>reinvention</EM>... I agree it is not productive to reinvent something. See <A HREF="http://en.wikipedia.org/wiki/Greenspun%27s_Tenth_Rule" REL="nofollow">Greenspun's Tenth Rule</A>, which I quote loudly and often.<BR/><BR/>Developing ideas in ignorance of the body of knowledge we have already accumulated always seems to lead to half-measures and concepts with unpalatable limitations.<BR/><BR/>Without bringing Python and Ruby into it, I wonder if, on the other hand, there is value in <EM>reinterpreting</EM> the principles first implemented in Lisp?<BR/><BR/>For example, it seems to me that languages like Haskell and ML attempt to take ideas first articulated in Lisp and "turn the dial to eleven," elevating them to first-class themes.<BR/><BR/>What do you think? Do you see a distinction between reinvention and reinterpretation?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html?showComment=1164292020000#c116429205592082880" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:27 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html?showComment=1164292020000#c116429205592082880" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:27 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116429205592082880" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116431448607309460"></a> 				<A HREF="http://programming.reddit.com/user/pjdelport" REL="nofollow">pjdelport</A> has pointed out an interesting distinction:<BR/><BR/><I>The article confuses meta-circular interpreters somewhat with ones that are just self-hosting.<BR/><BR/>Things like C compilers written in C are not meta-circular[1]: they implement language features directly in terms of lower-level primitives.<BR/><BR/>By contrast, meta-circular interpreters restate language features in terms of the features themselves, instead of actually implementing them. (Circular definitions, in other words; hence the name). They depend on their host environment to give the features meaning.<BR/><BR/>[1] OK, this is almost completely true: minor things like string escape sequences are sometimes defined meta-circularly (as discussed in Ken Thompson's classic <A HREF="http://www.acm.org/classics/sep95/" REL="nofollow">Reflections on Trusting Trust</A>.</I><br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html?showComment=1164314460000#c116431448607309460" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:41 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html?showComment=1164314460000#c116431448607309460" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:41 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116431448607309460" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="406383465670855154"></a> 				I learned Lisp young enough that "Lisp is implemented in itself!" didn't seem so shocking.<BR/><BR/>The great insight for me was reading TAOMOP and learning that CLOS was implemented in CLOS.  That fried my brain a little bit, but in retrospect it probably shouldn't have.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html?showComment=1195868820000#c406383465670855154" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 8:47 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html?showComment=1195868820000#c406383465670855154" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 8:47 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=406383465670855154" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -104,7 +104,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -158,25 +158,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -184,17 +184,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -204,17 +204,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -222,19 +222,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -242,18 +242,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -261,15 +261,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -278,101 +278,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

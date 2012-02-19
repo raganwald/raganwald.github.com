@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Tuesday, October 09, 2007</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="6962664050941946708">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2007/10/im-confused.html" title="permanent link">I'm confused</a></span>
-					<div style="clear:both;"></div><em>After reflection, this feels like it doesn&rsquo;t carry enough idea mass to deserve a blog essay, but it isn&rsquo;t brief enough to qualify as a twitter-like micro-post.</em><br /><hr/><br />I just stumbled across a parenthetical remark about <a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html">Why are local variables bad?</a>, an article wherein I started to talk about why it is important to really understand the objective of refactoring code, not just the mechanical process. I then got to the title&rsquo;s point, that <em>mutable local variables</em> are bad, and why I feel that way.<br /><br />Ocean <a href="http://blogs.concedere.net:8080/blog/discipline/links/?permalink=Links-10-08-2007.html">wrote</a>:<br /><blockquote>Local variables aren&rsquo;t bad they&rsquo;re just confusing. A lot of times people use the word &lsquo;bad&rsquo; when they really mean &lsquo;confusing.&rsquo;<br /></blockquote><br />This is interesting. When we are talking about computer programs, I suggest that confusing code is <strong>always bad</strong>. Perhaps there are &ldquo;degrees of bad,&rdquo; and local variables are less bad than, say, dangling pointers. But overall, isn&rsquo;t it bad to confuse?<br /><br />I guess my personal mantra is that <a href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FStructure-Interpretation-Computer-Programs-Engineering%2Fdp%2F0262011530%2Fsr%3D8-1%2Fqid%3D1163785017%3Fie%3DUTF8%26s%3Dbooks&tag=raganwald001-20&linkCode=ur2&camp=1789&creative=9325" title="Structure and Interpretation of Computer Programs on Amazon.com">programs must be written for people to read, and only incidentally for machines to execute</a> (and here&rsquo;s the entire text <a href="http://mitpress.mit.edu/sicp/full-text/book/book.html" title="Structure and Interpretation of Computer Programs">online</a>).<br /><br />Code that is confusing is difficult to understand. I pointed out that mutable local variables make code difficult to refactor. But hark! The problem is not that it&rsquo;s difficult to refactor: that&rsquo;s a <em>symptom</em>. The problem is that the logic is entangled and tightly coupled, such that it is difficult to decompose it into smaller blocks, to move pieces around, or to share common code.<br /><br />Now there&rsquo;s a kind of confusion that comes from unfamiliarity. If you grew up with Haskell, perhaps mutation will make your hair stand on end when you first see a BASIC program in all of its glory. But honestly, I have used mutable state since 1974, and it is not getting any easier.<br /><br />There&rsquo;s something intrinsically confusing about mutable local variables, and I suggest that this&mdash;in and of itself&mdash;is bad to the bone.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2007/10/im-confused.html" title="permanent link">I'm confused</a></span>
+					<div style="clear:both;"></div><em>After reflection, this feels like it doesn&rsquo;t carry enough idea mass to deserve a blog essay, but it isn&rsquo;t brief enough to qualify as a twitter-like micro-post.</em><br /><hr/><br />I just stumbled across a parenthetical remark about <a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html">Why are local variables bad?</a>, an article wherein I started to talk about why it is important to really understand the objective of refactoring code, not just the mechanical process. I then got to the title&rsquo;s point, that <em>mutable local variables</em> are bad, and why I feel that way.<br /><br />Ocean <a href="http://blogs.concedere.net:8080/blog/discipline/links/?permalink=Links-10-08-2007.html">wrote</a>:<br /><blockquote>Local variables aren&rsquo;t bad they&rsquo;re just confusing. A lot of times people use the word &lsquo;bad&rsquo; when they really mean &lsquo;confusing.&rsquo;<br /></blockquote><br />This is interesting. When we are talking about computer programs, I suggest that confusing code is <strong>always bad</strong>. Perhaps there are &ldquo;degrees of bad,&rdquo; and local variables are less bad than, say, dangling pointers. But overall, isn&rsquo;t it bad to confuse?<br /><br />I guess my personal mantra is that <a href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FStructure-Interpretation-Computer-Programs-Engineering%2Fdp%2F0262011530%2Fsr%3D8-1%2Fqid%3D1163785017%3Fie%3DUTF8%26s%3Dbooks&tag=raganwald001-20&linkCode=ur2&camp=1789&creative=9325" title="Structure and Interpretation of Computer Programs on Amazon.com">programs must be written for people to read, and only incidentally for machines to execute</a> (and here&rsquo;s the entire text <a href="http://mitpress.mit.edu/sicp/full-text/book/book.html" title="Structure and Interpretation of Computer Programs">online</a>).<br /><br />Code that is confusing is difficult to understand. I pointed out that mutable local variables make code difficult to refactor. But hark! The problem is not that it&rsquo;s difficult to refactor: that&rsquo;s a <em>symptom</em>. The problem is that the logic is entangled and tightly coupled, such that it is difficult to decompose it into smaller blocks, to move pieces around, or to share common code.<br /><br />Now there&rsquo;s a kind of confusion that comes from unfamiliarity. If you grew up with Haskell, perhaps mutation will make your hair stand on end when you first see a BASIC program in all of its glory. But honestly, I have used mutable state since 1974, and it is not getting any easier.<br /><br />There&rsquo;s something intrinsically confusing about mutable local variables, and I suggest that this&mdash;in and of itself&mdash;is bad to the bone.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2007/10/im-confused.html" title="permanent link">8:39 AM</a>
+						&para; <a href="http://raganwald.github.com/2007/10/im-confused.html" title="permanent link">8:39 AM</a>
 
 					 
 				</span> 
@@ -44,77 +44,77 @@
 						
 							<div class="blogComment">
 								<a name="2783160840014551172"></a> 				I don't find mutable local variables to be confusing. For one thing, they're right there, so you can see all the code that modifies them.<BR/><BR/>Immutable "variables" can help you to follow the code, and also help with refactoring (I'm a big fan of const correctness), but that doesn't mean mutable variables are bad.<BR/><BR/>What <B>is</B> bad is mutable variables that don't actually ever change. By omitting the <I>const</I>, you make a declaration that this variable can change. This is information that you've got to carry with you when reasoning about the code --- every time a variable is used you need to check that it's still got the same value.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/im-confused.html?showComment=1191948000000#c2783160840014551172" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12888842046584695509" rel="nofollow">Anthony Williams</a> : 12:40 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/im-confused.html?showComment=1191948000000#c2783160840014551172" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12888842046584695509" rel="nofollow">Anthony Williams</a> : 12:40 PM</div>
 
 								<span class="item-control blog-admin pid-696165089"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2783160840014551172" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3882391087976161364"></a> 				As an American, I have to say that it is very, very hard to take any post with the words "bad to the bone" seriously. I blame George Thorogood. :)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/im-confused.html?showComment=1191963720000#c3882391087976161364" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.codinghorror.com/blog/" rel="nofollow">Jeff Atwood</a> : 5:02 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/im-confused.html?showComment=1191963720000#c3882391087976161364" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.codinghorror.com/blog/" rel="nofollow">Jeff Atwood</a> : 5:02 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3882391087976161364" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4998653489095579777"></a> 				Jeff, I apologize. I blame The Guvernator for his role in "T2," where somehow he turned an expression that was supposed to stink of murder, mayhem, and terror and turned it into Harley-Davidson Chic.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/im-confused.html?showComment=1191974460000#c4998653489095579777" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:01 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/im-confused.html?showComment=1191974460000#c4998653489095579777" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:01 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4998653489095579777" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1435268887539629659"></a> 				Bah!  Humbug!  Are you suggesting humans program in  SSA form?<BR/><BR/>Seriously, LOCAL variables?  Where all modifying code is in front of you eyes?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/im-confused.html?showComment=1191975060000#c1435268887539629659" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00344092759766575438" rel="nofollow">Kyle Lahnakoski</a> : 8:11 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/im-confused.html?showComment=1191975060000#c1435268887539629659" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00344092759766575438" rel="nofollow">Kyle Lahnakoski</a> : 8:11 PM</div>
 
 								<span class="item-control blog-admin pid-1247114339"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1435268887539629659" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8321582110885765086"></a> 				the link that you provided at (and here’s the entire text online).<BR/><BR/>gives a 404 error, irony is this error is not actuially human readable....<BR/>It would be great if you can provide a working link, I would like to read it.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/im-confused.html?showComment=1192002060000#c8321582110885765086" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02913045800347594303" rel="nofollow">dilip</a> : 3:41 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/im-confused.html?showComment=1192002060000#c8321582110885765086" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02913045800347594303" rel="nofollow">dilip</a> : 3:41 AM</div>
 
 								<span class="item-control blog-admin pid-356792166"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8321582110885765086" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5477681574783811912"></a> 				You've established elsewhere (from memory, no refs to hand) that variables lead to different states in code which must then be tested for the program to be deemed correct. Therefore increasing immutability reduces bugs.<BR/><BR/>However, mutability is more natural to humans: they are used to doing things to the world and sensing changes. Think of the evolution of programming languages from assembler, through Cobol, Fortran,... Only comparatively recently have functional languages become established.  Also people (in general) find mathematical reasoning difficult, and it is possible that this is because one is dealing with relationships between immutable entities, not something one does that often outside of mathematics.  What about hardware: does there exist a purely functional CPU?<BR/><BR/>Even functional languages must introduce the nontrivial idea of monads to allow programs to print.<BR/><BR/>If you wish to expand this post into something longer, explain to us why functional programming is less confusing than local change in procedural or object oriented programming, the latter holding local mutability to be exemplary. How is it "natural" or "not confusing" to make a program work for you when it doesn't *do* anything? :-)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/im-confused.html?showComment=1192014240000#c5477681574783811912" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 7:04 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/im-confused.html?showComment=1192014240000#c5477681574783811912" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 7:04 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5477681574783811912" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1269415033390400014"></a> 				<I>explain to us why functional programming is less confusing than local change in procedural or object oriented programming</I><BR/><BR/>First, reducing <I>local</I> state changes by reducing or eliminating local mutable variables is not the same thing as functional programming.<BR/><BR/>All I'm saying is that methods, procedures, or functions that don't have mutable local variables are less confusing than those that do.<BR/><BR/>I am reminded of the following conversation: One fellow says to another, "My wife and I are expecting a baby. I hope it's a boy. It would be nice if he grows up to be tall, like me."<BR/><BR/>The other recoils in horror: "What are you saying? Can you imagine if the world was just men, no women? The human race would die out! And what's with tall? Are we short people so unattractive, so repulsive to you??? I had no idea you were such a shallow person!!!!!"<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/im-confused.html?showComment=1192018620000#c1269415033390400014" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:17 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/im-confused.html?showComment=1192018620000#c1269415033390400014" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:17 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1269415033390400014" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6200527032506959495"></a> 				:-) A nice riposte! However, you have argued before for more functional style, and reducing variables is heading that way, so I think it's a fair thing to ask for.  Asking the man why he wants a boy who is tall, what appeals to him about it, is not the same as saying "Why don't you want a girl?".  There are interesting cognitive issues here, solved in different ways in, say, Forth, C, C++, and Haskell. Your book links (Eg "To Mock a Mockingbird" ) show you'd have something to say about why a functional approach would address this problem, and I'm still trying to grok functional programming, so I'd be interested in reading that. I agree it isn't all or nothing, though.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/im-confused.html?showComment=1192026120000#c6200527032506959495" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 10:22 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/im-confused.html?showComment=1192026120000#c6200527032506959495" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 10:22 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6200527032506959495" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2640031574670099967"></a> 				I'd encourage everyone who is all excited about mutable data to check out Chapter 2 of Hardcore Java:<BR/><BR/>http://www.oreilly.com/catalog/hardcorejv/toc.html<BR/><BR/>The <B>final</B> keyword is a beautiful thing, for all the reasons Reg laid out, and they get into programming-language-specific detail in that book.<BR/><BR/>My big beef with mutable data is that while it may be natural for humans to think in terms of changing things, it's also very hard for humans to deal with lots of moving parts in their head.  Once you get past a couple of variables and a few branches, and certainly once you start to mix in abstraction and fun stuff like polymorphism or concurrency, the level of complexity has demonstrably gone beyond the capability of humans to handle.<BR/><BR/>This is exactly why people have tried to break up and isolate the exposure of mutability, and the ways in which mutable variables are accessed (see the move from global variables to objects).  And, as things have continued to progress, you're starting to see people saying that more and more mutable data should be more and more isolated.<BR/><BR/>This is all symptomatic of what Reg is getting at.  And while there may be a place and a time for mutable variables or side effects, code that minimizes those things -- in whatever language or structure -- is a lot more maintainable.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/im-confused.html?showComment=1192111440000#c2640031574670099967" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17844778275497805797" rel="nofollow">Robert</a> : 10:04 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/im-confused.html?showComment=1192111440000#c2640031574670099967" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17844778275497805797" rel="nofollow">Robert</a> : 10:04 AM</div>
 
 								<span class="item-control blog-admin pid-83827799"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2640031574670099967" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2286651585795940961"></a> 				Reg,<BR/><BR/>Yes, that was my point. When we talk about bad code we are really talking about confusing code. The word confusing allows us to really get at the problem. And it provides a good bound in the other direction: I can recall a few situations where introducing state, even temporary state, can make code much easier to understand.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/im-confused.html?showComment=1192194300000#c2286651585795940961" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://blogs.concedere.net:8080/blog/discipline/" rel="nofollow">ocean</a> : 9:05 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/im-confused.html?showComment=1192194300000#c2286651585795940961" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://blogs.concedere.net:8080/blog/discipline/" rel="nofollow">ocean</a> : 9:05 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2286651585795940961" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4440836066471795352"></a> 				Dilip, <BR/>In case you didn't find it, here's a working link to the <A HREF="http://mitpress.mit.edu/sicp/full-text/book/book.html" REL="nofollow">online SICP</A>.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/im-confused.html?showComment=1192640940000#c4440836066471795352" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://expectedbehavior.com" rel="nofollow">Matt Gordon</a> : 1:09 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/im-confused.html?showComment=1192640940000#c4440836066471795352" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://expectedbehavior.com" rel="nofollow">Matt Gordon</a> : 1:09 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4440836066471795352" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -125,7 +125,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -179,25 +179,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -205,17 +205,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -225,17 +225,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -243,19 +243,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -263,18 +263,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -282,15 +282,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -299,101 +299,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

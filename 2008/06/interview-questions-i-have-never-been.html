@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Tuesday, June 24, 2008</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="861417926615539281">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html" title="permanent link">Interview questions I have never been asked, Episode I</a></span>
-					<div style="clear:both;"></div>Compare and contrast:<pre><code><br />some_array.any? { |n| n > 100 }</code></pre><br />And:<pre><code><br />!!some_array.detect { |n| n > 100 }</code></pre><br />Which do you think is easier to read?<br /><br />Are classes and modules easier to read and understand when they have lots and lots of specific methods like <a href="http://globalnerdy.com/2008/06/24/enumerating-enumerable-enumerableany/">#any?</a> or are they easier to read and understand with a small number of axiomatic methods that can be composed and combined like #fold and #unfold? When you design a module or class, do you write lots of convenience methods in advance? Or do you refactor code by writing convenience methods when you find yourself repeating the same code? <br /><div class="book"><hr/><em><a name="evtst|a|0672328844" href="http://www.amazon.com/gp/product/0672328844?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0672328844"><img src="http://weblog.raganwald.com/uploaded_images/the_ruby_way.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0672328844" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br><a name="evtst|a|0672328844" href="http://www.amazon.com/gp/product/0672328844?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0672328844">The Ruby Way</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0672328844" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is the perfect second Ruby book for serious programmers. The Ruby Way contains more than four hundred examples explaining how to do everything from distribute Ruby with Rinda to functional programming techniques.</em><hr/></div><br />If you do refactor code to eliminate duplication, is there an amount of duplication that is too small to matter, like "!!"? Or is there an underlying principle of documenting intent that you wish to make explicit?<br /><br />Is:<pre><code><br />do_something() if some_array.detect { |n| n > 100 }</code></pre><br />Misleading because it doesn&rsquo;t actually <em>use</em> the element it detects? Or is it a reasonable idiom to test for an element&rsquo;s existence without using a specific method like #any or #nil?<br /><br />Are applications easier to read and understand when they make use of lots and lots of specific methods like #any or are they easier to read and understand when they compose and combine a smaller number of axiomatic methods so that you aren&rsquo;t constantly looking things up?<br /><br />Do you think applications should have large or small vocabularies?<br /><br /><em>This example can be easily translated to the language du jour, the underlying principle applies to programming in general</em><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html" title="permanent link">Interview questions I have never been asked, Episode I</a></span>
+					<div style="clear:both;"></div>Compare and contrast:<pre><code><br />some_array.any? { |n| n > 100 }</code></pre><br />And:<pre><code><br />!!some_array.detect { |n| n > 100 }</code></pre><br />Which do you think is easier to read?<br /><br />Are classes and modules easier to read and understand when they have lots and lots of specific methods like <a href="http://globalnerdy.com/2008/06/24/enumerating-enumerable-enumerableany/">#any?</a> or are they easier to read and understand with a small number of axiomatic methods that can be composed and combined like #fold and #unfold? When you design a module or class, do you write lots of convenience methods in advance? Or do you refactor code by writing convenience methods when you find yourself repeating the same code? <br /><div class="book"><hr/><em><a name="evtst|a|0672328844" href="http://www.amazon.com/gp/product/0672328844?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0672328844"><img src="http://raganwald.github.com/uploaded_images/the_ruby_way.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0672328844" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br><a name="evtst|a|0672328844" href="http://www.amazon.com/gp/product/0672328844?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0672328844">The Ruby Way</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0672328844" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is the perfect second Ruby book for serious programmers. The Ruby Way contains more than four hundred examples explaining how to do everything from distribute Ruby with Rinda to functional programming techniques.</em><hr/></div><br />If you do refactor code to eliminate duplication, is there an amount of duplication that is too small to matter, like "!!"? Or is there an underlying principle of documenting intent that you wish to make explicit?<br /><br />Is:<pre><code><br />do_something() if some_array.detect { |n| n > 100 }</code></pre><br />Misleading because it doesn&rsquo;t actually <em>use</em> the element it detects? Or is it a reasonable idiom to test for an element&rsquo;s existence without using a specific method like #any or #nil?<br /><br />Are applications easier to read and understand when they make use of lots and lots of specific methods like #any or are they easier to read and understand when they compose and combine a smaller number of axiomatic methods so that you aren&rsquo;t constantly looking things up?<br /><br />Do you think applications should have large or small vocabularies?<br /><br /><em>This example can be easily translated to the language du jour, the underlying principle applies to programming in general</em><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html" title="permanent link">10:45 AM</a>
+						&para; <a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html" title="permanent link">10:45 AM</a>
 
 					 
 				</span> 
@@ -44,98 +44,98 @@
 						
 							<div class="blogComment">
 								<a name="6099833608742152665"></a> 				A larger vocabulary is clearly better for communicating the programmers intent.  If that weren't the case, then you'd just use a for loop and the list size to do everything keeping the smallest possible interface on the list.  Using detect without using the result is deceptive, you're lying to the reader and trying to confuse him.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214320740000#c6099833608742152665" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12528375698090050555" rel="nofollow">Ramon Leon</a> : 11:19 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214320740000#c6099833608742152665" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12528375698090050555" rel="nofollow">Ramon Leon</a> : 11:19 AM</div>
 
 								<span class="item-control blog-admin pid-775678381"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6099833608742152665" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8653392632519923173"></a> 				I'll argue that Ruby does make a difference here; there's a semantic difference between detect and what I expect out of any. It can be defined in a very brief irb session:<BR/><BR/>>> x = [nil, false, true]<BR/>=> [nil, false, true]<BR/>>> x.detect {|y| y == nil}<BR/>=> nil<BR/>>> !!x.detect {|y| y == nil}<BR/>=> false<BR/>>> x.any {|y| y == nil}<BR/>=> true<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214322480000#c8653392632519923173" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 11:48 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214322480000#c8653392632519923173" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 11:48 AM</div>
 
 								<span class="item-control blog-admin pid-831715508"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8653392632519923173" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5403782591534387366"></a> 				Again though, it could just be python influencing my intuitions:<BR/><BR/>>>> x = [True, False, None]<BR/>>>> any(y == None for y in x)<BR/>True<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214322900000#c5403782591534387366" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 11:55 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214322900000#c5403782591534387366" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 11:55 AM</div>
 
 								<span class="item-control blog-admin pid-831715508"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5403782591534387366" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6580986890829830653"></a> 				Reading over my comments, I should clarify why this matters to me, because of course you are using detect to look for integers, where of course it will function perfectly well. (It wouldn't in python because zero is falsish).<BR/><BR/>My problem with doing so is that it's not thinking axiomatically. In my head, I would look for a function that always returned a truish object upon finding it, and detect wouldn't fit the bill (as shown above). <BR/><BR/>Thus, my argument is that you have not presented an example of a situation where a convenience method may be useful instead of a manipulation of an axiom, but instead a place where there is clear necessity for a further axiom.<BR/><BR/>(Side note #1: What would be your favorite modification of the "detect" idiom to be correct for all values of x? I'd use x.index I think?)<BR/><BR/>(Side note #2: I forgot to mention the very clean python idiom for checking for an element's existance in an array:<BR/><BR/>>> x = [True, False, None]<BR/>>> None in x<BR/>True<BR/>)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214323680000#c6580986890829830653" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 12:08 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214323680000#c6580986890829830653" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 12:08 PM</div>
 
 								<span class="item-control blog-admin pid-831715508"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6580986890829830653" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2828968545624650595"></a> 				I agree that since you're not using the result, the version with detect does not as clearly show your intent.<BR/><BR/>While not meaning to stir up arguments about premature optimization, efficiency is a concern as well. Because of your usage of some exotic structure(e.g. Bloom filter, "ropes" instead of strings, etc.) perhaps a method like any can take advantage of something "clever" that would be impossible to take advantage of from a more "axiomatic" interface.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214324520000#c2828968545624650595" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://titivillus.livejournal.com/" rel="nofollow">titivillus</a> : 12:22 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214324520000#c2828968545624650595" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://titivillus.livejournal.com/" rel="nofollow">titivillus</a> : 12:22 PM</div>
 
 								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2828968545624650595" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1981964170552117002"></a> 				The language that makes up the technical base is the foundation for expressing your specific programming solution. It is best to completely encapsulate that technical level with a higher problem-domain-specific one. <BR/><BR/>My reasoning is that you have to create a higher level vocabulary anyways, so the most readable solution doesn't flip flop between the two (doubling up in size) it sits complete at an upper level. <BR/><BR/>There is nothing wrong with framing the problem with your own primitives, but within that context it must be consistent and used consistently to be easily readable.<BR/><BR/>I'm working on a new post to dig a bit deeper into readability. Hopefully it will be finished in a day or two.<BR/> <BR/>Paul.<BR/><A HREF="http://theprogrammersparadox.blogspot.com" REL="nofollow">http://theprogrammersparadox.blogspot.com</A><br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214327880000#c1981964170552117002" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 1:18 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214327880000#c1981964170552117002" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 1:18 PM</div>
 
 								<span class="item-control blog-admin pid-1233049894"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1981964170552117002" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2136636666734352028"></a> 				Personally, I think that any language feature which encourages the use of the bangbang operator (!!) is a misfeature.  English classes discourage double negatives for a reason.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214332740000#c2136636666734352028" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10993900556434566800" rel="nofollow">Avdi Grimm</a> : 2:39 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214332740000#c2136636666734352028" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10993900556434566800" rel="nofollow">Avdi Grimm</a> : 2:39 PM</div>
 
 								<span class="item-control blog-admin pid-158043373"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2136636666734352028" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5988275761340997533"></a> 				It's 'any?' not 'any'<BR/><BR/>That to me makes a big difference, because the ? signals a boolean test. <BR/><BR/>I love how ruby does that with blah? and modify! methods, nothing would make me happier than for them to enforce it, the same way C++ enforces const member functions.<BR/><BR/>Anyway, I'm firmly on the side of large vocabularies. They let you write your code more as a sentence or statement for a human to read, rather than a list of instructions for a computer to execute.<BR/><BR/>With small languages everyone ends up reinventing the wheel, and writing a zillion helper functions to do things like .any?, so apart from the disk space required to ship a larger standard library, there's no downside to having a bigger vocab IMHO<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214340600000#c5988275761340997533" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15865664564356161586" rel="nofollow">Orion Edwards</a> : 4:50 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214340600000#c5988275761340997533" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15865664564356161586" rel="nofollow">Orion Edwards</a> : 4:50 PM</div>
 
 								<span class="item-control blog-admin pid-707821485"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5988275761340997533" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="9206897046339999974"></a> 				AFAICT, the rule in Ruby is that "?" does signal apredicate method (like foo-p in CL), but "!" is only used to disambiguate destructive vs. the non-destructive versions of the same method (like reverse and reverse! or compact and compact!)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214341800000#c9206897046339999974" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:10 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214341800000#c9206897046339999974" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:10 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9206897046339999974" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5332388300546994106"></a> 				and here I was typing:<BR/><BR/>some_array.inject(false){|bool, el| bool = bool ? el.test : bool}<BR/><BR/>at least today I know I learned something.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214343360000#c5332388300546994106" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12814700898058564667" rel="nofollow">Nathan</a> : 5:36 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214343360000#c5332388300546994106" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12814700898058564667" rel="nofollow">Nathan</a> : 5:36 PM</div>
 
 								<span class="item-control blog-admin pid-1746697826"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5332388300546994106" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5700501601987763480"></a> 				I think that problem spaces have a certain vocabulary size and that source code solving problems in that space should scale relative to that.<BR/><BR/>There may be ways to trivially disprove this assertion (i.e. a problem with a small vocabulary that requires an enormous vocabulary to solve, like an NP-complete problem solved in P).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214345460000#c5700501601987763480" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17622652320471746903" rel="nofollow">John</a> : 6:11 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214345460000#c5700501601987763480" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17622652320471746903" rel="nofollow">John</a> : 6:11 PM</div>
 
 								<span class="item-control blog-admin pid-1471048113"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5700501601987763480" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3524271827739159236"></a> 				I'm mostly with bill mill. detect was a bad choice.<BR/><BR/>But you do mention fold, which i think is the same as reduce/inject.<BR/><BR/>I was going to mention the code nathan posted as the alternative using inject.<BR/><BR/>but now i'm going to go on tangent.<BR/><BR/>I often transform an array into a hash by some property of the array. For example I might want to group a list of people by lastname. I generally do:<BR/><BR/>  people.inject(Hash.new{[]}) { |h, p| h[p.lastname] << p; h }<BR/><BR/>or <BR/><BR/>  people.inject({}) { |h, p| (h[p.lastname] ||= []) << p; h }<BR/><BR/>Once I abstracted that away and created something like <BR/><BR/>  array.hash_by { |n| n.foo }<BR/><BR/>but i never remember to use it.<BR/><BR/>I think using inject here shows the intent more clearly, because everybody knows how inject works, but no one knows hash_by, probably not even me, a few weeks in the future.<BR/><BR/>What I guess I'm trying to get at is: you can build a great language with just map/filter/reduce (collect/select/inject, etc). But part of that great language will be the helper methods you write with these building blocks. The same code you started with could be implemented in many ways with them:<BR/><BR/>  list.map { |n| n > 100 }.inject { |a, b| a && b }<BR/>  list.select { |n| n > 100 }.length != 0<BR/>  <BR/>and the aforementioned reduction by nathan.<BR/><BR/>And yet, I'm all for #any? as a language feature. Not at all because it's performance-wise better than inject because it can exit early (and detect/find do that too), but because it's pretty damn obivous.<BR/><BR/>In the end I just think your example shot itself in the foot because detect is really bad there, and any is really great. Instead, how do you feel about my hash_by?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214357340000#c3524271827739159236" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02363798132253736067" rel="nofollow">Caio</a> : 9:29 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214357340000#c3524271827739159236" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02363798132253736067" rel="nofollow">Caio</a> : 9:29 PM</div>
 
 								<span class="item-control blog-admin pid-385419299"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3524271827739159236" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1347029565951998835"></a> 				Of course, the any? version is clearer, it's also less likely to hide a bug. But even if it weren't, !! brings me out in hives. It's pure noise - there's absolutely no reason to go coercing any result into a boolean in such a simple minded fashion because everything that deals with truthy values already knows about what is truthy. <BR/><BR/>Seeing !! in code tells me is that the author hasn't got over static typing yet.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214400420000#c1347029565951998835" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://www.bofh.org.uk/" rel="nofollow">bofh.org.uk</a> : 9:27 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214400420000#c1347029565951998835" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://www.bofh.org.uk/" rel="nofollow">bofh.org.uk</a> : 9:27 AM</div>
 
 								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1347029565951998835" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8506184815464316658"></a> 				user.has_photo?<BR/>user.photos.count > 0<BR/><BR/>What do you think about this more subtle difference?<BR/>Do you think both can live together in a single codebase?<BR/>If so, how do we make programmers use the right one?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214734080000#c8506184815464316658" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://alisey.myopenid.com/" rel="nofollow">Alisey</a> : 6:08 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/interview-questions-i-have-never-been.html?showComment=1214734080000#c8506184815464316658" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://alisey.myopenid.com/" rel="nofollow">Alisey</a> : 6:08 AM</div>
 
 								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8506184815464316658" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -146,7 +146,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -200,25 +200,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -226,17 +226,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -246,17 +246,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -264,19 +264,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -284,18 +284,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -303,15 +303,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -320,101 +320,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

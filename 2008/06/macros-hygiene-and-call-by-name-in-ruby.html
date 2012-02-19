@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Sunday, June 22, 2008</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="8802494876056821164">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html" title="permanent link">Macros, Hygiene, and Call By Name in Ruby</a></span>
-					<div style="clear:both;"></div><blockquote>Never send a macro to do a function&#8217;s job.</blockquote><br />Sound advice, however just because functions (or methods) are better than macros for the things they both can do, that doesn&#8217;t mean functions can do everything macros can do. Let&#8217;s look at <a href="http://andand.rubyforge.org/" title="Object#andand">andand</a> for a moment. When you write:<br /><pre><code><br />foo().andand.bar(blitz())</code></pre><br />Using the andand gem, Ruby treats this something like:<br /><pre><code><br />temp1 = foo()<br />temp2 = temp1.andand<br />temp3 = blitz()<br />temp2.bar(temp3)</code></pre><br />As it happens, if you call nil.andand.bar(blitz()), it will return nil. But it will still evaluate blitz() before returning nil. What <em>I</em> would expect from something named andand is that if foo() is nil, Ruby will never evaluate blitz(). Something like:<br /><pre><code><br />temp1 = foo()<br />if temp1.nil?<br />    nil<br />else<br />    temp2 = blitz()<br />    temp1.bar(temp2)<br />end</code></pre><br />What we want is that when we pass blitz() to andand, it is not evaluated <em>unless the andand function uses it</em>. The trouble is, you cannot write an andand method in Ruby that delivers these semantics.<br /><br />Let&#8217;s hand wave over the difference between methods and functions for a moment and just look at calling functions. We&#8217;ll consider writing &#8220;our_and,&#8221; a function that emulates the short-circuit evaluation behaviour of Ruby&#8217;s &#8220;&amp;&amp;&#8221; and &#8220;and&#8221; operators. Ruby (and most other languages in use these days) uses <a href="http://en.wikipedia.org/wiki/Evaluation_strategy#Call_by_value" title="Evaluation strategy - Wikipedia, the free encyclopedia">call-by-value</a> when it passes parameters to functions. In other words, when you write:<br /><pre><code><br />our_and(foo(), blitz())</code></pre><br />Ruby turns that into something that looks like this:<br /><pre><code><br />var temp1 = foo()<br />var temp2 = blitz()<br />our_and(temp1, temp2)</code></pre><br />It doesn&#8217;t matter if the function our_and uses blitz() internally or not, it is evaluated <em>before</em> our_and is called and its value is passed to our_and. Whereas our &#8220;if&#8221; statement in the previous example does not evaluate &#8220;blitz()&#8221; unless &#8220;foo().andand&#8221; is not nil.<br /><br />Well, well, well. The inescapable conclusion is that there are some sequences of expressions in Ruby that cannot be represented as functions or methods. That&#8217;s right, <em>functions and methods can&#8217;t do everything that Ruby code can do</em>.<br /><br />Macros and code rewriting can do an awful lot. The implementation of andand in the <a href="http://rewrite.rubyforge.org/" title="rewrite">rewrite</a> gem <em>does</em> rewrite code. When you write:<br /><pre><code><br />with(andand) do<br />    # ...<br />    foo().andand.bar(blitz())<br />    # ...<br />end</code></pre><br />Rewrite rewrites your code in place to look something like:<br /><pre><code><br /># ...<br />lambda do |__121414053598468__|<br />    if __121414053598468__.nil?<br />        nil<br />    else<br />        __121414053598468__.bar(blitz())<br />    end<br />end.call(foo)<br />#...</code></pre><br />And for that reason when you write foo().andand.bar(blitz()) using the rewrite gem instead of the andand gem, blitz() is not evaluated if foo() is nil. Big difference!! So it looks like one way to get around call-by-value is to rewrite your Ruby code. Excellent. Or is it?<br /><br /><strong>What&#8217;s wrong with rewrite</strong><br /><br />Right now, the rewrite gem supports writing sexp processors. These are objects that encapsulate a way of transforming sexps. For example, here is the code that transforms expressions like &#8220;foo().andand.bar(blitz()):&#8221;<br /><pre><code><br />  def process_call(exp)<br />    exp.shift<br />    receiver_sexp = exp.first<br />    if matches_andand_invocation(receiver_sexp)<br />      exp.shift<br />      mono_parameter = Rewrite.gensym()<br />      s(:call, <br />        s(:iter, <br />          s(:fcall, :lambda), <br />          s(:dasgn_curr, mono_parameter), <br />          s(:if, <br />            s(:call, s(:dvar, mono_parameter), :nil?), <br />            s(:nil), <br />            begin<br />              s(:call, <br />                s(:dvar, mono_parameter), <br />                *(exp.map { |inner| process_inner_expr inner })<br />              )<br />            ensure<br />              exp.clear<br />            end<br />          )<br />        ), <br />        :call, <br />        s(:array, <br />          process_inner_expr(receiver_sexp[1])<br />        )<br />      )<br />    else<br />      begin<br />        s(:call,<br />          *(exp.map { |inner| process_inner_expr inner })<br />        )<br />      ensure<br />        exp.clear<br />      end<br />    end<br />  end</code></pre><br />And that&#8217;s just a third of andand: There is another method that handles expressions like &#8220;foo().andand { |x| x.bar(blitz()) }&#8221; and a third that handles &#8220;foo().andand(&amp;bar_proc).&#8221; Brutal.<br /><br />Now, rewriting code has many other uses. One on my wish list is a rewriter that transforms expressions like: &#8220;foo.select { |x| &#8230; }.map { |y| &#8230; }.inject { |z| &#8230; }&#8221; into one big inject as an optimization. So I&#8217;m not ready to throw rewrite in the trash can just yet. But there&#8217;s no way I want to be writing all that out by hand every time I want to implement a function but work around call-by-value semantics.<br /><br /><strong>What about macros?</strong><br /><br />Why can&#8217;t I write:<br /><pre><code><br />def_macro our_and(x,y)<br />    ((temp = x) ? (y) : (temp))<br />end</code></pre><br />&#8230;And have it automatically expand my code such that when I write:<br /><pre><code><br /># ...<br />foo = our_and(bar(), blitz())<br /># ...</code></pre><br />The macro expander rewrites it as:<br /><pre><code><br /># ...<br />foo = ((temp = bar() ? blitz() : temp)<br /># ...</code></pre><br />Wouldn&#8217;t that work? Maybe. Then again, maybe not.<br /><br />The problem given above&#8212;working around call-by-value&#8212;is just one small problem. A macro implementation would solve that problem, but there&#8217;s an awful lot of overhead required to make the implementation work, and whatever you do ends up being an incredibly leaky abstraction.<br /><br />Take our example above. What happens if we have our own variable named temp? Does it get clobbered by expanding our_and? Or do we rename temp? Or do some automagic jigger-pokery with scopes?<br /><br />Getting macros right is very tricky. I don&#8217;t personally plan to try my hand at implementing macros until I&#8217;m an expert on the subject of <a href="http://www.bookshelf.jp/texi/onlisp/onlisp_10.html" title="Onlisp:  Variable Capture">variable capture</a> and can hold forth on the design trade-offs inherent in different schemes for implementing <a href="http://en.wikipedia.org/wiki/Hygienic_macro" title="Hygienic macro - Wikipedia, the free encyclopedia">hygienic macros</a>. But that&#8217;s just me.<br /><br />Perhaps there are other ways to solve it without diving into a full-blown macro facility?<br /><br /><strong>Lambdas and blocks</strong><br /><br />Indeed there are other ways. Ruby already has one-and-a-half of them: blocks and lambdas. Using blocks and lambdas, you can control evaluation precisely. The andand gem actually does support short-circuit semantics using a block. When you write:<br /><pre><code><br />nil.andand { |x| x.foo(blitz()) }</code></pre><br />It does <em>not</em> evaluate blitz(). This alternate way of using andand supports the semantics we want by explicitly placing the code that should not be eagerly evaluated in a block. Given patience and a taste for squiggly braces, you can create non-standard evaluation without resorting to macros.<br /><br />We said at the beginning that the reason we cannot use functions and methods to represent everything we can write in code is because Ruby uses call-by-value to pass parameters to functions. One way to work around that is this: instead of passing the value of each expression to a function, we can pass the expression itself, wrapped up in its own lambda.<br /><br />Then, when the function needs the value, it can call the lambda. This technique has a name: it is called <a href="http://en.wikipedia.org/wiki/Thunk#Thunk_as_delayed_computation" title="Thunk as delayed computation">thunking</a>.<br /><br />We could implement our_and as follows:<br /><pre><code><br />our_and = lambda { |x,y|<br />    if temp = x.call<br />        y.call<br />    else<br />        temp<br />    end<br />end</code></pre><br />Then when we call it, we could wrap our parameters in lambdas:<br /><pre><code><br />our_and.call(<br />    lambda { a() },<br />    lambda { b() }<br />)</code></pre><br />Verify for yourself that this produces the behaviour we want, without the worry of our local variables messing things up for the calling code. Let&#8217;s go further: we can implement functions with a variable number of arguments using an enumeration of thunks. For example, we could write:<br /><pre><code><br />def try_these(*clauses)<br />    clauses.each { |clause| return clause.call rescue nil }<br />    nil<br />end</code></pre><br />And call our function like this:<br /><pre><code><br />try_these(<br />    lambda { http_util.fetch(url, :login_as =&gt; :anonymous) },<br />    lambda { http_util.fetch(url, :login_as =&gt; ['user', 'password']) },<br />    lambda { default_value() }<br />)</code></pre><br />We have just implemented the <a href="http://www.prototypejs.org/api/utility/try-these" title="Prototype JavaScript framework:  Utility Methods.Try.these">Try.these</a> function from the Prototype Javascript library.<br /><br />This technique gets us almost all of what we want for this common case of wanting to work around call-by-value semantics. As you can surmise from the fact that it has a name, it is not some newfangled shiny toy idea, it goes back to ALGOL 60, where it was known as <a href="http://foldoc.org/?call-by-name" title="call-by-name from FOLDOC">call-by-name</a>. (PHP has something called &#8220;Call By Name,&#8221; but it has a lot more in common with C++ references than it does with ALGOL parameter passing.)<br /><br />The application of call-by-name as a substitute for full-blown macros isn&#8217;t novel either. Joel Klein pointed out that <a href="http://jfkbits.blogspot.com/2008/05/call-by-need-lambda-poor-mans-macro.html" title="Call by Need Lambda a Poor Man's Macro?">Call by need is a poor man&#8217;s macro</a>. Another suggestion along similar lines is to <a href="http://arclanguage.org/item?id=7216" title="Arc Forum | Rethinking macros">rethink macros in Arc</a>.<br /><br /><strong>thunks: ugly name, ugly code</strong><br /><br />Our thunking approach solves a lot of our problems, but the implementation severely protrudes into the interface! We could argue that since our call-by-name functions have different behaviour than ordinary functions or methods, they ought to have different syntax.<br /><br />That&#8217;s a reasonable point of view, and that&#8217;s exactly how languages like Smalltalk work: everything that involves delaying evaluation in some way uses blocks, even the if statements, which are methods that take blocks as arguments. So in Smalltalk, everything is consistent.<br /><br />Ruby, OTOH, is not consistent. Operators like &#8220;&amp;&#8221; and &#8220;|&#8221; are actually methods with call-by-value semantics, while operators like &#8220;&amp;&amp;&#8221; and &#8220;||&#8221; are special forms with call-by-value semantics. Likewise if you only need to delay one expression you can use a block, but if you need to delay two or more, you need at least one lambda. So another reasonable point of view is that we should follow Ruby&#8217;s philosophy of making the common case easy to use and not become reductionists trying to build everything out of five axiomatic forms.<br /><br />So we have one approach&#8212;rewriting&#8212;that is crazy-hard to write but produces nicely readable code. And we have another approach&#8212;thunking&#8212;that is easy to write but produces unsightly boilerplate.<br /><br />Maybe what we want is a rewriter, but we want an easier way to write rewriters for this simple case?<br /><br /><strong>Called by name</strong><br /><br />Here&#8217;s how we could define and use a call-by-name function called &#8220;our_and&#8221;:<br /><pre><code><br />with (<br />    called_by_name(:our_and) { |x,y|<br />        if temp = x<br />            y<br />        else<br />            temp<br />        end<br />    }<br />) do<br />    # ...<br />    foo = our_and(bar(), blitz()) # method-like syntactic sugar<br />    # ...<br />end</code></pre><br />What we just did is manufacture a rewriter without any sexps. Instead of getting rid of sexps, we&#8217;re treating them like assembler and using a declarative language to write the assembler for us. Our rewriter dutifully rewrites our code to look something like:<br /><pre><code><br />our_and = lambda { |x,y|<br />    if temp = x.call<br />        y.call<br />    else<br />        temp<br />    end<br />end<br /># ...<br />foo = our_and.call(<br />    lambda { bar() },<br />    lambda { blitz() }<br />)<br /># ...</code></pre><br />We can define a rewriter for functions with splatted parameters too:<br /><pre><code><br />with(<br />    called_by_name(:try_these) { |*clauses|<br />        clauses.each { |clause| return clause rescue nil }<br />        nil<br />    }<br />) do<br />    # ...<br />    try_these(<br />        http_util.fetch(url, :login_as =&gt; :anonymous),<br />        http_util.fetch(url, :login_as =&gt; ['user', 'password']),<br />        default_value()<br />    )<br />    # ...<br />end</code></pre><br />Becomes something like:<br /><pre><code><br />try_these = lambda { |*clauses|<br />    clauses.each { |clause| return clause.call rescue nil }<br />    nil<br />}<br /># ...<br />try_these.call(<br />    lambda { http_util.fetch(url, :login_as =&gt; :anonymous) },<br />    lambda { http_util.fetch(url, :login_as =&gt; ['user', 'password']) },<br />    lambda { default_value() }<br />)<br /># ...</code></pre><br /><br /><blockquote>It goes, boys!</blockquote><div>&#8212;Lynn Hill after becoming the first person of either sex to climb The Nose of El Capitan, all free.</div><br />As of now, the <a href="http://rewrite.rubyforge.org">rewrite</a> gem supports called_by_name. You can write your own functions with call-by-name semantics using called_by_name just as you see here. As is standard with the rewrite gem, only the code in the do&#8230; end block is affected by your change.<br /><br /><strong>call-by-name, in summary</strong><br /><br />To summarize, with the rewrite gem you can write functions that have call-by-name semantics without wrestling sexps into submission or encumbering your code with a lot of superfluous lambdas and calls:<br /><pre><code><br />with(<br />    called_by_name(:try_these) { |*clauses|<br />        clauses.each { |clause| return clause rescue nil }<br />        nil<br />    },<br />    called_by_name(:our_and) { |x,y|<br />        if temp = x<br />            y<br />        else<br />            temp<br />        end<br />    }<br />) do<br />    # ...<br />    try_these(<br />        http_util.fetch(url, :login_as =&gt; :anonymous),<br />        http_util.fetch(url, :login_as =&gt; ['user', 'password']),<br />        default_value()<br />    )<br />    # ...<br />    foo = our_and(bar(), blitz())<br />    # ...<br />end</code></pre><br />This is a win when you don&rsquo;t want your code encumbered with more lambdas than business logic. It may be a matter of taste, but part of what I like about Ruby having a special case for blocks is that they act as a huge hint that an expression is temporary: a block after #map suggests we are only using that expression in one place. Whereas when I see &ldquo;Proc.new&rdquo; or &ldquo;lambda,&rdquo; I expect that the expression will be passed around and used elsewhere.<br /><br />Functions with call-by-name semantics communicate the same thing as blocks: the expressions are to be consumed by the function. When I see a lambda being passed to a function, I automatically expect it to be saved and possibly used elsewhere. For that reason, I prefer call-by-name semantics when an expression is not meant to be persisted beyond the function invocation.<br /><br />Now, called_by_name is not a replacement for macros. There are lots of things macros can do that called_by_name cannot do (not to mention that there are lots of things code rewriting can do that macros cannot do). But just as Ruby&#8217;s blocks are a deliberate attempt to make a common case for anonymous functions easy to write, called_by_name makes a common case for macros easy to write and safe from variable capture problems.<br /><br />Of course, called_by_name does so with lots of anonymous functions, and that is a much more expensive implementation than using a hygienic macro to rewrite code inline. But it feels like a move in an interesting direction: if it is a win to sometimes meta-program Ruby&#8217;s syntax with DSLs, it ought to also be a win to sometimes meta-program Ruby&#8217;s semantics with call-by-name functions.<br /><br /><strong>afterword</strong><br /><br />So&hellip; Is this merely a way to replicate things that are already built into Ruby but do them fifty times slower?<br /><br />I don&rsquo;t know how to answer that question. When I heard Matz talk about Ruby at <a href="http://weblog.raganwald.com/2007/01/where-were-you-on-saturday-november-9.html" title="Where were you on Saturday, November 9, 2002?">LL1</a>, I didn&rsquo;t catch the part of his speech where he described how to use metaprogramming to build a really neat web development framework. When you first see a new tool, you naturally start by applying it to problems you already know how to solve with your existing tools in the same way you have always solved such problems.<br /><br />Only later, after this tool becomes perfectly natural to you, do you start to think of entirely new ways to use the tool. I&rsquo;m not there yet, but my experience tells me that it&rsquo;s always a win to have more freedom, to have fewer things you can&rsquo;s do with a language.<br /><br />If just one person&mdash;maybe it&rsquo;s me, maybe it&rsquo;s somebody else&mdash;leans forward one day and sees a new way of solving a problem with call-by-name semantics, I&rsquo;ll consider working on this feature time well spent.<br /><br />It probably won&rsquo;t be something trivial like replicating short-circuit boolean operators. But it will be interesting, and I&rsquo;m looking forward to finding out what it is.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html" title="permanent link">Macros, Hygiene, and Call By Name in Ruby</a></span>
+					<div style="clear:both;"></div><blockquote>Never send a macro to do a function&#8217;s job.</blockquote><br />Sound advice, however just because functions (or methods) are better than macros for the things they both can do, that doesn&#8217;t mean functions can do everything macros can do. Let&#8217;s look at <a href="http://andand.rubyforge.org/" title="Object#andand">andand</a> for a moment. When you write:<br /><pre><code><br />foo().andand.bar(blitz())</code></pre><br />Using the andand gem, Ruby treats this something like:<br /><pre><code><br />temp1 = foo()<br />temp2 = temp1.andand<br />temp3 = blitz()<br />temp2.bar(temp3)</code></pre><br />As it happens, if you call nil.andand.bar(blitz()), it will return nil. But it will still evaluate blitz() before returning nil. What <em>I</em> would expect from something named andand is that if foo() is nil, Ruby will never evaluate blitz(). Something like:<br /><pre><code><br />temp1 = foo()<br />if temp1.nil?<br />    nil<br />else<br />    temp2 = blitz()<br />    temp1.bar(temp2)<br />end</code></pre><br />What we want is that when we pass blitz() to andand, it is not evaluated <em>unless the andand function uses it</em>. The trouble is, you cannot write an andand method in Ruby that delivers these semantics.<br /><br />Let&#8217;s hand wave over the difference between methods and functions for a moment and just look at calling functions. We&#8217;ll consider writing &#8220;our_and,&#8221; a function that emulates the short-circuit evaluation behaviour of Ruby&#8217;s &#8220;&amp;&amp;&#8221; and &#8220;and&#8221; operators. Ruby (and most other languages in use these days) uses <a href="http://en.wikipedia.org/wiki/Evaluation_strategy#Call_by_value" title="Evaluation strategy - Wikipedia, the free encyclopedia">call-by-value</a> when it passes parameters to functions. In other words, when you write:<br /><pre><code><br />our_and(foo(), blitz())</code></pre><br />Ruby turns that into something that looks like this:<br /><pre><code><br />var temp1 = foo()<br />var temp2 = blitz()<br />our_and(temp1, temp2)</code></pre><br />It doesn&#8217;t matter if the function our_and uses blitz() internally or not, it is evaluated <em>before</em> our_and is called and its value is passed to our_and. Whereas our &#8220;if&#8221; statement in the previous example does not evaluate &#8220;blitz()&#8221; unless &#8220;foo().andand&#8221; is not nil.<br /><br />Well, well, well. The inescapable conclusion is that there are some sequences of expressions in Ruby that cannot be represented as functions or methods. That&#8217;s right, <em>functions and methods can&#8217;t do everything that Ruby code can do</em>.<br /><br />Macros and code rewriting can do an awful lot. The implementation of andand in the <a href="http://rewrite.rubyforge.org/" title="rewrite">rewrite</a> gem <em>does</em> rewrite code. When you write:<br /><pre><code><br />with(andand) do<br />    # ...<br />    foo().andand.bar(blitz())<br />    # ...<br />end</code></pre><br />Rewrite rewrites your code in place to look something like:<br /><pre><code><br /># ...<br />lambda do |__121414053598468__|<br />    if __121414053598468__.nil?<br />        nil<br />    else<br />        __121414053598468__.bar(blitz())<br />    end<br />end.call(foo)<br />#...</code></pre><br />And for that reason when you write foo().andand.bar(blitz()) using the rewrite gem instead of the andand gem, blitz() is not evaluated if foo() is nil. Big difference!! So it looks like one way to get around call-by-value is to rewrite your Ruby code. Excellent. Or is it?<br /><br /><strong>What&#8217;s wrong with rewrite</strong><br /><br />Right now, the rewrite gem supports writing sexp processors. These are objects that encapsulate a way of transforming sexps. For example, here is the code that transforms expressions like &#8220;foo().andand.bar(blitz()):&#8221;<br /><pre><code><br />  def process_call(exp)<br />    exp.shift<br />    receiver_sexp = exp.first<br />    if matches_andand_invocation(receiver_sexp)<br />      exp.shift<br />      mono_parameter = Rewrite.gensym()<br />      s(:call, <br />        s(:iter, <br />          s(:fcall, :lambda), <br />          s(:dasgn_curr, mono_parameter), <br />          s(:if, <br />            s(:call, s(:dvar, mono_parameter), :nil?), <br />            s(:nil), <br />            begin<br />              s(:call, <br />                s(:dvar, mono_parameter), <br />                *(exp.map { |inner| process_inner_expr inner })<br />              )<br />            ensure<br />              exp.clear<br />            end<br />          )<br />        ), <br />        :call, <br />        s(:array, <br />          process_inner_expr(receiver_sexp[1])<br />        )<br />      )<br />    else<br />      begin<br />        s(:call,<br />          *(exp.map { |inner| process_inner_expr inner })<br />        )<br />      ensure<br />        exp.clear<br />      end<br />    end<br />  end</code></pre><br />And that&#8217;s just a third of andand: There is another method that handles expressions like &#8220;foo().andand { |x| x.bar(blitz()) }&#8221; and a third that handles &#8220;foo().andand(&amp;bar_proc).&#8221; Brutal.<br /><br />Now, rewriting code has many other uses. One on my wish list is a rewriter that transforms expressions like: &#8220;foo.select { |x| &#8230; }.map { |y| &#8230; }.inject { |z| &#8230; }&#8221; into one big inject as an optimization. So I&#8217;m not ready to throw rewrite in the trash can just yet. But there&#8217;s no way I want to be writing all that out by hand every time I want to implement a function but work around call-by-value semantics.<br /><br /><strong>What about macros?</strong><br /><br />Why can&#8217;t I write:<br /><pre><code><br />def_macro our_and(x,y)<br />    ((temp = x) ? (y) : (temp))<br />end</code></pre><br />&#8230;And have it automatically expand my code such that when I write:<br /><pre><code><br /># ...<br />foo = our_and(bar(), blitz())<br /># ...</code></pre><br />The macro expander rewrites it as:<br /><pre><code><br /># ...<br />foo = ((temp = bar() ? blitz() : temp)<br /># ...</code></pre><br />Wouldn&#8217;t that work? Maybe. Then again, maybe not.<br /><br />The problem given above&#8212;working around call-by-value&#8212;is just one small problem. A macro implementation would solve that problem, but there&#8217;s an awful lot of overhead required to make the implementation work, and whatever you do ends up being an incredibly leaky abstraction.<br /><br />Take our example above. What happens if we have our own variable named temp? Does it get clobbered by expanding our_and? Or do we rename temp? Or do some automagic jigger-pokery with scopes?<br /><br />Getting macros right is very tricky. I don&#8217;t personally plan to try my hand at implementing macros until I&#8217;m an expert on the subject of <a href="http://www.bookshelf.jp/texi/onlisp/onlisp_10.html" title="Onlisp:  Variable Capture">variable capture</a> and can hold forth on the design trade-offs inherent in different schemes for implementing <a href="http://en.wikipedia.org/wiki/Hygienic_macro" title="Hygienic macro - Wikipedia, the free encyclopedia">hygienic macros</a>. But that&#8217;s just me.<br /><br />Perhaps there are other ways to solve it without diving into a full-blown macro facility?<br /><br /><strong>Lambdas and blocks</strong><br /><br />Indeed there are other ways. Ruby already has one-and-a-half of them: blocks and lambdas. Using blocks and lambdas, you can control evaluation precisely. The andand gem actually does support short-circuit semantics using a block. When you write:<br /><pre><code><br />nil.andand { |x| x.foo(blitz()) }</code></pre><br />It does <em>not</em> evaluate blitz(). This alternate way of using andand supports the semantics we want by explicitly placing the code that should not be eagerly evaluated in a block. Given patience and a taste for squiggly braces, you can create non-standard evaluation without resorting to macros.<br /><br />We said at the beginning that the reason we cannot use functions and methods to represent everything we can write in code is because Ruby uses call-by-value to pass parameters to functions. One way to work around that is this: instead of passing the value of each expression to a function, we can pass the expression itself, wrapped up in its own lambda.<br /><br />Then, when the function needs the value, it can call the lambda. This technique has a name: it is called <a href="http://en.wikipedia.org/wiki/Thunk#Thunk_as_delayed_computation" title="Thunk as delayed computation">thunking</a>.<br /><br />We could implement our_and as follows:<br /><pre><code><br />our_and = lambda { |x,y|<br />    if temp = x.call<br />        y.call<br />    else<br />        temp<br />    end<br />end</code></pre><br />Then when we call it, we could wrap our parameters in lambdas:<br /><pre><code><br />our_and.call(<br />    lambda { a() },<br />    lambda { b() }<br />)</code></pre><br />Verify for yourself that this produces the behaviour we want, without the worry of our local variables messing things up for the calling code. Let&#8217;s go further: we can implement functions with a variable number of arguments using an enumeration of thunks. For example, we could write:<br /><pre><code><br />def try_these(*clauses)<br />    clauses.each { |clause| return clause.call rescue nil }<br />    nil<br />end</code></pre><br />And call our function like this:<br /><pre><code><br />try_these(<br />    lambda { http_util.fetch(url, :login_as =&gt; :anonymous) },<br />    lambda { http_util.fetch(url, :login_as =&gt; ['user', 'password']) },<br />    lambda { default_value() }<br />)</code></pre><br />We have just implemented the <a href="http://www.prototypejs.org/api/utility/try-these" title="Prototype JavaScript framework:  Utility Methods.Try.these">Try.these</a> function from the Prototype Javascript library.<br /><br />This technique gets us almost all of what we want for this common case of wanting to work around call-by-value semantics. As you can surmise from the fact that it has a name, it is not some newfangled shiny toy idea, it goes back to ALGOL 60, where it was known as <a href="http://foldoc.org/?call-by-name" title="call-by-name from FOLDOC">call-by-name</a>. (PHP has something called &#8220;Call By Name,&#8221; but it has a lot more in common with C++ references than it does with ALGOL parameter passing.)<br /><br />The application of call-by-name as a substitute for full-blown macros isn&#8217;t novel either. Joel Klein pointed out that <a href="http://jfkbits.blogspot.com/2008/05/call-by-need-lambda-poor-mans-macro.html" title="Call by Need Lambda a Poor Man's Macro?">Call by need is a poor man&#8217;s macro</a>. Another suggestion along similar lines is to <a href="http://arclanguage.org/item?id=7216" title="Arc Forum | Rethinking macros">rethink macros in Arc</a>.<br /><br /><strong>thunks: ugly name, ugly code</strong><br /><br />Our thunking approach solves a lot of our problems, but the implementation severely protrudes into the interface! We could argue that since our call-by-name functions have different behaviour than ordinary functions or methods, they ought to have different syntax.<br /><br />That&#8217;s a reasonable point of view, and that&#8217;s exactly how languages like Smalltalk work: everything that involves delaying evaluation in some way uses blocks, even the if statements, which are methods that take blocks as arguments. So in Smalltalk, everything is consistent.<br /><br />Ruby, OTOH, is not consistent. Operators like &#8220;&amp;&#8221; and &#8220;|&#8221; are actually methods with call-by-value semantics, while operators like &#8220;&amp;&amp;&#8221; and &#8220;||&#8221; are special forms with call-by-value semantics. Likewise if you only need to delay one expression you can use a block, but if you need to delay two or more, you need at least one lambda. So another reasonable point of view is that we should follow Ruby&#8217;s philosophy of making the common case easy to use and not become reductionists trying to build everything out of five axiomatic forms.<br /><br />So we have one approach&#8212;rewriting&#8212;that is crazy-hard to write but produces nicely readable code. And we have another approach&#8212;thunking&#8212;that is easy to write but produces unsightly boilerplate.<br /><br />Maybe what we want is a rewriter, but we want an easier way to write rewriters for this simple case?<br /><br /><strong>Called by name</strong><br /><br />Here&#8217;s how we could define and use a call-by-name function called &#8220;our_and&#8221;:<br /><pre><code><br />with (<br />    called_by_name(:our_and) { |x,y|<br />        if temp = x<br />            y<br />        else<br />            temp<br />        end<br />    }<br />) do<br />    # ...<br />    foo = our_and(bar(), blitz()) # method-like syntactic sugar<br />    # ...<br />end</code></pre><br />What we just did is manufacture a rewriter without any sexps. Instead of getting rid of sexps, we&#8217;re treating them like assembler and using a declarative language to write the assembler for us. Our rewriter dutifully rewrites our code to look something like:<br /><pre><code><br />our_and = lambda { |x,y|<br />    if temp = x.call<br />        y.call<br />    else<br />        temp<br />    end<br />end<br /># ...<br />foo = our_and.call(<br />    lambda { bar() },<br />    lambda { blitz() }<br />)<br /># ...</code></pre><br />We can define a rewriter for functions with splatted parameters too:<br /><pre><code><br />with(<br />    called_by_name(:try_these) { |*clauses|<br />        clauses.each { |clause| return clause rescue nil }<br />        nil<br />    }<br />) do<br />    # ...<br />    try_these(<br />        http_util.fetch(url, :login_as =&gt; :anonymous),<br />        http_util.fetch(url, :login_as =&gt; ['user', 'password']),<br />        default_value()<br />    )<br />    # ...<br />end</code></pre><br />Becomes something like:<br /><pre><code><br />try_these = lambda { |*clauses|<br />    clauses.each { |clause| return clause.call rescue nil }<br />    nil<br />}<br /># ...<br />try_these.call(<br />    lambda { http_util.fetch(url, :login_as =&gt; :anonymous) },<br />    lambda { http_util.fetch(url, :login_as =&gt; ['user', 'password']) },<br />    lambda { default_value() }<br />)<br /># ...</code></pre><br /><br /><blockquote>It goes, boys!</blockquote><div>&#8212;Lynn Hill after becoming the first person of either sex to climb The Nose of El Capitan, all free.</div><br />As of now, the <a href="http://rewrite.rubyforge.org">rewrite</a> gem supports called_by_name. You can write your own functions with call-by-name semantics using called_by_name just as you see here. As is standard with the rewrite gem, only the code in the do&#8230; end block is affected by your change.<br /><br /><strong>call-by-name, in summary</strong><br /><br />To summarize, with the rewrite gem you can write functions that have call-by-name semantics without wrestling sexps into submission or encumbering your code with a lot of superfluous lambdas and calls:<br /><pre><code><br />with(<br />    called_by_name(:try_these) { |*clauses|<br />        clauses.each { |clause| return clause rescue nil }<br />        nil<br />    },<br />    called_by_name(:our_and) { |x,y|<br />        if temp = x<br />            y<br />        else<br />            temp<br />        end<br />    }<br />) do<br />    # ...<br />    try_these(<br />        http_util.fetch(url, :login_as =&gt; :anonymous),<br />        http_util.fetch(url, :login_as =&gt; ['user', 'password']),<br />        default_value()<br />    )<br />    # ...<br />    foo = our_and(bar(), blitz())<br />    # ...<br />end</code></pre><br />This is a win when you don&rsquo;t want your code encumbered with more lambdas than business logic. It may be a matter of taste, but part of what I like about Ruby having a special case for blocks is that they act as a huge hint that an expression is temporary: a block after #map suggests we are only using that expression in one place. Whereas when I see &ldquo;Proc.new&rdquo; or &ldquo;lambda,&rdquo; I expect that the expression will be passed around and used elsewhere.<br /><br />Functions with call-by-name semantics communicate the same thing as blocks: the expressions are to be consumed by the function. When I see a lambda being passed to a function, I automatically expect it to be saved and possibly used elsewhere. For that reason, I prefer call-by-name semantics when an expression is not meant to be persisted beyond the function invocation.<br /><br />Now, called_by_name is not a replacement for macros. There are lots of things macros can do that called_by_name cannot do (not to mention that there are lots of things code rewriting can do that macros cannot do). But just as Ruby&#8217;s blocks are a deliberate attempt to make a common case for anonymous functions easy to write, called_by_name makes a common case for macros easy to write and safe from variable capture problems.<br /><br />Of course, called_by_name does so with lots of anonymous functions, and that is a much more expensive implementation than using a hygienic macro to rewrite code inline. But it feels like a move in an interesting direction: if it is a win to sometimes meta-program Ruby&#8217;s syntax with DSLs, it ought to also be a win to sometimes meta-program Ruby&#8217;s semantics with call-by-name functions.<br /><br /><strong>afterword</strong><br /><br />So&hellip; Is this merely a way to replicate things that are already built into Ruby but do them fifty times slower?<br /><br />I don&rsquo;t know how to answer that question. When I heard Matz talk about Ruby at <a href="http://raganwald.github.com/2007/01/where-were-you-on-saturday-november-9.html" title="Where were you on Saturday, November 9, 2002?">LL1</a>, I didn&rsquo;t catch the part of his speech where he described how to use metaprogramming to build a really neat web development framework. When you first see a new tool, you naturally start by applying it to problems you already know how to solve with your existing tools in the same way you have always solved such problems.<br /><br />Only later, after this tool becomes perfectly natural to you, do you start to think of entirely new ways to use the tool. I&rsquo;m not there yet, but my experience tells me that it&rsquo;s always a win to have more freedom, to have fewer things you can&rsquo;s do with a language.<br /><br />If just one person&mdash;maybe it&rsquo;s me, maybe it&rsquo;s somebody else&mdash;leans forward one day and sees a new way of solving a problem with call-by-name semantics, I&rsquo;ll consider working on this feature time well spent.<br /><br />It probably won&rsquo;t be something trivial like replicating short-circuit boolean operators. But it will be interesting, and I&rsquo;m looking forward to finding out what it is.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html" title="permanent link">9:25 PM</a>
+						&para; <a href="http://raganwald.github.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html" title="permanent link">9:25 PM</a>
 
 					 
 				</span> 
@@ -44,49 +44,49 @@
 						
 							<div class="blogComment">
 								<a name="4062807205808727628"></a> 				This is great! Thank you!<BR/><BR/>I'm not much of a Ruby user but I know some Lisp. While I still prefer  using <I>defmacro</I> (variable capture and all!) a function that automatically wraps all actual parameters in "thunks" would go a long way of providing possibilities for easier control abstraction. Ruby would be all the more powerful for it.<BR/><BR/>It might not be like Ruby's usual style of dynamic metaprogramming and looks (conceptually) like a more static approach, but it's not neccessarily an unwelcome direction.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1214260740000#c4062807205808727628" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11184190430016762265" rel="nofollow">Mohamed Samy</a> : 6:39 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1214260740000#c4062807205808727628" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11184190430016762265" rel="nofollow">Mohamed Samy</a> : 6:39 PM</div>
 
 								<span class="item-control blog-admin pid-542252256"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4062807205808727628" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="9068306713694892328"></a> 				I looks like you want lazy evaluation in Ruby, a la Haskell.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1214353320000#c9068306713694892328" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04653511283943003766" rel="nofollow">Mark Cidade</a> : 8:22 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1214353320000#c9068306713694892328" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04653511283943003766" rel="nofollow">Mark Cidade</a> : 8:22 PM</div>
 
 								<span class="item-control blog-admin pid-104899770"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9068306713694892328" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3699497131537255005"></a> 				<I>looks like you want lazy evaluation in Ruby</I><BR/><BR/><A HREF="http://raganwald.com/source/lazy_lists.html" REL="nofollow">been there, done that</A> ;-)<BR/><BR/>Also, call-by-need is not equivalent to call-by-name in a language with side effects. You often want the optimization of call-by-need, but sometimes you want to write something that explicitly evaluates a parameter expression more than once.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1214402040000#c3699497131537255005" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:54 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1214402040000#c3699497131537255005" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:54 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3699497131537255005" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3865806818597783815"></a> 				I believe that andand() should be called nil_or(). As in:<BR/><BR/>return xxxx.nil_or yyyy;<BR/><BR/>But before your nice trick this was purely academic because the lack of progressiveness in the "or" clause made the whole construction useless.<BR/><BR/>That's no longer the case and I am impressed with what you achieved. Congratulations.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1214478720000#c3865806818597783815" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09809073068192773946" rel="nofollow">JeanHuguesRobert</a> : 7:12 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1214478720000#c3865806818597783815" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09809073068192773946" rel="nofollow">JeanHuguesRobert</a> : 7:12 AM</div>
 
 								<span class="item-control blog-admin pid-2002941090"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3865806818597783815" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3221314417317285597"></a> 				Apparently the D programming language directly supports call-by-name semantics with its lazy storage class:<BR/><BR/>http://www.digitalmars.com/d/2.0/lazy-evaluation.html<BR/><BR/>I don't think I've seen this kind of thing elsewhere. They mention "parallels" with Lisp macros there, although the feature only gives you the equivalent of "hygienic" macros that don't inspect the structure of their input sexprs and simply conditionally evaluate them.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1214570700000#c3221314417317285597" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10312743652615166656" rel="nofollow">Yossi Kreinin</a> : 8:45 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1214570700000#c3221314417317285597" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10312743652615166656" rel="nofollow">Yossi Kreinin</a> : 8:45 AM</div>
 
 								<span class="item-control blog-admin pid-735405636"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3221314417317285597" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3458318912984071931"></a> 				<A HREF="http://www.digitalmars.com/d/2.0/lazy-evaluation.html" REL="nofollow">http://www.digitalmars.com/d/2.0/lazy-evaluation.html</A><BR/><BR/>Thanks for the link!<BR/><BR/>Yes, call-by-name s not the same thing as a rewrite or macro facility, but it is an interesting alternative in some of the places where a macro is a blunt instrument.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1214577960000#c3458318912984071931" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:46 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1214577960000#c3458318912984071931" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:46 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3458318912984071931" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8435422017779601523"></a> 				RLisp is Ruby and it easily supports macros like that. In simple cases like this variable hygiene is quite straightforward, you simply use (gensym) to generate fresh variable name. Variable hygiene is only a problem for much more complicated scenarios.<BR/><BR/>rlisp&gt; (defmacro andand-send (obj meth . args) (let var (gensym)) `(do (let ,var ,obj) (if ,var (send ,var &#39;,meth ,@args) ,var)))<BR/><BR/>#&lt;Proc:0x00316884@STDIN:1&gt;<BR/><BR/>rlisp&gt; (andand-send nil - 8)<BR/><BR/>nil<BR/><BR/>rlisp&gt; (andand-send 12 - 8)<BR/><BR/>4<BR/><BR/>rlisp&gt; (macroexpand &#39;(andand-send (+ 2 2) - 8))<BR/><BR/>(do (let #:G15 (+ 2 2)) (if #:G15 (send #:G15 (quote -) 8) #:G15))<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1221075300000#c8435422017779601523" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16972845140253292628" rel="nofollow">taw</a> : 3:35 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/06/macros-hygiene-and-call-by-name-in-ruby.html?showComment=1221075300000#c8435422017779601523" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16972845140253292628" rel="nofollow">taw</a> : 3:35 PM</div>
 
 								<span class="item-control blog-admin pid-1598631960"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8435422017779601523" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -97,7 +97,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -151,25 +151,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -177,17 +177,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -197,17 +197,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -215,19 +215,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -235,18 +235,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -254,15 +254,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -271,101 +271,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

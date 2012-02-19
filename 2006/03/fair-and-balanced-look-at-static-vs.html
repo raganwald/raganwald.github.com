@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Tuesday, March 14, 2006</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="114237514897947609">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html" title="permanent link">A "fair and balanced" look at the static vs. dynamic typing schism</a></span>
-					<div style="clear:both;"></div>A long time ago in an industry far, far away, everyone programmed in C.<br /><blockquote>Like <a href="www.joelonsoftware.com/articles/APIWar.html" title="How Microsoft Lost the API War">Joel says</a>, this is a broad stroke observation. I happened to use Pascal an awful lot at the time, so I realize that "everyone" doesn't mean "every last one of us." But it does mean "so many people that no other language mattered to the industry as a whole."</blockquote>C has many delightful advantages. It also has two, umm, features that programmers routinely screwed up. The first, as everyone knows, is the lack of memory management. Programmers had to do everything themselves and do it properly. If you made a mistake, your program would suffer from dangling pointers, or have a memory leak.<br /><br />The second was the almost complete lack of type safety. That's a big hand wave. I realize that if you're very careful you can make a C compiler, especially an <a href="http://en.wikipedia.org/wiki/C_programming_language">ANSI C</a> compiler, do a little static type checking for you. That's the theory. But in practice, it had this one little thing that made type safety moot: the unconditional type cast.<br /><br />How many readers know what I'm talking about? Put your hand up... Good! Talk amongst yourselves for the next paragraph while I explain this to the readers who are under the age of forty.<br /><span style="font-weight: bold;"></span><blockquote><span style="font-weight: bold;">Why C casts are dangerous</span><br />With an unconditional type cast, the C compiler would let you treat an address of something in memory as whatever you want. You could treat a byte as the start of a string. Or you could treat a long word as the address of a function. Or you could treat it as an array of pointers to functions. So if you had a pointer to the address of an array of pointers to functions and you mistakenly cast it to the address of an array of pointers to functions, and then you tried to call one of those functions, bad things would happen.</blockquote>Okay, everyone back? This was phenomenally bad, especially because we do this Von Neumann thing and have bytes of memory that are sometimes code to be executed and sometimes data to be shuffled around. If you have a pointer that is pointing to the wrong thing, the program would sometimes crash right away, or it would sometimes chug along for a while silently corrupting memory until everything failed. There's an entire industry of malicious people taking advantage of this possibility to craft <a href="http://en.wikipedia.org/wiki/Buffer_overflow">buffer overflow</a> attacks.<br /><br />This problem was so bad that it was one of the things C++ tried to fix with its <a href="http://en.wikipedia.org/wiki/Cast_%28computer_science%29#C.2B.2B-style_casting">casting constructs</a>. One of them, the dynamic cast, specifically checks the situation at run time to make sure that the cast is safe. The only trouble was, C++ let you keep the dangerous C cast and then threw in a variation called static cast that was nicer looking but still unsafe some of the time.<br /><br />I want to underline the consequences of bad casts here. When discussing risks, you always have to thing along two axes: the <span style="font-weight: bold;">likelihood</span> of disaster and the <span style="font-weight: bold;">magnitude</span> of the consequences. C programs with bad casts have extremely bad consequences. The might crash. They might corrupt all of their data. They could cause other things to crash. These are all terrible.<br /><br />When we discuss "type safety" we have to think along the same two axes of risk: there is safety that protects us from something going wrong, and there is safety that limits the consequences when something does go wrong.<br /><br />Well, one day Java came along. You may deride it as "Cobol Lite," but it did two things an awful lot better than C++, and if you look back at history it succeeded by converting people away from C++. The first thing it did better was to make automatic memory management mandatory.<br /><br />The second was to throw out all of the dangerous casts and replace them with a single casting operation that always checks types at run time and throws a nice exception right away if you get it wrong. Java, in effect, provides two kinds of type safety: its static type checking reduces the likelihood of a typing error, and its runtime cast checking sharply limits the consequences of a bad cast.<br /><br />Before we argue about static vs. dynamic type checking, let's remember where this fanaticism for so-called strong typing came from: it came from an entire industry that had been burned by having a trap door that led to having <span style="font-weight: bold;">no</span> typing. Back when it was C/C++ vs. Java, the debate was between having no type checking at run time vs. type checking at run time.<br /><br />(Attention pedants: I'm very aware of how much static type checking ANSI C and C++ can do. I'm judging these languages by the bad news edge case bugs, not by the billions of perfectly fine lines of code that eschewed unsafe casts.)<br /><br />For the most part, today we see people arguing about static vs. dynamic typing. They argue about the effort involved in telling the compiler what to check, and whether having the compiler find some errors for them does or doesn't make up for the extra code.<br /><br />The static folks say "hell, yeah, you're headed for big trouble if a type checking bug slips through the compiler into production." Okay, let's look at the history. Back in the day when Reg was young and user interface design consisted of colouring the punch cards, a type error slipping into a C program represented a real risk of a catastrophic problem. True.<br /><br />But let's say you want to use one of these "new-fangled" dynamic languages. Are you exposed to the same risk? The answer is <span style="font-weight: bold;">no</span>. The reason is that these dynamic languages have types and check them for you, just like Java's checked type casts. The consequences of a type error are trivial compared to C/C++ errors.<br /><blockquote><span style="font-weight: bold;">How trivial can a type error be?</span><br />Consider a web application. If a type error takes place, users will get a server error 500 response. The server will not crash, the database will not be infested with corrupt data, and users will not find themselves charging their purchases to someone else's credit cards. The consequences of a type error are relatively mild when the language checks types at run time.</blockquote>Let's consider sending a message to an object (not all dynamic languages have objects, but whatever). How would this happen in C? Well, you'd have a pointer or a handle to an object, and it would have a pointer to an array of pointers to functions representing its methods. (It could be more complex if there's inheritance or aggregation).<br /><br />So you might try dereferencing the handle twice, looking up the offset of the pointer to the array, then looking up the offset of the function you want, dereference that pointer, and call the function. If any of this is wrong, boom. Actually, it's worse than boom. You might not find out it was wrong for a very long time. Silent but deadly!<br /><br />In a dynamic language, you try sending a message to the object and if the object doesn't handle that message, there's a very explicit behaviour for managing the error. It calls a special missing method method. Or it throws a specific exception. Dynamic languages address the issue just like C++ did with dynamic casts and Java does all the time with its casts.<br /><br />Dynamic language advocates argue for more automated unit tests instead of compiler checking. Well, I'm in favour of more testing whenever you can get it.  But to my eye, that isn't the point. The point to me is that the potential for catastrophe with both Java and dynamic languages is so much smaller than the potential for catastrophe with C/C++ that the debate about type safety is almost moot.<br /><br />I really don't want to get into a shrill "do so! do not!!" debate. But if you're reading this and you're still planted 100% in the strong, static type checking camp, let me ask you one question:<br /><br /><span style="font-style: italic;">Have you actually worked on a project where casting errors caused the failure of the project? I mean the product failed in the marketplace, or you spent so much time trying to find and squash critical bugs that the project was cancelled?</span><br /><br />I have a funny feeling that most or all of the people who answer "yes" were working with C/C++ and unconditional casts. I have a feeling that as an industry we're so scarred with those problems that we don't realize that moving to run time type checking solves 75% of our problems and makes the errors 99% less dangerous.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html" title="permanent link">A "fair and balanced" look at the static vs. dynamic typing schism</a></span>
+					<div style="clear:both;"></div>A long time ago in an industry far, far away, everyone programmed in C.<br /><blockquote>Like <a href="www.joelonsoftware.com/articles/APIWar.html" title="How Microsoft Lost the API War">Joel says</a>, this is a broad stroke observation. I happened to use Pascal an awful lot at the time, so I realize that "everyone" doesn't mean "every last one of us." But it does mean "so many people that no other language mattered to the industry as a whole."</blockquote>C has many delightful advantages. It also has two, umm, features that programmers routinely screwed up. The first, as everyone knows, is the lack of memory management. Programmers had to do everything themselves and do it properly. If you made a mistake, your program would suffer from dangling pointers, or have a memory leak.<br /><br />The second was the almost complete lack of type safety. That's a big hand wave. I realize that if you're very careful you can make a C compiler, especially an <a href="http://en.wikipedia.org/wiki/C_programming_language">ANSI C</a> compiler, do a little static type checking for you. That's the theory. But in practice, it had this one little thing that made type safety moot: the unconditional type cast.<br /><br />How many readers know what I'm talking about? Put your hand up... Good! Talk amongst yourselves for the next paragraph while I explain this to the readers who are under the age of forty.<br /><span style="font-weight: bold;"></span><blockquote><span style="font-weight: bold;">Why C casts are dangerous</span><br />With an unconditional type cast, the C compiler would let you treat an address of something in memory as whatever you want. You could treat a byte as the start of a string. Or you could treat a long word as the address of a function. Or you could treat it as an array of pointers to functions. So if you had a pointer to the address of an array of pointers to functions and you mistakenly cast it to the address of an array of pointers to functions, and then you tried to call one of those functions, bad things would happen.</blockquote>Okay, everyone back? This was phenomenally bad, especially because we do this Von Neumann thing and have bytes of memory that are sometimes code to be executed and sometimes data to be shuffled around. If you have a pointer that is pointing to the wrong thing, the program would sometimes crash right away, or it would sometimes chug along for a while silently corrupting memory until everything failed. There's an entire industry of malicious people taking advantage of this possibility to craft <a href="http://en.wikipedia.org/wiki/Buffer_overflow">buffer overflow</a> attacks.<br /><br />This problem was so bad that it was one of the things C++ tried to fix with its <a href="http://en.wikipedia.org/wiki/Cast_%28computer_science%29#C.2B.2B-style_casting">casting constructs</a>. One of them, the dynamic cast, specifically checks the situation at run time to make sure that the cast is safe. The only trouble was, C++ let you keep the dangerous C cast and then threw in a variation called static cast that was nicer looking but still unsafe some of the time.<br /><br />I want to underline the consequences of bad casts here. When discussing risks, you always have to thing along two axes: the <span style="font-weight: bold;">likelihood</span> of disaster and the <span style="font-weight: bold;">magnitude</span> of the consequences. C programs with bad casts have extremely bad consequences. The might crash. They might corrupt all of their data. They could cause other things to crash. These are all terrible.<br /><br />When we discuss "type safety" we have to think along the same two axes of risk: there is safety that protects us from something going wrong, and there is safety that limits the consequences when something does go wrong.<br /><br />Well, one day Java came along. You may deride it as "Cobol Lite," but it did two things an awful lot better than C++, and if you look back at history it succeeded by converting people away from C++. The first thing it did better was to make automatic memory management mandatory.<br /><br />The second was to throw out all of the dangerous casts and replace them with a single casting operation that always checks types at run time and throws a nice exception right away if you get it wrong. Java, in effect, provides two kinds of type safety: its static type checking reduces the likelihood of a typing error, and its runtime cast checking sharply limits the consequences of a bad cast.<br /><br />Before we argue about static vs. dynamic type checking, let's remember where this fanaticism for so-called strong typing came from: it came from an entire industry that had been burned by having a trap door that led to having <span style="font-weight: bold;">no</span> typing. Back when it was C/C++ vs. Java, the debate was between having no type checking at run time vs. type checking at run time.<br /><br />(Attention pedants: I'm very aware of how much static type checking ANSI C and C++ can do. I'm judging these languages by the bad news edge case bugs, not by the billions of perfectly fine lines of code that eschewed unsafe casts.)<br /><br />For the most part, today we see people arguing about static vs. dynamic typing. They argue about the effort involved in telling the compiler what to check, and whether having the compiler find some errors for them does or doesn't make up for the extra code.<br /><br />The static folks say "hell, yeah, you're headed for big trouble if a type checking bug slips through the compiler into production." Okay, let's look at the history. Back in the day when Reg was young and user interface design consisted of colouring the punch cards, a type error slipping into a C program represented a real risk of a catastrophic problem. True.<br /><br />But let's say you want to use one of these "new-fangled" dynamic languages. Are you exposed to the same risk? The answer is <span style="font-weight: bold;">no</span>. The reason is that these dynamic languages have types and check them for you, just like Java's checked type casts. The consequences of a type error are trivial compared to C/C++ errors.<br /><blockquote><span style="font-weight: bold;">How trivial can a type error be?</span><br />Consider a web application. If a type error takes place, users will get a server error 500 response. The server will not crash, the database will not be infested with corrupt data, and users will not find themselves charging their purchases to someone else's credit cards. The consequences of a type error are relatively mild when the language checks types at run time.</blockquote>Let's consider sending a message to an object (not all dynamic languages have objects, but whatever). How would this happen in C? Well, you'd have a pointer or a handle to an object, and it would have a pointer to an array of pointers to functions representing its methods. (It could be more complex if there's inheritance or aggregation).<br /><br />So you might try dereferencing the handle twice, looking up the offset of the pointer to the array, then looking up the offset of the function you want, dereference that pointer, and call the function. If any of this is wrong, boom. Actually, it's worse than boom. You might not find out it was wrong for a very long time. Silent but deadly!<br /><br />In a dynamic language, you try sending a message to the object and if the object doesn't handle that message, there's a very explicit behaviour for managing the error. It calls a special missing method method. Or it throws a specific exception. Dynamic languages address the issue just like C++ did with dynamic casts and Java does all the time with its casts.<br /><br />Dynamic language advocates argue for more automated unit tests instead of compiler checking. Well, I'm in favour of more testing whenever you can get it.  But to my eye, that isn't the point. The point to me is that the potential for catastrophe with both Java and dynamic languages is so much smaller than the potential for catastrophe with C/C++ that the debate about type safety is almost moot.<br /><br />I really don't want to get into a shrill "do so! do not!!" debate. But if you're reading this and you're still planted 100% in the strong, static type checking camp, let me ask you one question:<br /><br /><span style="font-style: italic;">Have you actually worked on a project where casting errors caused the failure of the project? I mean the product failed in the marketplace, or you spent so much time trying to find and squash critical bugs that the project was cancelled?</span><br /><br />I have a funny feeling that most or all of the people who answer "yes" were working with C/C++ and unconditional casts. I have a feeling that as an industry we're so scarred with those problems that we don't realize that moving to run time type checking solves 75% of our problems and makes the errors 99% less dangerous.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/popular.html">popular</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html" title="permanent link">4:18 PM</a>
+						&para; <a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html" title="permanent link">4:18 PM</a>
 
 					 
 				</span> 
@@ -44,140 +44,140 @@
 						
 							<div class="blogComment">
 								<a name="114237950831818012"></a> 				"fair and balanced" just like Fox news is "fair and balanced" I guess.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142379480000#c114237950831818012" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:38 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142379480000#c114237950831818012" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:38 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114237950831818012" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114239689290310301"></a> 				"fair and balanced": well, yes, I assumed you'd get the joke without explictly winking :-)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142396880000#c114239689290310301" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:28 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142396880000#c114239689290310301" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:28 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114239689290310301" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114239707802872231"></a> 				Just read what I thought was a very interesting blog post; and then I saw the 'Fox News' comment. So - I'm pitching in and saying: great read - it's given me good food for thought...<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142397060000#c114239707802872231" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:31 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142397060000#c114239707802872231" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:31 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114239707802872231" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114247578117827072"></a> 				I am still 50/50 in this whole static versus dynamic typing debate.  For me the issue is not one of safety, but more about loss of information about variables at edit time.  <BR/><BR/>Without static typing you loose:<BR/>1) IDE autocomplete assistance<BR/>2) Most auto refactorings. (Refactoring engine cannot at edit time, figure out what types reference other types, and therefore is unable to do it's job.)<BR/>3) Less information can be infered from the code when dynamic typing is used.  It makes it harder to reason about. (what are the capabilities of this object here?... hmmm now I have to go and look for all of the places that pass a value to this method so I can figure out what type it is)<BR/><BR/><BR/>And many of the arguents against static typing seem argue that static typing means more typing on the keyboard (no pun intended).  <BR/><BR/>I never buy that argument, as the speed I type is not my bottleneck: most of the time I am thinking.<BR/><BR/>Paul Graham reckons that static typing means you can't have true macros (as in Lisp), however without understanding that statement fully I can't comment.<BR/><BR/>Much of this static versus dynamic typing debate could go away when there is no difference between edit time and run time.  You would be able to ask a 'live' object what it is capable of before you edit the code.<BR/><BR/>Anyway, all I am saying is that 'type safety' is only part of the story in a static versus dynamic debate.  There is a lot more to it!<BR/><BR/>Are there any modern languages that offer the option of statically typing where you want to and dynamically typing in other places?<BR/><BR/>Just my two cents!<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142475780000#c114247578117827072" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">James Sadler</span> : 9:23 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142475780000#c114247578117827072" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">James Sadler</span> : 9:23 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114247578117827072" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114247937095560026"></a> 				james,<BR/><BR/>With a dynamic model, you actually have more accurate autocomplete assistance in a real dynamic IDE, because the IDE itself has _more_ information about the types of the objects, not less.<BR/><BR/>Refactoring in a dynamic IDE is streamlined and simplified, for the same reasons, but you'll find that you don't need to refactor much, if at all, if using a good dynamic language like Ruby.<BR/><BR/>In a dynamic world, you just ask the object what its capabilities are. You don't have to look up call sites in the source code. What dynamic language have you been using that does not have this capability?<BR/><BR/>Also, Objective-C offers dynamic typing and optional static typing. The static typing allows the compiler to detect many type errors at compile time. In practice, you use static typing in most places in Objective-C, because it's still C at the core, and it's still a pain to go through the debug-edit-test cycle to find out you've gotten the type of something wrong. In a fully dynamic language, it really isn't an issue.<BR/><BR/>Again, Ruby is the exemplar. SmallTalk (from whence large bits of Objective-C and Ruby came) is both the original object-oriented language and a darn fine 'dynamic language' in the sense we know it today.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142479320000#c114247937095560026" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 10:22 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142479320000#c114247937095560026" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 10:22 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114247937095560026" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114249842736670044"></a> 				James, the Groovy language allows you to use static typing where you want to, and stay dynamic where it doesn't matter. It's definitely worth checking out.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142498400000#c114249842736670044" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://jroller.com/page/dukejeffrie" rel="nofollow">Tiago Silveira</a> : 3:40 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142498400000#c114249842736670044" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://jroller.com/page/dukejeffrie" rel="nofollow">Tiago Silveira</a> : 3:40 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114249842736670044" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114250034658367320"></a> 				I can't agree that you'll want to refactor less. I want to refactor dynamic code just as much as my Java code, but find myself doing it less because I don't have the tools.<BR/><BR/>Smalltalk and Bicycle Repair Man (for Python) aside, dynamic languages still lack good refactoring support, largely (but not only) because the nature of dynamic typing makes it harder to create a domain model of the code structure in the same way Eclipse or IntelliJ does for Java. I say harder, because I don't know of anyone who has done it for either Python of Ruby - Bicycle Repair man(brm) actually solves 99% of refactoring cases using recursive grepping, and simply asks the user for help the rest of the time - which is to my mind good enough.<BR/><BR/>Taking BRM as an example however I'm hopeful someone will port it to Ruby using the same techniques!<BR/><BR/>Does anyone know how Smalltalk accomplished it's refactoring support? Was it factored (pardon the pun) into the design of the language up front?<BR/><BR/>James, autocompletion is possible with a 'Find Definition' ability - something BRM can do. As for less information being available, well I suppose it depends on how you code - if you create clearly named objects, and assuming you have 'find definition'/autocompletion I'm not sure what else you lack. The forthcoming Protest python testing tool will certainly show that if you write good tests this is even easier (and can actually improve on those tools currently available to Java).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142500320000#c114250034658367320" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03460106744756694823" rel="nofollow">Sam</a> : 4:12 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142500320000#c114250034658367320" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03460106744756694823" rel="nofollow">Sam</a> : 4:12 AM</div>
 
 								<span class="item-control blog-admin pid-1411540391"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114250034658367320" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114250857070569866"></a> 				IDE can reason better about variable type when you work on static type language.<BR/><BR/>But you don't need Manifest typing. C++/Java/C# is Manifest typing, you always need to retype the type of variable. Language like Haskell support Type Inference so you can just type the type only when needed and let the compiler work out the rest. Type inference will be available in next C++ standard and C# 3.0 so may be that's how you will get the clean look of dynamic language while still maintaining Compile time type checking.<BR/><BR/>Most people who hate dynamic typing blame the wrong thing. When they said they are bitten, they are not actually bitten by dynamic typing feature of the language, but they are bitten by weak typing feature of the language. dynamic and strong type language is good. static and weak type is bad. dynamic and weak type and all hell break loses.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142508540000#c114250857070569866" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:29 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142508540000#c114250857070569866" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:29 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114250857070569866" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114251841404959998"></a> 				I'm fairly new to the debate.  So what classification would JavaScript fall under:  dynamic + strong type, static + weak type, dynamic + weak type, or something else?  I ask because it always elicits plenty of groans and grumbles when we have to revise our JavaScript on the web sites, partly due to cross-browser compatibility issues, but also because of how "loose" it is compared to Java.  I think this question will become more relevant with the rising popularity of the AJAX approach to web applications.<BR/><BR/>Cheers,<BR/><BR/>Ted<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142518380000#c114251841404959998" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:13 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142518380000#c114251841404959998" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:13 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114251841404959998" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114251975708247190"></a> 				whyis that discussion so often an XOR<BR/>discussion? why oh why?<BR/>http://yozzeff.blogspot.com/<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142519700000#c114251975708247190" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15930751907037208505" rel="nofollow">yozzeff</a> : 9:35 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142519700000#c114251975708247190" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15930751907037208505" rel="nofollow">yozzeff</a> : 9:35 AM</div>
 
 								<span class="item-control blog-admin pid-1974862790"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114251975708247190" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114253129154972149"></a> 				I think there's a balance to be struck. On the one hand, using dynamic languages requires a higher degree of skill. On the other hand, it allows skilled practitioners to be much more productive, and allows them to produce executables that can be far more efficient in terms of CPU and memory usage. In my experience, a smaller, more experienced team making use of dynamic language facilities will run rings around development teams that are not similarly constituted.<BR/><BR/>Sadly, IT managers are often pound wise and penny foolish, thinking to contain costs by paying lower labor rates. This strategy tends to backfire more often than not, especially for larger and/or more technically challenging projects.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142531280000#c114253129154972149" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://jroller.com/page/JonathanLehr" rel="nofollow">Jonathan Lehr</a> : 12:48 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142531280000#c114253129154972149" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://jroller.com/page/JonathanLehr" rel="nofollow">Jonathan Lehr</a> : 12:48 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114253129154972149" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="114262261582802021"></a> 				<I>'When we discuss "type safety"...'</I><BR/>We can just use a text book definition: "Type safety is the property that no primitive operation ever applies to values of the wrong type."<BR/><A HREF="http://www.cs.brown.edu/~sk/Publications/Books/ProgLangs/" REL="nofollow">p263 Programming Languages:<BR/>Application and Interpretation</A><BR/><BR/>That says nothing about <B>how</B> <I>type safety</I> is achieved (static type checks, runtime type checks, commonly both).<BR/><BR/><BR/><I>"a trap door that led to having no typing"</I><BR/>A trap door could have been okay (Ada, Modula, ML); a 5 lane super-highway - not okay.<BR/><BR/><BR/><I>'..."new-fangled" dynamic languages. Are you exposed to the same risk? The answer is no. The reason is...'</I><BR/>The reason is that these languages are <B>type safe</B>.<BR/><BR/><BR/><I>"Consider a web application... The consequences of a type error are relatively mild when the language checks types at run time."</I><BR/>The consequences are <B>utterly dependent on the context of use</B>.<BR/>- Failure to quickly complete a web application transaction could have multi million dollar opportunity costs, or it could just mean the user clicks reload.<BR/>- Runtime error could crash an airliner, or it could just pause the program until the on-call guy returns from the bar to fix and resume the program.<BR/>- Runtime error might mean answering bug reports and complaints from 3 million users, or it could just mean walking into the next cube to see what's going on.<BR/><BR/><I>"spent so much time trying to find and squash critical bugs that the project was cancelled?"</I><BR/>Yes, some third-party Smalltalk software never reached acceptable quality (in some other language the third-party software may not even have compiled).<BR/><BR/><I>"solves 75% of our problems and makes the errors 99% less dangerous"</I><BR/>As an industry, we already maintain a pretence that product errors are something users should put up with.<BR/><BR/>As an industry, rather than pretending that errors don't matter, we need better ways to detect errors before we deliver the product.<BR/><BR/>Better ways like <A HREF="http://www.it.uu.se/research/group/hipe/dialyzer/" REL="nofollow">static analysis of byte code produced by a dynamic type language</A>.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142622600000#c114262261582802021" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05398229396333413000" rel="nofollow">Isaac Gouy</a> : 2:10 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1142622600000#c114262261582802021" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05398229396333413000" rel="nofollow">Isaac Gouy</a> : 2:10 PM</div>
 
 								<span class="item-control blog-admin pid-51843297"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=114262261582802021" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2611326203357086991"></a> 				The static vs dynamic debate seems like a moot debate.  First of all most of the debate involves making normative instead of positive statements, which seems like an absolutely ridiculous thing to do as a group regarding a technology (especially since one consequence of making positive statements regarding type models is that research can test these statements and hence progress in improving program efficiency and correctness in a <I>scientific</I> manner is possible, I'm not sure how Voodoo Mysticism came to dominate the programming culture so effectively but it's disgusting).  Furthermore, it is possible to construct a language which has the properties of both a static and a dynamic language in that either static or dynamic type checking can be declared for code blocks  with a keyword.  The resulting language would be "dynamically" typed by definition, but would have all the properties of "statically typed languages" with the inclusion of a keyword (or static could be the default), so I'm not sure what all the Voodoo Mystics are babbling about when a superset language can be constructed that will satisfy both "sides."  I understand that normative statements and taking "sides" can be appealing because programming is an art, but I don't think decisions in entire industries should be driven by Voodoo magic and personal aesthetics -- instead powerful programming languages should be constructed which allow people to adopt their preferred aesthetics.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1173927180000#c2611326203357086991" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02568908952592933174" rel="nofollow">Connelly</a> : 10:53 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1173927180000#c2611326203357086991" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02568908952592933174" rel="nofollow">Connelly</a> : 10:53 PM</div>
 
 								<span class="item-control blog-admin pid-703742905"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2611326203357086991" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3792248530566782552"></a> 				Excelent posting!<BR/><BR/>Having managed a team working on a large (and bad) Perl codebase which has MANY problems that would have been avoided by compile-time type checking, I was wondering whether this is just a matter of particularly bad programming or it is the unavoidable fate of a long-lived large product written in a language with runtime-checked types.<BR/><BR/>You're right: my fears come from the C and Perl worlds - in C because you can turn whatever into anything, in Perl because you can turn strings into numbers and viceversa, and 0, undef, and '' are the same thing. Most of the above-mentioned problems with that Perl crap fall into this category.<BR/><BR/>Hmmm... I guess you've just saved my next team from being forced to move to Java.<BR/><BR/>Thanks for the enlightenment,<BR/><BR/>Jordi.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1177533540000#c3792248530566782552" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 4:39 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1177533540000#c3792248530566782552" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 4:39 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3792248530566782552" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="799827278728757814"></a> 				You should just say that it's your opinion, and quite uninformed at that.<BR/><BR/>The fact is that both serve their purpose.  Get off you high(really low) horse, and pick up the tool that solves your problem.<BR/><BR/>After you've done that, let everybody else do the same.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1193449020000#c799827278728757814" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:37 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1193449020000#c799827278728757814" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:37 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=799827278728757814" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8782238062016049067"></a> 				Anonymous:<BR/><BR/><I>You should just say that it's your opinion</I><BR/><BR/>This is a weblog, not a research paper. Do you really need to be told that it is an opinion? Should there be fine print to prevent you from hurting yourself?<BR/><BR/><I>let everybody else do...</I><BR/><BR/>I didn't realize you needed my say-so before doing whatever you want. Well, here it is: do as you please. Thank you, carry on.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1193454240000#c8782238062016049067" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:04 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1193454240000#c8782238062016049067" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:04 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8782238062016049067" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6853769484289931550"></a> 				Hmmm...the idea that casting errors are somehow insidious and terrible seems laughable to me.<BR/>I notice that *no one*(!) has answered "yes" to the question that casting errors caused a project to fail! I suspect this is just some theoretical thought experiment.<BR/><BR/>As an actual matter of fact, we use the C++-style casts. But they don't really give any major advantages over the C-style casts (when you gotta use reinterpret_cast you gotta use it).<BR/><BR/>Typically the result of a casting failure is an <B>immediate</B> crash. And that makes it pretty damn easy to trace and fix. As I mentioned, we use casts and I have never even seen a casting error reach past the developer's initial test never mind it getting checked-in and shared with the team.<BR/><BR/>The idea that a casting error would reach production and then, somehow, do something *bad* sounds like a halloween scary story you make up sitting around a fire sipping chocolate.<BR/><BR/>My 2 cents ;-)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1195123020000#c6853769484289931550" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07561763276075995615" rel="nofollow">brown-dragon</a> : 5:37 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1195123020000#c6853769484289931550" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07561763276075995615" rel="nofollow">brown-dragon</a> : 5:37 AM</div>
 
 								<span class="item-control blog-admin pid-1916484507"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6853769484289931550" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3157405741854488275"></a> 				The idea that a casting error would reach production and do something bad is a halloween story? I don't agree with this.  However, you also said that typically the result of a casting failure is an immediate crash.  Here's an immediate crash:<BR/><BR/> The Arianne 5, in 1996, went off course and exploded 40 seconds into launch, when a 64-bit floating point number was cast to a 16-bit signed integer and overflowed. The loss was valued at half a billion dollars.  See <A HREF="http://www.ima.umn.edu/~arnold/disasters/ariane.html" REL="nofollow">this</A>.<BR/><BR/>On the main topic, well, I'm a Lisp guy at heart (originally Lisp machines at MIT and Symbolics, now an airline reservation system at ITA Software), but I've also used Java extensively (at Object Design and BEA), and in a nutshell, both approaches have their pros and cons. I'd like to get experience writing large software in a language with powerful type inference, and see to what extent that can give you the best of both worlds.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1198423080000#c3157405741854488275" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">dlweinreb</span> : 10:18 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1198423080000#c3157405741854488275" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">dlweinreb</span> : 10:18 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3157405741854488275" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5082408253759484846"></a> 				The idea that a casting error would reach production and do something bad is a halloween story? I don't agree with this.  However, you also said that typically the result of a casting failure is an immediate crash.  Here's an immediate crash:<BR/><BR/> The Arianne 5, in 1996, went off course and exploded 40 seconds into launch, when a 64-bit floating point number was cast to a 16-bit signed integer and overflowed. The loss was valued at half a billion dollars.  See <A HREF="http://www.ima.umn.edu/~arnold/disasters/ariane.html" REL="nofollow">this</A>.<BR/><BR/>On the main topic, well, I'm a Lisp guy at heart (originally Lisp machines at MIT and Symbolics, now an airline reservation system at ITA Software), but I've also used Java extensively (at Object Design and BEA), and in a nutshell, both approaches have their pros and cons. I'd like to get experience writing large software in a language with powerful type inference, and see to what extent that can give you the best of both worlds.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1198423140000#c5082408253759484846" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">dlweinreb</span> : 10:19 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1198423140000#c5082408253759484846" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">dlweinreb</span> : 10:19 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5082408253759484846" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2923490597707886032"></a> 				I have read all the comments here and must say a VERY SIMPLE THING.<BR/>When I compile with a static language most of *my* errors are caught. This might be lazy.. But most *good* programmers *are* lazy it a matter of pragmatism.. Management wants *so* much from us.. SO when the compiler can catch 80% of my errors with a static language I am thinking GAWD what is with all the buzz about dynamic languages? I know you can't tell me with a straight face that dynamic languages are easier to catch stupid errors that I made than dynamic languages??? I mean common errors are indeed easier to make since the compiler is so much forgiving.. no? well keep in mind that I *have* checked out both kinds of languages and found what I have to say most true.. perhaps the exception is ORM.. gawd ok.. I get it dynamic languages rules here... but thats about it!<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1224034920000#c2923490597707886032" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://openid.aol.com/mail@joshsprabary.com" rel="nofollow">mail@joshsprabary.com</a> : 9:42 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html?showComment=1224034920000#c2923490597707886032" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://openid.aol.com/mail@joshsprabary.com" rel="nofollow">mail@joshsprabary.com</a> : 9:42 PM</div>
 
 								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2923490597707886032" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -188,7 +188,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -242,25 +242,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -268,17 +268,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -288,17 +288,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -306,19 +306,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -326,18 +326,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -345,15 +345,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -362,101 +362,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

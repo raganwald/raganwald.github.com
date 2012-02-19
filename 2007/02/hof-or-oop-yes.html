@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Friday, February 02, 2007</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="117042956864259931">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html" title="permanent link">HOF or OOP? Yes!</a></span>
-					<div style="clear:both;"></div>It&#8217;s interesting how the brain works: I wrote an essay that I thought was <a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">an explanation of what first class functions and closures <em>are</em></a>, and why some people would like to see them added to the <a href="http://www.java.com">Kitchen Sink of Languages</a>.<br /><br />Then I read <a href="http://www.wuenschenswert.net/wunschdenken/archives/117">From Functional to Object-Oriented Programming</a>, which suggests that my essay seems to be making a general statement about Functional Programming as an advance over Object Oriented Programming.<sup>1</sup><br /><br />Nothing could be further from my intention or my opinion. Smalltalk, for example, has a clean and powerful syntax for first-class functions. And those first-class functions are objects, as is <em>everything</em> in Smalltalk. I am tempted to rewrite my essay using Smalltalk: it seems that using <a href="http://www.ruby-lang.org/">Ruby</a>, another language where everything is an object, is not making this point strongly enough. In my mind, it is easy to use languages that provide the OO paradigm as well as the first-class function paradigm. At the same time.<br /><br /><strong>What I actually said</strong><br /><br />So what I actually said is: &#8220;Here are these things called <em>first-class functions</em>. This &ldquo;thing&rdquo; is where functions are exactly the same kind of thing as everything else in a language. This is useful, here is why.&#8221; If functions are first class, functions aren&#8217;t magically more special, nor are they second-class citizens in a language (like those brain-damaged primitives in crippled languages). If a language is an OO language, this implies that first-class functions in such a language are objects and that programming with them <em>is</em> OO programming.<br /><br />You&#8217;ll notice that I am not using the words &#8220;Functional Programming.&#8221; That&#8217;s because <strong>I&#8217;m not talking about Functional Programming</strong>. I&#8217;m talking about closures and first-class functions. I imagine that these things are present in all contemporary Functional Programming Languages, but that has nothing to do with my essay about the value of having first-class functions in an OO language: Smalltalk has had them in an OO language <em>for nearly thirty years</em>, and while it wasn&rsquo;t the first OO language, it is the canonical definition of class-based OO.<br /><br />That&#8217;s all I said. If you want to debate the merits of pure functional programming languages like <a href="http://www.haskell.org/">Haskell</a> against OO languages like Ruby, you have to take that up with someone like <a href="http://blog.moertel.com/" title="Tom Moertel">Tom</a> or <a href="http://www.randomhacks.net/" title="Eric Kidd">Eric</a>.<br /><br /><strong>What I don&#8217;t understand</strong><br /><br />I don&#8217;t understand the author&#8217;s objection to higher-order functional programming. He(?) says something about higher-order functions and type inference as being bad. I don&#8217;t get the argument. It seems like he is saying that the constructs are somehow too deeply nested, that it is too easy to make mistakes. I may not understand him correctly, for I have trouble seeing how this is different from having data structures with a thicket of HAS-A relationships.<br /><br />Somehow we program just fine in business with complex data schema, and we manage to keep track of things just fine. Strong typing and compiler support helps. So does IDE support. So does drawing diagrams. How is &#8220;a function taking an integer and a function taking two integers, returning a function taking a list of integers and returning an integer&#8221; somehow more complex than &#8220;a record containing an integer and that has many records containing an integer&#8221;?<br /><br />The argument seems to be (and I am open to correction, since what I think he&#8217;s saying is so obvious that I worry I&#8217;m misunderstanding it) that naming things makes all the difference, as in &#8220;a customer record with an ID has many Sales Records, each of which has an ID.&#8221; That does sound easier to understand.<br /><br />But of course, nothing stops you from naming things if you have first-class functions in a type checked OO language, does it? I am not a practitioner, but I have been working my way through <a href="http://www.amazon.com/gp/product/026256114X?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=026256114X">The Little MLer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256114X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, and it is part of the ML programming paradigm to name first-class functional types for precisely the reasons the author seems to advocate.<br /><br /><strong>Anonymity considered harmful?</strong><br /><br />So perhaps the objection is to having too many anonymous things, to having too many values without names. There is certainly an appropriate balance to be sought. One language designer seems to dislike anonymous functions, to the point where his language won&#8217;t let you have any that won&#8217;t fit on a single line. He has an <em>opinionated</em> language.<br /><br />I have seen similar arguments with non-functions. That control flow branches should not be nested too deeply (you know, <code>case</code> and <code>if</code> and the evil ternary operator). I often use the &#8220;extract variable&#8221; refactoring to simplify expressions and make them more readable. Naming a part of an expression provides a certain level of abstraction that improves comprehension.<br /><br />Types and expressions involving functions are no different, and if that&#8217;s what the author is saying I endorse his perspective.<br /><br />That statement, however, is somewhat orthogonal to whether first-class functions should exist in a language. As long as you can name them, you have the tool to write comprehensible code. If your language has types, then you ought to be able to name types involving first-class functions. As long as you can name functional values and types, you can apply all the same style guidelines to first-class functions that you apply to record types.<br /><br /><strong>In Conclusion</strong><br /><br />First-class functions are a natural fit with OO, as evidenced by their presence in OO languages that aren&#8217;t glorified PDP-11 assemblers with some OO stuff bolted on the side by people with <a href="http://www.noodlesoft.com/blog/2007/01/23/the-sun-also-sets/">very little OO and/or GUI programming experience</a>. First-class functions can be used to write clean and legible code, using all of the same techniques we use for writing clean and legible code with records, objects, and other types.<br /><br /><a href="http://www.wuenschenswert.net/wunschdenken/archives/117">From Functional to Object-Oriented Programming</a> has some interesting points about FP and OOP and their historical context. This has nothing to do with my original post, but I think those words are worth reading and considering. The post raises some caveats about complex and anonymous first-class functions that are obviously sensible: we have noticed the same things with other forms of expression in programming.<br /><br /><hr/><br /><ol><li>I will come clean here: when I think of OO, I am <em>not</em> thinking of C++ or Java, especially as they are practised in business. I&#8217;m thinking of languages like <a href="http://research.sun.com/self/language.html">Self</a>, <a href="http://en.wikipedia.org/wiki/Actor">Actor</a>, and <a href="http://www.smalltalk.org/">Smalltalk</a>.</li></ol><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/lispy.html">lispy</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html" title="permanent link">HOF or OOP? Yes!</a></span>
+					<div style="clear:both;"></div>It&#8217;s interesting how the brain works: I wrote an essay that I thought was <a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">an explanation of what first class functions and closures <em>are</em></a>, and why some people would like to see them added to the <a href="http://www.java.com">Kitchen Sink of Languages</a>.<br /><br />Then I read <a href="http://www.wuenschenswert.net/wunschdenken/archives/117">From Functional to Object-Oriented Programming</a>, which suggests that my essay seems to be making a general statement about Functional Programming as an advance over Object Oriented Programming.<sup>1</sup><br /><br />Nothing could be further from my intention or my opinion. Smalltalk, for example, has a clean and powerful syntax for first-class functions. And those first-class functions are objects, as is <em>everything</em> in Smalltalk. I am tempted to rewrite my essay using Smalltalk: it seems that using <a href="http://www.ruby-lang.org/">Ruby</a>, another language where everything is an object, is not making this point strongly enough. In my mind, it is easy to use languages that provide the OO paradigm as well as the first-class function paradigm. At the same time.<br /><br /><strong>What I actually said</strong><br /><br />So what I actually said is: &#8220;Here are these things called <em>first-class functions</em>. This &ldquo;thing&rdquo; is where functions are exactly the same kind of thing as everything else in a language. This is useful, here is why.&#8221; If functions are first class, functions aren&#8217;t magically more special, nor are they second-class citizens in a language (like those brain-damaged primitives in crippled languages). If a language is an OO language, this implies that first-class functions in such a language are objects and that programming with them <em>is</em> OO programming.<br /><br />You&#8217;ll notice that I am not using the words &#8220;Functional Programming.&#8221; That&#8217;s because <strong>I&#8217;m not talking about Functional Programming</strong>. I&#8217;m talking about closures and first-class functions. I imagine that these things are present in all contemporary Functional Programming Languages, but that has nothing to do with my essay about the value of having first-class functions in an OO language: Smalltalk has had them in an OO language <em>for nearly thirty years</em>, and while it wasn&rsquo;t the first OO language, it is the canonical definition of class-based OO.<br /><br />That&#8217;s all I said. If you want to debate the merits of pure functional programming languages like <a href="http://www.haskell.org/">Haskell</a> against OO languages like Ruby, you have to take that up with someone like <a href="http://blog.moertel.com/" title="Tom Moertel">Tom</a> or <a href="http://www.randomhacks.net/" title="Eric Kidd">Eric</a>.<br /><br /><strong>What I don&#8217;t understand</strong><br /><br />I don&#8217;t understand the author&#8217;s objection to higher-order functional programming. He(?) says something about higher-order functions and type inference as being bad. I don&#8217;t get the argument. It seems like he is saying that the constructs are somehow too deeply nested, that it is too easy to make mistakes. I may not understand him correctly, for I have trouble seeing how this is different from having data structures with a thicket of HAS-A relationships.<br /><br />Somehow we program just fine in business with complex data schema, and we manage to keep track of things just fine. Strong typing and compiler support helps. So does IDE support. So does drawing diagrams. How is &#8220;a function taking an integer and a function taking two integers, returning a function taking a list of integers and returning an integer&#8221; somehow more complex than &#8220;a record containing an integer and that has many records containing an integer&#8221;?<br /><br />The argument seems to be (and I am open to correction, since what I think he&#8217;s saying is so obvious that I worry I&#8217;m misunderstanding it) that naming things makes all the difference, as in &#8220;a customer record with an ID has many Sales Records, each of which has an ID.&#8221; That does sound easier to understand.<br /><br />But of course, nothing stops you from naming things if you have first-class functions in a type checked OO language, does it? I am not a practitioner, but I have been working my way through <a href="http://www.amazon.com/gp/product/026256114X?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=026256114X">The Little MLer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256114X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, and it is part of the ML programming paradigm to name first-class functional types for precisely the reasons the author seems to advocate.<br /><br /><strong>Anonymity considered harmful?</strong><br /><br />So perhaps the objection is to having too many anonymous things, to having too many values without names. There is certainly an appropriate balance to be sought. One language designer seems to dislike anonymous functions, to the point where his language won&#8217;t let you have any that won&#8217;t fit on a single line. He has an <em>opinionated</em> language.<br /><br />I have seen similar arguments with non-functions. That control flow branches should not be nested too deeply (you know, <code>case</code> and <code>if</code> and the evil ternary operator). I often use the &#8220;extract variable&#8221; refactoring to simplify expressions and make them more readable. Naming a part of an expression provides a certain level of abstraction that improves comprehension.<br /><br />Types and expressions involving functions are no different, and if that&#8217;s what the author is saying I endorse his perspective.<br /><br />That statement, however, is somewhat orthogonal to whether first-class functions should exist in a language. As long as you can name them, you have the tool to write comprehensible code. If your language has types, then you ought to be able to name types involving first-class functions. As long as you can name functional values and types, you can apply all the same style guidelines to first-class functions that you apply to record types.<br /><br /><strong>In Conclusion</strong><br /><br />First-class functions are a natural fit with OO, as evidenced by their presence in OO languages that aren&#8217;t glorified PDP-11 assemblers with some OO stuff bolted on the side by people with <a href="http://www.noodlesoft.com/blog/2007/01/23/the-sun-also-sets/">very little OO and/or GUI programming experience</a>. First-class functions can be used to write clean and legible code, using all of the same techniques we use for writing clean and legible code with records, objects, and other types.<br /><br /><a href="http://www.wuenschenswert.net/wunschdenken/archives/117">From Functional to Object-Oriented Programming</a> has some interesting points about FP and OOP and their historical context. This has nothing to do with my original post, but I think those words are worth reading and considering. The post raises some caveats about complex and anonymous first-class functions that are obviously sensible: we have noticed the same things with other forms of expression in programming.<br /><br /><hr/><br /><ol><li>I will come clean here: when I think of OO, I am <em>not</em> thinking of C++ or Java, especially as they are practised in business. I&#8217;m thinking of languages like <a href="http://research.sun.com/self/language.html">Self</a>, <a href="http://en.wikipedia.org/wiki/Actor">Actor</a>, and <a href="http://www.smalltalk.org/">Smalltalk</a>.</li></ol><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/lispy.html">lispy</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html" title="permanent link">10:16 AM</a>
+						&para; <a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html" title="permanent link">10:16 AM</a>
 
 					 
 				</span> 
@@ -44,175 +44,175 @@
 						
 							<div class="blogComment">
 								<a name="117043162597465163"></a> 				Well, you're welcome to debate the relative merits of functional programming and Ruby with me, but I'll argue both sides. :-)<BR/><BR/>More seriously, there are some cases where OO is the <I>right answer</I>, and where functional programming by itself will make your code nasty.<BR/><BR/>Exhibit A: On our last big Scheme project, we had a number of programmers write GUI components using either an OO style or a functional style. The components written in an OO style were nicely reusable, but the ones written in a classical Scheme style generally turned into unextensible balls of hair.<BR/><BR/>At the moment, I'm rewriting our low-level OO framework for Scheme to encourage a more Rubyish style on our next project.<BR/><BR/>Now, I'll happily agree that OO is much nicer with decent support for functional programming. But this is one of those peanut butter/chocolate things: You're better off having both, if at all possible.<BR/><BR/>Or to look at it from the other direction, there are some designs which can be expressed elegantly in O'Haskell that would be downright ugly in regular Haskell.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170431580000#c117043162597465163" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 10:53 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170431580000#c117043162597465163" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 10:53 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117043162597465163" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117043492209480582"></a> 				I think people have a problem with first-class functions because they are so wierd compared to the standard OO stuff.  OO has a direct parallel with real world stuff.  Functions in general don't have a concrete parallel.  If you have studied a lot of math, they are probably easier.  If you don't get first-class functions, you won't get closures.  <BR/><BR/>I remember reading about both of them for the first time about a year ago.  It took me a while to get what they were about, and how they were different than other constructs.  Once I got it, I realized that I had been using both for years programming javascript.<BR/><BR/>As a corralary, I think that's why some people have trouble with JS: to use it efficiently, you need FCFs and Closures.<BR/><BR/>About a month into my current job, I had a code review, and the reveiwers seemed totally baffled by something like "var foo = function(bar) {...}".<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170434880000#c117043492209480582" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Aaron Davis</span> : 11:48 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170434880000#c117043492209480582" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Aaron Davis</span> : 11:48 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117043492209480582" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117043519297287233"></a> 				<I>OO has a direct parallel with real world stuff. Functions in general don't have a concrete parallel.</I><BR/><BR/>Except real-world stuff has functional thingies like transactions and the Command Pattern.<BR/><BR/>If someone can understand the idea of a list of commands being used to manage the Undo/Redo stack of a desktop application, surely  they can understand the idea of a list of functions?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170435180000#c117043519297287233" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:53 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170435180000#c117043519297287233" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:53 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117043519297287233" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117043527239735236"></a> 				One small thing, I like your blog, but please stop saying SmallTalk.  It's one word, Smalltalk.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170435240000#c117043527239735236" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:54 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170435240000#c117043527239735236" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:54 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117043527239735236" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117043793330492762"></a> 				three words: (Anonymous) inner class.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170437880000#c117043793330492762" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.zwitserloot.com/" rel="nofollow">Reinier Zwitserloot</a> : 12:38 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170437880000#c117043793330492762" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.zwitserloot.com/" rel="nofollow">Reinier Zwitserloot</a> : 12:38 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117043793330492762" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117043825912991447"></a> 				Reinier:<BR/><BR/>Almost. The closing over part isn't handled well by the current behaviour of anonymous inner classes.<BR/><BR/>That being said, the original post talked about the need for a cleaner syntax. I'm very happy with the idea that first-class functions in Java could be syntactic sugar for anonymous inner classes plus some extensions so you can capture local variables and parameters.<BR/><BR/>This would be parallel to <B>enum</B>, which is really syntactic sugar for the old "Type Safe Enumeration" pattern.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170438240000#c117043825912991447" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:44 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170438240000#c117043825912991447" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:44 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117043825912991447" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117043993473006016"></a> 				From the article linked to: "The promise of OO was to replace the dazzling complexity (and intellectual challenge) of functional programming with something more manageable."<BR/><BR/>Really? I think OO as practiced in the industry is way too complex. I find Java and C++ to be quite intellectually challenging, whereas I can understand Lisp and F# just fine.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170439920000#c117043993473006016" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:12 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170439920000#c117043993473006016" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:12 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117043993473006016" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117044087575580759"></a> 				Wow! You remember Actor.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170440820000#c117044087575580759" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://dean.edwards.name/" rel="nofollow">Dean Edwards</a> : 1:27 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170440820000#c117044087575580759" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://dean.edwards.name/" rel="nofollow">Dean Edwards</a> : 1:27 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117044087575580759" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117044119983486186"></a> 				<I>You remember Actor.</I><BR/><BR/>But I've forgotten <A HREF="http://hyperarchive.lcs.mit.edu/HyperArchive/Abstracts/nwt/util/n-crypt-lite.hqx.txt" REL="nofollow">NewtonScript</A>!<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170441180000#c117044119983486186" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:33 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170441180000#c117044119983486186" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:33 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117044119983486186" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117044553880940550"></a> 				<I>If someone can understand the idea of a list of commands being used to manage the Undo/Redo stack of a desktop application, surely they can understand the idea of a list of functions?</I><BR/><BR/>Except that they don't (or don't want to try).  With OO, there is alway something being acted on.  Obviously, functions act on things also, but it isn't so blatant.<BR/><BR/>An likewise, assembly obviously acts on things also, but again even let blatant.<BR/><BR/>That being said, I think alot of the trouble stems from Java Schools. I remember my Java classes at University fo Wisconsin being boringly easy -- granted I did take a year of C++ in High School.  When you ask someone to move out of their comfort zone, and learn a new language and paradigm, some people get scared.  I think this is especially true for a language like Java which tries to abstract the wrong things.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170445500000#c117044553880940550" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Aaron Davis</span> : 2:45 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170445500000#c117044553880940550" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Aaron Davis</span> : 2:45 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117044553880940550" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117044782596083246"></a> 				Reginald wrote: <I>If someone can understand the idea of a list of commands being used to manage the Undo/Redo stack of a desktop application, surely they can understand the idea of a list of functions?</I><BR/><BR/>There's actually a really clever way to manage undo/redo in a purely functional language: keep around old copies of your data structures, allowing them to share structure with newer versions. Since no code can modify the data in place (it's all effectively "const"), it's safe to overlap different versions in this way.<BR/><BR/>For a really excellent book on this subject, see <A HREF="http://www.amazon.com/Purely-Functional-Structures-Chris-Okasaki/dp/0521663504" REL="nofollow">Purely Functional Data Structures</A>. <BR/><BR/>So in an object oriented language, you use lists of commands to implement undo, but in a functional language, you use plain old data!<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170447780000#c117044782596083246" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 3:23 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170447780000#c117044782596083246" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.randomhacks.net/" rel="nofollow">emk</a> : 3:23 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117044782596083246" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117045432252217954"></a> 				The real problem with higher order function is that it encourages, and sometimes enforces creating anonymous objects, which is generally bad. You should always name your types, your objects and yes, your methods too. Any anonymous object, of any kind constitutes a possible threat to code maintenance unless you have foresight and KNOW that this never needs to be named. (The only possible exception are numbers, because infix calculations are so readable and commonly understood that it's needless to name intermediate result.)<BR/><BR/>That's why I not only reject HOF, but anonymous classes and unnamed objects as well.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170454320000#c117045432252217954" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">albert bulawa</span> : 5:12 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170454320000#c117045432252217954" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">albert bulawa</span> : 5:12 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117045432252217954" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117045480408497584"></a> 				<I>You should always...</I><BR/><I>Any anonymous object, of any kind constitutes a possible threat...</I><BR/><BR/>Seems a little on the side of Bondage and Discipline, but if this is working for you, I say carry on with enthusiasm.<BR/><BR/>Have you considered that code is not cast in stone? It is always possible to write something with <I>no idea whatsoever</I> if it will need a name later, and then <I>name it when you find out you need a name?</I><BR/><BR/>This is the basis of DRY, to me. If something is only used once, it is least in need of a name. Especially if it is small.<BR/><BR/>When we find out later that we need to re-use the same thing again, we can name it and share it.<BR/><BR/><BR/>In any event, I am not at all convinced that a desire to name everything is in opposition to HOF.<BR/><BR/>Can't you use maps and generators and list comprehensions and all sorts of other HO tools to create things that you name?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170454800000#c117045480408497584" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:20 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170454800000#c117045480408497584" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:20 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117045480408497584" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117047097821862306"></a> 				Yeah, how you name things and HOF are othorgonal. Python vs. Perl shows that pretty well; both can do it, Perl is much friendlier if you don't like naming things.<BR/><BR/>I find I've come to appreciate the Python way of doing things when it comes to working with the code of others. It's extremely rare for me to encounter even a snippet of code that I really can't put a name on, and that often constitutes a code smell anyhow. (In the original sense of "code smell"; it isn't <I>a priori</I> a problem, but it probably indicates you're still fuzzy on exactly what's going on, which happens.)<BR/><BR/>If you're writing code on your own, go to town. But I really like naming things, even when I'm in pure functional. I really like the ability to "read" off programming statements, even if the grammar is in a different order than English.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170470940000#c117047097821862306" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.jerf.org/iri" rel="nofollow">Jeremy Bowers</a> : 9:49 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170470940000#c117047097821862306" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.jerf.org/iri" rel="nofollow">Jeremy Bowers</a> : 9:49 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117047097821862306" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117052656573479957"></a> 				Hi, I've tried to clarify some points from my original post in a <A HREF="http://www.wuenschenswert.net/wunschdenken/archives/118" REL="nofollow">follow-up</A> on my blog - it just got a bit too long to post here.  I believe my main point, don't get lost in abstraction, and the value of naming, were already reformulated excellently by Reg. Still, to me the value and use cases for closures in the OO paradigm seem to be different than in the functional paradigm... (<A HREF="http://www.wuenschenswert.net/wunschdenken/archives/118" REL="nofollow">extended version</A>)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170526560000#c117052656573479957" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.wuenschenswert.net/" rel="nofollow">axel</a> : 1:16 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170526560000#c117052656573479957" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.wuenschenswert.net/" rel="nofollow">axel</a> : 1:16 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117052656573479957" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117053907274563085"></a> 				Hi,<BR/><BR/>Every time when I tell my opinion on programming, I am insulted with "bondage and discipline". If I create my blog, I guess I should name it "BDSM Programming" or similarly. :) <BR/><BR/>But seriously: when you know how to name a thing, you should do it, and by not naming you're doing harm to code maintainers. If you don't know how to name a thing, that means you're in grave need of refactoring.<BR/><BR/>Everything that may be manifest, should be.<BR/><BR/>albert<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170539040000#c117053907274563085" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">albert bulawa</span> : 4:44 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170539040000#c117053907274563085" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">albert bulawa</span> : 4:44 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117053907274563085" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117054547627089645"></a> 				Albert:<BR/><BR/><I>Every time when I tell my opinion on programming, I am insulted with "bondage and discipline".</I><BR/><BR/>It's not meant as an insult, just a way of making a friendly joke in the style <A HREF="http://en.wikipedia.org/wiki/Ha_ha_only_serious" REL="nofollow">Ha ha, only serious</A>.<BR/><BR/>The serious part is in reference to what sound like absolute, inflexible rules. This is not a comment in agreement of disagreement with the rules themselves, just an observation about the style of development.<BR/><BR/>I know how to name many things. I do so when I need to use the thing in more than one place, or when it is easier to read as a series of lemmas rather than a single large expression.<BR/><BR/>I have a feeling that my style has been influenced by Agile development and by refactoring (whether automated or by hand).<BR/><BR/>I am not paranoid about colleagues coming after me and moving things around or naming things if they need. I don't try to guess that they need, I try to make things malleable so they can be refashioned.<BR/><BR/>That's probably a post in itself. I think it's related to <A HREF="http://en.wikipedia.org/wiki/YAGNI" REL="nofollow">YAGNI</A>. Not in the sense of hacking without forethought, but in the sense of building code that is easy to change.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170545460000#c117054547627089645" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:31 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170545460000#c117054547627089645" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:31 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117054547627089645" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117054554019262140"></a> 				Axel:<BR/><BR/>Thanks, great follow-up!<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170545520000#c117054554019262140" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:32 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170545520000#c117054554019262140" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:32 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117054554019262140" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117064036577498862"></a> 				There's an excellent presentation by Luca Cardelli called <A HREF="http://lucacardelli.name/Slides/1997-06%20Everything%20is%20an%20Object%20(ECOOP%20Prototypes%20Workshop).pdf" REL="nofollow">Everything is an object</A> where he shows that an object calculus can be more expressive and comprehensive than the lambda calculus, concluding: "Hence, objects are more basic than procedures". What I find interesting  is that he backs this claim by showing that it's cumbersome to translate the typed object calculus to the typed lambda calculus.<BR/><BR/>A language that is based in a similar object calculus is <A HREF="http://lucacardelli.name/Obliq/Obliq.html" REL="nofollow">Obliq</A>, also by Cardelli.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170640320000#c117064036577498862" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 8:52 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170640320000#c117064036577498862" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 8:52 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117064036577498862" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117064046770088120"></a> 				The above post on Obliq is mine. Blogger seems to function strangely without javascript enabled.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170640440000#c117064046770088120" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://daniel-yokomizo.livejournal.com" rel="nofollow">Daniel Yokomizo</a> : 8:54 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170640440000#c117064046770088120" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://daniel-yokomizo.livejournal.com" rel="nofollow">Daniel Yokomizo</a> : 8:54 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117064046770088120" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117066222675059378"></a> 				OK, so you joked at me, I accept this, but others probably do not joke :-) But this has another side too: the bondage part left out, the discipline is most important.<BR/><BR/>But it's hard to self impose the discipline for a programmer, I am one so I know it. That's why I prefer to rely on languages and tools to guarantee that programs I create (along with the team) have no unnamed objects, no unnamed classes. They do enforce the discipline and when this discipline is enforced, the names they give objects are meaningful too.<BR/><BR/>YAGNI is a good rule for avoiding overdesigns, we do use it too, but it's not good for avoiding "overnaming" (if such a thing existed) because I name things not for this myself sitting at the keyboard NOW, but for that myself who will try and understand the code a year later, or even for other people trying. YAGNI is so good because by demanding to keep things simple makes it easy to add needed things later, when they are really needed. But there is no such thing as "easily naming objects later": it will just always be very hard. That's why you should name things as you write, and not leave it for ever.<BR/><BR/>(And, this makes static manifest typing an obvious thing you want to have in your language.)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170662220000#c117066222675059378" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">albert bulawa</span> : 2:57 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170662220000#c117066222675059378" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">albert bulawa</span> : 2:57 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117066222675059378" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117068687532041406"></a> 				Albert, consider loop bodies. Should they be named? After all, if you think about it, a block in a language like C or Java isn't unlike an anonymous function.<BR/><BR/>But, I think you'll agree, it'd make no sense to give them names.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170686820000#c117068687532041406" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11467525080865173891" rel="nofollow">Keith Gaughan</a> : 9:47 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170686820000#c117068687532041406" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11467525080865173891" rel="nofollow">Keith Gaughan</a> : 9:47 AM</div>
 
 								<span class="item-control blog-admin pid-1787462716"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117068687532041406" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117068730434106980"></a> 				<I>the bondage part left out, the discipline is most important.</I><BR/><BR/>Well, it's just a joke, but for the sake of stretching our imagination, let's think of these definitions:<BR/><BR/><B>Bondage</B>: restricting programmers' freedom by imposing limitations on what their language or tools permit them to do.<BR/><BR/><B>Discipline</B>: restricting programmers' freedom through social methods such as codifying practices.<BR/><BR/>B&D apply to all sorts of cultures. For example, if an "agile" shop sets up a continuous integration server that rejects any code that breaks the build, you have a form of bondage.<BR/><BR/>If an "agile" shop encourages "YAGNI" through training, code review, and refactoring to YAGNI, you have discipline.<BR/><BR/>So...<BR/><BR/>I would say that both really do have their place, and the important thing is to find the balance that works properly for your group and your project.<BR/><BR/>Pax!<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170687300000#c117068730434106980" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:55 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170687300000#c117068730434106980" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:55 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117068730434106980" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="117097240050041091"></a> 				So how would you tell about enforcing codifying practices with a tool? :-) Is it bondage or discipline?<BR/><BR/>ps. I am not a native english speaker and when I try to find what this "bondage and discipline" is using Google search... well, guess why I don't get this joke :D<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1170972360000#c117097240050041091" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">albert bulawa</span> : 5:06 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1170972360000#c117097240050041091" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">albert bulawa</span> : 5:06 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=117097240050041091" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2696437984786626725"></a> 				<I>ps. I am not a native english speaker and when I try to find what this "bondage and discipline" is using Google search... well, guess why I don't get this joke :D</I><BR/><BR/>Ouch.  As independent to this conversation I can guarantee the tone was much lighter than was implied by what I'm sure came up in your google search :).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/02/hof-or-oop-yes.html?showComment=1200006780000#c2696437984786626725" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02498110256682690030" rel="nofollow">Sean Fritz</a> : 6:13 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/02/hof-or-oop-yes.html?showComment=1200006780000#c2696437984786626725" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02498110256682690030" rel="nofollow">Sean Fritz</a> : 6:13 PM</div>
 
 								<span class="item-control blog-admin pid-21348953"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2696437984786626725" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -223,7 +223,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -277,25 +277,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -303,17 +303,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -323,17 +323,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -341,19 +341,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -361,18 +361,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -380,15 +380,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -397,101 +397,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

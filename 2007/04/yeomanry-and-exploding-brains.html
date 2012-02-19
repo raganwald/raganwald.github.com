@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Wednesday, April 18, 2007</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="2756320424559787889">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2007/04/yeomanry-and-exploding-brains.html" title="permanent link">Yeomanry and Exploding Brains</a></span>
-					<div style="clear:both;"></div><em>Note: I wrote this post very quickly last evening, in an almost stream-of-conciousness style. I had just endured some particularly frustrating client issues, and I really, really wanted to focus on a few bright moments that I had enjoyed that day. You know, trying to be a <a href="http://weblog.raganwald.com/2007/03/programmers-are-sages.html">good dog</a>.<br /><br />After publishing it, I felt unsatisfied with the post. It didn&#8217;t feel like I was saying or thinking anything particularly new, just the same old, same old thing about stretching the mind and looking for the elusive &#8220;quality without a name&#8221; that lies behind well-written software.</em><br /><br /><em>So I yanked it and went home. I was talking with a friend who writes for a living, and she quoted a great aphorism: &#8220;All writing is rewriting.&#8221; She suggested I rework it, not discard it. So here it is again, and I hope to rework it until I&#8217;m satisfied. The first major change will probably be to cut it in half.<br /><br />We&#8217;ll see about the rest.</em><br /><hr><br />I finished reading <a id="lnx2" name="evtst|a|026256114X" href="http://www.amazon.com/gp/product/026256114X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256114X">The Little MLer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256114X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> this morning. This is a <strong>wonderful</strong> book. It&#8217;s obviously valuable if you want to learn something about SML or Ocaml. But having read it, I&#8217;d argue that it&#8217;s a great introduction to strongly typed functional languages, period.<br /><br />In fact, it&#8217;s probably the very best first book to read before learning Haskell if you haven&#8217;t already used a language that combines first-class functions and strong, static typing. If you read this first, you can concentrate on lazy evaluation and monads without having to grok currying and other first-class functional ideas at the same time.<br /><br /><strong>Stars, Arrows, and Elegance</strong><br /><br />Two things jumped out at me this morning. The first was chapter eight, &#8220;Bows and Arrows.&#8221; This was an introduction to currying and partial function application. When I say it that way, it sounds rather dry. But it rolled along quite pleasantly. The material will be familiar to anyone with a passing familiarity with the idea of a <a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html" title="Closures and Higher-Order Functions">function returning a function</a>. It has the same ideas you&#8217;ll find in <a id="lnx0" name="evtst|a|0262011530" href="http://www.amazon.com/gp/product/0262011530?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262011530">Structure and Interpretation of Computer Programs</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262011530" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1">, but delivered with static typing.<br /><br />This alone is worth the price of the book: I came to the subject with an impoverished experience set: I had used latently typed languages like Scheme and Ruby, as well as static and declaratively typed languages like C++ and Java. Although I knew &#8220;intellectually&#8221; how languages like Ocaml and Haskell deliver some of the power of Scheme along with the benefits of compile-time type checking, there is no substitute for walking through the examples to spark the &#8220;Aha!&#8221; feeling. Incredibly, chapter eight got <em>better</em>. It finished with a real bang:<br /><br />The examples in the chapter constructed various functions that took multiple arguments, then constructed their equivalents by combining smaller functions with partial evaluation. Then it closed with <strong>The Eighth Moral</strong>:<br /><br /><blockquote>Replace stars by arrows to reduce the number of values consumed and to increase the generality of the function defined.</blockquote><br />In other words, first-class functions let you break monolithic functions that take a lot of arguments into smaller components that can be combined and recombined. This is a deep idea in writing programs. We often see the tension between programs as collections of small pieces that fit together and black boxes that are configured by means of switches and dials on the outside.<br /><br />This is a good tension: we call the black box approach &#8220;abstraction&#8221; and we call the combinatory approach &#8220;bottom-up programming.&#8221; Both produce programs that are expressed economically, but the black box does so by sweeping the complexity &#8220;under the carpet&#8221; and bottom-up programming does so by identifying and combining the simple constituent elements of a program in an economical way.<br /><br />I think of black box abstractions like inventing new nouns for new ideas. A web server? We&#8217;ll call that a &#8220;Fizbuhlsweepnik.&#8221; A REST server? We&#8217;ll call that a &#8220;Harkonnensmelt.&#8221; Whereas I think of bottom-up programming as inventing smaller nouns, verbs, adjectives, and adverbs, so we can say a &#8220;web server&#8221; or a &#8220;REST server&#8221; or even a &#8220;Caching REST server.&#8221; Being able to combine the small words gives us more to say with much less effort. (I am not a linguist, so this argument is suspect!)<br /><br /><a href="http://gilesbowkett.blogspot.com/" title="Giles Bowkett">Giles Bowkett</a> nailed this idea when <a href="http://gilesbowkett.blogspot.com/2006/12/what-if-there-are-no-gods.html">he wondered whether languages like Scheme are actually <em>easier</em> to learn than languages like Java</a>.<sup>1</sup> This makes a lot of sense from the perspective of simplicity. Pure Scheme is based on just five axiomatic &#8220;special forms&#8221; plus macros to build almost everything else out of the five axioms. That&#8217;s a lot easier to learn than a language that tries to provide the same power with a plethora of knobs and switches like <code>package</code>, <code>static</code>, and <code>main</code>.<br /><br />This tells us something about ecosystems versus languages. Lately, quite reasonable people have wondered aloud whether the ecosystem of frameworks and libraries are more important than the languages themselves. As we&#8217;re beginning to see with multiple languages running on common VMs, the point may become moot very shortly. But for now, it is easy to see that libraries tend to look like black boxes. When they do exactly what you need, they save time and trouble. But they tend to be wide and shallow, just like Java. They have a lot of knobs and switches.<br /><br />Good languages, OTOH, give you power that can be combined and recombined like first-class functions. They let you tame the black boxes by wrapping up the parts you need and combining them in simple ways. With currying, a function with twenty arguments can be transformed into a function with one argument. With powerful languages, a baroque library can be deftly specialized to fit your program.<br /><br /><strong>My Brain Explodes</strong><br /><br />In the same chapter, the authors talked about extensional equivalence.<sup>2</sup> This is the idea of two functions that can have the exact same behaviour as each other, even though they are defined in different ways. As the authors point out, proving that two functions are extensionally equivalent is impossible in the general case.<br /><br />That shouldn&#8217;t stop anyone with a taste for reading <a href="http://www.randomhacks.net/">esoteric programming weblogs</a>.<sup>3</sup> Something was tickling the back of my mind about this problem. Yes, it had to do with <a href="http://www.randomhacks.net/articles/2005/10/11/amb-operator">rewinding into the past to correct mistakes</a>, something like backtracking in a reasoning system.<br /><br />So perhaps we want an equivalence function that takes two functions &#8220;p&#8221; and &#8220;q&#8221; and returns a Boolean. Both functions must have the same signature, obviously. How can we write such a function? Here&#8217;s one approach: Scan the history of the program for calls to <code>p</code>. For each call, call <code>q</code> and compare the results. If they differ, return <code>false</code>. Do the same for each call to <code>q</code>, comparing its result to the result of calling <code>p</code> with the same arguments.<br /><br />If there are no differences, return <code>true</code>. But wait, maybe your sample size is insufficient. No problem, continue forward in the program, and every time <code>p</code> or <code>q</code> are called in the future, compare the results from both functions again. If they are the same, continue on. But if they differ, <em>rewind back to when the equivalence function was called and return false</em>.<br /><br />That does not guarantee equivalence, of course, they may differ for some set of inputs that you never tested in your program. But if they are equivalent for the set of inputs you actually run, what do you care if they differ for inputs outside of the &#8220;event horizon&#8221; of your program?<br /><br />Now quite honestly, I cannot think of a practical use for this &#8220;rewinding extensional equivalence predicate.&#8221; I mention it only because the thought captures for me one of the benefits of reading certain kinds of books: they provoke you into thinking about new things in new ways. They may be useful immediately, or they may pop up down the road. Or maybe they were just a passing thought that amounted to nothing of grave importance.<br /><br />But overall, my experience is that people and writing that pushes you into unfamiliar thinking territory is good for you. And in that spirit, I recommend <a id="lnx2" name="evtst|a|026256114X" href="http://www.amazon.com/gp/product/026256114X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256114X">The Little MLer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256114X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><sup>4</sup> with as much enthusiasm as I recommend <a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">writing your own version of the Y Combinator</a>.<br /><br /><hr /><ol><li>See also: <a href="http://weblog.raganwald.com/2006/12/giles-bowkett-turns-language-elitism.html" title="Raganwald: Giles Bowkett turns language elitism upside down">Giles Bowkett turns language elitism upside down</a></li><br /><li><a href="http://weblog.raganwald.com/2007/04/what-does-barbara-liskov-have-to-say.html">Equivalence has been on my mind recently</a>!</li><br /><li>And you wonder why I have been doing this since the seventies but somehow managed to miss out on earning a Turing Award while utterly failing to amass a small private fortune?</li><br /><li>Judging by the click-throughs on my blog in the last year, there are plenty of people who can&#8217;t quite bring themselves to pick up a book about ML. Don&#8217;t fret, the authors have also written <a id="lnx0" name="evtst|a|026256100X" href="http://www.amazon.com/gp/product/026256100X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256100X">The Seasoned Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256100X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> for your first-class functional pleasure. In an effort to expand my own mind, I will be starting their book about logic programming, <a href="http://www.amazon.com/gp/product/0262562146?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0262562146">The Reasoned Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262562146" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> tomorrow.</li></ol><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2007/04/yeomanry-and-exploding-brains.html" title="permanent link">Yeomanry and Exploding Brains</a></span>
+					<div style="clear:both;"></div><em>Note: I wrote this post very quickly last evening, in an almost stream-of-conciousness style. I had just endured some particularly frustrating client issues, and I really, really wanted to focus on a few bright moments that I had enjoyed that day. You know, trying to be a <a href="http://raganwald.github.com/2007/03/programmers-are-sages.html">good dog</a>.<br /><br />After publishing it, I felt unsatisfied with the post. It didn&#8217;t feel like I was saying or thinking anything particularly new, just the same old, same old thing about stretching the mind and looking for the elusive &#8220;quality without a name&#8221; that lies behind well-written software.</em><br /><br /><em>So I yanked it and went home. I was talking with a friend who writes for a living, and she quoted a great aphorism: &#8220;All writing is rewriting.&#8221; She suggested I rework it, not discard it. So here it is again, and I hope to rework it until I&#8217;m satisfied. The first major change will probably be to cut it in half.<br /><br />We&#8217;ll see about the rest.</em><br /><hr><br />I finished reading <a id="lnx2" name="evtst|a|026256114X" href="http://www.amazon.com/gp/product/026256114X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256114X">The Little MLer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256114X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> this morning. This is a <strong>wonderful</strong> book. It&#8217;s obviously valuable if you want to learn something about SML or Ocaml. But having read it, I&#8217;d argue that it&#8217;s a great introduction to strongly typed functional languages, period.<br /><br />In fact, it&#8217;s probably the very best first book to read before learning Haskell if you haven&#8217;t already used a language that combines first-class functions and strong, static typing. If you read this first, you can concentrate on lazy evaluation and monads without having to grok currying and other first-class functional ideas at the same time.<br /><br /><strong>Stars, Arrows, and Elegance</strong><br /><br />Two things jumped out at me this morning. The first was chapter eight, &#8220;Bows and Arrows.&#8221; This was an introduction to currying and partial function application. When I say it that way, it sounds rather dry. But it rolled along quite pleasantly. The material will be familiar to anyone with a passing familiarity with the idea of a <a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html" title="Closures and Higher-Order Functions">function returning a function</a>. It has the same ideas you&#8217;ll find in <a id="lnx0" name="evtst|a|0262011530" href="http://www.amazon.com/gp/product/0262011530?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262011530">Structure and Interpretation of Computer Programs</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262011530" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1">, but delivered with static typing.<br /><br />This alone is worth the price of the book: I came to the subject with an impoverished experience set: I had used latently typed languages like Scheme and Ruby, as well as static and declaratively typed languages like C++ and Java. Although I knew &#8220;intellectually&#8221; how languages like Ocaml and Haskell deliver some of the power of Scheme along with the benefits of compile-time type checking, there is no substitute for walking through the examples to spark the &#8220;Aha!&#8221; feeling. Incredibly, chapter eight got <em>better</em>. It finished with a real bang:<br /><br />The examples in the chapter constructed various functions that took multiple arguments, then constructed their equivalents by combining smaller functions with partial evaluation. Then it closed with <strong>The Eighth Moral</strong>:<br /><br /><blockquote>Replace stars by arrows to reduce the number of values consumed and to increase the generality of the function defined.</blockquote><br />In other words, first-class functions let you break monolithic functions that take a lot of arguments into smaller components that can be combined and recombined. This is a deep idea in writing programs. We often see the tension between programs as collections of small pieces that fit together and black boxes that are configured by means of switches and dials on the outside.<br /><br />This is a good tension: we call the black box approach &#8220;abstraction&#8221; and we call the combinatory approach &#8220;bottom-up programming.&#8221; Both produce programs that are expressed economically, but the black box does so by sweeping the complexity &#8220;under the carpet&#8221; and bottom-up programming does so by identifying and combining the simple constituent elements of a program in an economical way.<br /><br />I think of black box abstractions like inventing new nouns for new ideas. A web server? We&#8217;ll call that a &#8220;Fizbuhlsweepnik.&#8221; A REST server? We&#8217;ll call that a &#8220;Harkonnensmelt.&#8221; Whereas I think of bottom-up programming as inventing smaller nouns, verbs, adjectives, and adverbs, so we can say a &#8220;web server&#8221; or a &#8220;REST server&#8221; or even a &#8220;Caching REST server.&#8221; Being able to combine the small words gives us more to say with much less effort. (I am not a linguist, so this argument is suspect!)<br /><br /><a href="http://gilesbowkett.blogspot.com/" title="Giles Bowkett">Giles Bowkett</a> nailed this idea when <a href="http://gilesbowkett.blogspot.com/2006/12/what-if-there-are-no-gods.html">he wondered whether languages like Scheme are actually <em>easier</em> to learn than languages like Java</a>.<sup>1</sup> This makes a lot of sense from the perspective of simplicity. Pure Scheme is based on just five axiomatic &#8220;special forms&#8221; plus macros to build almost everything else out of the five axioms. That&#8217;s a lot easier to learn than a language that tries to provide the same power with a plethora of knobs and switches like <code>package</code>, <code>static</code>, and <code>main</code>.<br /><br />This tells us something about ecosystems versus languages. Lately, quite reasonable people have wondered aloud whether the ecosystem of frameworks and libraries are more important than the languages themselves. As we&#8217;re beginning to see with multiple languages running on common VMs, the point may become moot very shortly. But for now, it is easy to see that libraries tend to look like black boxes. When they do exactly what you need, they save time and trouble. But they tend to be wide and shallow, just like Java. They have a lot of knobs and switches.<br /><br />Good languages, OTOH, give you power that can be combined and recombined like first-class functions. They let you tame the black boxes by wrapping up the parts you need and combining them in simple ways. With currying, a function with twenty arguments can be transformed into a function with one argument. With powerful languages, a baroque library can be deftly specialized to fit your program.<br /><br /><strong>My Brain Explodes</strong><br /><br />In the same chapter, the authors talked about extensional equivalence.<sup>2</sup> This is the idea of two functions that can have the exact same behaviour as each other, even though they are defined in different ways. As the authors point out, proving that two functions are extensionally equivalent is impossible in the general case.<br /><br />That shouldn&#8217;t stop anyone with a taste for reading <a href="http://www.randomhacks.net/">esoteric programming weblogs</a>.<sup>3</sup> Something was tickling the back of my mind about this problem. Yes, it had to do with <a href="http://www.randomhacks.net/articles/2005/10/11/amb-operator">rewinding into the past to correct mistakes</a>, something like backtracking in a reasoning system.<br /><br />So perhaps we want an equivalence function that takes two functions &#8220;p&#8221; and &#8220;q&#8221; and returns a Boolean. Both functions must have the same signature, obviously. How can we write such a function? Here&#8217;s one approach: Scan the history of the program for calls to <code>p</code>. For each call, call <code>q</code> and compare the results. If they differ, return <code>false</code>. Do the same for each call to <code>q</code>, comparing its result to the result of calling <code>p</code> with the same arguments.<br /><br />If there are no differences, return <code>true</code>. But wait, maybe your sample size is insufficient. No problem, continue forward in the program, and every time <code>p</code> or <code>q</code> are called in the future, compare the results from both functions again. If they are the same, continue on. But if they differ, <em>rewind back to when the equivalence function was called and return false</em>.<br /><br />That does not guarantee equivalence, of course, they may differ for some set of inputs that you never tested in your program. But if they are equivalent for the set of inputs you actually run, what do you care if they differ for inputs outside of the &#8220;event horizon&#8221; of your program?<br /><br />Now quite honestly, I cannot think of a practical use for this &#8220;rewinding extensional equivalence predicate.&#8221; I mention it only because the thought captures for me one of the benefits of reading certain kinds of books: they provoke you into thinking about new things in new ways. They may be useful immediately, or they may pop up down the road. Or maybe they were just a passing thought that amounted to nothing of grave importance.<br /><br />But overall, my experience is that people and writing that pushes you into unfamiliar thinking territory is good for you. And in that spirit, I recommend <a id="lnx2" name="evtst|a|026256114X" href="http://www.amazon.com/gp/product/026256114X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256114X">The Little MLer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256114X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><sup>4</sup> with as much enthusiasm as I recommend <a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">writing your own version of the Y Combinator</a>.<br /><br /><hr /><ol><li>See also: <a href="http://raganwald.github.com/2006/12/giles-bowkett-turns-language-elitism.html" title="Raganwald: Giles Bowkett turns language elitism upside down">Giles Bowkett turns language elitism upside down</a></li><br /><li><a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html">Equivalence has been on my mind recently</a>!</li><br /><li>And you wonder why I have been doing this since the seventies but somehow managed to miss out on earning a Turing Award while utterly failing to amass a small private fortune?</li><br /><li>Judging by the click-throughs on my blog in the last year, there are plenty of people who can&#8217;t quite bring themselves to pick up a book about ML. Don&#8217;t fret, the authors have also written <a id="lnx0" name="evtst|a|026256100X" href="http://www.amazon.com/gp/product/026256100X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256100X">The Seasoned Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256100X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> for your first-class functional pleasure. In an effort to expand my own mind, I will be starting their book about logic programming, <a href="http://www.amazon.com/gp/product/0262562146?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0262562146">The Reasoned Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262562146" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> tomorrow.</li></ol><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2007/04/yeomanry-and-exploding-brains.html" title="permanent link">7:43 PM</a>
+						&para; <a href="http://raganwald.github.com/2007/04/yeomanry-and-exploding-brains.html" title="permanent link">7:43 PM</a>
 
 					 
 				</span> 
@@ -44,42 +44,42 @@
 						
 							<div class="blogComment">
 								<a name="4478906162942549099"></a> 				I read it in bloglines last night, liked it, and was going to add it to programming.reddit, but subsequently couldn't find it on your site. Good to hear what happened. (and I think it's interesting, for one data point)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/yeomanry-and-exploding-brains.html?showComment=1177015440000#c4478906162942549099" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 4:44 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/yeomanry-and-exploding-brains.html?showComment=1177015440000#c4478906162942549099" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 4:44 PM</div>
 
 								<span class="item-control blog-admin pid-831715508"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4478906162942549099" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1901905658457625821"></a> 				Bill:<BR/><BR/>Thanks! I have no idea when I'll find the time, but the second bit, the part about extensional equivalence, seems far more interesting to me, so I hope to flesh it out into a post of its own.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/yeomanry-and-exploding-brains.html?showComment=1177015800000#c1901905658457625821" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:50 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/yeomanry-and-exploding-brains.html?showComment=1177015800000#c1901905658457625821" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:50 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1901905658457625821" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="785002204761528015"></a> 				I will have to admit I am a little lost when it comes to understanding the full understanding of "rewinding extensional equivalence predicate", but it seems that developers sometimes do this when they are debugging..  Let me explain, and maybe you can tell me if my understanding matched yours.<BR/><BR/>In my attempt to avoid making unit cases, it either make, or find, equivalent-functioning code.  One version is my preferred implementation, and the other is a naïve (but more likely to be correct) version , or maybe a version I scraped off the internet.  I then make a third version which uses the other two and compares their results.  I use this third version in my code until some optimization is required.<BR/><BR/>During any particular debugging session, I have several (long forgotten) "equivalence predicates" working in the background.  Should one of the predicates be broken, I perform an effective "rewinding": Fixing one of the three implementations, and then returning to my debugging.<BR/><BR/>Is this an example of "rewinding extensional equivalence predicate"?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/yeomanry-and-exploding-brains.html?showComment=1177090860000#c785002204761528015" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Kyle Lahnakoski</span> : 1:41 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/yeomanry-and-exploding-brains.html?showComment=1177090860000#c785002204761528015" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Kyle Lahnakoski</span> : 1:41 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=785002204761528015" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1514355134022538153"></a> 				I work at BigCo, but the upside is that I have a Books24x7 account, which I have just searched and found The Little MLer. I shall start reading it Monday.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/yeomanry-and-exploding-brains.html?showComment=1177115460000#c1514355134022538153" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 8:31 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/yeomanry-and-exploding-brains.html?showComment=1177115460000#c1514355134022538153" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 8:31 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1514355134022538153" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1881050501278826253"></a> 				So what happens if you rewind the program and return false, and as a result the program executes such that the two functions are now equivalent?  :)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/yeomanry-and-exploding-brains.html?showComment=1177287720000#c1881050501278826253" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.neilmix.com/" rel="nofollow">Neil Mix</a> : 8:22 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/yeomanry-and-exploding-brains.html?showComment=1177287720000#c1881050501278826253" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.neilmix.com/" rel="nofollow">Neil Mix</a> : 8:22 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1881050501278826253" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3594812847673265145"></a> 				<I>what happens if you rewind the program and return false, and as a result the program executes such that the two functions are now equivalent?</I><BR/><BR/>This exposes a real problem with functions that talk about other functions!<BR/><BR/>You can change the implementation to try to fix things, but you can never succeed. You are up against a fundamental limit in consistency.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/yeomanry-and-exploding-brains.html?showComment=1177288380000#c3594812847673265145" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:33 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/yeomanry-and-exploding-brains.html?showComment=1177288380000#c3594812847673265145" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:33 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3594812847673265145" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -90,7 +90,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -144,25 +144,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -170,17 +170,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -190,17 +190,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -208,19 +208,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -228,18 +228,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -247,15 +247,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -264,101 +264,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

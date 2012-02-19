@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Wednesday, October 04, 2006</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="116001645840262686">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html" title="permanent link">Why are local variables bad?</a></span>
-					<div style="clear:both;"></div>Steve Yegge wrote a terrific post about <a href="http://www.refactoring.com/">refactoring</a>, "<a href="http://www.oreillynet.com/ruby/blog/2006/03/transformation.html">Transformation</a>," in March of 2006. My two cent review is that the most valuable part is his discussion of how the <a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html">Blub</a> community has become so enamored of push-button refactoring at the line of code level that they have lost sight of what refactoring is supposed to accomplish at the design level.<br /><br />Many Blub programmers won't even <span style="font-style: italic;">try</span> a language that doesn't have so-called refactoring support in their IDE. Given <a href="http://beust.com/weblog/archives/000414.html">the choice between dynamic metaprogramming and refactoring</a>, they choose refactoring without even knowing exactly what <a href="http://weblog.raganwald.com/2006/08/dynamic-is-opposite-of-static-not-of.html">dynamic metaprogramming</a> is.<br /><br />And they are blissfully unaware that the 'refactorings' in their editors are just a few of the <a href="http://www.refactoring.com/catalog/index.html">refactorings suggested</a> in Martin Fowler's seminal book on the topic. Furthermore, there is more than one way to accomplish the goal of well-designed software, and some languages, (especially folding languages), provide much more powerful tools for clean software design than micro-refactoring.<br /><br />All that leads me to a question posed on <a href="http://programming.reddit.com">programming.reddit.com</a>:<br /><br /><span style="font-style: italic;">Why are local variables considered bad?</span><br /><br />I'll simplify things. <span style="font-style: italic;">Mutable</span> local variables are bad. And here's why:<br /><br />Mutable local variables mean that within a method execution you have changes of state. That makes it very difficult to change anything without breaking things.<br /><span class="g"><blockquote>Those are my principles, and if you don't like them... well, I have others.</blockquote></span><div style="text-align: right;"><span class="g">Groucho Marx</span><br /><span class="g"></span></div><br />For Eclipse fans, consider what happens if you take a random chunk in the middle of a method with mutable local variables and try to use the automatic refactoring to make a new private method.<br /><br />If you have lots of immutable local variables, they have to be passed to your new method as parameters. That's not so bad. But if you have mutable local variables, you have to do some back flips and sit ups to ensure that any changes to those variables are propagated to the rest of your method.<br /><br />This is a tip-off that the mutable local variables have introduced a lot of complexity to the structure of the method. Unless they make it dramatically shorter than a variable-free version of the same method, they should be removed.<br /><br />(Update): What kind of complexity are we talking about? We are talking about lots and lots of dependencies between the lines of code in the method. Those dependencies are what make the code brittle: if you try to move something or change it, you break some other code that is depending on its side effects. The extra dependencies have introduced <span style="font-style: italic;">coupling</span>, which is a code smell.<br /><br /><div style="margin: 0pt 0pt 10px 10px; width: 240px; float: right; text-align: center; font-size: 85%;"><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/gp/product/0201485672?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0201485672" title="Refactoring: Improving the Design of Existing Code"><img style="" src="http://weblog.raganwald.com/uploaded_images/refactoring-720867.jpg" alt="Refactoring: Improving the Design of Existing Code" border="0" /></a><em><br /><br />The book that touched off a revolution in software design. Incredibly, most programmers think that refactoring is just about the dozen or so menu items in their IDE. This book discusses over a hundred refactorings, organized into themes. It goes beyond mere transformations to explain what makes good code and how to recover from bad decisions.</em></div>The extra coupling manifests itself in many ways, not just in the difficulty of moving code around. You also have problems changing lines of code. This manifests itself in regressions: every time you fix a problem or add some functionality, do you find yourself having to fix a bunch of bugs created by your change?<br /><br />Let's be clear: we don't say mutable local variables are bad because it's hard to refactor methods with mutable local variables. We say mutable local variables are bad because they intrduce complex dependencies and coupling between the lines of code in a method.<br /><br /><span style="font-style: italic;">Immutable</span> local variables, such as the local variables you use to cache certain results, are  <span style="font-style: italic;">not</span> bad. (I should say, "in my opinion," but this is my blog. Note the words "my" and "blog," establishing that we're talking about <span style="font-style: italic;">me</span> and <span style="font-style: italic;">opinions,</span> not everyone and especially not widely accepted irrefutable facts).<br /><br />As a matter of fact, I can <span style="font-style: italic;">prove</span> that they are not bad. Okay, "proof" is an ambitious word given that there is no widely accepted <a href="http://scienceblogs.com/goodmath/2006/06/extreme_math_1_1_2.php">proof that 1+1=2</a>. I'll demonstrate. Here's some code with an immutable local variable:<br /><pre><code><br />my_var = SomeModelClass.find :all<br />if my_var.empty?<br />  :empty<br />else<br />  my_var<br />end<br /></code></pre><br />Let's transform that code into:<br /><pre><code><br />(lambda do |my_var|<br />  if my_var.empty?<br />     :empty<br />  else<br />     my_var<br />  end).call(SomeModelClass.find :all)<br /></code></pre><br />We've transformed the immutable local variable into a parameter for a lambda (or closure, or anonymous proc object, whichever name you prefer). Parameters are not harmful. And since this transformation can be automatically performed for <span style="font-style: italic;">any</span> immutable local variable, I claim that immutable local variables are also not harmful.<br /><br />Cool discovery, hunh? I should be famous. Oh wait, someone on the phone from the 1970s. The Lisp people want their <span style="font-weight: bold;">let</span> <span style="font-weight: bold;">macro</span> back. And they're right. People having been using <span style="font-weight: bold;">let</span> for more than thirty years to write concise code without the side effects and state changes associated with mutable local variables. Consider instead:<br /><pre><code><br />(let ((my_var (find SomeModelClass 'all)))<br />     (if<br />        (empty? my_var)<br />        'empty<br />        my_var))<br /></code></pre><br />That's simpler structurally than using one of Ruby's procs. So what do we conclude?<br /><br />First, refactoring is cool, but it's a tool, not an objective. The important thing is the objective,  well-designed software. Second, read the book. Really read it, cover to cover.<br /><br /><span style="font-size:85%;">Update: This is exactly why languages with more powerful abstractions are more important than adding push-button variable renaming to less powerful languages. Where's the button that refactors a method with lots of mutable variables into one with no mutable variables? No button? Okay, until you invent one, don't you want a language that makes it easy to write methods and functions without mutable local variables? (Attention Java programmers: <span style="font-style: italic;">Yes you do</span>, and I have proof. Do you like the new <span style="font-weight: bold;">for</span> syntactic sugar in Java 1.5? Its biggest benefit is that it makes loops that used to have a mutable variable look just like an iterator block with an immutable parameter in Ruby or Smalltalk. Think about it.)</span><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html" title="permanent link">Why are local variables bad?</a></span>
+					<div style="clear:both;"></div>Steve Yegge wrote a terrific post about <a href="http://www.refactoring.com/">refactoring</a>, "<a href="http://www.oreillynet.com/ruby/blog/2006/03/transformation.html">Transformation</a>," in March of 2006. My two cent review is that the most valuable part is his discussion of how the <a href="http://raganwald.github.com/2006/10/are-we-blub-programmers.html">Blub</a> community has become so enamored of push-button refactoring at the line of code level that they have lost sight of what refactoring is supposed to accomplish at the design level.<br /><br />Many Blub programmers won't even <span style="font-style: italic;">try</span> a language that doesn't have so-called refactoring support in their IDE. Given <a href="http://beust.com/weblog/archives/000414.html">the choice between dynamic metaprogramming and refactoring</a>, they choose refactoring without even knowing exactly what <a href="http://raganwald.github.com/2006/08/dynamic-is-opposite-of-static-not-of.html">dynamic metaprogramming</a> is.<br /><br />And they are blissfully unaware that the 'refactorings' in their editors are just a few of the <a href="http://www.refactoring.com/catalog/index.html">refactorings suggested</a> in Martin Fowler's seminal book on the topic. Furthermore, there is more than one way to accomplish the goal of well-designed software, and some languages, (especially folding languages), provide much more powerful tools for clean software design than micro-refactoring.<br /><br />All that leads me to a question posed on <a href="http://programming.reddit.com">programming.reddit.com</a>:<br /><br /><span style="font-style: italic;">Why are local variables considered bad?</span><br /><br />I'll simplify things. <span style="font-style: italic;">Mutable</span> local variables are bad. And here's why:<br /><br />Mutable local variables mean that within a method execution you have changes of state. That makes it very difficult to change anything without breaking things.<br /><span class="g"><blockquote>Those are my principles, and if you don't like them... well, I have others.</blockquote></span><div style="text-align: right;"><span class="g">Groucho Marx</span><br /><span class="g"></span></div><br />For Eclipse fans, consider what happens if you take a random chunk in the middle of a method with mutable local variables and try to use the automatic refactoring to make a new private method.<br /><br />If you have lots of immutable local variables, they have to be passed to your new method as parameters. That's not so bad. But if you have mutable local variables, you have to do some back flips and sit ups to ensure that any changes to those variables are propagated to the rest of your method.<br /><br />This is a tip-off that the mutable local variables have introduced a lot of complexity to the structure of the method. Unless they make it dramatically shorter than a variable-free version of the same method, they should be removed.<br /><br />(Update): What kind of complexity are we talking about? We are talking about lots and lots of dependencies between the lines of code in the method. Those dependencies are what make the code brittle: if you try to move something or change it, you break some other code that is depending on its side effects. The extra dependencies have introduced <span style="font-style: italic;">coupling</span>, which is a code smell.<br /><br /><div style="margin: 0pt 0pt 10px 10px; width: 240px; float: right; text-align: center; font-size: 85%;"><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/gp/product/0201485672?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0201485672" title="Refactoring: Improving the Design of Existing Code"><img style="" src="http://raganwald.github.com/uploaded_images/refactoring-720867.jpg" alt="Refactoring: Improving the Design of Existing Code" border="0" /></a><em><br /><br />The book that touched off a revolution in software design. Incredibly, most programmers think that refactoring is just about the dozen or so menu items in their IDE. This book discusses over a hundred refactorings, organized into themes. It goes beyond mere transformations to explain what makes good code and how to recover from bad decisions.</em></div>The extra coupling manifests itself in many ways, not just in the difficulty of moving code around. You also have problems changing lines of code. This manifests itself in regressions: every time you fix a problem or add some functionality, do you find yourself having to fix a bunch of bugs created by your change?<br /><br />Let's be clear: we don't say mutable local variables are bad because it's hard to refactor methods with mutable local variables. We say mutable local variables are bad because they intrduce complex dependencies and coupling between the lines of code in a method.<br /><br /><span style="font-style: italic;">Immutable</span> local variables, such as the local variables you use to cache certain results, are  <span style="font-style: italic;">not</span> bad. (I should say, "in my opinion," but this is my blog. Note the words "my" and "blog," establishing that we're talking about <span style="font-style: italic;">me</span> and <span style="font-style: italic;">opinions,</span> not everyone and especially not widely accepted irrefutable facts).<br /><br />As a matter of fact, I can <span style="font-style: italic;">prove</span> that they are not bad. Okay, "proof" is an ambitious word given that there is no widely accepted <a href="http://scienceblogs.com/goodmath/2006/06/extreme_math_1_1_2.php">proof that 1+1=2</a>. I'll demonstrate. Here's some code with an immutable local variable:<br /><pre><code><br />my_var = SomeModelClass.find :all<br />if my_var.empty?<br />  :empty<br />else<br />  my_var<br />end<br /></code></pre><br />Let's transform that code into:<br /><pre><code><br />(lambda do |my_var|<br />  if my_var.empty?<br />     :empty<br />  else<br />     my_var<br />  end).call(SomeModelClass.find :all)<br /></code></pre><br />We've transformed the immutable local variable into a parameter for a lambda (or closure, or anonymous proc object, whichever name you prefer). Parameters are not harmful. And since this transformation can be automatically performed for <span style="font-style: italic;">any</span> immutable local variable, I claim that immutable local variables are also not harmful.<br /><br />Cool discovery, hunh? I should be famous. Oh wait, someone on the phone from the 1970s. The Lisp people want their <span style="font-weight: bold;">let</span> <span style="font-weight: bold;">macro</span> back. And they're right. People having been using <span style="font-weight: bold;">let</span> for more than thirty years to write concise code without the side effects and state changes associated with mutable local variables. Consider instead:<br /><pre><code><br />(let ((my_var (find SomeModelClass 'all)))<br />     (if<br />        (empty? my_var)<br />        'empty<br />        my_var))<br /></code></pre><br />That's simpler structurally than using one of Ruby's procs. So what do we conclude?<br /><br />First, refactoring is cool, but it's a tool, not an objective. The important thing is the objective,  well-designed software. Second, read the book. Really read it, cover to cover.<br /><br /><span style="font-size:85%;">Update: This is exactly why languages with more powerful abstractions are more important than adding push-button variable renaming to less powerful languages. Where's the button that refactors a method with lots of mutable variables into one with no mutable variables? No button? Okay, until you invent one, don't you want a language that makes it easy to write methods and functions without mutable local variables? (Attention Java programmers: <span style="font-style: italic;">Yes you do</span>, and I have proof. Do you like the new <span style="font-weight: bold;">for</span> syntactic sugar in Java 1.5? Its biggest benefit is that it makes loops that used to have a mutable variable look just like an iterator block with an immutable parameter in Ruby or Smalltalk. Think about it.)</span><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/popular.html">popular</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html" title="permanent link">10:13 PM</a>
+						&para; <a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html" title="permanent link">10:13 PM</a>
 
 					 
 				</span> 
@@ -44,119 +44,119 @@
 						
 							<div class="blogComment">
 								<a name="116002490179949638"></a> 				Perhaps they're all reading "Renaming: Keeping the Design of Existing Code"?<BR/><BR/>Immutable local variables are not bad, actually I think the alternative (no free variables) is an excercise in pain.<BR/><BR/>But immutable local variables are, just like globals, method overloading and class heirarchies, something you're better off doing in limited quantities.<BR/><BR/>If you go on a free variable diet, you will leave a better and longer life.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1160024880000#c116002490179949638" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://labnotes.org" rel="nofollow">assaf</a> : 1:08 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1160024880000#c116002490179949638" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://labnotes.org" rel="nofollow">assaf</a> : 1:08 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116002490179949638" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116005156681556845"></a> 				As a purely knee-jerk reaction... I think this idea is good in principle, but it is fundamentally incompatible with the languages most programmers use.<BR/><BR/>Mutable local state is the hallmark of imperative programming; elimination of mutable state is, more or less by defintion, functional programming. There's a reason why Lisp programmers have "had it right" for decades and Java programmers still use state - and it has nothing to do with the fact that Lisp users are more enlightened ;-)<BR/><BR/><BR/>In principle, functional languages tend to produce better code anyways (remember - knee-jerk and subjective here) because the elimination of state allows precisely the kind of refactorings you allude to. However, shifting entirely towards a functional style in a procedural language is misery.<BR/><BR/>I know you didn't say it, but I think we all read between the lines: the big obsessors over automatic refactoring are Java folks. And let's face it, Java's a bass-ackwards language; it doesn't even have decent closures. (Even Microsoft got that right as of 2.0 revisions of the .Net languages, folks...)<BR/><BR/>I feel bad for anyone who has to code in Java in the first place, but trying to write in a functional style in Java would just be murderous. As such, while I fully agree with your ideas in principle, I just don't think they're going to the right audience.<BR/><BR/>That said, minimizing state is definitely practical and not too hard, even though eliminating it is almost impossible to do conveniently in any imperative language. And I *absolutely* agree that most refactoring-weenies need to actually read Fowler properly.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1160051520000#c116005156681556845" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://members.gamedev.net/bag-of-holding/journal" rel="nofollow">Apoch</a> : 8:32 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1160051520000#c116005156681556845" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://members.gamedev.net/bag-of-holding/journal" rel="nofollow">Apoch</a> : 8:32 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116005156681556845" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116005397372325081"></a> 				<I>elimination of mutable state is, more or less by defintion, functional programming</I><BR/><BR/>I think you're arguing absolutes.<BR/><BR/>Object oriented programming is, at its heart, all about state. if you write objects without state, you are basically using objects as namespaces.<BR/><BR/>I'm not suggesting that.<BR/><BR/>Consider, instead, the principle of confining your state changes to <I>objects</I>, not assignment to local variables.<BR/><BR/>I'm arguing in favour of a certain level of granularity for managing state, not for eliminating state.<BR/><BR/>A pedant can argue that state change is state change, so who cares about the difference between object state change and local variable state change?<BR/><BR/>While this is true in theory, in practice people have a whole library of design tastes and patterns and guidelines for "good" object design. It's easy to see when an object has a logical purpose and changes state in a straightforward way.<BR/><BR/>Local variables... not so much so. It seems that every mutable local variable introduces a smidgen of MS Basic-like thinking in even the most experienced programmer.<BR/><BR/>Summary: if you want to program with changes of state, do so at a coarser level of granularity, in objects.<BR/><BR/><I>Trying to write in a functional style in Java would just be murderous. As such, while I fully agree with your ideas in principle, I just don't think they're going to the right audience.</I><BR/><BR/>There are a wide range of Java programmers in the world. Axiomatically, nobody who reads my blog drinks the Java kool-aid.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1160053920000#c116005397372325081" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:12 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1160053920000#c116005397372325081" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:12 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116005397372325081" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116006041218189394"></a> 				OK, I see what you're driving at. I agree that encapsulation of state in an object is a solid principle, at least as far as the OO realm goes. I'd also attach the proviso that "encapsulation" mandates genuinely hiding state concerns from clients of the class when possible; simply going from foo=bar; to object.SetFoo(bar); is not sufficient.<BR/><BR/>I guess this falls under what I referred to as "minimizing state" before; state isn't actually going away so much as be confined as much as possible. The point is to prevent state from affecting things outside the smallest possible scope (which may not necessarily correspond to a specific lexical scope in the code itself, mind). In OO-land, this is often done best using encapsulation, provided the design is done right.<BR/><BR/><BR/>I guess I haven't thought in a way that promoted local mutable state in so long that I've more or less forgotten what it looks like :-) I actually trawled a good chunk of my code looking for examples I could use for discussion, and virtually everywhere my only use of local variables essentially amounts to caching. While such caching is of course isomorphic to elimination of local variables, that transformation is ugly and gross in imperative languages. It tends to be far more pleasant in more abstract languages that "understand" functional concepts.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1160060400000#c116006041218189394" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://members.gamedev.net/bag-of-holding/journal/" rel="nofollow">Apoch</a> : 11:00 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1160060400000#c116006041218189394" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://members.gamedev.net/bag-of-holding/journal/" rel="nofollow">Apoch</a> : 11:00 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116006041218189394" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116006297737641283"></a> 				Forth<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1160062920000#c116006297737641283" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:42 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1160062920000#c116006297737641283" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:42 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116006297737641283" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116006868162076206"></a> 				While I normally use locals as if they were immutable, there are times when I really do need variables that can be changed. I am not against new syntax that says certain variables are/are not immutable.<BR/><BR/>The extract method/mutable locals seem to be a problem specific to Java. Languages that allow you to pass values by reference handle it cleanly.<BR/><BR/>Refactor by DevExpress does have a tool to take a local and split it into several "immutable" varaibles. (I used quotes becuase they are really immutable, they just look like they are.)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1160068680000#c116006868162076206" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Grauenwolf</span> : 1:18 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1160068680000#c116006868162076206" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Grauenwolf</span> : 1:18 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116006868162076206" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116007039978259000"></a> 				<I>The extract method/mutable locals seem to be a problem specific to Java. Languages that allow you to pass values by reference handle it cleanly.</I><BR/><BR/>I think you'll agree that passing parameters by reference trades one set of dependency/coupling challenges for another.<BR/><BR/>Clearly you can move code around a little easier, but that doesn't change the underlying coupling concern that is eliminated when you redesign your code to minimize the use of mutables.<BR/><BR/>These things are not absolutes, of course.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1160070360000#c116007039978259000" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:46 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1160070360000#c116007039978259000" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:46 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116007039978259000" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116008088963597420"></a> 				Great post. <BR/><BR/>I code in Java almost exclusively (oh noes!) and I can tell you that as my code evolves I always go for removal of method-local mutable variables because it allows for coarser *reusability* (pluggable objects) -- the whole point of OO to begin with. It introduces (a possible) tradeoff with concurrency, but it can also be easier to deal with concurrency at a coarser level.<BR/><BR/>The problem with this style of programming in Java is that it leads to lots of wrapper objects which make large systems composed this way seem very impenetrable at first. Until you drink the kool aid of course.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1160080860000#c116008088963597420" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Josh</span> : 4:41 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1160080860000#c116008088963597420" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Josh</span> : 4:41 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116008088963597420" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116013953712816796"></a> 				"That's simpler than using one of Ruby's procs".<BR/><BR/>I beg to differ.  Let's leave aside the fact that the parentheses are nested 4 deep there. I can forgive that as a characteristic of Lisp, a language with much to outweigh that.<BR/><BR/>The main problem I have with the Lisp definition is that value used for the parameter is textually within the definition.  Clearly the Ruby version, where the lambda is followed by its call, the extraction of the lamboda to a method is textually simpler.  One could, as a first step write<BR/><BR/>  def method(param)<BR/>    lambda do |x|<BR/>      ...<BR/>    end.call(param)<BR/>  end<BR/><BR/>and later remove the lambda.<BR/>Or one could just nest the methods in the first place:<BR/><BR/>  %> cat !$<BR/>  cat test_nested_def.rb<BR/>  def do_this<BR/>    def this_or_empty(x)<BR/>      if x<BR/>        return x<BR/>      else<BR/>        return :empty<BR/>      end<BR/>    end<BR/>    puts<BR/>this_or_empty(nil).inspect<BR/>    puts this_or_empty("full").inspect<BR/>  end<BR/><BR/>  do_this<BR/>  %> ruby !$<BR/>  ruby test_nested_def.rb<BR/>  :empty<BR/>  "full"<BR/>  %><BR/><BR/>My indents are lost, and I can't use PRE tags to display the code.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1160139480000#c116013953712816796" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 8:58 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1160139480000#c116013953712816796" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 8:58 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116013953712816796" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116014251417289448"></a> 				It's all black-n-white, isn't it?<BR/>Myself, I'm heading towards an OO-implemented functional design with a clean cut between entities ("dumb data") and activities (functions). Most of both worlds, I'd think.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1160142480000#c116014251417289448" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:48 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1160142480000#c116014251417289448" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:48 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116014251417289448" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116016132721875885"></a> 				<I>Here's another viewpoint</I>:<BR/><BR/>I've read up a bit on this local variable issue and the reason (supposedly) that local variables are bad is because:<BR/><BR/>"Mutable local variables mean that within a method execution you have changes of state. That makes it very difficult to change anything without breaking things."<BR/><BR/>Now, I'm of the belief that if you think logically enough about your app AND you profoundly UNDERSTAND your app, then local variables are not a big deal to implement, and quite frankly, if a dev is not capable of making changes to an app without breaking it, then the developer is not a very good one anyway...<BR/><BR/>Every app is different and you cannot go through your development life thinking that mutable local variables are bad or shouldn't be used. They have their place in programming.<BR/><BR/>What the article suggested to me is that the more mutable local variables are contained within an app, the more closely one pays attention to the CYCLOMATIC COMPLEXITY rating of the app.<BR/><BR/>I don't agree with the position that something shouldn't be implemented because of fear of not being able to handle the impact of it under change.<BR/><BR/>If you understand what you are working with, then one can handle change states as well.<BR/><BR/>Quite frankly, I believe that global variable or form variables are much more tricky to deal with in an app than any local variable because at least your local variables are confined within the procedure in which they are written.<BR/><BR/>Global and form variables have much more complexity tied to them when they are being accessed from multiple procedures and functions....<BR/><BR/>--Brice Richard, <A HREF="http://discuss.joelonsoftware.com/default.asp?joel.3.399117" REL="nofollow">writing in the Joel on Software discussion forums</A><br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1160161320000#c116016132721875885" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:02 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1160161320000#c116016132721875885" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:02 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116016132721875885" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="116035430809961578"></a> 				Hmmm, excellent post - I did in fact run into this exact problem while playing with a section of "Big Companies" code.  I was attempting to clean up a bit of code dealing with the creation and download of Quicken and MS Money files.  It has a mutable local state variable controlling some of the sections of the code.  It was HARD to get the whole thing re-organized to make that variable go away, as its existance made the WHOLE thing very very brittle.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1160354280000#c116035430809961578" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://vwdiesel.livejournal.com" rel="nofollow">joe campbell</a> : 8:38 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1160354280000#c116035430809961578" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://vwdiesel.livejournal.com" rel="nofollow">joe campbell</a> : 8:38 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116035430809961578" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7764136374671825568"></a> 				I can understand why people like to have automated functionality to pull code blocks into functions, rename variables, and so forth.  But even if I had these functions available in my editor (Notepad), I'd hardly use them as they wouldn't be worth the effort in the languages and programming style that I use.  I tend to use ML, Python, and C, and to use the functional idioms whenever possible; it seems like most of what I do is calling existing functions or writing and debugging new functions, and only occasionally grouping functions into "classes."  Now I've used Java a fair amount and I'd say that refactoring is useful in Java because Java programming requires maintaining lots of complicated class hierarchies and interrelationships between classes (everything is a noun...), so much of the effort in Java goes into moving classes and methods around and changing how interfaces and classes and class hierarchies all couple together in a "web."  If one's programming looks like a spiderweb then it's only natural that one would like to have refactoring; however, this doesn't necessarily mean that refactoring is useful (or more useful than search and replace at any rate) for languages in general.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1173928920000#c7764136374671825568" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02568908952592933174" rel="nofollow">Connelly</a> : 11:22 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1173928920000#c7764136374671825568" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02568908952592933174" rel="nofollow">Connelly</a> : 11:22 PM</div>
 
 								<span class="item-control blog-admin pid-703742905"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7764136374671825568" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4169341144243622023"></a> 				Connelly:<BR/><BR/>I think we're in agreement:<BR/><BR/><I>we don't say mutable local variables are bad because it's hard to refactor methods with mutable local variables. We say mutable local variables are bad because they introduce complex dependencies and coupling between the lines of code in a method.</I><BR/><BR/>The goal is to eliminate the spiderweb of dependencies. Difficulty of refactoring in Java is a symptom, not a root problem, because the refactoring itself is not a goal, but a means to the end of simple code.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1173929100000#c4169341144243622023" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:25 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1173929100000#c4169341144243622023" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:25 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4169341144243622023" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="359161718671749072"></a> 				okay -- i haven't read <I>all</I> the comments, but i do like what i've read so far. <BR/><BR/>i've wanted to coin the term 'refunctoring' for automatable code modifications that preserve intent while removing stateliness, and removing unneeded side-effects.<BR/><BR/>lb (secretGeek.net)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1176198720000#c359161718671749072" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:52 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1176198720000#c359161718671749072" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:52 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=359161718671749072" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5537585073295650446"></a> 				I have to agree- but I'd follow up and say, as bad as mutable local variables are, mutable object-scope and mutable global variables are even worse, as they encourage complicated dependencies between widely separated pieces of code.  Not to mention being a lurking source of hideous to debug race conditions in multithreaded code.<BR/><BR/>I'd also like to agree with the poster who said that this was in direct contradiction to how popular languages today work.  You're both right- it stinks but it's popular.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1190944080000#c5537585073295650446" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://enfranchisedmind.com/blog" rel="nofollow">Brian Hurt</a> : 9:48 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1190944080000#c5537585073295650446" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://enfranchisedmind.com/blog" rel="nofollow">Brian Hurt</a> : 9:48 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5537585073295650446" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2229443261476462353"></a> 				"nobody who reads my blog drinks the Java kool-aid" - No, but some of us have to hold our nose and choke it down from time to time.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html?showComment=1191943200000#c2229443261476462353" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:20 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/10/why-are-local-variables-bad.html?showComment=1191943200000#c2229443261476462353" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:20 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2229443261476462353" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -167,7 +167,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -221,25 +221,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -247,17 +247,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -267,17 +267,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -285,19 +285,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -305,18 +305,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -324,15 +324,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -341,101 +341,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

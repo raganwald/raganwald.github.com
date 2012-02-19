@@ -43,7 +43,7 @@
 <body>
 
 	<div id="leftcontent">
-			<img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/><br/>
 <!--
 <div style="background-color:black; text-align: center; color: white; padding: 10px 10px 10px 10px;">
@@ -60,11 +60,11 @@
 			<div class="Post"><a name="114900010849166152">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/05/reg-suffering-from-high-altitude.html" title="permanent link">Reg suffering from high-altitude hypoxia?</a></span>
-					<div style="clear:both;"></div>Respected Java and XML Guru <a href="http://www.elharo.com/">Elliotte Rusty Harold</a> has posted <a href="http://cafe.elharo.com/java/eliminating-final/">a very nice discussion of Eiffel's Design by Contract principles</a>. Along the way, he makes a vicious ad hominem attack, accusing me of architecture astronautics (he actually stooped to using using the word "theorist," which means, <span style="font-style: italic;">someone who blogs when they should be coding</span>). But I digress.<br /><br /><a href="http://www.flickr.com/photos/raganwald/152207513/"><img src="http://static.flickr.com/46/152207513_b3be666020.jpg" width="375" height="500" alt="The World's Longest Single Arch Bridge" /></a><br /><br />The gist of his post is that since we don't have language-level support for Design By Contract, we ought to use <span style="font-weight: bold;">final</span> to accomplish as much invariant enforcement as possible. He suggests that final should be the default choice, that interfaces should be rare and concrete classes plentiful in a design, and that support for polymorphism is less-important than enforcing invariants:<br /><blockquote style="font-style: italic;">Preconditions, postconditions, and invariants are at the core of data encapsulation. They are the first and most important pillar of object oriented programming. Inheritance and polymorphism are second and third respectively, and are less important.</blockquote>While controversial, this argument is cogent. I would say it is consistent with a specific kind of design philosophy, one that would be as at home in Ada or Modula as it is in Java. This is in marked opposition to the design philosophy of SmallTalk and Squeak, so I would say it is <span style="font-style: italic;">not very object oriented</span>.<br /><br />Is that a bad thing? <span style="font-weight: bold;">I don't think so</span>. Principles like data encapsulization, modularity, contract enforcement, and componentization are extremely valuable and can be realized in many different ways. For example, what do you think the <a href="http://www.erlang.org/">Erlang</a> programming language or the <a href="http://en.wikipedia.org/wiki/Linda_%28coordination_language%29">Linda</a> communication and co&ouml;rdination frameworks are are all about? It's not just concurrency, dude.<br /><br />The large-scale Java applications I've seen have been particularly devoid of true object orientation, and people seem perfectly happy with that. (Rough metric: the OO-ness of a Java application is congruent to the reciprocal of the number of public static methods in the source code).<br /><br />So my conclusion is that if you want some advice on writing robust, large scale Java applications in a style that has been proven to be useful over the last several decades, you will find Rusty's post informative.<br /><br />p.s. My tongue was in my cheek when I composed the title and suggested that one of the most socially conscious Java bloggers in the world was vicious. But you knew that.<br /><br />p.p.s. If you feel that either Rusty or I can be correct but not both of us, please accept my condolences. How long has it been since imagination passed out of your life?<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/java.html">java</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2006/05/reg-suffering-from-high-altitude.html" title="permanent link">Reg suffering from high-altitude hypoxia?</a></span>
+					<div style="clear:both;"></div>Respected Java and XML Guru <a href="http://www.elharo.com/">Elliotte Rusty Harold</a> has posted <a href="http://cafe.elharo.com/java/eliminating-final/">a very nice discussion of Eiffel's Design by Contract principles</a>. Along the way, he makes a vicious ad hominem attack, accusing me of architecture astronautics (he actually stooped to using using the word "theorist," which means, <span style="font-style: italic;">someone who blogs when they should be coding</span>). But I digress.<br /><br /><a href="http://www.flickr.com/photos/raganwald/152207513/"><img src="http://static.flickr.com/46/152207513_b3be666020.jpg" width="375" height="500" alt="The World's Longest Single Arch Bridge" /></a><br /><br />The gist of his post is that since we don't have language-level support for Design By Contract, we ought to use <span style="font-weight: bold;">final</span> to accomplish as much invariant enforcement as possible. He suggests that final should be the default choice, that interfaces should be rare and concrete classes plentiful in a design, and that support for polymorphism is less-important than enforcing invariants:<br /><blockquote style="font-style: italic;">Preconditions, postconditions, and invariants are at the core of data encapsulation. They are the first and most important pillar of object oriented programming. Inheritance and polymorphism are second and third respectively, and are less important.</blockquote>While controversial, this argument is cogent. I would say it is consistent with a specific kind of design philosophy, one that would be as at home in Ada or Modula as it is in Java. This is in marked opposition to the design philosophy of SmallTalk and Squeak, so I would say it is <span style="font-style: italic;">not very object oriented</span>.<br /><br />Is that a bad thing? <span style="font-weight: bold;">I don't think so</span>. Principles like data encapsulization, modularity, contract enforcement, and componentization are extremely valuable and can be realized in many different ways. For example, what do you think the <a href="http://www.erlang.org/">Erlang</a> programming language or the <a href="http://en.wikipedia.org/wiki/Linda_%28coordination_language%29">Linda</a> communication and co&ouml;rdination frameworks are are all about? It's not just concurrency, dude.<br /><br />The large-scale Java applications I've seen have been particularly devoid of true object orientation, and people seem perfectly happy with that. (Rough metric: the OO-ness of a Java application is congruent to the reciprocal of the number of public static methods in the source code).<br /><br />So my conclusion is that if you want some advice on writing robust, large scale Java applications in a style that has been proven to be useful over the last several decades, you will find Rusty's post informative.<br /><br />p.s. My tongue was in my cheek when I composed the title and suggested that one of the most socially conscious Java bloggers in the world was vicious. But you knew that.<br /><br />p.p.s. If you feel that either Rusty or I can be correct but not both of us, please accept my condolences. How long has it been since imagination passed out of your life?<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/java.html">java</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/05/reg-suffering-from-high-altitude.html" title="permanent link">10:03 AM</a>
+						&para; <a href="http://raganwald.github.com/2006/05/reg-suffering-from-high-altitude.html" title="permanent link">10:03 AM</a>
 
 					 
 				</span> 
@@ -84,11 +84,11 @@
 			<div class="Post"><a name="114894953048519458">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/05/in-memoriam-repost.html" title="permanent link">In memoriam (Repost)</a></span>
-					<div style="clear:both;"></div>There's nothing I can write that could possibly capture how incredibly lucky I am to be able to live, love, and follow my dreams in the New World.<br /><br />A generation of our youth poured over the trenches and into the gas in WWI, and then their sons and daughters went back to fight and die and ultimately prevail in WWII so that you and I could live in a world where people of diverse colours, sexual orientations, religions, and political viewpoints could live without fear of extermination and genocide.<br /><br />Thank you.<br /><br />(<a href="http://weblog.raganwald.com/2005/11/i-remember.html">Originally posted</a> on <acronym title="The Sunday closest to November 11, observed in Canada and Great Britain in commemoration of those killed in the World Wars.">Remembrance Day</acronym>).<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2006/05/in-memoriam-repost.html" title="permanent link">In memoriam (Repost)</a></span>
+					<div style="clear:both;"></div>There's nothing I can write that could possibly capture how incredibly lucky I am to be able to live, love, and follow my dreams in the New World.<br /><br />A generation of our youth poured over the trenches and into the gas in WWI, and then their sons and daughters went back to fight and die and ultimately prevail in WWII so that you and I could live in a world where people of diverse colours, sexual orientations, religions, and political viewpoints could live without fear of extermination and genocide.<br /><br />Thank you.<br /><br />(<a href="http://raganwald.github.com/2005/11/i-remember.html">Originally posted</a> on <acronym title="The Sunday closest to November 11, observed in Canada and Great Britain in commemoration of those killed in the World Wars.">Remembrance Day</acronym>).<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/05/in-memoriam-repost.html" title="permanent link">8:35 PM</a>
+						&para; <a href="http://raganwald.github.com/2006/05/in-memoriam-repost.html" title="permanent link">8:35 PM</a>
 
 					 
 				</span> 
@@ -108,11 +108,11 @@
 			<div class="Post"><a name="114856931325471522">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/05/ready-aim-final.html" title="permanent link">Ready, Aim, Final</a></span>
-					<div style="clear:both;"></div>There're <a href="http://www.sphericalimprovement.com/blogs/mbowler/exit.php?url_id=1042&entry_id=352">some</a> <a href="http://cafe.elharo.com/java/final-good/">interesting</a> <a href="http://www.cincomsmalltalk.com/blog/blogView?showComments=true&amp;entry=3325941352">rants</a> going on about Java's <span style="font-weight: bold;">final</span> keyword. And Mike Bowler does a decent job of <a href="http://www.sphericalimprovement.com/blogs/mbowler/archives/352-Weighing-in-on-final.html">explaining what final </a><a href="http://www.sphericalimprovement.com/blogs/mbowler/archives/352-Weighing-in-on-final.html">does</a>. As Mike points out, all of the ranting is about whether you should declare classes and methods final.<br /><br />The arguments against declaring classes and methods final are persuasive. It makes it really hard to unit test anything. You are putting future programmers in a straightjacket (that's actually part of the spirit of bondage and discipline languages like Java, but that doesn't mean it's a good idea). And some refactoring becomes impossible.<br /><br />When I look at these arguments, I see evidence of a deeper malaise. The problem isn't the final keyword. The problem is <span style="font-style: italic;">the lack of separation between interfaces and implementations</span>.<br /><br />Take <span style="font-weight: bold;">java.lang.String</span>. This class is final, and that is a royal PITA. If you want to extend String to do neat things like keep track of SQL injection safety you are SOL. Now if there was a String <span style="font-style: italic;">interface</span>, and everyone declared their instance variables with the interface instead of the implementation, there would be no problem with a final String class.<br /><br />Do you need a flag for whether the String is SQL-safe? Use delegation instead of inheritence. No problem. Do you need pluggable storage behaviours for handling special character sets? Use aggregation and a Strategy pattern.<br /><br />Separating the String interface from the String implementation solves our problems nicely.<br /><br />I'm 100% ok with the final keyword in implementations. I think it's ok to make a class and say, this is the FizbangImplementationClass. For example, if you were making a sort class for some reason, it would be a little weird to override the actual sort algorithm. If you do, maybe it isn't really a-kind-of FizbangImplementationClass, so it shouldn't extend that base class. It ought to <span style="font-style: italic;">conform to the same interface but be implemented as something else</span>.<br /><br />At no time in the near future will I be proposing JSR666, "How to fix the Java language so that you can write elegant, object-oriented code." But if I do, my suggestion will be to <span style="font-style: italic;">make every class an interface automatically</span>. (This is not an original idea.)<br /><br />Here's how it would work. We keep all of the existing syntax exactly as we have it. But the first addition is that you can have class A implement class B. Note that class B is a class, not an interface. This means class A acquires the public members of class B but not their implementations. Now you can 'override' to your heart's content. The final keywords do not affect this, because you are actually implementing an interface.<br /><br />Is this bad? I don't think so. Framework authors that declare methods final are usually trying to ensure some consistency within a class. If you are implementing the class instead of extending it, you can build it from the ground up. If you need some of the class's behaviour you can use delegation and the orginal class will retain its original behaviour.<br /><br />The second addition is that when you declare a variable to be of a certain class, you are naturally declaring it to be the interface of the class. So anything declared as a String is actually declared as the String interface, not the String class.<br /><br />(There are other, subtle changes that are needed. Should String.class refer to the class and String.interface refer to the interface separately? Order plenty of espresso and let the committee thrash this kind of question out).<br /><br />This could be all accomplished within the current language if everyone was disciplined about declaring interfaces. However, Gosling and Steele set the tone for the Java language when the original libraries contained precious few interfaces and tons of classes. I think it's too late to get everyone to change. So some language change is needed to handle the zillions of lines of existing code.<br /><br />Or, you could take another approach and eschew languages that deliberately restrict your expressiveness. It's a big world out here, and it would be a shame if you don't get out from behind your desk and travel once in a while :-)<br /><br /><span style="font-style: italic;">Updates: Elliote Rusty Harold <a href="http://cafe.elharo.com/java/eliminating-final/">triple-underscored his support for the final keyword, while suggesting that interfaces are mostly bad</a>, and <a href="http://weblog.raganwald.com/2006/05/reg-suffering-from-high-altitude.html">I responded with respect for our differences</a>.<br /><br />Then Rusty provided some <a href="http://cafe.elharo.com/java/the-three-reasons-for-data-encapsulation/">excellent reasons for locking interfaces down</a> in his designs, and I explained why I believe there're <a href="http://weblog.raganwald.com/2006/06/trade-off-between-power-and-ease-of.html">legitimate reasons to choose Rusty's approach for some programmers and more flexibility for others</a>.<br /></span><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/java.html">java</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2006/05/ready-aim-final.html" title="permanent link">Ready, Aim, Final</a></span>
+					<div style="clear:both;"></div>There're <a href="http://www.sphericalimprovement.com/blogs/mbowler/exit.php?url_id=1042&entry_id=352">some</a> <a href="http://cafe.elharo.com/java/final-good/">interesting</a> <a href="http://www.cincomsmalltalk.com/blog/blogView?showComments=true&amp;entry=3325941352">rants</a> going on about Java's <span style="font-weight: bold;">final</span> keyword. And Mike Bowler does a decent job of <a href="http://www.sphericalimprovement.com/blogs/mbowler/archives/352-Weighing-in-on-final.html">explaining what final </a><a href="http://www.sphericalimprovement.com/blogs/mbowler/archives/352-Weighing-in-on-final.html">does</a>. As Mike points out, all of the ranting is about whether you should declare classes and methods final.<br /><br />The arguments against declaring classes and methods final are persuasive. It makes it really hard to unit test anything. You are putting future programmers in a straightjacket (that's actually part of the spirit of bondage and discipline languages like Java, but that doesn't mean it's a good idea). And some refactoring becomes impossible.<br /><br />When I look at these arguments, I see evidence of a deeper malaise. The problem isn't the final keyword. The problem is <span style="font-style: italic;">the lack of separation between interfaces and implementations</span>.<br /><br />Take <span style="font-weight: bold;">java.lang.String</span>. This class is final, and that is a royal PITA. If you want to extend String to do neat things like keep track of SQL injection safety you are SOL. Now if there was a String <span style="font-style: italic;">interface</span>, and everyone declared their instance variables with the interface instead of the implementation, there would be no problem with a final String class.<br /><br />Do you need a flag for whether the String is SQL-safe? Use delegation instead of inheritence. No problem. Do you need pluggable storage behaviours for handling special character sets? Use aggregation and a Strategy pattern.<br /><br />Separating the String interface from the String implementation solves our problems nicely.<br /><br />I'm 100% ok with the final keyword in implementations. I think it's ok to make a class and say, this is the FizbangImplementationClass. For example, if you were making a sort class for some reason, it would be a little weird to override the actual sort algorithm. If you do, maybe it isn't really a-kind-of FizbangImplementationClass, so it shouldn't extend that base class. It ought to <span style="font-style: italic;">conform to the same interface but be implemented as something else</span>.<br /><br />At no time in the near future will I be proposing JSR666, "How to fix the Java language so that you can write elegant, object-oriented code." But if I do, my suggestion will be to <span style="font-style: italic;">make every class an interface automatically</span>. (This is not an original idea.)<br /><br />Here's how it would work. We keep all of the existing syntax exactly as we have it. But the first addition is that you can have class A implement class B. Note that class B is a class, not an interface. This means class A acquires the public members of class B but not their implementations. Now you can 'override' to your heart's content. The final keywords do not affect this, because you are actually implementing an interface.<br /><br />Is this bad? I don't think so. Framework authors that declare methods final are usually trying to ensure some consistency within a class. If you are implementing the class instead of extending it, you can build it from the ground up. If you need some of the class's behaviour you can use delegation and the orginal class will retain its original behaviour.<br /><br />The second addition is that when you declare a variable to be of a certain class, you are naturally declaring it to be the interface of the class. So anything declared as a String is actually declared as the String interface, not the String class.<br /><br />(There are other, subtle changes that are needed. Should String.class refer to the class and String.interface refer to the interface separately? Order plenty of espresso and let the committee thrash this kind of question out).<br /><br />This could be all accomplished within the current language if everyone was disciplined about declaring interfaces. However, Gosling and Steele set the tone for the Java language when the original libraries contained precious few interfaces and tons of classes. I think it's too late to get everyone to change. So some language change is needed to handle the zillions of lines of existing code.<br /><br />Or, you could take another approach and eschew languages that deliberately restrict your expressiveness. It's a big world out here, and it would be a shame if you don't get out from behind your desk and travel once in a while :-)<br /><br /><span style="font-style: italic;">Updates: Elliote Rusty Harold <a href="http://cafe.elharo.com/java/eliminating-final/">triple-underscored his support for the final keyword, while suggesting that interfaces are mostly bad</a>, and <a href="http://raganwald.github.com/2006/05/reg-suffering-from-high-altitude.html">I responded with respect for our differences</a>.<br /><br />Then Rusty provided some <a href="http://cafe.elharo.com/java/the-three-reasons-for-data-encapsulation/">excellent reasons for locking interfaces down</a> in his designs, and I explained why I believe there're <a href="http://raganwald.github.com/2006/06/trade-off-between-power-and-ease-of.html">legitimate reasons to choose Rusty's approach for some programmers and more flexibility for others</a>.<br /></span><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/java.html">java</a>, <a rel='tag' href="http://raganwald.github.com/labels/popular.html">popular</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/05/ready-aim-final.html" title="permanent link">10:28 AM</a>
+						&para; <a href="http://raganwald.github.com/2006/05/ready-aim-final.html" title="permanent link">10:28 AM</a>
 
 					 
 				</span> 
@@ -132,11 +132,11 @@
 			<div class="Post"><a name="114848337711358667">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/05/beam-me-up-scotty.html" title="permanent link">Beam me up, Scotty</a></span>
+					<a href="http://raganwald.github.com/2006/05/beam-me-up-scotty.html" title="permanent link">Beam me up, Scotty</a></span>
 					<div style="clear:both;"></div><style type="text/css">.flickr-photo { border: solid 2px #000000; }.flickr-yourcomment { }.flickr-frame { text-align: left; padding: 3px; }.flickr-caption { font-size: 0.8em; margin-top: 0px; }</style><div class="flickr-frame">	<a href="http://www.flickr.com/photos/raganwald/152209758/" title="photo sharing"><img src="http://static.flickr.com/44/152209758_04359e9377.jpg" class="flickr-photo" alt="" /></a><br />	<span class="flickr-caption"><a href="http://www.flickr.com/photos/raganwald/152209758/">Beam me up, Scotty</a>, originally uploaded by <a href="http://www.flickr.com/people/raganwald/">raganwald</a>.</span></div>				<p class="flickr-yourcomment">	</p><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/05/beam-me-up-scotty.html" title="permanent link">11:06 AM</a>
+						&para; <a href="http://raganwald.github.com/2006/05/beam-me-up-scotty.html" title="permanent link">11:06 AM</a>
 
 					 
 				</span> 
@@ -156,11 +156,11 @@
 			<div class="Post"><a name="114781063374244046">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/05/development-is-about-communication_16.html" title="permanent link">Development is about communication between people</a></span>
+					<a href="http://raganwald.github.com/2006/05/development-is-about-communication_16.html" title="permanent link">Development is about communication between people</a></span>
 					<div style="clear:both;"></div><style type="text/css">.flickr-photo { border: solid 2px #000000; }.flickr-yourcomment { }.flickr-frame { text-align: left; padding: 3px; }.flickr-caption { font-size: 0.8em; margin-top: 0px; }</style><div class="flickr-frame">	<a href="http://www.flickr.com/photos/thomasb/147745824/" title="photo sharing"><img src="http://static.flickr.com/54/147745824_738156528f.jpg" class="flickr-photo" alt="" /></a><br />	<span class="flickr-caption"><a href="http://www.flickr.com/photos/thomasb/147745824/">Dad and I have a special connection</a>, originally uploaded by <a href="http://www.flickr.com/people/thomasb/">thomas.braithwaite</a>.</span></div>				<p class="flickr-yourcomment">	</p><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/05/development-is-about-communication_16.html" title="permanent link">4:14 PM</a>
+						&para; <a href="http://raganwald.github.com/2006/05/development-is-about-communication_16.html" title="permanent link">4:14 PM</a>
 
 					 
 				</span> 
@@ -180,11 +180,11 @@
 			<div class="Post"><a name="114771436699342583">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/05/javascript-pop-quiz-remarks.html" title="permanent link">JavaScript Pop Quiz Remarks</a></span>
-					<div style="clear:both;"></div><span style="font-style: italic;">Here's an email I sent in response to a colleague's question about some sample JavaScript. If you haven't already seen it, you might want to <a href="http://weblog.raganwald.com/2006/05/javascript-pop-quiz.html">look at the code first</a>.</span><br /><br />Joe:<br /><br />You seem to understand the behaviour perfectly. The problem was that we wanted to call <span style="font-family:courier new;">set_datetime(...)</span> with a different value for each cell in the table. We know the values when we build the table cell by cell.<br /><br />However, if we write the code as:<br /><br /><pre><span style="font-family:courier new;">    thisCell.onclick =</span><br /><span style="font-family:courier new;">        function() { set_datetime( dt_current_day.valueOf(), true);</span></pre><br />At run time each cell will have a function that gets the value of <span style="font-family:courier new;">dt_current_day</span> when the cell is clicked, not when the code was written into the cell. I think we end up with the last day in the calendar. We want to capture the value when of <span style="font-family:courier new;">dt_current_day</span> when we build the function, not later when the function is called.<br /><br />The code given makes an anonymous function (let's call it the "outer function") and calls it immediately. That call copies <span style="font-family:courier new;">dt_current_day.valueOf()</span> into the <span style="font-family:courier new;">day<span style="font-family:arial;"> </span></span>variable and returns a function (the "inner function") that uses the <span style="font-family:courier new;">day<span style="font-family:arial;"> </span></span>variable. The inner function is the one assigned to the cell's <span style="font-family:courier new;">onclick </span>handler.<br /><br />The reason it works is that every time you call the outer function you manufacture a new <span style="font-family:courier new;">day </span>variable. If you did the assignment without calling a function, like this:<br /><br /><pre><span style="font-family:courier new;">    var day = dt_current_day.valueOf();</span><br /><span style="font-family:courier new;">    thisCell.onclick =</span><br /><span style="font-family:courier new;">        function() { set_datetime( day, true);</span></pre><br />...you would end up with the wrong behaviour because all of the <span style="font-family:courier new;">onclick<span style="font-family:arial;"> </span></span>handlers would share the same day variable.<br /><br />This pattern is so common that Lisp-like languages (including <a href="http://www.ccs.neu.edu/home/dorai/t-y-scheme/t-y-scheme.html">Scheme</a>) have a family of <a href="http://en.wikipedia.org/wiki/Macros">macros </a>called <a href="http://www.ccs.neu.edu/home/dorai/t-y-scheme/t-y-scheme-Z-H-7.html#node_sec_5.1">let</a> to do this for us. In Scheme, our code would look something like this:<br /><br /><pre><span style="font-family:courier new;">    (let (</span><br /><span style="font-family:courier new;">            (day (value-of dt_current_day)))</span><br /><span style="font-family:courier new;">            (!set   (handler thisCell 'onclick)</span><br /><span style="font-family:courier new;">                    (<a href="http://en.wikipedia.org/wiki/Functional_programming#History">lambda</a> () (set-datetime! day #t))))</span></pre><br />Although using <span style="font-family:courier new;">let<span style="font-family:arial;"> </span></span>looks just like a straightforward assignment using <span style="font-family:courier new;">set!</span>, it actually creates a new variable every time. It should not surprise you to learn (if you didn't already know) that behind the scenes <span style="font-family:courier new;">let<span style="font-family:arial;"> </span></span>is a macro that rewrites the code into an anonymous outer function just like the JavaScript sample.<br /><br />p.s. This problem can be solved in other ways. The original code actually wrote the <span style="font-family:courier new;">onclick </span>handler out as an <span style="font-family:courier new;">href<span style="font-family:arial;"> </span></span>in plain text. It copied the value of <span style="font-family:courier new;">dt_current_date</span> out as a string. Essentially, it was doing "code generation." Also, it would be possible to create an object with a field to store the date. You'd have to do that in a language like Java where functions don't really exist independently of objects and classes.<br /><br />p.p.s. I can't believe I managed to explain the whole thing without resorting to the <a href="http://jibbering.com/faq/faq_notes/closures.html">c-word</a>!<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2006/05/javascript-pop-quiz-remarks.html" title="permanent link">JavaScript Pop Quiz Remarks</a></span>
+					<div style="clear:both;"></div><span style="font-style: italic;">Here's an email I sent in response to a colleague's question about some sample JavaScript. If you haven't already seen it, you might want to <a href="http://raganwald.github.com/2006/05/javascript-pop-quiz.html">look at the code first</a>.</span><br /><br />Joe:<br /><br />You seem to understand the behaviour perfectly. The problem was that we wanted to call <span style="font-family:courier new;">set_datetime(...)</span> with a different value for each cell in the table. We know the values when we build the table cell by cell.<br /><br />However, if we write the code as:<br /><br /><pre><span style="font-family:courier new;">    thisCell.onclick =</span><br /><span style="font-family:courier new;">        function() { set_datetime( dt_current_day.valueOf(), true);</span></pre><br />At run time each cell will have a function that gets the value of <span style="font-family:courier new;">dt_current_day</span> when the cell is clicked, not when the code was written into the cell. I think we end up with the last day in the calendar. We want to capture the value when of <span style="font-family:courier new;">dt_current_day</span> when we build the function, not later when the function is called.<br /><br />The code given makes an anonymous function (let's call it the "outer function") and calls it immediately. That call copies <span style="font-family:courier new;">dt_current_day.valueOf()</span> into the <span style="font-family:courier new;">day<span style="font-family:arial;"> </span></span>variable and returns a function (the "inner function") that uses the <span style="font-family:courier new;">day<span style="font-family:arial;"> </span></span>variable. The inner function is the one assigned to the cell's <span style="font-family:courier new;">onclick </span>handler.<br /><br />The reason it works is that every time you call the outer function you manufacture a new <span style="font-family:courier new;">day </span>variable. If you did the assignment without calling a function, like this:<br /><br /><pre><span style="font-family:courier new;">    var day = dt_current_day.valueOf();</span><br /><span style="font-family:courier new;">    thisCell.onclick =</span><br /><span style="font-family:courier new;">        function() { set_datetime( day, true);</span></pre><br />...you would end up with the wrong behaviour because all of the <span style="font-family:courier new;">onclick<span style="font-family:arial;"> </span></span>handlers would share the same day variable.<br /><br />This pattern is so common that Lisp-like languages (including <a href="http://www.ccs.neu.edu/home/dorai/t-y-scheme/t-y-scheme.html">Scheme</a>) have a family of <a href="http://en.wikipedia.org/wiki/Macros">macros </a>called <a href="http://www.ccs.neu.edu/home/dorai/t-y-scheme/t-y-scheme-Z-H-7.html#node_sec_5.1">let</a> to do this for us. In Scheme, our code would look something like this:<br /><br /><pre><span style="font-family:courier new;">    (let (</span><br /><span style="font-family:courier new;">            (day (value-of dt_current_day)))</span><br /><span style="font-family:courier new;">            (!set   (handler thisCell 'onclick)</span><br /><span style="font-family:courier new;">                    (<a href="http://en.wikipedia.org/wiki/Functional_programming#History">lambda</a> () (set-datetime! day #t))))</span></pre><br />Although using <span style="font-family:courier new;">let<span style="font-family:arial;"> </span></span>looks just like a straightforward assignment using <span style="font-family:courier new;">set!</span>, it actually creates a new variable every time. It should not surprise you to learn (if you didn't already know) that behind the scenes <span style="font-family:courier new;">let<span style="font-family:arial;"> </span></span>is a macro that rewrites the code into an anonymous outer function just like the JavaScript sample.<br /><br />p.s. This problem can be solved in other ways. The original code actually wrote the <span style="font-family:courier new;">onclick </span>handler out as an <span style="font-family:courier new;">href<span style="font-family:arial;"> </span></span>in plain text. It copied the value of <span style="font-family:courier new;">dt_current_date</span> out as a string. Essentially, it was doing "code generation." Also, it would be possible to create an object with a field to store the date. You'd have to do that in a language like Java where functions don't really exist independently of objects and classes.<br /><br />p.p.s. I can't believe I managed to explain the whole thing without resorting to the <a href="http://jibbering.com/faq/faq_notes/closures.html">c-word</a>!<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/05/javascript-pop-quiz-remarks.html" title="permanent link">1:09 PM</a>
+						&para; <a href="http://raganwald.github.com/2006/05/javascript-pop-quiz-remarks.html" title="permanent link">1:09 PM</a>
 
 					 
 				</span> 
@@ -204,11 +204,11 @@
 			<div class="Post"><a name="114719100399247332">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/05/javascript-pop-quiz.html" title="permanent link">JavaScript Pop Quiz</a></span>
-					<div style="clear:both;"></div>In essay or point form, compare and contrast:<br /><br /><pre><span style="font-family:courier new;">    </span><span style="font-family:courier new;">thisCell.onclick = function() { set_datetime( </span><span style="font-family:courier new;">dt_current_day.valueOf()</span><span style="font-family:courier new;">, true); };</span></pre><br /><span style="font-style: italic;">and</span><br /><pre><span style="font-family:courier new;">    thisCell.onclick =<br />       function (day) {<br />           return function() { set_datetime( day, true); };<br />       }(dt_current_day.valueOf());</span></pre><br />Do not limit yourself to describing the run-time behaviour as specified in the language specification. Discuss the implications of each choice in the broader context of programming and software design.<br /><br />Hint 1: Consider the possibility that these statements may be executed more than once, that this_cell may refer to different objects when these statements are executed more than once, and that dt_current_day may have different values when these statements are executed more than once.<br /><br />Hint 2: <a href="http://mitpress.mit.edu/sicp/full-text/book/book.html" title="Structure and Interpretation of Computer Programs, by Abelson, Sussman, and Sussman">SICP</a>.<br /><br /><a id="showlink">Hint 3</a>:<div id="codeincontext" style="display: none;"><pre>var cTable = document.getElementById("calendarTable");<br />var dt_current_day = new Date(...),<br />var iRow = 1;<br /><br />while (dt_current_day.getMonth() == dt_current.getMonth()<br />     || dt_current_day.getMonth() == dt_firstday.getMonth()) {<br /> iRow = iRow + 1;<br /> var thisRow = cTable.rows[iRow];<br /> for (var n_current_wday=0; n_current_wday<7; thiscell =" thisRow.cells[n_current_wday];" innerhtml =" dt_current_day.getDate();"><span style="color:green;"><pre>       thisCell.onclick =<br />         function (day) { return function() {<br />            set_datetime( day, true); }; }(dt_current_day.valueOf());<br /></pre></span><pre>       ...<br />     dt_current_day.setDate(dt_current_day.getDate()+1);<br /> }<br />}</pre><br /></pre></div><br /><br />Hint 4: <a href="http://weblog.raganwald.com/2006/05/javascript-pop-quiz-remarks.html">JavaScript Pop Quiz Remarks</a><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2006/05/javascript-pop-quiz.html" title="permanent link">JavaScript Pop Quiz</a></span>
+					<div style="clear:both;"></div>In essay or point form, compare and contrast:<br /><br /><pre><span style="font-family:courier new;">    </span><span style="font-family:courier new;">thisCell.onclick = function() { set_datetime( </span><span style="font-family:courier new;">dt_current_day.valueOf()</span><span style="font-family:courier new;">, true); };</span></pre><br /><span style="font-style: italic;">and</span><br /><pre><span style="font-family:courier new;">    thisCell.onclick =<br />       function (day) {<br />           return function() { set_datetime( day, true); };<br />       }(dt_current_day.valueOf());</span></pre><br />Do not limit yourself to describing the run-time behaviour as specified in the language specification. Discuss the implications of each choice in the broader context of programming and software design.<br /><br />Hint 1: Consider the possibility that these statements may be executed more than once, that this_cell may refer to different objects when these statements are executed more than once, and that dt_current_day may have different values when these statements are executed more than once.<br /><br />Hint 2: <a href="http://mitpress.mit.edu/sicp/full-text/book/book.html" title="Structure and Interpretation of Computer Programs, by Abelson, Sussman, and Sussman">SICP</a>.<br /><br /><a id="showlink">Hint 3</a>:<div id="codeincontext" style="display: none;"><pre>var cTable = document.getElementById("calendarTable");<br />var dt_current_day = new Date(...),<br />var iRow = 1;<br /><br />while (dt_current_day.getMonth() == dt_current.getMonth()<br />     || dt_current_day.getMonth() == dt_firstday.getMonth()) {<br /> iRow = iRow + 1;<br /> var thisRow = cTable.rows[iRow];<br /> for (var n_current_wday=0; n_current_wday<7; thiscell =" thisRow.cells[n_current_wday];" innerhtml =" dt_current_day.getDate();"><span style="color:green;"><pre>       thisCell.onclick =<br />         function (day) { return function() {<br />            set_datetime( day, true); }; }(dt_current_day.valueOf());<br /></pre></span><pre>       ...<br />     dt_current_day.setDate(dt_current_day.getDate()+1);<br /> }<br />}</pre><br /></pre></div><br /><br />Hint 4: <a href="http://raganwald.github.com/2006/05/javascript-pop-quiz-remarks.html">JavaScript Pop Quiz Remarks</a><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/05/javascript-pop-quiz.html" title="permanent link">12:02 PM</a>
+						&para; <a href="http://raganwald.github.com/2006/05/javascript-pop-quiz.html" title="permanent link">12:02 PM</a>
 
 					 
 				</span> 
@@ -228,11 +228,11 @@
 			<div class="Post"><a name="114660062783132157">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/05/how-to-make-programming-hard-for.html" title="permanent link">How to make programming hard for yourself</a></span>
-					<div style="clear:both;"></div><a href="http://weblog.raganwald.com/2006/04/why-do-we-resist-idea-that-programming.html">I posed a simple question</a>: <span style="font-style: italic;">why do we have trouble admitting that programming is hard</span>?<br /><br />This generated a tempest in a teapot of comments. Most focused on the red herring of whether programming is an innate talent. That's actually irrelevant to the fundamental question.<br /><br /><span style="font-weight: bold;">Is programming actually hard?</span><br /><br />The evidence is in that software development as an engineering practice is very hard. One person on reddit commented that he had worked for three successive game companies that shipped working software on time. Other than that comment, my own experience, the experience of everyone I've ever talked to, and the industry folklore is that software projects are almost always late, short of promised functionality, buggy, or all three.<br /><br /><a href="http://www.flickr.com/photos/thomasb/166020892/" title="Peek-a-boo!"><img src="http://static.flickr.com/77/166020892_0fa65c5808.jpg" class="flickr-photo" alt="Peek-a-boo!" border="0" /></a><br /><br />Now I admit that lots of people think that this is a management problem. Their view is that the actual programming is quite tractable, it's just that getting people to work on the right things at the right time is the hard part of software development. This argument takes the same world view that the Egyptian engineers had about building pyramids: the labour is so easy that ignorant slaves can do it.<br /><br />My view is that this is true for a certain class of programs. Most of these can be found in current business contexts. Quite honestly, most business applications are what I would call <span style="font-style: italic;">wide and shallow</span>. There's a lot of work to be done, but little of it requires deep thinking. The challenges are around managing requirements and user expectations. These are hard problems, but they are not in the same class as, say, figuring out how to implement a fast join on two distributed hash tables.<br /><br />I think that easy programming problems drive a lot of decisions about people and tools. If you perceive that a problem isn't very hard, why hire the 'cream' of the programming crop to solve it? And if you eschew the cream for a <a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">plain glass of 1% milk</a>, won't you insist that the program be written in <a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html">Blub</a> instead of Python, Ruby, or Lisp?<br /><br />This becomes a feedback loop. The 'B' players become hiring managers one day and they hire 'C' players. The 'C' players are asked to design applications, and they design things that they know how to build. This second effect is a huge lever pushing programming problems downwards in business.<br /><br />Programs are written to solve problems posed by people, be they programmers, program managers, business analysts, or what-have-you. The difficulty of writing the programs is driven by the difficulty of the problems. The difficulty of the problems is limited by the imagination of the people posing the problems.<br /><br />If your feedback loop is pushing difficulty downwards, the only problems you will have are the ones that can be solved by anyone who can pick up a <span style="font-style: italic;">Learn Blub in Twenty-One Days</span> book.<br /><br />Is this a problem?<br /><br />Quite honestly, <span style="font-weight: bold;">no</span>. If what you want is a steady paycheque, and you can sleep at night knowing that your job might be outsourced one day, there's nothing wrong with chasing the easy work. It's no different than playing saxophone in a dance band at a wedding. Charlie Parker did it, you can do it.<br /><br />But just because almost everybody does easy work doesn't mean there isn't hard work to be done. Hard problems are their own reward for some people, myself included (in my case I mean "hard for me," I know more than a few people that consider my hard problems to be recreational diversions). And <a href="http://weblog.raganwald.com/2006/09/business-programming-simply-isnt-that.html">some hard problems have lucrative consequences</a> if you have a taste for starting companies.<br /><br /><span style="font-weight: bold;">Why it's hard to find hard problems</span><br /><br />It's hard to find problems that are so challenging that you don't know how to solve them. It's especially hard if you also want a problem that can actually be solved. And it's very, very hard to find a hard problem that makes business sense, even in a startup. Most good startups solved the right problem rather than the hardest problem.<br /><br />Very few people have the luxury of writing requirements for a program that they have no idea how to write, much less the imagination to see the results. Jump in your time machine and zoom back to 1980. Start asking people do sketch a word processor design on a napkin. How many people specify bit-mapped graphics and mouse-driven selection?<br /><br />I compared programming to music and athletics. I suggested that programming is hard and the reason we don't see that is because we aren't competitive enough. That may be true, but now I sense a deeper challenge: in programming, we tend to pose questions for which we already know the answer.<br /><br />In music, most people's reach far exceeds their grasp. It's quite easy to find pieces of music that are difficult or impossible for someone to play but nevertheless pleasing to that same person's ear.<br /><br />If you are a wanna-be bassist and you listen to Jaco Pastorius' harmonics on "<a href="http://en.wikipedia.org/wiki/Portrait_Of_Tracy">Portrait of Tracy</a>," it is immediately obvious to you that you could be better and that being better is worthwhile. I leave it to your imagination to draw the same parallel to sports and athletics.<br /><br />But in programming... we have a nasty habit of being very satisfied with the tools we already know. After all, <a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html">they are good enough for all of the programs we have ever written</a>. And, surprise surprise, they just might be good enough for all of the programs we will ever want to write.<br /><br /><span style="font-weight: bold;">How to make life hard for yourself</span><br /><br />Most of us need outside forces to shake us up. Many bassists were shocked in 1976 when they heard Portrait of Tracy. Harmonics were used as accents here and there, but nobody dared to play an entire piece with harmonics as the main technique. This shook things up, and now playing harmonics is considered a basic skill on electric bass (although it's still fiendishly hard to play Portrait of Tracy!)<br /><br />For all of my professed admiration of Ruby on rails, I personally don't think that easier and more productive CRUD application writing will shake things up. I personally care very much about writing applications in a tenth of the time, but <span style="font-style: italic;">using </span>Rails is like <span style="font-style: italic;">listening </span>to Jaco Pastorius. The real learning experience comes when you try to duplicate the feat.<br /><br />If you want Rails to help you improve as a programmer, you need to look at the source code and figure out how to use Ruby to write Domain Specific Languages. Next, you'll have to write a few DSLs to become immersed in how programming changes when you can write DSLs. Now you're ready to look for a problem that is barely possible if you can solve it with a DSL.<br /><br />Before you knew how to write your own languages, you probably couldn't design a program that couldn't be written without a DSL. Now you can.<br /><br />This general template works surprisingly well: Learning things that force you to solve existing problems in new ways will help you find hard problems that can only be solved with the aid of your new techniques.<br /><br />So when you're done learning how to write DSLs just like Rails, go ahead and write a web application using continuations as the basic metaphor. And don't forget to look under the hood and figure out how the framework makes continuations scale in a web context.<br /><br />Come to think of it, figure out how to write continuation-based Rails applications that live on a Google-scaled grid and you might be headed towards a place where the inhabitants have no fear of hard.<br /><br />I'll see you there.<br /><br /><span style="font-style: italic;">Update: I found an <a href="http://www.jacop.net/sounds/portraitoftracy_early.mp3">early take of Jaco playing Portrait of Tracy</a> (MP3). Nice.</span><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/passion.html">passion</a></p>&nbsp;
+					<a href="http://raganwald.github.com/2006/05/how-to-make-programming-hard-for.html" title="permanent link">How to make programming hard for yourself</a></span>
+					<div style="clear:both;"></div><a href="http://raganwald.github.com/2006/04/why-do-we-resist-idea-that-programming.html">I posed a simple question</a>: <span style="font-style: italic;">why do we have trouble admitting that programming is hard</span>?<br /><br />This generated a tempest in a teapot of comments. Most focused on the red herring of whether programming is an innate talent. That's actually irrelevant to the fundamental question.<br /><br /><span style="font-weight: bold;">Is programming actually hard?</span><br /><br />The evidence is in that software development as an engineering practice is very hard. One person on reddit commented that he had worked for three successive game companies that shipped working software on time. Other than that comment, my own experience, the experience of everyone I've ever talked to, and the industry folklore is that software projects are almost always late, short of promised functionality, buggy, or all three.<br /><br /><a href="http://www.flickr.com/photos/thomasb/166020892/" title="Peek-a-boo!"><img src="http://static.flickr.com/77/166020892_0fa65c5808.jpg" class="flickr-photo" alt="Peek-a-boo!" border="0" /></a><br /><br />Now I admit that lots of people think that this is a management problem. Their view is that the actual programming is quite tractable, it's just that getting people to work on the right things at the right time is the hard part of software development. This argument takes the same world view that the Egyptian engineers had about building pyramids: the labour is so easy that ignorant slaves can do it.<br /><br />My view is that this is true for a certain class of programs. Most of these can be found in current business contexts. Quite honestly, most business applications are what I would call <span style="font-style: italic;">wide and shallow</span>. There's a lot of work to be done, but little of it requires deep thinking. The challenges are around managing requirements and user expectations. These are hard problems, but they are not in the same class as, say, figuring out how to implement a fast join on two distributed hash tables.<br /><br />I think that easy programming problems drive a lot of decisions about people and tools. If you perceive that a problem isn't very hard, why hire the 'cream' of the programming crop to solve it? And if you eschew the cream for a <a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">plain glass of 1% milk</a>, won't you insist that the program be written in <a href="http://raganwald.github.com/2006/10/are-we-blub-programmers.html">Blub</a> instead of Python, Ruby, or Lisp?<br /><br />This becomes a feedback loop. The 'B' players become hiring managers one day and they hire 'C' players. The 'C' players are asked to design applications, and they design things that they know how to build. This second effect is a huge lever pushing programming problems downwards in business.<br /><br />Programs are written to solve problems posed by people, be they programmers, program managers, business analysts, or what-have-you. The difficulty of writing the programs is driven by the difficulty of the problems. The difficulty of the problems is limited by the imagination of the people posing the problems.<br /><br />If your feedback loop is pushing difficulty downwards, the only problems you will have are the ones that can be solved by anyone who can pick up a <span style="font-style: italic;">Learn Blub in Twenty-One Days</span> book.<br /><br />Is this a problem?<br /><br />Quite honestly, <span style="font-weight: bold;">no</span>. If what you want is a steady paycheque, and you can sleep at night knowing that your job might be outsourced one day, there's nothing wrong with chasing the easy work. It's no different than playing saxophone in a dance band at a wedding. Charlie Parker did it, you can do it.<br /><br />But just because almost everybody does easy work doesn't mean there isn't hard work to be done. Hard problems are their own reward for some people, myself included (in my case I mean "hard for me," I know more than a few people that consider my hard problems to be recreational diversions). And <a href="http://raganwald.github.com/2006/09/business-programming-simply-isnt-that.html">some hard problems have lucrative consequences</a> if you have a taste for starting companies.<br /><br /><span style="font-weight: bold;">Why it's hard to find hard problems</span><br /><br />It's hard to find problems that are so challenging that you don't know how to solve them. It's especially hard if you also want a problem that can actually be solved. And it's very, very hard to find a hard problem that makes business sense, even in a startup. Most good startups solved the right problem rather than the hardest problem.<br /><br />Very few people have the luxury of writing requirements for a program that they have no idea how to write, much less the imagination to see the results. Jump in your time machine and zoom back to 1980. Start asking people do sketch a word processor design on a napkin. How many people specify bit-mapped graphics and mouse-driven selection?<br /><br />I compared programming to music and athletics. I suggested that programming is hard and the reason we don't see that is because we aren't competitive enough. That may be true, but now I sense a deeper challenge: in programming, we tend to pose questions for which we already know the answer.<br /><br />In music, most people's reach far exceeds their grasp. It's quite easy to find pieces of music that are difficult or impossible for someone to play but nevertheless pleasing to that same person's ear.<br /><br />If you are a wanna-be bassist and you listen to Jaco Pastorius' harmonics on "<a href="http://en.wikipedia.org/wiki/Portrait_Of_Tracy">Portrait of Tracy</a>," it is immediately obvious to you that you could be better and that being better is worthwhile. I leave it to your imagination to draw the same parallel to sports and athletics.<br /><br />But in programming... we have a nasty habit of being very satisfied with the tools we already know. After all, <a href="http://raganwald.github.com/2006/01/finding-signal-to-noise-ratio-in-never.html">they are good enough for all of the programs we have ever written</a>. And, surprise surprise, they just might be good enough for all of the programs we will ever want to write.<br /><br /><span style="font-weight: bold;">How to make life hard for yourself</span><br /><br />Most of us need outside forces to shake us up. Many bassists were shocked in 1976 when they heard Portrait of Tracy. Harmonics were used as accents here and there, but nobody dared to play an entire piece with harmonics as the main technique. This shook things up, and now playing harmonics is considered a basic skill on electric bass (although it's still fiendishly hard to play Portrait of Tracy!)<br /><br />For all of my professed admiration of Ruby on rails, I personally don't think that easier and more productive CRUD application writing will shake things up. I personally care very much about writing applications in a tenth of the time, but <span style="font-style: italic;">using </span>Rails is like <span style="font-style: italic;">listening </span>to Jaco Pastorius. The real learning experience comes when you try to duplicate the feat.<br /><br />If you want Rails to help you improve as a programmer, you need to look at the source code and figure out how to use Ruby to write Domain Specific Languages. Next, you'll have to write a few DSLs to become immersed in how programming changes when you can write DSLs. Now you're ready to look for a problem that is barely possible if you can solve it with a DSL.<br /><br />Before you knew how to write your own languages, you probably couldn't design a program that couldn't be written without a DSL. Now you can.<br /><br />This general template works surprisingly well: Learning things that force you to solve existing problems in new ways will help you find hard problems that can only be solved with the aid of your new techniques.<br /><br />So when you're done learning how to write DSLs just like Rails, go ahead and write a web application using continuations as the basic metaphor. And don't forget to look under the hood and figure out how the framework makes continuations scale in a web context.<br /><br />Come to think of it, figure out how to write continuation-based Rails applications that live on a Google-scaled grid and you might be headed towards a place where the inhabitants have no fear of hard.<br /><br />I'll see you there.<br /><br /><span style="font-style: italic;">Update: I found an <a href="http://www.jacop.net/sounds/portraitoftracy_early.mp3">early take of Jaco playing Portrait of Tracy</a> (MP3). Nice.</span><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/labels/passion.html">passion</a></p>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/05/how-to-make-programming-hard-for.html" title="permanent link">2:36 PM</a>
+						&para; <a href="http://raganwald.github.com/2006/05/how-to-make-programming-hard-for.html" title="permanent link">2:36 PM</a>
 
 					 
 				</span> 
@@ -293,25 +293,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -319,17 +319,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -346,13 +346,13 @@
 <input type="hidden" name="item_number" value="DoubleEspresso">
 <input type="hidden" name="amount" value="3.15">
 <input type="hidden" name="no_shipping" value="0">
-<input type="hidden" name="logo_custom" value="http://weblog.raganwald.com/uploaded_images/coffeecup.png">
+<input type="hidden" name="logo_custom" value="http://raganwald.github.com/uploaded_images/coffeecup.png">
 <input type="hidden" name="no_note" value="1">
 <input type="hidden" name="currency_code" value="USD">
 <input type="hidden" name="tax" value="0">
 <input type="hidden" name="lc" value="CA">
 <input type="hidden" name="bn" value="PP-DonationsBF">
-<input type="image" src="http://weblog.raganwald.com/uploaded_images/coffeecup.png" width="64" height="64" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+<input type="image" src="http://raganwald.github.com/uploaded_images/coffeecup.png" width="64" height="64" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
 <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
 </form></div>If you enjoy reading my weblog, please consider <a href="#"
 title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript: document.DoubleEspresso.submit();">buying me a Darkhorse Double Espresso, for just $3.15</a>
@@ -366,17 +366,17 @@ title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -384,19 +384,19 @@ title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -404,18 +404,18 @@ title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -423,15 +423,15 @@ title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -440,103 +440,103 @@ title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
-		<script type="text/javascript" language="Javascript">if (location.href.indexOf("archive")!=-1) document.write("<strong><a href=\"http://weblog.raganwald.com/welcome.html\">Current Posts</a></strong>");</script>
+		<script type="text/javascript" language="Javascript">if (location.href.indexOf("archive")!=-1) document.write("<strong><a href=\"http://raganwald.github.com/index.html\">Current Posts</a></strong>");</script>
 		<br/></p>
 		<br/>
 

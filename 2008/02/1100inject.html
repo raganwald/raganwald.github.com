@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Monday, February 25, 2008</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="2951585157212250661">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2008/02/1100inject.html" title="permanent link">(1..100).inject(&:+)</a></span>
-					<div style="clear:both;"></div>I want to show you my favourite line of ruby code:<sup><font size="1"><a href="#to_1" name="from_1">1</a>, <a href="#to_2" name="from_2">2</a></font></sup><pre><code><br />(1..100).inject(&amp;:+)<br /></code></pre>This code works out of the box in Ruby 1.9. This also works in Ruby 1.8 with Rails, thanks to this chunk of code called &ldquo;Symbol#to_proc&rdquo;:<pre><code><br />class Symbol<br />  # Turns the symbol into a simple proc, which is especially useful for enumerations. <br />  def to_proc<br />    Proc.new { |*args| args.shift.__send__(self, *args) }<br />  end<br />end<br /></code></pre>Now, I should explain what I like about it. No, we aren&rsquo;t going to debate whether <code>{ |acc, n| acc + n }</code> contains accidental complexity. We are not going to talk about why this is better than whatever you would do in PHP or Visual Basic to sum the integers. Let go of any idea that this article is about golf. I like this line of code because it says a lot about how the Ruby language works. I do not want to talk about those other things, they are not interesting to either of us.<br /><br />The two things I <em>do</em> want to talk about are that: 1.&nbsp;Somebody made Symbol#to_proc in Ruby 1.8, and that 2.&nbsp;It became part of Ruby 1.9. Let&rsquo;s start with how it works.<br /><br />Symbol#to_proc works because Symbol is an <em>Open Class</em> in Ruby. And Ruby is <em>Dynamically Typed</em>, meaning you can modify classes and objects at run time, thus Symbol gets the to_proc method added when you run the above code. (You sometimes see the expression &#8220;Dynamic Typing&#8221; used to describe a system where you don&#8217;t need to write the type of an object before using it. I call that &#8220;Latent Typing&#8221; and use the word &#8220;Dynamic&#8221; to describe a system where types can <em>change</em> thanks to adding or removing methods. In this case, we are adding a method to <em>every</em> Symbol in a program, which is pretty dynamic.)<br /><br /><strong>The Acid Test</strong><br /><br />One of the things that really intrigues me this little snippet of code, <code>(1..100).inject(&amp;:+)</code>, is that you can tell an awful lot about someone&#8217;s attitude towards programming styles, languages, and cultural bias by asking them what they think of it. It touches on functional programming, on brevity, and in this case, on open classes.<br /><br />Take a moment to really think this through. <em>What do you think of the fact that someone sat down and modified one of Ruby&#8217;s most core classes, Symbol?</em><br /><br />This is a decidedly non-trivial thing to do. Changing Symbol in any way opens up a Pandora&#8217;s box of risk. You can break a lot of code. You can&#8212;I beg your pardon, you <strong>will</strong>&#8212;confuse people who have never heard of Symbol#to_proc. Just so you can express &#8220;Fold the numbers from one to one hundred using addition&#8221; in a very direct manner eliminating the boilerplate of <code>{ |a, n| a + n }</code>.<br /><br />If Symbol wasn&#8217;t an open class, how would <code>inject(&amp;:+)</code> have been added to the language? Open classes and other &#8220;turtles all the way down&#8221; features are <em>dangerous</em>. But dangerous features help a language evolve. Lisp&#8217;s macros are extremely dangerous. And they are also what made it possible to discover/invent CLOS. Had there been no macros, the only way to experiment with new ideas in OO would be to create whole new language, an exercise in Accidental Complexity.<br /><br /><div class="book"><hr><em><a id="lnx0" name="evtst|a|0672328844" href="http://www.amazon.com/gp/product/0672328844?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0672328844"><img src="http://weblog.raganwald.com/uploaded_images/the_ruby_way.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0672328844" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br><a name="evtst|a|0672328844" href="http://www.amazon.com/gp/product/0672328844?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0672328844">The Ruby Way</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0672328844" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is the perfect second Ruby book for serious programmers. The Ruby Way contains more than four hundred examples explaining how to do everything from distribute Ruby with Rinda to functional programming techniques.</em><hr></div>When you look at a language like Java, you see this ponderous, bureaucratic process for language change. Java does not include dangerous features like macros or open classes, and as a result change can only come from the language&#8217;s implementation, not from out on the <a href="http://weblog.raganwald.com/2008/02/raganwald-at-rubyfringe.html" title="Raganwald at RubyFringe">fringe</a> where people are using it and creating their own features to address their own needs.<br /><br /><font size=-1><em>(As someone pointed out, not all languages with centralized control evolve as slowly as Java. But they still are centralized, they still impose a vision from the top. The point is about central planning vs. the free market if you to toss another metaphor on the pile.)</em></font><br /><br />Lispers talk about Bottom-Up Programming. Well, dangerous features enable bottom-up language evolution. We discovered we like Symbol#to_proc because it bubbled up from the bottom. Someone invents something. If other people like it, they use it. The word gets around. People improve on it. Eventually it gains acceptance and becomes the de facto way to write code.<br /><br />This is true in all languages, but languages&#8212;like Ruby&#8212;that include dangerous features give the fringe a broader latitude to invent new things. Of course, they also break things and they invent stupid things and they get excited and write entire applications by patching core classes instead of writing new classes and commit all sorts of sin.<br /><br /><blockquote>The number of readers who seem unable to get past the literal syntax-as-solution of <code>(1..100).inject(&amp;:+)</code> and grasp that the interesting bit isn&rsquo;t the literal utility of that line of code, or that there are others ways to implement the same functionality, or that pet language X has an easier/smaller/cleaner mechanism for summing integers, or that there are &ldquo;better&rdquo; lines of &ldquo;cooler&rdquo; code, is really quite depressing to me.<br /><br />Is it really so difficult to work out that the interesting bits are in the mere existence&mdash;or not&mdash;of that code at all, per the developer&rsquo;s whim?</blockquote><div>&mdash;Chris Cummer</div><br />But they will also invent Symbol#to_proc. The &#8220;marketplace&#8221; has voted very strongly in favour of Symbol#to_proc, so much so that it is now in the next revision of the language. Maybe you love Symbol#to_proc, maybe you hate it. But somebody loves it, enough to have created it, and enough other people liked it that you can find implementations everywhere. So it clearly has some appeal. But that isn&rsquo;t the point. Even if it is a terrible feature, it is a feature invented by the people and for the people, not a feature pushed down from above.<br /><br />Open classes makes invention possible in real time. No committee. No waiting for the next language revision. If you think of it, you can try it. Does Symbol#to_proc make it worthwhile? How about <a href="http://andand.rubyforge.org">andand</a>? Why don&#8217;t <em>you</em> tell <em>me</em>? I was serious when I asked you what you think of it.<br /><br /><strong>Are you young at heart?</strong><br /><br />For some, languages are best when they are mature, when there is nothing left to discover, when all of the &#8220;best practices&#8221; have been laid down in stone. There&#8217;s a comforting stability, a knowledge that some hot shot they hire tomorrow will not arrive with a bunch of new techniques you have never heard of. In mature, stable environments the people around the longest have the most authority.<br /><br />When anybody can invent a new thing, it&#8217;s the youngsters who hold the power. If you don&#8217;t like the way Ruby handles nil, you can write your own <a href="http://weblog.raganwald.com/2008/01/objectandand-objectme-in-ruby.html" title="Object#andand &amp; Object#me in Ruby">andand</a>. Surprise surprise, so did half a dozen other people, so for the moment you&#8217;re going to find that there is no clear standard, no &#8220;One obvious way to do it&#8221; in Ruby. That kind of thing is <em>painful</em> for a certain type of personality: they want to know &#8220;Which way is the best.&#8221; Ideally, they want Matz (or as one person commented, Guido) to anoint one of these the &#8220;winner&#8221; by building it into the core. That way the oldsters get the power back, they have the experience so they have memorized more of the core API.<br /><br />Invention isn&#8217;t its own reward. Creating new stuff for the sake of novelty wears thin pretty quickly. But when you are making up the rules, you get to stack them in your favour. If you create it, it works for your needs. Naturally, there is an argument that the mature, tested heavyweight whatsis is better than your half-baked roll-your-own whatsis. or at least, there is an argument if we are talking about an Enterprise Transactional Data Processing Platform.<br /><br />But look at Rails. It is much smaller than something like Spring. So it was much better for 37 Signals than Spring, even though they rolled their own. Rolling your own is a lot harder in a language&#8212;like Java&#8212;that doesn&#8217;t let you have the dangerous features. The trade-offs between using the old and inventing the new are different in a language like Ruby. You still want to use what already works most of the time. But there&#8217;re a lot more places where inventing something new makes sense.<br /><br /><strong>Ignorance is Strength</strong><br /><br />Naturally, a lot of people are going to get the trade-off wrong. They&#8217;ll reinvent something that already exists. Or they&#8217;ll gratuitously use a dangerous feature when a perfectly serviceable safe feature is easier and faster to use. That&#8217;s the consequence of giving people a choice, sometimes they choose wrong. Especially if they are young, especially if they don&#8217;t know any better.<br /><br />But guess what? Not knowing any better is what made David create Rails. he didn&#8217;t know Ruby doesn&#8217;t work for web applications. He didn&#8217;t know it&#8217;s wrong to create a web framework when there are so many sitting on the shelf waiting for you to use them right out of the box.<br /><br />When I look at some code like <code>(1..100).inject(&amp;:+)</code>, I see the thing in Ruby that made Rails possible. I see all of the good things&#8212;and all of the bad things too. In that way, it&#8217;s totemic. And in truth, I think you can really decide for yourself what you think of Ruby just from looking at that one snippet of code.<br /><br />If it scares the bejeezus out of you, if you start thinking of rules to impose on your team (we will use no more than three of the following seven gems on any one project. You will have an Architect approve any modification to one of the following 132 classes&#8230;), then Ruby is not for you.<br /><br />But if you love <code>(1..100).inject(&amp;:+)</code>, if it fires up your imagination, if you think that you might write your own gem one day and see if the community likes your idea for improving the language, then I think you will be able to handle the inevitable snafus with a pragmatic shrug of the shoulders (<em>Maybe I shouldn&#8217;t have extensively patched the Array class just so that I could steal the { x => y } notation for my pattern-matching DSL</em>). You will evolve your judgement so that you know when to pull out the dangerous features and when to use restraint.<br /><br />And whether you love open classes or hate them, whether you can think of a way to use them or whether you think there is always a better way, the indisputable truth about them is that Rubyists <em>are</em> using them to evolve the language from the bottom up, to find new ways to do things. Good things, bad things, beautiful things, ugly things&hellip; they are all New Things.<br /><br />And ultimately, that is what this line of code says to me about Ruby. It says that this is a language where the fringe is inventing new things. And to embrace ruby is to embrace the idea of a language being propelled by its user base. <br /><br />I use the language, so I obviously have some degree of comfort with the idea of a language evolving from the bottom up. But what do <em>you</em> think? It&rsquo;s your opinion that really matters, not mine.<br /><hr/><br /><ol><li><a name="to_1"></a><strong>Explanation</strong>: <code>(1..100)</code> creates a <em>Range</em>. For our purposes, this is equivalent to a collection of the whole numbers from one to one hundred, inclusive (The major way in which it differs from an array for us is that it doesn&rsquo;t actually require one hundred spots in memory. Ranges are also useful for matching.) The #inject method is called <code>fold</code> or <code>reduce</code> in other languages. Expressed like this, it applies the &ldquo;+&rdquo; function to the elements of our range, giving us the sum. <a href="http://en.wikipedia.org/wiki/Carl_Friedrich_Gauss">Primary school students</a> could tell you an easier way to obtain the sum, of course, but we will ignore that for now.<br /><br />Ruby doesn&rsquo;t actually have a function called <code>+</code>. What actually happens is that <code>#inject</code> wants a block. The <code>&amp;</code> operator converts Proc objects into blocks and block into Proc objects. In this case, it tries to convert the symbol <code>:+</code> into a block. The conversion uses Ruby&rsquo;s built-in coercion mechanism. That mechanism checks to see whether we have a Proc object. If not, it sends the <code>#to_proc</code> method to the argument to make a Proc. If the Symbol <code>:+</code> has a <code>#to_proc</code> method, it will be called. In Ruby 1.9 it has a <code>#to_proc</code> method. That method returns a Proc that takes its first argument and sends the <code>+</code> method to it along with any other arguments that may be present.<br /><br />So, <code>&amp;:+</code> really means <code>{ |x, y| x + y }</code>. And the whole thing gives us a simple sum, just as <code>(1..100).inject(&amp;:*)</code> would give us the product. Now that you know that, what does <code>(1..100).map(&amp;:to_s).map(&amp;:size)</code> do?<br /><br />[<a href="#from_1">back</a>]</li><li><a name="to_2"></a>My favourite? Really?<br /><br />Actually, yes. Not the most powerful. Not the most compelling. Not even the most concise, and I don&rsquo;t defend it as being superior to <code>(1..100).inject { |acc, n| acc + n }</code> in any way. And not my favourite line of code from any language: Ruby isn&rsquo;t my favourite programming language, so it would be surprising if this were my all-time favourite line of code.<br /><br />But it is&mdash;to me&mdash;a totemic line of Ruby code. A line that demonstrates what a lot of Ruby is all about as a language. Its good and its bad. People have written to say that you coul duse <code>sum</code> or whatsis or jeebus to do the same thing in Ruby or in other languages, so this is a bad example. No it&rsquo;s not! Trying to write an unassailable line of code that everyone will worship for its perfection is a fool&rsquo;s errand. The point is to demonstrate something of Ruby&rsquo;s character, especially in its evolution.<br /><br />As someone wisely pointed out, the equivalent code in other languages needn&rsquo;t sum the numbers from one to one hundred, it needs to demonstrate something about that language&rsquo;s culture and evolution. Java might show something with generics and type erasure. C# might do something with LINQ.<br /><br />[<a href="#from_2">back</a>]</li></ol><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2008/02/1100inject.html" title="permanent link">(1..100).inject(&:+)</a></span>
+					<div style="clear:both;"></div>I want to show you my favourite line of ruby code:<sup><font size="1"><a href="#to_1" name="from_1">1</a>, <a href="#to_2" name="from_2">2</a></font></sup><pre><code><br />(1..100).inject(&amp;:+)<br /></code></pre>This code works out of the box in Ruby 1.9. This also works in Ruby 1.8 with Rails, thanks to this chunk of code called &ldquo;Symbol#to_proc&rdquo;:<pre><code><br />class Symbol<br />  # Turns the symbol into a simple proc, which is especially useful for enumerations. <br />  def to_proc<br />    Proc.new { |*args| args.shift.__send__(self, *args) }<br />  end<br />end<br /></code></pre>Now, I should explain what I like about it. No, we aren&rsquo;t going to debate whether <code>{ |acc, n| acc + n }</code> contains accidental complexity. We are not going to talk about why this is better than whatever you would do in PHP or Visual Basic to sum the integers. Let go of any idea that this article is about golf. I like this line of code because it says a lot about how the Ruby language works. I do not want to talk about those other things, they are not interesting to either of us.<br /><br />The two things I <em>do</em> want to talk about are that: 1.&nbsp;Somebody made Symbol#to_proc in Ruby 1.8, and that 2.&nbsp;It became part of Ruby 1.9. Let&rsquo;s start with how it works.<br /><br />Symbol#to_proc works because Symbol is an <em>Open Class</em> in Ruby. And Ruby is <em>Dynamically Typed</em>, meaning you can modify classes and objects at run time, thus Symbol gets the to_proc method added when you run the above code. (You sometimes see the expression &#8220;Dynamic Typing&#8221; used to describe a system where you don&#8217;t need to write the type of an object before using it. I call that &#8220;Latent Typing&#8221; and use the word &#8220;Dynamic&#8221; to describe a system where types can <em>change</em> thanks to adding or removing methods. In this case, we are adding a method to <em>every</em> Symbol in a program, which is pretty dynamic.)<br /><br /><strong>The Acid Test</strong><br /><br />One of the things that really intrigues me this little snippet of code, <code>(1..100).inject(&amp;:+)</code>, is that you can tell an awful lot about someone&#8217;s attitude towards programming styles, languages, and cultural bias by asking them what they think of it. It touches on functional programming, on brevity, and in this case, on open classes.<br /><br />Take a moment to really think this through. <em>What do you think of the fact that someone sat down and modified one of Ruby&#8217;s most core classes, Symbol?</em><br /><br />This is a decidedly non-trivial thing to do. Changing Symbol in any way opens up a Pandora&#8217;s box of risk. You can break a lot of code. You can&#8212;I beg your pardon, you <strong>will</strong>&#8212;confuse people who have never heard of Symbol#to_proc. Just so you can express &#8220;Fold the numbers from one to one hundred using addition&#8221; in a very direct manner eliminating the boilerplate of <code>{ |a, n| a + n }</code>.<br /><br />If Symbol wasn&#8217;t an open class, how would <code>inject(&amp;:+)</code> have been added to the language? Open classes and other &#8220;turtles all the way down&#8221; features are <em>dangerous</em>. But dangerous features help a language evolve. Lisp&#8217;s macros are extremely dangerous. And they are also what made it possible to discover/invent CLOS. Had there been no macros, the only way to experiment with new ideas in OO would be to create whole new language, an exercise in Accidental Complexity.<br /><br /><div class="book"><hr><em><a id="lnx0" name="evtst|a|0672328844" href="http://www.amazon.com/gp/product/0672328844?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0672328844"><img src="http://raganwald.github.com/uploaded_images/the_ruby_way.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0672328844" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br><a name="evtst|a|0672328844" href="http://www.amazon.com/gp/product/0672328844?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0672328844">The Ruby Way</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0672328844" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is the perfect second Ruby book for serious programmers. The Ruby Way contains more than four hundred examples explaining how to do everything from distribute Ruby with Rinda to functional programming techniques.</em><hr></div>When you look at a language like Java, you see this ponderous, bureaucratic process for language change. Java does not include dangerous features like macros or open classes, and as a result change can only come from the language&#8217;s implementation, not from out on the <a href="http://raganwald.github.com/2008/02/raganwald-at-rubyfringe.html" title="Raganwald at RubyFringe">fringe</a> where people are using it and creating their own features to address their own needs.<br /><br /><font size=-1><em>(As someone pointed out, not all languages with centralized control evolve as slowly as Java. But they still are centralized, they still impose a vision from the top. The point is about central planning vs. the free market if you to toss another metaphor on the pile.)</em></font><br /><br />Lispers talk about Bottom-Up Programming. Well, dangerous features enable bottom-up language evolution. We discovered we like Symbol#to_proc because it bubbled up from the bottom. Someone invents something. If other people like it, they use it. The word gets around. People improve on it. Eventually it gains acceptance and becomes the de facto way to write code.<br /><br />This is true in all languages, but languages&#8212;like Ruby&#8212;that include dangerous features give the fringe a broader latitude to invent new things. Of course, they also break things and they invent stupid things and they get excited and write entire applications by patching core classes instead of writing new classes and commit all sorts of sin.<br /><br /><blockquote>The number of readers who seem unable to get past the literal syntax-as-solution of <code>(1..100).inject(&amp;:+)</code> and grasp that the interesting bit isn&rsquo;t the literal utility of that line of code, or that there are others ways to implement the same functionality, or that pet language X has an easier/smaller/cleaner mechanism for summing integers, or that there are &ldquo;better&rdquo; lines of &ldquo;cooler&rdquo; code, is really quite depressing to me.<br /><br />Is it really so difficult to work out that the interesting bits are in the mere existence&mdash;or not&mdash;of that code at all, per the developer&rsquo;s whim?</blockquote><div>&mdash;Chris Cummer</div><br />But they will also invent Symbol#to_proc. The &#8220;marketplace&#8221; has voted very strongly in favour of Symbol#to_proc, so much so that it is now in the next revision of the language. Maybe you love Symbol#to_proc, maybe you hate it. But somebody loves it, enough to have created it, and enough other people liked it that you can find implementations everywhere. So it clearly has some appeal. But that isn&rsquo;t the point. Even if it is a terrible feature, it is a feature invented by the people and for the people, not a feature pushed down from above.<br /><br />Open classes makes invention possible in real time. No committee. No waiting for the next language revision. If you think of it, you can try it. Does Symbol#to_proc make it worthwhile? How about <a href="http://andand.rubyforge.org">andand</a>? Why don&#8217;t <em>you</em> tell <em>me</em>? I was serious when I asked you what you think of it.<br /><br /><strong>Are you young at heart?</strong><br /><br />For some, languages are best when they are mature, when there is nothing left to discover, when all of the &#8220;best practices&#8221; have been laid down in stone. There&#8217;s a comforting stability, a knowledge that some hot shot they hire tomorrow will not arrive with a bunch of new techniques you have never heard of. In mature, stable environments the people around the longest have the most authority.<br /><br />When anybody can invent a new thing, it&#8217;s the youngsters who hold the power. If you don&#8217;t like the way Ruby handles nil, you can write your own <a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html" title="Object#andand &amp; Object#me in Ruby">andand</a>. Surprise surprise, so did half a dozen other people, so for the moment you&#8217;re going to find that there is no clear standard, no &#8220;One obvious way to do it&#8221; in Ruby. That kind of thing is <em>painful</em> for a certain type of personality: they want to know &#8220;Which way is the best.&#8221; Ideally, they want Matz (or as one person commented, Guido) to anoint one of these the &#8220;winner&#8221; by building it into the core. That way the oldsters get the power back, they have the experience so they have memorized more of the core API.<br /><br />Invention isn&#8217;t its own reward. Creating new stuff for the sake of novelty wears thin pretty quickly. But when you are making up the rules, you get to stack them in your favour. If you create it, it works for your needs. Naturally, there is an argument that the mature, tested heavyweight whatsis is better than your half-baked roll-your-own whatsis. or at least, there is an argument if we are talking about an Enterprise Transactional Data Processing Platform.<br /><br />But look at Rails. It is much smaller than something like Spring. So it was much better for 37 Signals than Spring, even though they rolled their own. Rolling your own is a lot harder in a language&#8212;like Java&#8212;that doesn&#8217;t let you have the dangerous features. The trade-offs between using the old and inventing the new are different in a language like Ruby. You still want to use what already works most of the time. But there&#8217;re a lot more places where inventing something new makes sense.<br /><br /><strong>Ignorance is Strength</strong><br /><br />Naturally, a lot of people are going to get the trade-off wrong. They&#8217;ll reinvent something that already exists. Or they&#8217;ll gratuitously use a dangerous feature when a perfectly serviceable safe feature is easier and faster to use. That&#8217;s the consequence of giving people a choice, sometimes they choose wrong. Especially if they are young, especially if they don&#8217;t know any better.<br /><br />But guess what? Not knowing any better is what made David create Rails. he didn&#8217;t know Ruby doesn&#8217;t work for web applications. He didn&#8217;t know it&#8217;s wrong to create a web framework when there are so many sitting on the shelf waiting for you to use them right out of the box.<br /><br />When I look at some code like <code>(1..100).inject(&amp;:+)</code>, I see the thing in Ruby that made Rails possible. I see all of the good things&#8212;and all of the bad things too. In that way, it&#8217;s totemic. And in truth, I think you can really decide for yourself what you think of Ruby just from looking at that one snippet of code.<br /><br />If it scares the bejeezus out of you, if you start thinking of rules to impose on your team (we will use no more than three of the following seven gems on any one project. You will have an Architect approve any modification to one of the following 132 classes&#8230;), then Ruby is not for you.<br /><br />But if you love <code>(1..100).inject(&amp;:+)</code>, if it fires up your imagination, if you think that you might write your own gem one day and see if the community likes your idea for improving the language, then I think you will be able to handle the inevitable snafus with a pragmatic shrug of the shoulders (<em>Maybe I shouldn&#8217;t have extensively patched the Array class just so that I could steal the { x => y } notation for my pattern-matching DSL</em>). You will evolve your judgement so that you know when to pull out the dangerous features and when to use restraint.<br /><br />And whether you love open classes or hate them, whether you can think of a way to use them or whether you think there is always a better way, the indisputable truth about them is that Rubyists <em>are</em> using them to evolve the language from the bottom up, to find new ways to do things. Good things, bad things, beautiful things, ugly things&hellip; they are all New Things.<br /><br />And ultimately, that is what this line of code says to me about Ruby. It says that this is a language where the fringe is inventing new things. And to embrace ruby is to embrace the idea of a language being propelled by its user base. <br /><br />I use the language, so I obviously have some degree of comfort with the idea of a language evolving from the bottom up. But what do <em>you</em> think? It&rsquo;s your opinion that really matters, not mine.<br /><hr/><br /><ol><li><a name="to_1"></a><strong>Explanation</strong>: <code>(1..100)</code> creates a <em>Range</em>. For our purposes, this is equivalent to a collection of the whole numbers from one to one hundred, inclusive (The major way in which it differs from an array for us is that it doesn&rsquo;t actually require one hundred spots in memory. Ranges are also useful for matching.) The #inject method is called <code>fold</code> or <code>reduce</code> in other languages. Expressed like this, it applies the &ldquo;+&rdquo; function to the elements of our range, giving us the sum. <a href="http://en.wikipedia.org/wiki/Carl_Friedrich_Gauss">Primary school students</a> could tell you an easier way to obtain the sum, of course, but we will ignore that for now.<br /><br />Ruby doesn&rsquo;t actually have a function called <code>+</code>. What actually happens is that <code>#inject</code> wants a block. The <code>&amp;</code> operator converts Proc objects into blocks and block into Proc objects. In this case, it tries to convert the symbol <code>:+</code> into a block. The conversion uses Ruby&rsquo;s built-in coercion mechanism. That mechanism checks to see whether we have a Proc object. If not, it sends the <code>#to_proc</code> method to the argument to make a Proc. If the Symbol <code>:+</code> has a <code>#to_proc</code> method, it will be called. In Ruby 1.9 it has a <code>#to_proc</code> method. That method returns a Proc that takes its first argument and sends the <code>+</code> method to it along with any other arguments that may be present.<br /><br />So, <code>&amp;:+</code> really means <code>{ |x, y| x + y }</code>. And the whole thing gives us a simple sum, just as <code>(1..100).inject(&amp;:*)</code> would give us the product. Now that you know that, what does <code>(1..100).map(&amp;:to_s).map(&amp;:size)</code> do?<br /><br />[<a href="#from_1">back</a>]</li><li><a name="to_2"></a>My favourite? Really?<br /><br />Actually, yes. Not the most powerful. Not the most compelling. Not even the most concise, and I don&rsquo;t defend it as being superior to <code>(1..100).inject { |acc, n| acc + n }</code> in any way. And not my favourite line of code from any language: Ruby isn&rsquo;t my favourite programming language, so it would be surprising if this were my all-time favourite line of code.<br /><br />But it is&mdash;to me&mdash;a totemic line of Ruby code. A line that demonstrates what a lot of Ruby is all about as a language. Its good and its bad. People have written to say that you coul duse <code>sum</code> or whatsis or jeebus to do the same thing in Ruby or in other languages, so this is a bad example. No it&rsquo;s not! Trying to write an unassailable line of code that everyone will worship for its perfection is a fool&rsquo;s errand. The point is to demonstrate something of Ruby&rsquo;s character, especially in its evolution.<br /><br />As someone wisely pointed out, the equivalent code in other languages needn&rsquo;t sum the numbers from one to one hundred, it needs to demonstrate something about that language&rsquo;s culture and evolution. Java might show something with generics and type erasure. C# might do something with LINQ.<br /><br />[<a href="#from_2">back</a>]</li></ol><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2008/02/1100inject.html" title="permanent link">12:25 PM</a>
+						&para; <a href="http://raganwald.github.com/2008/02/1100inject.html" title="permanent link">12:25 PM</a>
 
 					 
 				</span> 
@@ -44,266 +44,266 @@
 						
 							<div class="blogComment">
 								<a name="3228018527405451573"></a> 				Well, I guess the question is whether you want a code base which is in continual flux and may not do what you think it's doing, or if you want a codebase which is simple and stabilized.<BR/><BR/>Now, open classes are Teh Eevil.  However, they are digging at a major pain point -- somehow, developers need the ability to easily extend functionality that's already in existence.<BR/><BR/>A much nicer approach, however, is offered by implied static typing.  That lets you have your cake (the ability to add new functionality to existing codebase) and eat it, too (in the form of brevity and type safety).<BR/><BR/>Localized overloading is another potential solution which doesn't offer the potential damage of Ruby's classes.<BR/><BR/>Again, my standard caveat -- I'm a fan of open classes if my other option is Java's type system.  However, it's not something that should be done willy-nilly, because it obscures the actual behavior of the code in a way that violates the Principle of Least Surprise.  When I use && in my code, I expect it to mean the language-specific definition of &&.  If you change that, and I have to come in and fix bugs in your code caused by that surprise, I will be cranky.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203966960000#c3228018527405451573" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17844778275497805797" rel="nofollow">Robert Fischer</a> : 2:16 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203966960000#c3228018527405451573" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17844778275497805797" rel="nofollow">Robert Fischer</a> : 2:16 PM</div>
 
 								<span class="item-control blog-admin pid-83827799"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3228018527405451573" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1383134168552555968"></a> 				Robert:<BR/><BR/>You are right that there is a pain point, and I happen to agree with you that Open Classes are not the final word on how to address that pain point.<BR/><BR/>However, I think there is a more general issue here about the fact that a language which is predictable and stable is not evolving, regardless of how well it was designed to begin with.<BR/><BR/>We can argue about the exact mechanisms, but fundamentally I think that languages with dangerous features are the ones that offer the most potential for bottom-up evolution.<BR/><BR/>But this is like saying that Espresso is the best coffee... it isn't everybody's cup of tea ;-)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203967260000#c1383134168552555968" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:21 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203967260000#c1383134168552555968" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:21 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1383134168552555968" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4673121305808382454"></a> 				Is this not a false dichotomy, Reg?<BR/><BR/>How much experimentation and innovation you can tolerate in your language is going to be related to the context in which you use it.<BR/><BR/>Are you working with a small team with a lot of continuity, or a large one with lots of turnover?  Are you building a one-off project or a monolithic, mission-critical app whose source code will haunt the organization for decades?  <BR/><BR/>Depending on the use and circumstance, it may be obvious that one or the other (or something in between) is the better fit.<BR/><BR/>Choosing language features based on "marketing lifestyle", i.e. are you a young-at-heart innovator or a frightened stodgy-old-fart, probably isn't the best way to think about the choices.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203967860000#c4673121305808382454" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11526878435261617011" rel="nofollow">Marc Hamann</a> : 2:31 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203967860000#c4673121305808382454" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11526878435261617011" rel="nofollow">Marc Hamann</a> : 2:31 PM</div>
 
 								<span class="item-control blog-admin pid-230931515"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4673121305808382454" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="335209645711853322"></a> 				Marc:<BR/><BR/>I have found that people's cultural biases drive their decision, and the technical factors come afterwards as they rationalize a decision they already made.<BR/><BR/>You say that the environment drives your tolerance for innovation. Hmmm... don't you think people choose whether to work for BigCo or for a startup for much the same reason they choose whether to work with tools that are mature and stable or are evolving rapidly?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203968100000#c335209645711853322" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:35 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203968100000#c335209645711853322" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:35 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=335209645711853322" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4755621051636590622"></a> 				Well, I'm probably just a brainwashed Pythonista, but I think I prefer the balance in the Python world.<BR/><BR/>In python-land, innovations happen from the community on up (witness: closures, generators, iterators, "with", any number more things) but they don't happen from people slinging around changes to fundamental python concepts in production code; they happen from considered debate followed finally by approval from above (Guido).<BR/><BR/>We have a language that's evolving enough, while still reliably stable inside each version.<BR/><BR/>(Not that I think it's the *best* solution, mind you. Just that I prefer that balance.)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203968580000#c4755621051636590622" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 2:43 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203968580000#c4755621051636590622" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 2:43 PM</div>
 
 								<span class="item-control blog-admin pid-831715508"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4755621051636590622" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8256034823086064944"></a> 				Like I said, Bill, it's your opinion that matters!<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203968880000#c8256034823086064944" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:48 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203968880000#c8256034823086064944" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:48 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8256034823086064944" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4468284883953831083"></a> 				<I>I have found that people's cultural biases drive their decision</I><BR/><BR/>I agree this if often true, but I also think it is the wrong way to make decisions. ;-)  I would argue that to be truly good at making this kind of technical choice, you need to deeply understand your problems and the range of options available to solve them.  In a sense, an unthinking cultural bias to be an innovator by doing what the other innovators are doing is <I>less</I> creative and innovative than finding good trade-off solutions that fit the problems at hand.<BR/><BR/><I>don't you think people choose whether to work for BigCo or for a startup for much the same reason they choose whether to work with tools that are mature and stable or are evolving rapidly</I><BR/><BR/>Again you are assuming a mutually exclusive choice from which all else follows.  Though BigCo is more likely to be conservative and the startup innovative in their technical choices, this is not <I>necessarily</I> always the case: BigCo could have an innovative department or product, while startup could have innovative marketing and sales strategy but conservative technology.<BR/><BR/>Surely you don't think that the only choice is to be one kind of cookie-cutter clone or the other?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203969480000#c4468284883953831083" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11526878435261617011" rel="nofollow">Marc Hamann</a> : 2:58 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203969480000#c4468284883953831083" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11526878435261617011" rel="nofollow">Marc Hamann</a> : 2:58 PM</div>
 
 								<span class="item-control blog-admin pid-230931515"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4468284883953831083" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3921212895512871409"></a> 				Marc:<BR/><BR/>The race does not always go to the swift, nor the battle to the strong, <EM>but that is the way to bet</EM>.<BR/><BR/>We are all free to make our own decisions. I state that this is how a huge number of people make decisions about technology and tools. Should they? Perhaps not. Do they? Yes.<BR/><BR/>Should you choose Ruby becuase you like its culture? Should you choose Ruby because you enjoy an environment of change and evolution? I can't tell you what to do or what not to do, all I can do is point out the factors in play.<BR/><BR/>As I said, the article asks a question of its readers and attempts to explain the significance of the answer.<BR/><BR/>As for how to make choices, I am in favour of Bob Sutton's suggestion to have <A HREF="http://bobsutton.typepad.com/my_weblog/2006/07/strong_opinions.html" REL="nofollow">Strong Opinions, Weakly Held</A>.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203970020000#c3921212895512871409" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:07 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203970020000#c3921212895512871409" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:07 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3921212895512871409" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3041026212010668023"></a> 				+1 to Bill.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203972000000#c3041026212010668023" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01765211985760464677" rel="nofollow">Brandon Corfman</a> : 3:40 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203972000000#c3041026212010668023" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01765211985760464677" rel="nofollow">Brandon Corfman</a> : 3:40 PM</div>
 
 								<span class="item-control blog-admin pid-37552936"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3041026212010668023" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5093403173525629090"></a> 				It would seem that the majority of people still choose the Devil you can strongly type over the Devil you can't.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203974040000#c5093403173525629090" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08437073136758086679" rel="nofollow">Chalain</a> : 4:14 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203974040000#c5093403173525629090" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08437073136758086679" rel="nofollow">Chalain</a> : 4:14 PM</div>
 
 								<span class="item-control blog-admin pid-954195632"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5093403173525629090" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7995917291193310148"></a> 				I love it - but the Smug Lisp<I>^H^H^H^H</I>Forth Weenie in me kind of wonders what's so special about + that it can't be used in that context itself...<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203974400000#c7995917291193310148" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03775254923855147509" rel="nofollow">Gwenhwyfaer</a> : 4:20 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203974400000#c7995917291193310148" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03775254923855147509" rel="nofollow">Gwenhwyfaer</a> : 4:20 PM</div>
 
 								<span class="item-control blog-admin pid-23579630"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7995917291193310148" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8466278240980951107"></a> 				I like it. It's so Forth-ish.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203974700000#c8466278240980951107" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07505997833685327219" rel="nofollow">Daniel</a> : 4:25 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203974700000#c8466278240980951107" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07505997833685327219" rel="nofollow">Daniel</a> : 4:25 PM</div>
 
 								<span class="item-control blog-admin pid-1712528103"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8466278240980951107" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2944699180833857846"></a> 				<I>However, I think there is a more general issue here about the fact that a language which is predictable and stable is not evolving, regardless of how well it was designed to begin with.</I><BR/><BR/>That's not true at all.  Java is the most predictable and stable of popular languages, and even that is having a lot of evolving and exciting stuff going on (see Generics and the current Closure debate).  Now, where the debate is coming from is from *outside* languages -- C++ in the case of Generics, and Groovy in the case of Closures.  It maintains stability by adding new features at major release boundaries (Java2, Java5, Java7), so if you know what JVM version you're dealing with, you know what kind of code to expect.<BR/><BR/>The other thing to look at is languages like Ocaml, which have extremely stable core syntax, but which adds a syntax extension through the CamlP4 pre-processor.  Again, when you're building, you have to explicitly handle the pre-processing, so you're not going to be surprised when some coder opens up your class and messes with it half-way through your code execution.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203975240000#c2944699180833857846" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17844778275497805797" rel="nofollow">Robert Fischer</a> : 4:34 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203975240000#c2944699180833857846" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17844778275497805797" rel="nofollow">Robert Fischer</a> : 4:34 PM</div>
 
 								<span class="item-control blog-admin pid-83827799"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2944699180833857846" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2282698202716604835"></a> 				Robert:<BR/><BR/>I have been watching Java for ten years, and all I can say is that when you say the words "Having a lot of evolving and exciting stuff going on" you mean something different than when I say "Having a lot of evolving and exciting stuff going on."<BR/><BR/>Going through deep soul-searching over closures in 2008 is not what I call an exciting debate. But that's just me! As the post points out, it's your opinion that matters, not mine.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203976080000#c2282698202716604835" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:48 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203976080000#c2282698202716604835" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:48 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2282698202716604835" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5444084273724490545"></a> 				I would prefer a programming language that let one replace that line of code with the single token "5050".<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203978900000#c5444084273724490545" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09983774593651729845" rel="nofollow">Andrew</a> : 5:35 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203978900000#c5444084273724490545" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09983774593651729845" rel="nofollow">Andrew</a> : 5:35 PM</div>
 
 								<span class="item-control blog-admin pid-1730719146"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5444084273724490545" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4083087857874605392"></a> 				"(1..100).inject(&:+)"<BR/><BR/>I don't like it, because it *should* be:<BR/><BR/>(1..100).inject(+)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203982620000#c4083087857874605392" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13177589188773325675" rel="nofollow">Douglas</a> : 6:37 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203982620000#c4083087857874605392" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13177589188773325675" rel="nofollow">Douglas</a> : 6:37 PM</div>
 
 								<span class="item-control blog-admin pid-784256968"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4083087857874605392" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3291301149165625402"></a> 				Funny how you mention that snippet... it's amazingly close to my favorite one:<BR/><BR/>(1..10).reduce(&:*)<BR/><BR/>Key differences are that I much prefer "reduce" over "inject" (fortunately this alias is standard in 1.9) and I normally point to multiplication (many other languages have built-in "sum" methods, but few offer "factorial" or even "product" by default, so people tend to reply "so what, I just use array_sum in my favorite language and it is much more readable").<BR/><BR/>As for the range... I just tend to use much shorter values for demonstration :)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203985080000#c3291301149165625402" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14294388654620215152" rel="nofollow">mernen</a> : 7:18 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203985080000#c3291301149165625402" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14294388654620215152" rel="nofollow">mernen</a> : 7:18 PM</div>
 
 								<span class="item-control blog-admin pid-1852084484"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3291301149165625402" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1610989631371310918"></a> 				In the 1.4 to Java7 set of releases, Java has explored non-blocking I/O, generics, concurrency, non-blocking I/O, dynamic language support in the VM, new garbage collection methods, and now closures.  And that's in the core language, not including library experimentation (like Spring).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203987600000#c1610989631371310918" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17844778275497805797" rel="nofollow">Robert Fischer</a> : 8:00 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203987600000#c1610989631371310918" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17844778275497805797" rel="nofollow">Robert Fischer</a> : 8:00 PM</div>
 
 								<span class="item-control blog-admin pid-83827799"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1610989631371310918" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2555872183853088826"></a> 				The reason I don't like this is that I don't think it should be necessary to use <I>to_proc</I>. Why is <I>+</I> not a method? Just as I've always been able to do this:<BR/><BR/><I>['2007-01-01', '2008-01-01'].map &Date.method(:parse)</I><BR/><BR/>I want to do this:<BR/><BR/><I>(1..10).inject &method(:+)</I><BR/><BR/>Prefixing the last-argument with an ampersand has always worked for Proc and Method instances. Wrapping in a Proc seems like an indirect solution to the real problem.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203993180000#c2555872183853088826" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02429208719755091086" rel="nofollow">Nathan de Vries</a> : 9:33 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203993180000#c2555872183853088826" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02429208719755091086" rel="nofollow">Nathan de Vries</a> : 9:33 PM</div>
 
 								<span class="item-control blog-admin pid-1774657853"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2555872183853088826" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8460534852315814051"></a> 				&:+) is also looks like a really funny emoticon!  Very nice post, Reg.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203993420000#c8460534852315814051" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13435514890492313898" rel="nofollow">Benjamin</a> : 9:37 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203993420000#c8460534852315814051" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13435514890492313898" rel="nofollow">Benjamin</a> : 9:37 PM</div>
 
 								<span class="item-control blog-admin pid-215142982"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8460534852315814051" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6202829839770120970"></a> 				Nathan, Method objects generate Procs just like anything that is passed in &form to function calls. One would obviously expect that Method#to_proc generates a very lightweight wrapper, but I'd also expect Ruby 1.9's native Symbol#to_proc to be very efficient (I haven't checked).<BR/><BR/>So, in the end your proposed &method(:+) and &:+ would actually do the same thing, except &:+ is shorter and works in the language right now (since, by the current rules, method(:+) is akin to self.method(:+), not some "unbound_method_defer(:+)") :)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1203993720000#c6202829839770120970" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14294388654620215152" rel="nofollow">mernen</a> : 9:42 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1203993720000#c6202829839770120970" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14294388654620215152" rel="nofollow">mernen</a> : 9:42 PM</div>
 
 								<span class="item-control blog-admin pid-1852084484"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6202829839770120970" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="5211744216164821800"></a> 				<span class="deleted-comment">This post has been removed by the author.</span><br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204030200000#c5211744216164821800" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03349402280188661045" rel="nofollow">pierre</a> : 7:50 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204030200000#c5211744216164821800" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03349402280188661045" rel="nofollow">pierre</a> : 7:50 AM</div>
 
 								<span class="item-control blog-admin "><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5211744216164821800" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="6444144082547731214"></a> 				Personally, I find<BR/><BR/>foldl1 (+) [1..100]<BR/><BR/>much cleaner and easier to use :-)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204030380000#c6444144082547731214" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03349402280188661045" rel="nofollow">pierre</a> : 7:53 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204030380000#c6444144082547731214" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03349402280188661045" rel="nofollow">pierre</a> : 7:53 AM</div>
 
 								<span class="item-control blog-admin pid-1233249181"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6444144082547731214" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3753582335289872742"></a> 				Pierre:<BR/><BR/>So do I, but this post is about why a certain piece of Ruby code exemplifies Ruby's innovate-from-the-fringe culture.<BR/><BR/>So... if what you quoted is Haskell, I like it but I can't "connect the dots" between it and this post.<BR/><BR/>On the other hand, if you show me a way to write that in Ruby and popularize it to the point where it is added to a future set of core libraries... it may become an even better example of innovation from the fringe.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204031100000#c3753582335289872742" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:05 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204031100000#c3753582335289872742" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:05 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3753582335289872742" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="2891323138775256157"></a> 				My problem -- cause I always have at least one :-) -- is that finding this line of code for the very first time in my life, at 4am while trying to fix someone else's program, would cause me to throw something heavy across the room in frustration.<BR/><BR/>I love this type of thing when I am playing with a language, but it is just not 'industrial' enough for me to want to stick it into production. Cool is only cool if it isn't making you miserable.<BR/><BR/><BR/>Paul. <BR/><A HREF="http://theprogrammersparadox.blogspot.com" REL="nofollow">http://theprogrammersparadox.blogspot.com</A><br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204049940000#c2891323138775256157" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 1:19 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204049940000#c2891323138775256157" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 1:19 PM</div>
 
 								<span class="item-control blog-admin pid-1233049894"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2891323138775256157" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="830071273589789307"></a> 				Paul:<BR/><BR/>Remember we are talking about an evolving language. If you learned Ruby from 1.9, you would not need to throw the book across the room, this would be standard behaviour built into the core classes.<BR/><BR/>In Ruby 1.8, it is very popular but not built in. Therefore, you throw books until you learn the idiom, and thereafter you know it.<BR/><BR/>The point being that when people invent things like this, we get to do a little market testing: if everyone throws books, the ideas go away. if enough people like them, they make their way into the language.<BR/><BR/>That's why I picked this example instead of something like andand: andand has not been proven in the marketplace. It has not been accepted into the next version.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204050360000#c830071273589789307" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:26 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204050360000#c830071273589789307" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:26 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=830071273589789307" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="45513508793441040"></a> 				Hi Reg,<BR/><BR/>It is a great example, because it brings together my two opposing sides: a) I want to find more powerful ways to represent larger and larger chunks of functionality and b) I want a simple stable platform on which to build sophisticated systems.<BR/><BR/>In a way, when I put together some collection of primitive functions (in any language or paradigm) I am -- by virtue of my programming -- actually extending the functionality of the language. I can create a set of reusable building blocks that I can then apply to my specific problems. Most languages allow that to be built on top of them to some degree or another.<BR/><BR/>Something worries me about allowing  everyone to go in low and extend the language. Perhaps it is just that too much flexibility is as dangerous as not enough? If the language is completely different at every shop, then is it really the same language? <BR/><BR/><BR/>Paul.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204052280000#c45513508793441040" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 1:58 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204052280000#c45513508793441040" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 1:58 PM</div>
 
 								<span class="item-control blog-admin pid-1233049894"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=45513508793441040" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="84118813441355618"></a> 				Your comments seem to push you in the direction of wanting a "central planning" language. It doesn't have to be Java, of course, I am told that Python works the same way.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204052700000#c84118813441355618" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:05 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204052700000#c84118813441355618" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:05 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=84118813441355618" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="674460336829434655"></a> 				The number of readers here, and in particular on N.YC, who seem unable to get past the literal syntax-as-solution of (1..100).inject(&:+) and grasp that the interesting bit isn't the literal utility of that line of code, or that there are others ways to implement the same functionality, or that pet language X has an easier/smaller/cleaner mechanism for summing integers, or that there are "better" lines of "cooler" code, is really quite depressing to me.<BR/><BR/>Is it really so difficult to work out that the interesting bits are in the mere existence - or not - of that code at all, per the developer's whim?<BR/><BR/>It's not my favourite piece of Ruby code. At the moment my favourite piece of Ruby code is:<BR/><BR/>module Kernel  <BR/>private <BR/>  def this_method()<BR/>    caller[0] =~ /`([^']*)'/ and $1 + "()"<BR/>  end<BR/>end<BR/><BR/>It's not hugely useful. You'll probably never use it. It won't win any awards and I hazard to guess if you don't know Ruby you won't likely tease out its purpose. And you can probably come up with a way to do the same in your favourite language. But it still makes me laugh every time I read it simply because it can exist at all.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204052880000#c674460336829434655" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03652713897934933857" rel="nofollow">Chris Cummer</a> : 2:08 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204052880000#c674460336829434655" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03652713897934933857" rel="nofollow">Chris Cummer</a> : 2:08 PM</div>
 
 								<span class="item-control blog-admin pid-41703090"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=674460336829434655" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1626951075499888449"></a> 				Hi Reg,<BR/><BR/>Yes, but I don't think there are any current languages that would really make me happy. Oddly, languages like Java, VB and Pascal drive me nuts because they seem too rigid, while ones like Perl or C++ offer too much rope. No doubt they are all very different tools meant to solve different problems. <BR/><BR/>I'd like something that easily allows me to express the solution in the same way I talk about it with the users. I'd like it to have a consistent philosophy, and be extendable at the low levels. But at the high level, I want the language itself to enforce very rigid rules. If I assemble some blocks for other people, I want to be able to have the computer control how they are used. I want the rope, but I don't want everyone to have access to it. <BR/><BR/>Oh yea, I'd like a mansion and a yacht too, if possible. :-)<BR/><BR/><BR/>Paul.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204055280000#c1626951075499888449" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 2:48 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204055280000#c1626951075499888449" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 2:48 PM</div>
 
 								<span class="item-control blog-admin pid-1233049894"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1626951075499888449" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7443177984918555361"></a> 				<A HREF="http://www.blogger.com/profile/09983774593651729845" REL="nofollow">Andrew</A> said:<BR/><I>I would prefer a programming language that let one replace that line of code with the single token "5050".<BR/></I><BR/><BR/>There you go:<BR/><BR/><B><BR/>: 5050 DEPTH LOCALS| D |<BR/>&nbsp;&nbsp;100 1 1- DO I LOOP<BR/>&nbsp;&nbsp;BEGIN<BR/>&nbsp;&nbsp;&nbsp;&nbsp;DEPTH D <><BR/>&nbsp;&nbsp;WHILE<BR/>&nbsp;&nbsp;&nbsp;&nbsp;+<BR/>&nbsp;&nbsp;REPEAT<BR/>;<BR/></B><BR/><BR/>It's uglier than it has to be, but I tried not to assume what "+" does, because, really, I can't. :-)<BR/><BR/>In fact, I discarded my first version after careful consideration of what "+" <I>could</I> do. :-)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204063920000#c7443177984918555361" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07505997833685327219" rel="nofollow">Daniel</a> : 5:12 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204063920000#c7443177984918555361" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07505997833685327219" rel="nofollow">Daniel</a> : 5:12 PM</div>
 
 								<span class="item-control blog-admin pid-1712528103"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7443177984918555361" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4878699291270702274"></a> 				There, I just click on the Publish link to realize a problem. The Ruby code is object oriented. The Forth code isn't, because there's no standard OO for Forth I could build upon (there are as many non-standard OO implementations as there are Forth programmers interested in OO :).<BR/><BR/>So I assumed "+" would take two numbers as parameters and return one number. The equivalent, really, of assuming the method + takes an object of the same class as self's class, and returns an object of self's class.<BR/><BR/>After all, you really can't assume "1" or "100" are numbers, can you? :-)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204064280000#c4878699291270702274" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07505997833685327219" rel="nofollow">Daniel</a> : 5:18 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204064280000#c4878699291270702274" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07505997833685327219" rel="nofollow">Daniel</a> : 5:18 PM</div>
 
 								<span class="item-control blog-admin pid-1712528103"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4878699291270702274" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
-								<a name="7467254234476295691"></a> 				@<A HREF="http://weblog.raganwald.com/2008/02/1100inject.html#c6202829839770120970" REL="nofollow">mernen</A>:<BR/>My explanation was pretty dodgy, but what I should have said instead of <I>to_proc</I> was <I>Symbol#to_proc</I>. Why is method calling delegated to the <I>Symbol</I> class? Should this be necessary when we have both <I>Method</I> and <I>UnboundMethod</I>?<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204065360000#c7467254234476295691" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02429208719755091086" rel="nofollow">Nathan de Vries</a> : 5:36 PM</div>
+								<a name="7467254234476295691"></a> 				@<A HREF="http://raganwald.github.com/2008/02/1100inject.html#c6202829839770120970" REL="nofollow">mernen</A>:<BR/>My explanation was pretty dodgy, but what I should have said instead of <I>to_proc</I> was <I>Symbol#to_proc</I>. Why is method calling delegated to the <I>Symbol</I> class? Should this be necessary when we have both <I>Method</I> and <I>UnboundMethod</I>?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204065360000#c7467254234476295691" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02429208719755091086" rel="nofollow">Nathan de Vries</a> : 5:36 PM</div>
 
 								<span class="item-control blog-admin pid-1774657853"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7467254234476295691" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="8589089242300871488"></a> 				I don't disagree with anything you've said in this post.<BR/><BR/>I don't know if this post is in response to my post about monkey patching, but you referenced it in the Reddit discussion, so I thought I'd respond.  I think a lot of the people who read my post (or who stopped reading at at the tongue-in-cheek title) got the idea that I'm some sort of anti-dynamic troglodyte who is afraid of the very features that make Ruby powerful.  All I can say to that is this: <A HREF="http://avdi.org/devblog/2008/02/25/full-disclosure/" REL="nofollow">I have contributed monkey-patches to an open-source project</A>.  Recently.  And I'm pretty pleased with what I was able to accomplish in that code. Yay for Ruby!<BR/><BR/>As a result I'm afraid a lot of people have missed the actual meat of my argument: that dynamic extension of classes is currently overused in Ruby, in ways that are:<BR/><BR/><BR/>* needless - another technique (such as a mixin, or locally extending individual objects) would have worked as well or better<BR/><BR/>* Overcomplicated - the use of a monkey patch actually created more work for the author<BR/><BR/>* fragile - the solution is tightly bound to third-party internals, reducing the usefulness of the plugin or gem because it is prone to breakage<BR/><BR/>* Excessively wide in scope - by hardcoding extensions to core classes, the author takes the choice to scope the change out of the plugin/gem user's hands, further limiting utility.<BR/><BR/>My point is that <EM>there are alternatives</EM> - often alternatives which are actually easier to implement and will make your plugin or gem more useful to the user.  I don't see that there's anything wrong with trying to get this message out.  I also don't think that there is necessarily tension between a) embracing powerful, dynamic features and b) evolving and promulgating good practices and guidelines for using those features.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204129080000#c8589089242300871488" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://avdi.org/openid/" rel="nofollow">Avdi</a> : 11:18 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204129080000#c8589089242300871488" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://avdi.org/openid/" rel="nofollow">Avdi</a> : 11:18 AM</div>
 
 								<span class="item-control blog-admin pid-1425394405"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8589089242300871488" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="7043878082801443353"></a> 				Avdi:<BR/><BR/>This post was not a response to your post. For one thing, you used an expression, "M---- P----" that I think of as referring to changing an existing method, such as what happens when you rename a method, then stick your own replacement in that does some pre-processing before calling the original method.<BR/><BR/>When you do that kind of thing to core classes or to framework classes (as happens with some Rails plug-ins), you get a completely different kind of result than when you expand core classes with things like Symbol#to_proc.<BR/><BR/>So I really don't see the two posts as being seriously comparable.<BR/><BR/>In my case, I am not even interested in whether Symbol#to_proc is a good idea or whether, on the whole, giving people open classes is a god idea. I was just commenting that it has this interesting effect of growing a language from the fringe rather than (or perhaps in addition to) the core.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1204129740000#c7043878082801443353" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:29 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1204129740000#c7043878082801443353" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:29 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7043878082801443353" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="4515325593059703504"></a> 				@nathan, mernen: <BR/><BR/>AFAICT &method(:+) gets the BoundMethod of the callling object, which is, almost certainly, not the method you want. Writing (1..100).inject(&Fixnum.instance_method(:+)) is both unwieldy and, in general wrong because it throws away the polymorphic aspect of &:+. <BR/><BR/>In this specific case, it's not an issue, but suppose the range were big enough that the numbers flipped over to Bignums? You can't use Integer.instance_method(:+) to get round it, because Integer doesn't actually have an implementation of +.<BR/><BR/>The robust ways of doing the job are: an explicit block (boring, repetitious); altering the implementation of map/inject/each to take a symbol as an argument (repetitious, special casey, ick); or implementing Symbol#to_proc somewhere (just right).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1216102920000#c4515325593059703504" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09681803905544703714" rel="nofollow">pdcawley</a> : 2:22 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1216102920000#c4515325593059703504" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09681803905544703714" rel="nofollow">pdcawley</a> : 2:22 AM</div>
 
 								<span class="item-control blog-admin pid-1891813156"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4515325593059703504" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="1813296963299000001"></a> 				Running Ruby 1.8.7 now and the ampersand seems no longer to be needed:<br />&gt;&gt; (1..100).inject(:+)<br />=&gt; 5050<br /><br />This also works:<br />&gt;&gt; (100&gt;&gt;1)*100+(100&gt;&gt;1)<br />=&gt; 5050<br /><br />(yes, that was kind of a joke)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1244126507349#c1813296963299000001" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18088865137364783994" rel="nofollow">jonelf</a> : 10:41 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1244126507349#c1813296963299000001" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18088865137364783994" rel="nofollow">jonelf</a> : 10:41 AM</div>
 
 								<span class="item-control blog-admin pid-1723470739"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1813296963299000001" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3132639089914444643"></a> 				So, I&#39;m late to this party, but here are my reactions:<br /><br />(1) This counts as a change to the language, per se? I wouldn&#39;t have anticipated that.<br /><br />(2) Looks like lots of powerful forms have yet to be implemented in Ruby.<br /><br />I&#39;m new enough to Ruby that I&#39;m not sure I can say much more than that without wandering onto some other topic.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/1100inject.html?showComment=1246512945561#c3132639089914444643" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04936208622362384288" rel="nofollow">Tracy</a> : 1:35 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/1100inject.html?showComment=1246512945561#c3132639089914444643" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04936208622362384288" rel="nofollow">Tracy</a> : 1:35 AM</div>
 
 								<span class="item-control blog-admin pid-110294302"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3132639089914444643" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -314,7 +314,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -368,25 +368,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -394,17 +394,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -414,17 +414,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -432,19 +432,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -452,18 +452,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -471,15 +471,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -488,101 +488,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>

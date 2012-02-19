@@ -14,7 +14,7 @@
 <body>
 
 	<div id="leftcontent">
-			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			<a href="http://raganwald.github.com/"><img src="http://raganwald.github.com/assets/raganwald_2008_350_150" 
 			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
 			
 				<div class="DateHeader">Friday, September 15, 2006</div>
@@ -23,11 +23,11 @@
 			<div class="Post"><a name="115833667927750302">&nbsp;</a>
 				<span class="PostTitle">
 
-					<a href="http://weblog.raganwald.com/2006/09/scientists-announce-empirical-evidence.html" title="permanent link">Scientists Announce Empirical Evidence for Greenspun's Tenth Rule</a></span>
-					<div style="clear:both;"></div>It's <a href="http://weblog.raganwald.com/2006/07/its-friday-whos-having-fun.html">Friday</a>, so let's have some fun.<br /><br />Sinclair Schuller posted an interesting article, <em>How to Rewrite Standard Recursion through a State Stack & Iteration</em> (the original page has been removed). In his own words:<br /><blockquote>Recursion, as a construct, is quite beautiful. It offers an elegant means of achieving an algorithmic goal and is used in everything from mathematics to text processing and data structure manipulation. The problem is, using it in practice   through today's popular languages (such as my favorite, C#) can prove to be a disaster.</blockquote>The problem, quite simply, is that many <strike>flavours of <a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html">Blub</a></strike> popular languages have a limitation on how deeply you can make function calls before returning. That limit is far smaller than the limitations placed on the size of data set you can manipulate.<br /><br /><style type="text/css">.flickr-photo { border: solid 2px #000000; }.flickr-yourcomment { }.flickr-frame { text-align: left; padding: 3px; }.flickr-caption { font-size: 0.8em; margin-top: 0px; }</style><div class="flickr-frame"> <a href="http://www.flickr.com/photos/x180/235793166/" title="Door to Nowhere"><img src="http://static.flickr.com/80/235793166_98f61738b5.jpg" class="flickr-photo" alt="Door to Nowhere" border="0" /></a><br /><span class="flickr-caption"><a href="http://www.flickr.com/photos/x180/235793166/">Door to Nowhere</a>, originally uploaded by <a href="http://www.flickr.com/people/x180/">x180</a>. Courtesy James Duncan Davidson</span></div><br />Recursive functions often have the property that they require storage O<span style="font-style: italic;">n</span>. Therefore, if the number of function calls you can make before returning is fixed, the size of data set you can manipulate is fixed.<br /><br />Yes, I said data set. That's very interesting, especially when you consider that Sinclair's example, the factorial function, doesn't really manipulate what most people would think of as a data set. But it really is, because if you were to think of <code>100!</code> as a macro instead of a function, you would end up with <code>1 x 2 x 3 x 4 x 5...</code> <code>x 99 x 100</code>. So there really is a set of 100 datums to manipulate.<br /><br />Now back to Sinclair's example. He shows how to emulate a programming language's call stack. This is <a href="http://en.wikipedia.org/wiki/Greenspun%27s_Tenth_Rule">Greenspunning</a> at its finest:<br /><blockquote>Any sufficiently complicated C or Fortran program contains an ad hoc, informally-specified, bug-ridden, slow implementation of half of Common Lisp.</blockquote>Sinclair's transformation implements a better programming language (like Lisp) that does not have an arbitrary limit on the size of the stack it uses for function calls. This used to be a neat programming challenge. Old-timers will remember when certain languages (BASIC, FORTRAN) did not support re-entrant functions or procedures. So if you wanted to do something recursively, you had to Greenspun. (re-)Discovering this technique in order to write a "Towers of Hanoi" program was an early "Aha!" moment for me.<br /><br />I call such a transformation a pseudo-iteration. It isn't really iterative, as the presence of a stack shows. Instead, it is emulating or interpreting a recursive algorithm. Sinclair also shows how to optimize the algorithm so that it always executes in constant space (O<span style="font-style: italic;">1</span>).<br /><br />I consider this a variation on Greenspunning where instead of implementing half of Common Lisp, we implement half of <a href="http://www-swiss.ai.mit.edu/projects/scheme/">Scheme</a>. Scheme is a member of the Lisp family that can optimize tail-recursive functions. (So can most Common Lisp implementations. Maybe. As Wikipedia says: <span style="font-style: italic;">The Scheme standards documents require </span><a style="font-style: italic;" href="http://en.wikipedia.org/wiki/Tail_recursion" title="Tail recursion">tail-call optimization</a><span style="font-style: italic;">, which the CL standard does not. Most CL implementations do offer tail-call optimization, although often only when the programmer uses an optimization directive.</span>)<br /><br />Let's look at what's going on with some Ruby. The first thing we need is a factorial function:<br /><pre><code><span style="font-weight: bold;">def</span> factorial n # whole numbers only<br /> (([0,1].include? n) &&amp; 1) || (n * (factorial (n - 1)))<br /><span style="font-weight: bold;">end</span><br /></code></pre>(If you aren’t familiar with Ruby, what you need to know is that the <code>&&amp;</code> operator returns its last argument if all of its arguments are truthy (neither <code>nil</code> nor <code>false</code>) and the <code>||</code> operator returns its first truthy argument.)<br /><br />Okay, so the first thing we do is convert this factorial function into tail recursive form:<br /><pre><code><span style="font-weight: bold;">def</span> factorial n, acc = 1<br /> ((0 == n) &&amp; acc) || (factorial (n - 1), (n * acc))<br /><span style="font-weight: bold;">end</span><br /></code></pre>As you already know (or have learned by following the links to an explanation of <a href="http://en.wikipedia.org/wiki/Tail_recursion#Implementation_methods">tail call optimization</a>), this version of factorial has its call in <span style="font-style: italic;">tail position</span>. That means that every time it calls itself (just once), it returns the result of the call directly. The first version of the function didn't return the result directly; it called itself and then performed a multiply on the result.<br /><br />Because it does no further work with the result of the recursive call, there is <span style="font-style: italic;">no need to store the calling parameters or the result on a stack</span>. What you do is this. You set up a loop. Inside each iteration you perturb the parameters you have received. When the loop is done, you return some expression on the final set of parameters.<br /><br />As it happens, factorial is easy in this respect because the final return is simply the accumulator we had been carrying around as a parameter in the tail recursive algorithm.<br /><br />Let's perform the conversion, using this approach to omit the stack:<br /><pre><code><span style="font-weight: bold;">def</span> factorial n<br /></code><code>    acc = 1<br /></code><code>    <span style="font-weight: bold;">until</span> 0 == n<br />     acc *= n<br />     n -= 1<br /> <span style="font-weight: bold;">end</span><br /> acc<br /><span style="font-weight: bold;">end</span><br /></code></pre>We have progressed beyond half of Common Lisp into half of Scheme. Now, like a properly optimizing environment, we have greater performance and we require constant memory.<br /><br />Only we have done by hand the work that a machine (you know, a labour-saving device) could have done for us, had we used a programming language of 1970s vintage.<br /><br />How quaint.<br /><br />Update: <span style="font-style: italic;">C# and Java Leak<br /><br /></span>Why is this kind of manual transformation necessary? In the end, it is because the so-called modern programming languages are so obsessed with copying popular languages that came before them (like C and C++) that they copied the bugs as well as the features.<br /><br />The present an abstraction, function calling, but the abstraction leaks badly: you can't actually use it for non-trivial data sets. To me, this is kith and kin with the leaky abstraction known as primitive data types.<br /><blockquote>The only way to deal with the leaks competently is to learn about how the abstractions work and what they are abstracting. So the abstractions save us time working, but they don't save us time learning.<br /><br />And all this means that paradoxically, even as we have higher and higher level programming tools with better and better abstractions, becoming a proficient programmer is getting harder and harder.<br /></blockquote> <div style="text-align: right;">Joel Spolsky<br /><br /></div>I am deeply dissappointed that programmers need to do this kind of work by hand in this day and age. We have known how to release function calls from the tyranny of a fixed stack for decades. We have known how to optimize tail calls for decades.<br /><br />No matter how simple and obvious these transformations are, every time we do this by hand we are sidetracked from ading real value through innovation. Every time we do this by hand, we add some risk of defect to our software. Every time we do this by hand, we obfuscate the core expression of our intent behind the <a href="http://www.joelonsoftware.com/articles/LeakyAbstractions.html">leaky abstraction</a>.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<a href="http://raganwald.github.com/2006/09/scientists-announce-empirical-evidence.html" title="permanent link">Scientists Announce Empirical Evidence for Greenspun's Tenth Rule</a></span>
+					<div style="clear:both;"></div>It's <a href="http://raganwald.github.com/2006/07/its-friday-whos-having-fun.html">Friday</a>, so let's have some fun.<br /><br />Sinclair Schuller posted an interesting article, <em>How to Rewrite Standard Recursion through a State Stack & Iteration</em> (the original page has been removed). In his own words:<br /><blockquote>Recursion, as a construct, is quite beautiful. It offers an elegant means of achieving an algorithmic goal and is used in everything from mathematics to text processing and data structure manipulation. The problem is, using it in practice   through today's popular languages (such as my favorite, C#) can prove to be a disaster.</blockquote>The problem, quite simply, is that many <strike>flavours of <a href="http://raganwald.github.com/2006/10/are-we-blub-programmers.html">Blub</a></strike> popular languages have a limitation on how deeply you can make function calls before returning. That limit is far smaller than the limitations placed on the size of data set you can manipulate.<br /><br /><style type="text/css">.flickr-photo { border: solid 2px #000000; }.flickr-yourcomment { }.flickr-frame { text-align: left; padding: 3px; }.flickr-caption { font-size: 0.8em; margin-top: 0px; }</style><div class="flickr-frame"> <a href="http://www.flickr.com/photos/x180/235793166/" title="Door to Nowhere"><img src="http://static.flickr.com/80/235793166_98f61738b5.jpg" class="flickr-photo" alt="Door to Nowhere" border="0" /></a><br /><span class="flickr-caption"><a href="http://www.flickr.com/photos/x180/235793166/">Door to Nowhere</a>, originally uploaded by <a href="http://www.flickr.com/people/x180/">x180</a>. Courtesy James Duncan Davidson</span></div><br />Recursive functions often have the property that they require storage O<span style="font-style: italic;">n</span>. Therefore, if the number of function calls you can make before returning is fixed, the size of data set you can manipulate is fixed.<br /><br />Yes, I said data set. That's very interesting, especially when you consider that Sinclair's example, the factorial function, doesn't really manipulate what most people would think of as a data set. But it really is, because if you were to think of <code>100!</code> as a macro instead of a function, you would end up with <code>1 x 2 x 3 x 4 x 5...</code> <code>x 99 x 100</code>. So there really is a set of 100 datums to manipulate.<br /><br />Now back to Sinclair's example. He shows how to emulate a programming language's call stack. This is <a href="http://en.wikipedia.org/wiki/Greenspun%27s_Tenth_Rule">Greenspunning</a> at its finest:<br /><blockquote>Any sufficiently complicated C or Fortran program contains an ad hoc, informally-specified, bug-ridden, slow implementation of half of Common Lisp.</blockquote>Sinclair's transformation implements a better programming language (like Lisp) that does not have an arbitrary limit on the size of the stack it uses for function calls. This used to be a neat programming challenge. Old-timers will remember when certain languages (BASIC, FORTRAN) did not support re-entrant functions or procedures. So if you wanted to do something recursively, you had to Greenspun. (re-)Discovering this technique in order to write a "Towers of Hanoi" program was an early "Aha!" moment for me.<br /><br />I call such a transformation a pseudo-iteration. It isn't really iterative, as the presence of a stack shows. Instead, it is emulating or interpreting a recursive algorithm. Sinclair also shows how to optimize the algorithm so that it always executes in constant space (O<span style="font-style: italic;">1</span>).<br /><br />I consider this a variation on Greenspunning where instead of implementing half of Common Lisp, we implement half of <a href="http://www-swiss.ai.mit.edu/projects/scheme/">Scheme</a>. Scheme is a member of the Lisp family that can optimize tail-recursive functions. (So can most Common Lisp implementations. Maybe. As Wikipedia says: <span style="font-style: italic;">The Scheme standards documents require </span><a style="font-style: italic;" href="http://en.wikipedia.org/wiki/Tail_recursion" title="Tail recursion">tail-call optimization</a><span style="font-style: italic;">, which the CL standard does not. Most CL implementations do offer tail-call optimization, although often only when the programmer uses an optimization directive.</span>)<br /><br />Let's look at what's going on with some Ruby. The first thing we need is a factorial function:<br /><pre><code><span style="font-weight: bold;">def</span> factorial n # whole numbers only<br /> (([0,1].include? n) &&amp; 1) || (n * (factorial (n - 1)))<br /><span style="font-weight: bold;">end</span><br /></code></pre>(If you aren’t familiar with Ruby, what you need to know is that the <code>&&amp;</code> operator returns its last argument if all of its arguments are truthy (neither <code>nil</code> nor <code>false</code>) and the <code>||</code> operator returns its first truthy argument.)<br /><br />Okay, so the first thing we do is convert this factorial function into tail recursive form:<br /><pre><code><span style="font-weight: bold;">def</span> factorial n, acc = 1<br /> ((0 == n) &&amp; acc) || (factorial (n - 1), (n * acc))<br /><span style="font-weight: bold;">end</span><br /></code></pre>As you already know (or have learned by following the links to an explanation of <a href="http://en.wikipedia.org/wiki/Tail_recursion#Implementation_methods">tail call optimization</a>), this version of factorial has its call in <span style="font-style: italic;">tail position</span>. That means that every time it calls itself (just once), it returns the result of the call directly. The first version of the function didn't return the result directly; it called itself and then performed a multiply on the result.<br /><br />Because it does no further work with the result of the recursive call, there is <span style="font-style: italic;">no need to store the calling parameters or the result on a stack</span>. What you do is this. You set up a loop. Inside each iteration you perturb the parameters you have received. When the loop is done, you return some expression on the final set of parameters.<br /><br />As it happens, factorial is easy in this respect because the final return is simply the accumulator we had been carrying around as a parameter in the tail recursive algorithm.<br /><br />Let's perform the conversion, using this approach to omit the stack:<br /><pre><code><span style="font-weight: bold;">def</span> factorial n<br /></code><code>    acc = 1<br /></code><code>    <span style="font-weight: bold;">until</span> 0 == n<br />     acc *= n<br />     n -= 1<br /> <span style="font-weight: bold;">end</span><br /> acc<br /><span style="font-weight: bold;">end</span><br /></code></pre>We have progressed beyond half of Common Lisp into half of Scheme. Now, like a properly optimizing environment, we have greater performance and we require constant memory.<br /><br />Only we have done by hand the work that a machine (you know, a labour-saving device) could have done for us, had we used a programming language of 1970s vintage.<br /><br />How quaint.<br /><br />Update: <span style="font-style: italic;">C# and Java Leak<br /><br /></span>Why is this kind of manual transformation necessary? In the end, it is because the so-called modern programming languages are so obsessed with copying popular languages that came before them (like C and C++) that they copied the bugs as well as the features.<br /><br />The present an abstraction, function calling, but the abstraction leaks badly: you can't actually use it for non-trivial data sets. To me, this is kith and kin with the leaky abstraction known as primitive data types.<br /><blockquote>The only way to deal with the leaks competently is to learn about how the abstractions work and what they are abstracting. So the abstractions save us time working, but they don't save us time learning.<br /><br />And all this means that paradoxically, even as we have higher and higher level programming tools with better and better abstractions, becoming a proficient programmer is getting harder and harder.<br /></blockquote> <div style="text-align: right;">Joel Spolsky<br /><br /></div>I am deeply dissappointed that programmers need to do this kind of work by hand in this day and age. We have known how to release function calls from the tyranny of a fixed stack for decades. We have known how to optimize tail calls for decades.<br /><br />No matter how simple and obvious these transformations are, every time we do this by hand we are sidetracked from ading real value through innovation. Every time we do this by hand, we add some risk of defect to our software. Every time we do this by hand, we obfuscate the core expression of our intent behind the <a href="http://www.joelonsoftware.com/articles/LeakyAbstractions.html">leaky abstraction</a>.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
 					<span class="PostFooter">
 
-						&para; <a href="http://weblog.raganwald.com/2006/09/scientists-announce-empirical-evidence.html" title="permanent link">11:43 AM</a>
+						&para; <a href="http://raganwald.github.com/2006/09/scientists-announce-empirical-evidence.html" title="permanent link">11:43 AM</a>
 
 					 
 				</span> 
@@ -44,63 +44,63 @@
 						
 							<div class="blogComment">
 								<a name="115834618137850051"></a> 				<A HREF="http://lib.store.yahoo.net/lib/paulgraham/cint.lisp" REL="nofollow">Guy Steele's call/cc eval</A> doesn't use the stack at all.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158346140000#c115834618137850051" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 2:49 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158346140000#c115834618137850051" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 2:49 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115834618137850051" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="115834910239751065"></a> 				Here's some <A HREF="http://programming.reddit.com/info/imz8/comments/cio49" REL="nofollow">lively commentary</A> on Sinclair's post. There's some excellent theory in there, as well as some enourmously valuable insights into why these conversions are non-trivial.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158349080000#c115834910239751065" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:38 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158349080000#c115834910239751065" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:38 PM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115834910239751065" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="115835007779426840"></a> 				Just as a side note, I've made some changes to the article to provide a more appropriate context. It's title is now "How to Rewrite Standard Recursion through a State Stack & Iteration".<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158350040000#c115835007779426840" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Sinclair</span> : 3:54 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158350040000#c115835007779426840" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Sinclair</span> : 3:54 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115835007779426840" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="115854099376734506"></a> 				Did I miss something? This is first year CS stuff. Except we had to write the stack data structure as well using linked lists which were written by us in a previous lesson.<BR/><BR/>I remember doing a tail-optimized recursive loop when I wrote a scheduler in VB6 that emulated the Windows task scheduler. I don't remember what the algorithm was, but I tried to avoid using a recursive loop as much as possible. I made sure that the depth of the calculation was really small in the worst case and I had more "exit" conditions than recursive conditions. The calculation was the date and time of the next trigger of the scheduler. I calculated it up-front and then just did a less than or equal test for every Timer.Tick event. I called it the "better late than never" algorithm. <BR/><BR/>My point is that a one-size-fits-all recursive solution is unnecessary and ineffecitent. Algorithms can be optimized to fit the need of the calculation and the restrictions of the language. <BR/><BR/>I miss the days when I had to show why QuickSort was O(nlog(n)). I also miss the days when I had to know the proper definiteion of O(f(x)).<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158540960000#c115854099376734506" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.giampierodeciantis.com" rel="nofollow">Gp</a> : 8:56 PM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158540960000#c115854099376734506" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.giampierodeciantis.com" rel="nofollow">Gp</a> : 8:56 PM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115854099376734506" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="115858702809757643"></a> 				As far as I know GCC does tail call optimisation. So<BR/>int factorial(int n) {<BR/>    return (n == 0) ? 1 : n*factorial(n-1);<BR/>}<BR/>should be optimised to the iterative version in C,C++ and Java.<BR/><BR/>I unfortunately don't have time to verify my bold claim, so don't bet the house on it before checking it yourself. :)<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158586980000#c115858702809757643" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Ants Aasma</span> : 9:43 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158586980000#c115858702809757643" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Ants Aasma</span> : 9:43 AM</div>
 
 								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115858702809757643" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="115858721127602305"></a> 				<I>GCC does tail call optimisation</I><BR/><BR/>I have also heard this, and that is certainly how things ought to work!<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158587160000#c115858721127602305" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:46 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158587160000#c115858721127602305" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:46 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115858721127602305" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="115858748899603369"></a> 				<A HREF="http://www.cookcomputing.com/blog/archives/000200.html" REL="nofollow">This</A> discussion of tail call optimization in .NET suggests that tail calls were badly broken at the time the author investigated them, but there was some evidence that tail call optimization was on the .NET to-do list.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158587460000#c115858748899603369" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:51 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158587460000#c115858748899603369" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:51 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115858748899603369" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="115858778783233882"></a> 				And <A HREF="http://debasishg.blogspot.com/2006/03/non-java-languages-on-jvm.html" REL="nofollow">this </A> article explains that Java is in no danger of implementing fast tail call optimization.<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158587760000#c115858778783233882" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:56 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1158587760000#c115858778783233882" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:56 AM</div>
 
 								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115858778783233882" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
 						
 							<div class="blogComment">
 								<a name="3233098812167448708"></a> 				Seems like the article can now be found at:<BR/><BR/>http://www.saasblogs.com/2006/09/15/how-to-rewrite-standard-recursion-through-a-state-stack-amp-iteration/<br />
-								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1206277200000#c3233098812167448708" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://www.grauw.nl/id/grauw" rel="nofollow">Grauw</a> : 9:00 AM</div>
+								<div class="byline"><a href="http://raganwald.github.com/2006/09/scientists-announce-empirical-evidence.html?showComment=1206277200000#c3233098812167448708" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://www.grauw.nl/id/grauw" rel="nofollow">Grauw</a> : 9:00 AM</div>
 
 								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3233098812167448708" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
 							</div>
@@ -111,7 +111,7 @@
 					
 
 					<br /> <br />
-					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
 				</div>
 
 			
@@ -165,25 +165,25 @@
 
 		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
 
-		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
 
-		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
 
 <br/><br/>
 
-                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
 
-		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
                 
-		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
 
 		<br />
 
@@ -191,17 +191,17 @@
 
 		<div class="SideBarTitle">Work</div>
 
-                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
 
-                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
 
-                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
 
-		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
 
-		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
 
-		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
 
                 <br/>
 
@@ -211,17 +211,17 @@
 
 		<div class="SideBarTitle">Management</div>
 
-		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
 
-		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
 
-                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
 
-		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
 
 		<br />
 
@@ -229,19 +229,19 @@
 
 		<div class="SideBarTitle">Notation</div> <!-- languages -->
 
-		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
 
-		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
 
-                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
 
-                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
                 
-                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
 
-                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
 
 		<br />
 
@@ -249,18 +249,18 @@
 
 		<div class="SideBarTitle">Opinion</div>
 
-		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
 
-		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
 
-		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
 
-		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
 
-		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
-                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
-                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
 
 		<br/>
 
@@ -268,15 +268,15 @@
 
 		<div class="SideBarTitle">Whimsey</div>
 
-                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
 
-		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
 
-		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
 
-		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
 
-		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
 
 		<br />
 
@@ -285,101 +285,101 @@
 		<div class="SideBarTitle">History</div>
 
 		
-			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
 		
-			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
 		
 		
 		<br/></p>
