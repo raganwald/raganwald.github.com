@@ -1,0 +1,533 @@
+<html> 
+<head>
+        
+        <title>"L" is not a code smell</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Monday, July 21, 2008</div>
+			
+
+			<div class="Post"><a name="4142227447436024458">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2008/07/l-is-not-code-smell.html" title="permanent link">"L" is not a code smell</a></span>
+					<div style="clear:both;"></div>During <a href="http://flickr.com/photos/raganwald/sets/72157606272767656/show/">my presentation at RubyFringe</a>, I shared a question that has been swirling around in my brain for a while: <em>Are IDE features really language smells?</em><br />
+<br />
+I don&#8217;t think it&#8217;s an original thought. If nothing else, it&#8217;s a corollary to what I believe to be true about many of the GoF design patterns: Many of them are workarounds, ways to Greenspun missing language features. Now, this is probably not the case for all IDE features, and in truth it may be that there are some features which could be implemented in either the language or the IDE, but the IDE may be the best place to put them.<br />
+<br />
+But there is a fairly large class of IDE features that strike me as language workarounds. One of them is definitely the ability to spit out a lot of boilerplate. If you need a lot of code written, you ought to be able to get your programming language to do it for you, not your IDE.<br />
+<br />
+There is room for people to disagree about this. There are some who feel (Strawman alert!) that programs consisting of large numbers of simple elements are easier to understand than programs consisting of a small number of highly abstract elements. Those folks feel an IDE gives you the ease of writing a program quickly plus the ease of reading that same program quickly. They feel that abstractions make the program easier to write but harder to read.<br />
+<br />
+I happen to disagree with this, and if you have been reading this weblog for more than a couple of days you have already read why my experience leads me down a different path. Although in deference to my colleagues with different views, I offer this quote:<br />
+<br />
+<blockquote>All problems can be solved by adding another layer of abstraction, except the problem of having too many layers of abstraction.</blockquote><br />
+Anyone who has dealt with an <a href="http://discuss.joelonsoftware.com/default.asp?joel.3.219431" title="Why I Hate Frameworks">hammer factory</a> will agree.<br />
+<br />
+So back to &#8220;L.&#8221;<br />
+<br />
+Two speakers before me, <a href="http://gilesbowkett.blogspot.com/" title="Giles Bowkett">Giles Bowkett</a> gave his excellent <a href="http://gilesbowkett.blogspot.com/2008/02/archaeopteryx-ruby-midi-generator.html">Archaeopteryx</a>&#8212;um&#8212;presentation. I hesitated over that word, because I could just as easily say <em>performance</em>. Performances are terrific entertainment, but they sometimes obscure the message behind them. I want to say outright that while this is true of many other subjects, I felt it worked for Giles because the subject of his presentation was software development as a <em>how rather than a what</em>, and for Giles the &#8220;what&#8221; is performance.<br />
+<br />
+(Giles got a standing &#8220;O,&#8221; and many people might be tempted to rush out and make their presentations just as stimulating (400+ in-your-face slides punctuated with loud, driving <a href="http://www.youtube.com/watch?v=5SaFTm2bcac" title="The world's most important 6-sec drum loop">drum and bass</a>). Be sure that your material matches your presentation style! If not, people may walk away saying &#8220;Wow, amazing, but what exactly did she say?&#8221; I think it worked for Giles and that&#8217;s quite an accomplishment.)<br />
+<br />
+Now really, back to &#8220;L.&#8221;<br />
+<br />
+Giles is one of the people using closures in Ruby. Meaning, he is passing functions around and storing functions in objects. I am not going to try to say exactly what Archaeopteryx does, so I will describe this style of programming using an imaginary companion program that creates walking bass lines. I will call it <a href="http://web.mit.edu/newsoffice/2001/troody-0516.html" title="AI Lab creates robotic dinosaur - MIT News Office">Troody</a>.<br />
+<br />
+Let&#8217;s simplify things greatly and say that Troody will only ever play in perfect 4-4 time and further that Troody only ever play one of the eight notes in a particular chord&#8217;s standard scale. The probability of playing each of those notes on any one &#8220;beta&#8221; could be represented as an array with eight elements, like this: [.35, .05, .1, .05, .25, .05, .1, .05 ]. You can imagine passing arrays like this around in Troody.<br />
+<br />
+For example, we can pass this array to an object that actually plucks the strings: Plucker.new.start_plucking([ 0.35, 0.05, 0.1, 0.05, 0.25, 0.05, 0.1, 0.05 ]).<br />
+<br />
+Let&#8217;s try writing a na&iuml;ve Troody Plucker:<pre><code>
+class Plucker
+    def start_plucking(probs)
+        while (self.tune.playing)
+            if (Metronone.on_the_beat)
+                r = rand
+                cumulative_probs = probs.inject([]) { |cum, element| 
+                    cum + [ cum[-1] &amp;&amp; (cum[-1] + element) || element ] 
+                }
+                notes_to_cumulative_probs = (1..8).zip(cumulative_probs)
+                note_to_play = notes_to_cumulative_probs.detect { |note, prob| prob &gt;= r }
+                self.pluck(note_to_play)
+            end
+        end
+    end
+end</code></pre><br />
+You pass it a set of probabilities, it produces bass notes. But stop, that&#8217;s so procedural. Let&#8217;s learn from a flying creature, let&#8217;s learn from Archaeopteryx. Instead of passing arrays, let&#8217;s pass <em>lambdas</em>, like this: lambda { [.35, .05, .1, .05, .25, .05, .1, .05 ] }. Now whenever Troody needs the probability of something, we call the function with .call or Ruby&#8217;s [] alternative syntax. So now we write Plucker.new.start_plucking(lambda { [.35, .05, .1, .05, .25, .05, .1, .05 ] })<br />
+<br />
+Our new Plucker code is the same as the old, except we write:<pre><code>
+cumulative_probs = probs.call.inject([]) { |cum, element| 
+    cum + [ cum[-1] &amp;&amp; (cum[-1] + element) || element ] 
+}</code></pre><br />
+We now call the probs lambda when we need a note. That&rsquo;s it, we&rsquo;ve added a .call call. What does that get us? Well, here&#8217;s one thing: If we want the probability to change over time, our function can do that, and we don&#8217;t have to rewrite our start_plucking method to handle the idea.<br />
+<br />
+For example, here&#8217;s a probability lambda that usually plays the same way but from time to time decides it ought to play pedal notes (refactoring to OO is an optional exercise):<pre><code>
+probs = lambda { |bars_of_pedal, beat|
+    lambda {
+        if beat == 0
+            if bars_of_pedal == 0
+                bars_of_pedal = 1 if rand &lt; .05
+            elsif bars_of_pedal == 5
+                if rand &lt; .25
+                    bars_of_pedal = 0 
+                else
+                    bars_of_pedal += 1
+                end
+            elsif bars_of_pedal == 9
+                if rand &lt; .5
+                    bars_of_pedal = 0 
+                else
+                    bars_of_pedal += 1
+                end
+            elsif bars_of_pedal == 13
+                bars_of_pedal = 0
+            end
+        end
+        beat = (beat + 1) % 4
+        if bars_of_pedal == 0
+            [ 0.35, 0.05, 0.1, 0.05, 0.25, 0.05, 0.1, 0.05 ]
+        else
+            [ 1.0, 0, 0, 0, 0, 0, 0, 0 ]
+        end
+    }
+
+}.call(0, 0)</code></pre><br />
+Thanks to the way we&#8217;ve separated the probabilities from the plucking, we do not need to subclass Plucker to try a different playing style in Troody.<br />
+<br />
+As Giles pointed out, this is the <em>Strategy Pattern</em>. We are making different kinds of pluckers by encapsulating the logic of what to pluck in something we pass to a plucker. Archaeopteryx appears to do this everywhere. There are lambdas paramaterized by lambdas, lambdas that return lambdas&#8230;<br />
+<br />
+This creates a problem. Imagine a programing language where all the keywords are in upper case: IF foo THEN bar ELSE bizzat. Try reading such a program aloud, and you end up shouting the punctuation but speaking the words. This is wrong! We should be shouting the words and whispering the punctuation!<br />
+<br />
+And the problem with Ruby&#8217;s lambdas is that if you use a lot of them the word lambda really starts to stand out. So Giles fixed this by aliasing it to L: and using [] instead of .call():<pre><code>
+alias :L :lambda
+
+L{ |a| a + a}[5].
+    =&gt; 10</code></pre><br />
+Much nicer, and as Giles pointed out, this is an example of Ruby&#8217;s strength. If you have a program that rarely uses lambdas, you probably want lambdas to stand out when you use them, so you don&#8217;t alias lambdas to L and you use the call method, not the square brackets. But if you use lambdas a lot, it&#8217;s a win to abbreviate things.<br />
+<br />
+Okay, we&#8217;re talking about &#8220;L.&#8221; Good.<br />
+<br />
+Now in my talk, I said that abbreviating lambda to L was a code smell. I was wrong! Giles, my bad!!<br />
+<br />
+What I actually think is that needing to abbreviate lambda to L is a language smell. Very different. If you show me a Java program and you show me Strategy Pattern, I shouldn&#8217;t say it&#8217;s a code smell. I should say too bad for you that you need all that boilerplate when Ruby lets you do that with the word lambda and a pair of curly braces.<br />
+<br />
+So now to &#8220;L:&#8221; Giles, if lambdas are integral to Archaeopteryx, if they are so woven into the fabric of what Archaeopteryx does that you want the keyword &#8220;lambda&#8221; to fade away, I honestly think this is a place where the language <em>could</em> help you.<br />
+<br />
+For example, what if Ruby had <a href="http://en.wikipedia.org/wiki/Evaluation_strategy#Call_by_name" title="Evaluation strategy - Wikipedia, the free encyclopedia">call-by-name semantics</a>? You could write:<pre><code>
+Plucker.new.start_plucking([ 0.35, 0.05, 0.1, 0.05, 0.25, 0.05, 0.1, 0.05 ])
+
+# or...
+
+bars_of_pedal, beat = 0, 0
+Plucker.new.start_plucking(
+    if beat == 0
+        if bars_of_pedal == 0
+            bars_of_pedal = 1 if rand &lt; .05
+        elsif bars_of_pedal == 5
+            if rand &lt; .25
+                bars_of_pedal = 0 
+            else
+                bars_of_pedal += 1
+            end
+        elsif bars_of_pedal == 9
+            if rand &lt; .5
+                bars_of_pedal = 0 
+            else
+                bars_of_pedal += 1
+            end
+        elsif bars_of_pedal == 13
+            bars_of_pedal = 0
+        end
+    end
+    beat = (beat + 1) % 4
+    if bars_of_pedal == 0
+        [ 0.35, 0.05, 0.1, 0.05, 0.25, 0.05, 0.1, 0.05 ]
+    else
+        [ 1.0, 0, 0, 0, 0, 0, 0, 0 ]
+    end
+)</code></pre><br />
+And you would get the same behaviour as if you were using lambdas.<br />
+<br />
+That&#8217;s it, that&#8217;s what I should have said on stage: any time you are working around your language&#8212;whether in your IDE, or by modifying open classes, or by abbreviating things&#8212;that&#8217;s a place where we should step back, where we should ask if our language is missing something.<br />
+<br />
+The answer may very well be &#8220;no.&#8221; But we ought to at least ask the question.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2008/07/l-is-not-code-smell.html" title="permanent link">12:43 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>"L" is not a code smell</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="8309953577195794643"></a> 				I think it all comes down to what happens in the future. What happens in eight years, when you've been hired again to come back to this stuff and change it? Will you remember the language? Your specific hacks? The weirdness of the domain? Which IDE version you were dependent on? <BR/><BR/>What works is what is obvious, even a decade later. We put so much effort into our work, it is a shame if it doesn't stay around long enough to justify itself. <BR/><BR/>The worst thing that can happen is to depend on some infrastructure tool like an IDE for something critical, like managing the code. If it's not entirely contained in the source code control, then your missing a dependency, aren't you? Opps ...<BR/><BR/><BR/>Paul.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/l-is-not-code-smell.html?showComment=1216671000000#c8309953577195794643" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 4:10 PM</div>
+
+								<span class="item-control blog-admin pid-1233049894"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8309953577195794643" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3221809681275525536"></a> 				Paul:<BR/><BR/>Oh Lordy, Lordy you are preaching to the choir. A part of me dies when someone is only able to build and run their app in their IDE and can’t replicate production on their development box.<BR/><BR/>As for making things obvious, that’s the whole debate. Aliasing lambda to L: does it make things less obvious because you have to find the line of code that performs the aliasing?<BR/><BR/>or does it make the code <EM>more</EM> obvious by putting the actual logic front and centre?<BR/><BR/>And of course, the third option is to have well-known language extensions or tools that can make the entire problem go away.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/l-is-not-code-smell.html?showComment=1216672500000#c3221809681275525536" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:35 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3221809681275525536" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4174225697898515648"></a> 				It is funny, but for a couple of weeks now I've been flip flopping on this point exactly. I wrote a blog entry, but they bailed in posting it because I wasn't sure I said it well enough.<BR/><BR/>In the most simplest form, we end up creating a great deal of intrinsic domain specific complexity anyways with our implementations. In that sense, if we leave our custom expressions to be based purely on the underlying language expressions, we are almost doubling up the amount of 'stuff' we need to cope with in order understand what the code does. If on the other hand, the programmers develop a consistent fully encapsulating grammar that mostly hides the underlying language elements, replacing them with their own, an outsider need only understand one simple complete set of expressions.<BR/><BR/>I find it a lot easier to read C that has heavily customized macros hiding the language ugliness, then I do to read Java that is written in purely primitive arguments. To be very fair, I really really miss the ability in the language to enhance and encapsulate the language itself. Pascal, VB, and Java all have that annoying restrictiveness in common.<BR/><BR/>Now for the fun part: some programmers make really good use of language extensions, most do not. What I'd like to see is a language where you were free to extend it, but you could also lock it down preventing extensions. In that way, the core underlying developers could set forth a better domain-specific set of primitives, but the bulk of programmers aren't allowed to shoot themselves. <BR/> <BR/><BR/>Paul.<BR/><A HREF="http://theprogrammersparadox.blogspot.com" REL="nofollow">http://theprogrammersparadox.blogspot.com</A><br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/l-is-not-code-smell.html?showComment=1216738440000#c4174225697898515648" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 10:54 AM</div>
+
+								<span class="item-control blog-admin pid-1233049894"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4174225697898515648" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5734084854841016720"></a> 				Muahahahaha! A retraction! Victory is mine!<BR/><BR/>OK. I think it's basically true. I'm basically using, in Ruby, JavaScript's model of functions. It isn't patched into the language itself, so it's a convention in the code rather than any actual new syntax. I went with the L{} because I was thinking of what Prototype did with $() - it's actually a very similar problem. There's a piece of syntax you need, you can't alter the language, so you make it as unobtrusive as possible. And as Hampton pointed out, that $() is a smell, not a code smell, not even a language smell, but a (language/context)-mismatch smell.<BR/><BR/>Sometimes you can smell it, but you're not sure what it is.<BR/><BR/>Even if I knew C and the Ruby internals very well, I'd probably still go with L{}, on the virtue of its cheapness, but if I were working with a fully-turtles Rubinius, I'd look for a better way. You use $() for the first time, you're like, gawd, what a hack, and then after you've gotten used to it you wonder why it took such a long time for somebody to add it. Same thing, kinda. People who use Perl for a long time and get good at it, the ugliness disappears, replaced with a perception of only the power, but the reality is, the whole win with Ruby is you get power <I>and</I> clarity, so no doubt this is an edge that could be smoothed a bit.<BR/><BR/>But man, a code smell! I couldn't believe it! I should have shouted and waved my arms and ran up and down the aisles objecting like crazy, but I was completely out of energy. I had loaded up on coffee, timing it so the peak would hit from 12 to 1, and had so much caffeine in my system during the talk that my finger was twitching and my face was red from the heightened blood pressure. After the talk I was zonked.<BR/><BR/>Also the whole presentation v. performance thing - extremely relevant! Not the first time I performed live drum and bass in front of a group - not even the first time I performed live drum and bass in front of <I>that</I> group <I>that weekend</I>. I basically looked at it as performing a documentary live. I didn't even get to the final two slides, which list contributors, inspirations, and related projects by other programmers in a scrolling top-to-bottom film credits style.<BR/><BR/>A lot of people who weren't reading my blog last year don't know about my interest in acting, either. If you study acting with real professional actors and structure your programming schedule to allow time to go on auditions, it's safe to say that you'll also be comfortable with public speaking. But that's just the tip of the iceberg. The goal of my acting training was never to become comfortable with public speaking. The goal of my acting training was to get standing ovations.<BR/><BR/>However the goals of the presentation were to evangelize Archaeopteryx and push everybody away from the 2007 venture capital infatuation back to the 2006 "fight the power" style. Anyway, total threadjack. Thank you for the retraction - I think you're right - it's a smell like the $() in Prototype. A useful smell, I think. But remember the cardinal rule, PDI! Archaeopteryx is on GitHub so there are absolutely zero barriers to entry if anybody would like to hack together an alternate, cleaner approach to closure-centric Ruby. Hint hint!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/l-is-not-code-smell.html?showComment=1216747020000#c5734084854841016720" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 1:17 PM</div>
+
+								<span class="item-control blog-admin pid-855033878"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5734084854841016720" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="246489209165497766"></a> 				Sorry, I didn't realize I was thanking the Academy quite so much. Also come to think of it the first time I used $() I was like "finally!".<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/l-is-not-code-smell.html?showComment=1216747140000#c246489209165497766" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 1:19 PM</div>
+
+								<span class="item-control blog-admin pid-855033878"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=246489209165497766" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="298691117527748239"></a> 				&gt; Archaeopteryx is on GitHub so there are absolutely zero barriers to entry<BR/><BR/>I wish this were true, but last I checked it had a nasty dependency on a bunch of proprietary software. I&#39;d be glad if this were no longer true though.<BR/><BR/>As for the lambda/L issue, I prefer to just fix it in the rendering layer:<BR/><BR/>(defun pretty-lambdas ()<BR/>  (font-lock-add-keywords<BR/>   nil `((&quot;(?\\(lambda\\&gt;\\)&quot;<BR/>          (0 (progn (compose-region (match-beginning 1) (match-end 1)<BR/>                                    ,(make-char &#39;greek-iso8859-7 107))<BR/>                    nil))))))<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/l-is-not-code-smell.html?showComment=1217456880000#c298691117527748239" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12517691336187602116" rel="nofollow">Phil</a> : 6:28 PM</div>
+
+								<span class="item-control blog-admin pid-761066368"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=298691117527748239" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6886704096440878904"></a> 				Phil,<BR/><BR/>What proprietary software are you referring to?  Take another look.  I don't think you know what you're talking about.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/l-is-not-code-smell.html?showComment=1222483440000#c6886704096440878904" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01183566927646186069" rel="nofollow">devin</a> : 10:44 PM</div>
+
+								<span class="item-control blog-admin pid-1443293028"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6886704096440878904" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

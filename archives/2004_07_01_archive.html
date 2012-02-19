@@ -1,0 +1,1103 @@
+<html> 
+<head>
+        
+        <title>raganwald: 07/04</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+	<!-- Meta Information --> 
+	<!-- put "BlogMetaData" between angle-dollar and dollar angle  to restore defaults -->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="MSSmartTagsPreventParsing" content="true" />
+	<meta name="generator" content="Blogger" />
+
+	<link rel="alternate" type="application/atom+xml" title="Raganwald Posts + Links(Atom)" href="http://feeds.raganwald.com/raganwald" />
+	<!-- <link rel="alternate" type="application/rss+xml" title="Raganwald Posts + Links (RSS 2.0)" href="http://feeds.raganwald.com/raganwald" /> -->
+	<link rel="alternate" type="application/atom+xml" title="Raganwald Posts Only (Atom)" href="http://feeds.raganwald.com/raganwald_articles" />
+	<link rel="alternate" type="application/atom+xml" title="Raganwald on Twitter (Atom, experimental)" href="http://twitter.com/statuses/user_timeline/14165291.atom" />
+
+	<link rel="service.post" type="application/atom+xml" title="Raganwald" href="https://www.blogger.com/atom/7618424" />
+	<link rel="service.post" type="application/atom+xml" title="Raganwald (Atom 1.0)" href="http://www.blogger.com/feeds/7618424/posts/full" />
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.blogger.com/rsd.g?blogID=7618424" />
+
+
+
+    <link rel="openid.server" href="http://www.myopenid.com/server " />
+    <link rel="openid.delegate" href="http://reginald.braithwaite.myopenid.com/" />
+    <meta http-equiv="X-XRDS-Location" content="http://reginald.braithwaite.myopenid.com/xrds" />
+
+
+
+
+	<style type="text/css">
+	@import url("http://www.blogger.com/css/blog_controls.css");
+	@import url("http://www.blogger.com/dyn-css/authorization.css?blogID=7618424");
+	</style>
+
+	<!-- /Meta Information -->
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/><br/>
+<!--
+<div style="background-color:black; text-align: center; color: white; padding: 10px 10px 10px 10px;">
+<p><font size="+1">Arthur C. Clarke</font><font size="-1">, 1917&thinsp;&ndash;&thinsp;2008
+<br/>&ldquo;If we have learned one thing from the history of invention and discovery,
+<br/>it is that, in the long run&mdash;and often in the short one&mdash;the most daring prophecies seem laughably conservative.&rdquo;</font>
+</p></div>
+-->
+		
+			
+				<div class="DateHeader">Friday, July 30, 2004</div>
+			
+
+			<div class="Post"><a name="109008359785826210">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/how-to-use-acceptance-tests-to-ship.html" title="permanent link">How to Use Acceptance Tests to Ship Software</a></span>
+					<div style="clear:both;"></div>Validation tests are tests that measure some aspect of an implementation's behaviour against an expectation and answer whether the software complies with the expectation. For example, a test that measures the time required to perform a specific task is not a validation test. A test that measures the time required to perform a specific task and compares it to a benchmark is a validation test.
+<br />
+<br />One very strong benefit of using validation tests is that creating the tests forces the development team to achieve detailed and objective designs. This extends beyond the coding team to include program and product management: <span style="FONT-WEIGHT: bold">writing tests that validate compliance with requirements force product management to articulate detailed and objective requirements</span>.
+<br />
+<br />Thinking the requirements through in detail is more valuable than thinking the design through in detail: if the design is not solid, you will end up with a poor solution to a good problem. This can be refactored. If the requirement are not well understood, you will end up with a solution to the wrong problem: this is more difficult to change.
+<br />
+<br />The two most important types of validation tests are:
+<br /></span><ul><li>Acceptance tests, which validate an implementation's compliance with requirements. </li><li>Unit tests, which validate an implementation's compliance with a design. </li></span></ul><span style="FONT-WEIGHT: bold">Acceptance Tests
+<br />
+<br /></span>Acceptance tests validate an implementation's compliance with requirements. One style of development is to write detailed requirements and then translate the requirements into acceptance tests. When the requirements are sufficiently detailed, the acceptance tests flow freely from the requirements and the role of the team is to validate that the acceptance tests properly express the requirements.
+<br />
+<br />A lightweight approach is to write less detailed requirements and to consider the acceptance tests as an extension of the requirements document. This works well in smaller organizations. When using the lightweight approach, it is important that customer or market facing contributors retain 'ownership' of the expression of requirements. A protocol I have seen work very well is for a program manager to write requirements, and then the program manager negotiates acceptance tests with the programming team.
+<br />
+<br />The program manager <em>owns</em> the definition of the acceptance tests, and the programming team <em>validates</em> the tests, raising red flags if they have concerns or cannot 'connect the dots' between the requirements and the acceptance tests. For example, a programmer is allowed to reject any acceptance test that validates an implementation rather than a requirement. This is quite properly the province of unit tests and not an issue for the program manager to determine.
+<br />
+<br />Let's review this last point. Consider a high-level Market Requirements Document ("MRD"). What does it mean to "flesh out the MRD with more detail" or to "drill down into one of the requirements"? Well, it doesn't mean "write specs for a solution." That's a common pitfall: when asked for more detail, product managers get sucked into designing software.
+<br />
+<br />More detail for an MRD should mean "describe the problem to be solved in more detail." The most useful detail possible is a complete list of acceptance tests.
+<br />
+<br />Writing an acceptance test is easy: write a sentence that begins: "the software is acceptable when..." Now all you have to do is make sure that your acceptance test is implementation-free, just like any good requirement. This test is now a detailed expansion of some requirement. Write as many acceptance tests as you can.
+<br />
+<br />For incredible leverage, automate your acceptance tests using tools like <a href="http://fitnesse.org/FitNesse.WhatIsFitNesse">Fitnesse</a>.
+<br />
+<br /><span style="FONT-WEIGHT: bold">Unit Tests </span>
+<br />
+<br />Unit tests validate an implementation's compliance with a design. Since requirements are implementation-free, there should be no coupling between the definition of unit tests and the definition of acceptance tests.
+<br />
+<br />Unit tests express one and only one fact, which they express in the abstract: code that is written with well chosen and sufficient unit tests can be considered of good quality and likely to be delivered on time with high confidence. Customer or market facing contributors such as program managers have an abstract interest in unit tests for this reason.
+<br />
+<br /><span style="FONT-WEIGHT: bold">Why Unit Test are not Acceptance Tests</span>
+<br />
+<br />Unit tests should not be confused with acceptance tests, for the same reasons that
+<br /></span><ul><li>the design should not be confused with the requirements</li><li>the project plan should not be confused with the release plan, and,</li><li>technical management should not be confused with product management</li></span></ul>A design is one possible solution to the problem of "writing software that complies with the requirements." A project plan is one possible solution to the problem of "implementing a design using the available resources in compliance with the release plan." Technical management is the art of finding and implementing these solutions.
+<br />
+<br />Unit tests should not be confused with acceptance tests because they do not express some requirement of the release plan: it is possible to completely refactor the design and the project plan, rewriting every single unit test, without changing any of the acceptance tests. But changes to acceptance tests reflect changes to the product contract: they are an element of the Plan of Record.
+<br />
+<br /><span style="FONT-WEIGHT: bold">Bugs and Defects</span>
+<br />
+<br />When a release (internal or external) is tested, bugs are inevitable. A bug report expresses a kind of validation test in the negative: "the software ought to... But instead it..." A good bug report explains how to reproduce the problem: "Install the software on a dual Triton system with less an 4GB of RAM, then boot it in greedy mode..."
+<br />
+<br />This is a validation test. Ideally, this test was already expressed as an acceptance or unit test. In practice, a bug report often expresses an implicit test, one that wasn't spelled out as part of the process. This is not a bad thing: tests evolve as the team's understanding evolves.
+<br />
+<br />It's important to distinguish bugs that reflect shortcomings in acceptance from bugs that reflect shortcomings in design. If you look at a bug and it reflects some fundamental aspect of the requirements of the software, you need to treat it with considerably more care than a bug that reflects some shortcoming in design.
+<br />
+<br />I call such bugs "defects." A defect must absolutely, positively be remedied, because if the software does not conform to the acceptance criteria, it is not "done."
+<br />
+<br />For example, you may have a requirement that some aspect of the UI conform to generally accepted principles. Say there's a menu option that displays a shortcut key, but the key doesn't work. That bug is interesting. You can write a unit test for this bug: "pressing control J should invoke the Jump command."
+<br />
+<br />But that isn't an acceptance test. An acceptance test would be "for every menu item that displays a shortcut key, the shortcut key should invoke the command." Why the generalization? Because one way to fix the broken control J would be to not display the shortcut key in the menu. The software would still conform to the acceptance test, but it would fail the unit test.
+<br />
+<br />Bug reports are an excellent source of acceptance criteria, however product management and development need to analyze the tests to decide which bugs are defects and to extract acceptance criteria, just as requirements need to be analyzed to remove implementation, design, and specifications.
+<br />
+<br />I'll end with one anti-pattern: if you don't distinguish bugs that reflect acceptance shortfalls from bugs that reflect implementation shortfalls, you paint yourself into a corner where you cannot manage the bug list: all you can do is try to fix as much as you can and hope for the best.
+<br />
+<br />If you separate the defects out and give them their own special place in your process, you are now (a) learning more about the detailed requirements of your software, and (b) you have a smaller list of defects that must absolutely, positively be fixed. Prioritizing defects over bugs is one excellent way to raise your chances of shipping acceptable software on time.
+<br /></span>
+<br /><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/agile.html">agile</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/how-to-use-acceptance-tests-to-ship.html" title="permanent link">9:50 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Wednesday, July 28, 2004</div>
+			
+
+			<div class="Post"><a name="109059547096717839">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/how-to-write-software-with-art.html" title="permanent link">How To Write Software With Art, Independence and Spirit</a></span>
+					<div style="clear:both;"></div><em></em><em></em><blockquote>Everybody is talented because everybody who is human has something to express</blockquote><strong></strong>Are you working on a personal project right now? Are you working on something that will have an unmistakable stamp of <strong>you</strong> in it? If not, why not?<br /><br /><span style="font-style: italic;">Are you holding back because you don't have that million-dollar idea that will change the world?</span><br /><br />This is a subtle way of beating yourself down, of not giving yourself credit for the talents you already possess. You are talented, you have something that should be shared. It may not be a big hit. Of course, it may be a big hit no matter how zany it sounded when it started.<br /><br /><a href="http://www.scripting.com/dwiner/">Dave Winer</a> started a company to sell a scripting environment. He ended up with a company that helped launch the weblog revolution. This shouldn't have surprised him: he once wrote a <a href="http://en.wikipedia.org/wiki/Pascal_programming_language">Pascal</a>-specific programming editor and ended up with MORE than he expected, inventing the <a href="http://www.outliners.com/">outliner</a>. And don't get me started talking about <a href="http://www.siliconvalley.com/mld/siliconvalley/3466594.htm">the guy who created a web site for selling Pez dispensers</a>.<br /><br />Wait a second, what about the millions of metric tons of books published with the advice to research, research, research before you start your business?<br /><br />I have a longer answer about market research below. But the short version is that your estimate of the value of the market for your idea is in no way related to the talent you have to express that idea in software. So express yourself: write your software.<br /><strong><blockquote>Teachers, critics, parents and know-it-alls, when they see you have written something, become at once long-nosed and finicking and go through it gingerly sniffing out the flaws. AHA! a misspelled word! as though Shakespeare could spell!</blockquote></strong>Absolute crap sells when it brings a new idea to the world. The quality of the idea is more important than the quality of the software. Don't horde your software, polishing it for years lest someone file a bug report or tell you that you can't code anything.<br /><br /><a href="http://www.dreamsongs.com/WorseIsBetter.html">Worse is Better</a>: release early, release often. Get it into the world and refine it with feedback. It's easier for critics to find flaws than to appreciate the enormity of the change you are proposing. When Apple released Macintosh, what did people say? How about "It sucks, it only has 128k." Only 128k? Well, of course they had to add more memory. Didn't the first PC come out with 64k? That isn't the point.<br /><br />The point is that the most important thing is to <strong>ship</strong> your software. Start it. And then release it. You'll have many chances to polish it later. Look at Open Source: the number one thing people look for in freely available software is that it is maintained, that it received regular attention from its authors.<br /><br />If you wait until your software is perfect, there will be nothing left to add, and it will sit on the shelf gathering dust like a precious gem that is too valuable to wear daily. Get it out early, don't worry about the criticisms, and let it surprise you.<br /><strong><blockquote>A great musician once told me that one should never play a single note without hearing it, feeling that it is true, thinking it beautiful</blockquote></strong>Consider everything in your software. Make a list of requirements and features. So much to do! And it always feels like making your software better will take more time. What to do?<br /><br />This one's easy. Go over your list of requirements. How many are there because they capture some essential truth in the software? And how many are there because there's some 'should' or 'ought to' that drove the decision?<br /><br />For example, if you're writing a web application, does it really need to be .NET or J2EE? What's with the XML/XSLT layer? Do you really need XML/XSLT to implement skins? Or would XHTML+CSS get the job done faster and simpler? There's a whole debate on faster, lighter development. Let's skip over that. The point is, unless the core of your idea is about XML and XSLT, you don't need it.<br /><br />You may choose it if it helps you express your fundamental idea more succinctly. But if it's a lot of extra work, what are you writing? Your software? Your business plan? Or your resume? Stick to the core ideas that are true, that are beautiful, that will make your software sing like a Stradivarius.<br /><strong><blockquote>Men spend their lives adding and subtracting and dictating letters when secretly they long to write sonnets and play the violin and burst into tears at the sunset</blockquote></strong>Remember the question about market research? Why shouldn't you do market research before you write your software?<br /><br />By all means research the market when you're ready to sell. And maybe at that moment you'll make some changes. But <strong>don't start with the research</strong>. Market research will kill any idea and furthermore, you'll get depressed thinking about how spectacularly useless your ideas might be.<br /><br />Another reason to skip the market research is that anything worth doing creates its own market. Pretend it's 1979. Microcomputers have been around since 1977. What's the market for another micro to go head to head with Apple Computer? Good thing you didn't do your homework, because you're IBM and if you start now, in 1981 your new micro coupled with 40% of your entire worldwide marketing budget will revolutionalize the business.<br /><br />Okay, it's 1982. What's the market for a mouse and bit-mapped graphics? Good thing you skipped the market research, because you're Apple Computer and in 1984 you will change the world with Macintosh. It's the third kick at the can: Xerox's customers have voted thumbs down on their Star workstation and your own customers have told you that "Lisa Technology" sucks.<br /><br />Anyways, here's the real issue: market research is adding and subtracting and dictating letters. It's trying to fit in with the business world so that you can feel like you're part of the herd, one of the crowd, so that you don't stick too far out.<br /><br />I'll give you a hard, hard truth to face: <span style="font-style: italic;">when you try to write a piece of software around market research, you're subtly trying to justify your own failure</span>. You're making excuses in advance.<br /><br />What happens when you research the market? Well, one possibility is that you don't write your software ("nobody wants to pay for it"). But you take solace in the fact that it wasn't your fault: it's the market. And if you tweak and pull and twist your ideas to fit the research, then you've got another excuse: it wasn't your fault the program failed, that wasn't your original idea, but the market research said you had to do things that way.<br /><br />Forget the market research. Forget the analysts. Write what's in your heart, and let's find out.<br /><br /><em>This post was inspired by a chapter in </em><a href="http://en.wikipedia.org/wiki/Guy_Kawasaki"><em>Guy Kawasaki</em></a><em>'s book </em><a href="http://www.umsl.edu/%7Esbmeade/macway/curmudgn.htm"><em>The Computer Curmudgeon</em></a><em>. That chapter reprinted a magazine column he wrote that was inspired in turn by Brenda Ueland's book </em><a href="http://www.chapters.indigo.ca/item.asp?Item=978155597260&Catalog=Books&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;N=35&Lang=en&amp;Section=books&amp;zxac=1"><em>If You Want To Write</em></a><em>. The quotations in bold are taken from Brenda's Book. If you'd like more inspiration, buy Guy's book The Macintosh Way, where he shares his feelings about beautiful software and beautiful companies.<br /><br /></em><em>If you like this, please try</em> <a href="http://weblog.raganwald.com/2004/07/if-you-want-to-write-software.html">If You Want To Write Software</a><em>, where I tried to express how I feel about writing software, using Brenda Ueland's quotes to introduce the ideas.</em><em></em><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/passion.html">passion</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/how-to-write-software-with-art.html" title="permanent link">7:41 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Monday, July 26, 2004</div>
+			
+
+			<div class="Post"><a name="109086199736458365">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/selling-agile-difference-between-sales.html" title="permanent link">Selling Agile: The Difference Between Sales and Marketing </a></span>
+					<div style="clear:both;"></div>There's an interesting Yahoo! Group centered around "selling" agile: convincing stakeholders and developers to adopt Agile Methods to improve their software development. 
+<br />
+<br /><a href="http://finance.groups.yahoo.com/group/SellingAgile/">http://finance.groups.yahoo.com/group/SellingAgile/</a> 
+<br />
+<br />I spent a few years as a salesman, with decent results. I recall one thing from my sales career that seems quite relevant to the 'problem' of selling organizations on changing their development culture: 
+<br />
+<br /><strong>Know the difference between Sales and Marketing</strong> 
+<br />
+<br />Sales is persuading a prospect that now is the time to act and that you are the best choice. Everything else is marketing. 
+<br />
+<br />What's the difference? Fundamentally, marketing lowers the cost of getting your message to prospects by&nbsp;publishing a fairly generic message in bulk. Sales increases the effectiveness by arranging for a sales person to engage a prospect interactively. 
+<br />
+<br />Effective sales companies use lower-cost marketing to educate customers about their products or services so that customers understand whether or not they have a problem and at the very least know that the company should be on the short list for choosing a solution when the customer is ready to act. 
+<br />
+<br />Then, effective sales companies use medium-cost prospecting (like direct mail and tele-sales) to locate customers that may make a decision in the near future. Those 'leads' are turned over to salespeople for closing. 
+<br />
+<br />The high-cost sales-people then have just two jobs: urge the customer to act now and urge the customer to buy from the company. If the customer needs to be convinced that there is a problem worth solving, the salesperson shouldn't be talking to the customer. 
+<br />
+<br />That's why salespeople spend so much time <strong>qualifying</strong>. Talk to a top salesperson. They'll tell you that there are only two skills that pay the mortgage: qualifying and closing. Everything else is secondary. 
+<br />
+<br />Why do we Agilists care? Because most companies don't think they have problem. Or if they think they have a problem, they think they have a personnel problem, or an estimation problem, or a discipline problem. They don't think their methodology is fundamentally broken. 
+<br />
+<br />By my reckoning, this is a marketing problem, not a sales problem. If you talk to these companies about Agile, you need to get them to understand that their process is broken. That's an expensive conversation. It's far, far better to market Agile to those companies. That means write books, publish weblogs, speak at seminars... All low-ish cost ways of getting the message out. 
+<br />
+<br />There's one big problem with this. Some Agilists take full-time jobs with non-Agile organizations and want to "sell" internally. That's a problem, because they have failed to perform the crucial first step in Sales: they failed to qualify the customer. If you want to practice Agile, you need to restrict your job search to companies that practice Agile, or at the very least companies that are hiring you because what they're currently doing doesn't work. 
+<br />
+<br />If your boss thinks that what you're currently doing is "not bad" or "good enough," then there's no sale to be made. You need to market, not sell. And that's a long, drawn-out proposition.
+<br /><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/agile.html">agile</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/selling-agile-difference-between-sales.html" title="permanent link">12:54 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Friday, July 23, 2004</div>
+			
+
+			<div class="Post"><a name="109015823574299196">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/emperors-old-clothes.html" title="permanent link">The Emperor's Old Clothes</a></span>
+					<div style="clear:both;"></div><div align="left">Many years ago, there was an Emperor who was so excessively fond of clothes that he spent all his money on dress. He did not trouble himself with soldiers, attend banquets, or give judgement in court. Of any other king or emperor one might say, "He is sitting in council," but it was always said of him, "The emperor is sitting in his wardrobe." And so he was. On one unfortunate occasion he had been tricked into going forth naked to his chagrin and the glee of his subjects. He resolved never to leave his throne, and to avoid nakedness, he ordered that each of his many new suits of clothes should be simply draped on top of the old.<br /><br />Time passed away merrily in the large town that was his capital. Ministers and courtiers, weavers and tailors, visitors and subjects, seamstresses and embroiderers, went in and out of the throne room about their various tasks, and they all exclaimed, "How magnificent is the attire of our Emperor."<br /><br />One day the Emperor's oldest and most faithful Minister heard tell of a most distinguished tailor who taught at an ancient institute of higher stitchcraft, and who had developed a new art of abstract embroidery using stitches so refined that no one could tell whether they were actually there at all. "These must indeed be splendid stitches," thought the minister. "If we can but engage this tailor to advise us, we will bring the adornment of our Emperor to such heights of ostentation that all the world will acknowledge him as the greatest Emperor there has ever been."<br /><br />So the honest old Minister engaged the master tailor at vast expense. The tailor was brought to the throne room where he made obeisance to the heap of fine clothes which now completely covered the throne. All the courtiers waited eagerly for his advice. Imagine their astonishment when his advice was not to add sophistication and more intricate embroidery to that which already existed, but rather to remove layers of the finery, and strive for simplicity and elegance in place of extravagant elaboration. "This tailor is not the expert that he claims," they muttered. "His wits have been addled by long contemplation in his ivory tower and he no longer understands the sartorial needs of a modern Emperor."<br /><br />The tailor argued loud and long for the good sense of his advice but could not make himself heard. Finally, he accepted his fee and returned to his ivory tower. </div><div align="left"><br />Never to this very day has the full truth of this story been told: That one fine morning, when the Emperor felt hot and bored, he extricated himself carefully from under his mountain of clothes and is now living happily as a swineherd in another story. The tailor is canonized as the patron saint of all consultants, because in spite of the enormous fees that he extracted, he was never able to convince his clients of his dawning realization that their clothes have no Emperor.<br /><br /><em>C.A.R. Hoare</em><br /><br /><span style="font-weight: bold;">Addendum</span><br /><br />This is the concluding parable from Hoare's 1980 Turing Award Lecture. The original PDF is widely available, including <a href="http://www.sli-institute.ac.uk/%7Ebob/hoare.pdf">here</a>. You can also take advantage of Google's PDF-to-HTML to translation to  read the lecture <a href="http://72.14.207.104/search?q=cache:HfohDxgx0aIJ:www.sli-institute.ac.uk/%7Ebob/hoare.pdf">here</a>.<br /><br /></div><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/emperors-old-clothes.html" title="permanent link">11:18 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Thursday, July 22, 2004</div>
+			
+
+			<div class="Post"><a name="109051637103193281">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/if-you-want-to-write-software.html" title="permanent link">If You Want To Write Software</a></span>
+					<div style="clear:both;"></div>This post was inspired by a chapter in </em><a href="http://en.wikipedia.org/wiki/Guy_Kawasaki"><em>Guy Kawasaki</em></a><em>'s book </em><a href="http://www.umsl.edu/~sbmeade/macway/curmudgn.htm"><em>The Computer Curmudgeon</em></a><em>. That chapter reprinted a magazine column he wrote that was inspired in turn by Brenda Ueland's book </em><a href="http://www.chapters.indigo.ca/item.asp?Item=978155597260&Catalog=Books&amp;amp;amp;amp;amp;amp;N=35&Lang=en&amp;Section=books&amp;zxac=1"><em>If You Want To Write</em></a><em>.
+<br />
+<br /><span style="FONT-WEIGHT: bold">Everybody is talented because everybody who is human has something to express</span>: don't worry about market share, customer needs, or the admiration of your peers. Ask yourself, "what is inside me straining to get out and manifest itself as a piece of software?"
+<br />
+<br /><span style="FONT-WEIGHT: bold">Teachers, critics, parents and know-it-alls, when they see you have written something, become at once long-nosed and finicking and go through it gingerly sniffing out the flaws. AHA! a misspelled word! as though Shakespeare could spell!</span>: It is not important that your code be well-formatted, refactored mercilessly, or even be entirely bug-free. It is only important that when you look back at what you have written, you can say with certainty: "that's what I was thinking of when I wrote it."
+<br />
+<br /><span style="FONT-WEIGHT: bold">A great musician once told me that one should never play a single note without hearing it, feeling that it is true, thinking it beautiful</span>: Everything you write should embody some great truth you hold dear. Ignore things you know in your heart to be false, such as integrations driven by Business Development, or features added to make your business plan more marketable.
+<br />
+<br /><span style="FONT-WEIGHT: bold">Men spend their lives adding and subtracting and dictating letters when secretly they long to write sonnets and play the violin and burst into tears at the sunset</span>: does the world need another XML-based, J2EE powered, SQL-Server? Or does it need <a href="http://www.konfabulator.com/">Konfabulator</a>, software so beautiful it inspires legions of admirers? What makes your heart beat? What would you write if you had hundreds of millions of dollars? Go ahead: write it anyways.
+<br />
+<br /><span style="FONT-WEIGHT: bold">No writing is a waste of time,—no creative work where the feelings, the imagination, the intelligence must work. With every sentence you write, you have learned something. It has done you good. It has stretched your understanding</span>: during every development there comes the awful realization that nobody is going to want what you are building. Sometimes you are wrong and people will download your creation like hot cakes. Sometimes you are right and your software will pass unnoticed as the world careens down its crazy, unpredictable, unfair path. The thing is, it doesn't matter if your software changes the world. Writing it will change you for the better.
+<br />
+<br />
+<br /><blockquote>Two roads diverged in a wood, and I-
+<br />I took the one less traveled by,
+<br />And that has made all the difference.</blockquote><div style="TEXT-ALIGN: right"><a href="http://www.ketzle.com/frost/roadnot.htm">The Road Not Taken</a>, by Robert Frost
+<br /></div>
+<br /><span style="FONT-WEIGHT: bold">The moment I read Van Gogh's letter I knew what art was, and the creative impulse. It is a feeling of love and enthusiasm for something, and in a direct, simple, passionate and true way, you try to show this beauty in things to others, by drawing it</span>: you and I think software has beauty, an aesthetic value, in both form and function. We have a <a href="http://www.paulgraham.com/taste.html">sense of taste</a> for software. Writing software is a way of sharing your feeling with the world, of telling the world what beauty means. Tell us! We want to know! We want, for one shining moment, to feel your love for your work.
+<br />
+<br /><span style="FONT-WEIGHT: bold">At last I understood that writing was this: an impulse to share with other people a feeling or truth that I myself had. Not to preach to them, but to give it to them if they cared to hear it</span>: thank you for reading this article. The words of others have helped me to explain how I feel about—how I've always felt about—writing software.<span style="FONT-STYLE: italic">
+<br />
+<br /></span><span style="FONT-STYLE: italic">The quotations in bold are taken from Brenda's Book. If you'd like more inspiration, buy Guy's book The Macintosh Way, where he shares his feelings about beautiful software and beautiful companies.</span>
+<br />
+<br />
+<br /></em><em></em><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/passion.html">passion</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/if-you-want-to-write-software.html" title="permanent link">1:41 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Tuesday, July 20, 2004</div>
+			
+
+			<div class="Post"><a name="109035046343688026">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/requirements-changes-and-acceptance.html" title="permanent link">Requirements Changes and Acceptance Debt</a></span>
+					<div style="clear:both;"></div><p>Andre asked:</p><blockquote><p>Part of agile is the idea of not complaining when the spec changes -just go ahead and make the change - even if it means rewriting a large part of the project because the software wasn't originally designed to accommodate the new requested functionality.</p><p>How do you deal with this in the real world?</p></blockquote><p>In <strong>any</strong> environment where there are stakeholders, you must inform the stakeholders of their options and solicit their preference. This is true in Agile, this is also true in Classical project management. The only difference (which I will address) is your ability to handle the change.</p><p>Where Agile is beneficial is in reducing the cost so that the likelihood of "rewriting a large part of the project because the software wasn't originally designed to accommodate the new requested functionality" is lower.</p><p>How can this be so? How can Agile reduce (not eliminate) the cost?</p><p>One of the answers is by reducing <strong>Acceptance Debt</strong>.</p><p>At any one time in any project, the stakeholders will have a finite list of requirements. They will have tested the unfinished product against zero or more of those requirements. If they test, they will pronounce the product to have satisfied zero or more of the requirements.</p><p>This is acceptance testing. Code that does not contribute to satisfying one or more requirements accepted by the stakeholder is unaccepted code. Note that you must actually test, and the stakeholder must be satisfied. This eliminates "requirements drift," where you test against a stale requirements document. The stakeholder must validate the acceptance test.</p><p>During a development cycle ("iteration" in XP, "sprint" in Scrum, "release" in Classical), new code is unaccepted. You're building "Acceptance Debt" as you write every line. At the end of the iteration, you acceptance test. You eliminate the debt by proving that the code satisfies the stakeholders.</p><p>Why is it debt? Because you pay out resources and time to obtain code. You're "out of pocket" until the stakeholder accepts that the code satisfies their requirements.</p><p>Agile reduces Acceptance Debt in several ways. First, Agile has short iterations (2 weeks for XP, 30 days for Scrum). You have less unaccepted code at any one time. It's like being on a contract and negotiating progress payments: you have better cash flow and less risk.</p><p>Agile also eschews coding for requirements you cannot satisfy during an iteration. This doesn't mean don't think ahead and don't design, just don't write code you can't test.</p><p>Classical uses very long development cycles with little or no acceptance testing until the end of the project. Lots of unaccepted code (no, unit testing does <strong>not</strong> reduce Acceptance Debt). So Classical builds up huge acceptance debt.</p><p>So, how does lowering acceptance debt lower the cost of requirements changes?</p><p>Well, you can devise a scenario that is an exception to any generalization, but I will suggest to you that most requirements changes tend to keep substantially all of the existing requirements. One or two get lopped off and an entirely new set get added on that you didn't anticipate.</p><p>So what happens? Let's look at your acceptance debt. What happens when a requirement you haven't satisfied yet gets dropped? In the Agile world, you have no problem, because you didn't write any code to partially satisfy requirements.</p><p>This is different than the Classical World. Most Classical architects develop things in nice layers of abstractions with frameworks and delegates and tiers. So at any one time you have huge acceptance debt in the form of code that doesn't satisfy a requirement today but it might help satisfy one next month. Those architects have a problem when those unsatisfied requirements change.</p><p>So, I suggest the Agile project has less acceptance debt from unsatisfied requirements than the Classical project, because the Classical project hasn't satisfied as many requirements, and even the ones that have been satisfied haven't been accepted by the stakeholders.</p><p>Now what happens when a requirement you've already satisfied gets dropped? Some or all of the code supporting that requirement just became unaccepted, and you have instant Acceptance Debt. This is not so good. Is it the same for the Agile and Classical World?</p><p>No, it is not the same. In the Agile World the stakeholder has accepted the requirement. You didn't send her an email saying some task was done, you didn't show some demo that might have really been PowerPoint or Flash, you stress tested the Product Increment and gave it to them to use in a production setting. They know it was done.</p><p>In the Classical world they take your word for it that it was done, but the Product Increment isn't in production. How is this different? In theory it shouldn't be different, it shouldn't matter because they no longer need the software to satisfy the dropped requirement.</p><p>In practice, when the stakeholder has already accepted the product increment, they understand the wastage in a visceral sense. It's like buying a sedan, then taking it back to the dealer to ask them to cut the roof off and make it a convertible. If you already took the car for a drive, you appreciate the fact that metal must be cut and welded. But if the car hasn't been delivered yet, you just say "sorry, I changed my mind, change the car for me." The roof is the dealer's problem.</p><p>Anyways, the stakeholder is adamant, so you just piled up acceptance debt. So what? Okay, there's less debt for the Agile project. So what? In practice, this debt now weighs you down. It takes more time because you're rooting through the now unaccepted code trying to change it, without breaking anything that satisfied a requirement that hasn't changed.</p>So, the less acceptance debt you have, the easier it is to satisfy the new requirements. Therefore, the consequences are less, and thanks to getting the stakeholder to accept the satisfied requirements as you went along, the consequences are more visible. 
+<br />
+<br />This answer is already way too long, so I'll just mention three other things without explaining them. As explained above, acceptance debt adds rework when requirements change. But acceptance debt also adds uncertainty. So you have more work to do, and it's harder to estimate how much work needs to be done. 
+<br />
+<br />Second, the development cycles in the Agile project explicitly include re-examining requirements, encouraging changes to appear earlier. The objective is to hear about the change earlier in the process, again reducing acceptance debt. 
+<br />
+<br />Third, you are "test infected" on an Agile project, so as you go through the code ripping out the unaccepted stuff, you find out right away when you accidentally break something, you don't wait for weeks or months, so you again reduce uncertainty. This is very similar to what Agile developers say about the relationship between unit testing and refactoring.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/agile.html">agile</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/requirements-changes-and-acceptance.html" title="permanent link">3:07 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Monday, July 19, 2004</div>
+			
+
+			<div class="Post"><a name="109024790678458841">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/chris-crawford-on-game-development.html" title="permanent link">Chris Crawford on Game Development</a></span>
+					<div style="clear:both;"></div><a href="http://www.erasmatazz.com/">Chris Crawford</a> is a game developer. He created many of my favourite Macintosh games, including <a href="http://www.fact-index.com/b/ba/balance_of_power_1.html">Balance of Power</a>, a sophisticated game of geopolitics. He later wrote a book about Balance of Power, explaining the game's creation and mechanics. 
+<br />  
+<br />I re-read his book over the weekend, and was struck by Chris' insights into software design. First person shooter games are all about rendering and trajectories. But Chris' games perform the difficult feat of modelling "soft" subjects like geopolitics, trust, or economics. 
+<br />  
+<br />His perspectives struck me even more relevant today than they were in 1986 when he wrote the book (not to mention 1984 when he began work on the game). Today we are obsessed with "styling," animated menus and translucent interface elements. But where is the "Knowledge Navigator"? How much progress have we made getting computers to help us with our lives or jobs? 
+<br />  
+<br />Of course, computers are pervasive. That's a measure of economic success. But to be honest, I'd say that computers in the office spend most of the time solving problems that other computers have created. I recently made a presentation with animations. But is there any content in that presentation that wouldn't have been just as effective if I'd written things out with Word 2.0 for DOS, my editor in my University days? 
+<br />  
+<br />So back to Chris. His perspectives on turning soft concepts into games apply directly to developing software for helping people solve problems. The problems we want to solve are incredibly soft. 
+<br />  
+<br />Take software development itself. Do you <em>really</em> believe it's an empirical science? That we just assemble the estimates, draw some pretty diagrams, follow the ISO something-or-other standard, and software emerges from the process? Software development is a soft science. And I hope that some of Chris' principles for developing games around soft concepts will apply directly to developing software to assist software development. 
+<br />  
+<br />I captured some of Chris' words from the book. I hope he doesn't mind my sharing them with you here: 
+<br />  
+<br /><em>Simplification to achieve clarity is the essence of my work; clarity can be extracted from a muddy reality only by denying some of reality's richness. 
+<br />  
+<br />A game is to a simulation as a painting is to a blueprint. A painting of a house gives you an emotional impression of the house; a blueprint of a house tells a carpenter where to put the windowsill. 
+<br />  
+<br />What is important is the principle, not the instance, and principles are processes. The actual amount of the GNP of Ghana is less important, for the purposes of a game on geopolitics, than the manner in which that GNP changes over time... This concept—which I call *process intensity*—is the organizing principle of [my book]... I give the facts themselves short shrift. Facts are transitory, while processes are the enduring truths. 
+<br />  
+<br />You can't interact with a fact. It's like a dead fish—it just lays there. But you can interact with a process. You can shape it, change the parameters that affect its behaviour. Ultimately, you can learn about it. facts are best relegated to books and other static media, and computers are best applied to problems involving processes, for computers are not *data* processors, but data *processors*. 
+<br />  
+<br />I did not start out with a fixed set of notions and then express those notions directly through the computer. Instead, the attempt to express my thoughts on the problems of geopolitics helped refine and correct them. 
+<br />  
+<br />Verbs are all-important in game design. They are the allowed actions, the permissible commands that are available to the player. A good set of verbs allowes players to do everything they would need or want to do. A poor set of verbs will either confuse them with its arbitrainess, or lock them in a frustrating straightjacket. The game designer spends a great deal of design effort worrying about the verbs to provide in the game. 
+<br />  
+<br />A programming tool is like a freeway: It takes you somewhere in the universe of results. All programming tools are to some extent generalized to handle the needs of a large number of programmers. They are like freeways that take you to the most popular beaches or the most crowded resorts. He who would climb the remote peaks must forsake the freeway and make his way by foot. The exertion of a week's simple sweat can place the programmer on a mountain peak from which are visible new territories of creative opportunity invisible to those who veer away from steep grades. 
+<br /></em>  
+<br />And my favourite quote: 
+<br />  
+<br /><em>Using paratroops is like putting yourself into a deep hole to see if you can dig yourself out of it. I did much the same thing with Balance of Power, setting a goal for myself that I had no reason to believe I could attain. Then I publicly and financially committed myself to attaining that goal... It was a tough, frightening experience. When it was over I was physically and spiritually spent. But what is the point of undertaking anything less than the most demanding of efforts?</em> <div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/passion.html">passion</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/chris-crawford-on-game-development.html" title="permanent link">10:10 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Saturday, July 17, 2004</div>
+			
+
+			<div class="Post"><a name="109008409477263026">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/what-michael-lewis-told-me-about.html" title="permanent link">What Michael Lewis told me about Software Development </a></span>
+					<div style="clear:both;"></div>Some time ago I read the book version of “next (the future just happened)” for the second time. Michael Lewis has a knack for explaining the social revolutions that roil under the surface of the headlines. 
+<br />
+<br />Reading the book, I was struck by the strong parallels between the Internet’s democratisation of information and the democratisation of talent in the software industry. Developing software is still very much an art. For all the languages, methodologies, management theories, and training, there is no rigorous scientific explanation for why some individuals are tens or hundreds of times more productive than others. There is no rigorous scientific explanation for why some groups are tens or hundreds of times more productive than others. It just happens. 
+<br />
+<br />Michael Lewis uses Pyramids and Pancakes as metaphors for group dynamics. Pyramids are rigid hierarchies based on command and control. Pancakes are, um, flat. Pervasive and nearly free communication of information and ideas allows people to decide for themselves whether they prefer to be part of pyramids or pancakes. 
+<br />
+<br />It turns out that talented software developers like to be part of pancakes. It also turns out that pancakes make better software than pyramids. This is another way of saying the same thing that Open Source advocates have been saying for some time. 
+<br />
+<br />What are the characteristics of ‘pancake software development’? (I am not trying to create a new buzz phrase) : 
+<br /><ul><li>Peer to Peer Communication and Review. Individuals communicate directly with each other to solve problems and create code. Administrators or managers facilitate communication rather than acting as middlemen between individuals. Peers evaluate each other’s code, ideas, and fitness for work. 
+<br /></li><li>Shared Objective. Although individuals execute different tasks, there is one unified goal everyone is trying to achieve together. 
+<br /></li><li>Meritocratic Assignments. Tasks are assigned to the individuals best able to execute them, regardless of seniority or education. </li></ul>In my career, I’ve seen an inexorable shift from pyramids towards pancakes in software development. Lightweight methodologies like Open Source Development, Extreme Programming and Pragmatic Product Management are some of the more successful examples of this trend. 
+<br />
+<br />At the heart of these methodologies are Peer to Peer Communication and Peer Review. Open Source Development relies on evangelists to recruit contributors and administrate repositories of code. Extreme Programming espouses continuous (‘extreme’) Peer Review though pair programming, and Shared Objectives by incorporating user stories into the methodology. 
+<br />&nbsp; 
+<br />Pragmatic Product Management emphasises a peer relationship between development and product management, and especially direct communication between developers and product managers without mediation by other managers. 
+<br />
+<br />In “next,” Michael Lewis also points out the social effects of the democratisation of knowledge. He uses examples from investing and law, but the application to software development is remarkably clear. The third characteristic of pancake software development, Meritocratic Assignments, is exemplified by a shift in hiring practises towards technical testing. This is a direct result of the democratisation of knowledge about how to write good software. There’s more of that knowledge on the Internet than in all of the world’s universities combined. 
+<br />
+<br />Compare the value of a Computer Science degree to the value of an MBA from a good school. The MBA is essential to getting a position at a desirable firm. And that position is a necessary prerequisite to getting a better position at the same or better firm. And so it goes for the pyramidal business person working in a pyramidal industry like management consulting or investment banking. 
+<br />
+<br />The importance of that first job, and therefore of the MBA, is magnified by the magic of compound returns. Anybody with enough business acumen to get into an MBA program knows their entire career follows from their ability to be a star in the MBA program at a prestigious university. Start with a star job, and a career is assured. Start with a poor job, and a graduate is doomed to a career of mediocrity. 
+<br />
+<br />Software development doesn’t work that way. The first job a graduate lands could be in a big pyramid or a tiny start-up. Either way, the graduate could be working on something huge and important, or something dead boring. There isn’t much of a correlation between the prestige of the employer in pyramidal terms and the value of the work the graduate gets to do. 
+<br />
+<br />The software development industry ends to place more emphasis on what a developer has worked on, be it technologies or be it products achieving success in the marketplace, or perhaps even notoriety. Big, pyramidal software companies that value degrees from prestigious universities do not have a monopoly on jobs that will be valuable to a new graduate. 
+<br />
+<br />In fact, it is often the very reverse: in the pyramid, the graduate does not get enough good work to do and therefore obtains less experience than a graduate working for a pancake software development company. That’s no reason to forego a degree in Computer Science, but it is a reason to look twice at any company that would prefer to hire a developer with strong credentials but little evidence of developing great software. 
+<br />&nbsp; 
+<br />What are companies doing about this? More and more companies are using testing to evaluate . Résumés are useful for trimming a flood of applicants down to a manageable number, but serious software development organisations now ask even senior candidates to write code, solve puzzles, design applications, or otherwise demonstrate their ability to think, communicate,&nbsp;and code. This is democratisation of hiring. It is independent of education, age, or culture. 
+<br />
+<br />This democratisation of hiring is part of the natural push towards pancake software development. Companies that hire based on proven ability to develop software, rather than a ‘good education’ or ‘having worked at IBM,’ are usually also the companies that encourage Meritocratic Assignment and Peer Review. They have a culture that emphasises tangible results over interpersonal dynamics. 
+<br />
+<br />It’s no surprise that Peer to Peer Communication and Review, Shared Objective, and Meritocratic Assignments are often found together in the same high performance group. Each characteristic works in synergy with the others to promote a pancake culture rather than a pyramid culture. 
+<br />&nbsp; 
+<br />And as I learned from Michael Lewis, there’s nothing surprising about this trend: it’s happening everywhere, and we who build the technology to create pancakes should not be surprised that we are not immune to their effects. 
+<br />&nbsp; 
+<br /><em>Since I published an earlier version of this article, I received quite a few comments suggesting that the Software Industry is immature, and that the value of a degree in Computer Science will rise as the indutry matures.</em> 
+<br /><em></em>&nbsp; 
+<br /><em>I agree that a degree has value for starting a career in software development. I dispute whether that degree drives a developer's entire career: I am suggesting that the nature of a developer's projects is much more important than the quality of the developer's school. And I am also suggesting a potential reverse correlation between going to work for a pyramid and having a strong career: developers will get more valuable experience going to work for pancake-like organizations.</em> 
+<br /><p><em>I also received quite a few comments along the lines of "software development is more than just prigramming, so your arguments about meritocarcy do not apply."&nbsp;I have always agreed, and I note that my origianl wording did not&nbsp; spell this out for the more litereral readers.</em></p><p><em>My point is that a meritocracy rewards those who Get Things Done. And for a software developer, that's developing successful software. Software development includes skills like communication, requirements analysis, interaction design, and getting along with colleagues.</em></p><em>I argue that companies are tending towards&nbsp;hiring developers with experience Getting Things Done, and that a young developer will get more of that experience in a pancake than in a pyramid. Your comments on this conjecture are gratefully solicited.</em> 
+<br />
+<br /><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/what-michael-lewis-told-me-about.html" title="permanent link">1:07 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Friday, July 16, 2004</div>
+			
+
+			<div class="Post"><a name="108997906730457463">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/how-to-get-your-first-job-developing.html" title="permanent link">How to get your first job developing software</a></span>
+					<div style="clear:both;"></div><a href="http://www.humblecoder.com/">HumbleCoder</a> asked: 
+<br />
+<br /><blockquote>I've seen a number of people recommend doing programming work for free in order to gain experience. This can involve either volunteer work for a local charity or school, or working as an intern for a for-profit corporation. I'm not sure if this actually works or not, so I am wondering if anyone out there can comment on this strategy for getting experience. Email me if you have used this technique to help you land a first job. </blockquote>I have been hiring developers for almost a decade, and one of the things I look for is a habit of writing free or nearly free software. 
+<br />
+<br />In my experience, good developers love to write code. In fact, the very best developers don't know how to "not write code". When they were in high school, they wrote MUDs in Basic (well, that's what they did in the 80s). When they were in college, they developed Perl and Tcl scripts that scanned Usenet for updates to threads of interest. Even if they hold a "lowly" summer job working in a computer store, they have a Linux system at home running Apache and mod_perl or PHP. 
+<br />
+<br />Even after they get paying jobs working 70 hours a week, good developers can't stop coding. For example, Phil Greenspun started Ars Digita, yet he wrote lots of free tools on his home server (I use two of them on my own weblog). Paul Graham ran Franz and Viaweb (now Yahoo! Stores), yet he is busy developing a new language, Arc. In my own case, I was busy as a consultant in the early nineties but couldn't help writing a PDA application and a dynamic web service "on the side". 
+<br />
+<br />When I am asked how an inexperienced person can get their foot in the door, I give two pieces of advice: 
+<br />
+<br />First, I tell them to <strong>just start writing code</strong>. If they don't know what to write, I don't suggest anything specific, I just tell them that they should pick stuff they enjoy, using tools they like. It isn't important to use the latest "industry standard" tools or work on something "commercial". 
+<br />
+<br />Second, I tell them to think in terms of a "portfolio" instead of a "résumé". Even if they don't take a physical portfolio to job interviews, their résumé or cover letter should include an appendix with samples of their work. If an inexperienced person wants to stand out from the crowd, screen shots, links, and code snippets will appeal to a technical hiring manager. 
+<br />
+<br />Is any of this guaranteed? No. Some companies hire HR people that are not qualified to tell the difference between a talented candidate who compiles and builds their own development environment at home and a mediocre college graduate that didn't expand their own horizons. 
+<br />
+<br />I personally wouldn't want to work for a company that gives significant authority over its intellectual property to such an HR person, but not&nbsp;everyone is as picky as I am :-) 
+<br /><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/jobs.html">jobs</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/passion.html">passion</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/how-to-get-your-first-job-developing.html" title="permanent link">7:57 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Thursday, July 15, 2004</div>
+			
+
+			<div class="Post"><a name="108991758767451730">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/last-trevor-mills-show-wednesday-july.html" title="permanent link">Last Trevor Mills Show Wednesday, July 21st at Hugh's Room in Toronto</a></span>
+					<div style="clear:both;"></div><a href="http://www.trevormills.com/">Trevor Mills</a> is a former software program manager with a huge talent for communication. A few years ago he decided to play music full time, and he's great.
+<br />
+<br />His last Toronto concert is this Wednesday, July 21st at <a href="http://www.hughsroom.com/">Hugh's Room</a>. Go ahead, make a reservation, and have a great time!
+<br />
+<br />What's so special about Trevor? In a word, <strong>passion</strong>. He has a passion for folk music. It's not just the music, it's the culture, it's the camaradarie, it's the lifestyle.
+<br />
+<br />Are you passionate about software development? Are you ready to commit to developing great software? Do you think that a minute spent writing mediocre code is a minute of your life wasted irrevocably?
+<br />
+<br />If you aren't, that's fine. I'm not going to tell you what to do. It's got to be something you feel for your own reasons. But I know how I feel, and I know I want to spend the rest of my life with people who feel the same way about their chosen careers.
+<br />
+<br />People like Trevor.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/last-trevor-mills-show-wednesday-july.html" title="permanent link">2:53 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+
+			<div class="Post"><a name="108989169800010345">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/email-explaining-code-review.html" title="permanent link">An Email Explaining a Code Review</a></span>
+					<div style="clear:both;"></div>From: Reg Braithwaite-Lee 
+<br />To: F---- S------- 
+<br />Subject: An hour before your first Code Review at XXX 
+<br />
+<br />F---- : 
+<br />
+<br />In about an hour you will be participating in one of the most important events in your career with XXX, your first code review. 
+<br />
+<br />Code reviews are the foundation of team software development. The Code Review is where we have an opportunity to synchronize on what's important, what's not important, how things should work, and how much progress we are making. 
+<br />
+<br />Other organizations have other paths to team software development. For example, some organizations take an autocratic approach. Your manager would normally review your code personally and dictate changes to you, possibly accompanied by explanations of why the changes are important. Such companies often have "style police," architects or managers that dictate programming conventions and audit code for compliance. 
+<br />
+<br />We aren't going to do that. Having the team review the code together means that we can discuss the code and we can also discuss what's important and why. It's an opportunity for peer to peer communication, which is way more important and valuable to us than dictates from managers. 
+<br />
+<br />So thanks, you're a part of something very important. 
+<br />
+<br />Now that I've explained the importance of this, I want to set your expectations correctly. We are probably going to come up with a lot of 'opportunities for improvement' with your code. Why? 
+<br />
+<br />Well, for starters, there's the number of eyes. You look at your code with two eyes. A group looks at it with twelve or twenty eyes or more. It's almost impossible for anything to be so perfect nobody can suggest an improvement. And quite frankly, if you're optimizing every algorithm, you may be working on perfection at the expense of goodness. 
+<br />
+<br />Another reason has to do with synchronizing our ideas of importance. Do you know what I think is important to the success of the project? You probably have an incomplete idea. I probably have an incomplete idea of what you think is important. T--, A--, E--, and S-- probably have other ideas. 
+<br />
+<br />Under the circumstances, there's probably no piece of code that would meet with everyone's approval. Quite likely, the code you write does a good job of expressing your idea of what's important. If you can express your own ideas, you are coding well. 
+<br />
+<br />Part of this review will be discussing what is important and why. That way, we will all share the same ideas. And the next piece of code you write will express those shared ideas. As will the next piece of code S-- or O-- writes. 
+<br />
+<br />I want to stress that developing software in a team environment is an ongoing process of refinement and improvement. It simply doesn't work to try to 'start at the finish.' For example, you could have taken the weekend, interviewed me extensively, and rewrote your code to express my ideas. But such a body of code wouldn't help the team learn and communicate. 
+<br />
+<br />So it's better for XXX that we 'follow the path' and 'take each step once.' And you're a big part of our next step. 
+<br />
+<br />Once again, thank you in advance. 
+<br /><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/agile.html">agile</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/email-explaining-code-review.html" title="permanent link">7:40 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Wednesday, July 14, 2004</div>
+			
+
+			<div class="Post"><a name="108982213755644098">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/aggregating-raganwald.html" title="permanent link">Aggregating Raganwald</a></span>
+					<div style="clear:both;"></div>I received an email today asking about syndication. Blogger's free service offers syndication in <a href="http://www.atomenabled.org/">Atom</a> format. The URL for the Atom feed is:<br /><br /><a href="http://weblog.raganwald.com/atom.xml">http://weblog.raganwald.com/atom.xml</a><br /><br />The nice people at Blogger point out that there's a free re-syndication service called <a href="http://www.feedburner.com/">Feedburner</a> that can convert the Atom feed into RSS 2.0. Of course, they may change their plans and stop serving feeds at any time, but if you'd like to try it, try:<br /><br /><a href="http://feeds.feedburner.com/raganwald">http://feeds.feedburner.com/raganwald</a><br /><br />If you aggregate blogs, I'd appreciate your feedback and suggestions for improving these feeds. Thanks!<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/aggregating-raganwald.html" title="permanent link">12:05 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+
+			<div class="Post"><a name="108980814372677511">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/defining-tasks-with-acceptance-tests.html" title="permanent link">Defining Tasks with Acceptance Tests</a></span>
+					<div style="clear:both;"></div>Here's an email from a few years back:
+<br />
+<br />From: Reg Braithwaite-Lee 
+<br />Sent: Monday, August 28, 2000 6:52 PM 
+<br />To: XXX 
+<br />Subject: RE: Software 
+<br />
+<br />XXX wrote: 
+<br />
+<br /><blockquote>I have a software guy who is undisciplined - he wants to just be left alone and write software to his spec. 
+<br />
+<br />Any tips and hints there for me?  :)</blockquote> 
+<br />
+<br />The terse response is that you must be synchronized on expectations. 
+<br />
+<br />My practise is to set up "acceptance tests." An acceptance test is a written understanding of what it means for a piece of software or task to be "done." An acceptance test has a Boolean output: pass/fail, done/not done. 
+<br />
+<br />Acceptance tests start with a one sentence executive summary. The best acceptance tests strive to be objective "The sort function shall be deemed to have acceptable performance when it can demonstrate sorting 100,000 randomly generated strings in x seconds or less." 
+<br />
+<br />When you and the developer have agreed on a one sentence summary, you drill down to specific tests. You can probably dictate the summary, but the developer should participate as a reasonably equal partner in fleshing out the tests: 
+<br />
+<br />"The sort function shall be deemed to have acceptable performance when it can demonstrate sorting 100,000 randomly generated strings in x seconds or less: 
+<br />
+<br />Random strings to be in a text file, one string per line, strings to be 10 characters long. Standard Unix conventions. Test to be run using a simple shell that reads the entire file into RAM before timing the sort.  Timing will be established using the systemTimeInMilliseconds() function. The test is a pass if the time for the sort is less than x milliseconds. The machine for the testing will be any of our usual testing systems (currently YYY running Linux)." 
+<br />
+<br />Large point:  I forbid coding until the acceptance test has been signed off. Moving ahead is tempting for the developer and the manager, but resist! I also do not accept any time estimates for a task that does not have acceptance tests defined. How does (s)he know how long it will take if you haven't agreed on when it will be done? 
+<br />
+<br />Small point: for some tasks, setting up and writing the tests takes as long as the coding. This is normal, and an acceptable cost of development. It is a false saving to thug on ahead to avoid the "overhead" of acceptance tests. 
+<br />
+<br />Medium Point: Tugging over acceptance tests is an important part of the development process: it is a valuable brainstorming activity and quickly identifies what is important and what is not. 
+<br />
+<br />p.s. Something like a sort requires multiple acceptance tests. Here's another for the sort function: 
+<br />
+<br />"The sort function shall sort strings into alphabetical order: 
+<br />
+<br />Random strings to be in a text file, one string per line, strings to be 10 characters long. Standard Unix conventions. A sorted copy of the file will be generated using Unix standard sort. Test to be run using a simple shell that reads the entire file into RAM and writes the sorted result to a file. The veracity of the sort will be validated by comparing the output with the Unix sort version. The machine for the testing will be any of our usual testing systems (currently YYY running Linux)."
+<br /><hr/>
+<br />Looking back, I didn't really address my friend's concerns directly. First, there was the concern of 'his spec', as in the developer's spec. That's really what this email addresses: making sure that the developer is working on the right thing.
+<br />
+<br />There's another entire problem of 'being left alone', also known as 'going dark.' My email doesn't address that problem at all. Perhaps I'll post something on that topic in the future...<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/agile.html">agile</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/defining-tasks-with-acceptance-tests.html" title="permanent link">8:21 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Tuesday, July 13, 2004</div>
+			
+
+			<div class="Post"><a name="108973528537261499">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/interviewees-perspective.html" title="permanent link">The Interviewee's Perspective</a></span>
+					<div style="clear:both;"></div>So I find myself sitting still for a technical interview with a faceless corporation that&#8217;s hiring contract programmers. Right away the answer to all my problems is &#8220;don&#8217;t do that!&#8221; But anyways, I did it, and here&#8217;s how it goes&#8230;<br /><br />I meet four junior-ish programmers that pepper me with Java and SQL questions. I get it all just about right, although I was unsure about one of the SQL questions. They seemed satisfied, but maybe they don&#8217;t bother to shake their fingers at hapless interviewees when they blow a question&#8230;<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://weblog.raganwald.com/uploaded_images/buggy-729989.png"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;" src="http://weblog.raganwald.com/uploaded_images/buggy-728535.png" border="0" alt="" /></a>When I get home I try it on my laptop and discover I&#8217;d left something out of my SQL answer. I get it right and like a good brown noser I send them an email thanking them and correcting my answer, being careful to explain that I&#8217;d tried it like a hands-on person rather than googling the answer like a student.<br /><br />This wins me a second interview, and once again I get technical questions, these ones a little better. The first set were all right and wrong answers, these ones include an opportunity to share your thinking, such as:<br /><br />&#8220;<em>What&#8217;s the difference between an Abstract Class and an Interface? Explain when you would use one versus the other</em>.&#8221;<br /><br />All goes well until I&#8217;m asked to explain the difference between static and instance methods, and give examples of how to call them. I do so, and write out a series of calls including this one:<br /><br /><pre><code>    someInstance.staticMethod();<br /></code></pre><br />I explain that <em>it&#8217;s allowed by the compiler but I never do that</em>. The lead tech guy shakes his head, saying no, it&#8217;s not allowed. Okay, I&#8217;m not perfect, I explain that I thought it was allowed but not a good idea, but I could be wrong. Either way, I&#8217;m not writing that code.<br /><br />They finish by asking me to write code for permuting strings. I include command line flags, help, <a href="http://www.junit.org/">JUnit</a> tests, I go all out and take thirty minutes. He seems impatient for me to finish, even though inside sources told me they&#8217;ve hired people who took forty-five minutes to complete the code.<br /><br /><a href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FHow-Would-Move-Mount-Fuji%2Fdp%2FB000ESSSN4%2Fsr%3D8-1%2Fqid%3D1165595626%3Fie%3DUTF8%26s%3Dbooks&tag=raganwald001-20&linkCode=ur2&camp=1789&creative=9325"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;" src="http://weblog.raganwald.com/uploaded_images/move_mt_fuji-703316.jpg" border="0" alt="" /></a>When it&#8217;s all over, he&#8217;s escorting me to the elevator. I ask him how it went. &#8220;Some good, some not so good.&#8221; He says. You can guess where this is going&#8230; He explained that I got the method code wrong, and that really was not so good.<br /><br />What can I do? Of course, when I get home, I check the answer. I&#8217;m deflated to discover that I was right. This doesn&#8217;t help, I&#8217;m not going to get a job by telling him he got it wrong. I&#8217;d rather be wrong and admit it.<br /><br />Of course, some people would shrug and say it&#8217;s a minor detail, they don&#8217;t mind getting it wrong. I&#8217;m one of those people. But if I&#8217;m interviewing, I don&#8217;t hold those details against people. This guy seems to think that knowing the details of the language are important. So I&#8217;m not going to tell him he would fail his own test.<br /><br />So all I can do is blow off a little steam on the web and look forward to interviewing elsewhere.<br /><br />Thanks for listening, I feel better now.<br /><br />(This originally appeared in the <a href="http://discuss.fogcreek.com/joelonsoftware/default.asp?cmd=show&amp;ixPost=151541">Joel on Software discussion group</a> shortly after the interview: time has <a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html" title="Trick or Bleep?">mellowed my perspective</a> since then.)<br /><br /><span style="font-weight:bold;">Follow up</span>: In hindsight, this is good for a laugh. What are your thoughts about interviews like this? Should I have respectfully disagreed with the interviewer? Should I have deliberately left any anti-patterns out of my answer? Perhaps I missed an opportunity to turn the discussion towards one of my strengths?<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/jobs.html">jobs</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/interviewees-perspective.html" title="permanent link">12:12 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+
+			<div class="Post"><a name="108972725304595138">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/hazards-of-hiring.html" title="permanent link">Hazards of Hiring</a></span>
+					<div style="clear:both;"></div><a href="http://msdn.microsoft.com/longhorn/understanding/columns/default.aspx?pull=/library/en-us/dnsoftware/html/software07072004.asp">Hazards of Hiring</a>
+<br />
+<br />An excellent article with a balanced look at the hiring process. The author runs a small ISV, so you get a highly pragmatic perspective.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/agile.html">agile</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/jobs.html">jobs</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/hazards-of-hiring.html" title="permanent link">10:00 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+
+			<div class="Post"><a name="108972056319141550">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/whats-all-fuss-with-build-process.html" title="permanent link">What's all the fuss with the build process?</a></span>
+					<div style="clear:both;"></div>Hello!
+<br />
+<br />You may have overheard C****, D*****, and B**** talking about overhauling the build process lately. What's all the fuss about?
+<br />
+<br />The short answer is, we want to cut the amount of time required to develop O---- core and add ons, while increasing quality. So we look around, and what do we see? Smart people working hard. So the answer is NOT work harder. The answer is "work smarter."
+<br />
+<br />Of course, not everyone agrees on what it means to "work smarter." Some people might come in here and tell us we need more UML diagrams, or throw out the C++ and start again with a so-called "better" programming language, or perhaps move everybody into their own offices and remove the telephones.
+<br />
+<br />Those suggestions have some merit, but if you look around you'll find some companies that do very well using those ideas, and some that do very well doing the opposite. Let's put those kinds of suggestions aside for the moment. They might work for us, they might not. The problem with those suggestions is that they don't come with much of a guarantee. We have to study them a lot harder before trying any of them.
+<br />
+<br />There's another kind of suggestion, like "hire the best people you can find." Almost every company that ignores this suggestion fails to ship software. It seems to be a "best practice." It comes with a good track record. Suggestions for producing software faster with higher quality that have good track records are priorities for us.
+<br />
+<br />So back to the build process. I'm going to share a FACT with you. If you want to research this yourself, spend a few minutes with Google using keywords like "continuous integration" or "daily build." Here's the fact:
+<br />
+<br />Companies that build their software more often produce higher quality products, faster.
+<br />
+<br />Here are some opinions backing up this fact:
+<br />
+<br /><a href="http://www.stevemcconnell.com/bp04.htm">http://www.stevemcconnell.com/bp04.htm</a>
+<br /><a href="http://www.joelonsoftware.com/articles/fog0000000023.html">http://www.joelonsoftware.com/articles/fog0000000023.html</a>
+<br />
+<br />Please read them both. All of them. It'll take you less than sixty seconds each. I'll wait while you read them. There will be a test later.
+<br />
+<br />*****
+<br />
+<br />Did you read them both? You didn't? You'll get to them "later"? Come on, read them right now, I'll wait, I really will. Take two minutes and make yourself a more professional programmer!
+<br />
+<br />Okay, you've read them. Thank you. Wasn't that worth it?
+<br />
+<br />Now, hopefully you're excited about daily builds. You might even want to build more often. XP zealots actually say "daily builds are for wimps": they build as they go, triggering a build dozens of times a day. Great. But we have to start somewhere. And that's why we're taking a hard look at our build process and working towards building at least once a day.
+<br />
+<br />So... When you hear talk of the build process, you now know what's going on: we're "working smarter".
+<br />
+<br />You read the articles, right? So you can tell me:
+<br />
+<br />1. Jim McCarty wrote a book that mentions the daily build. What's its name?
+<br />2. When projects get really big, the build takes a long time. If you have more than five million lines of code, should you still do daily builds, or is your project too big for this technique?
+<br />3. Joel has a test for engineering group. How many questions are in his test?
+<br />4. Extra bonus: what's our score in the "Joel Test"?
+<br />5. Extra bonus: where can you get Jim's book?<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/agile.html">agile</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/whats-all-fuss-with-build-process.html" title="permanent link">8:07 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+
+			<div class="Post"><a name="108971890227155614">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/wanted-agile-c-wizard.html" title="permanent link">Wanted: Agile C++ Wizard</a></span>
+					<div style="clear:both;"></div>O---- is looking for a self-directed C++ wizard with a strong agile mindset. O---- is a *product* company. This isn't another J2EE/WebSphere/Oracle yada yada yada project. This is hard core, shrink-wrapped software, for a company that has substantial revenues and has been in business for more than five years.
+<br />
+<br />I'm going to be candid with you: this company is investing in Agile, is giving agile a try, but needs to see results. We've already hired two strong agile development leads, and we're gaining traction with the CEO and VP of Product Management.
+<br />
+<br />We've got the support and we're already doing a lot of new development using agile practices. Now we need to deliver. And that means we're looking for two things: (1) people who deliver (Joel calls this skill "Gets Things Done"), and (2) people who are strongly committed to agile development.
+<br />
+<br />I'm stressing this point for a reason. There are a lot of people who "like" agile, who "think its cool." We aren't looking for them. If you believe that agile's nice, but not essential, PLEASE pass this email to someone who's a little more passionate about delivering software.
+<br />
+<br />We're looking for the few, the proud, the fanatics. People who know that the old ways deliver half as much software in twice the time, if they deliver at all. And specifically, people who care enough that they're uncomfortable delivering less than their best.
+<br />
+<br />It's really simple. We're delivering great software, ahead of the curve, using agile practices. Our success is going to drive the company to the next level. We have an ambitious plan. And now we need to bring in the talent to deliver the products while evangelizing the entire company.
+<br />
+<br />SO: if you're a "God amongst insects" when it comes to C++ development, if you have incredibly strong communication and leadership skills, if you want to be a part of the agile revolution, email your resume to me RIGHT NOW. I'm ready to arrange interviews.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/jobs.html">jobs</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/wanted-agile-c-wizard.html" title="permanent link">7:38 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+                <div class="SideBarTitle">Buy Raganwald a Coffee</div>
+				
+                       <div style="float: right; width: 64px; margin-left: 6px; font-style: italic; text-align: center; font-size: 80%;"><form name="DoubleEspresso" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_donations">
+<input type="hidden" name="business" value="raganwald@gmail.com">
+<input type="hidden" name="item_name" value="Buy Raganwald a Darkhorse Double Espresso">
+<input type="hidden" name="item_number" value="DoubleEspresso">
+<input type="hidden" name="amount" value="3.15">
+<input type="hidden" name="no_shipping" value="0">
+<input type="hidden" name="logo_custom" value="http://weblog.raganwald.com/uploaded_images/coffeecup.png">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="tax" value="0">
+<input type="hidden" name="lc" value="CA">
+<input type="hidden" name="bn" value="PP-DonationsBF">
+<input type="image" src="http://weblog.raganwald.com/uploaded_images/coffeecup.png" width="64" height="64" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form></div>If you enjoy reading my weblog, please consider <a href="#"
+title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript: document.DoubleEspresso.submit();">buying me a Darkhorse Double Espresso, for just $3.15</a>
+                       Thank you!
+
+		<br />
+
+		<br />
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		<script type="text/javascript" language="Javascript">if (location.href.indexOf("archive")!=-1) document.write("<strong><a href=\"http://weblog.raganwald.com/welcome.html\">Current Posts</a></strong>");</script>
+		<br/></p>
+		<br/>
+
+		<p class="profile-link"><a href="http://feeds.raganwald.com/raganwald"><img src="http://feeds.raganwald.com/~fc/raganwald?bg=&amp;fg=&amp;anim=0" height="26" width="88" style="border: 0pt none ; vertical-align: middle;" alt="" /></a>&nbsp;<a href="http://feeds.raganwald.com/raganwald" rel="alternate" type="application/rss+xml"><img src="http://www.raganwald.com/fb/images/pub/feed-icon16x16.png" alt="" style="border: 0pt none ; vertical-align: middle;"></a>&nbsp;<a href="http://feeds.raganwald.com/raganwald" rel="alternate" type="application/rss+xml">Subscribe in a reader</a></p>
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

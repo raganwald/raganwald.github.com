@@ -1,0 +1,505 @@
+<html> 
+<head>
+        
+        <title>Java is the right answer to the wrong question, Ruby is the wrong answer to the right question</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Thursday, September 27, 2007</div>
+			
+
+			<div class="Post"><a name="8378328582722123438">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html" title="permanent link">Java is the right answer to the wrong question, Ruby is the wrong answer to the right question</a></span>
+					<div style="clear:both;"></div><blockquote>Large code bases are the problem, not the language they&rsquo;re written in. Find a way to break/decompose big code bases into little ones.<br /></blockquote><div style="text-align: right;"><a href="http://dehora.net/journal/">Bill de h&Oacute;ra</a>, calming a <a href="http://beust.com/weblog/archives/000462.html">heated debate</a></div><br /><br />Can we please stop calling each other silly names over the languages we choose and move on to calling each other silly names over our choices for writing literate programs, eliminating redundancy, decoupling modules from each other, and so forth?<br /><br />The very next time you find yourself being drawn into a debate about Java vs. Ruby, try saying something obscure, such as, <em>Java is the right answer to the wrong question, Ruby is the wrong answer to the right question</em> and see if you can redirect the energy towards exploring new ground instead of stagnating in the same old tired place.<br /><br /><blockquote>Do not follow in the foot steps of the Sages. Seek what they sought.</blockquote><br />When we argue Java vs. Ruby, or testing vs. type checking, we are arguing about foot steps. Take the debate to the next level. What is it we are trying to accomplish with those features? What are we seeking?<br /><br />My favourite example of this is the subject of automatic <a href="http://www.amazon.com/gp/product/0201485672?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0201485672" title="Refactoring: Improving the Design of Existing Code">refactoring</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0201485672" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />. My current text editor doesn&rsquo;t perform automatic refactoring (ducks). Are you about to blast a flaming comment or perhaps an entire blog post explaining what a dunderhead I am for not using an IDE that can move a method with a single dialog box?<br /><br />Stop for a moment. <em>Why</em> do we move methods? <a href="http://steve.yegge.googlepages.com/transformation" title="Transformation, by Steve Yegge">What are we trying to accomplish?</a> What is it about our code after we have refactored that makes the code better? Now you have a really juicy comment to make, a deep and insightful point of view to bring to a discussion. Let&rsquo;s talk about that quality of good code first, and then we can talk about how to get there later, if ever.<br /><br />So the next time you read that &ldquo;Strong, static typing is superior because it enables the IDE to provide automatic refactoring support,&rdquo; take a deep breath. Don&rsquo;t nod and agree. Don&rsquo;t shake your head and disagree. Ask a polite question: <em>What are we trying to accomplish with automatic refactoring?</em> And when told that &ldquo;Unit tests are superior to compiler type checking for catching bugs,&rdquo; don&rsquo;t settle for &ldquo;catching bugs&rdquo; as axiomatic. Ask what quality <em>really</em> means for code.<br /><br />Nothing is going to save us from <a href="http://www.youtube.com/watch?v=OYecfV3ubP8" title="Apple's 1984 Macintosh commercial on Youtube">talking ourselves to death</a>. But at least we can debate at a higher level of abstraction.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/ruby.html">ruby</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html" title="permanent link">7:02 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Java is the right answer to the wrong question, Ruby is the wrong answer to the right question</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="887116425352884016"></a> 				Okay, I might be violating the spirit of your post here, but can you put a finger on why not having IntelliJ style rename and move methods while coding in Ruby/Python doesn't hurt?<BR/><BR/>The point of those refactorings is mostly to keep the code understandable by breaking the code into smaller chunks and adjusting method/class names as the intent of the method/class becomes more clear or changes.<BR/><BR/>How are you able to do that in Ruby coding without being backed up by automated refactoring?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190908680000#c887116425352884016" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:58 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=887116425352884016" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7763860694254981534"></a> 				<I>keep the code understandable by breaking the code into smaller chunks</I><BR/><BR/>I think we can agree on the importance of smaller chunks. But is taking a large thing and breaking it into a collection of smaller things the only way to do that? How else could we arrive at a program that consists of small chunks?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190908920000#c7763860694254981534" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:02 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7763860694254981534" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8256903606779501912"></a> 				But it is not the same level which is compared here. Java was pushed for a long time, and is faster than Ruby. However it is also overly verbose and leads to those huge chunks of code.<BR/><BR/>Ultimately, you cant use Ruby alone except for smaller projects (where it beats perl into the ground; python beast perl as well)<BR/><BR/>Sooner or later you HAVE to combine ruby with one of the faster languages, and among these there is a wide array of languages C/C++/Java/C#, maybe even D in the future.<BR/><BR/>Refactoring in a language like ruby is simply on another scale than doing so in one of those "bigger" languages mentioned above<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190909760000#c8256903606779501912" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:16 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8256903606779501912" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5760754781503910652"></a> 				Are the first two comments really comparing Java to Ruby?<BR/><BR/>Please tell me you are both close friends who are trying to play with my head.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190909880000#c5760754781503910652" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:18 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5760754781503910652" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="17409147421226169"></a> 				What is your editor (for Java, Ruby etc.) of choice, Reginald?<BR/><BR/>Regards<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190909940000#c17409147421226169" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Lunohodov</span> : 12:19 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=17409147421226169" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8925304424920324859"></a> 				I use TextMate for Ocaml, Javascript, Java, and Ruby. I drop into IntelliJ and Eclipse for Java from time to time when given projects already organized around them.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190910540000#c8925304424920324859" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:29 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8925304424920324859" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4817241769772140651"></a> 				You shouldn't need an editor that refactors code for you. You should be doing it <I>while</I> you're working through the code.<BR/><BR/>Refactoring is excellent but the point at which you do it should be changed.<BR/><BR/>Mr Braithwaite is gently leading readers to the conclusion that there <I>is</I> a different way to code. The best way to summarize his post is, "Always ask why you are doing something."<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190911260000#c4817241769772140651" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11493260046342691726" rel="nofollow">Rudolf</a> : 12:41 PM</div>
+
+								<span class="item-control blog-admin pid-1335719340"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4817241769772140651" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4312209612198429205"></a> 				"How else could we arrive at a program that consists of small chunks?"<BR/><BR/>By not writing big chunks in the first place. Did I get my brownie points?<BR/><BR/>Seriously even if we have a sufficiently expressive and compact notation (e.g. Ruby or Haskell) we still have the huge problem of finding (one of) the minimal correct API that would allow us to express our problem in the most readable way. A refactoring tool let us experiment with possible choices, otherwise we need to be prescient or incur in large doses of pain.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190911980000#c4312209612198429205" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Daniel Yokomizo</span> : 12:53 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4312209612198429205" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1771528321380217402"></a> 				<I>You shouldn't need an editor that refactors code for you. You should be doing it while you're working through the code.</I><BR/><BR/>You shouldn't need one, but you're probably going to need a refactoring IDE or wish you had one, because <B>you're going to write bad code</B>.  I don't mean you personally, <B>I mean everyone</B>. You're going to make a poor choice about a method signature or something that you call more than once and you're going to want to change it.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190912160000#c1771528321380217402" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:56 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1771528321380217402" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3847782647828369445"></a> 				enjoyed your post a lot!<BR/><BR/>It's not the first time i wonder why we tend to talk much more about the medium / instruments rather than about goals. <BR/><BR/>After all, it should be more about the context we should reflect about - for almost every pro, we could find a con when switching the context ...<BR/><BR/>Greetings<BR/><BR/>Mario<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190917560000#c3847782647828369445" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://gleichmann.blog.com" rel="nofollow">Mario Gleichmann</a> : 2:26 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3847782647828369445" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6573883273714732266"></a> 				I hate the every day language debates.  Everybody always makes the same points, but as you said I think they tend to miss the point.<BR/><BR/>Fundamental features of languages support and influence design decisions, but in my opinion principles of good software design are orthogonal to those features.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190919780000#c6573883273714732266" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://evang.eli.st/blog/" rel="nofollow">Pat Maddox</a> : 3:03 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6573883273714732266" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8604308462082925582"></a> 				<I>principles of good software design are orthogonal to those features</I><BR/><BR/>Or to put it another way, Real Programmers can write FORTRAN in any language.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190919900000#c8604308462082925582" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:05 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8604308462082925582" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2669860229515642577"></a> 				Let hope that the people fighting these pointless debates aren't too busy patting each other on the back to read and understand what you've said here.<BR/><BR/>Thanks for making my brief visit to programming.reddit.com enjoyable today.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190922240000#c2669860229515642577" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07143770726013580744" rel="nofollow">Geoff Wozniak</a> : 3:44 PM</div>
+
+								<span class="item-control blog-admin pid-466476365"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2669860229515642577" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2149127643821463252"></a> 				<I>Or to put it another way, Real Programmers can write FORTRAN in any language.</I><BR/>I'm probably dense and just missed your point, but it seems like you're suggesting that if you ignore language features and idioms that you'll end up writing code that doesn't make much sense in the context of that language (basically by definition, right?)<BR/><BR/>My point was that if you're going through <I>Design Patterns</I> in Ruby, you'll end up not implementing much of them because Ruby solves a lot of the same problems at the language level.  However you ought to be able to take away the ideas and goals behind those patterns regardless of which language you're using.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190923860000#c2149127643821463252" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://evang.eli.st/blog/" rel="nofollow">Pat Maddox</a> : 4:11 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2149127643821463252" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4173801237485357317"></a> 				Pat, I was being flippant. What I meant was, you can write Lisp or Haskell or Ruby or Smalltalk in any language, as well.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190924640000#c4173801237485357317" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:24 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4173801237485357317" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6258221745448052227"></a> 				And like I said, I was being dense :)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190924760000#c6258221745448052227" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://evang.eli.st/blog/" rel="nofollow">Pat Maddox</a> : 4:26 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6258221745448052227" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5523024425562154628"></a> 				Refactor to reduce the entropy of the code. I have to disagree w/ you Reginald: sometimes the path to minimum entropy has to traverse a region of higher entropy cf. simulated annealing. By continuously refactoring an locally reducing entropy you can miss an opportunity to capture some big, chunky abstraction that only appears after your code has gotten cruft with several instances of a pattern.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190929620000#c5523024425562154628" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04766131116514643236" rel="nofollow">hughw</a> : 5:47 PM</div>
+
+								<span class="item-control blog-admin pid-522968278"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5523024425562154628" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4552499467785242263"></a> 				Hughw:<BR/><BR/>I don't recall saying that the global optimum is a consequence of local optimization for anything.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190947620000#c4552499467785242263" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:47 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4552499467785242263" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8613782329567261775"></a> 				Erk... right, I must have confounded your post with some several of the comments on Cedric's blog. Or else I was setting up a straw man. Can't remember now.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190987760000#c8613782329567261775" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04766131116514643236" rel="nofollow">hughw</a> : 9:56 AM</div>
+
+								<span class="item-control blog-admin pid-522968278"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8613782329567261775" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2438115859232551321"></a> 				Hugh:<BR/><BR/>That's ok, your comment shows we're thinking along the very same lines, although you expressed the thought in a different, and interesting way!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190988120000#c2438115859232551321" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:02 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2438115859232551321" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8588056152900540660"></a> 				"What is it we are trying to accomplish with those features? What are we seeking?" This appeared to be the main point of your post.<BR/><BR/>There is an old adage that says if you have a hammer everything looks like a nail. While ADS is a Rails development firm (our hammer), we also work with Flex, JRuby, and other technologies. The right tool for the right job is our modus operandi. If Ruby and/or Rails doesn't present the best fit technology solution to a client's challenge, then we find the one that will. To solve client challenges, one must be flexible.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1190993100000#c8588056152900540660" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00826208059090783477" rel="nofollow">Robert Dempsey</a> : 11:25 AM</div>
+
+								<span class="item-control blog-admin pid-778829798"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8588056152900540660" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4458588639611231763"></a> 				I didn't put the time in up front to identify all possible directions my earlier implementation would take.  My customer was paying for only so much, today, not the future.  I didn't have the foresight to measure which feature would be most desired by my customer.  And, the predictions I dared to make, turned out incorrect.  I just didn't have the time/money/foresight/divinity to engineer the early release with the right structure that would be resilient to change.<BR/><BR/>So, I refactor.<BR/><BR/>The legacy code I inherited to support was originally written 10 years ago.  It has undergone some development, bug fixes and new features, but has not undergone a redesign.  A redesign would position it for lower maintenance costs and prepare it for a large feature improvement that has finally been funded.<BR/><BR/>So, I refactor.<BR/><BR/>The person who I replaced on a project had a very low appreciation for good code, code that is efficient and easy to look at.  He disregarded all stlye conventions.  He provided his own implementation of features available in the language library.  He used features of the language that have been deprecated and replaced by better performing alternatives.  And the worst part, he didn't even know how to spell!<BR/><BR/>So, I refactor.<BR/><BR/>Regards,<BR/>John<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1191014280000#c4458588639611231763" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18379473769214753265" rel="nofollow">John</a> : 5:18 PM</div>
+
+								<span class="item-control blog-admin pid-323557198"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4458588639611231763" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4825038386112830751"></a> 				I find that the dynamic typing in Ruby leads to a few problems. In an environment without solid process, it can become a major impediment when you have more than a few developers that depend on each others' code. Compilers help you detect some things very quickly that Ruby does not.<BR/><BR/>I ran into quite a few problems with my code when someone changed one of the Rails base classes without telling anyone. It took quite a while to track that one down. With a compiler and strong typing, I'd have caught that one almost immediately, and saved myself quite a bit of debugging time.<BR/><BR/>Of course, not having much by way of debugging tools just exacerbated the problem.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/09/java-is-right-answer-to-wrong-question.html?showComment=1191259740000#c4825038386112830751" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03609332931737867757" rel="nofollow">Rakesh</a> : 1:29 PM</div>
+
+								<span class="item-control blog-admin pid-1526126640"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4825038386112830751" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

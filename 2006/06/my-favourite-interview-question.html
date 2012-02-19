@@ -1,0 +1,687 @@
+<html> 
+<head>
+        
+        <title>My favourite interview question</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Monday, June 12, 2006</div>
+			
+
+			<div class="Post"><a name="115012606053917465">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html" title="permanent link">My favourite interview question</a></span>
+					<div style="clear:both;"></div>Some years back, I was interviewed by an interesting start-up in Palo Alto. I was really tempted to take their offer, mostly because:<br /><ol><li>One of the interviewers was an avid Ultimate player;</li><li>Stanford. In walking distance. (And the regular Stanford Friz-ball variant game);</li><li>They asked me a question which has become my favourite interview question to ask and to answer.</li></ol>The question they asked was:<br /><br /><div style="text-align: center;"><span style="font-weight: bold;">How might you design a program that lets people play <a href="http://en.wikipedia.org/wiki/Monopoly_%28game%29">Monopoly</a> with each other over the internet? </span><br /></div><br /><br />Of course there&#8217;s a lot to be learned on both sides when an interviewee is asked to design something and explain their design. Both parties learn a lot about each other&#8217;s communication styles and approach.<br /><br />It works both ways: for example, if I were sketching out a design and the interviewers repeatedly interrupted me to discuss my UML notation, I could infer certain things about their culture.<br /><br />Those kinds of issues apply to any reasonably sized design problem. Anything larger than, say, &#8220;write a procedure that reverses a string in place.&#8221; But let&#8217;s look at three of the characteristics of the game of Monopoly that I find attractive for this exercise:<br /><ul><li>Monopoly is poorly defined;</li><li>Monopoly requires more than simplistic object design, and;</li><li>Monopoly is too big to be designed in one session.<br /></li></ul>First, <span style="font-weight: bold;">Monopoly is poorly defined</span>. Chess, for example, is rigorous. The <a href="http://richard_wilding.tripod.com/monorules.htm">official rules of Monopoly</a> are silent on some critical questions and vague on others. A tournament-playing aficionado will realize this immediately, but it&#8217;s easy to guide a candidate to this realization by asking some of the well-known <a href="http://www.google.ca/search?q=monopoly+faq">FAQ questions</a>.<br /><br />This &#8216;problem&#8217; makes it a great interview question. It drives a lot of valuable interaction between the candidate and the interviewers. You have to ask questions, make assumptions, and know when to stop gathering requirements and start driving the design.<br /><br /><a href="http://www.amazon.com/gp/redirect.html?ie=UTF8&amp;location=http%3A%2F%2Fwww.amazon.com%2FMonopoly-Game-70th-Anniversary-Edition%2Fdp%2FB00061I4YM%2Fsr%3D8-2%2Fqid%3D1165601433%3Fie%3DUTF8%26s%3Dtoys-and-games&amp;tag=raganwald-store-20&amp;linkCode=ur2&amp;camp=1789&amp;creative=9325"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;" src="http://weblog.raganwald.com/uploaded_images/monopoly-773348.jpg" border="0" alt="" /></a>There have been some blog posts pointing out that <a href="http://exold.com/article/stupid-interview-questions">even trivial requirements can have many hidden implications</a>. A determined and finicky developer can drive questions for the length of the interview. I think Monopoly&#8217;s missing requirements actually improve its suitability as an interview question.<br /><br />If the candidate uses up all of the interview time trying to obtain perfect requirements, we have a problem. In the software development I do, the requirements are never perfect. I don&#8217;t demand that a candidate try to create an agile, iterative process on the spot, but I look for someone who knows when to say &#8220;close enough, let&#8217;s move forward.&#8221;<br /><br />Another good way to move forward for both interviewer and candidate is to say, &#8220;ok, we&#8217;ve covered the most important requirements. Let&#8217;s make a bunch of assumptions and document them. In a real-world situation we could obtain feedback on the assumptions after presenting an initial approach.&#8221;<br /><br />After all, who&#8217;s to say that a programmer, designer, or architect is always 100% beholden to others for requirements?<br /><br />The second reason I like this problem is that <span style="font-weight: bold;">Monopoly requires more than just a simplistic object design</span>. What I&#8217;m about to say will be blindingly obvious to the Enterprise crowd (sorry, not you over there with the <a href="http://greasemonkey.mozdev.org/">Greasemonkey </a>script that translates your web email to Klingon). <span style="font-style: italic;">The rules must be considered as carefully as the entities</span>. Enterprise developers have known this for years: that&#8217;s why you see rules engines, table-driven designs, and visual workflow editors in many Enterprise applications.<br /><br />Now let&#8217;s talk about &#8216;object-oriented programming&#8217; for a second. 99% of the stuff you read discusses modeling real-world physical objects. Things. Nouns. It is a <a href="http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html">Kingdom of Nouns</a>. Most candidates start every design by dutifully listing all of the nouns they can think of and then they spend the rest of the time available thinking about piling them into phyla, hierarchies of &#8220;IS-A&#8221; and &#8220;A-KIND-OF.&#8221;<br /><br />This approach, which I will call &#8220;noun and verb,&#8221; is so limited I&#8217;ll dare to call it <a href="http://www.folklore.org/StoryView.py?project=Macintosh&amp;story=A_Mac_For_Mick.txt">brain damaged</a>. In fun. But seriously, competent software developers spend much more time on relationships, responsibilities, and constraints than they do on trying to <a href="http://www.petefreitag.com/item/509.cfm">prematurely optimize</a> reuse through inheritance.<br /><br /><div class="book"><a href="http://www.amazon.com/gp/product/0201379430?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0201379430"><img border="0" width="128" height="160" src="http://weblog.raganwald.com/uploaded_images/object_design-719894.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201379430" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br /><a href="http://www.amazon.com/gp/product/0201379430?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0201379430">Object Design: Roles, Responsibilities, and Collaborations</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201379430" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> focuses on the practice of designing objects as integral members of a community where each object has specific roles and responsibilities. The authors present the latest practices and techniques of Responsibility-Driven Design and show how you can apply them as you develop modern object-based applications.  <br /><br /></div>Now let&#8217;s ask a question about Monopoly (and Enterprise software). <span style="font-style: italic;">Where do the rules live?</span> In a noun-oriented design, the rules are smooshed and smeared across the design, because every single object is responsible for knowing everything about everything that it can &#8216;do&#8217;. All the verbs are glued to the nouns as methods.<br /><br />Let&#8217;s take a look at a simple rules question. <span style="font-style: italic;">If a player owns Baltic Avenue, can she add a house to it?</span><br /><br />Well, there&#8217;s a bunch of stuff about whether she can afford it and whether there is a house available in the bank. Where does that live? In the bank object? And there is a bunch of stuff about whether it is either the player&#8217;s turn or between turns. Where does that live?<br /><br />And there is a bunch of stuff about whether the property already has four houses. Where does that live? Somewhere in the property hierarchy? Sounds reasonable. Now what about mortgaged property? If Baltic is mortgaged, the answer is <span style="font-weight: bold;">no</span>. That&#8217;s easy. But what if Mediterranean Avenue is mortgaged? And what if, for example, Baltic has one house but Mediterranean has none? Where does that logic live? Both of these last two questions involve knowing something about the other properties of a colour group.<br /><br />Now you can debate which verbs belong to which nouns, but here is an opportunity to step back a bit and consider the larger implications of maintaining such a &#8216;classical&#8217; OO design.<br /><br />Consider a &#8216;noun and verb&#8217; design. First, an easy question. <span style="font-style: italic;">How well does the design document the actual game of Monopoly?</span> If someone were to read the source code, do you think they could learn how to play the actual game?<br /><br />Is this a <a href="http://www.quotationspage.com/quote/27543.html">stupid question</a>? I think it strikes at the root of sustainable software development. In real world applications, software lives for a long time and teams change over that time. Programmers are often asked to maintain software with insufficient training in its intended use.<br /><br />OO programs can be brilliant communicators in some designs (&#8220;here&#8217;s everything I need to know about a Money Transfer&#8221;) and terrible in others. I think this is part of the appeal and effectiveness) of the <a href="http://jamis.jamisbuck.org/articles/2006/04/20/writing-domain-specific-languages">Domain Specific Language</a> approach. It does a better job of communicating its intentions than a simple OO design.<br /><br />I&#8217;m not saying that a DSL is right for Monopoly. Or wrong. Just that it&#8217;s valuable to consider this issue when discussing an approach. There is a lot of opportunity for a candidate and the interviewers to learn about each other&#8217;s thinking that goes way beyond coding if you spend a few moments discussing the importance (or irrelevance) of a design that communicates its intentions. And I think that makes Monopoly a good design subject.<br /><br />Another issue about the rules. In software development, requirements often change. <span style="font-style: italic;">What kinds of requirements changes are easy with the design? What kinds are difficult?</span><br /><br />I suspect it&#8217;s easy to change the prices and names of properties, but very difficult to change the fundamental rules. Well, it&#8217;s probably easy to introduce the popular &#8216;lottery&#8217; variation where fines are paid into a pool and anyone landing on Free Parking&#8217; scoops  it up.  But some of the more esoteric variations would require making lots of changes to many different classes.<br /><br />The &#8216;noun and verb&#8217; design is tightly coupled, and distributes the rules across the design. If you really want a mess, consider that popular computer versions of Monopoly allow you to pick and choose rules variations for each game.<br /><br />The key to making this easy is to find another way to represent the rules. I generally provide hints along these lines by asking the candidate how they plan to implement the Chance and Community Chest cards. What is the relationship between the cards, special squares like &#8220;Luxury Tax,&#8221; and introducing variant rules?<br /><br /><blockquote style="font-style: italic;">(You can probably save yourself a lot of interview time. Instead of all this hoopla, ask the candidate to describe when they have actually used the <a href="http://c2.com/cgi/wiki?StrategyPattern">Strategy</a>, <a href="http://c2.com/cgi/wiki?VisitorPattern">Visitor</a>, and <a href="http://c2.com/cgi/wiki?CommandPattern">Command</a> patterns outside of a framework.)</blockquote>The bottom line is that designing a Monopoly game requires giving a lot of thought to representing the rules. There are a lot of ways to do that. I&#8217;ve hinted at two, and you I&#8217;ve heard of a lot of other interesting approaches. It&#8217;s a great chance to really go beyond OOP 101.<br /><br />Now to close as rapidly as possible with what I consider an essential characteristic of a good design problem, and one that applies here. <span style="font-weight: bold;">Monopoly is too large to solve in one interview</span>. This is related to the vague requirements characteristic I mentioned above.<br /><br />The reason this is important is that it forces the designer to pick and choose what elements of the design to solve in limited time. Some candidates will fail outright because their problem solving style is to consider all of the implications before starting. It&#8217;s easy to spend hours on a problem like Monopoly. But will you get up and apply the marker to the white board?<br /><br />>Does a candidate start with the trivia? Who cares how to represent the colour of a property? CSS? A getter in each object? Yawn. I&#8217;ll prod him to move along.<br /><br />Perhaps a candidate spends all of her time working in an area of the problem she knows well. Some candidates can spend forever engineering a Monopoly Online site up to <a href="http://joedrumgoole.com/blog/2006/05/29/web-20-vs-web-10/">Web 1.0</a> scale. Or building <a href="http://novator.com/">FTD.com</a>-like <a href="http://www.37signals.com/svn/archives2/dont_scale_99999_uptime_is_for_walmart.php">reliability</a>. Whatever.<br /><br />I&#8217;m not saying that&#8217;s bad. Or good. But I will say that given a problem too large to solve in the time allotted, there&#8217;s fantastic value in evaluating what&#8217;s important. And that cuts both ways. If you think that some of the OO design choices are critical but the interviewers hand wave it and want to see how you plan to handle 10,000 requests per minute, that&#8217;s revealing.<br /><br /><span style="font-weight: bold;">Summary</span><br /><br />I like asking (and being asked) about Monopoly because it provides fertile ground for discussing issues that are critical to judging both competence and cultural fit, like:<br /><ul><li>Communication style and skills;</li><li>Deep OO design philosophy;</li><li>Prioritization and time management, and;</li><li>Handling ambiguity.</li></ul>And now, if you have a moment, I&#8217;d like to ask for your feedback. Is there a better design question to ask? What is your perspective as an interviewee? What other issues about a design should be discussed during an interview?<br /><br />I&#8217;m looking forward to hearing from you. Thanks in advance!<br /><br /><strong><a name="caution">Update: A cautionary note</a></strong><br /><br />Some people have objected to this question because it may be a trivia challenge: how well does the candidate know the game of Monopoly? In the comments I mentioned that the question really only applies to candidates that already know the game.<br /><br />Others have suggested it may be a form of &#8220;guess the design I&#8217;m thinking of&#8221; where there is exactly one right answer, the design the interviewer has already come up with. I think this is a legitimate concern.<br /><br />It really applies to <span style="font-weight: bold;">any </span>interview question. For example: &#8220;name your three strengths&#8221; or &#8220;tell me about a challenge you faced in your last position and how you overcame the obstacles.&#8221; If an interviewer is looking for something specific, they can and will twist any interview question into a variation of &#8220;guess the answer I&#8217;m thinking of.&#8221;<br /><br />I won&#8217;t say that Monopoly is somehow better than other questions in this regard, nor is it worse. If you have an interview based on reviewing a candidate&#8217;s past accomplishments, don&#8217;t you think there are some interviewers that will discount those that don&#8217;t fit their personal criteria for merit?<br /><br /><blockquote>I once had an interview where the interviewer spent forty minutes talking to me about my education, and something like fifteen talking about my fifteen years (at that time) of actual career experience. Bias in an interviewer is orthogonal to the choice of interviewing technique.<br /></blockquote><br /><br />What do these two cautions have in common? Only that the most important thing for a successful interview is that the interviewer be genuinely seeking out a view of the candidate&#8217;s strengths and weaknesses. All I can really say about this question is that if (and it&#8217;s a big if) the interviewer is sincerely attempting to evaluate a candidate&#8217;s technical ability, and if the candidate has some familiarity with the game, then the session can be very productive.<br /><br /><strong>Update: Some relevant links</strong><br /><br /><blockquote>It would be ludicrous to think of hiring a juggler without first seeing him perform. That&#8217;s just common sense. Yet when you set out to hire an engineer or a designer or a programmer or a group manager, the rules of common sense are often suspended. You don&#8217;t ask to see a design or a program or anything. In fact, the interview is just talk.<br /></blockquote><br /><br /><div style="text-align: right;"><em><a href="http://weblog.raganwald.com/2006/07/hiring-juggler_02.html">Hiring a Juggler</a></em></div><br /><br /><blockquote>The bottom line in my interviewing technique is that smart people can generally tell if they’re talking to other smart people by having a conversation with them on a difficult or highly technical subject, and the interview question is really just a pretext to have a conversation on a difficult subject so that the interviewer’s judgement can form an opinion on whether this is a smart person or not.<br /></blockquote><br /><br /><div style="text-align: right;"><a href="http://www.joelonsoftware.com/articles/ThePhoneScreen.html"><em>The Phone Screen</em></a></div><br /><br /><blockquote>Think of three things you want the interviewer to know about you that you think they are unlikely to find out if they ask all the questions. The important ideas are that (a) you want the interviewer to know about each of the three things, and that (b) the interviewer is unlikely to ask about all three if you don’t exercise some control over the interview.<br /></blockquote><br /><div style="text-align: right;"><a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html"><em>Take control of your interview</em></a></div><br /><br /><blockquote>In case you didn’t know this, about 1/3 of all technical interview questions worldwide are variants of “How do you fit 10 pounds of crap in a five-pound bag?” Examples: how do you reverse a string in place, how do you sort a billion numbers, how do you write a decent compiler back end for an architecture with only four frigging registers, how do you handle fair scheduling when someone just forked off 1000 copies of some Towers of Hanoi simulation, etc.<br /></blockquote><br /><div style="text-align: right;"><em><a href="http://www.oreillynet.com/ruby/blog/2006/03/interviewing_ruby_programmers.html">Interviewing Ruby programmers</a></em></div><br /><br /><blockquote>I&#8217;m exaggerating a lot, but the point is, when you select 1 out of 200 applicants, the other 199 don&#8217;t give up and go into plumbing (although I wish they would&#8230; plumbers are impossible to find). They apply again somewhere else, and contribute to some <em>other</em> employer&#8217;s self-delusions about how selective they are.<br /></blockquote><br /><br /><div style="text-align: right;"><em><a href="http://www.joelonsoftware.com/items/2005/01/27.html">Joel on Hiring</a><br /></em></div><br /><br /><blockquote>And then there is the issue of why would someone care if I knew how to write a file copy function, ahead of what the difference between an interface and an abstract class was. Or when would I use encapsulation? Or in my design, how would I choose between polymorphism or inheritance? Or what pattern would I recommend for dealing with a general or specific problem?<br /></blockquote><br /><br /><div style="text-align: right;"><em><a href="http://blogs.msdn.com/davidlem/archive/2006/05/16/598696.aspx">What&#8217;s with the programming test!?</a></em></div><br /><br /><blockquote>I know lots and <em>lots</em> of interviewers, at many companies, who&#8217;ve decided that they can fully evaluate you based on whether you can solve some particular convex optimization problem (or graph-search problem, or logic problem, or whatever their pet Elephant Question is), and they ask every candidate this question regardless of their background or experience. In fact, I&#8217;d estimate that some 10% of all technical interviewers ask the same questions, year after year, and they could care less about your experience.<br /></blockquote><br /><div style="text-align: right;"><a href="http://steve-yegge.blogspot.com/2006/03/truth-about-interviewing.html"><em>The Truth About Interviewing</em></a></div><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/jobs.html">jobs</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html" title="permanent link">10:45 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>My favourite interview question</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="115021371756219774"></a> 				I've played half a game of Monopoly in my life, and I was too drunk and sleepy at the time to pay much attention. If you asked me that question, you'd then have to spend much of the subsequent interview explaining how to play the game to me. Which could in itself be interesting, but it would stress the requirements capture part of the question a bit more than you probably want.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150213680000#c115021371756219774" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://pozorvlak.livejournal.com" rel="nofollow">pozorvlak</a> : 11:48 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115021371756219774" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115021510877333216"></a> 				I forgot to mention that the prelude to the question is "Are you familiar with the game of Monopoly?"<BR/><BR/>If you don't know the game reasonably well, there isn't much point in this specific question.<BR/><BR/>But don't worry, there are others, oh boy are there others :-)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150215060000#c115021510877333216" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:11 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115021510877333216" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115021532592913769"></a> 				It's really hard to identify competent programmers.  I like your approach however I think it's too involved for an interview - unless the candidate is going to be there for hours.<BR/><BR/>I've had success with identifying a hobby that the person has and then getting them to describe it in detail.  Woodworking is a good one for getting to know how they think, how successful they are, etc.<BR/><BR/>A mechanic friend of mine said that one of the best way he has for determining how good a mechanic someone will be is to hand the person a broom and see how he/she cleans the floor.  I haven't tried this one yet but I think it may work with programmers who know how to operate a broom.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150215300000#c115021532592913769" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:15 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115021532592913769" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115021728677525830"></a> 				There's no doubt in my mind <B>whatsoever</B> that no-one should be hired without hours of interviewing. But that's another topic, and one that is very well covered on various blogs.<BR/><BR/>What I would say is that perhaps this shouldn't be a weeder question. Hopefully you've already phone screened a candidate and conducted some other good interview stuff.<BR/><BR/>Now you've already determined that the candidate is competent and you want to know whether they have star quality architecture skills.<BR/><BR/>When I was asked this question, I had already passed a phone screen and a long phone interview. I was then flown to California for a day's worth of interviews with the team.<BR/><BR/>I also recall an entertaining <A HREF="http://www.techinterview.org/Puzzles/fog0000000079.html" REL="nofollow">math/logic puzzle</A> I had to solve. But it was really an "aha!", so I don't ask it.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150217280000#c115021728677525830" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:48 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115021728677525830" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115022035691031997"></a> 				A much better (IMHO) question is: "design a control system for an elevator." This has the advantage that (a) everyone is very familar with elevators, (b) there's lots of interesting quirks, such as having more than one elevator shaft, and (c) it's far, far more difficult than it seems at first.<BR/><BR/>Doesn't sound too hard? What if the elevator is on the first floor, has just been called to the fifth floor, and someone on the third floor presses the down button? The elevator should not stop on the way. (!)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150220340000#c115022035691031997" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.robbyslaughter.com" rel="nofollow">Robby Slaughter</a> : 1:39 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115022035691031997" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115022081968766663"></a> 				I was once asked to design software that simulated a soda vending machine.  It covers basic rules and object design, and isn't as complex as Monopoly.<BR/><BR/>It is always a good idea to ask if a developer has used patterns like Command or whatever outside a framework.  Few developers know patterns, fewer know how to use them, and the one you want to hire <I>has</I> used them effectively.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150220760000#c115022081968766663" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:46 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115022081968766663" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115022157689314571"></a> 				<I>(c) it's far, far more difficult than it seems at first.</I><BR/><BR/>That's part of what I like about Monopoly. But I totally agree about elevators. The game "SimTower" was born when the author became interested in the heuristics needed to make elevators work efficiently in tall buildings. There's a lot of strategy involved.<BR/><BR/><I>I was once asked to design software that simulated a soda vending machine. It covers basic rules and object design, and isn't as complex as Monopoly.</I><BR/><BR/>I really prefer to hit on at least one issue orthogonal to the obvious physical entities. It's not immediately obvious to me whether a Soda Machine has this characteristic. But maybe I'm just failing the interview :-)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150221540000#c115022157689314571" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:59 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115022157689314571" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115022348513098388"></a> 				Interview questions like that are generally a good way of discounting qualified people who don't happen to have an *immediate* knowledge of Monopoly (or whatever other 'clever' topic you pose).<BR/><BR/>I've seen variations of this flawed interveiwing technique such as "You have 30 minutes, now code a fully-functional calculator."<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150223460000#c115022348513098388" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 2:31 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115022348513098388" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115022515237067371"></a> 				This tip is dumb - finding a good programmer through an interview process is an art form, and not something can always be determined from an interview - the problem with interviewing is that the interviewer is usually done by dumbazzes.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150225140000#c115022515237067371" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 2:59 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115022515237067371" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115022654429753335"></a> 				<I>Interview questions like that are generally a good way of discounting qualified people who don't happen to have an *immediate* knowledge of Monopoly</I><BR/><BR/>See my comment above: I forgot to mention that the prelude to the question is "Are you familiar with the game of Monopoly?"<BR/><BR/>Once again, <B>don't worry, there are others, oh boy are there others</B>.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150226520000#c115022654429753335" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:22 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115022654429753335" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115022674449693407"></a> 				Just out of curiosity: <I>is there something I wrote that implies that this is the only question I ever ask while interviewing?</I><BR/><BR/>I also ask situational questions, I also ask for someone to write some actual working, debugged code, I also ask for someone to solve a logic puzzle, and on and on ad nauseum.<BR/><BR/>This just happens to be my <B>favourite</B> question.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150226700000#c115022674449693407" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:25 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115022674449693407" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115022682208055648"></a> 				I hire programmers by asking programmers I know and respect who they would recommend.  The people recommended need to have worked with the person making the recommendation.<BR/><BR/>There is a lot more to building a successful development team than being able to design something in an interview (such as interacting with others).  Some people are actually very good but freeze when first assigned a design.<BR/><BR/>They work on things using their subconscious mind and they can have a great answer for you ten minutes after the interview is over.<BR/><BR/>I do like the find out what books a person owns (technical and non-tech), what movies they like and why, do they play a musical instrument, do they try out new programming languages for fun, etc.<BR/><BR/>Overall, I look for interesting people with the obvious skills/experience needed, intelligence, curiosity, and drive.  Anything else can be picked up on the job.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150226820000#c115022682208055648" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 3:27 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115022682208055648" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115022748019775097"></a> 				<I>There is a lot more to building a successful development team than being able to design something in an interview</I><BR/><BR/><B>Of course</B>. Is there anything in the post that suggests otherwise?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150227480000#c115022748019775097" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:38 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115022748019775097" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115022842530968128"></a> 				Like others have commented, I'm embarrassed to say that I'm not very familiar with Monopoly!<BR/><BR/>However, I do feel that these types of questions may tell you more about how well a person's brain works under pressure rather than whether or not they'd actually be a good programmer, or even a good architect.<BR/><BR/>I've also found that, sadly, many people seem to study for these types of questions, including general patterns-and-practices topics.<BR/><BR/>I've been thrown many times interviewing people for web developer positions who were great at these questions, yet always left me feeling uneasy about their actual abilities, and sure enough I've been burned before.<BR/><BR/>I now always ask them the one question that nobody ever seems to have a scripted response for:<BR/><BR/>"Can you make a website?"<BR/><BR/>You'd be amazed how many people applying for web developer questions are completely thrown off guard by this question. The first responses are usually "huh? what? um.. what do you mean?".<BR/><BR/>"You know: a website. Can you make them?"<BR/><BR/>Then the candidate will usually bite "Um... you're going to have to give me some specifics."<BR/><BR/>Of course then this continues for a bit, but I only dish out as little specifics as possible.<BR/><BR/>Usually from this line of questioning, I've found that it's both much easier to find out if they can both grasp high-level concepts like architecture, as well as actually develop something, rather than questions like "how would you reverse a string...", etc.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150228380000#c115022842530968128" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 3:53 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115022842530968128" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115022928433152494"></a> 				<I>Of course. Is there anything in the post that suggests otherwise?</I><BR/><BR/>Uh, yes?  Like the entire premise that asking a question such as the "favorite question" is actually useful?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150229280000#c115022928433152494" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 4:08 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115022928433152494" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115022984916694079"></a> 				As an employee applying for a Project Management position, I was asked to document the requirements of building a Peanut Butter and Jelly sandwich.<BR/><BR/>I was given 15 min.<BR/><BR/>I also had the chance to review answers back from other job candidates for similar positions later on.<BR/><BR/>Similar to your example, I liked it because it revealed a lot about the candidates, and as an interviewer, it's nice to have a question that demonstrates skills.  <BR/><BR/>One feels one is judged a lot more on merit.  <BR/><BR/>An interesting side note, I've noticed that the decision on who was going to be hired was decided long before this question was asked and the answers read.  <BR/><BR/>It became more of a "Where exactly does this person fit?" and "What projects should we give him" sort of question<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150229820000#c115022984916694079" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.EverydayEconomist.com" rel="nofollow">Everyday Economist</a> : 4:17 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115022984916694079" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115023032695139886"></a> 				<I>Like the entire premise that asking a question such as the "favorite question" is actually useful?</I><BR/><BR/>Just because I assert that it is a useful question does not imply that I assert it is the <B>only</B> useful question.<BR/><BR/>As to whether it is useful, if you do some googling you will find there are many dissenting views. There are also people who challenge whether it is useful to pose logic puzzles, or useful to ask someone to write code in the interview. And I do all three of these things.<BR/><BR/>I do <B>not</B> assert that this type of question is infallible. My experience is that it does present some false negatives: good people who don't "interview well."<BR/><BR/>However, I have found it to present few false positives: I have not met a lot of people who do well with this type of question but cannot design software in the field.<BR/><BR/>That being said, there are many complex dynamics involved in building a good team, and that is why I believe that to select a core person I need a long process involving many different types of investigations.<BR/><BR/>And yes, references from people I trust are some of the better indicators.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150230300000#c115023032695139886" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:25 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115023032695139886" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115023054449350704"></a> 				<I>many people seem to study for these types of questions, including general patterns-and-practices topics.</I><BR/><BR/>And this is bad because...?<BR/><BR/>I have found that candidates (myself included) are quick to mention their experience when engaging in a spirited discussion about the merits of a design choice.<BR/><BR/>If I mention a rules engine, for example, some candidates are only too happy to talk about how they tried that on such-and-such a project and what happened.<BR/><BR/>Overall, I'm conent with the idea that people will study for an interview. If I wasn't, I wouldn't publish my favourite question :-)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150230540000#c115023054449350704" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:29 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115023054449350704" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115023079627288349"></a> 				<I>I was asked to document the requirements of building a Peanut Butter and Jelly sandwich.</I><BR/><BR/>Another well-known problem is to designa spice rack for the visually impaired.<BR/><BR/>Stuff like that makes me wish I'd studied Industrial Design. We have two terrific schools here in Toronto, OCAD and Sheridan, and I'm jealous of the cool stuff the students do every day.<BR/><BR/>The annual engineering problem at OCAD is to use a single piece of paper to somehow keep a raw egg from breaking when dropped from a balcony.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150230780000#c115023079627288349" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:33 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115023079627288349" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115023302133437191"></a> 				<I>And this is bad because...?</I><BR/><BR/>Well, your rules engine is a good example because in that scenario you say that the candidate related it to an actual project he worked on.<BR/><BR/>A bad example is when a candidate studies for these type of questions and can talk about them all day "in general", yet they may not be able to actually apply it to a real world situation.<BR/><BR/>I always try to avoid questions to which I think the candiate could give a scripted response, and instead try to think of questions which they could only answer if they had the experience, in addition to the book knowledge.<BR/><BR/>An example I like to use is asking the candidate how they would program the front page of Amazon.com. Again, this gets them into high-level concepts such as overall architecture, performance requirements due to the traffic of the site, etc.<BR/><BR/>However, I can also drill them in detail such as how to create stylesheets or how to make different components of the page re-usable, if I feel that they are answering my questions with too much "fluff".<BR/><BR/>I feel it's difficult to do this when the topic is something that is too far from a real-world environment, such as the Monopoly or elevator examples.<BR/><BR/>For web development, questions like "Make Amazon.com" or "Make ebay.com" tend to be good examples because a) Everyone knows it, and b) You can ask both high-level and specific questions that relate to your position.<BR/><BR/>For application developers I would probably ask questions like "How would you make Microsoft Word?". It still gives you the flexibility of the Monopoly example but you get the added benefit of being able to drill them down if you feel they are reciting a bunch of buzz-words they studied on somebody's blog :-)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150233000000#c115023302133437191" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:10 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115023302133437191" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115023340392686443"></a> 				During interviews I'm only interested in two questions, and they are questions that I pose to myself:<BR/>1.  Are the "lights on"?  In other words, is this person responsive? <BR/>2. And, is this someone that I want to work with?  Because no matter how brilliant they are I don't want them around if it's going to be a strain to be in the office.  Are they abrasive, or have poor hygiene?<BR/><BR/>I usually know the answers to both of these questions in the first few minutes, and then it's just a matter of getting to know them.  <BR/><BR/>BTW, I consider fondness of UML and design patterns as a negative point, but I'm willing to ignore these bad habits if it's a nice person.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150233360000#c115023340392686443" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:16 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115023340392686443" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115023372873375852"></a> 				<I>A bad example is when a candidate studies for these type of questions and can talk about them all day "in general", yet they may not be able to actually apply it to a real world situation.</I><BR/><BR/>First, great comment, thanks!!!<BR/><BR/>I do not ask candidates to "talk in general" about approaches. Let's say, for example, that a candidate seems to think for a while and then says "this is a good place to use a DSL."<BR/><BR/>"Ok," I smile. "The whiteboard is waiting." The acid test is whether the candidate can (a) design a decent DSL for Monopoly, and (b) design an architecture for implementing the DSL.<BR/><BR/>If someone is able to read a few blog posts, google some terms, and then hoodwink an interviewer, then either they are very, very bright or there may be <A HREF="http://weblog.raganwald.com/2006/06/insight-into-practice-of-judging-value.html" REL="nofollow">another explanation</A>.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150233720000#c115023372873375852" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:22 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115023372873375852" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115024339901134598"></a> 				What do you mean (or what did the interviewer mean) by "referee the game"? Do the players ask questions of the referee in a natural language? Or is the game being played on the computer, so that the referee just has to put up a message when a player tries to do something illegal? What about questions such as the one in one of the FAQs: "Can a player borrow money from another player?" If the referee is just quietly watching the game play, how would it ever know about such borrowing? Perhaps it has to know about any transaction that affects any player's bank balance (er, money stash), but how do I say "borrow from Harry" to the referee?<BR/><BR/>Solving the stated problem is, I suspect, overwhelmingly dependent on the details of the environment in which the program must operate. I guess one could design a "next action" panel in which all the possible actions for the player at a given time are specified. But in that case, the referee function has already been performed in the process of showing the valid next actions.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150243380000#c115024339901134598" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://newsfare.com" rel="nofollow">Ralph</a> : 8:03 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115024339901134598" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115024406607862076"></a> 				<I>Solving the stated problem is, I suspect, overwhelmingly dependent on the details of the environment in which the program must operate.</I><BR/><BR/>First, it isn't really a 'problem to be solved.' I don't treat it as an exercise in 'guess the design I'm thinking of.'<BR/><BR/>The questions you pose are part of the requirements gathering process. The important thing is to ask the questions and to proceed with a design that is reasonable for whatever constraints the interviewer imposes in response.<BR/><BR/>JM2C, but if I wrote the whole thing out as formal requirements, a lot of the value of the problem would go away.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150244040000#c115024406607862076" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:14 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115024406607862076" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115026006057256694"></a> 				@Reginald Braithwaite - the logic question you linked to seems to have only half the answer.<BR/><BR/>http://www.techinterview.org/Solutions/fog0000000095.html<BR/><BR/>It doesn't seem to say anything about doors which are prime numbered. These should also be open. Just one more reason why I hate these logic puzzles. I don't feel that it tells you anything about a person other than they are good at logic puzzles.<BR/><BR/>http://www.kirit.com/Interview%20by%20under-constrained%20programming<BR/><BR/><BR/>K<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150260060000#c115026006057256694" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.kirit.com/" rel="nofollow">Kirit</a> : 12:41 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115026006057256694" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115028292994035033"></a> 				In the same way that people nominate interview questions as a good way of revealing characteristics of the person being interviewed, the question reveals characteristics about the person asking the question. Favourite questions are ways for people to find other people like themselves, rather than whether they would have been a good fit in the team.<BR/><BR/>The only way of finding out whether someone would be a good fit in the team is to hire them, and find out with actual practical experience. As this is, in turn, not a practical approach, it would be more honest to simply note that such questions are filtering methods rather than identification methods.<BR/><BR/>It's pretty obvious when someone's trotting out a favourite interview question, and I can assure you that the answer has a hell of a lot more to do with stabbing in the dark for the precise answer that they're looking for, than actually solving the question.<BR/><BR/>It's a process of 'hunt the button', as the fact remains that there are numerous correct answers, of which a set of those correct answers is not going to be understood or accepted by the person asking the question!<BR/><BR/>This is a particular problem for me, since my answers tend to be lateral and mistakenly assumed incorrect, when in fact it's precise and would work just fine.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150282920000#c115028292994035033" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 7:02 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115028292994035033" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115028335410056345"></a> 				<I>It doesn't seem to say anything about doors which are prime numbered. These should also be open.</I><BR/><BR/>Are you sure? Perhaps you could write a brief simulator to see what happens.<BR/><BR/>For example, two is a prime number. Is the second door open or closed?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150283340000#c115028335410056345" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:09 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115028335410056345" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115028498120991976"></a> 				<I>the answer has a hell of a lot more to do with stabbing in the dark for the precise answer that they're looking for, than actually solving the question.</I><BR/><BR/>This is a danger with any interview question, such as asking what books they have read recently or how they would handle a hypothetical on-the-job situation.<BR/><BR/>Is Monopoly is any worse for this than other design or programming tasks? Or is the very concept of 'design this' or 'program that' suspect in your view?<BR/><BR/>Quite possibly, the fact that the question is a favourite may be the characteristic that makes it inapproriate for me to ask.<BR/><BR/>Sometimes a favourite question comes with the emotional baggage of how the interviewer thinks the question is best answered.<BR/><BR/>I personally don't think there is a "best" answer: I'm biased towards candidates that suggest there are many right answers and who can discuss the merits of different approaches given different requirements and expectations.<BR/><BR/>p.s. Maybe I would be more effective asking about elevators while <A HREF="http://www.robbyslaughter.com/" REL="nofollow">Robby</A> asks about Monopoly?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150284960000#c115028498120991976" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:36 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115028498120991976" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115069895808110600"></a> 				"I think this is part of the appeal and effectiveness) of the Domain Specific Language approach. It does a better job of communicating its intentions than a simple OO design."<BR/><BR/>Please give a concrete example.  What is the difference between a DSL and a library?  How would the rules not be spread across the DSL?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150698900000#c115069895808110600" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 2:35 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115069895808110600" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115071531517258094"></a> 				<I>Please give a concrete example. What is the difference between a DSL and a library? How would the rules not be spread across the DSL?</I><BR/><BR/>Is that <B>your</B> favourite interview question?<BR/><BR/>I wouldn't rely on my answer for a really good introduction to the subject. You might want to look into <A HREF="http://www.rubyonrails.com/" REL="nofollow">Ruby on Rails</A> as a very popular example of a framework with is DSL-centric. How does it differ from frameworks that are library-centric?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150715280000#c115071531517258094" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:08 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115071531517258094" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115081385502157771"></a> 				I was once asked to describe the process of making a cup of tea. After explaining that I didn't drink tea, I thought it best to describe the process of making the worst cup of tea in human history. This way, the drinker would be warned that a non-tea-drinker is not a good maker.<BR/><BR/>I managed to make the interviewers laugh while indicating the appropriate steps. I got the job.<BR/><BR/><A HREF="http://www.maison-de-stuff.net/rob/" REL="nofollow">Rob Lang</A><br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150813800000#c115081385502157771" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 10:30 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115081385502157771" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115082211290825333"></a> 				This is a great discussion because it gets at the huge question of what quality software is.  And we want to know if a potential coworker knows what that is.<BR/><BR/>I do not want a programmer who makes an excuse of not being an architect.  That programmer will soon be creating random classes and methods with no cohesion and coupling all over the place.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150822080000#c115082211290825333" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:48 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115082211290825333" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115088663308108200"></a> 				<I>Sometimes a favourite question comes with the emotional baggage of how the interviewer thinks the question is best answered.</I><BR/><BR/>Yes, that is the point I was making.<BR/><BR/>Another approach would be to ask questions about problems neither of you know about, and see how well you work together to solve the problem.<BR/><BR/>I've had a read through your web site, and appreciate the honest effort you're making to present and understand problems. Very enjoyable read.<BR/><BR/>It's a bit hard to have a converation through a web page though, as I had to make a specific effort to bookmark and check back to see if you had responded.<BR/><BR/>Not sure how to solve that one, except wait for the Web to re-invent the mailing list. :)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150886580000#c115088663308108200" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:43 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115088663308108200" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115092732733597084"></a> 				Great article!<BR/><BR/>but you've never played monopoly with a real band of cut-throats like myself and my family - bailing out mortgages and then tripling the rents - forming allegiances against other players and then double-crossing - rent-splitting, private loans with interest... !<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1150927320000#c115092732733597084" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:02 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115092732733597084" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115943546323988315"></a> 				Interesting article.  One of my favourite things to find out in an interview is whether the candidate is capable of saying "I don't know".  It's amazing how many people just will not say those words.  The one question that seems to trip up most people who claim to know databases and SQL is "What is the HAVING clause used for in SQL"?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1159435440000#c115943546323988315" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:24 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115943546323988315" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116065095984809972"></a> 				Something that I have picked in the many interviews I have conducted over the last year is the difference in approach when someone is confident in themselves even when the territory is unfamiliar. Poor candidates will waste time wafting on about anything but the question where as a strong candidate seems capable of getting to the point quickly or asking a pertenant question that will direct the conversation. Poor candidates will rarely say "I don't know".<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1160650920000#c116065095984809972" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 7:02 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116065095984809972" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116186741504623259"></a> 				I've been asked this very question in an interview a few years ago. We went through 5 variations of "requirements" within 20-30m, which indicated how malleable the design was, etc. <BR/><BR/>One thing that comes out of such a question is how quickly someone can think on their feet, and do they have a portfolio of experience to draw on to at least start a discussion quickly. (It's an interview, not the design stage of the best product ever)<BR/><BR/>That said, the most evil variation was along the lines of multiple players, each with a unique path through the "game board". That makes for some interesting rule variations on its own.<BR/><BR/>Lastly, a note on your blog site - how about some dates along with the timestamp? No idea how old/stale these postings are.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1161867360000#c116186741504623259" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 8:56 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116186741504623259" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116186982504852490"></a> 				<I>how about some dates along with the timestamp? No idea how old/stale these postings are</I><BR/><BR/>Good idea, I'll look into it. In the mean time, have a look at the URL for each post.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1161869820000#c116186982504852490" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:37 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116186982504852490" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116274364601966774"></a> 				Holy crap, I'm not going to hire a coder who cannot reverse a  string. This is something that is basic, and the ppl who cannot reverse the string I will send to you anonymous-3:53 PM :)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1162743600000#c116274364601966774" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:20 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116274364601966774" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116274509553398822"></a> 				<I>Holy crap, I'm not going to hire a coder who cannot reverse a string. This is something that is basic, and the ppl who cannot reverse the string I will send to you</I><BR/><BR/>Nothing in this post should be construed as suggesting that anyone who cannot reverse a string is worthy of employment as a programmer.<BR/><BR/>This is not the <I>only</I> question I consider asking, just my <I>favourite</I>.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1162745040000#c116274509553398822" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:44 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116274509553398822" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1309703364532706288"></a> 				Thank you for the post, I have heard that many questions asked during interviews are puzzle-like questions similar to one at http://www.technical-interview.com. I myself had phone interview with Microsoft and they ask me coding questions. I guess it all depends on the guy who is interviewing you.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1172302500000#c1309703364532706288" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 2:35 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1309703364532706288" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3305187405899862896"></a> 				I came to this blog since I was asked the Monopoly question for design. I thought it was not a question for developers and architects to be answering. <BR/><BR/> The Internet industry is now over 15 years old and we are still asking questions like Monopoly, and language syntax. <BR/>The question we need to ask is: "Can the individual solve problems or are they mostly glorified typists (coders)?". It is time for us to start asking questions of HR, Account and invoice problems rather than some games and syntax. <BR/><BR/>For example:<BR/> While walking in a forest, you come across a river and want to know how deep it is; how would you find out how deep it is ?<BR/> or ask question like:<BR/> "How would you design an application for viewing all invoices which are over due by 30 days?" <BR/><BR/>These should be the questions for IT professionals with > 5 years experience and have atleast 2 languages experience.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1200349500000#c3305187405899862896" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01677662936254968409" rel="nofollow">Rajeev</a> : 5:25 PM</div>
+
+								<span class="item-control blog-admin pid-846021319"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3305187405899862896" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4078670887816269400"></a> 				Rajeev:<BR/><BR/><I>The question we need to ask is: "Can the individual solve problems or are they mostly glorified typists (coders)?". It is time for us to start asking questions of HR, Account and invoice problems rather than some games and syntax.</I><BR/><BR/>I'm having a little trouble understanding your comment. Are you suggesting that Monopoly is a question to discover if someone is a glorified typist, and asking someone how to formulate a SQL query to obtain invoices 30 days overdue os a question for people with five years of experience?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1200415260000#c4078670887816269400" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:41 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4078670887816269400" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8395675495200889730"></a> 				Reginald:<BR/> I see how what I wrote can be understood as you said in your note. I meant to say we need to start asking more questions for experienced  developers design questions which do not deal with games but with business problems. <BR/> Not a lot of people in the industry have game development and/or design experience. <BR/> However, I observe that it does not matter what one answers in most of the interviews whether it is a design question or implementation question. The main reason I make the comment in this paragraph is if the answer one gives is not the same the interviewer has then you did not pass according to them.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1200442020000#c8395675495200889730" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01677662936254968409" rel="nofollow">Rajeev</a> : 7:07 PM</div>
+
+								<span class="item-control blog-admin pid-846021319"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8395675495200889730" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8674979402380935914"></a> 				Rajeev:<BR/><BR/><I>s if the answer one gives is not the same the interviewer has then you did not pass according to them.</I><BR/><BR/>This is a very good observation, and a major problem with many interviewers. of course, it applies to business problems as well as to more abstract problems. Some interviewers have a pet architecture for business applications, and if you do not propose it, you &ldquo;lose.&rdquo;<BR/><BR/>For example, if they ask you how to build an invoicing application, they might be looking for very specific opinions about what logic belongs in PL/SQL, what logic belongs in a middleware server, what logic belongs in a "controller" layer, what logic belongs in the view, and so on. They might have extremely rigid ideas about whether an ORM is required, and if so, whther it is database-driven (like ActiveRecord) or object-driven (like Hibernate).<BR/><BR/>I think a good interview technique is one that reveals something about the candidate about you, while a bad interview technique reveals something about the interviewer.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1200446400000#c8674979402380935914" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:20 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8674979402380935914" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2720893914053810424"></a> 				I just tried the elevator question.  I failed to engage the interviewee in the idea that this was an opportunity to run with this and show off what a great designer/programmer they were.<BR/><BR/>I think one needs to provide bounds on this question.  I framed the question as: "Ok, the boss has hired you, and he walks in saying: 'We need to build an elevator controller.'  Describe what you might do or ask to figure out what the boss wants, what the platform is, and the like.  Assume the language is object oriented.  Also assume the controller is receiving messages as text, and sends messages as text."<BR/><BR/>In addition to that, I think I also should have steered the interviewee to: A. Describe the state machine, B. map out the API, and C. Ask me or invent anything that furthers your description over the next 10 minutes.<BR/><BR/>Really, you are looking for anything that showcases an interviewee's abilities.  The real goal is to engage them in that manner.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1205433540000#c2720893914053810424" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="https://me.yahoo.com/a/HNwuzKIrr_pk6sLp2f1499_p60qDJ2Z2qg--#f0281" rel="nofollow">HNwuzKIrr_pk6sLp2f1499_p60qDJ2Z2qg--</a> : 2:39 PM</div>
+
+								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2720893914053810424" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8551033294807101329"></a> 				If you want good programmers then you need to look for attitude and interest as much as ability.  If the attitude and interest is good they will learn/acquire whatever skills you require of them as soon as you point them in the right direction.  We've all go to learn new stuff every few years anyway.<BR/>And if you want the best you'll need to go hunt them out because the best people never need to apply for a job; they've got employers chasing them. But that's a separate issue.<BR/>If someone has the right attitude and interest then asking how they do anything will tell you how good a programmer they are. If they do a good job thoroughlt, they're good; If they don't, they're not. It really is that simple. And if the employer doesn't understand that even the best candidate will need some time to 'bed in' to a new job the you'd better explain it, and why, in your interview and if they don't get it, leave quickly.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1232019240000#c8551033294807101329" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17534025826555170828" rel="nofollow">Rob Swan</a> : 6:34 AM</div>
+
+								<span class="item-control blog-admin pid-1362445136"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8551033294807101329" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2205951305386126194"></a> 				<I>Commenting years later - just discovered this blog</I><BR/><BR/>The interview question I like most as an interviewer is one where I don't yet know the answer.  There is always some unsolved problem or dilemma in our jobs - ask the prospect what they would do about it.<BR/><BR/>You'll learn very quickly how well they'll work with your organization at the problem-solving level in that problem domain.<BR/><BR/>When I'm the prospect this is the question I look for - if it's not asked I'll try to elicit something like it during the "anything you'd like to ask me" section of the interview.<BR/><BR/>Admittedly, this is because I'm much better in real, live, interactive situations than in canned and clearly artificial ones.  So it may just be my bias.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1236197040000#c2205951305386126194" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01985125461223119357" rel="nofollow">JH</a> : 3:04 PM</div>
+
+								<span class="item-control blog-admin pid-564864367"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2205951305386126194" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7013699722015506902"></a> 				All the people you actually want to hire, would never agree to an interview.   Or fill out employment forms.  Interviews are a farce.  The people you want to hire, refuse to fill out an employment application, and work as contractors.  You tell us the scope of the project, and we deliver the solution.   None of this bullshit.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html?showComment=1241491200000#c7013699722015506902" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04581768170922696043" rel="nofollow">Starguy</a> : 10:40 PM</div>
+
+								<span class="item-control blog-admin pid-165760845"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7013699722015506902" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

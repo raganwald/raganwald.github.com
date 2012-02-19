@@ -1,0 +1,386 @@
+<html> 
+<head>
+        
+        <title>Ruby Metaprogramming: A generic controller for REST-ful services on Rails</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Sunday, September 17, 2006</div>
+			
+
+			<div class="Post"><a name="115860210089160063">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2006/09/ruby-metaprogramming-generic.html" title="permanent link">Ruby Metaprogramming: A generic controller for REST-ful services on Rails</a></span>
+					<div style="clear:both;"></div><span style="font-weight: bold;">Disclaimer</span>:<br /><br />This is very raw code, and I've only been using it for a few days. It isn't in production. It hasn't been peer-reviewed. There are far fewer lines of test code than lines of functional code.<br /><br />In short, this is really a peek over my shoulder at what's running on my MacBook.<br /><br /><a href="http://www.flickr.com/photos/raganwald/34964775/" title="Dale on the Approach"><img src="http://static.flickr.com/21/34964775_76025bb762.jpg" alt="Dale on the Approach" border="0" height="375" width="500" /></a><br /><br />It has shortcomings. I recently read a blog post where the author complained that many of the naked people at Burning Man weren't pleasing to his eyes. Fair enough. But... is nudism always about exhibitionism? I think in many cases, it's about being perfectly aware of one's lack of physical beauty but being comfortable enough with oneself that you don't need to hide inside your clothing.<br /><br />I am posting this code in that spirit. Warts and all, I am trying to get my head out of the "don't show it until it has been polished to perfection" mind set.<br /><br />If you don't find it attractive, I hope you at least find it interesting.<br /><br /><span style="font-weight: bold;">What I needed</span>:<br /><br />I'm doing some work with bridging multiple Rails applications. In the back of my mind I thought I'd want to use ActiveWebServices in the production code, but when I got to the point of integrating my databases, I followed the principle of <a href="http://c2.com/xp/YouArentGonnaNeedIt.html">YAGNI</a> and decided I would use <a href="http://c2.com/cgi/wiki?DoTheSimplestThingThatCouldPossiblyWork">the simplest thing that could possibly work</a>.<br /><br />So I figured I would build one of the Rails applications around a REST-ful interface. The other applications could wrestle with REXML and Net::HTTP to talk to it. The joke on me is that this isn't the simplest thing that could possibly work. In my ignorance of all things Rails, I didn't know that I could have one Rails application use different databases for different models.<br /><br /><span style="font-weight: bold;">Rails and REST</span>:<br /><br />Rails 1.1 makes REST controllers as easy as:<br /><pre><code>class WardersController &lt; ApplicationController<br /><br /> def index<br />     @warders = Warder.find :all<br />     respond_to do |wants|<br />         wants.html<br />         wants.xml   { render :xml =&gt; @warders.to_xml }<br />     end<br /> end<br /><br /> # ...<br /><br />end</code></pre>I also needed to implement the <code>show</code> action. Once again, it’s fairly easy to handle the default case:<br /><pre><code>def show<br /> begin<br />   @warder = Warder.find params[:id]<br />   respond_to do |wants|<br />     wants.html<br />     wants.xml { render :xml =&gt; @warder.to_xml }<br />   end<br /> rescue ActiveRecord::RecordNotFound<br />   render :nothing =&gt; true, :status =&gt; 404<br /> end<br />end<br /></code></pre>Shortly after I had this working, it was time to implement <em>filters</em>. My first need was to be able to find the first Inmate that exactly matched something other than an <code>id</code>. I believe that it is far better to extract infrastructure through refactoring common code than to over-engineer up front. But it seemed obvious that I needed a generic “find on any column” feature.<br /><br />I did cobble something together, and it worked: you could search for an inmate using a <code>GET</code> such as <code>http://thevillage.org/inmates/show?number=6</code>. Shortly after I had it working for the <code>show</code> action I discovered that I needed the exact same functionality for the <code>index</code> action as well. And it was obvious it ought to work for any model controller without resorting to copy and paste.<br /><br /><strong>Rails Controllers and Filters</strong><br /><br />This is a common concern, and Rails provides Aspect-Oriented Programming hooks for controllers called <em>filters</em> just for this kind of purpose (they’re also handy for security). I decided to write a filter. Since I wanted to use it for all of my models, I placed the filter in <code>application.rb</code>, the common superclass of all controllers.<br /><br />Let’s start with a look at what a typical controller now looks like:<br /><br /><pre><code>class InmatesController &lt; ApplicationController<br /><br />before_filter :first_inmate, :only =&gt; [ :show, :update, :edit, :destroy ]<br />before_filter :all_inmates, :only =&gt; [ :index ]<br /><br />def index<br />  respond_to do |wants|<br />    wants.html<br />    wants.xml   { render :xml =&gt; @inmates.to_xml }<br />  end<br />end<br /><br />def show<br />  if @event.nil?<br />    render :nothing =&gt; true, :status =&gt; 404<br />  else<br />    respond_to do |wants|<br />      wants.html<br />      wants.xml { render :xml =&gt; @inmate.to_xml }<br />    end<br />  end<br />end<br /><br /># ...<br /><br />end<br /></code></pre>As you can see, I’ve added <code>before_filters</code> to our actions. These filters set the instance variables <code>@inmate</code> or <code>@inmates</code> for the action’s use. You can also see that the filter methods are customized for each model class. As you’ll see in a moment, if you add a new model class, say, <code>Rover</code>, you’ll get <code>first_rover</code> and <code>all_rovers</code> methods for free.<br /><br />Here’s the code for the methods:<br /><br /><pre><code>class ApplicationController &lt; ActionController::Base<br /><br /> class &lt;&lt; self<br />   def before_filter *args<br />     method_name = args[0].to_s<br />     if method_name =~ /^first_(.*)$/<br />       class_name = Inflector.singularize((Inflector.camelize $1))<br />       instance_name = '@' + Inflector.singularize((Inflector.underscore $1))<br />       load "#{Inflector.singularize(Inflector.underscore $1)}.rb"<br />       clazz = Kernel.const_get(class_name)<br />       define_method method_name do<br />         self.instance_variable_set instance_name, (find_filter :class =&gt; clazz, :find =&gt; :first)<br />       end<br />     elsif method_name =~ /^all_(.*)$/<br />       class_name = Inflector.singularize((Inflector.camelize $1))<br />       instance_name = '@' + Inflector.pluralize((Inflector.underscore $1))<br />       load "#{Inflector.singularize(Inflector.underscore $1)}.rb"<br />       clazz = Kernel.const_get(class_name)<br />       define_method method_name do<br />         self.instance_variable_set instance_name, (find_filter :class =&gt; clazz, :find =&gt; :all)<br />       end<br />     end<br />     super<br />   end<br /> end<br /><br />private<br /><br />def find_filter options<br />  options[:find] ||= :first<br />  if params[:id]<br />    begin<br />      (options[:find] == :first &&amp; (Event.find params[:id])) || [ (Event.find params[:id]) ]<br />    rescue ActiveRecord::RecordNotFound<br />      (options[:find] == :all &&amp; []) || nil<br />    end<br />  else<br />    column_names = options[:class].column_names<br />    clauses = (column_names.inject([]) { |cond_clauses, column_name| params[column_name] &&amp; cond_clauses &lt;&lt; "#{column_name} = ?"; cond_clauses })<br />    full_conditions = (!clauses.empty? &&amp; (column_names.collect { |column_name| params[column_name] }).compact.unshift((clauses.join ' AND '))) || nil<br />    if params[:order_by]<br />      words = params[:order_by].split<br />      order_column_name = (column_names.include? words.first) &&amp; words.first<br />      if order_column_name<br />        direction = (words.last &&amp; (words.last.upcase == 'DESC') &&amp; ' DESC') || ''<br />        (full_conditions &&amp; (options[:class].find options[:find], :conditions => full_conditions, :order => "#{order_column_name}#{direction}")) || (options[:class].find options[:find], :order => "#{order_column_name}#{direction}")<br />      elsif full_conditions<br />        options[:class].find options[:find], :conditions => full_conditions<br />      else<br />        options[:class].find options[:find]<br />      end<br />    elsif full_conditions<br />      options[:class].find options[:find], :conditions => full_conditions<br />    else<br />      options[:class].find options[:find]<br />    end<br />  end<br />end<br />end<br /></code></pre>As you can see, I intercept calls to <code>before_filter</code> and define a small wrapper method around <code>find_filter</code>. I was going to introspect on the controller name to get the class, however I wanted to allow the posibility that I would create controllers with arbitrary names. And after looking at the way the filters look, the method names seem to have documentation value.<br /><br />It also seemed possible to eliminate the filter calls in the controller, but they are so short that it didn't seem like a big code win to abstract those up into <code>ApplicationController</code>.<br /><br />So... there you have it. In summary, <strong>all</strong> of the controllers in this rails application now support simple filtering on column names like <code>http://thevillage.org/escapes/outcome=failure</code> or <code>http://thevillage.org/butlers/stature=short&umbrella=yes</code>.<br /><br /><strong>My thoughts on metaprogramming</strong>:<br /><br /><blockquote>I had to stop learning Lisp. I realized that at the rate I was going I would quickly automate myself right out of a job.</blockquote><div style="text-align: right;"><a href="http://www.recursivethought.com/blog/">Senzei</a><br /></div><br />I <em>like</em> dynamic metaprogramming. Obviously. On the other hand, it’s hard to write an IDE that knows where to find the definition for <code>all_rovers</code>. I think that as Ruby matures, people will look for ways to assist tool vendors, perhaps by extending reflection.<br /><br />OO theorists sometimes complain that even this mild form of dynamic metaprogramming violates the purity of defining all of the verbs for a noun up front. At the risk of arguing with a straw man, I feel that this is well within the spirit of OOP. What we’re really saying is <em>all objects that extend <code>ApplicationController</code> have two extra methods, <code>first_something</code> and <code>all_somethings</code></em>, we just don’t know the name of <code>something</code> yet.<br /><br /><strong>Defining the methods using <code>method_missing</code></strong>:<br /><br />My first cut at the implementation used <code>method_missing</code> to handle the new methods instead of <code>define_method</code>. Stefan Tilkov's comment (below) inspired me to try defining the methods dynamically. Here's the original code:<br /><pre><code> def method_missing method<br />  method_name = method.id2name<br />  if method_name =~ /^first_(.*)$/<br />    class_name = Inflector.singularize((Inflector.camelize $1))<br />    instance_name = '@' + Inflector.singularize((Inflector.underscore $1))<br />    load "#{Inflector.singularize(Inflector.underscore $1)}.rb"<br />    clazz = Kernel.const_get(class_name)<br />    self.instance_variable_set instance_name, (find_filter :class =&gt; clazz, :find =&gt; :first)<br />  elsif method_name =~ /^all_(.*)$/<br />    class_name = Inflector.singularize((Inflector.camelize $1))<br />    instance_name = '@' + Inflector.pluralize((Inflector.underscore $1))<br />    load "#{Inflector.singularize(Inflector.underscore $1)}.rb"<br />    clazz = Kernel.const_get(class_name)<br />    self.instance_variable_set instance_name, (find_filter :class =&gt; clazz, :find =&gt; :all)<br />  else<br />    super<br />  end<br />end<br /></code></pre>While I embrace the spirit of dynamic metaprogramming, I don’t care for the aesthetics of implementing methods with <code>method_missing</code>. In my ideal world, we’d combine pattern matching with our existing syntactic forms of defining a method so that it is much more obvious that ApplicationController defines those two methods. That would be a win for programmers and for tools. And we could do that today as syntactic sugar by rewriting pattern matching definitions using <code>method_missing</code>.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2006/09/ruby-metaprogramming-generic.html" title="permanent link">10:00 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Ruby Metaprogramming: A generic controller for REST-ful services on Rails</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="115861479894735553"></a> 				Without knowing any Ruby I don't know how well I can comment on this, but when has that stopped anybody?<BR/><BR/>I like the "do the simplest thing that could possibly work" concept, simply because it is so good at biting people in the ass. I think most programmers get a little too wrapped up in specifics of the current problem. (generalizing myself to be "most programmers", feel free to shoot me down) Statements like "do the simplest thing that could possibly work" are the progenitors of monsters that would make Dr. Frankenstein squeamish when we allow ourselves to say "X will just be an implementation detail".<BR/><BR/>In your case, it looks like X was "connecting other rails applications to your RESTful interface". Keeping everything in balance and looking at the problem from multiple levels at once is hard. At the least I suck at it, and it appears to be the case that everyone imitates me on occassion.<BR/><BR/>Re: the metaprogramming statement that my quote prefaced, I actually don't like most popular language's support for metaprogramming. My programming "career" started out as maintenance work on a bunch of VB scripts left by a former employee. It quickly taught me that decipherability and consistency were awesome traits in a programming language. <BR/><BR/>Given all of that, metaprogramming scares me. It lets any old moron open up a class and break everyone else's code in new and painfully interesting ways. When this happens during a project the solution is simple: Go grab a clue-by-four and exorcise the problem. Trying to pick up after this six months later is another story.<BR/><BR/>Until I am convinced that a language has something to help me figure out when in the flow of execution something gets modified, to what, by whom, etc; I will be avoiding metaprogramming like the plague. From a maintenance perspective it is a great way to shoot yourself (or any hapless successors) in the foot a few months down the line.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/ruby-metaprogramming-generic.html?showComment=1158614760000#c115861479894735553" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.recursivethought.com" rel="nofollow">ajones</a> : 5:26 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115861479894735553" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115861494596088183"></a> 				Cool. I'm not yet confident enough with Ruby metaprogramming to fully understand this, though: If I understand the code correctly, you don't actually add the methods, do you? Instead, your "magic" seems to run any time one of the missing methods is called. Wouldn't it be easier/nicer to really add the methods, which would mean that method_missing would only be invoked the first time? Or am I missing something (quite likely)?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/ruby-metaprogramming-generic.html?showComment=1158614940000#c115861494596088183" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.innoq.com/blog/st/" rel="nofollow">Stefan Tilkov</a> : 5:29 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115861494596088183" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115861524908060418"></a> 				<I>Wouldn't it be easier/nicer to really add the methods, which would mean that method_missing would only be invoked the first time?</I><BR/><BR/>Ahhh, <I>memoization</I>. That has several advantages. First, performance. Second, run-time reflection. If and when Ruby catches up with Smalltalk-80, we'll have inspectors that will display a class's methods, and your suggestion will be a vast improvement.<BR/><BR/>Thanks.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/ruby-metaprogramming-generic.html?showComment=1158615240000#c115861524908060418" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:34 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115861524908060418" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115867471682466654"></a> 				Doesn't irb allow for method inspection? What's the difference to Smalltalk's inspection (another language I'm much too ignorant  of)?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/ruby-metaprogramming-generic.html?showComment=1158674700000#c115867471682466654" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.innoq.com/blog/st/" rel="nofollow">Stefan Tilkov</a> : 10:05 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115867471682466654" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="115867525773631390"></a> 				<I>Doesn't irb allow for method inspection?</I><BR/><BR/>Yes, of course it does. But I don't know: can you attach irb to an existing Ruby process?<BR/><BR/>If you can, irb has a command line interface. It isn't a lot of fun to browse objects and classes manually and it doesn't "make me happy."<BR/><BR/>Smalltalk provides a GUI you can use to browse objects and classes in a running image.<BR/><BR/>Ruby will benefit from tools like this. It just needs people who are passionate about IDEs.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/ruby-metaprogramming-generic.html?showComment=1158675240000#c115867525773631390" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:14 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=115867525773631390" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116975511314301063"></a> 				Thanks.  FYI to anyone trying to incorporate this code, here is my newby experience:<BR/><BR/>In the find_filter method, I had to change "Event" to "options[:class]".  For the url's, I changed the last '/' to '?' to prevent routing errors.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/09/ruby-metaprogramming-generic.html?showComment=1169755080000#c116975511314301063" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">MarkF</span> : 2:58 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116975511314301063" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

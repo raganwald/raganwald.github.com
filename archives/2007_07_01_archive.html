@@ -1,0 +1,724 @@
+<html> 
+<head>
+        
+        <title>raganwald: 07/07</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+	<!-- Meta Information --> 
+	<!-- put "BlogMetaData" between angle-dollar and dollar angle  to restore defaults -->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="MSSmartTagsPreventParsing" content="true" />
+	<meta name="generator" content="Blogger" />
+
+	<link rel="alternate" type="application/atom+xml" title="Raganwald Posts + Links(Atom)" href="http://feeds.raganwald.com/raganwald" />
+	<!-- <link rel="alternate" type="application/rss+xml" title="Raganwald Posts + Links (RSS 2.0)" href="http://feeds.raganwald.com/raganwald" /> -->
+	<link rel="alternate" type="application/atom+xml" title="Raganwald Posts Only (Atom)" href="http://feeds.raganwald.com/raganwald_articles" />
+	<link rel="alternate" type="application/atom+xml" title="Raganwald on Twitter (Atom, experimental)" href="http://twitter.com/statuses/user_timeline/14165291.atom" />
+
+	<link rel="service.post" type="application/atom+xml" title="Raganwald" href="https://www.blogger.com/atom/7618424" />
+	<link rel="service.post" type="application/atom+xml" title="Raganwald (Atom 1.0)" href="http://www.blogger.com/feeds/7618424/posts/full" />
+
+	<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.blogger.com/rsd.g?blogID=7618424" />
+
+
+
+    <link rel="openid.server" href="http://www.myopenid.com/server " />
+    <link rel="openid.delegate" href="http://reginald.braithwaite.myopenid.com/" />
+    <meta http-equiv="X-XRDS-Location" content="http://reginald.braithwaite.myopenid.com/xrds" />
+
+
+
+
+	<style type="text/css">
+	@import url("http://www.blogger.com/css/blog_controls.css");
+	@import url("http://www.blogger.com/dyn-css/authorization.css?blogID=7618424");
+	</style>
+
+	<!-- /Meta Information -->
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/><br/>
+<!--
+<div style="background-color:black; text-align: center; color: white; padding: 10px 10px 10px 10px;">
+<p><font size="+1">Arthur C. Clarke</font><font size="-1">, 1917&thinsp;&ndash;&thinsp;2008
+<br/>&ldquo;If we have learned one thing from the history of invention and discovery,
+<br/>it is that, in the long run&mdash;and often in the short one&mdash;the most daring prophecies seem laughably conservative.&rdquo;</font>
+</p></div>
+-->
+		
+			
+				<div class="DateHeader">Tuesday, July 31, 2007</div>
+			
+
+			<div class="Post"><a name="7934863193248007983">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/abbreviation-accidental-complexity-and.html" title="permanent link">Abbreviation, Accidental Complexity, and Abstraction</a></span>
+					<div style="clear:both;"></div>Modern programming languages provide a variety of mechanisms for translating a relatively short program into a huge number of instructions for the computer&#8217;s CPU. It is tempting to think that the purpose of &#8220;high level languages&#8221; like Java, C#, Smalltalk, Ruby, or even Lisp is to be a kind of decompression algorithm: you type 147 lines of code, and the compiler elaborates each line of code, producing several megabytes of executable.<br /><br />If it were as simple as that, we would say that the &#8220;highest level language&#8221; is the one that allows us to express our programs in the smallest source code, perhaps in fewer symbols or lines of code. For example, we would say that <a href="http://montreal.pm.org/tech/neil_kandalgaonkar.shtml" title="Perl tricks by Neil Kandalgaonkar"><code>(1 x shift) !~ /^1?$|^(11+?)\1+$/'</code></a> is superior to:<br /><br /><pre><code>function (x) {<br />        y = Math.floor(Math.sqrt(x));<br />        var a = new Array();<br /><br />        a.push(2);<br />        for (i = 3; i &lt;= x; i+=2) {<br />                a.push(i)<br />        }<br />        a.reverse();<br />        var primes = new Array();<br />        while ((current_prime = a.pop()) &lt; y) {<br />                primes.push(current_prime);<br />                for (index in a) {<br />                        if (a[index] % current_prime == 0) {<br />                                a.splice(index,1);<br />                        }<br />                }<br />        }<br />        return a[0] == x;<br />}<br /></code></pre><br />Strictly because it is smaller by all obvious metrics (<a href="http://badcomputer.org/unix/code/eratos/javascript1.bot" title="sieve of Eratosthenes | code | unix stuff | badcomputer">source</a>).<sup><font size='-1'>1</font></sup><br /><br /><div class="book"><hr/><em><br /><a href="http://www.amazon.com/gp/product/0201835959?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0201835959"><img border="0" src="/uploaded_images/mythical_man_month.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201835959" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br />Twenty years later, <a href="http://www.amazon.com/gp/product/0201835959?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0201835959">The Mythical Man-Month: Essays on Software Engineering</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201835959" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> is still one of the most important books ever written about developing software, from the small to the large. It&#8217;s time to read the book that spawned the expression, &#8220;there is no silver bullet.&#8221;<br /></em><hr/></div>This explanation is clearly wrong. Even if both examples produced exactly the same result, the former is almost impossible to use by mortals: its form obfuscates its output. Clearly, writing the smallest possible program is not the goal.<br /><br />Writing smaller programs is also not an anti-goal: longer programs are not automatically &#8220;easier to read and understand.&#8221; One of the problems with longer programs is that they often are longer by virtue of containing <a href="http://www.amazon.com/gp/product/0201835959?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0201835959" title="The Mythical Man-Month: Essays on Software Engineering, 20th  Anniversary Edition">accidental complexity</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201835959" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, swathes of <a href="http://weblog.raganwald.com/2006/12/economizing-can-be-penny-wise-and.html" title="Economizing can be penny-wise and pound foolish">yellow code</a>.<br /><br /><strong>abbreviations</strong><br /><br />Some shorter programs are shorter merely because they contain shorter constructs. For example, if you perform some regular expression pattern matching in Ruby, you can use <code>/</code> characters to delimit your regular expression. That&#8217;s an abbreviation for the more tedious <code>Regexp.new()</code>. And there are some global variables that are automatically set for you. For example, <code>$1</code>, <code>$2</code> and so on are set to the matching groups.<br /><br />So if you write <code>/(fu|foo)(bar|blitz)/ =~ 'my program went fubar'</code>, <code>$1</code> is automatically assigned the string <code>'fu'</code> and <code>$2</code> is assigned the string <code>'bar'</code>.<br /><br />Compare and contrast this to: <code>my_matcher = Regexp.new('(fu|foo)(bar|blitz)').match('my program went fubar')</code>. Now you can use <code>my_matcher[1]</code> and <code>my_matcher[2]</code> to extract <code>'fu'</code> and <code>'bar'</code>.<br /><br />Obviously, the former expression is shorter, and quite handy. And while it may look a little cryptic to someone raised on Java&#8217;s one-size-fits-all syntax of everything is a .message, it really isn&#8217;t an obfuscation. It&#8217;s an abbreviation, nothing more. It makes programs shorter without changing their meaning in any substantial way.<br /><br /><strong>accidental complexity</strong><br /><br />We mentioned earlier that longer programs are sometimes longer by virtue of containing accidental complexity. There&#8217;s a good point of comparison. If a shorter program is shorter by virtue of having less accidental complexity, it&#8217;s better. <a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html" title="raganwald: Finding the Signal-to-Noise Ratio in the Never-Ending Language Debate">It has a higher ratio of signal to noise</a>.<br /><br />For example, here is one of the new <code>for</code> loops in Java:<br /><br /><pre><code>for (Account account: customer.getAccountList()) {<br />    // do something<br />}<br /></code></pre><br />This is shorter than:<br /><br /><pre><code>Iterator iAccount = customer.getAccountList().iterator();<br />while (iAccount.hasNext()) {<br />    final Account account = (Account) iAccount.next();<br />    // do somethinmg<br />}<br /></code></pre><br />It also removes some of the accidental complexity of the iterator. The new <code>for</code> loop removes some accidental complexity, raising the signal by eliminating noise. To continue with the same example, let&#8217;s look at an old <code>for</code> loop:<br /><br /><pre><code>for (int i = 0, i &lt; customer.getAccountList().size(); ++i) {<br />    final Account account = customer.getAccountList().get(i);<br />    // do something<br />}<br /></code></pre><br />This has even more accidental complexity, a loop index variable. Eliminating the loop index is a decent win, it eliminates fence post errors. But there is a bigger win in moving from an index-based loop to an iterator based loop or a new for loop: we have abstracted away the notion that the collection must be indexed by consecutive integers.<br /><br /><strong>abstractions</strong><br /><br />The iterator (and the new <code>for</code> loops) work with all kinds of collections, including linked lists and sets. Moving from a loop index variable to an iterator does more than just abbreviate the code, it does more than hide some accidental complexity, it provides a general-purpose abstraction for operations on collections.<br /><br /><div class="book"><hr/><em><br /><a href="http://www.amazon.com/gp/product/0596510047?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0596510047"><img border="0" src="/uploaded_images/beautiful_code.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0596510047" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br />How do the experts solve difficult problems in software development? In <a href="http://www.amazon.com/gp/product/0596510047?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0596510047">Beautiful Code</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0596510047" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, leading computer scientists offer case studies that reveal how they found unusual, carefully designed solutions to high-profile projects. You will be able to look over the shoulder of major coding and design experts to see problems through their eyes.<br /><br />This is not simply another design patterns book, or another software engineering treatise on the right and wrong way to do things. The authors think aloud as they work through their project&#8217;s architecture, the tradeoffs made in its construction, and when it was important to break rules. Beautiful Code is an opportunity for master coders to tell their story.<br /></em><hr/></div>So here is another point of comparison: does the shorter program provide us with a useful <em>abstraction</em>? Some programs are shorter through mere abbreviation, some are shorter through hiding accidental complexity, and some are shorter by providing useful abstractions.<br /><br />The difference between a new <code>for</code> loop and an index variable <code>for</code> loop may seem subtle. So let&#8217;s bring out a canonical example, one we touched on earlier: regular expressions. Can anyone seriously doubt that <code>/(fu|foo)(bar|blitz)/</code> provides a powerful abstraction compared to a stack of loops and <code>indexOf</code> method calls?<br /><br />There is more than abbreviation involved, more than hiding the accidental complexity of <code>indexOf</code>, there is a whole new mental model involved. A regular expression is <em>declarative</em>, it specifies what you what to find, and leaves the how to the language implementation. It is shorter, yes. But it is also much more powerful because it provides the programmer with a huge mental lever.<br /><br />Active Record provides a very useful abbreviation that eliminates a large chunk of accidental complexity, <a href="http://blog.hasmanythrough.com/2006/8/13/how-dynamic-finders-work" title="has_many :through: How dynamic finders work">dynamic finders</a>. You can write <code>User.find_all_by_street_and_city(street, cities)</code>. I won&#8217;t say what it returns, I trust it&#8217;s obvious.<br /><br />You could easily write a <code>find_all_by_street_and_city</code> method in any language you care to name. Agreed. But if you write one yourself, you have to write one for ever different kind of query you need to make. And if you write it, you trust it.<br /><br />But if you are maintaining someone else&#8217;s code, do you <em>really</em> trust it without reading it? Or do you have a peek to see whether there&#8217;s some weird business logic in there, like some special case treating the abbreviation &#8220;Hogtown&#8221; as a substitute for &#8220;Toronto&#8221;? Repeat this process for each search abbreviation method in the code base. What if one has a bug? Or another has a specific eager loading behaviour?<br /><br />If you are using an ORM like ActiveRecord, once you&#8217;ve learned how dynamic finders work, you know how they all work. Furthermore, you have an abstraction you understand, you don&#8217;t have to peek under the hood to see what&#8217;s going on. Abstractions are better than abbreviations.<br /><br /><strong>abstractions are not abbreviations</strong><br /><br />Abbreviations are useful. They can make code more readable by putting the all of the essential workings in one visible chunk. But they aren&#8217;t as powerful as constructs that remove accidental complexity or provide abstractions.<br /><br />And some times, abbreviations are even harmful. If the programmer reading code must understand what is being abbreviated in order to understand the code, then the abbreviation merely forces the programmer to jump around the code to figure anything out. When programs are written like this as a matter of course, the poor programmer is forced to rely on powerful IDEs that can jump to method definitions or find references quickly. She has to have these tools, because she must read <em>all</em> of the code to understand what it does.<br /><br />The abbreviations have introduced complexity, not removed it.<br /><br />Where do such programs come from, programs where the abbreviations are not useful abstractions? From those same IDEs, of course, from mindlessly refactoring to eliminate duplicate code without stopping to <em>design</em> the program&#8217;s mental model.<br /><br />This is not a knock against powerful IDEs, far from it. But we should realize that all the same arguments raised about powerful programming languages (&#8220;operator overloading is dangerous in the hands of mediocre programmers,&#8221; &#8220;macros enable people to write unreadable programs,&#8221; and so forth) apply to tools that shuffle code around, especially when the same tools seem to make it easy to navigate the shuffled program.<br /><br />When composing our own programs, when using these tools, it is not enough to merely seek to eliminate duplication. We must be mindful of the distinction between abbreviation, removing accidental complexity, and introducing useful abstractions.<br /><br />It is not wrong to eliminate redundancy in code. But when we do so, we mustn&rsquo;t follow the path of least resistance and mindlessly perform the refactorings suggested by our tools. This argument exactly parallels the argument about making code shorter for its own sake. Code brevity in and of itself is not desirable, well-abstracted code with a minimum of accidental complexity is desirable, and brevity follows when these goals are attained.<br /><br />Likewise, elimination of redundancy is not desirable in and of itself. But it serves to warn us of the need to seek useful abstractions and to remove accidental complexity. When we work with those goals in mind, the redundancy likewise melts away, and we are able to use the tools to improve our code.<sup><font size="-1">2</font></sup><br /><br />Abbreviations might be good.<br />Removing Accidental Complexity is better.<br />And providing Useful Abstractions is best of all.<br /><br /><hr/><br /><ol><li>And there's another difference: is 121 a prime number?</li><li>Thanks, <a href="http://programming.reddit.com/user/jbstjohn">jbstjohn</a>!</li></ol><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/abbreviation-accidental-complexity-and.html" title="permanent link">10:19 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Thursday, July 26, 2007</div>
+			
+
+			<div class="Post"><a name="9039694258808910109">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/haggling-about-price.html" title="permanent link">Haggling about the price</a></span>
+					<div style="clear:both;"></div>A few minutes ago I saw this interesting post: <a href="http://ajaxian.com/archives/ajax-web-developer-240k-per-year-with-only-one-catch">Ajax Web Developer: $240k per year… with only one catch</a>. If you want the executive summary, the job location is Iraq, a battle zone.<br /><br />What I find interesting about jobs like this are the people who debate whether $240,000 is enough to compensate for the very real possibility of being killed:<br /><br /><blockquote>Unfortunately, the whole 12/hr/day, 7/day/week deal works out to only about $52/hour&#8230;<br />  <br />  I think that for $240k a year, I could shift my sleep schedule to iRaq time&#8230;<br />  <br />  I think it would be a cool opportunity, but the 12 hour days, 7 days a week drops the money down to just over $50 an hour. If there is the possibility of being shot at, I need at least $80 per hour :-P<br />  <br />  I would take 300k, though probably (?) not 200 to work in Iraq&#8230;</blockquote><br />And lots of people were debating the tax-free status of this position, as if that&#8217;s the only deciding factor between staying or going. I&#8217;m sure many of the people commenting were being facetious, however Winston Churchill really put things into perspective in <a href="http://jo-kes.blogspot.com/2007/06/churchill-humor.html" title="Jokes: Churchill humor">this apocryphal exchange with a socialite</a>:<br /><br /><blockquote>Churchill: &#8220;Madam, would you sleep with me for five million pounds?&#8221;<br />  <br />  Socialite: &#8220;My goodness, Mr. Churchill… Well, I suppose… we would have to discuss terms, of course…&#8221;<br />  <br />  Churchill: &#8220;Would you sleep with me for five pounds?&#8221;<br />  <br />  Socialite: &#8220;Mr. Churchill, what kind of woman do you think I am?!&#8221;<br />  <br />  Churchill: &#8220;Madam, we’ve already established that. Now we are haggling about the price.&#8221;</blockquote><br />If you&#8217;re going to sacrifice your life on principle, I commend you for your bravery.<br /><br />But when it comes to money, either you incorruptible, or you have decided that your life is a commodity, something that can be bought or sold, traded or bartered, played as a pawn and sacrificed so that some contracting company somewhere makes another billion dollars for its shareholders.<br /><br /><strong>but I&rsquo;m not working in a battle zone&#8230;</strong><br /><br />This all seems very surreal, I&#8217;m quite sure few or none of my blog readers are wearing combat fatigues and body armour right now.<br /><br />But the principle applies elsewhere. If you ever find yourself being subjected to personal abuse, or manipulative behaviour by your manager, or asked to lie to clients, or outright cheat such as double billing, you are in the exact same position as someone asked to sacrifice their life. You have to decide whether you are sacrificing your self-esteem for a noble cause, or whether it&#8217;s about the money.<br /><br />And trust me on this one, if it&#8217;s about the money, you are on the road of perpetual unhappiness, where every well is dry and every inn is full, and your journey never ends.<br /><br />If you have a dream, and making that dream a reality involves tough business decisions, good for you. I commend you for having the courage to duke it out with VCs, lawyers, and whomever else will try to get you to mortgage your honesty to fill their coffers.<br /><br />But if you are dragging yourself to work every day, if you hate what your boss makes you do, if it&#8217;s about the money and the vacations and the toys, but not about fundamental satisfaction with your job, you need to <strong>stop right now</strong>, sit down with the people you love and trust, and reëvaluate your choices.<br /><br />Trust me on this one. If $100,000 isn&#8217;t enough, neither is $200,000, and $300,000 won&#8217;t do it either. We&#8217;ve established what they want you to become. All you&#8217;re doing is haggling about the price.<br /><br /><strong>the sun also rises</strong><br /><br />The good news is that unless you have signed up for a two year tour of duty with the army, you can stop any time. You can get off the treadmill. You can just stop doing things that aren&rsquo;t consistent with your values.<br /><br />I&rsquo;m not saying you shouldn&rsquo;t work long hours, or compromise your technical integrity by using a for loop instead of a map function. Making tough choices is part of growing up.<br /><br />But you do not need to compromise your integrity, ever. And the good news is, you can just say <strong>no</strong>. Tell your boss to handle all communications with the client if he doesn&rsquo;t want you to mention that you only put in twenty hours on their project last week because he has you working for two clients at once.<br /><br />Tell your client that no, you cannot submit an invoice for $2,500 but accept only $2,000 in payment, with her skimming the extra $500 as a secret commission.<br /><br />It&rsquo;s incredible, but this little word, no, it really works. The world does not stop. You don&rsquo;t get dragged from the room and imprisoned without trial. If you are let go, you will find another job, a better one, a job with people who like you and respect you and want to make money in an honourable fashion.<br /><br />We have a lot of freedoms. The point of those freedoms is to have an almost completely unrestrained ability to pursue happiness. All you have to do is make the right choices.  And the first choice is to simply say no to anything you cannot abide.<br /><br />That is the road that leads us into the sunshine.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/passion.html">passion</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/haggling-about-price.html" title="permanent link">3:37 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Monday, July 23, 2007</div>
+			
+
+			<div class="Post"><a name="8121316760614337339">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/lies-damned-lies-and.html" title="permanent link">Lies, Damned Lies, and...</a></span>
+					<div style="clear:both;"></div>Statistics&#8212;by which I mean collected evidence&#8212;is useful for making decisions in a probabilistic environment. A probabilistic environment is one in which we have several alternatives, the alternatives have different outcomes, and we cannot assure ourselves of selecting the most beneficial outcome with the evidence we are able to gather.<br /><br />The best we can do is make a choice that gives us the greatest likelihood of a good outcome, or perhaps limits the likelihood of a bad outcome.<br /><br />We humans like to use evidence of past outcome to guide ourselves when making future choices. We&#8217;re pattern-matching machines. If we ate a green banana and it hurt our stomach in the past, we avoid green bananas in the future. Almost everything we do in our lives and our careers is based on this principle, although we wrap it up in <a href="http://www.amazon.com/gp/product/0521701724?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0521701724" title="Understanding Probability: Chance Rules in Everyday Life">books full of formulae</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0521701724" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> and impressive phrases like <a href="http://en.wikipedia.org/wiki/Bayesian_filtering" title="Bayesian filtering - Wikipedia, the free encyclopedia">bayesian filtering</a>.<br /><br />The trouble with this is that humans rarely apply even a modicum of common sense to probabilistic decisions. For example, one huge issue is called <em>sampling bias</em>. Consider hiring programmers, a popular topic. What does a certification with Sun or MSFT tell us about a candidate?<br /><br />Well, let&#8217;s look at the evidence. Let&#8217;s pick 10,000 people randomly. Divide into two groups, programmers and non-programmers. What percentage of the programmers have certification? What percentage of the non-programmers have certification?<br /><br />This evidence we just collected is exactly the same kind of evidence that spam classification systems use to determine whether emails are spam or not. So, can we apply this evidence to selecting people to interview for jobs as programmers?<br /><br />The catch in this case is that <em>people applying for a job as programmers</em> is not the same kind of sample as <em>the population at large</em>. The samples are different. The filter (&#8220;select people with certification&#8221;) is most effective when the sample of people applying for the job most closely resembles the population at large, and it is least effective when the sample of people applying for the job does not resemble the population at large.<br /><br />Imagine two companies, Alpha-Geeks (&#8220;A&#8221;), and BigCo (&#8220;B&#8221;). Alpha-Geeks is a start up working on something hip that you cannot explain to your Mother-in-Law. It is using one of the technologies covered by certification. BigCo is in the Consulting Industry, its clients are big corporations everyone has heard of.<br /><br />The sample of people applying for jobs with Company A is very different than the sample of people applying for jobs with Company B. Don&#8217;t you think that Company B attracts many, many more submissions than Company A? And aren&#8217;t those submissions much more weighted to the average or even mediocre? (<em>Weighted towards</em> doesn&#8217;t mean that talented people don&#8217;t apply for jobs at Company B, please keep your cool).<br /><br />The filter is going to be far more useful with Company B than Company A, <em>because the sample of people applying for jobs at Company B is far more similar to the evidence sample than the sample of people applying for jobs at Company A</em>.<br /><br />And that&#8217;s the key to making good decisions based on evidence: your evidence sample must be very similar to your decision environment.<br /><br />(I am not going down the rabbit hole of saying that people with certification have some sort of personality that doesn&#8217;t match a start up or anything along those lines. Such a thing may explain this result, but explanation is not needed: the very fact that the samples of applicants are different from each other is enough to understand the principle of sample bias.)<br /><br /><strong>but is it good enough</strong><br /><br />One argument is that even a flawed filter has some value. So even if certification is flawed, it&#8217;s still helpful. I&#8217;ve already taken a whack at certification, let&#8217;s take a whack at the diametrically opposite filter so give this some balance: let&#8217;s talk about asking applicants to solve some sort of problem in an interview.<br /><br />Why do people administer this kind of problem? Possibly, because it makes them feel smarter than the applicant. Possibly because their mentor Joe Furrybeard from MIT did it that way. And possibly because they performed the following simple experiment: they asked everyone in their company to solve the problem at an off-site retreat, where 90% got it right. They have observed interviewees struggle with it, and fewer than 50% get it right.<br /><br /><div class="book"><hr/><em><a href="http://www.amazon.com/gp/product/0316778494?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0316778494"><img border="0" src="/uploaded_images/move_mt_fuji.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0316778494" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br /><a href="http://www.amazon.com/gp/product/0316778494?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0316778494">How Would You Move Mount Fuji?: Microsoft's Cult of the Puzzle -- How the World's Smartest Companies Select the Most Creative Thinkers</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0316778494" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /></em><hr/></div>They know that <a href="http://en.wikipedia.org/wiki/Sturgeon%27s_Revelation" title="Sturgeon's Law - Wikipedia, the free encyclopedia">Sturgeon&#8217;s Law</a> applies to applicants (more <a href="http://weblog.raganwald.com/2007/03/thank-you-for-writing-such-heartfelt.html" title="Thank you for writing such a heartfelt critique of the Fizzbuzz screening question">here</a> and <a href="http://www.joelonsoftware.com/items/2005/01/27.html" title="Everyone thinks they're hiring the top 1%">here</a>), so it looks like a winner: apply the test and throw the losers out on the spot.<br /><br />Well, this is contentious. But let&#8217;s start with an easy issue. Remember that we tested people at a retreat? We could have the following phenomenon: most of the people at the company got it right because they were asked the problem in a relaxed setting, while many interviewers blow it under pressure. Our &#8220;evidence&#8221; that 90% of our staffers get it right is biased.<br /><br />Selection bias happens when hiring in other ways: we could select by lifestyle (golfers need not apply at our start up unless they are <a href="http://en.wikipedia.org/wiki/Disc_golf" title="Disc golf - Wikipedia, the free encyclopedia">disc golfers</a>). True, everyone at the company is good at this problem. But that&#8217;s only because we hire people who are good at problems like this, not because there is a correlation between this specific talent and someone&#8217;s job performance.<br /><br />Even if everyone at the company is extremely talented, that may say nothing about the value of this interview problem. Let&#8217;s see how. Let&#8217;s apply two filters to everyone we interview: one is very good at predicting job performance, one that is poor. Perhaps the good one is something obvious like <em>previous performance under similar circumstances</em>, while the bad one is <em>whether they play a musical instrument</em>.<br /><br />If we use both filters, we will select far fewer people than if we just use the good one. But when we survey our employees, we discover that they are good and that they play musical instruments. So why don&#8217;t we drop the long interviews asking about past performance and simply pick those who play a musical instrument?<br /><br />Let&#8217;s think about a spam filter: it gets thousands of emails, we classify them by hand into spam and not-spam, and it learns the relevance of various pieces of evidence like words.<br /><br />In our case, want to know if &#8220;plays musical instrument&#8221; is significant. We measure that everyone in the company plays a musical instrument. Very good. So we have a measure that 100% of the people we hired play musical instruments. But did we measure how many of the people we turned down for jobs played musical instruments? No. Maybe 50% or more of the rejects play musical instruments.<br /><br />Well, if 100% of the hires play an instrument and 50% of the no-hires play an instrument, that&#8217;s still pretty useful, isn&#8217;t it? No way! Because, as we pointed out, our sample of employees is contaminated by the fact that we only hire musicians. Those statistics would only be relevant if there were no hidden correlation to our existing selection. But since our selection is contaminated, playing a musical instrument has about as much value as belonging to your <a href="http://en.wikipedia.org/wiki/Skull_and_bones" title="Skull and Bones - Wikipedia, the free encyclopedia">college club</a> has for fitness to rule the nation.<br /><br />The problem with both of our sample bias problems is simple: although what we did looked a little like a Bayesian filter, we did not sample real job applicants for our company and train our filters based on trusted classification. We trained our filters based on inappropriate data sets like the population at large or existing employees.<br /><br /><strong>little lies</strong><br /><br />Sampling bias is a pervasive problem. Another way it creeps into decision-making is through <em>discounting</em>. Humans have a way of filtering evidence before they use it to make decisions. Consider this situation: a drug company is putting a new Heart Medication through trials. 1,000 patients try it for two years years after having bypass surgery. The company reports that 60% of the patients reported better-than-average blah-blah-blah (cholesterol, mood, blood pressure, take your pick) two years after surgery.<br /><br />Great medication? It sounds like 600 patients got better. What&#8217;s the problem?<br /><br />Don&#8217;t settle for the press release, let&#8217;s look at the study parameters. Well, look at that, they threw 200 patients out of the survey. It seems they <em>died before the survey was completed</em>. And what does improved blah-blah-blah mean? Well, there was a control group of 1,000 patients who didn&#8217;t take the drug. Five percent of them died, and the company threw them out using the same protocol as the test group. The survivor&#8217;s blah-blah-blah was measured, and the company is claiming that 60% of the people who survived the drug experience are better than the <a href="http://en.wikipedia.org/wiki/Median" title="Median - Wikipedia, the free encyclopedia">median</a> blah-blah-blah of the control group survivors. <br /><br />But when you copy and paste the tables from the PDF into your calculator and do a quick calculation, you discover that although 60% are better than median, only 40% of the survivors are better than the average blah-blah-blah of the control group. The data set is strongly skewed.<br /><br />Well, that&#8217;s effing <em>terrible</em>. First, you have <em>four times the mortality rate</em>. True, 60% of the survivors are better than average, but what appears to be going on is that a lot of them are only a little bit better, and the ones that are worse are much, much worse. That explains why there were 150 more deaths in the test group.<br /><br />What happened here? The drug company discounted the problem results. It threw out the deaths and it chose to measure the median instead of the mean. Luckily for us, we don&#8217;t do this in software development.<br /><br />Or do we?<br /><br />How often do you hear someone report &#8220;Operation successful, but the patient died?&#8221; I hear it all the time. For example, people report that a project was problematic <em>Because the client kept changing requirements</em>. I&#8217;m sure the client did change requirements, no word of a lie.<br /><br />But what if we ask, &#8220;<a href="http://steve-yegge.blogspot.com/2006/09/good-agile-bad-agile_27.html" title="Stevey's Blog Rants: Good Agile, Bad Agile">What&#8217;s your success rate with your software development methodology</a>?&#8221; Will the response be, &#8220;it almost never works, it depends on fixed requirements and that&#8217;s not what we observe in the field?&#8221; or will the response be, &#8220;it works just fine?&#8221;<br /><br />What happens here is that people believe it <em>ought to work</em>, so they discount the times it doesn&#8217;t work by blaming clients or programmers or managers. In effect, they are throwing the dead patients out of the study! I suspect what happens is that they have heard this worked at another company, with different people, different clients, different skill sets, everything different. But they ignore the obvious sample bias, they ignore the fact that what works at BigCo may not work for them, (or vice versa), so they discount their failures.<br /><br />It goes the other way too. Some people throw the <em>survivors</em> out of the study. Have you ever heard someone describe Ruby as a language that won&#8217;t work for large teams of mediocre programmers? Because, you know, they aren&#8217;t hackers? There may be some truth to it, but you&#8217;re also hearing someone discount evidence of success just as they discount evidence of failure.<br /><br />My summary here is a short one: Statistics are only useful for decision-making when rigourously examined for fitness. You must be very, very certain that your evidence sample strongly resembles the decision-making environment, and you must be very careful that you don&#8217;t discount significant portions of your evidence.<br /><br />I am going to give the final word on the subject to the Marketing Product Manager that steered JProbe to eight-figure revenues and a Jolt Award. (If you think software developers make decisions based on bad statistics, you will be amazed at what passes for evidence when marketing is discussed.)<br /><br /><blockquote>The plural of anecdote is not data.</blockquote><br /><div style="text-align: right;">&#8212;Alan Armstrong</div><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/lies-damned-lies-and.html" title="permanent link">1:09 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Friday, July 20, 2007</div>
+			
+
+			<div class="Post"><a name="6657513306213574054">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/ouch-that-smarts.html" title="permanent link">Ouch, that smarts</a></span>
+					<div style="clear:both;"></div><blockquote>Smarts are about one tenth of what makes a business work. The rest is just shitty stuff like dealing with customers and partners and fixing bugs and reworking code and doing all sorts of lousy grunt work.</blockquote><br /><div style="text-align: right;">&mdash;Fake Steve Jobs, <a href="http://feeds.feedburner.com/~r/TheSecretDiaryOfSteveJobs/~3/135640266/squirrel-boy-gets-his-turn-in-clown.html">Squirrel Boy gets his turn in the clown chair</a></div><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/ouch-that-smarts.html" title="permanent link">1:18 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+
+			<div class="Post"><a name="2135628346515572708">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/friday-morning-surprise-essay-question.html" title="permanent link">Friday Morning Surprise Essay Question</a></span>
+					<div style="clear:both;"></div>Compare and contrast:<br /><br /><blockquote><a href="http://www.codinghorror.com/blog/archives/000913.html">Atwood's Law</a>: any application that can be written in JavaScript, <a href="http://weblog.raganwald.com/2007/07/javascript-on-jvm-in-fifteen-minutes.html">will eventually be written in JavaScript</a>.</blockquote><div style="text-align: right;">&mdash;Jeff Atwood</div><br /><blockquote>Lisp is a Black Hole: if you try to design something that&rsquo;s not Lisp, but like Lisp, you&rsquo;ll find that the gravitational forces on the design will suck it into the Black Hole, and <a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">it will become Lisp</a>.</blockquote><div style="text-align: right;">&mdash;Attributed to Guy Steele</div><br /><blockquote>To become popular, a programming language has to be the scripting language of a popular system.</blockquote><div style="text-align: right;">&mdash;Paul Graham, <a href="http://www.paulgraham.com/popular.html">Being Popular</a></div><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/friday-morning-surprise-essay-question.html" title="permanent link">9:13 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Wednesday, July 18, 2007</div>
+			
+
+			<div class="Post"><a name="8607279150808937241">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/and-i-thought-i-knew-how-low-recruiters.html" title="permanent link">And I thought I knew how low recruiters were prepared to go</a></span>
+					<div style="clear:both;"></div><blockquote>... You tell them you already submitted your r&eacute;sum&eacute; and that they shouldn&rsquo;t submit you again...<br /><br />Well, I know of some agencies that once you give them this information, they will submit you&mdash;without your approval&mdash;<strong>just to get you disqualified so that their candidates have a better chance of getting the job</strong>.</blockquote><br /><div style="text-align: right;">Chris, <a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html#702892315734127459">commenting</a> on <a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a></div><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/and-i-thought-i-knew-how-low-recruiters.html" title="permanent link">6:02 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+
+			<div class="Post"><a name="2736892831556262337">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/bill-de-hra-on-designing-for-web.html" title="permanent link">Bill de hÓra on Designing for the Web</a></span>
+					<div style="clear:both;"></div><blockquote>The relative verbosity of programming languages isn&rsquo;t the interesting thing; nor is typing doctrine. What&rsquo;s interesting is the culture of frameworks and what different communities deem valuable.<br /><br />My sense of it is that on Java, too many web frameworks&mdash;think <a href="http://java.sun.com/javaee/javaserverfaces/">JSF</a>, or <a href="http://struts.apache.org/">Struts</a> 1.x&mdash;consider the Web something you work around using software patterns. The goal is get off the web, and back into middleware. Whereas a framework like <a href="http://www.djangoproject.com/">Django</a> or <a href="http://www.rubyonrails.org/">Rails</a> is purpose-built for the Web; integrating with the internal enterprise is a non-goal...<br /><br />There are so many things frameworks like Rails/Django do ranging from architectural patterns around state management, to URL design, to testing, to template dispatching, to result pagination, right down to table coloring that the cumulative effect on productivity is startling. <strong>I suspect designing for the Web instead of around it is at least as important as language choice.</strong><br /><br />It&rsquo;s hard to explain sometimes just how time-consuming it can be to get Web things done on some Java frameworks. </blockquote><br /><div style="text-align: right;">&mdash Bill de h&Oacute;ra, <a href="http://www.dehora.net/journal/2007/07/earned_value.html">Design for the Web</a></div><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/bill-de-hra-on-designing-for-web.html" title="permanent link">9:23 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Monday, July 16, 2007</div>
+			
+
+			<div class="Post"><a name="4267051248388428321">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/javascript-on-jvm-in-fifteen-minutes.html" title="permanent link">How to Run Javascript on the JVM in Just Fifteen Minutes</a></span>
+					<div style="clear:both;"></div><strong>what and why</strong><br /><br />This post is about executing Javascript inside the JVM without using a browser. Besides the fact that people are talking about <a href="http://steve-yegge.blogspot.com/2007/06/rhino-on-rails.html" title="Stevey's Blog Rants: Rhino on Rails">running Javascript on the server</a> (<a href="http://helma.org/" title="Helma - Javascript Web Application Framework">again</a>, and <a href="http://peter.michaux.ca/article/3001" title="Server-Side JavaScript with Rhino and Jetty">again</a>), here&#8217;s why my colleagues and I used it on a recent project:<br /><br />We have some logic that needs to run on the server and on the client, depending on when the application applies it. There is like an incredibly complex form validation involed. Think of a loan application, for example. Zillions of rules like &#8220;at least five years at current location <em>or</em> at most three locations in ten years <em>or</em> owns current location for at least one year.&#8221; The whole thing forms a big logical expression that needs to be evaluated in such a way that we can report which pieces are missing or do not meet requirements (<em>Declined because income is insufficient and does not state purpose of loan</em>).<br /><br />There are a couple of ways to handle this. One is to submit the form back to the server for validation. Another is to write everything in Java, but use <a href="http://code.google.com/webtoolkit/" title="Google Web Toolkit">a sophisticated tool to render the Java into Javascript</a>. Naturally, our team chose a third option, The Rails Way (available for <a href="http://www.amazon.com/gp/product/0321445619?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0321445619" title="The Rails Way (Addison-Wesley Professional Ruby Series)">pre-order</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0321445619" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />).<br /><br />We have a Domain-Specific Language for describing the rules. Business users use the DSL, and another tool writes code from that. We could, in theory, write Java methods for the server <em>and</em> write Javascript for the client. We chose to start with Javascript, and we&#8217;ll write Java for the server if running Javascript on the server turns out to be <strike>unperformant</strike> slow.<br /><br />In the mean time, we decided that having some Java make a simple function call to a Javascript function and process a simple result was a reasonable first step. As a side benefit, we run all our server-side Javascript unit tests in Java test suites alongside our Java unit tests.<br /><br />And after some fiddling around, we got Javascript working on the JVM. My bet is that you can get it working too, and it won&#8217;t take more than fifteen minutes.<br /><br />Care to try it?<br /><br /><strong>step zero: the Java Virtual Machine (JVM)</strong><br /><br />You&#8217;ll need JDK 1.5 or 1.6 from Sun. If you already have this, move on to step one. Still reading? You&#8217;ll need to do a big install before we go further.<br /><br />Go to the <a href="http://java.sun.com/javase/downloads/index.jsp" title="Java SE Downloads">downloads page</a> and download the latest thing they have on offer with the words &#8220;JDK&#8221; in it. You won&#8217;t need JEE (the framework formerly known as J2EE) for this exercise, but if you know what it is you know enough to decide whether to download it.<br /><br />Right now, you want <strong>JDK 6u2</strong>. Go get it and suffer through the installation process.<br /><br /><strong>Step one: Bean Scripting Framework</strong><br /><br />Java6 has a new framework for running &#8220;scripting&#8221; languages, and it&#8217;s built into Java6. We&#8217;re not going to use it today, just because some of you may still need to make stuff work with JDK 1.5 in production. Instead, we&#8217;re going to go get the Jakarta Bean Scripting Framework (BSF). <a href="http://jakarta.apache.org/bsf/" title="Jakarta BSF - Bean Scripting Framework">You can download it here</a>. We&#8217;ll need <code>bsf.jar</code>.<br /><br /><strong>step two: fix gotchas</strong><br /><br />YMMV, but I found that I couldn&#8217;t get BSF working without including the <a href="http://jakarta.apache.org/commons/logging/" title="Commons - Logging">Jakarta Commons-Logging</a> jar. So if you don&#8217;t have this floating around, go <a href="http://jakarta.apache.org/site/downloads/downloads_commons-logging.cgi" title="The Jakarta Site - Commons Logging Downloads">here</a> and download it. I experimented, and I could ignore everything except <code>commons-logging-1.1.jar</code>. If that was missing, BSF kakked.<br /><br /><strong>step three: Rhino</strong><br /><br />Since we&#8217;re going to run Javascript, we need an interpreter. <a href="http://www.mozilla.org/rhino/" title="Rhino - JavaScript for Java">Rhino</a> to the rescue. <a href="http://www.mozilla.org/rhino/download.html" title="Rhino Downloads">Download it</a>. We&#8217;ll need <code>js.jar</code>.<br /><br /><strong>step four: keeping things organized</strong><br /><br />Ready to code? Let&#8217;s start with a directory for all of our stuff. Call it <code>hello_javascript</code>. For the sake of keeping thing simple, set up the sub-structure as follows:<br /><br /><code>hello_javascript</code><br /><code>hello_javascript\lib</code><br /><br />You may be using a fancy IDE, you may be using a text editor and have to graft your classpaths together with chicken wire. The important thing is that your classpath, besides including all of Java&#8217;s required stuff, and your own Java classes, also includes <code>bsf.jar</code>, <code>commons-logging-1.1.jar</code> and <code>js.jar</code>.<br /><br />We&#8217;ll put all three in the <code>lib</code> subdirectory:<br /><br /><code>hello_javascript\lib\bsf.jar</code><br /><code>hello_javascript\lib\commons-logging-1.1.jar</code><br /><code>hello_javascript\lib\js.jar</code><br /><br /><strong>step five: &#8220;Hello, Javascript&#8221;</strong><br /><br />Let&#8217;s write some Java: create the following subdirectories and put a file called <code>HelloJavascript.java</code> in it:<br /><br /><code>hello_javascript\com\raganwald\public\HelloJavascript.java</code><br /><br />Let&#8217;s give it some code:<br /><br /><pre><code>package com.raganwald.public;<br /><br />import org.apache.bsf.BSFManager;<br /><br />public class HelloJavascript {<br />    public static void main (final String[] argv) {<br />        final BSFManager manager = new BSFManager();<br />        final Object jso = manager.eval("javascript", "(java)", 1, 1, "'hello, Javascript'");<br />        System.out.println(jso.toString());<br />    }<br />}<br /></code></pre><br /><br />Run your new Java application. Did you see that? It interpreted some Javascript <em>in the JVM without a browser</em>. Check your watch. Did you need more than a quarter of an hour? I didn&#8217;t think so.<br /><br />You can try more ambitious code:<br /><br /><pre><code> manager.eval(<br />    "javascript", "(java)", 1, 1, <br />    "var f = function (what) { return 'hello, ' + what; }; f('Javascript);");<br /></code></pre><br /><br /><strong>including other files is an exercise left for the reader</strong><br /><br />I didn&#8217;t find an easy way to get Javascript files to include other Javascript files. This isn&#8217;t the worst thing in the world, but you certainly don&#8217;t want to write anything substantial inside of Java strings. So try experimenting with reading javascript files right off the classpath.<br /><br />I created a subdirectory called <code>javascript</code>:<br /><br /><code>hello_javascript\javascript</code>  <br /><br />And you can read Javascript into your strings or Stringbuffers with some fairly simple code, thanks to a utility built into BSF:<br /><br /><pre><code>import org.apache.bsf.util.IOUtils;<br /><br />// ...<br /><br />static String readScript(final String fileName) throws Exception {<br />    final FileReader in = new FileReader(fileName);<br />    return IOUtils.getStringFromReader(in);<br />}<br /></code></pre><br /><br />That reads some script into a string. You can then prepend it to whatever you want to evaluate. Note that if you want to set up some sort of simple checking to make sure that you don&#8217;t &#8220;include&#8221; the same file twice, you will need to write yourself a little framework for that, perhaps using a <code>Set</code> to keep track of what you&#8217;ve already loaded.<br /><br /><strong>garbage in, garbage out</strong><br /><br /><div class="book"><hr/><em><a href="http://www.amazon.com/gp/product/1933988037?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=1933988037"><img border="0" src="/uploaded_images/prototype_and_scriptaculous_in_action.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=1933988037" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br /><a href="http://www.prototypejs.org/">Prototype</a> and <a href="http://script.aculo.us/">Scriptaculous</a> are the Javascript libraries that make slick transitions and UI effects easy one-liners. Prototype does more than just make an application look good: it adds Ruby and Smalltalk-like methods for handling Hashes, Arrays, and the DOM.<br /><br />This book is one of the fastest ways to get up to speed on taking Javascript to the next level.<br /></em><hr/></div>This is nice, and with a little work you could make a program that reads paths to Javascript files off the commend line and executes them. But to make things really interesting, you want to find a way to get Java data into your JavaScript and do something useful with the results, not just print it as a String.<br /><br />BSF provides a way to inject objects into the scripting language&#8217;s environment, so you could use that facility. When writing automated unit tests for that particular project, I chose a simpler route: I serialized the data into JSON and used that to call a Javascript function directly via BSF:<br /><br /><pre><code>manager.eval("javascript", "(java)", 1, 1, <br />    "myJavascriptFunction(" + myJSONString + ");");<br /></code></pre><br /><br />This is a <em>really bad idea</em> if your JSON is handed you from an insecure source, such as a public web page calling you back via <code>XMLHttpRequest</code>, but if you trust your source, this works wonderfully.<br /><br />Now what do you do with the result? If you are generating something esoteric like a Javascript function, I have no idea. In my own case, I return all values as simple trees of Hashes (Javascript objects without any special methods) and Arrays. I convert those into Java trees of Maps and Arrays:<br /><br /><pre><code>import org.mozilla.javascript.NativeArray;<br />import org.mozilla.javascript.ScriptableObject;<br /><br />import java.util.ArrayList;<br />import java.util.Arrays;<br />import java.util.HashMap;<br />import java.util.List;<br />import java.util.Map;<br /><br />// ...<br /><br />static List unwrapNativeArray (final NativeArray na) {<br />    return new ArrayList&lt;Object&gt; () {{<br />        for (int i = 0; i &lt; na.getLength(); ++i) {<br />            add(unwrapNative(na.get(i, null)));<br />        }<br />    }};<br />}<br /><br />static List unwrapPrototypeArray (final ScriptableObject sObj) {<br />    return new ArrayList&lt;Object&gt; () {{<br />        final List&lt;Object&gt; sObjIds = Arrays.asList(sObj.getAllIds());<br />        for (int i = 0; sObjIds.contains(i); ++i) {<br />            add(unwrapNative(sObj.get(i, null)));<br />        }<br />    }};<br />}<br /><br />static Map unwrapObject (final ScriptableObject sObj) {<br />    return new HashMap&lt;String, Object&gt; () {{<br />        for (Object id: sObj.getAllIds()) {<br />            put(id.toString(), unwrapNative(sObj.get(id.toString(), null)));<br />        }<br />    }};<br />}<br /><br />static Object unwrapNative (final Object obj) {<br />    if (obj instanceof NativeArray) {<br />        return unwrapNativeArray((NativeArray) obj);<br />    }<br />    else if (obj instanceof ScriptableObject) {<br />        final ScriptableObject sObj = (ScriptableObject) obj;<br />        final List&lt;Object&gt; sObjIds = Arrays.asList(sObj.getAllIds());<br />        if (sObjIds.contains("keys")) { // a prototype enumerable/hash<br />            return unwrapObject(sObj);<br />        }<br />        else if (sObjIds.contains("flatten")) { // a prototype enumerable/array<br />            return unwrapPrototypeArray(sObj);<br />        }<br />        else return unwrapObject(sObj);<br />    }<br />    else return obj;<br />}<br /></code></pre><br />Check your watch. Are you still under fifteen minutes? Great!<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/lispy.html">lispy</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/javascript-on-jvm-in-fifteen-minutes.html" title="permanent link">4:58 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Saturday, July 14, 2007</div>
+			
+
+			<div class="Post"><a name="7955025473320987143">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/is-raganwald-leasing-space-in-bloggers.html" title="permanent link">Is raganwald leasing space in Blogger's walled garden?</a></span>
+					<div style="clear:both;"></div>I currently use <a href="http://www.blogger.com/home">Blogger</a> to compose this weblog and to handle comments. So yes, Google has a database somewhere with all of my posts and comments in it. But <a href="http://weblog.raganwald.com/" title="raganwald">raganwald</a> is <em>not</em> living inside a walled garden. Soon after I started writing, Joel Spolsky wrote to suggest that I not use the built-in hosting option but always host my own words on my own (as in leased from a hosting company, so I guess I mean <em>relatively more my own</em>) server with my own domain. I took his advice.<br /><br />So what happens with the weblog is this: when a new page is published or an old one updated, Blogger actually renders the page to HTML and uploads it to my server by FTP. If I make a change to the template such as adding a new link to the &#8220;popular&#8221; section, Blogger re-uploads every single page in the weblog. If you add a comment, Blogger adds it to the bottom and re-renders the page, then re-uploads it. Every time.<br /><br />So while I use the Blogger <em>application</em> to manage my weblog, I do not use Blogger to host my application in any meaningful way. If they shut down the service, I still have the pages. If I switch applications, I still have the pages. If you want to scrape data off my site, Blogger is powerless to block your web spider. If they change their business model and insist that every page carry their advertisements, I can GREP their ads out.<br /><br />I apologize to everyone that finds the current application&#8217;s comment system inconvenient, and I will look into alternatives. But REST assured, this weblog supports the web&#8217;s basic open commons in a meaningful way. It is not leasing space in a walled garden.<br /><br /><hr/>I&rsquo;m going back to work on <a href="http://weblog.raganwald.com/2007/07/javascript-on-jvm-in-fifteen-minutes.html">actual software</a> now. I thank you for your patience with these posts pretentiously pontificating on the potential for premature pizzlement<sup><font size="-2">1</font></sup> of our precious web...<br /><ol><li>Philip K. Dick, <a href="http://en.wikipedia.org/wiki/Autofac">Autofac</a></li></ol><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/is-raganwald-leasing-space-in-bloggers.html" title="permanent link">10:02 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Friday, July 13, 2007</div>
+			
+
+			<div class="Post"><a name="4657547224027017770">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/thanks-for-submitting-my-post-to.html" title="permanent link">Thanks for submitting my post to programming.reddit.com</a></span>
+					<div style="clear:both;"></div>&#8230;or <a href="http://slashdot.org/" title="Slashdot: News for nerds, stuff that matters">slashdot</a>, <a href="http://del.icio.us/tag/raganwald" title="Pages tagged with 'raganwald' on del.icio.us">del.icio.us</a>, <a href="http://www.dzone.com/search.html?query=raganwald&amp;x=0&amp;y=0">dzone</a>, and all of the other &#8220;social bookmarking&#8221; sites. I really appreciate knowing somebody likes what I&#8217;ve written.<br /><br />But you know, as much as <a href="http://programming.reddit.com/user/raganwald/submitted" title="Links submitted by raganwald to programming.reddit.com">I love these places</a>, I&#8217;m getting a little worried by where we&#8217;re headed. The thing is, these aggregation sites are taking the value that the web provides and concentrating it in proprietary databases. They operate on the Internet, but not on the web.<br /><br />Let me give you an example. A popular blog post can generate hundreds of comments. When those comments are attached to the post, you can read them right on the post. Anybody finding the post finds the comments. That&#8217;s value added to the post. Search engines can index them. If there are links in the comments, search engines can make inferences about the relationship between pages and ideas.<br /><br />Likewise, if you follow-up with a comment on <em>your</em> blog, your words are forever available to anyone reading your ideas. Search engines can make inferences about the relationship between pages and ideas. Words and links on the web add value to the web.<br /><br />But when the comments are in <a href="http://programming.reddit.com/">programming.reddit.com</a> instead of on the blog post, what happens? I hope that search engines are smart enough to index those comments as if they were attached to the post, but I&#8217;m not so sure they do. And what if the company owning the comments blocks search engines, or goes out of business? The value is lost forever.<br /><br /><blockquote>The web is composed of pages with contextually relevant links between them. Social bookmarking applications subvert this basic structure. They are unravelling the web itself.</blockquote><br />Those comments are on the Internet, but they aren&#8217;t on the web. The web is composed of pages with contextually relevant links between them. Social bookmarking applications subvert this basic structure. They are unravelling the web itself.<br /><br />This isn&#8217;t just a problem with the value of comments and discussion being redirected off the web and into Internet applications. It&#8217;s a problem with the basic link structure of the web itself. As much as I love the convenience of del.icio.us (I have a special tag just for<a href="http://del.icio.us/raganwald/weblog"> links to fold into my weblog&#8217;s feed</a>), it&#8217;s a culprit as well. Recently, I read <a href="http://cysquatch.net/blog/?p=43" title="Is your code worthless?">something very interesting</a> by Carl Lewis. I posted the link to my weblog feed and to programming.reddit.com. Traffic followed for Carl. Great.<br /><br /><div class="book"><em><hr/><a href="http://www.amazon.com/gp/product/0465039138?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0465039138"><img border="0" src="/uploaded_images/code_and_other_laws_of_cyberspace.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0465039138" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br />In <a href="http://www.amazon.com/gp/product/0465039138?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0465039138">Code and Other Laws of Cyberspace</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0465039138" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, Lawrence Lessig argues that the the Internet is being steadily regulated and controlled by businesses and governments. Are we going to sit on the sidelines whilst others decide its fate? Or will we get involved and participate in the creation of the future?<br /><br />This is a must-read for anyone passionate about the Internet, the web, and its role in society and business.<br /><hr/></em></div>But you know what isn&#8217;t great? There&#8217;s no context for these links. There&#8217;s one-time traffic to Carl&#8217;s post, but although that happened on the Internet, <em>it didn&#8217;t happen on the web</em>. There&#8217;s no permanent link to Carl&#8217;s post on my weblog. There&#8217;re no words, no matter how brief, explaining what I thought of the post and why I liked it. Sure, search engine providers can add a page&#8217;s number of del.icio.us links to their formula for calculating popularity.<br /><br />But now, the smarts about what a page represents and the relationships between pages have gone from being embedded in the pages themselves to the tags that reside in a proprietary Internet application. Once again, the inherent smarts of the web are being leeched away.<br /><br />The web has its faults. But it&#8217;s <em>open</em>. Anyone can write a new search engine. Sure, the big &#8220;Do as we say when we say do no evil, not as we do&#8221; company has a tremendous competitive advantage in their massive S^Hk^Hy^Hn^He^Ht^H computing network. But in principle, all the data they&#8217;ve collected from pages and links can be collected by their competitors, or by you in your garage.<br /><br />Not so with the tags in del.icio.us or the rankings in digg.com. All it takes is a EULA at the bottom of each page and they slam the door on us.<br /><br /><strong>call to action</strong><br /><br />Naturally, keep using these applications. If they add value to your life, that&#8217;s great! But spare a thought for the web, for true freedom of information. There&#8217;s value there too. If you blog, don&#8217;t forget that old fashioned links, the kind with HTML anchors (not blogrolls or JavaScript or what-have-you) are still what the web is made of. And a link with even a sentence explaining why you&#8217;re linking is <em>even better</em>.<br /><br />And do you have something to say about a post? Why not put your comment right there on the post? <em>Or better still, why not publish your own blog post with your words and link back?</em> I know all your buddies are on reddit or what-ever, but your words will be (relatively) immortal on the post.<br /><br />It&rsquo;s our web. Let&rsquo;s keep it that way.<br /><br /><em>update</em>: Thanks for some of the early feedback, I&rsquo;ve tried to clarify something: I don&rsquo;t want to hog your comments on my blog where I can moderate them or get Google-juice from your words or even sell books to people searching for your words. What I want is for your words and links to be freely available to everyone to read, search, index, and add value.<br /><br />They&rsquo;re your words, put them where you will (I obviously do). They&rsquo;re your links, aggregate them where you will (again, I do). But words on the web are more open and more valuable than words in a social aggregation application. And links that make up the web are more open, more valuable thank links in a social bookmarking site. I just want to encourage us all to keep growing the web.<br /><br /><em>Update II</em>: After thinking about it, I see the issue as being congruent to the <a href="http://www.codinghorror.com/blog/archives/000898.html">walled garden</a> syndrome. It isn&rsquo;t about taking content behind a log in or sign on, but it is about taking information that used to be open and distributed (like links and relationships) and putting it into proprietary Internet applications.<br /><br />And it happens for the same reason: a true commons requires more work and has messier  connectivity than a walled garden. When a city grows organically, it will always have icky bits and inconvenient bits. A &ldquo;planned community&rdquo; with a reasonably benevolent dictator will always offer a much more attractive vista, with more convenience and better looks. Naturally reddit has more convenient commenting. And also naturally, Cond&eacute; Naste owns its database.<br /><br />In Toronto, we have vibrant neighborhoods, and we have corporate spaces like shopping malls and nightclubs. Each have their place, but if I could only have one, I would have the public spaces. I don&rsquo;t want to wake up one day and find that we can have any Internet we want, as long as it&rsquo;s proprietary.<br /><br /><em>And update III</em>: <a href="http://weblog.raganwald.com/2007/07/is-raganwald-leasing-space-in-bloggers.html">Is raganwald leasing space in Blogger&rsquo;s walled garden?</a><br /><br /><em>Update IV</em>:Joel Spolsky on why <a href="http://www.joelonsoftware.com/items/2007/07/20.html">comments are bad for blogs, especially anonymous comments</a>. Worth reading. This does not affect my thinking about the importance of having web pages link to web pages rather than using bookmarking sites.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/thanks-for-submitting-my-post-to.html" title="permanent link">10:13 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Thursday, July 12, 2007</div>
+			
+
+			<div class="Post"><a name="2534843083927679355">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/off-topic-cuba-si.html" title="permanent link">Off Topic: Cuba, ¡si!</a></span>
+					<div style="clear:both;"></div>My bother and I are going to Cuba August 3<sup><font size="-1">rd</font></sup> to 11<sup><font size="-1">th</font></sup> for a week of rock climbing, scuba diving, salsa, cigars, and hanging out. We will be staying informally, in the Cuban equivalents of Bed and Breakfasts.<br /><br /><b>Update</b>: <a href="http://www.flickr.com/photos/raganwald/sets/72157601412351676/">Scuba diving off Isla la Juventud</a>.<br /><br />It's a great time to get cheap, last-minute flights down there. And there won&rsquo;t be that many opportunities to visit before everything changes. For one thing, all those gorgeous old cars are going on eBay the very moment the trade embargo is lifted. An era is drawing to a close.<br /><br />There is some of the world&rsquo;s best climbing and <a href="http://www.netssa.com/scuba_diving_cuba.html">reef diving</a> to be had in Cuba, unspoiled by hordes of tourists. For example, the diving close to the big resorts is middling, but if you travel off the beaten track to Maria La Gorda, the Bay of Pigs, or the Isle of Youth, all reports are that the diving is spectacular.<br /><br />I can report from experience that <a href="http://cubaclimbing.com/">the climbing in Viñales is uncrowded and spectacular</a>, with climbs from 5.6 to 5.13 on tufas, stalactites, and other features. It&rsquo;s like climbing in Thailand, only you don&rsquo;t have to fly twenty hours to get there and you are in the middle of coffee and cigar tobacco plantations.<br /><br />If you have a fancy to try visiting and you want to hang out, please get in touch!<br /><br /><em>For me, visiting Cuba is absolutely <strong>not</strong> an endorsement of Castro&rsquo; policies, nor is it a criticism of the embargo and travel restrictions. If you are reading this and your country has laws or policies frowning upon visiting Cuba, please be very sure you are complying with your regulations before visiting.<br /><br />It&rsquo;s perfectly legal for Canadians, and it&rsquo;s super easy for others to travel to Toronto or Mexico and fly direct from there, but the fact that it&rsquo;s easy doesn&rsquo;t make it right for you.</em><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/off-topic-cuba-si.html" title="permanent link">12:07 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Monday, July 09, 2007</div>
+			
+
+			<div class="Post"><a name="2481552639802454233">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/can-your-type-checking-system-do-this.html" title="permanent link">Can your type checking system do this?</a></span>
+					<div style="clear:both;"></div>I tend to work with dynamic languages. This is a personal preference at the moment. I have liked statically typed languages with powerful type checking systems in the past, and my mind is wide open to using them again in the future. Unfortunately, when you mention &#8220;static typing,&#8221; most people think you&#8217;re talking about Java. There is more to static typing than Java, a lot more. For example, Brian over at Enfranchised Mind <a href="http://enfranchisedmind.com/blog/archive/2007/07/04/276" title="Enfranchised Mind &raquo; Certification?  Please, no.">pointed out</a> that languages like OCaml have a static type checking system powerful enough to enforce constraints like:<br /><br /><ul><li>All possible variants of a type must be dealt with&#8212;for example, that a list has no elements or at least one element must both be handled.</li><br /><li>The read_async function only takes file handles opened with the async flag set, while the close function can take file handles with the async flag set or not set.</li><br /><li>The buffer returned from read_async can not be accessed until the asynchronous read is completed.</li><br /><li>A Postgresql cursor can only be created and accessed with a transaction.</li></ul><br />He&#8217;s absolutely right. Serious programming languages can do all of that.<br /><br />Joel Spolsky once explained why he likes using Apps Hungarian naming conventions: <a href="http://www.joelonsoftware.com/articles/Wrong.html" title="Making Wrong Code Look Wrong - Joel on Software">it helps avoid problems with various SQL and Javascript injection vulnerabilities</a>. The idea is that you want to make it obvious when you&#8217;re violating certain constraints on the use of string values in your application. And Tom Moertel responded by showing <a href="http://blog.moertel.com/articles/2006/10/18/a-type-based-solution-to-the-strings-problem" title="A type-based solution to the strings problem: a fitting end to XSS and SQL-injection holes?">how Haskell&#8217;s static type checking can completely eliminate the problem</a>. Once again, a powerful type checking system can be used to enforce an important constraint.<br /><br />My own pet peeve problem is the dreaded <code>NullPointerException</code>. Why, I whinge, must the compiler demand that I type boilerplate like:<br /><br /><pre><code>final Map&lt;String, String&gt; dictionary = new HashMap&lt;String, String&gt; () {{<br />  // ...<br />}}<br /></code></pre><br />But it will not do a simple little thing for me in return like check all of my code paths to ensure that I never pass a parameter that <em>might be null</em> to a method that assumes the parameter <em>can never be null</em>? Wouldn&rsquo;t it be <a href="http://nice.sourceforge.net/" title="The Nice Programming Language">nice</a> if the compiler would deign to help me with these things?<br /><br />What do all of these things have in common? They are <em>semantic constraints</em>. Constraints on the meaning of a program. The kind of type checking you find in popular programming languages that is based on interfaces, on the physical type of your values and variables, that kind of type checking is a step up from syntax, but not much further. I would call it grammar checking, checking that your &#8220;sentences&#8221; have the right parts of speech in the right places. There is no attempt to check that your sentences are meaningful.<br /><br /><strong>the value of semantic validation</strong><br /><br />Powerful type systems (type systems like those found in Ocaml and Haskell are often called &ldquo;expressive&rdquo; type systems), can be put to work enforcing a degree of semantic correctness. (There are other ways to do it: there are static code analysis tools, for example you can buy tools that check C/C++ code for memory leaks and buffer overflow vulnerabilities. And if you use a language with <a href="http://en.wikipedia.org/wiki/Design_by_contract" title="Design by contract - Wikipedia, the free encyclopedia">Design by Contract</a> features, you have another tool in your toolbox.)<br /><br /><div class="book"><hr/><em><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/gp/redirect.html?ie=UTF8&amp;location=http%3A%2F%2Fwww.amazon.com%2FLittle-MLer-Matthias-Felleisen%2Fdp%2F026256114X%2Fsr%3D1-1%2Fqid%3D1165759722%3Fie%3DUTF8%26s%3Dbooks&amp;amp;amp;amp;tag=raganwald001-20&amp;linkCode=ur2&amp;camp=1789&amp;creative=9325"><img style="cursor: pointer;" src="http://weblog.raganwald.com/uploaded_images/little_mler-705423.jpg" alt="" border="0" height="180" width="180"></a><br /><br />The Little MLer introduces ML (and Ocaml) through a series of entertaining and straightforward exercises leading up to the construction of the Y Combinator.<br><br>ML and OCaml introduce powerful strong typing and type inference. Both are great languages to learn: you will stretch your understanding of defining types and writing correct programs.<br></em><hr/></div>There is an argument that testing can replace type checking. Quite honestly, I believe that extensive automated testing almost completely replaces the need for &#8220;grammar checking&#8221; in the software I write.<br /><br />Why? Because checking that you don&#8217;t send the wrong message to an object, or call a function with the wrong number of arguments is something that seems to get found when my test suite reaches a certain tiiping point in code path coverage. So far I have always found these things very quickly.<br /><br />That being said, <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html" title="raganwald: Which theory fits the evidence?">Theory P</a> warns me that there are some I haven&#8217;t found, of course, but I have some faith that the result of such an error will not be catastrophic. With strongly typed languages like Lisp, this kind of failure is gracefully handled. We aren&#8217;t talking about a buffer overflow that can turn exploited into a privilege escalation.<br /><br />The nice thing about grammar errors is that you don&#8217;t have to try very hard to catch them. If you have reasonable code coverage, you&#8217;ll find them. So you concentrate on your test cases, and while you are testing your logic you will validate your grammar.<br /><br />So that&rsquo;s why dynamic languages in conjunction with automated test suites are working <em>for me</em>. YMMV, so let&#8217;s not argue about whether it would work for you or not, because I want to move ahead and say that I don&#8217;t believe that extensive automated testing has quite the same value for semantic checking.<br /><br /><blockquote>I believe the hard part of building software to be the specification, design, and testing of this conceptual construct, not the labor of representing it and testing the fidelity of the representation. We still make syntax errors, to be sure; but they are fuzz compared with the conceptual errors in most systems.</blockquote><div style="text-align: right;">&mdash;<a href="http://virtualschool.edu/mon/SoftwareEngineering/BrooksNoSilverBullet.html" title="No Silver Bullet: Essence and Accidents of Software Engine">Frederick P. Brooks, Jr.</a></div><br /><br />Semantic errors, you see, are not covered &#8220;for free&#8221; while you exercise your program logic. If you want to rely on testing to find them, you must become very good at thinking up edge cases where things can go wrong. You must try situations where things fail and you get <code>nulls</code>. You must try to create race conditions in concurrent code. You must try really bad data, like setting up cases where an employee&#8217;s hire date is after their termination date, or there is a cycle in the graph of reports and managers, or someone has <a href="http://www.amazon.com/gp/product/B000AP04L0?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=B000AP04L0">eight bosses</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=B000AP04L0" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />.<br /><br />You have to try empty lists, lists with one item, all of the cases. Grammar checkers only check that you are passing a list, you need semantic checking to ensure you have coded for every case.<br /><br /><strong>what to do</strong><br /><br />Now, you do not get semantic checking for free if you start writing code in Ocaml or Haskell. Why? Because you will be a Real Programmer, someone who can write Fortran in any language.<br /><br /><blockquote>A language that doesn&#8217;t affect the way you think about programming, is not worth knowing.</blockquote><br /><div style="text-align: right;">&#8212;Alan Perlis, <a href="http://www.cs.yale.edu/quotes.html" title="Perlisisms - &quot;Epigrams in Programming&quot; by Alan J. Perlis">Epigrams in Programming</a></div><br /><br />To take advantage of a language like Ocaml, you must actually think through the semantics of your program and think of ways to make the type system work for you. You must &#8220;think in types&#8221; instead of thinking in values. This is a valuable exercise, because it fundamentally changes the way you view programming an application.<br /><br /><div class="book"><em><hr/><br><a name="evtst|a|0521644089" href="http://www.amazon.com/gp/product/0521644089?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521644089"><img src="http://weblog.raganwald.com/uploaded_images/haskell_school_of_expression.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;amp;amp;o=1&amp;a=0521644089" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br>I’m not a regular Haskell user (yet), but <a name="evtst|a|0521644089" href="http://www.amazon.com/gp/product/0521644089?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521644089">The Haskell School of Expression: Learning Functional Programming through Multimedia</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;amp;amp;o=1&amp;a=0521644089" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> has received rave reviews and comes with solid recommendations. It’s no longer on my <a href="http://www.amazon.com/gp/registry/wishlist/3A2XEHODQK2WP/ref=wl_web/">wish list</a>: I picked it up and it has been enjoyable and educational.<br><br><hr/></em></div>In my experience, this thinking through the semantic constraints of your application may be the most valuable result of the exercise. You see this when people write a very database-centric application. They think about the entities and the relationships. They write constraints and triggers. There&#8217;s a great value in arguing all these cases out, in drawing the arrows on the white board and marking them with little question marks, plus signs, asterixes, and ones. It makes you think things through.<br /><br />I was once asked in an interview to name a feature from C++ I wanted to use in Java. I didn&#8217;t name Templates (this was before generics), or Multiple Inheritance. I named the <code>const</code> keyword. I am a huge fan of <em>const correctness</em>, of using the C++ compiler to enforce this one little <em>semantic</em> constraint. It&#8217;s an enormous burden, because you literally have to go through your entire program, usage by usage, to make sure you are fully const correct and have correctly declared everything. It would be far easier if C++ had const inference.<br /><br />But const correctness is valuable precisely because it forces you to think very hard about a <em>semantic</em> constraint: when should something change, and when should it be considered immutable? The act of bringing a code base into const correctness forces you to think about what the code <em>does to its data</em>, not just whether it has &#8220;spelling errors.&#8221;<br /><br />I can see the same value in using a language like Ocaml or Haskell to enforce semantic constraints. Sure, the compiler will catch errors for you. But the act of designing your application&#8217;s types to enforce your application&#8217;s constraints will be a powerful force driving you to deeper understanding of your domain.<br /><br /><a href="http://www.joelonsoftware.com/items/2006/08/01.html" title="Can Your Programming Language Do This? - Joel on Software">If your current programming language can&#8217;t do this</a>, I encourage you to study ML, Ocaml, Haskell, or one of the other fine languages with powerful typing systems.<br /><br /><em>Update (April, 2008): <a href="http://enfranchisedmind.com/blog/2008/04/14/useful-things-about-static-typing/">7 Actually Useful Things You Didn’t Know Static Typing Could Do: An Introduction for the Dynamic Language Enthusiast</a></em><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/can-your-type-checking-system-do-this.html" title="permanent link">11:30 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+
+			<div class="Post"><a name="7599198619766301952">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/ancient-wisdom.html" title="permanent link">Ancient Wisdom</a></span>
+					<div style="clear:both;"></div><blockquote>I don&#8217;t trust any &#8220;SDK&#8221; made by a company that won&#8217;t use it themselves&#8230;<br />  <br />This is why I&#8217;ve never tried to program for any of the many, many systems Microsoft has tried to foist off on us over the years (Direct-stuff, Active-thing, C-sharp, .Net, Live-whatever)&#8212;because they don&#8217;t fucking use their own stuff. They write demo apps in them, sure, and tell <em>us</em> that their frameworks are going to be the basis of the next generation of wonderful applications, but in the end Microsoft&#8217;s OSes and their Office apps are just a bazillion lines of old C code, and the programmers who got duped into using Microsoft&#8217;s new untested frameworks realize that, surprisingly, untested frameworks never work.</blockquote><br /><div style="text-align: right;">&mdash; Wil Shipley, <a href="http://wilshipley.com/blog/2007/07/iphones-ajax-sdk-no-thank-you.html">iPhone's AJAX SDK: No, thank you.</a></div><br /><br />Wil Shipley is taking Apple to task for their (possibly temporary) advice that developers develop &ldquo;iPhone Applications&rdquo; in AJAX. Note the quotes: in the nineties, I would have used my fingers to make that annoying &ldquo;I&rsquo;m being sarcastic&rdquo; gesture, because a Safari application is <em>not</em> an iPhone application. Not that there&rsquo;s anything wrong with web applications. Except there is something wrong with web applications on a device that willfully refuses to remember your identity.<br /><br />Sorry, I&rsquo;m rambling.<br /><br />The point is, frameworks and libraries and toolkits and programming languages and SDKs are best when  they are <em>extracted</em> from actual development projects, rather than manufactured out of whole cloth from the imagination of someone who <em>thinks</em> they know what will work and what will not.<br /><br />This is no different than what works and doesn&rsquo;t work for other kinds of software. The whole point of iterative development is to put working software in the hands of users so that they can guide its development and design from their experience, rather than from guesses and intuition. It&rsquo;s an <em>empirical</em> approach.<br /><br />(The most glorious example of this principle is a <a href="http://en.wikipedia.org/wiki/Self-interpreter">self-hosted programming language</a>: when a language designer &ldquo;eats her own dogfood&rdquo; by using the language to build the language, the result is nearly always powerful and elegant. Decades after their invention, programmers still rave about Lisp&rsquo;s <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html" title=" The significance of the meta-circular interpreter">metacircular evaluator</a> and Smalltalk&rsquo;s UI framework, both of which are written entirely in themselves.)<br /><br />Now, AJAX in a browser is not exactly a figment of some Apple engineer&rsquo;s imagination. For a very popular class of application&rsquo;s, it&rsquo;s <a href="http://www.randomhouse.com/wotd/index.pperl?date=20010102">the cat&rsquo;s pajamas</a>. And if you are building such an application, you probably want to make sure it works well on an iPhone.<br /><br />But what if you are asking yourself, <em>Self, what tool should I use to make an application for iPhone with the same capabilities and look and feel of Apple&rsquo;s own applications that ship with iPhone</em>? I think the answer will be, <em>Do as Apple actually does, not as they say</em>.<br /><br />And likewise, when someone suggests an SDK or a framework or any other tool, and they tell me how gosh-darn wonderful it is, my first question will always be, <em>What are you using it for yourself</em>?<br /><br />It&rsquo;s ancient wisdom, reeking of conservatism and cynicism. It doesn&rsquo;t sound daring and adventurous. But boy, does it work.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/ancient-wisdom.html" title="permanent link">8:17 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Sunday, July 08, 2007</div>
+			
+
+			<div class="Post"><a name="8799567203619444319">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/repost-newco-business-idea.html" title="permanent link">Repost: The NewCo Business Idea</a></span>
+					<div style="clear:both;"></div>I wrote about <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">abandoning my attempts to write a new kind of sofware project management application</a>. Here is an excerpt from the <a href="http://www.homoiconic.com/assets/open-newco-excerpt.pdf">Original Business Plan</a> that I wrote in 2004 and very early 2005 (1.2MB PDF). Looking back on it, the fundamental premise was to encode expertise into the system in advance. I would later move to the idea of using collaborative filtering to make predictions about the outcome of software development projects.<br /><hr/><br />Let me tell you a little story:<br /><br /><strong>Threadalyzer</strong><br /><br />Some little time ago I was hired by Steve Rosenberg to build a product named Threadalyzer. A very bright product manager named Saeed Khan had thought up the name, and the feature list was compiled by the simple expedient of copying features from existing products.<br /><br />Threadalyzer was part of a suite of products for analyzing the behaviour of running Java applications (along with Profiler, Memory Debugger, and Coverage). Although the suite was marketed as a collection of different products, in actuality Profiler, Memory Debugger, and Coverage all shared a lot of common code while Threadalyzer was built from the ground up with a different architecture.<br /><br />The biggest difference was that the other three products collected information about a running Java application. The information was presented in a graph or table, and the programmer would use that information to figure out what was going on. For example, Profiler could tell you that your servlet spent 90% of its running time in methods belonging to the jdbc package.<br /><br />Is that good? Bad? Only the programmer would know.<br /><br />But Threadalyzer was, at its heart, an exercise in “Artificial Stupidity.” Threadalyzer collected data about the way threads interacted with each other, especially through synchronization and locks. But unlike its suite-mates, Threadalyzer then looked for specific patterns. And instead of dumping the data in your lap, Threadalyzer made a diagnosis.<br /><br />For example, Threadalyzer maintained a <em>waits-for graph</em> where every thread is a node and arcs connected threads that were blocked by locks to threads that held those same locks. When a cycle appeared in the graph, Threadalyzer would announce that the program contained a deadlock.<br /><br />(This is not rocket science, unless you want to do this in real time by combination of hooks into the rather primitive Java VM of the day and by injecting byte codes into classes on the fly.)<br /><br /><div style="text-align: center;"><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://homoiconic.com/uploaded_images/threadalyzer-728803.gif"><img style="margin: 0px auto 10px; display: block; text-align: center; cursor: pointer;" src="http://homoiconic.com/uploaded_images/threadalyzer-727344.gif" alt="" border="0" /></a><span style="font-size:85%;"><span style="font-style: italic;">Threadalyzer displaying a deadlock</span></span><br /></div><div style="text-align: center;"><span style="font-style: italic;"><br /></span></div>I had the privilege of hiring a <a href="http://www.jaekl.net/%7Echris/" title="Christian Jaekl">very smart fellow</a> whose Master’s Thesis in Distributed Computing was one of my reference papers for the design. He sifted through the possibilities and designed several other useful patterns. The smart fellow, a C++ wizard named John MacMillan, myself, and a promising Waterloo co-op named Jenny Lee then built Threadalyzer with a plug-in architecture.<br /><br />Although (to my knowledge) the product was never “unbundled” in such a way that customers could install analyzers after the fact, we built it as an engine that hosted many arbitrary little pattern-matching applications.<br /><br /><strong>NewCo</strong><br /><br />Shipping software on time was and is a very hard problem. Actually, there are <em>two</em> hard problems involved. The first is knowing how to plan and <a href="http://weblog.raganwald.com/2006/11/what-is-managing-software-development.html" title="What is managing software development?">manage</a> development. The second is convincing stake holders that your plan is optimal and that any interference on their part—be it feature creep, dictating overtime, advancing the ship date, whatever—will make things worse. Please don’t consider the second part as me just trying to make a funny to capture your interest. <strong>It is a very hard problem in the real world</strong>.<br /><br /><div class="book"><hr/><a href="http://www.amazon.com/gp/product/0671671642?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0671671642"><img border="0" src="http://weblog.raganwald.com/uploaded_images/growing_a_business.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0671671642" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br />In my twenty years of business experience, <a href="http://www.amazon.com/gp/product/0671671642?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0671671642">Growing a Business</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0671671642" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> is absolutely the best book on founding and running a business organically that I have ever read. And I read a lot of books. &#8220;Growing a Business&#8221; is not about scoring business coups or raising money. It is not about sales tactics or innovation. It is about growing a business step by step, customer by customer. It is about expanding at a sane rate and getting rich the old-fashioned way: one satisfied customer at a time.<br /><br /><a href="http://www.amazon.com/gp/product/0671671642?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0671671642">Growing a Business</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0671671642" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> is a must-read for anyone who wants to build a business rather than &#8220;do a deal.&#8221;<br /><br /><hr/></div>One of the things people like about project management applications and spreadsheets and just about anything that produces professional looking graphics for presentations and reports is that it makes your plan seem solid and unassailable.<br /><br />If a stakeholder walks into your office and sees handwritten <a href="http://weblog.raganwald.com/2006/12/repost-how-to-manage-iteration-with.html" title="How to Manage an Iteration with a Cork Board and a Stack of Three by Five Cards">three by five cards</a>, she may be tempted to haggle.<br /><br />One of the things I learned right away is that project management software is useless for actually planning projects, and if your boss is wily enough to know that, she will <em>still</em> haggle with you: she will ask tough questions like, “How do you know that you will need that much time for QA? Won’t the programmers have written bug-free code?”, or perhaps “Since we are instituting a brand new change control process, and therefore there will be very few new requirements, can’t we cut the development time in Phase II in half?”<br /><br />You can’t defend a GANTT chart if your interlocutor has ever shipped a real, live working piece of software. She knows that what the GANTT chart makes tangible and concrete—task dependencies and resource allocations—have almost nothing to do with the final ship date.<br /><br />So I dreamed of a piece of software that would back up the kinds of things I actually say when planning a project or defending a plan, like <em>Well, we can produce code that requires less QA, but we will need to allocate time for that unit testing framework and continuous integration sever you turned down</em>.<br /><br />Or, <em>Okay, you&rsquo;re saying we should cut the estimate for requirements churn by 75%. Okay, we can try that, but if we get the usual number of requirements changes in Phase II, we&rsquo;ll know that the fault was with the estimate, not with the team</em>.<br /><br />Or, <em>Overtime? No problem, but the numbers show that we get almost as much work done in seventy hours a week than we do in fifty</em>, and so on.<br /><br /><strong>Triangulation</strong><br /><br />Or if that’s too much of a stretch, let me ask you this question. The very first thing you learn about shipping software is the existence of the <em>features–quality–time</em> triangle (another variation on the same idea is the <a href="http://www.codinghorror.com/blog/archives/000708.html">features, money, time</a> triangle).<br /><br />Okay, where is the triangle in a GANTT chart? How do you play what–if with the triangle?<br /><br />Tools for managing projects ought to directly manipulate the ways we think about managing projects. I wanted such a tool.<br /><br /><strong>The Hammer</strong><br /><br />When you’re holding a hammer, every problem looks like a nail. And having built Threadalyzer, my thought was, <em>why can’t we have a project management application that has little analyzers that look at a plan and provide warnings of problems with the plan?</em> And of course, we would ship analyzers that encapsulated project management expertise as patterns in advance.<br /><br />It would be much, much later that I would realize the fundamental error in my thinking.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/repost-newco-business-idea.html" title="permanent link">11:15 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+			
+				<div class="DateHeader">Wednesday, July 04, 2007</div>
+			
+
+			<div class="Post"><a name="7513586702604711513">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/07/certification-bring-it-on.html" title="permanent link">Certification? Bring It On!</a></span>
+					<div style="clear:both;"></div>Not too far in the distant past, I was persuaded to give my r&eacute;sum&eacute; to a recruiter. He was trying to place a development manager for a growing company, and they wanted heavy Agile experience, deep management experience, and someone with some technical chops. Well, I figured that twenty-plus year of experience, with something like eight years of legitimate Agile, leading a team of twenty-plus, producing a product that won several Jolt awards and a JDJ Editor&#8217;s Choice award&#8230; I thought I was a lock for an interview.<br /><br />But an email came right back: <em>The client is wondering where you got your degree</em>. Twenty years of experience, and they want to know how I spent my time in the mid-eighties.<br /><br />This got me thinking about certification. It&#8217;s another long-running debate. And something funny has happened to me. <em>I&#8217;ve switched sides</em>. I&#8217;m actually in favour of certifying software developers. Yes, I am in favour of disqualifying intelligent programmers from professional employment if they do not possess a little piece of paper from a certifying agency.<br /><br />Deep breath. Wait for the room to stop spinning. Or is my head spinning around on my shoulders (<a href="http://www.amazon.com/gp/product/B0000524CY?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=B0000524CY">heh</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=B0000524CY" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />)?<br /><br /><strong>the catch</strong><br /><br />Like everyone else in favour of certification, I have my own ides about what skills and knowledge you need to demonstrate to get your certification. Unlike everyone else, I think I would fail my own certification if I didn&#8217;t do a whole lot of studying. That&#8217;s because I think our industry is undemanding, very undemanding. I know a few people who would pass my certification without studying. But only a few.<br /><br />Before I tell you what&#8217;s on the final examination, let&#8217;s talk about what <em>isn&#8217;t</em>:<br /><br /><ul><li><strong>Object oriented programming</strong>: <em>not</em> on the exam. Use OO on a project, don&#8217;t use OO on a project, I don&#8217;t care. Throw in dependency injection, MVC, everything to do with industry standard architecture. I still don&#8217;t care, you can get certified without it.</li><br /><li><strong>Functional programming, metaprogramming, macros</strong>: <em>not</em> on the exam. Be an <a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">academic</a>, be a <a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html">language weenie</a>. Or not. I don&#8217;t care.</li><br /><li><strong>Static typing, type inference, annotations, category theory</strong>: <em>not</em> on the exam. Save it for your <a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html">blog post</a>, I don&#8217;t care.</li><br /><li><strong>Knowing who Alan Kay, John McCarthy, or Ted Nelson are</strong>: <em>not</em> on the exam. I think it&#8217;s great to know the history of our industry, but I don&#8217;t care.</li><br /><li><strong><a href="http://www.amazon.com/gp/product/0201633612?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0201633612">Design Patterns</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0201633612" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></strong>: See OO above. I really don&#8217;t care. Write spaghetti code. Be <a href="http://www.pbm.com/~lindahl/mel.html">Mel</a>. I don&#8217;t care.</li><br /><li><strong>Agile Development, Waterfall, GTD, or anything else to do with Getting Things Done</strong>: I really don&#8217;t care. I will certify you <a href="http://weblog.raganwald.com/2007/06/my-working-day.html">whether you can execute or not.</a></li><br /><li><strong>Deep knowledge of programming language syntax or semantics</strong>: I&#8217;ll certify PHP programmers. I&#8217;ll certify Java programmers that don&#8217;t understand generics. I don&#8217;t care if you know what a <a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">closure</a> is. I don&#8217;t care if you believe that recursion is retrograde.</li></ul><br />By now, you are thinking, &#8220;Raganwald, this certification is worthless. You are excluding just about everything we know about writing great software. What&#8217;s the point?&#8221;<br /><br />Let me explain. My certification does not say you are any good at coding software. Let me repeat. <strong>My certification does not say that you are any good at coding software</strong>. I&#8217;ll let the marketplace decide. I am not telling businesses, &#8220;Hire certified programmers, they are great coders.&#8221; <br /><br />Why should I? Business is perfectly happy to hire programmers with Comp. Sci. degrees, and there seems to be little or no evidence that a Comp. Sci. degree says anything about your ability do deliver working software. So why should my certification raise that bar?<br /><br /><strong>what&#8217;s on the exam</strong><br /><br />Now let&#8217;s talk about what <em>is</em> on the exam. Just one subject, but the exam goes into excruciating detail about that subject. If you don&#8217;t know this subject cold, I am <em>not</em> going to certify you. Period. No debate, no negotiation, no &#8220;equivalent experience.&#8221;<br /><br />The one subject? <em>Testing and Quality Control</em>. That&#8217;s right. All I care about is that if you are asked to make bulletproof software, you know how. I&#8217;m going to ask you about:<br /><br /><ul><li>Continuous integration.</li><br /><li>Black box testing.</li><br /><li>White box testing.</li><br /><li>Design for testing.</li><br /><li>Probabilistic testing.</li><br /><li>Testing tools.</li><br /><li>Testing metrics.</li><br /><li>Testing methodologies.</li></ul><br />And more:<br /><br /><ul><li>Security concepts.</li><br /><li>Preventing vulnerabilities.</li><br /><li>Privacy and data management concepts.</li><br /><li>Encryption and verification concepts.</li></ul><br />And a whole lot more on top of that. There is room for debate about whether to have separate testers or whether programmers should test themselves. You are not getting certified with me unless you know how to do it both ways, and can write a comprehensible essay describing the relative advantages and disadvantages of both. I am not going to require you to know the latest programming frameworks, but you are not getting certified unless you demonstrate up-to-date knowledge of the latest continuous integration tools.<br /><br /><div class="book"><em><hr/><a href="http://www.amazon.com/gp/product/0321146530?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0321146530"><img border="0" src="/uploaded_images/test_driven_development.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0321146530" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br /><a href="http://www.amazon.com/gp/product/0321146530?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0321146530">Test Driven Development: By Example</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0321146530" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> is THE book that ignited a revolution in software development practices. Whether you are developing in an Agile environment or working from a telephone book specification in a Waterfall project, Test-Driven Development will show you how to write automated tests that work to actually shorten your development time and clarify your code.<br /><br />And best of all, this book uses actual projects as an example. This is not an exercise in theory, this is a practical tome full of practical advice. You&rsquo;re already familiar with the concepts, reading this book will dive into the details that will make your coding more effective.<br /><hr/></em></div>I don&#8217;t care if you know how to write a great architecture document. But I will fail you if you can&#8217;t write a good code review. The same goes for everything else. I will not demand that you do it a specific way, but you will prove that you have state-of-the art knowledge of how to ensure that software is solid and does what you expect it to do, no more, no less.<br /><br />And you know what? After you get your piece of paper, you&#8217;ll need to work for at least a year under the supervision of a certified leader to get your upgraded &#8220;practitioner&#8221; certification. I want you to practise continuous education.<br /><br />Does this mean that I am going to certify all of the QA Analysts in the industry while barring the programmers from work? Well, let me ask you: do most, a few, or any of the QA Analysts you know have a deep knowledge of software quality and methodologies? Can they write an essay describing the cost of bug fixing comparing early vs. late detection? Can they talk about various unit testing tools? Can they measure code coverage? Can they look at a piece of code with 93% coverage and tell whether the missing 7% has one or more crucial cases missing?<br /><br />If so, I want to certify them. If not, they need to hit the books with me.<br /><br /><strong>where did I get this crazy idea?</strong><br /><br />In our industry we have wasted millions of person-years debating the relationship between software development and architecture/engineering. Last weekend I went to see Pixar&#8217;s Ratatouille with my son. And it struck me: we should be like chefs.<br /><br />Do I demand that the chef in a restaurant use a certain kind of stove? Cook a certain kind of food? Manage her kitchen a certain way? <span style="font-style:italic;">Non!</span> The marketplace decides all these things. And the marketplace works for this. What do we demand? What do we <em>require</em> of restaurants?<br /><br /><span style="font-weight:bold;">Safety</span>. We demand that if they serve the public, that they have certain fire safety standards. That they have certain food cleanliness standards. That they know enough about food not to poison us by accident. Of course, a cook learns to cook when getting their designation. But the thing we really <em>demand</em> of them is that they keep us safe!<br /><br />If we order Chicken, we do not want the Fish to come out and put us into Anaphylactic Shock. Cooks know that mixing up Chicken and Fish is fatal, while mixing up Basil and Oregano is not. So they have a different protocol for handing the two kinds of food. They keep us safe. <br /><br />And if I am placed in charge of certification one day, that&#8217;s what I will demand. <em>Keep us safe</em>. Don&#8217;t leave <a href="http://en.wikipedia.org/wiki/2005_Sony_BMG_CD_copy_protection_scandal">back doors</a> and XSS vulnerabilities in your code. Don&#8217;t store our passwords in the database. Don&#8217;t deliver code that is full of undiscovered bugs.<br /><br />If someone can be relied upon to write software that is safe, I will not dictate how they do it, or how long it takes to do it. The marketplace can decide whether they are employable, much as a restaurant can decide whether to hire someone whose food is bland and unappetizing.<br /><br />I am not telling businesses that they can&#8217;t ship software full of bugs. You have Product Managers, they can decide whether it is more important to build new features or fix the old ones. Microsoft, do your thing! But business can&#8217;t make those decisions unless they have an accurate view of what the software actually does, of which parts are solid and which are brittle.<br /><br />And I am not telling managers how to run projects. But I do expect that a certified manager understands the trade-offs when she chooses BDUF over Agile, <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html" title="raganwald: Which theory fits the evidence?">Theory D over Theory P</a>. She can do as she please, provided her eyes are wide open to the consequences.<br /><br />Well, that&#8217;s my thought about certification. I&#8217;m all for it, don&#8217;t let anyone say otherwise. And like everyone else, I want it to reflect what my experience tells me is important about software development in the commercial environment, namely safety and a clear view of what works and what doesn&#8217;t.<br /><br /><hr/><br />This is obviously a pipe dream, the product of Dark Horse Caf&eacute;&rsquo;s &#8220;Ruby&#8217;s Pride&#8221; French Press coffee. But what do <em>you</em> think? Would such a certification be useful?<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/07/certification-bring-it-on.html" title="permanent link">10:14 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+                <div class="SideBarTitle">Buy Raganwald a Coffee</div>
+				
+                       <div style="float: right; width: 64px; margin-left: 6px; font-style: italic; text-align: center; font-size: 80%;"><form name="DoubleEspresso" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_donations">
+<input type="hidden" name="business" value="raganwald@gmail.com">
+<input type="hidden" name="item_name" value="Buy Raganwald a Darkhorse Double Espresso">
+<input type="hidden" name="item_number" value="DoubleEspresso">
+<input type="hidden" name="amount" value="3.15">
+<input type="hidden" name="no_shipping" value="0">
+<input type="hidden" name="logo_custom" value="http://weblog.raganwald.com/uploaded_images/coffeecup.png">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="tax" value="0">
+<input type="hidden" name="lc" value="CA">
+<input type="hidden" name="bn" value="PP-DonationsBF">
+<input type="image" src="http://weblog.raganwald.com/uploaded_images/coffeecup.png" width="64" height="64" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form></div>If you enjoy reading my weblog, please consider <a href="#"
+title="Buy Raganwald a darkhorse double espresso, for $3.15" onclick="javascript: document.DoubleEspresso.submit();">buying me a Darkhorse Double Espresso, for just $3.15</a>
+                       Thank you!
+
+		<br />
+
+		<br />
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		<script type="text/javascript" language="Javascript">if (location.href.indexOf("archive")!=-1) document.write("<strong><a href=\"http://weblog.raganwald.com/welcome.html\">Current Posts</a></strong>");</script>
+		<br/></p>
+		<br/>
+
+		<p class="profile-link"><a href="http://feeds.raganwald.com/raganwald"><img src="http://feeds.raganwald.com/~fc/raganwald?bg=&amp;fg=&amp;anim=0" height="26" width="88" style="border: 0pt none ; vertical-align: middle;" alt="" /></a>&nbsp;<a href="http://feeds.raganwald.com/raganwald" rel="alternate" type="application/rss+xml"><img src="http://www.raganwald.com/fb/images/pub/feed-icon16x16.png" alt="" style="border: 0pt none ; vertical-align: middle;"></a>&nbsp;<a href="http://feeds.raganwald.com/raganwald" rel="alternate" type="application/rss+xml">Subscribe in a reader</a></p>
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

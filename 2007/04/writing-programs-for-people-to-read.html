@@ -1,0 +1,449 @@
+<html> 
+<head>
+        
+        <title>Writing programs for people to read</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Sunday, April 29, 2007</div>
+			
+
+			<div class="Post"><a name="37004754037577415">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html" title="permanent link">Writing programs for people to read</a></span>
+					<div style="clear:both;"></div><blockquote>Programs must be written for people to read, and only incidentally for machines to execute.</blockquote><div style="text-align: right;">Abelson &amp; Sussman, <a href="http://www.amazon.com/gp/redirect.html?ie=UTF8&amp;location=http%3A%2F%2Fwww.amazon.com%2FStructure-Interpretation-Computer-Programs-Engineering%2Fdp%2F0262011530%2Fsr%3D8-1%2Fqid%3D1163785017%3Fie%3DUTF8%26s%3Dbooks&amp;tag=raganwald001-20&amp;linkCode=ur2&amp;camp=1789&amp;creative=9325">Structure and Interpretation of Computer Programs</a><br></div><br /><br />This is about writing programs in a style that favours human comprehension over the convenience of the machine.<sup>1</sup><br /><br />Norbert Winklareth recently raised the question of <a href="http://agilerenaissance.com/2007/04/25/on-semantic-distance-and-computer-languages.aspx" title="On Semantic Distance and Computer Languages">minimizing the <em>semantic distance</em> between the program as written and the solution to the problem as conceived by the programmer</a>.<br /><br />Norbert was talking about comparing the capabilities of programming languages, but the idea of semantic distance is also useful for comparing programs to each other. Although this is not the entirety of writing good programs, let&#8217;s examine this idea in more detail.<br /><br />Indeed, let&#8217;s look at one very simple, very powerful, way of writing programs that are as semantically close to the solution in the mind of the programmer.<br /><br /><strong>Code that resembles its result</strong><br /><br />A template is a blueprint for describing the result you want, where instead of embedding data inside executable code, you turn things inside out and embed executable code inside data.<br /><br />Templates are very popular in programs that generate markup:<br /><br /><pre class="textmate-source sunburst"><span class="text text_xml text_xml_xsl"><br /><span class="meta meta_tag meta_tag_xml"><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&lt;</span><span class="entity entity_name entity_name_tag entity_name_tag_localname entity_name_tag_localname_xml">HTML</span><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&gt;</span></span><br />    <span class="meta meta_tag meta_tag_xml"><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&lt;</span><span class="entity entity_name entity_name_tag entity_name_tag_localname entity_name_tag_localname_xml">HEAD</span><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&gt;</span></span><br />        <span class="meta meta_tag meta_tag_xml"><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&lt;</span><span class="entity entity_name entity_name_tag entity_name_tag_localname entity_name_tag_localname_xml">TITLE</span><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&gt;</span></span>Hello World<span class="meta meta_tag meta_tag_xml"><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&lt;/</span><span class="entity entity_name entity_name_tag entity_name_tag_localname entity_name_tag_localname_xml">TITLE</span><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&gt;</span></span><br />    <span class="meta meta_tag meta_tag_xml"><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&lt;/</span><span class="entity entity_name entity_name_tag entity_name_tag_localname entity_name_tag_localname_xml">HEAD</span><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&gt;</span></span><br /><br />    <span class="meta meta_tag meta_tag_xml"><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&lt;</span><span class="entity entity_name entity_name_tag entity_name_tag_localname entity_name_tag_localname_xml">BODY</span><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&gt;</span></span><br />        Hello, Example. Today's date and time is <span class="source source_java source_java_embedded source_java_embedded_xml"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_begin punctuation_section_embedded_begin_xml">&lt;%=</span><span class="storage storage_type storage_type_java">Now</span>()<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_end punctuation_section_embedded_end_xml">%&gt;</span></span>.<br />    <span class="meta meta_tag meta_tag_xml"><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&lt;/</span><span class="entity entity_name entity_name_tag entity_name_tag_localname entity_name_tag_localname_xml">BODY</span><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&gt;</span></span><br /><span class="meta meta_tag meta_tag_xml"><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&lt;/</span><span class="entity entity_name entity_name_tag entity_name_tag_localname entity_name_tag_localname_xml">HTML</span><span class="punctuation punctuation_definition punctuation_definition_tag punctuation_definition_tag_xml">&gt;</span></span><br /><br /></span></pre><br />It&#8217;s obvious what result you want, much more obvious than if you tried the following:<br /><br /><pre class="textmate-source sunburst"><span class="source source_java"><br />    page = <span class="storage storage_type storage_type_java">Page</span>();<br />    head = <span class="keyword keyword_other keyword_other_class-fns keyword_other_class-fns_java">new</span> <span class="storage storage_type storage_type_java">Head</span>();<br />    title = <span class="keyword keyword_other keyword_other_class-fns keyword_other_class-fns_java">new</span> <span class="storage storage_type storage_type_java">Title</span>();<br />    title.setText(<span class="string string_quoted string_quoted_double string_quoted_double_java"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_java">"</span>Hello World<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_java">"</span></span>)<br />    head.add(title);<br />    page.add(head);<br />    body = <span class="keyword keyword_other keyword_other_class-fns keyword_other_class-fns_java">new</span> <span class="storage storage_type storage_type_java">Body</span>();<br />    preamble = <span class="keyword keyword_other keyword_other_class-fns keyword_other_class-fns_java">new</span> <span class="support support_type support_type_built-ins support_type_built-ins_java">StringBuffer</span>();<br />    preamble.append(<span class="string string_quoted string_quoted_double string_quoted_double_java"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_java">"</span>Hello, Example. Today's date and time is <span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_java">"</span></span>);<br />    preamble.append(<span class="support support_type support_type_built-ins support_type_built-ins_java">Time</span>.now().toString());<br />    preamble.append(<span class="string string_quoted string_quoted_double string_quoted_double_java"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_java">"</span>.<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_java">"</span></span>);<br />    body.add(preamble.toString());<br />    page.add(body);<br /><br /></span></pre><br />This code produces its results as a <em>side effect</em> of its execution. The code itself doesn&#8217;t directly describe the result, whereas the first example directly describes the result we wish to generate.<br /><br />Sometimes you need to generate the result as a side effect of the code. You needn&#8217;t write code as opaque as the answer above, instead you can <a href="http://weblog.raganwald.com/2007/04/rails-style-creators-in-java-or-how-i.html">organize your code so that its form resembles the form of the result you are generating</a>, such as this <a href="http://script.aculo.us/" title="script.aculo.us - web 2.0 javascript">Scriptaculous</a> code:<br /><br /><pre><code>element = Builder.node('div',{id:'ghosttrain'},[<br />   Builder.node('div',{className:'controls',style:'font-size:11px'},[<br />     Builder.node('h1','Ghost Train'),<br />     "testtext", 2, 3, 4,<br />     Builder.node('ul',[<br />       Builder.node('li',{className:'active', onclick:'test()'},'Record')<br />     ]),<br />   ]),<br />]);<br /><br /></code></pre><br />That produces this HTML:<br /><br /><pre><code>&lt;div id="ghosttrain"&gt;<br />    &lt;div class="controls" style="font-size:11px"&gt;<br />        &lt;h1&gt;Ghost Train&lt;/h1&gt;<br />        testtext234<br />        &lt;ul&gt;<br />            &lt;li class="active" onclick="test()"&gt;Record&lt;/li&gt;<br />        &lt;/ul&gt;<br />    &lt;/div&gt;<br />&lt;/div&gt;<br /><br /></code></pre><br />Just like the template example, you don&#8217;t need to run a simulation in your head to try to figure out what the code produces.<br /><br /><strong>Is this just cancer of the semicolon?</strong><br /><br />What&#8217;s the difference between these two code samples?<br /><br /><pre class="textmate-source sunburst"><span class="source source_java"><br />    preamble = <span class="keyword keyword_other keyword_other_class-fns keyword_other_class-fns_java">new</span> <span class="support support_type support_type_built-ins support_type_built-ins_java">StringBuffer</span>();<br />    preamble.append(<span class="string string_quoted string_quoted_double string_quoted_double_java"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_java">"</span>Hello, Example. Today's date and time is <span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_java">"</span></span>);<br />    preamble.append(<span class="support support_type support_type_built-ins support_type_built-ins_java">Time</span>.now().toString());<br />    preamble.append(<span class="string string_quoted string_quoted_double string_quoted_double_java"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_java">"</span>.<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_java">"</span></span>);<br /><br /></span></pre><br />&#8230;and&#8230;<br /><br /><pre class="textmate-source sunburst"><span class="source source_java"><br />    <span class="string string_quoted string_quoted_double string_quoted_double_java"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_java">"</span>Hello, Example. Today's date and time is #{Time.now}.<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_java">"</span></span><br /><br /></span></pre><br />Is the second just syntactic sugar for the first? No. It&#8217;s more than <strong>just</strong> syntactic sugar. People have a habit of saying &#8220;syntactic sugar&#8221; in a dismissive way. It&#8217;s another argument that since an underlying language is <a href="http://en.wikipedia.org/wiki/Turing_completeness" title="Turing completeness - Wikipedia, the free encyclopedia">Turing Equivalent</a>, there is no need for a particular language feature.<br /><br />Not all language features are just syntactic sugar. True syntactic sugar features are <em>local</em> features: you can replace the feature with some other equivalent code without having to change a bunch of stuff elsewhere.<br /><br /><a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Lazy evaluation</a> and garbage collected memory management are not syntactic sugar: they require wholesale changes to the underlying model of computation to work. The abbreviated <code>for</code> loop in Java 1.5 <em>is</em> syntactic sugar: you can translate each loop into the equivalent old-style iterator loop without any additional support. For that matter, Java <a href="http://java.sun.com/j2se/1.5.0/docs/guide/language/enums.html"><code>enums</code></a> are also syntactic sugar, they&#8217;re a way to write the Type Safe Enum idiom with less boilerplate.<br /><br />Okay, non-local features are not syntactic sugar. When is a local feature &#8220;just&#8221; syntactic sugar and when is it something more than that?<br /><br />Let&#8217;s compare these two language features. Consider this Smalltalk code:<br /><br /><pre class="textmate-source sunburst"><span class="source source_java-props"><br />window<br /><span class="keyword keyword_other keyword_other_java-props">       position</span><span class="punctuation punctuation_separator punctuation_separator_key-value punctuation_separator_key-value_java-props">:</span> 80@80;<br /><span class="keyword keyword_other keyword_other_java-props">       extent</span><span class="punctuation punctuation_separator punctuation_separator_key-value punctuation_separator_key-value_java-props">:</span> 320@90;<br /><span class="keyword keyword_other keyword_other_java-props">       backcolor</span><span class="punctuation punctuation_separator punctuation_separator_key-value punctuation_separator_key-value_java-props">:</span> Color blue;<br /><span class="keyword keyword_other keyword_other_java-props">       caption</span><span class="punctuation punctuation_separator punctuation_separator_key-value punctuation_separator_key-value_java-props">:</span> 'My Blue Test Window'.<br /><br /></span></pre><br />This shows a series of &#8220;cascading messages&#8221; to the same receiver. It saves you having to type the word &#8220;window&#8221; again, and it is a lot easier to read, because it lets you <a href="http://weblog.raganwald.com/2007/04/rails-style-creators-in-java-or-how-i.html">group messages that obviously belong together</a>.<br /><br />And earlier, we saw:<br /><br /><pre class="textmate-source sunburst"><span class="source source_java"><br />    <span class="string string_quoted string_quoted_double string_quoted_double_java"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_java">"</span>Hello, Example. Today's date and time is #{Time.now}.<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_java">"</span></span><br /><br /></span></pre><br />This is <em>String Interpolation</em>.<sup>2</sup> It&#8217;s an &#8220;abbreviation&#8221; for a longer sequence of <code>appends</code> onto a <code>StringBuffer</code>.<br /><br />The difference between these two trivial cases is that the first example doesn&#8217;t change your mental model of what&#8217;s going on when you read the code: you&#8217;re simply sending a bunch of messages to the <code>window</code>.<br /><br /><div class="book"><hr/><em><a name="evtst|a|0672328844" href="http://www.amazon.com/gp/product/0672328844?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0672328844"><img src="http://weblog.raganwald.com/uploaded_images/the_ruby_way.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0672328844" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br><a name="evtst|a|0672328844" href="http://www.amazon.com/gp/product/0672328844?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0672328844">The Ruby Way</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0672328844" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is the perfect second Ruby book for serious programmers. The Ruby Way contains more than four hundred examples explaining how to do everything from distribute Ruby with Rinda to dynamic programming techniques just like these.<hr/><br><br></em></div>The second example is different in a very important way: honestly, when you read the second example, do you think &#8220;<em>Aha! Start with a string, get Time.now(), append it to that string, then append a period</em>&#8221;?<br /><br />No way! You think &#8220;<em>A String with Time.now() stuck in it</em>.&#8221;<br /><br />That&#8217;s a huge difference mentally, it&#8217;s not just shorter, it&#8217;s <em>semantically closer</em> to your mental model of the result you&#8217;re trying to achieve.<br /><br /><strong>Wrapping up code that resembles its result</strong><br /><br />In summary, one way to write code that is comprehensible is to make sure that the form of the code matches the data the code generates. This is a very general principle, it can be found in web templates (like PHP and ASP pages), markup builder libraries, and even String or List Interpolation.<br /><br />Features that support this style of writing code are more than simple syntactic sugar, because they alter the reader&#8217;s mental model, lowering the semantic distance between the code and the code&#8217;s result.<br /><br /><em>Bonus! Order now, and we&#8217;ll throw in these free Domain Specific Languages!</em><br /><br />We saw that organizing code so that it resembles the result it generates lowers the semantic distance between the code and the solution. We saw two ways to do this: we can use templates or interpolation (if our language permits interpolation) to produce data, and where templates won&#8217;t work we can structure our code to resemble its result.<br /><br />Well, we needn&#8217;t stop there. <a href="http://weblog.raganwald.com/2007/03/approach-to-composing-domain-specific.html" title="An Approach to Composing Domain-Specific Languages in Ruby">Domain-specific languages</a> can provide this exact benefit.<br /><br />The general purpose of a DSL is to write programs, or parts of programs, where the form of the code matches the mental model of domain experts or programmers. And here is one specific use for a DSL: to write code that closely matches the result it generates.<br /><br /><a href="http://weblog.raganwald.com/2007/03/approach-to-composing-domain-specific.html#lcir">List Comprehensions</a> model lists after mathematical notation. <code>list { [x, y, x * y] }.given(:x =&gt; 1..12, :y =&gt; 1..12)</code> directly describes a list of multiplicands and results.<br /><br /><code>(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])</code> is a regular expression that matches dates.<sup>3</sup> Do you think it is hard to read? What would happen if you &#8220;compile&#8221; that expression into procedural code with side effects? Which program would be easier to understand, debug, and modify?<br /><br />There are many valuable uses for DSLs. One of them is to create programs that closely resemble the results achieve, such as the HTML builder we see earlier, list comprehensions, and regular expressions. DSLs can increase human comprehension by representing the desired result directly.<br /><br /><em>And if you call in the next fifteen minutes, you&#8217;ll membership in the Pattern Matching family at no extra cost!</em><br /><br />There&#8217;s another significant opportunity for writing code that increases human comprehension. We saw how to write code where the form of the code resembles its result. You can also write code where the form of the code resembles <em>the data it consumes</em>.<br /><br />In ML, patterns allow us to make our functions resemble the different values they consume:<br /><br /><pre><code>fun factorial 0 = 1<br />    | factorial n = n * factorial (n - 1)<br /><br /></code></pre><br />If you are not familiar with pattern matching, and especially with how languages like ML and Haskell combine patterns with their type checking system, maybe today is the day to spend a little time looking into this powerful idea for making comprehensible programs.<br /><br /><hr /><br /><ol><li>In my personal experience, &#8220;favouring human comprehension&#8221; does not mean favouring readability over writability&#8212;in order to write a program that solves a problem, I have to understand the solution, so comprehensibility applies to the act of composing <em>and</em> of reading programs by humans.<br /><br />Now about machines: In this day and age, &#8220;The convenience of the machine&#8221; is often a way of saying, &#8220;the convenience of the layer of abstraction just below your program.&#8221; In a sense, every layer of abstraction above the silicon is a kind of virtual machine.<br /><br />&#8220;Remember, it&#8217;s all software, it just depends on when you crystallize it.&#8221;&#8212;Alan Kay, <a href="http://www.folklore.org/StoryView.py?project=Macintosh&amp;story=Creative_Think.txt&amp;characters=Alan%20Kay&amp;sortOrder=Sort%20by%20Date">as quoted by Andy Hertzfeld</a></li><br /><li>List Interpolation actually predates String Interpolation, but most people recognize String Interpolation. Lispers have a little thing called a <a href="http://practical-scheme.net/wiliki/schemexref.cgi?quasiquote">quasiquote</a> or <a href="http://cl-cookbook.sourceforge.net/macros.html#LtohTOCentry-2">backquote</a> that builds lists or vectors in a template form.</li><br /><li>Early feedback suggested this is a poor example of a regular expression, because it looks obtuse. I could have selected something much simpler, however I wanted something that really would be <i>incredibly</i> obtuse if you tried to code it procedurally. (Not counting using built-in library functions for parsing dates, of course).<br /><br />The point is that this regex <i>is</i> readable, and you can see out all of the special cases, right where they belong in their place in the pattern. If readers can post some imperative code that does the same thing in a more readable form, that would be a very interesting lesson.</li></ol><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html" title="permanent link">9:57 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Writing programs for people to read</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="4379777336242237706"></a> 				> If you are not familiar with pattern matching, and especially with how languages like ML and Haskell combine patterns with their type checking system, maybe today is the day to spend a little time looking into this powerful idea for making comprehensible programs.<BR/><BR/>You don't need Haskell's or ML's type system to make Pattern Matching work, and work extremely well.<BR/><BR/>Pattern Matching is rampant in Erlang (hell, even what other languages usually see as assignment is a special case of pattern-matching in erlang), yet the language is dynamically typed<BR/><BR/><BR/>PS: blogger comments blow: even with a google/blogger account, I have to enter a captcha whose image doesn't even appear in my firefox for no known reason.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1177860840000#c4379777336242237706" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10261896483118253882" rel="nofollow">Masklinn</a> : 11:34 AM</div>
+
+								<span class="item-control blog-admin pid-2144531356"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4379777336242237706" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3085740458238417550"></a> 				Minor nitick:  Nobody in the Smalltalk community upcases the "t".  I now feel like a Lisp weenie bitching about "LISP".<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1177861560000#c3085740458238417550" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:46 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3085740458238417550" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2097306623549724411"></a> 				Hey Reg,<BR/>Great article like so many of your others but I do have to point out that "Smalltalk" is spelled with a lowercase "t". Keep them coming!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1177861920000#c2097306623549724411" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:52 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2097306623549724411" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1448564924384343049"></a> 				Can you please linkify your footnote references? It's pretty tedious to scroll down the whole page to find the first footnote, read it, then get back up to where I stopped.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1177877340000#c1448564924384343049" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="mhaggag.wordpress.com" rel="nofollow">Muhammad Haggag</a> : 4:09 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1448564924384343049" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5737102077272091658"></a> 				Hi, I tried to describe problems with the syntax of lighttpd.conf... in essence my problem was to guess how to write stuff so that lighttpd understood what I meant:<BR/><BR/>http://typo.cdlm.fasmz.org/articles/2007/04/25/greeting-ipv6-users-with-lighttpd<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1177878420000#c5737102077272091658" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://typo.cdlm.fasmz.org" rel="nofollow">Damien Pollet</a> : 4:27 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5737102077272091658" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4699826524970211548"></a> 				<I>Can you please linkify your footnote references</I><BR/><BR/>Sadly, I use the absolute <B>worst</B> blogging software I've ever seen, Google's <A HREF="http://www.blogger.com/" REL="nofollow">Blogger</A>.<BR/><BR/>It can't do footnotes, it acts as if Trackbacks don't exist, and as far as I can tell, it is written to cater to the needs of sploggers so that they can use misappropriated content to drive adwords revenue.<BR/><BR/>Which is probably why it doesn't do footnotes: Google hasn't figured out how to attach ads to them :-)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1177878960000#c4699826524970211548" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:36 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4699826524970211548" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8659297822549464827"></a> 				I think regular expressions as they are expressed as you show above is an example of how a DSL-ish representation can still be really obtuse.  Regexes have always looked like line noise to me.<BR/><BR/>I prefer reading and writing regexes with a more natural language, "fluent" interface.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1177879500000#c8659297822549464827" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08122880712808512260" rel="nofollow">Mark</a> : 4:45 PM</div>
+
+								<span class="item-control blog-admin pid-504838883"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8659297822549464827" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6828801064050170252"></a> 				Very interesting post!<BR/><BR/>About syntactic sugar. Even if syntactic sugar "just" adds simplicity (a la the simplified <I>for</I> loop) instead of new semantic meaning, it <I>still</I> matters. Because as you mention it's not about Turing completeness, it's about changing how people think and use things. Doing something has a certain friction related to it, and once you reduce that friction to below the threshold of being annoying or bothersome, you can fundamentally change the way people behave.<BR/><BR/>Long ago, <A HREF="http://use.perl.org/~jplindstrom/journal/7877" REL="nofollow">I attended a talk</A> about Perl 6 where Damian Conway talked about <I>Syntactic Vitamins</I>, and I think that perfectly captures the power of making common things really easy to do. This line of thinking seems to be pervasive in the design of Perl 6 (and as for irony and the ability of Perl to Get Things Done(tm): note the age of my post :)<BR/><BR/>About DSLs. I actually thought of this tired TLA already when you mentioned templates and string interpolation, because if you think about it that's what string interpolation really is: a very very simple notation for accomplishing something within it's domain. Not that it really matters if you want to cram it in under the DSL label, but putting stuff inside  strings is such a common thing to do when programming that you wonder how people can design new languages without even considering something like this. I mean, the concept has been obvious since the printf/sprintf syntax became mainstream with C.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1177880580000#c6828801064050170252" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Johan L</span> : 5:03 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6828801064050170252" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2500806584841271977"></a> 				If you apply the logic of the article to higher level business constructs you should, it seems to me, drift immediately into business rules. The use of a business rules management system to specify "business rules" rather than a low level coding language would be compelling for the same reason that better laid out/written code would. Helping those who need to validate/manage the organization's policies and procedures interact directly with "code" they could understand could only help.<BR/>The use of business rules could make <A HREF="http://www.edmblog.com/weblog/2006/12/using_business__1.html" REL="nofollow">your code more maintainable</A>, <A HREF="http://www.edmblog.com/weblog/2006/07/learning_to_lov.html" REL="nofollow">reduce your dislike of change</A> and <A HREF="http://www.ebizq.net/blogs/decision_management/2007/04/business_rules_and_the_applica.php" REL="nofollow">reduce your application knowledge defecit</A>.<BR/>JT<BR/><A HREF="http://www.edmblog.com" REL="nofollow">www.edmblog.com</A><br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1177882920000#c2500806584841271977" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04589456040368641147" rel="nofollow">James Taylor</a> : 5:42 PM</div>
+
+								<span class="item-control blog-admin pid-1721070937"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2500806584841271977" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1363137713024249956"></a> 				<I>If you apply the logic of the article to higher level business constructs you should, it seems to me, drift immediately into business rules.</I><BR/><BR/>That's a slightly different application of DSLs. It's possibly even more valuable, but I was trying to stick with one very simple principle and show it is a lot if different contexts.<BR/><BR/>Thanks for the links!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1177883040000#c1363137713024249956" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:44 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1363137713024249956" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2154174490561249737"></a> 				Business rules are one of those things I find really frustrating, because they <EM>almost</EM> work. <BR/><BR/>Pulling out the rules and expressing and storing them in a clean declarative way seems like a really good idea, for all the obvious engineering reasons. But the trouble is that the order rules fire in matters, because they can update the state of your system. Then you end up messing up your nice declarative framework with all sorts of hideous hacks to treat ordering.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1177884180000#c2154174490561249737" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06853898957395028131" rel="nofollow">Neel Krishnaswami</a> : 6:03 PM</div>
+
+								<span class="item-control blog-admin pid-1144552805"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2154174490561249737" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2017254978745092751"></a> 				Since you asked for other ways to write this, here's how this looks in my work-in-progress language Flan:<BR/><BR/>@separator = oneof "- /.";<BR/>@date = [<BR/>  /some(1900..2099).toString,<BR/>  separator,<BR/>  /some(1..12).toString,<BR/>  separator,<BR/>  /some(1..31).toString<BR/>];<BR/><BR/>(Ok, this doesn't handle the initial '0's.)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1177932840000#c2017254978745092751" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09919006779080998004" rel="nofollow">Laurie Cheers</a> : 7:34 AM</div>
+
+								<span class="item-control blog-admin pid-569099421"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2017254978745092751" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4882367967454923910"></a> 				I've new to reading your blog, but I've noticed that you reference the SICP pretty regularly. You usually point links to the Amazon page, so I thought I'd mention that the SICP is <A HREF="http://mitpress.mit.edu/sicp/full-text/book/book.html" REL="nofollow">available in full</A> on the net. You could even link to <A HREF="http://mitpress.mit.edu/sicp/front/node3.html" REL="nofollow">the page you quote</A>. If this was widely known information, pay me no mind...<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1180407480000#c4882367967454923910" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://expectedbehavior.com" rel="nofollow">Matt Gordon</a> : 10:58 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4882367967454923910" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6399178516775705711"></a> 				Matt:<BR/><BR/>I have linked to the free version quite often, such as on <A HREF="http://weblog.raganwald.com/2006/10/irony.html" REL="nofollow">Irony</A> and <A HREF="http://weblog.raganwald.com/2006/11/first-seven-books-i-would-buy-if-my_17.html" REL="nofollow">The first seven books I would buy if my shelves were bare</A>. But another link is helpful.<BR/><BR/>Personally, I love physical books, especially timeless classics like SICP. But the free version makes it possible to try before you buy, makes it accessible to those on a budget, and generally makes the world a better place.<BR/><BR/>Rock on!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1180407840000#c6399178516775705711" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:04 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6399178516775705711" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4336330706115301142"></a> 				One can design programs to be read using tools rather than changes to a specific language/platform. Check out <A HREF="http://en.wikipedia.org/wiki/Literate_programming" REL="nofollow">Literate programming</A>, coined by <A HREF="http://en.wikipedia.org/wiki/Donald_Knuth" REL="nofollow">Don Knuth</A> when he created <A HREF="http://en.wikipedia.org/wiki/WEB" REL="nofollow">web</A>. The state of the art, IMO: <A HREF="http://webpages.charter.net/edreamleo/front.html" REL="nofollow">Leo</A>. It doesn't waste effort on paper rendering like Knuth did with all the latex.. The critical ability is simply ordering code for readability rather than a compiler.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html?showComment=1180419000000#c4336330706115301142" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://akkartik.name" rel="nofollow">Kartik Agaram</a> : 2:10 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4336330706115301142" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

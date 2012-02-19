@@ -1,0 +1,442 @@
+<html> 
+<head>
+        
+        <title>If you cannot change your language, change your language</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Thursday, December 27, 2007</div>
+			
+
+			<div class="Post"><a name="1242084701441810451">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html" title="permanent link">If you cannot change your language, change your language</a></span>
+					<div style="clear:both;"></div><blockquote>You want to strive to make sure every single line of code has some value or meaning to the programmer. Programming languages are for humans, not machines. If you have code that looks like it doesn&#8217;t do anything useful, is hard to read, or seems tedious, then chances are good that Python has some language feature that will let you remove it.</blockquote><div>&#8212;Ryan Tomayko, <a href="http://tomayko.com/articles/2005/01/20/getters-setters-fuxors" title="Getters/Setters/Fuxors">Getters/Setters/Fuxors</a></div><br />Generalizing this, I would say:<br /><br /><blockquote>You want to strive to make sure every single line of code has some value or meaning to the programmer. Programming languages are for humans, not machines. If you have code that looks like it doesn&#8217;t do anything useful, is hard to read, or seems tedious, then introduce an <a title="Abbreviation, Accidental Complexity, and Abstraction" href="http://weblog.raganwald.com/2007/07/abbreviation-accidental-complexity-and.html">abstraction</a> that will let you remove it.<br /><br />If your language&#8217;s mechanisms for abstracting away accidental complexity are so laborious that you cannot remove the useless, the hard to read, and the tedious from your programs without introducing code that is even more useless, harder to read, and more tedious to your framework, then change languages.</blockquote><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html" title="permanent link">4:10 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>If you cannot change your language, change your language</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="5441550695110507707"></a> 				And the Python seems unnecessarily complex to me, because there are explicit language features in place to deal with the "magic" attribute setters. Now programmers coming to the language get one that's less coherent than it would otherwise. Python concepts needed for this example:<BR/>* objects have attributes and methods<BR/>* public object attributes can be directly accessed by calling object.attribute (=)<BR/>* you can create special get_attr/set_attr methods for each attr to overrise calls to obj.attr (=)<BR/><BR/>The latter two facts are knowledge of limited use outside this specific topic. Instead in Ruby, the issue is solved as part of the core language feature - everything is just messages between objects. I think the desire to solve individual problems on a microscopic level - rather than simplify and empower the language - leads down the path of an increasibly complex and convoluted syntax with diminishing(if not negative) returns on each new feature added<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1198792800000#c5441550695110507707" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11730826719862467406" rel="nofollow">crayz</a> : 5:00 PM</div>
+
+								<span class="item-control blog-admin pid-1422544751"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5441550695110507707" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5861497027511781230"></a> 				Interesting point, thanks.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1198792980000#c5861497027511781230" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:03 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5861497027511781230" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4547182311543749165"></a> 				"introduce an abstraction that will let you remove it."<BR/><BR/>I had the same thought as I read Mr. Tomayko's version.  Good catch.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1198793940000#c4547182311543749165" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.codeodor.com" rel="nofollow">Sammy Larbi</a> : 5:19 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4547182311543749165" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1162428856692288399"></a> 				Thanks for inspiring me to <A HREF="http://billmill.org/poe.html" REL="nofollow">write</A> tonight, when I had no intention of doing so otherwise.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1198823100000#c1162428856692288399" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 1:25 AM</div>
+
+								<span class="item-control blog-admin pid-831715508"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1162428856692288399" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3493037714180147066"></a> 				convoluted syntax with python or ruby????<BR/><BR/>The thing is - just because a feature exists in a language does NOT mean you HAVE to use it.<BR/><BR/>Every feature you use makes the code more complex (on the other hand, a good feature might save you a lot of lines of code).<BR/><BR/>It simply is that, the better the human, the better his language, the better the results will be (if that human wants to achieve good results). Most of the time this means to be very concise. <BR/><BR/>That being said, I really think that exactly the OOP is where ruby shines compared to python.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1198841460000#c3493037714180147066" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:31 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3493037714180147066" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="735572109894092260"></a> 				Sorry this is probably going to come out as a rant but I really like your blog and know you welcome constructive criticism (which I hope this is going to be).<BR/><BR/>I tend to dislike the way you overuse the term abstraction. You make a very valid point here: a good language should have the constructs you need to express your algorithms without accidental complexity (a.k.a. code bloat). Otherwise ,either you chose the wrong language for the job or the language itself is wrong.<BR/><BR/>However, I don't see why you'd consider these language constructs abstractions. They are, in fact, very concrete implementations. Just one choice of implementation against another. We, computer scientists, tend to like abstracting away, removing ourselves from practical difficulties. The overuse of "abstraction" encourages this (IMHO) bad tendency.<BR/><BR/>We have too many abstractions and not enough efficient and practical techniques. Introducing language constructs that express exactly what you need is good language design, it's not abstraction.<BR/><BR/>And thanks a lot for your blog.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1198842120000#c735572109894092260" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05059773788741298600" rel="nofollow">Matt</a> : 6:42 AM</div>
+
+								<span class="item-control blog-admin pid-2122801257"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=735572109894092260" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6962066808147842231"></a> 				Matt:<BR/><BR/>I try to use abstraction in a very specific way, as explained here:<BR/><BR/><A HREF="http://weblog.raganwald.com/2007/07/abbreviation-accidental-complexity-and.html" REL="nofollow">Abbreviation, Accidental Complexity, and Abstraction</A>.<BR/><BR/>In that sense, there are ways to remove accidental complexity that are not abstractions, and it is appropriate to use them as well.<BR/><BR/>If I am overusing the word, it is entirely possible that I am overly enthusiastic about abstraction.<BR/><BR/>Thanks for the perspective check.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1198848120000#c6962066808147842231" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:22 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6962066808147842231" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8757088676535778632"></a> 				So this reminded me of a recent experience, sort of from the other direction....<BR/><BR/>Recently I had to maintain some Pascal code in our Rails project, and I was struck by the stiltedness of the language. All your vars have to be declared outside the function--or procedure, which is a different type of method call...<BR/><BR/>I really felt like I was "Writing Pascal" rather than "making the project work". The kicker came when I left a colon off of an assignment statement (for those who have been spared a Pascal-based education, writing = instead of :=) and the compiler reminded me of this.<BR/><BR/>"Oh yeah," I said aloud. "I remember when we were really proud of <I>assignment</I>."<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1198863060000#c8757088676535778632" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08437073136758086679" rel="nofollow">Chalain</a> : 12:31 PM</div>
+
+								<span class="item-control blog-admin pid-954195632"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8757088676535778632" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7571564610537114771"></a> 				I wish Rubyists and Pythonistas would stop taking every (perceived) opportunity to try and cut down the other.  As someone who thinks both are great I'll be the devil's advocate here and point out that Ruby has just as much potential for obtuse magic with things like method_missing and friends.  Rubyists will step up an point out that in 99.99% of cases you shouldn't be using method_missing whereas Pythonistas will say the same thing about Python's "magic" methods.<BR/><BR/>The purpose of having Python's magic methods exposed to the user, er, programmer, is not for them to override existing behaviour, thus confusing semantics of what should be perfectly clear code, but rather to be able to define those semantics where it's not perfectly clear as well as to be able to use those operations in a functional context as you can't pass a '.' or '+' to functions like map.<BR/><BR/>Both Python and Ruby should be blushing and avoiding people's eye contact when it comes to the potential for abusing their metaprogramming constructs.  That being said, I'm a big fan of crazy metaprogramming :)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1198863960000#c7571564610537114771" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08004339418967276939" rel="nofollow">Erik</a> : 12:46 PM</div>
+
+								<span class="item-control blog-admin pid-1157324840"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7571564610537114771" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6646878656823880508"></a> 				Erik: Just so we're clear here, <I>they're</I> the ones who are bigoted and dumb.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1198876860000#c6646878656823880508" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08437073136758086679" rel="nofollow">Chalain</a> : 4:21 PM</div>
+
+								<span class="item-control blog-admin pid-954195632"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6646878656823880508" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8255121393940596647"></a> 				I couldn't parse your title the first time around. How about this, for a more chiastic formulation:<BR/><BR/>"If your language cannot change, change your language."<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1198967700000#c8255121393940596647" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08449307204087650764" rel="nofollow">Neil</a> : 5:35 PM</div>
+
+								<span class="item-control blog-admin pid-142997893"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8255121393940596647" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5791980791088047826"></a> 				<I>I couldn't parse your title the first time around. How about this, for a more chiastic formulation:<BR/><BR/>"If your language cannot change, change your language."</I><BR/><BR/>Part of why I like the title is that the reflection also works, as in:<BR/><BR/>"If you cannot change languages, change your language."<BR/><BR/>This version of the title explains why I was writing XSL style sheets to generate Java interfaces and classes in 2003 :-)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1198969020000#c5791980791088047826" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:57 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5791980791088047826" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7269143860509904907"></a> 				crayz: Python unifies all access as attributes, just as Ruby unifies all access as as messages. Python objects do not have "attributes and methods", they only have attributes. The way you describe it is one way to learn it, and in practical terms it'll tell you what you need to know, but it's not an accurate reflection of how Python works and what is actually happening. Note that Python has no special syntax for property support, it's built entirely on top of the generic attribute access mechanism, just as Ruby's "attribute" lookup is built on top of it's message passing mechanism.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1199390040000#c7269143860509904907" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06254628778286143065" rel="nofollow">arkanes</a> : 2:54 PM</div>
+
+								<span class="item-control blog-admin pid-1429790973"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7269143860509904907" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1596920068205550137"></a> 				> <I>Programming languages are for humans, not machines.</I><BR/><BR/>I think this attitude is one of the reasons there is so much bad software.  Software is where the rubber meets the road.  It is a communication from the programmer to the machine, and the programmer needs to understand the machine to effectively communicate.<BR/><BR/>Abstraction is a leading cause of code bloat.  The layers of glue code (linking one layer of abstraction to the next) tend to get deeper and deeper, till the person at the top of the stack has no idea what is going on underneath.  It is more meaningful to talk about simplification than abstraction.  Sometimes simplification can done through abstraction.  But it is better to refactor the data and code to eliminate the need for the complex code, not just hide it away where it only <B>looks</B> simple.<BR/><BR/>In fact, too much abstraction can be a reason to change languages.  A good example of this is the OpenGL shading language.  OpenGL 1.3 is an abstraction of 3D hardware.  But as the abstraction layer is moved closer to the actual hardware, via GLSL, then suddenly the programmer gains a great deal of power to do complex and specific tasks in a very simple manner.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/if-you-cannot-change-your-language.html?showComment=1201483620000#c1596920068205550137" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://wickedsmoke.myopenid.com/" rel="nofollow">Karl</a> : 8:27 PM</div>
+
+								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1596920068205550137" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

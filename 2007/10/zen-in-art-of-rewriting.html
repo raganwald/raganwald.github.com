@@ -1,0 +1,442 @@
+<html> 
+<head>
+        
+        <title>Zen in the Art of Rewriting</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Monday, October 29, 2007</div>
+			
+
+			<div class="Post"><a name="3650278533953259157">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html" title="permanent link">Zen in the Art of Rewriting</a></span>
+					<div style="clear:both;"></div>More than a few people have taken the time to write and say that my writing sucks. Folks, hold your applause! It&#8217;s true, it does. This distresses me:<br /><br /><blockquote>Zen Master Ryokan lived in a poor little hut on a mountainside. One moonlight night he came home and found a burglar looking for something to steal. But Ryokan was a hermit who owned nothing.<br />  <br />  &#8220;Poor fellow,&#8221; he said to the robber. &#8220;You have come a long way and have found nothing. But I don&#8217;t want you to leave me empty-handed. Please take my clothes.&#8221; And Ryokan stripped, and handed the clothes to the robber.<br />  <br />  &#8220;Poor fellow,&#8221; said naked Ryokan, going outdoors again when the inconsiderate robber had left, &#8220;How I wish I could have given him this wonderful moon.&#8221;<br /></blockquote><br />I often feel like there is this wonderful moon, these great truths and beauties, and when I write down what I see, when I try to share it, all I have to give you is a tattered robe. How I wish I could give you the feeling I have when I sit in the moon&#8217;s silvery radiance. But my weblog&#8230; it&#8217;s really just a tattered robe. Why is it so bad? Why do I fall so short?<br /><br />Writing and coding have a lot in common. One of the most obvious similarities is that good writing is <em>rewriting</em>. I don&#8217;t just mean &#8220;polishing,&#8221; I mean sitting down and reorganizing, dropping stuff that really doesn&#8217;t work, finding a better organizational structure for ideas, combining a few things that say the same thing&#8230; Rewriting is hard work, much harder than writing.<br /><br />One of the reasons my writing sucks is that I don&#8217;t do enough rewriting. Like many software projects, my blog is a prisoner of the tyranny of the urgent. Once a post is basically coherent, I have to choose between rewriting it and getting Real Work&trade; done, or writing more Nights-and-Weekend&trade; code written, or even between rewriting an old piece and writing a brand new piece. Far too often, I say the same thing about a new post that we all say about our software: &#8220;It&#8217;s good enough, it works, don&#8217;t rewrite it, don&#8217;t refactor until we need to.&#8221;<br /><br />It&#8217;s amazing. We agonize and debate and twist ourselves into intellectual knots over whether a new language or a particular DSL or even a hack makes each line of code easier or more difficult to read. But where&#8217;s the emphasis on writing and rewriting each line of code until it&#8217;s perfectly readable?<br /><br /><div class="book"><em><hr/><a href="http://www.amazon.com/gp/product/0439339111?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0439339111"><img border="0" src="http://weblog.raganwald.com/uploaded_images/zen_shorts.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0439339111" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br /><a href="http://www.amazon.com/gp/product/0439339111?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0439339111">Zen Shorts</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0439339111" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> is a tremendous children&rsquo;s book, featuring the enigmatic Panda Stillwater and the stories he tells to help children understand their lives. It contains three of my favourites including The Robe and The Moon and The Monks and The Lady.<br /><hr/></em></div>There&#8217;s some sort of fetish for small vocabularies in our industry. This idea that if you use simple words and simple sentences, clear writing necessarily follows without further effort. This is like assuming that the smaller your vocabulary, and the simpler your sentences, the more you write like Hemmingway.<br /><br />If reading code is far more important than writing it, if we really ought to be writing code for those who come behind us to maintain it, why are we talking about the difference between <a href="http://weblog.raganwald.com/2007/10/stringtoproc.html" title="String#to_proc"><code>.map { |x| x*2 }</code> and <code>.map &amp;'*2'</code></a> when we ought to be talking about the difference between taking two hours to write some code and six hours to write, rewrite, and rewrite the code again?<br /><br />Is it&#8212;I am speaking from my heart here&#8212;because languages and tools are glamorous? Because they are the stuff of ideas and intellectual valour? Where rewriting is just plain hard, hard work? Work that few appreciate, because the work of rewriting is &#8220;invisible&#8221; in the finished code?<br /><br />In my essay about <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html" title="Still failing, still learning">still failing</a>, and again in my essay about <a href="http://weblog.raganwald.com/2007/08/bricks.html" title="Bricks">bricks</a>, I lamented the fact that what we can observe about projects and about code is only indirectly related to what is important. Rewriting is one of those things. You can look at code and say, &#8220;<a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html" title="Too much of a good thing: not all functions should be object methods">The Visitor Pattern adds needless cruft</a>.&#8221; But how do you look at code and see whether this is the best that can be done? How do you know whether the author banged it out in one go or spent days making it as simple and direct as possible?<br /><br />Getting back to the story of The Robe and The Moon, there is no doubt that shipping things that just work puts software into the hands of people that need it, just as Ryokan gave his robe to the burglar. But how distressing that we still fall far short of what we could be shipping, of what we could share with the world.<br /><br />Yes, I admit that my writing sucks. And worse, I admit that much of the code I&#8217;ve written in my life sucks in exactly the same way. And I&#8217;m going to do better.<br /><br />I&#8217;d like to start now. But first I have to get back to <a href="http://mcommons.com/about/jobs" title="We&#039;re Hiring!">work</a>.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html" title="permanent link">9:41 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Zen in the Art of Rewriting</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="6310501902193045422"></a> 				WTF? Your writing doesn't suck.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193680380000#c6310501902193045422" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:53 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6310501902193045422" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="236832406010528062"></a> 				Thanks, but honestly it could be better.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193680440000#c236832406010528062" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:54 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=236832406010528062" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1747600950451211147"></a> 				great, honest article.<BR/><BR/>how does one get to Carangie hall? practice, practice practice.<BR/><BR/>That probably wasn't the first time Ryokan gave someone all his belongs. Mastery of something does not come in a moment of great need, or even timely preparation.  Train daily to better yourself at all you do and gradually, over-time, that mastery will unfold itself.<BR/><BR/>But of course, work comes first :)<BR/><BR/>davidgurba.com<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193684040000#c1747600950451211147" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 2:54 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1747600950451211147" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4116770389107932487"></a> 				“If I had more time, I would have written a shorter letter."<BR/>Whether its from pascal or elliot the phrase is still good.<BR/><BR/>The trick is in the stopping I guess. Not stopping cause you don't have enough time but stopping when you know it is right to stop.  Most of our code that we write has to be stopped because of deadlines, but making sure you can go back and rewrite it allows it to get closer to "right" and usually shorter.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193688780000#c4116770389107932487" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.cylentware.com/wordpress" rel="nofollow">Chad</a> : 4:13 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4116770389107932487" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3589252835568007718"></a> 				Writing and programming are different in that the primary goal of programming is to solve some problem, and communicating with other people is the secondary goal.  Put another way, it doesn't matter how clear and direct the code is if it doesn't do what your customer wants.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193690700000#c3589252835568007718" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://wgz.org/chromatic/" rel="nofollow">chromatic</a> : 4:45 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3589252835568007718" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6707161790367178779"></a> 				<I>Writing and programming are different in that the primary goal of programming is to solve some problem, and communicating with other people is the secondary goal.</I><BR/><BR/>In the past, I've tried saying this to colleagues, explaining that if I can solve the problem faster in Language X than in Language Y, we should use X.<BR/><BR/>Or using idiom W instead of pattern Z.<BR/><BR/>But for some reason, the response was always, "that would be difficult for maintenance programmers to grasp, they are too junior to understand language X and idiom W."<BR/><BR/>It appears that programming is an activity where communicating with each other is far from secondary to communicating with the machine.<BR/><BR/>My experience is that people want communication with the machine AND with people. It is obviously true that if it doesn't work, nobody cares what it looks like. But it also isn't true that if it works, nobody cares what it looks like.<BR/><BR/>Once it works, people have very strong opinions about its form.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193691060000#c6707161790367178779" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:51 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6707161790367178779" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5357145446894838887"></a> 				<I>how do you look at code and see whether this is the best that can be done? How do you know whether the author banged it out in one go or spent days making it as simple and direct as possible?</I><BR/><BR/>You make it conventional to distribute software with its version history. And you build effective tools to browse version history.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193699820000#c5357145446894838887" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://scrapbook.akkartik.name" rel="nofollow">Kartik Agaram</a> : 7:17 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5357145446894838887" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="402650627784883693"></a> 				Just to clarify:<BR/><BR/>I am not claiming that there is a relationship between Zen and writing (be it blogs or software).<BR/><BR/>I found that something in a particular Zen story reminded me of the gap between what I feel and what I write, and then from there I went to one particular reason for the gap. There is, of course, no relationship between the meaning of the story and rewriting.<BR/><BR/>In fact, I can't even claim that I know what the Zen story is actually about. Maybe its intent is far removed from the feeling I took from it.<BR/><BR/>Oh well!<BR/><BR/>And as for the title, I intended it as a homage to <A HREF="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FZen-Art-Archery-Eugen-Herrigel%2Fdp%2F0375705090&tag=raganwald001-20&linkCode=ur2&camp=1789&creative=9325" REL="nofollow">one of my favourite books</A>. That book isn't about writing either.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193701560000#c402650627784883693" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:46 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=402650627784883693" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4690572597593664193"></a> 				<I>Work that few appreciate, because the work of rewriting is “invisible” in the finished code?</I><BR/><BR/>I feel that one very strongly. I found the following "pattern" on my own "Night-and-weekends" project:<BR/><BR/>1. I write client code as clearly/elegantly as I would like it to be<BR/><BR/>2. I struggle with the compiler (scala) and try to degrade the syntax just enough to get a compiling solution<BR/><BR/>3. I complete the implementation to get something which really works<BR/><BR/>4. I sweat a lot to rewrite the implementation to get it more simple, more to the point. In the process I may drop some "client" features to avoid an unreadable implementation.<BR/><BR/>5. I retire and meditate on all the people (including myself) who will later say:<BR/><BR/>-the client code could be better<BR/>-the implementation is a piece of cake, I would have written that in 2 hours<BR/>-the implementation is ugly<BR/><BR/>Now, the questions I ask myself are:<BR/><BR/>-is that possible to get to the final code more quickly?<BR/>-does it take just much more years of practice?<BR/>-are there some other techniques/idioms/languages which would get me there faster?<BR/><BR/>How those questions would apply to your writings? I suspect that there is a positive answer to the third question for both programming and writing.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193708160000#c4690572597593664193" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16484514586929815703" rel="nofollow">Eric</a> : 9:36 PM</div>
+
+								<span class="item-control blog-admin pid-868989312"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4690572597593664193" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7662897078779691679"></a> 				The difference is between writing a novel and writing poetry.<BR/><BR/>When you're coding, you have to write a novel.  The plot must not have any holes in it.  All characters must be consistent and fully researched. The prose will suffer because the prose is the least important part of a novel.  As long as it's serviceable in describing the plot and fleshing out the characters, it's "good enough".<BR/><BR/>Lucky for you, there are things like Anarchy Golf.. where you can write Poetry.  The plot is unimportant, and there aren't any characters.  It's the actual prose that matters.  Every letter of every word is important, and the finished product may only be one line of beauty.<BR/><BR/>So when you get harried from your coding... try some anarchy golf.  It's very Zen.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193722320000#c7662897078779691679" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 1:32 AM</div>
+
+								<span class="item-control blog-admin pid-2050274566"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7662897078779691679" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1845639137198349250"></a> 				If your writing sucked, people would just not read it. Your problem isn't that you're not explaining yourself, it's that you <I>are</I>, and some people don't like what you're saying. (In many cases because they are bozos.)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193751120000#c1845639137198349250" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Dan</span> : 9:32 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1845639137198349250" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5692717256922025574"></a> 				I honestly believe that writing is something we do for every body else and rewriting is for ourselves.<BR/>Is an urge to scratch that zone that we know exposes us to others and we judge it harshly from fear.<BR/>Anyway, your writing doesn't suck at all, or if it does, is an a way that's soul touching.<BR/>Keep sucking!!!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193846400000#c5692717256922025574" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Rafael Imas</span> : 12:00 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5692717256922025574" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1126736400628181428"></a> 				Zen Shorts is such an amazing children's book. I always wonder how much my daughter (4) gets out of it, but I get something out of it every time.<BR/><BR/>Funny how Muth is also the author of 'Stone Soup', another story that is familiar to many through 'The Pragmatic Programmer'.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1193942100000#c1126736400628181428" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16098483018096096360" rel="nofollow">Matt M</a> : 2:35 PM</div>
+
+								<span class="item-control blog-admin pid-525906948"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1126736400628181428" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="510031742227402149"></a> 				I've often found that in a rigorous code review, anything a maintenance programmer couldn't understand is likely to get all sorts of phantom "problems".  The fastest way to get through the development cycle to worry as much about readability up front as workability, and document anything the least bit tricky.<BR/><BR/>Of course, many organizations skimp on code review, but it does tend to lengthen the testing cycle.  Of course, you can skimp on the testing cycle...<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/10/zen-in-art-of-rewriting.html?showComment=1194832920000#c510031742227402149" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">AK</span> : 9:02 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=510031742227402149" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

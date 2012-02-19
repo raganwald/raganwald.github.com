@@ -1,0 +1,353 @@
+<html><head><title>Raganwald: If Sneetches with Stars use Java, and Sneetches without Stars use Ruby, who uses ML?</title>
+<meta http-equiv="refresh" content="5;url=if-sneetches-with-stars-use-java-and.html">
+
+<style>
+/* style modified from glish: http://www.glish.com/css/ */
+
+body{margin:0px 0px 0px 0px;font-family:trebuchet ms, verdana, sans-serif;background-color:white;}
+#Title{font-size:63px;padding-left:15px;padding-top:10px;text-transform:uppercase;font-family:trebuchet ms, verdana, sans-serif;}
+#Title a {text-decoration:none;color:inherit;}
+#Description{padding:0px;padding-top:10px;font-size:12px;font-weight:normal}
+.DateHeader{border-bottom:none;font-size:15px;text-align:left;margin-top:20px;margin-bottom:14px;padding:1px;padding-left:17px;color:gray;font-family:trebuchet ms, verdana, sans-serif;}
+.PostTitle{font-size:18px;font-weight:bold}
+.Post{padding-left:20px;margin-bottom:20px;text-indent:10px;padding-right:20px;line-height:22px}
+.PostFooter{margin-bottom:15px;margin-left:0px;color:black;font-size:10px}
+.comment-link {margin-left:.6em;}
+@media all {
+  #leftcontent{background-color:whitesmoke;border-right:2px dashed #000;border-bottom:0px dashed #000;float:left;padding-bottom:20px;margin-right:15px;padding:0px;width:67%;border-top:0px dashed #000}
+}
+@media handheld {
+  #leftcontent{border-right:0px dashed #000;float:none;margin:0 5% 0 5%;width:90%;}
+}
+.SideBarTitle{font-weight:bold;font-size:18px}
+h1{font-size:14px;padding-top:10px}
+a{text-decoration:none}
+a:hover{border-bottom:dashed 1px red}
+@media all {
+  #rightcontent{font-size:12px;height:100%;margin-left:0px;text-transform:none;padding-right:10px;background-color:white;}
+}
+@media handheld {
+  #rightcontent{margin:0 5% 0 5%;}
+}
+.blogComments{font-size:15px;text-align:left;margin-top:20px;margin-bottom:14px;padding:1px;padding-left:17px;color:gray;font-family:trebuchet ms, verdana, sans-serif;}
+.blogComment{margin-top:10px;margin-bottom:10px;color:black;text-indent:10px;padding-right:20px;line-height:22px}
+.deleted-comment {font-style:italic;color:gray;}
+.byline{margin-bottom:20px;margin-left:0px;margin-right:10px;color:black;font-size:10px;display:inline}
+#profile-container { }
+.profile-datablock { }
+.profile-img {display:inline;}
+.profile-img img {float:left;margin:0 10px 0px 0;border:4px solid #ccc;}
+#profile-container p { }
+#profile-container .profile-textblock { }
+.profile-data strong {display:block;}
+
+blockquote:first-letter {
+background: #f8f6f6 url(/assets/quoteleft.gif)left top no-repeat;
+letter-spacing: -.06em; padding-left:30px;font-size:1.6em; }
+
+blockquote {
+background: #f8f6f6 url(/assets/quoteright.gif) right bottom no-repeat;
+font-weight: normal; font-style:oblique; color: #444;
+margin: 0px 50px 10px 20px; padding: 0px 25px 0px 4px;
+line-height:1.5; border-top:1px solid #efefef;
+border-bottom:1px solid #efefef; }
+
+</style>
+<!-- Meta Information -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="MSSmartTagsPreventParsing" content="true" />
+<meta name="generator" content="Blogger" />
+<link rel="alternate" type="application/atom+xml" title="Raganwald (Atom 0.3)" href="http://weblog.raganwald.com/atom.xml" />
+<link rel="alternate" type="application/rss+xml" title="Raganwald (RSS 2.0)" href="http://weblog.raganwald.com/rss.xml" />
+<link rel="service.post" type="application/atom+xml" title="Raganwald" href="https://www.blogger.com/atom/7618424" />
+<link rel="service.post" type="application/atom+xml" title="Raganwald (Atom 1.0)" href="http://www.blogger.com/feeds/7618424/posts/full" />
+
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.blogger.com/rsd.g?blogID=7618424" />
+<style type="text/css">
+@import url("http://www.blogger.com/css/blog_controls.css");
+@import url("http://www.blogger.com/dyn-css/authorization.css?blogID=7618424");
+</style>
+
+
+
+<script type="text/javascript">
+    function raganwaldloader () {
+        var showlink = window.document.getElementById('showlink');
+        var codeincontext = window.document.getElementById('codeincontext');
+        if (showlink && codeincontext) {
+            showlink.onclick = function () { codeincontext.style.display = ''; };
+            showlink.style.textDecoration = 'underline';
+            showlink.title = 'show the code in context';
+        }
+    }
+</script>
+
+</head><body onLoad="javascript:raganwaldloader();">
+<div id="quickSub" style="position:absolute; visibility:hidden; z-index:1000;" onMouseOut="return timeqs();" 
+
+onMouseMove="return delayqs();"></div>
+<script language="JavaScript" src="/weblog/quicksub.js"><!-- quickSub (c) Jason Brome --></script>
+
+<div id="leftcontent">
+	<div id="Title" style="background: #FFFFFF; padding-bottom: 12px;">
+    <a href="http://weblog.raganwald.com/">
+	<img src="http://weblog.raganwald.com/assets/raganwald.png" width="352" height="90" border="0" alt="raganwald" title="raganwald, now with Web 2.0 beta goodness"/>
+	</a>
+
+  </div>
+
+
+   
+   
+        <div class="DateHeader">Sunday, October 08, 2006</div>
+   
+
+       <div class="Post"><a name="116033648506034653">&nbsp;</a>
+   <span class="PostTitle">
+
+If Sneetches with Stars use Java, and Sneetches without Stars use Ruby, who uses ML?</span>
+   <div style="clear:both;"></div><a href="http://en.wikipedia.org/wiki/ML_programming_language">ML</a> is a programming language featuring <a href="http://en.wikipedia.org/wiki/Type_inference">type inference</a>: you don’t have to encumber your code with type declarations, the compiler can figure them out for you. So… are type inference languages like ML for Sneetches <a href="http://steve-yegge.blogspot.com/2006/10/egomania-itself.html">with or without stars</a>? Or another kind of Sneetch entirely?<br /><br /><span style="font-style: italic;font-size:85%;" >Update</span><span style="font-size:85%;">: More than a few people have written that Steve Yegge's association of static typing with neatness and dynamic typing with slovenliness runs opposite to their impressions of the kinds of people who strongly prefer one or the other. I used Steve's terms in the original post, partly because I thought people would get the same joke I thought Steve was making. It look slike they don't, nobody wrote to say "LOL." I have changed the terms to something that represents what I think of the cultural divide between programmers who like Java and programmers who like Ruby.</span><br /><br />Let’s review. Sneetches with stars like to use a colour-coded label maker to label the drawers, boxes, and files in their office. Once glance at everything and you know what it holds. Sneetches with stars add extra labels even when you don’t need them. For example, if a box is labeled ‘tax receipts’, each piece of paper inside has a post-it note saying tax receipt’, even if it’s obviously a tax receipt and lives inside the tax receipts box.<h4 id="what_is_stariness">What is Stariness?</h4>Sneetches with stars like these languages we say are <em>statically typed</em>. What do we mean by the word static? We mean <em>it can be resolved at compile time</em>. Other words for this idea are <em>invariant</em> or <em>constant</em>. Sneetches with stars like languages where the type of each entity can be resolved at compile time.<br /><blockquote>Some people are always critical of vague statements. I tend rather to be critical of precise statements; they are the only ones which can correctly be labelled "wrong."</blockquote><div style="text-align: right;">Raymond Smullyan<br /></div><br />Let’s dive into this a little deeper. (My apologies to my readers who were actually paying attention to the stuff in first year computer science that isn’t a requirement for <a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">getting a job at BigCo</a>.) What does it mean when we say “something can be resolved at compile time”? That expression is laden with implementation details like assuming we’re using a compiler. But it’s a convenient short-hand for saying <em>something about the program that is true every time you run the program</em>.<br /><br />Consider the <code>final</code> declaration in Java. If you write:<br /><pre><code>final String snafu = "situation normal...";<br /></code></pre>We know that the variable <code>snafu</code> always holds a reference to the constant string <code>"situation normal..."</code>. No matter what data you feed to your program and how you mangle it, <code>snafu</code> will always be <code>"situation normal..."</code>. Do you agree? (Joe Campbell, put your hand down. Yes, there is a back door way you can change the contents of a <code>String</code> in Java.)<br /><br />Java can take advantage of this to perform <em>constant propagation</em>. Everywhere you write <code>snafu</code>, Java can substitute <code>"situation normal..."</code> and throw away the variable lookup. To get away from arguing about back doors in the <code>String</code> class, let’s consider one of the primitive types, a <code>boolean</code>. If you write:<br /><pre><code>final boolean foo = true;<br />// code without assignments to foo<br />if (foo) {<br />// do something<br />}<br />else {<br />// do something else<br />}<br /></code></pre>Wouldn’t you agree that the compiler can get rid of the variable lookup and the <code>if</code> statement? The path through the code is always through the <code>// do something</code> path every time you run the program.<br /><br />Now back to the word <em>stariness</em>. We really mean <em>the amount of stuff about the program that can be resolved at compile time</em>, or if you prefer, <em>the amount of stuff that is true every time you run the program</em>.<br /><br />Stuff that is always true is useful. For most programs, we have an idea in our head about “correctness.” What we mean when we talk about a program being correct is that it produces desirable results every time you run the program.<br /><blockquote>A formalist is one who cannot understand a theory unless it is meaningless.</blockquote>Stariness is thus similar to correctness. And that’s why a lot of people, the Sneetches with stars, are obsessed with it. Being able to “prove” something about their program (“the method call <code>foo.bar(5)</code> never throws a <code>MethodNotImplemented</code> exception”) feels a lot like being able to prove that their program is correct.<br /><br />It feels a lot like it, but it isn’t the same thing. The reason it isn’t the same thing is that while its true that a program throwing <code>MethodNotImplemented</code> exceptions is probably not correct, it’s not true that a program that doesn’t throw such exceptions <em>is</em> correct. It just feels, somehow, more likely to be correct because we’ve thrown out one of the infinite ways it can be incorrect.<br /><br />Now that we’ve dispatched that logically, let’s be clear about something: just because stariness does not enforce correctness, it doesn’t mean that stariness isn’t <strong>useful</strong>. Stariness is useful. Period, no debate.<h4 id="back_to_inferences">Back to inferences</h4>Type inference is also for Sneetches with stars.  A language with type inference resolves the type of each entity at compile time by inspecting the program and figuring the types out through inspection. It’s a lot like the way a compiler can look at the Java code above and figure out that you always <code>// do something</code> and you never <code>// do something else</code>. The code looks sorta like you could go either way, but the compiler knows better.<br /><br />Languages with type inference look like variables can have any type, but the compiler knows better. Remember the labels that the verbose declaration Sneetches with stars love? Type inference languages still have labels, but the labels are hidden inside of the files and boxes where you can’t see them.<br /><br />Remember when manufacturers used to put their labels <em>inside</em> clothes instead of right across the front? Same thing. The rules for what goes where are strictly enforced, it’s just that if you can figure out what goes where with a bit of common sense, you don’t need a label or a post-it note.<br /><br />Compare these two snippets of Java:<br /><pre><code>final String[] words = { "foo", "bar", "blitz" };<br />final int word_length = words.length;<br />final String[] anagrams = new String[word_length];<br /></code></pre>…and…<br /><pre><code>final words = { "foo", "bar", "blitz" };<br />final word_length = words.length;<br />final anagrams = new String[word_length];<br /></code></pre>Hey, if a variable is final, we can almost <strong>always</strong> figure out its type in Java. Making that work in the compiler is something an intern ought to be able to do over a Summer work term!<br /><br />So if we take a valid Java program and simply erased type declarations whenever we could logically deduce the type of the variables, but left them in whenever we were not sure of the final type of the variables, we would have exactly the same program. Nothing about it has changed except it has fewer symbols. It’s just as neat, it is just as static, it is no more or less correct than it was before we erased some symbols.<br /><br />And you over there itching to say something about IDE refactorings and auto-completions: None of those go away either. You can rename things and move things and press command-tab to get an object’s methods whenever you like. So… would you agree that type inference of this sort doesn’t change a neat program into a starless program? This isn’t about stariness versus starlessness, it’s about the obsessive-compulsive desire to label everything.<br /><br />The bottom line: <em>type inference does not change a statically typed language into a dynamically typed language</em>. It’s still starry.<h4 id="so_why_can8217t_the_Sneetches without stars_use_type_inference">So why can’t the Sneetches without stars use type inference?</h4>Think of types as being like values and objects like variables. A statically typed language is one where there are no type re-assignments. Some languages enforce this. But if you write a program in a static way, you can still reason about it. This is why lots of people think that we can “neaten up” languages like Ruby by adding type inference to the compiler: they're thinking about programs that are neat to begin with, but we happen to have written them in a language for Sneetches without stars.<br /><br />And whenever someone talks about a refactoring IDE or an auto-completing IDE for a dynamic language, they’re talking about performing some type inference on Ruby programs that are written in a static way. So… what’s the holdup? We said we could add type inference to Java in a Summer. Where’s the intern to add it to Ruby?<br /><blockquote>Programmed. In me somewhere, he thought, there is a matrix fitted in place, a grid screen that cuts me off from certain thoughts, certain actions. And forces me into others. I am not free. I never was, but now I know that; that makes it different.</blockquote><div style="text-align: right;">Philip K. Dick, "The Electric Ant"<br /></div><br />The problem is that the set of all programs that are "starry" is a subset of the set of all programs that parse correctly. So either not all starless programs are neat, or not all portions of a starless program are neat, or both.<br /><br />Let’s compare back to our Java snippet. Remember:<br /><pre><code>final words = { "foo", "bar", "blitz" };<br />final word_length = words.length;<br />final anagrams = new String[word_length];<br /></code></pre>The compiler could perform inference because it knows that the variables are not reassigned. They’re <em>immutable</em>. What happens if we erase the <code>final</code> keyword as well:<br /><pre><code>words = { "foo", "bar", "blitz" };<br />word_length = words.length;<br />anagrams = new String[word_length];<br /></code></pre>Now the job is much harder. We have to first infer which variables are final and then we can infer their types. Inferring finality can be done for a very restricted set of variables, such as some local variables. For a very large class of programs, we cannot infer the contents of a variable with less runtime complexity than running the program for every possible input. This is why compilers have limitations on the optimizations they can perform, and humans still need to do some thinking about writing fast programs.<br /><br />In starless languges, there is no <code>final</code> keyword on the types of objects.<br /><br />The type inference problem is exactly the same as the inferring the possible contents of a variable problem. The inferring the contents of a variable problem is doable for a restricted set of programs. And the way we tell the compiler that a variable is a member of this restricted set is with the <code>final</code> keyword.<br /><br />Likewise, the way we tell a compiler that the type of a variable is also restricted is that we use a language where the type of every variable is final. It’s the same thing: we don’t reassign final variables and we don’t change types on the fly.<br /><br />Starlessness is not about writing programs without labels. Starlessness is when you write dynamic programs. Dynamic doesn’t mean ‘unlabeled’. As I showed above, if the <code>final</code> keyword is there, the label is mostly optional. But if you don’t have <code>final</code>, you’re writing dynamic programs.<br /><br />Truly starless programs have dynamic types: <em>types that change at run time</em>. they are not always one thing or another. For example, what if you write an Object-Relational Mapper (“ORM”) that reflects on the database structure at run time. That is, you can change columns in a database table and you get new getters and setter methods in your program. <em>Without recompiling</em>.<br /><br />In a fully static language (with or without type inference), you can’t do that. Think of Java’s JDBC: you have to fool around with methods that get values and pass a column name as a parameter. Or maybe you create a hash. And C# is getting this capability, but of you look closely you still have to define the “type” of a query through the LINQ syntax.<h4 id="are_neat_freaks_ever_starless">Are Sneetches with stars ever starless?</h4>A dynamically typed language lets us define an object holding a database row with methods for each column. But we can’t know at compile time whether our program will throw a <code>MethodNotImplemented</code> exception because we don’t know whether someone will monkey with the database structure. That sounds bad.<br /><br />But what happens if you write the same thing in a neat program? Aha! a <code>SQLException</code>! it seems that there are dynamic things that must be dynamic no matter what you do.<br /><br />This is a specific case of Greenspunning. There are some facilities of dynamic languages that you are going to need. If you don’t have them built into your static language, you will build them yourself or use a framework that has already built them for you. Other examples I have seen in Java programs include:<br /><br />Spring and Hibernate;<br />Any use of <code>Class.forName(...)</code>;<br />Any use of dynamic proxies;<br /><br />In essence, you’re being a Sneetch without a star but twisting your starry language to permit starlessness. And for those portions of the program that are no longer nice, starry bundles that can be examined at compile time for invariant behaviour, you are indeed in dynamic territory and have to live with the risks.<br /><br />In my experience, all non-trivial starry programs contain this kind of starlessness. To my admittedly inexperienced eyes, starlessness is the hallmark of expert programming in starry languages ("expert" does not necessarily mean "more desirable," especially in the minds of those who believe that programs should be written and maintained by mediocre developers).<h4 id="eating_cake">Eating cake</h4>So… can we say that since you can write starless programs in neat languages, you can have the useful benefits of stariness when you need it and the flexibility of starlessness when you need that too? Isn’t that better?<br /><br />Yes, you <em>can</em> say that. And you may be right, for you. The <a href="http://boo.codehaus.org/Language+Guide">Boo</a> people believe that: their language has a <code>duck</code> keyword for when you feel like a Sneetch without a star. Be aware that at this moment in history, languages designed for Sneetches without stars seem to have much better features for writing starless programs than languages for Sneetches with stars. So my observation is this:<br /><br /><em>If you dislike the verbosity of starry languages like Java but like the feeling of safety, try a type inference language. Don’t go to a starless language if you don’t intend to actually write dynamically typed programs.</em><br /><br />My experience is that if you are frustrated by the amount of work you have to do to express the algorithms in your head, you should look at a language that removes your frustration. If you're using Java and don't like the verbosity, find a language that celebrates brevity while preserving static typing. But if you're using Java and find yourself pushing more and more logic out of java because its type system is too static or too inflexible, you should consider a language with a different approach to typing.<br /><blockquote>Computer languages differ not so much in what they make possible, but in what they make easy. </blockquote><div style="text-align: right;">Larry Wall<br /></div><h4 id="why_would_the_Sneetches without stars_use_starless_languages">Why would the Sneetches without stars use starless languages?</h4><em>Writing starless programs on top of neat languages is exactly the same thing as writing automatic memory management routines on top of a manually managed programming language or writing functional programs on top of a noun-centric object-oriented language.</em><br /><br />You can take that statement as an argument in favour of specialized languages for Sneetches without stars or as an argument against them. My guess is that the above statement is true and a Rorschach Inkblot: You will interpret it as confirmation of your existing prejudices.<div style="clear:both; padding-bottom: 0.25em;"></div>&nbsp;
+   <span class="PostFooter">
+   &para; <a href="http://weblog.raganwald.com/2006/10/if-sneetches-with-stars-use-java-and.html" title="permanent link">3:34 PM</a>
+
+<span class="item-action"><a href="http://www.blogger.com/email-post.g?blogID=7618424&amp;postID=116033648506034653" title="Email Post"><span class="email-post-icon">&nbsp;</span></a></span><span class="item-control admin-1604801951 pid-921744122"><a style="border:none;" href="http://www.blogger.com/post-edit.g?blogID=7618424&amp;postID=116033648506034653&amp;quickEdit=true" title="Edit Post"><span class="quick-edit-icon">&nbsp;</span></a></span> </span> 
+
+    </div>
+
+ 
+
+  <div class="blogComments">
+	<a name="comments"></a>
+			Comments:
+			
+			<div class="blogComment">
+				<a name="116034788736063333"></a> 				There are big "yes but" to using inference typing.<BR/><BR/>first, mixing inference with side effects is complicated O'caml weak types are a sample of this complexity. For example 2 programs with the same value denotation might not denote the same type.<BR/><BR/>second, inference typing leads to complicated (meaningful) error reporting. If I remeber well, Xavier Leroy himself told that useful error reporting is a matter of research by itself.<BR/><BR/>Remember : there is no silver bullets, only compromises and trends.<br />
+				<div class="byline"><a href="http://weblog.raganwald.com/2006/10/if-sneetches-with-stars-use-java-and.html#116034788736063333" title="permanent link">#</a> posted by <span class="anon-comment-author">nraynaud</span> : 6:51 PM</div>
+
+				<span class="item-control admin-1604801951 pid-1369880533"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116034788736063333" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+			</div>
+			
+			<div class="blogComment">
+				<a name="116034867053918206"></a> 				<I>If Neat Freaks use Java, and Slobs use Ruby...</I><BR/>A fallacy - so we need read no further.<br />
+				<div class="byline"><a href="http://weblog.raganwald.com/2006/10/if-sneetches-with-stars-use-java-and.html#116034867053918206" title="permanent link">#</a> posted by <a href="http://www.blogger.com/profile/4282727" rel="nofollow">Isaac Gouy</a> : 7:04 PM</div>
+
+				<span class="item-control admin-1604801951 pid-1861342529"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116034867053918206" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+			</div>
+			
+			<div class="blogComment">
+				<a name="116036048819956417"></a> 				I don’t know how something that fails to make the proper Foleyesque slobering noises about dynamic typing and Ruby on Rails managed to get voted up on reddit, but I am glad this did. It is a rather excellent article that manages to nail the issue without really taking sides. My only complaint is this: it gets the recommendation exactly wrong.<BR/><BR/>If you use a slobby language like python you will have to become extremely neat. If you work on a project with more than one programmer you will have to start documenting the types of every function in comments or you you will find yourself having discussions like “fred, does this method expect a list of hashes that map ints to strings, or a list of hashes that map ints to user objects?”. You will also have to be very serious about your testing strategy to make sure that you maintain the ability to refactor when you have a lot of code, otherwise it is impossible to know when you have broken something. If you have only 60% unit test coverage in some area, you will need to do a lot of manual testing to ensure you haven’t broken something with your refactoring.<BR/><BR/>Likewise if you work in a language where the compiler checks your types for you, you can be a lot sloppier. You can make interface changes and depend on the compiler (or a refactoring tool) to find all the various places you have just broken.<BR/><BR/>One should pick tools that correct ones own tendencies (or those of your team), not tools that exacerbate problems.  It may be that dynamic types appeal to slobs, but that does not mean that dynamic types are good for slobs.<BR/><BR/>So my recommendation would be this: if you are very precise about types, so much so that you can maintain them all in your head, then dynamic languages are the way to go–they will offer you flexibility and less writing out of types. If you find yourself slipping a bit in your precision, then you want a compiler which checks static types for you. I know that I am a slob, so I think that type inference is in my future.<br />
+				<div class="byline"><a href="http://weblog.raganwald.com/2006/10/if-sneetches-with-stars-use-java-and.html#116036048819956417" title="permanent link">#</a> posted by <a href="http://empathybox.com/" rel="nofollow">jay</a> : 10:21 PM</div>
+
+				<span class="item-control admin-1604801951 pid-1369880533"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116036048819956417" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+			</div>
+			
+			<div class="blogComment">
+				<a name="116036485101527467"></a> 				Jay:<BR/><BR/>I appreciate your arguments, and I agree with you rrecommendations.<BR/><BR/>That being said, I think they are orthogonal to my own recommendation, which is to use a statically typed language if your types never change.<BR/><BR/>'Slovenly languages' aren't really for people who are careless, but rather they are for people who sometimes do one thing with a variable, and sometimes another.<BR/><BR/>In my own case, one of the things I regularly do with Ruby is extend pre-existing types with new functionality.<BR/><BR/>This is a big no-no with the neatness crowd. This is why Java really permits you to mark a class final: so that other programmers cannot extend it.<br />
+				<div class="byline"><a href="http://weblog.raganwald.com/2006/10/if-sneetches-with-stars-use-java-and.html#116036485101527467" title="permanent link">#</a> posted by <a href="http://www.blogger.com/profile/3914785" rel="nofollow">Reginald Braithwaite</a> : 11:34 PM</div>
+
+				<span class="item-control admin-1604801951 pid-921744122"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116036485101527467" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+			</div>
+			
+			<div class="blogComment">
+				<a name="116036500455474185"></a> 				nreynaud:<BR/><BR/><I>There are big "yes but" to using inference typing.</I><BR/><BR/>Your point about error reporting is particularly salient.<BR/><BR/>As to silver bullets, Wasabi... oh never mind, I <A HREF="http://weblog.raganwald.com/2006/09/wasabi-cannot-cure-rotten-fish.html" REL="nofollow">said that already</A>.<br />
+				<div class="byline"><a href="http://weblog.raganwald.com/2006/10/if-sneetches-with-stars-use-java-and.html#116036500455474185" title="permanent link">#</a> posted by <a href="http://www.blogger.com/profile/3914785" rel="nofollow">Reginald Braithwaite</a> : 11:36 PM</div>
+
+				<span class="item-control admin-1604801951 pid-921744122"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116036500455474185" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+			</div>
+			
+			<div class="blogComment">
+				<a name="116036508918653437"></a> 				Isaac:<BR/><BR/>Thanks, and I would say that is a static property of this blog.<br />
+				<div class="byline"><a href="http://weblog.raganwald.com/2006/10/if-sneetches-with-stars-use-java-and.html#116036508918653437" title="permanent link">#</a> posted by <a href="http://www.blogger.com/profile/3914785" rel="nofollow">Reginald Braithwaite</a> : 11:38 PM</div>
+
+				<span class="item-control admin-1604801951 pid-921744122"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116036508918653437" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+			</div>
+			
+			<div class="blogComment">
+				<a name="116038351190351254"></a> 				Me thinks me would go insane trying to write monadic code in Haskell without type inference.<br />
+				<div class="byline"><a href="http://weblog.raganwald.com/2006/10/if-sneetches-with-stars-use-java-and.html#116038351190351254" title="permanent link">#</a> posted by <span class="anon-comment-author">Johan Tibell</span> : 4:45 AM</div>
+
+				<span class="item-control admin-1604801951 pid-1369880533"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116038351190351254" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+			</div>
+			
+			<div class="blogComment">
+				<a name="116041006788322500"></a> 				Correctness is the killer app, it saves me from errors. But we're not there yet.<BR/><BR/>The problem with correctness is that it doesn't scale well. Languages that come from the academic world (things ending with calculus) have correctness, but are very hard to work with for sizeable problems. Java attacked this for small, single purpose applications for handheld devices, but the language didn't scale to handle the problems we're solving today. Ruby and other dynamic languages are worse at correctness, but they have less code to prove.<BR/><BR/>Meta-programming, like frameworks, APIs and constructs before, simply move the correctness to a place where it's easier to prove. Easier just because you have more people looking at it (the brute force approach). So if I have to judge for correctness, I think they're all equally bad, or equally good, depending on the half of the glass.<BR/><BR/>I open up a lot of code for access through remote APIs, the moment I start worrying about operations and types that are not enforced by the language, is the moment I stop caring about Java-like correctness. I just want to write less code, so it's easier to prove.<BR/><BR/>Neatness is separate from correctness, it's our need to keep the cognitive load minimal. I don't think Java is more neat than Ruby (or the other way around), they're just neat in different ways. Verbosity is neatness for some, a big mess for others.<BR/><BR/>And then, there's status quo ...<br />
+				<div class="byline"><a href="http://weblog.raganwald.com/2006/10/if-sneetches-with-stars-use-java-and.html#116041006788322500" title="permanent link">#</a> posted by <a href="http://labnotes.org" rel="nofollow">assaf</a> : 12:07 PM</div>
+
+				<span class="item-control admin-1604801951 pid-1369880533"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116041006788322500" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+			</div>
+			
+			
+	  
+        <br /> <br />
+        
+
+	<br /> <br />
+	<a href="http://weblog.raganwald.com/">&lt;&lt; Home</a>
+    </div>
+
+
+
+
+
+</div>
+
+<div id="rightcontent">
+
+	<div id="Description">I didn't do it! Nobody saw me do it! Can't prove anything!
+
+--Bart Simpson</div>
+
+
+	<p>
+<div id="profile-container">
+          <h2 class="sidebar-title">More...</h2>
+<dl class="profile-datablock">
+          <p class="profile-link"> <a href="http://www.raganwald.com/RegBraithwaite.pdf">Reg 
+
+Braithwaite</a> </p>
+          <p class="profile-link"> <a href="http://weblog.raganwald.com/">Recent Posts</a></p>
+          <p class="profile-link"> <script type="text/javascript" src="http://del.icio.us/feeds/js/networkbadge/raganwald?name;icon=s"></script></p>
+          
+</dl>
+          </div>    
+
+
+<div class="SideBarTitle">Popular</div>
+
+    <a href="http://weblog.raganwald.com/2006/09/wasabi-cannot-cure-rotten-fish.html">Wasabi cannot cure rotten fish</a> /
+
+    <a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+    <a href="http://weblog.raganwald.com/2006/08/dear-agile-metaprogrammer.html">Dear Agile Metaprogrammer</a> /
+
+    <a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a> /
+
+    <a href="http://weblog.raganwald.com/2006/04/why-do-we-resist-idea-that-programming.html">Why do we resist the idea that programming might be hard?</a> /
+
+    <a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html">I'll take Static Typing for $800, Alex</a> /
+
+    <a href="http://weblog.raganwald.com/2006/03/fair-and-balanced-look-at-static-vs.html">A
+    "fair and balanced" look at the static vs. dynamic typing schism</a> /
+
+    <a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I've learned from failure</a> /
+    
+    <a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html">Finding the Signal-to-Noise Ratio in the Never-Ending Language Debate</a> /
+    
+    <a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a> /
+    
+    <a href="http://weblog.raganwald.com/2005/10/im-not-young-enough-to-know-everything.html">I'm not young enough to know everything</a> /
+    
+    <a href="http://weblog.raganwald.com/2005/06/working-code-attracts-people-who-want.html">Working code attracts people who want to code</a> /
+    
+    <a href="http://weblog.raganwald.com/2005/03/are-you-thinking-of-working-for-start.html">Are you thinking of working for a start up?</a> /
+    
+    <a href="http://weblog.raganwald.com/2004/10/beware-of-turing-tar-pit.html">Beware of the Turing Tar-Pit</a> /
+    
+    <a href="http://weblog.raganwald.com/2004/08/taking-work-personally.html">Taking Work Personally</a>
+    
+    	<br /></p>
+    
+	<br />
+
+</ItemPage>
+
+<div class="SideBarTitle">History</div>
+
+
+    <a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">July 2004</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">August 2004</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">September 2004</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">October 2004</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">November 2004</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">December 2004</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">January 2005</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">February 2005</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">March 2005</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">April 2005</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">June 2005</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">July 2005</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">August 2005</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">September 2005</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">October 2005</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">November 2005</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">January 2006</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">February 2006</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">March 2006</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">April 2006</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">May 2006</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">June 2006</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">July 2006</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">August 2006</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">September 2006</a> /
+
+    <a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">October 2006</a> /
+
+			<script type="text/javascript" language="Javascript">if (location.href.indexOf("archive")!=-1) document.write("<strong><a href=\"http://weblog.raganwald.com/\">Current Posts</a></strong>");</script>
+<br/></p>
+<p></p>
+
+<p class="profile-link"> <a href="http://feeds.feedburner.com/raganwald"><span style="font-family: 
+
+verdana, sans-serif;
+font-size: 10px;
+font-weight:bold;
+text-decoration:none;
+color: white;
+background-color: #F60;
+border:1px solid;
+border-color: #FC9 #630 #330 #F96;
+padding:0px 3px 0px 3px;
+margin:0px;">RSS</span></a></p>
+
+<!-- Start of Flickr Badge -->
+<style type="text/css">
+#flickr_badge_source_txt {padding:0; font: 11px Arial, Helvetica, Sans serif; color:#666666;}
+#flickr_badge_icon {display:block !important; margin:0 !important; border: 1px solid rgb(0, 0, 0) !important;}
+#flickr_icon_td {padding:0 5px 0 0 !important;}
+.flickr_badge_image {text-align:center !important;}
+.flickr_badge_image img {border: 1px solid black !important;}
+#flickr_www {display:block; padding:0 10px 0 10px !important; font: 11px Arial, Helvetica, Sans serif !important; color:#3993ff !important;}
+#flickr_badge_uber_wrapper a:hover,
+#flickr_badge_uber_wrapper a:link,
+#flickr_badge_uber_wrapper a:active,
+#flickr_badge_uber_wrapper a:visited {text-decoration:none !important; background:inherit !important;color:#3993ff;}
+#flickr_badge_wrapper {background-color:#ffffff;border: solid 1px #000000}
+#flickr_badge_source {padding:0 !important; font: 11px Arial, Helvetica, Sans serif !important; color:#666666 !important;}
+</style>
+<table id="flickr_badge_uber_wrapper" cellpadding="0" cellspacing="10" border="0"><tr><td><a href="http://www.flickr.com" id="flickr_www">www.<strong style="color:#3993ff">flick<span style="color:#ff1c92">r</span></strong>.com</a><table cellpadding="0" cellspacing="10" border="0" id="flickr_badge_wrapper">
+<script type="text/javascript" src="http://www.flickr.com/badge_code_v2.gne?count=5&display=random&size=t&layout=v&source=user&user=17454406%40N00"></script>
+</table>
+</td></tr></table>
+<!-- End of Flickr Badge -->
+
+
+</div>
+
+
+
+</body>
+</html>

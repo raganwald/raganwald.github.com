@@ -1,0 +1,505 @@
+<html> 
+<head>
+        
+        <title>Why Why Functional Programming Matters Matters</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Sunday, March 11, 2007</div>
+			
+
+			<div class="Post"><a name="1990194990621630996">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html" title="permanent link">Why Why Functional Programming Matters Matters</a></span>
+					<div style="clear:both;"></div>I recently re-read the amazing paper <a href="http://www.math.chalmers.se/~rjmh/Papers/whyfp.html">Why Functional Programming Matters</a> (&#8220;WhyFP&#8221;). Although I thought that I understood WhyFP when I first read it a few years ago, when I had another look last weekend I suddenly understood that I had missed an important message.<sup>1</sup><br /><br />Now obviously (can you guess from the title?) the paper is about the importance of one particular style of programming, functional programming. And when I first read the paper, I took it at face value: I thought, &#8220;Here are some reasons why functional programming languages matter.&#8221;<br /><br />On re-reading it, I see that the paper contains insights that apply to programming in general. I don&#8217;t know why this surprises me. The fact is, programming language design revolves around program design. A language&#8217;s design reflects the opinions of its creators about the proper design of programs.<br /><br />In a very real sense, the design of a programming language is a strong expression of the opinions of the designer about good programs. When I first read WhyFP, I thought the author was expressing an opinion about the design of good programming languages. Whereas on the second reading, I realized he was expressing an opinion about the design of good programs.<br /><br /><strong>Can we add though subtraction?</strong><br /><br /><blockquote>It is a logical impossibility to make a language more powerful by omitting features, no matter how bad they may be.</blockquote><br />Is this obvious? So how do we explain that one reason Java is considered &#8220;better than C++&#8221; is because it omits manual memory management? And one reason many people consider Java &#8220;better than Ruby&#8221; is because you cannot open base classes like <code>String</code> in Java? So no, it is not obvious. Why not?<br /><br />The key is the word <em>better</em>. It&#8217;s not the same as the phrase <em>more powerful</em>.<sup>2</sup> The removal or deliberate omission of these features is an expression about the idea that programs which do not use these features are better than programs which do. Any feature (or removal of a feature) which makes the programs written in the language better makes the language better. Thus, it <em>is</em> possible to make a language &#8220;better&#8221; by removing features that are considered harmful,<sup>3</sup> if by doing so it makes programs in the language better programs.<br /><br />In the opinion of the designers of Java, programs that do not use <code>malloc</code> and <code>free</code> are safer than those that do. And the opinion of the designers of Java is that programs that do not modify base classes like <code>String</code> are safer than those that do. The Java language design emphasizes a certain kind of safety, and to a Java language designer, safer programs are better programs.<br /><br />&#8220;More powerful&#8221; is a design goal just like &#8220;safer.&#8221; But yet, what does it mean? We understand what a safer language is. It&#8217;s a language where programs written in the language are safer. But what is a &#8220;more powerful&#8221; language? That programs written in the language are more powerful? What does that mean? Fewer symbols (the &#8220;golf&#8221; metric)?<br /><br />WhyFP asserts that you cannot make a language more powerful through the removal of features. To paraphrase an argument from the paper, <em>if removing harmful features was useful by itself, C and C++ programmers would simply have stopped using</em> <code>malloc</code> <em>and</em> <code>free</code> <em>twenty years ago</em>. Improving on C/C++ was not just a matter of removing <code>malloc</code> and <code>free</code>, it was also a matter of adding automatic garbage collection.<br /><br /><blockquote>This space, wherein the essay ought to argue that Java compensates for its closed base classes by providing a more powerful substitute feature, left intentionally blank.</blockquote><br />At the same time, there is room for arguing that some languages are improved by the removal of harmful features. To understand why they may be improved but not more powerful, we need a more objective definition of what it means for a language to be &#8220;more powerful.&#8221; Specifically, what quality does a more powerful programming language permit or encourage in programs?<br /><br />When we understand what makes a program &#8220;better&#8221; in the mind of a language designer, we can understand the choices behind the language.<br /><br /><strong>Factoring</strong><br /><br />Factoring a program is the act of dividing it into units that are composed to produce the working software.<sup>4</sup> Factoring happens as part of the design. (<em>Re</em>-factoring is the act of rearranging an existing program to be factored in a different way). If you want to compare this to factoring in number theory, a well designed program has lots of factors, like the number <code>3,628,800</code> (<code>10!</code>). A <a href="http://www.laputan.org/mud/">Big Ball of Mud</a> is like the number <code>3,628,811</code>, a prime.<br /><br />Composition is the construction of programs from smaller programs. So factoring is to composition as division is to multiplication.<br /><br />Factoring programs isn&#8217;t really like factoring simple divisors. The most important reason is that programs can be factored in orthogonal ways. When you break a program into subprograms (using methods, subroutines, functions, what-have-you), that&#8217;s one axis of factoring. When you break an a modular program up into modules, that&#8217;s another, orthogonal axis of factoring.<br /><br />Programs that are well-factored are more desirable than programs that are poorly factored.<br /><br /><blockquote>In computer science, <strong>separation of concerns</strong> (SoC) is the process of breaking a program into distinct features that overlap in functionality as little as possible. A concern is any piece of interest or focus in a program.<br />  <br />  SoC is a long standing idea that simply means a large problem is easier to manage if it can be broken down into pieces; particularly so if the solutions to the sub-problems can be combined to form a solution to the large problem.<br />  <br />  The term separation of concerns was probably coined by Edsger W. Dijkstra in his paper <a href="http://www.cs.utexas.edu/users/EWD/transcriptions/EWD04xx/EWD447.html">On the role of scientific thought</a>.</blockquote><br />&#8212;Excerpts from the Wikipedia entry on <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">Separation of Concerns</a><br /><br />Programs that separate their concerns are well-factored. There&#8217;s a principle of software development, <a href="http://www.amazon.com/gp/product/0201379430?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=211189&amp;creative=374929&amp;creativeASIN=0201379430" title="Object Design: Roles, Responsibilities, and Collaborations">responsibility-driven design</a>. Each component should have one clear responsibility, and it should have everything it needs to carry out its responsibility.<br /><br />This is the separation of concerns again. Each component of a program having one clearly defined responsibility means each concern is addressed in one clearly defined place.<br /><br /><blockquote>Let’s ask a question about Monopoly (and Enterprise software). Where do the rules live? In a noun-oriented design, the rules are smooshed and smeared across the design, because every single object is responsible for knowing everything about everything that it can ‘do’. All the verbs are glued to the nouns as methods.</blockquote><div>&#8212;<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a></div><br /><br />In a game design where you have important information about a rule smeared all over the object hierarchy, you have very poor separation of concerns. It looks at first like there&#8217;s a clear factoring &#8220;Baltic Avenue has a method called <code>isUpgradableToHotel</code>,&#8221; but when you look more closely you realize that every object representing a property is burdened with knowing almost all of the rules of the game.<br /><br /><div class="book"><a href="http://www.amazon.com/gp/product/026256100X?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=026256100X"><img border="0" src="http://weblog.raganwald.com/uploaded_images/seasoned_schemer.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=026256100X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br /><a href="http://www.amazon.com/gp/product/026256100X?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=026256100X">The Seasoned Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=026256100X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> is devoted to the myriad uses of first class functions. This book is approachable and a delight to read, but the ideas are provocative and when you close the back cover you will be able to compose programs from functions in powerful new ways.<br><br></div>The concerns are not clearly separated: there&#8217;s no one place to look and understand the behaviour of the game.<br /><br />Programs that separate their concerns are better programs than those that do not. And languages that facilitate this kind of program design are better than those that hamper it.<br /><br /><strong>Power through features that separate concerns</strong><br /><br />One thing that makes a programming language &#8220;more powerful&#8221; in my opinion is the provision of more ways to factor programs. Or if you prefer, <em>more axes of composition</em>. The more different ways you can compose programs out of subprograms, the more powerful a language is. <br /><br />Do you remember <a href="http://en.wikipedia.org/wiki/Structured_programming">Structured Programming</a>? The gist is, you remove <code>goto</code> and you replace it with well-defined control flow mechanisms: some form of subroutine call and return, some form of selection mechanism like Algol-descendant <code>if</code>, and some form of repetition like Common Lisp&#8217;s <code>loop</code> macro.<br /><br />Dijkstra&#8217;s view on structured programming was that it promoted the separation of concerns. The factoring of programs into blocks with well-defined control flow made it easy to understand blocks and rearrange programs in different ways. Programs with indiscriminate jumps did not factor well (if at all): they were difficult to understand and often could not be rearranged at all.<br /><br />Structured <a href="http://dmoz.org/Computers/Programming/Languages/Assembly/68k/">68k ASM</a> programming is straightforward in theory. You just need a lot of boilerplate, design patterns, and the discipline to stick to your convictions. But of course, lots of 68k ASM programming in practice is only partially structured. Statistically speaking, 68k ASM is not a structured programming language even though structured programming is possible in 68k ASM.<br /><br />Structured Pascal programming is straightforward both in theory and in practice. Pascal facilitates separation of concerns through structured programming. So we say that Pascal &#8220;is more powerful than 68k ASM&#8221; to mean that in practice, programs written in Pascal are more structured than programs written in 68k ASM because Pascal provides facilities for separating concerns that are missing in 68k ASM.<br /><br /><strong>For example: working with lists</strong><br /><br />Consider this snippet of iterative code:<br /><br /><pre class="textmate-source sunburst"><br /><span class="source source_java"><span class="storage storage_type storage_type_java">int</span> numberOfOldTimers = <span class="constant constant_numeric constant_numeric_java">0</span>;<br /><span class="meta meta_definition meta_definition_constructor meta_definition_constructor_java"><span class="entity entity_name entity_name_function entity_name_function_constructor entity_name_function_constructor_java">for</span> <span class="meta meta_definition meta_definition_param-list meta_definition_param-list_java">(<span class="storage storage_type storage_type_java">Employee</span> emp: employeeList</span>) </span>{<br /><span class="meta meta_definition meta_definition_constructor meta_definition_constructor_java">    <span class="entity entity_name entity_name_function entity_name_function_constructor entity_name_function_constructor_java">for</span> <span class="meta meta_definition meta_definition_param-list meta_definition_param-list_java">(<span class="storage storage_type storage_type_java">Department</span> dept: departmentsInCompany</span>) </span>{<br />        <span class="keyword keyword_control keyword_control_java">if</span> (emp.getDepartmentId() <span class="keyword keyword_operator keyword_operator_comparison keyword_operator_comparison_java">==</span> dept.getId() <span class="keyword keyword_operator keyword_operator_logical keyword_operator_logical_java">&amp;&amp;</span> emp.getYearsOfService() <span class="keyword keyword_operator keyword_operator_comparison keyword_operator_comparison_java">&gt;</span> dept.getAge()) {<br />            <span class="keyword keyword_operator keyword_operator_increment-decrement keyword_operator_increment-decrement_java">++</span>numberOfOldTimers;<br />        }<br />    }<br />}<br /></span><br /></pre><br />This is an improvement on older practices.<sup>5, 6</sup> For one thing, the <code>for</code> loops hide the implementation details of iterating over <code>employeeList</code> and <code>departmentsInCompany</code>. Is this better because you have less to type? Yes. Is it better because you eliminate the fence-post errors associated with loop variables? Of course.<br /><br />But most interestingly, you have the beginnings of a <em>separation of concerns</em>: how to iterate over a single list is separate from what you do in the iteration.<br /><br /><blockquote>Try calling a colleague on the telephone and explaining what we want as succinctly as possible. Do you say &#8220;We want a loop inside a loop and inside of that an if, and&#8230;&#8221;? Or do you say &#8220;We want to count the number of employees that have been with the company longer than their departments have existed.&#8221;</blockquote><br />One problem with the <code>for</code> loop is that it can only handle one loop at a time. We have to nest loops to work with two lists at once. This is patently wrong: there&#8217;s nothing inherently nested about what we&#8217;re trying to do. We can demonstrate this easily: try calling a colleague on the telephone and explaining what we want as succinctly as possible. Do you say &#8220;We want a loop inside a loop and inside of that an if, and&#8230;&#8221;?<br /><br />No, we say, &#8220;We want to count the number of employees that have been with the company longer than their departments have existed.&#8221; There&#8217;s no discussion of nesting.<br /><br />In this case, a limitation of our tool has caused our concerns to intermingle again. The concern of &#8220;How to find the employees that have been with the company longer than their departments have existed&#8221; is intertwined with the concern of &#8220;count them.&#8221; Let&#8217;s try a different notation that separates the details of <em>how to find</em> from the detail of <em>counting what we&#8217;ve found</em>:<br /><br /><pre class="textmate-source sunburst"><br /><span class="source source_ruby">old_timers = (employees * departments).select <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|emp, dept|<br />  emp.department_id == dept.id &amp;&amp; emp.years_of_service &gt; dept.age<br /><span class="keyword keyword_control keyword_control_ruby">end</span><br />number_of_old_timers = old_timers.size<br /></span><br /></pre><br />Now we have separated the concern of finding from counting. And we have hidden the nesting by using the <code>*</code> operator to create a Cartesian product of the two lists. Now let&#8217;s look at what we used to filter the combined list, <code>select</code>. The difference is more than just semantics, or counting characters, or the alleged pleasure of fooling around with closures.<br /><br /><div class="book"><br>  <a name="evtst|a|0521644089" href="http://www.amazon.com/gp/product/0521644089?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521644089"><img src="http://weblog.raganwald.com/uploaded_images/haskell_school_of_expression.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;amp;amp;o=1&amp;a=0521644089" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br>I’m not a Haskell user (yet), but <a name="evtst|a|0521644089" href="http://www.amazon.com/gp/product/0521644089?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521644089">The Haskell School of Expression: Learning Functional Programming through Multimedia</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;amp;amp;o=1&amp;a=0521644089" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> has received rave reviews and comes with solid recommendations. It’s on my <a href="http://www.amazon.com/gp/registry/wishlist/3A2XEHODQK2WP/ref=wl_web/">wish list</a> if you’re feeling generous!<br><br></div><code>*</code> and <code>select</code> facilitates separating the concerns of how to filter things (like iterate over them applying a test) from the concern of what we want to filter. So languages that make this easy are more powerful than languages that do not. In the sense that they facilitate additional axes of factoring.<br /><br /><strong>The Telephone Test</strong><br /><br />Let&#8217;s look back a few paragraphs. We have an example of the &#8220;Telephone Test:&#8221; when code very closely resembles how you would explain your solution over the telephone, we often say it is &#8220;very high level.&#8221; The usual case is that such code expresses a lot more <em>what</em> and a lot less <em>how</em>. The concern of what has been very clearly separated from the concern of how: you can&#8217;t even <em>see</em> the how if you don&#8217;t go looking for it.<br /><br />In general, we think this is a good thing. But it isn&#8217;t free: somewhere else there is a mass of code that supports your brevity. When that extra mass of code is built into the programming language, or is baked into the standard libraries, it is nearly free and obviously a Very Good Thing. A language that doesn&#8217;t just separate the concern of how but does the work for you is very close to &#8220;something for nothing&#8221; in programming.<br /><br />But sometimes you have to write the <em>how</em> as well as the <em>what</em>. It isn&#8217;t always handed to you. In that case, it is still valuable, because the resulting program still separates concerns. It still factors into separate components. The components can be changed.<br /><br />I recently separated the concern of describing &#8220;how to generate sample curves for some data mining&#8221; from the concern of &#8220;managing memory when generating the curves.&#8221; I did so by writing my own lazy evaluation code (Both the <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">story</a> and the <a href="http://raganwald.com/source/lazy_lists.html">code</a> are on line). Here&#8217;s the key &#8220;what&#8221; code that generates an infinite list of parameters for sample bezi&eacute;r curves:<br /><br /><pre class="textmate-source sunburst"><br /><span class="source source_ruby"><span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">magnitudes</span></span><br />  <span class="support support_class support_class_ruby">LazyList</span>.binary_search(<span class="constant constant_numeric constant_numeric_ruby">0.0</span>, <span class="constant constant_numeric constant_numeric_ruby">1.0</span>)<br /><span class="keyword keyword_control keyword_control_ruby">end</span><br /><br /><span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">control_points</span></span><br />  <span class="support support_class support_class_ruby">LazyList</span>.cartesian_product(magnitudes, magnitudes) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|x, y|<br />    <span class="support support_class support_class_ruby">Dictionary</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>( <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; x, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span> =&gt; y )<br />  <span class="keyword keyword_control keyword_control_ruby">end</span><br /><span class="keyword keyword_control keyword_control_ruby">end</span><br /><br /><span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">order_one_flows</span></span> args = {}<br />  height, width = (args[<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>height</span>] || <span class="constant constant_numeric constant_numeric_ruby">100.0</span>), (args[<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>width</span>] || <span class="constant constant_numeric constant_numeric_ruby">100.0</span>)<br />  <span class="support support_class support_class_ruby">LazyList</span>.cartesian_product(<br />      magnitudes, control_points, control_points, magnitudes<br />  ) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|initial_y, p1, p2, final_y|<br />    <span class="support support_class support_class_ruby">FlowParams</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(<br />      height, width, initial_y * height,<br />      <span class="support support_class support_class_ruby">CubicBezierParams</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(<br />        <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; width,          <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span> =&gt; final_y * height,<br />        <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x1</span> =&gt; p1.x * width,  <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y1</span> =&gt; p1.y * height,<br />        <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x2</span> =&gt; p2.x * width,  <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y2</span> =&gt; p2.y * height<br />      )<br />    )<br />  <span class="keyword keyword_control keyword_control_ruby">end</span><br /><span class="keyword keyword_control keyword_control_ruby">end</span><br /></span><br /></pre><br />That&#8217;s it. Just as I might tell you on the phone: &#8220;Magnitudes&#8221; is a list of numbers between zero and one created by repeatedly dividing the intervals in half, like a binary search. &#8220;Control Points&#8221; is a list of the Cartesian product of magnitudes with itself, with one magnitude assigned to <code>x</code> and the other to <code>y</code>. And so forth.<br /><br />I will not say that the sum of this code and the code that actually implements infinite lists is shorter than imperative code that would intermingle loops and control structures, <a href="http://www.amazon.com/gp/product/B000002J27?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=B000002J27" title="A Trick of the Tail by Genesis, Track 2, Entangled">entangling</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=B000002J27" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> <em>what</em> with <em>how</em>. I will say that it separates the concerns of what and how, and it separates them in a different way than <code>select</code> separated the concerns of what and how.<br /><br /><strong>So why does &#8220;Why Functional Programming Matters&#8221; matter again?</strong><br /><br />The great insight is that better programs separate concerns. They are factored more purely, and the factors are naturally along the lines of responsibility (rather than in Jenga piles of <code>abstract</code> <code>virtual</code> <code>base</code> <code>mixin</code> <code>module</code> <code>class</code> <code>proto_</code> <code>extends</code> <code>private</code> <code>implements</code>). Languages that facilitate better separation of concerns are more powerful in practice than those that don&#8217;t.<br /><br />WhyFP illustrates this point beautifully with the same examples I just gave: <a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">first-class functions</a> and <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">lazy evaluation</a>, both prominent features of modern functional languages like Haskell.<br /><br />WhyFP&#8217;s value is that it expresses an opinion about what makes programs better. It backs this opinion up with reasons why modern functional programming languages are more powerful than imperative programming languages. But even if you don&#8217;t plan to try functional programming tomorrow, the lessons about better programs are valuable for your work in <em>any</em> language today.<br /><br />That&rsquo;s why <a href="http://www.math.chalmers.se/~rjmh/Papers/whyfp.html">Why Functional Programming Matters</a> matters.<br /><br /><hr /><ol><li>And now I&#8217;m worried: what am I <em>still</em> missing?</li><br /><li>Please let&#8217;s not have a discussion about <a href="http://en.wikipedia.org/wiki/Turing-complete">Turing Equivalence</a>. Computer Science &#8220;Theory&#8221; tells us &#8220;there&#8217;s no such thing as more powerful.&#8221; Perhaps we share the belief that <em>In theory, there&#8217;s no difference between theory and practice. But in practice, there is</em>.</li><br /><li>I am not making the claim that <em>I</em> consider memory management or unsealed base classes harmful, but I argue that there exists at least one person who does.</li><br /><li>The word &#8220;factor&#8221; has been a little out of vogue in recent times. But thanks to an excellent <a href="http://programming.reddit.com/info/18td4/comments">post on reddit</a>, it could make a comeback.</li><br /><li>So much so that we won&#8217;t even bother to show what loops looked like in the days of <code>for (int i = 0; i &lt; employeeList.size(); ++i)</code>. </li><br /><li>Another organization might merge employees and departments, or have each department &ldquo;own&rdquo; a collection of employees. This makes our example easier, but now the <em>data</em> doesn&rsquo;t factor well. Everything we&rsquo;ve learned from databases in the last forty years tells us that we often need to find new ways to compose our data. The relational model factors well. The network model factors poorly.</li><br /></ol><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/java.html">java</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/lispy.html">lispy</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/ruby.html">ruby</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html" title="permanent link">10:21 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Why Why Functional Programming Matters Matters</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="9188498039672755580"></a> 				Regarding the "power" footnote:<BR/>Why not invent a term such as "factorability", since that's what you spend most of the post talking about?  Power is power, and Church and Turing have pretty much dealt with that.  Let's not overload the word power with other concepts that make it too hard to tell what we're talking about.  At the very least, pick something a bit closer.  "Expressiveness," perhaps.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173678780000#c9188498039672755580" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Scott</span> : 1:53 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9188498039672755580" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8393597926251233162"></a> 				Hi Reginald,<BR/><BR/>Just a Ruby comment. In your code sample, the operator * is used for 2 arrays as a cartesian product. While this is trivial to add it to the Array class, I don't find it the standard ruby distribution 1.8.5. Did you implement it or did you use an extension lib for the Array class?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173679020000#c8393597926251233162" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16484514586929815703" rel="nofollow">Eric</a> : 1:57 AM</div>
+
+								<span class="item-control blog-admin pid-868989312"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8393597926251233162" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1522927386593674741"></a> 				In the Ruby version of counting old timers, am I misreading something or shouldn't the first "employees_and_departments" really be an "old_timers"?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173682200000#c1522927386593674741" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12361589059366845911" rel="nofollow">Vineet</a> : 2:50 AM</div>
+
+								<span class="item-control blog-admin pid-31796719"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1522927386593674741" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="564851405134288722"></a> 				Consider the APL and J languages, and the latest from that camp, Arthur Whitne's K (at http://kx.com/ ). It's a programming language that dominates the golf course, and has notoriety as less readable than perl because of that; But most importantly, it eschews standard notions of OO and many FP languages. Instead, it focuses on 40 or so basic operations, and some 20 ways to compose them. The result is really amazing -- a functional (thus, safe) language, very easy to use once you get the hang of it, with an incredibly quick interpreter that often outdoes comparable C code, in a 120K executable.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173686040000#c564851405134288722" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 3:54 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=564851405134288722" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4264162708606160611"></a> 				Scott: CHurch and Turning have dealt with <I>computability</I> in <I>theory</I>.<BR/><BR/>This essay discusses power in practice. See the footnote above.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173699240000#c4264162708606160611" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:34 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4264162708606160611" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2727997777031538467"></a> 				Eric:<BR/><BR/>The code for * is in the lazy lists class mentioned above (the source is <A HREF="http://raganwald.com/source/lazy_lists.html" REL="nofollow">here</A>).<BR/><BR/>There is an implementation for arrays as part of the Ruby Facets class, it is the combinations method added to Enumerable.<BR/><BR/>My version happens to work with infinite lists. And by strange co&iuml;incidence, the code above does not actually declare that the given lists are Arrays...<BR/><BR/>Perhaps they are also lazy?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173700980000#c2727997777031538467" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:03 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2727997777031538467" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3115549260185715326"></a> 				Hi Reg,<BR/><BR/>Another thoughtful post, thank you.  Being an admirer, I also appreciate your reference to Edsger W. Dijkstra's Separation of Concerns.<BR/><BR/>In reading a number of your posts, I see a common theme of talking about the problem of the semantic distance between the language of the problem domain and the language used to implement a solution, without explicitly saying that you are talking about this distance.  Your example of contrasting two implementations of counting the employees is a wonderful demonstration of this distance.  My question is why do you not come out and specifically say that this is what you are talking about or to turn around your question: what am I missing?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173703980000#c3115549260185715326" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="www.aiglerenaissance.com" rel="nofollow">Norbert</a> : 8:53 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3115549260185715326" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="893481966213253812"></a> 				To abridge the discussion that has been going on at Reddit (http://programming.reddit.com/info/19leo/comments/c19lwv) Reg's argument seems to involve a measure of power for a language that has to do with transformations that are possible to do once an idea is expressed in that language.<BR/><BR/>My position is that I would prefer a measure of power that increased depending on how few transformations are needed to move the proposed solution from an idea in your head to an expression in the language.<BR/><BR/>It'll take me probably a week to get this down coherently no my web site, but once I do so it will be at http://www.kirit.com/Measuring%20the%20power%20of%20programming%20languages<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173705360000#c893481966213253812" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02188707816239176630" rel="nofollow">Kirit</a> : 9:16 AM</div>
+
+								<span class="item-control blog-admin pid-1683405536"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=893481966213253812" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7929310602969070329"></a> 				I think the established word that you are looking for is 'compositionality' or 'decompositionality'. <BR/><BR/>There are many advantage to compositionality, many of which you list. But there is one major disadvantage as well: efficiency. Compositional optimisation, i.e. optimising the various parts of a program then plugging them together, will always be strictly less efficient that global optimisation, which always results in spaghetti code.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173708300000#c7929310602969070329" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14866637943603692944" rel="nofollow">Dan</a> : 10:05 AM</div>
+
+								<span class="item-control blog-admin pid-1874063337"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7929310602969070329" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4098452317040832631"></a> 				Another great article.<BR/><BR/>Just a quick note re: your nested looping antidote example.  Ruby supports some light destructuring out of the box, so you could have written <BR/><BR/>old_timers = (employees * departments).select do |emp,dept|<BR/>&nbsp;&nbsp;emp.department_id == dept.id && emp.years_of_service > dept.age<BR/>end<BR/>number_of_old_timers = old_timers.size<BR/><BR/>instead.  Pretty trivial, but makes the code even nicer to read.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173718440000#c4098452317040832631" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Justin</span> : 12:54 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4098452317040832631" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3666194320387600509"></a> 				<I>Ruby supports some light destructuring out of the box</I><BR/><BR/>Hey, I didn't know you could do that without splattage. Thanks!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173718680000#c3666194320387600509" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:58 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3666194320387600509" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3322145014968360863"></a> 				Reginald yet another gem from you.<BR/><BR/><I>"So how do we explain that one reason Java is considered “better than C++” is because it omits manual memory management?"</I><BR/><BR/>As a side note, a wrong perception is always given that Java removes/omit memory management. In fact it "replaces" it with a Garbage Collector. <BR/><BR/>Which does not mean you are not responsible for memory management any more. We are sill responsible for memory management but a different way. I blogged about it some time back <BR/><A HREF="http://bootstrapping.wordpress.com/2007/02/16/memory-management-is-still-your-responsibility/" REL="nofollow">  Memory management is STILL your responsibility</A> <BR/><BR/>Off course you mention the Java example to explain a lot different thing.<BR/><BR/>Cool post keep them coming!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173725820000#c3322145014968360863" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://bootstrapping.wordpress.com" rel="nofollow">TH</a> : 2:57 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3322145014968360863" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6068961215324565907"></a> 				TH:<BR/><BR/><I>Which does not mean you are not responsible for memory management any more. We are sill responsible for memory management but a different way.</I><BR/><BR/>Funny thing, but when we started selling JProbe Memory Debugger, we had to pound that message into the market over and over and over.<BR/><BR/>One of our favourite "talking points" was a list of four kinds of memory leaks in Java programs.<BR/><BR/>The thought at the time was that "Java programs do not leak," so that was always a fun topic.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173726240000#c6068961215324565907" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:04 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6068961215324565907" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="542642112773020438"></a> 				Regarding the code samples wrt iterating over the lists:<BR/><BR/>The code you show is not object oriented at all, it's relational and hence your problems. If you designed your DAO and logic objects properly you'd just write something like:<BR/>int oldTimers = 0;<BR/>for (Department dept: departments) {<BR/>for (Employee emp: dept.getEmployees()) {<BR/>if (emp.getYearsOfService() > dept.getAge()) {<BR/>++oldTimers;<BR/>}<BR/>}<BR/>}<BR/><BR/>In fact, your Ruby version makes things possibly even worse. Unless there is some lazy magic there, your Cartesian product will needlessly eat lots of memory and get garbage collected just afterwards (of course, your Java version might needlessly connect to a database behind, so it's hard to decide which is really worse). In the Ruby version you're also creating an unneeded list of oldtimers, but its only fate is to yield its length and get eaten as well.<BR/><BR/>But whatever happens, both your Java and Ruby versions needlessly iterate over dept_count*emp_count pairs, while properly designed OO version iterates only emp_count times over exactly those pairs (dept, emp) which make sense.<BR/><BR/>I really can't believe that functional design cannot do that.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173736140000#c542642112773020438" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01378450378511697449" rel="nofollow">albert bulawa</a> : 5:49 PM</div>
+
+								<span class="item-control blog-admin pid-1681707838"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=542642112773020438" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3332436822315095447"></a> 				Albert:<BR/><BR/><I>If you designed your DAO and logic objects properly</I><BR/><BR/>In other words, if you <B>pushed joining two lists somewhere else</B>?<BR/><BR/>So what is the real argument? Could it be that <I>a properly designed system separates the mechanism of joining (by putting it in a DAO that talks to an RDBMS) from what we want to do with the result</I>?<BR/><BR/>Are we arguing <B>the exact same point</B>, only using different examples?<BR/><BR/>I think this is a case where perhaps you would have preferred to see some production code to a simple example?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173736680000#c3332436822315095447" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:58 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3332436822315095447" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6316561053236557536"></a> 				For monopoly, I'd imagine that it'd be better to make a new static class called Referee, who'd know all the rules.  Then you would consult with the Referee for any moves you made.  Also, any tweaks to the rules (such as whether or not landing on Free Parking paid out of a pot) could be kept in one place.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173737040000#c6316561053236557536" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 6:04 PM</div>
+
+								<span class="item-control blog-admin pid-2050274566"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6316561053236557536" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6421238193068478455"></a> 				As promised, Kirit has followed up:<BR/><BR/><A HREF="http://www.kirit.com/Measuring%20the%20power%20of%20programming%20languages" REL="nofollow">Measuring the power of programming languages</A>.<BR/><BR/>I like it, thanks!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173754080000#c6421238193068478455" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:48 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6421238193068478455" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6493940383892080858"></a> 				<I>But whatever happens, both your Java and Ruby versions needlessly iterate over dept_count*emp_count pairs, while properly designed OO version iterates only emp_count times over exactly those pairs (dept, emp) which make sense.</I><BR/><BR/>Indeed.  In Ruby a good solution would probably end up looking something like the one you've given.  I'd say that is a better separation of concerns as well, as either an employee should know their department or a department should know their employees.<BR/><BR/>That said, a similarly written solution in Haskell (from my understanding) need not hold the list of all employees and departments.<BR/><BR/>This would be a rather natural way of writing that program, using a list comprehension.<BR/><BR/><BR/>length [Nothing | emp <- employees, <BR/>                                         dept <- departments, <BR/>                                         getDeptId emp == getId dept, <BR/>                                         getYearsOfService emp > getDeptAge dept]<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173757560000#c6493940383892080858" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03799579139256306118" rel="nofollow">Peter</a> : 11:46 PM</div>
+
+								<span class="item-control blog-admin pid-1035025294"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6493940383892080858" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6019288179712596084"></a> 				Oy, debating the merits of object designs is interesting, but really should be over at the Monopoly post... which is about design.<BR/><BR/>But we're programmers, and if we see an essay with 500 words and five lines of code, we'll give the words a few minutes and then we'll spend hours talking about the five lines of code.<BR/><BR/>Remember, the code is to illustrate something about factoring.<BR/><BR/>Okay, so:<BR/><BR/>First, it's easy to have an employee hold a reference to a department. If I did that, I could change the example to count departments that have old timers.<BR/><BR/>Whats the difference? Now you have a problem of going from department to employee.<BR/><BR/>Should departments hold a collection of employees? I don't think so. I'm okay with a <I>convenience method</I> that returns such a collection, but behind the scenes, something else has to manage that collection.<BR/><BR/>Although we say "department has many employees" aloud, if we actually make a department a  container for employees, we have two different entities sharing a responsibility.<BR/><BR/>What happens when we write "emp.department = new_dept"? You have to update two different objects, the employee and the department. Likewise, if you write "dept.employees << new_hire_employee", you have to update two objects again.<BR/><BR/>You end up with employees responsible for managing departments AND departments responsible for managing employees. This is a code smell: there should be exactly one place where the relationship between the two is updated.<BR/><BR/>Of course, you can write those exact statements in Rails. Is that bad? No, because Rails virtualizes those methods.<BR/><BR/>In actual fact, there is one thing in Rails that manages the relationship, a table in a database. The methods are provided for convenience. And if you change the relationship, the methods change for you automatically: you don't have to update the methods in two places.<BR/><BR/>So while Rails looks like it give you employees that have a reference to a department and departments that have a collection of employees, the actual mechanism for managing the relationship is factored out of employees and out of departments.<BR/><BR/>Which, I think, i entirely in keeping with the actual point of the words of this post, about factoring how away from what.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173786540000#c6019288179712596084" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:49 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6019288179712596084" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6527232970767009087"></a> 				Reginald: Weren't we talking about SoC?! That's exactly what you missed from that example. This code should not know that there is any deptid and that this is what links an employee to their department. Depending on what application should really do, this Department.getEmployees() method could return a pre-created list, join lists in background, do a select to a single RDBMS column, whatever. But that does not belong in this code snippet, and neither do fields which may be required by backend storage but are meaningless at this business logic level.<BR/><BR/>I may miss your point, so a real-life code sample could probably help.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173794880000#c6527232970767009087" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">albert bulawa</span> : 10:08 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6527232970767009087" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4176168431190705502"></a> 				"a select to a single RDBMS column"<BR/><BR/>Of course, I meant a table.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173795000000#c4176168431190705502" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">albert bulawa</span> : 10:10 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4176168431190705502" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7679108939386311702"></a> 				Albert:<BR/><BR/>Your suggestion that the methods be proxies for some other thingie is exactly what I would do in "real life."<BR/><BR/>I would probably use some metaprogramming (or annotation or whatever the language in question calls code that writes code).<BR/><BR/>But you know, my example is still entirely valid and concise. There is a better separation of concerns using Cartesian product and select than there is iterating when you wish to perform a join and filter.<BR/><BR/>I think you are bothered by the example of employees and departments because you probably imagine that the relationship is something permanent and ought to be reflected directly in the Entity-Relationship Model.<BR/><BR/>If you like, you can consider a case with a much more transient relationship. For example:<BR/><BR/>We have a list of coffee shops, graded by quality and geocoded for location. We have a list of potential offices where we can locate a new start up.<BR/><BR/>We are looking for locations that have at least two good coffee shops within walking distance from them.<BR/><BR/>I am tempted to ask whether we can agree that one style of code separates the concern better than the other.<BR/><BR/>In fact, that is not the question. The <B>real</B> question is, can we agree that some styles of code separate concerns better than others?<BR/><BR/>As long as we agree that some code separates concerns better than others, that's all that matters.<BR/><BR/>You can really pick any two chunks of code that do the same thing and point out which one does a better job. The thesis is that some code separates concerns better than others, and that some tools facilitate that separation better than others.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1173796440000#c7679108939386311702" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:34 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7679108939386311702" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4142214880613397262"></a> 				In response to your disclaimer about Turing equivalence, and your comment to Scott: you <EM>can</EM> make <STRONG>formal</STRONG> claims about expressive power beyond Turing equivalence.  There's a <A HREF="http://www.ccs.neu.edu/scheme/pubs/scp91-felleisen.ps.gz" REL="nofollow">classic paper</A> by Felleisen (co-author of the <EM>Seasoned Schemer</EM>, which you cite) about this.  Read, enjoy, and be enlightened.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html?showComment=1220408340000#c4142214880613397262" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02956763366608000839" rel="nofollow">Shriram Krishnamurthi</a> : 10:19 PM</div>
+
+								<span class="item-control blog-admin pid-1371933109"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4142214880613397262" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

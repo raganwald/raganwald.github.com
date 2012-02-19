@@ -1,0 +1,442 @@
+<html> 
+<head>
+        
+        <title>"Lets" organize our Ruby Code</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Friday, May 30, 2008</div>
+			
+
+			<div class="Post"><a name="2031631425815760317">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html" title="permanent link">"Lets" organize our Ruby Code</a></span>
+					<div style="clear:both;"></div>This post is for folks interested in the <a href="http://ick.rubyforge.org/" title="Invocation Construction Kit">Invocation Construction Kit</a> for Ruby. There is a new invocation, Ick::Syntax::Lets:<br /><pre><code><br />lets(<br />    :person =&gt; Person.find(:first, ...),<br />    :place  =&gt; City.select { ... },<br />    :thing  =&gt; %w(ever loving blue eyed)<br />) {<br />    "#{person.name} lives in #{place} where he is known as the '#{thing.join(' ')} thing.'"<br />}</code></pre><br />Quite simply, #lets provides you with a way of making block-local variables. Ick already includes #let, which does almost exactly the same thing. However, #let is limited to just one variable:<br /><pre><code><br />let(Person.find(:first, ...)) { |person| ... }</code></pre><br />Expanding #let to multiple variables with its existing syntax just doesn&#8217;t scale properly:<br /><pre><code><br />let(<br />    Person.find(:first, ...),<br />    City.select { ... },<br />    %w(ever loving blue eyed)<br />) { |person, place, thing|<br />    "#{person.name} lives in #{place} where he is known as the '#{thing.join(' ')} thing.'"<br />}</code></pre><br />Thus, the #lets syntax uses a hash so that the variable names are close to the expressions denoting their values.<br /><br />That&#8217;s all. If you are interested in why anyone would need #lets, read on&#8230;<br /><br /><strong>Scope Creep</strong><br /><br />Recently there has been a lot of interest in exploring the extremes of OO style. One of the tenets of such a style is to work with <a href="http://binstock.blogspot.com/2008/04/perfecting-oos-small-classes-and-short.html" title="Perfecting OO's Small Classes and Short Methods">small classes and short methods</a>. Why do you suppose we want to do that?<br /><br />Well, the underlying principle is to chunk things into small, workable pieces with clear purposes. This principle abounds everywhere: posts just like this are broken up into sections with headings and the prose is subdivided into paragraphs. So I quite agree with the principle behind small classes and short methods.<br /><br />__________. You just knew that a word like &#8220;However&#8221; would follow a paragraph like that, didn&#8217;t you?<br /><br />The principle of subdivision is terrific. But are classes and methods the only mechanisms we have for subdividing code? In some languages, that may be true. In other languages, that is not true.<br /><br />For example, since version 1.1 Java has permitted classes to be nested inside of other classes, calling them &#8220;inner classes.&#8221; This is a very powerful technique of organizing code: If class A is the only class that ever uses class B, why should class B live in its own file, visible to every other class? Placing class B inside of class A is a big win: it is immediately clear that A is the only user of B, and when looking at the code in your IDE you do not see class B promoted to equal standing with A: it is clearly subordinate to A.<br /><br />Of course, placing class B inside of class A makes A a bigger class. Is that wrong? Perhaps it is at some times, but it&#8217;s a big win at others. Remember we said B is subordinate to A? An inner class can be made private, explicitly telling the compiler and other programmers that it is limited in scope.<br /><br />Limiting scope is a very powerful organizing technique in code. We can debate how important it is that the compiler enforce scope, however given the importance of writing code for humans to read and understand, I&#8217;m personally in favour of any technique that sends a strong <a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html" title="Programming conventions as signals">signal</a> to your fellow programmers explaining the intended structure and organization of the code.<br /><br /><strong>Small Methods</strong><br /><br />There are techniques for organizing methods into classes or modules, and techniques for organizing classes and modules into larger classes and modules. But what about individual lines of code? Are methods really the only mechanism we have for organization at the lowest level?<br /><br />I think not. Even within methods, there are certain practices that logically chunk your code into small, workable pieces with clear purposes. For example, Algol, Pascal, Modula, and many other languages support nested functions or procedures:<br /><pre><code><br />procedure print(var j: integer);<br /><br />  function next(k: integer): integer;<br />  begin<br />    next := k + 1<br />  end;<br /><br />begin<br />  writeln('The total is: ', j);<br />  j := next(j)<br />end;</code></pre><br />It is clear that #next is used solely by #print. Since most OO languages do not permit nested procedures, the programmer is left to choose between making #nest a private method or carving #print out and making it a strategy class. Making #next a private method does keep it from prying eyes outside of the class, however it implies that all methods of the class may want to use it, which is clearly not the case.<br /><br />If we are allowed to nest objects, we can fake nested procedures with objects. Ruby&#8217;s Proc class makes it easy:<br /><pre><code><br />def print(j)<br />    next = proc { |k|<br />        k + 1<br />    }<br />    p "the total is: #{j}"<br />    j = next.call(j)<br />end</code></pre><br />(There is a fairly major difference in what these two snippets of code do thanks to the difference between call-by-value and call-by-reference, but let&#8217;s wave our hands furiously and stick to the point about nesting functions.)<br /><br /><strong>Containing Variables</strong><br /><br />In imperative languages, one of our biggest headaches is managing <a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html" title="Why are local variables bad?">mutable local variables</a>. If you only need one in one particular place, it is helpful to have a way of nesting the variable definition. In Java:<br /><pre><code><br />for(int i=1; i&lt;11; i++) {<br />    StringBuffer j = new StringBuffer();<br />    // ...<br />}</code></pre><br />And in Perl (thanks Chromatic):<br /><pre><code><br />{<br />  my $person = Person->find( first => ... );<br />  my $place = City->select( sub { ... } );<br />  my $thing = [qw( ever loving blue eyed )];<br /><br />  return $person->name() . " lives in $place where he is known as the "<br />    . join( ' ', @$thing ) . ' thing.';<br />}</code></pre><br />The variables i and j are limited in scope to the body of the for loop. This called block scoping, and I personally love it. Block scoping permits us to make small, self-contained blocks of code and use them inline. If we need to move them or change them, we know which things are limited in scope to the block and which reach outside of the block and thus might be affected by our changes.<br /><br />In Javascript we can <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html" title="Block-Structured Javascript">fake block scoping using procedures</a>, but it&#8217;s syntactically noisy. Can we do the same thing in Ruby? Yes, and that&#8217;s exactly what #lets does:<br /><pre><code><br />lets(<br />    :person =&gt; Person.find(:first, ...),<br />    :place  =&gt; City.select { ... },<br />    :thing  =&gt; %w(ever loving blue eyed)<br />) {<br />    "#{person.name} lives in #{place} where he is known as the '#{thing.join(' ')} thing.'"<br />}</code></pre><br />This is a block with three block-local variables in it, just like you might find in Java. It breaks a complicated expression up into smaller pieces (&#8220;How to find the person,&#8221; &#8220;How to find the place,&#8221; &#8220;What kind of thing we have,&#8221; and finally &#8220;How to describe it all as a string&#8221;). And those pieces are all grouped together so you know they are not used elsewhere.<br /><br /><strong>A Hack, wrapped in a Workaround, inside a Kludge</strong><br /><br />Unlike the other elements of Ick, #lets actually <em>rewrites your ruby code</em>. The code example above is actually rewritten as:<br /><pre><code><br />proc { |__121217088531733__|<br />  lambda do |person, place, thing|<br />    "#{person.name} lives in #{place} where he is known as the '#{thing.join(" ")} thing.'"<br />  end.call(<br />    __121217088531733__[:person], <br />    __121217088531733__[:place], <br />    __121217088531733__[:thing]<br />  )<br />}.call(<br />    :person =&gt; Person.find(:first, ...),<br />    :place  =&gt; City.select { ... },<br />    :thing  =&gt; %w(ever loving blue eyed)<br />)</code></pre><br />The rewritten code is then evaluated. At the moment, this happens every time you call #lets, so it is expensive. Even by Ruby standards. Hopefully, there will be a future version of Ick::Syntax that only rewrites by need or perhaps just once when the code is first read.<br /><br />So, #lets takes the syntactic noise of using procs to create block structure and hides it from us. How?<br /><br />Well, my first cut at it used <a href="http://rubyforge.org/frs/shownotes.php?group_id=1513&amp;release_id=17347">Ruby2Ruby</a> and regular expressions. Then I was inspired by Aanand Prasad&#8217;s <a href="http://github.com/aanand/ruby-do-notation/tree/master">Haskell-style monad do-notation for Ruby</a> to work directly with s-expressions. Although the code is technically longer, it&#8217;s actually much, much better. For meta-syntactic programming, you need to work with the abstract syntax tree.<br /><br />And with <a href="http://rubyforge.org/projects/parsetree/" title="RubyForge: ParseTree - ruby parse tree tools: Project Info">ParseTree</a> and Ruby2Ruby, you have all the tools you need to write code that writes code, with the teeny-weeny proviso that what you want to do is translate your Ruby into Lisp, manipulate the Lisp, and then translate it back into Ruby:<br /><pre><code><br />def rewrite_sexp(names_to_values, sexp)<br />  mono_parameter = :"__#{Time.now.to_i}#{rand(100000)}__"<br />  # the next four assignments are exactly why we want #lets:<br />  sorted_symbols = (names_to_values || {}).keys.map(&:to_s).sort.map(&:to_sym)<br />  parameters = if sorted_symbols.size == 1<br />    s(:dasgn_curr, sorted_symbols.first)<br />  else<br />    s(:masgn, s(:array, *sorted_symbols.map { |sym| s(:dasgn_curr, sym) }) )<br />  end<br />  values = s(:array,<br />    *sorted_symbols.map { |sym|<br />      s(:call, s(:dvar, mono_parameter), :[], s(:array, s(:lit, sym)))<br />    }<br />  )<br />  body = sexp.last<br /><br />  s(:defn, :__anonymous__, <br />    s(:bmethod, <br />      s(:dasgn_curr, mono_parameter), <br />      s(:call, <br />        s(:iter, <br />          s(:fcall, :lambda), <br />          parameters,<br />          body<br />        ), <br />        :call, <br />        values<br />      )<br />    )<br />  )<br />end</code></pre><br /><strong>You know what to do:</strong><br /><br /><em>sudo gem install <a href="http://ick.rubyforge.org">ick</a></em><br /><br />Cheers, and thanks very much to <a href="http://rubyforge.org/users/zenspider/">Ryan Davis</a>, <a href="http://rubyforge.org/users/drbrain/">Eric Hodel</a>, <a href="http://matt.blogs.it/" title="Curiouser and Curiouser!">Matt Mower</a>, and <a href="http://www.aanandprasad.com/">Aanand Prasad</a>.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html" title="permanent link">3:02 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>"Lets" organize our Ruby Code</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="8314320877534927424"></a> 				Wow - let as syntax sugar for lambda.  It's so Scheme-ish it makes my eyes a little misty.<BR/><BR/>For the non-Rubyists who read this post, it's worth mentioning that in many (though not all) of the curly brace languages you can use braces for the exclusive purpose of introducing a nested scope without necessarily using a for or if or whatever.<BR/><BR/>Perhaps it would make sense for Ruby to allow nested begin/end pairs for the same purpose.  Just a thought.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212195720000#c8314320877534927424" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02835376424060382389" rel="nofollow">James Iry</a> : 9:02 PM</div>
+
+								<span class="item-control blog-admin pid-593983781"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8314320877534927424" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8456691411732468986"></a> 				James:<BR/><BR/>As you probably know, in Scheme the macro let <I>is</I> implemented by rewriting using lambda. I wonder where I got the idea???<BR/><BR/>It&rsquo;s a personal opinion, but I wouldn&rsquo;t call it Syntactic Sugar if it introduces a new metaphor or mental model. To me, it&rsquo;s only Syntactic Sugar if the writer and reader think &ldquo;lambda&rdquo; in their heads but use the macro to save typing characters.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212202080000#c8456691411732468986" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:48 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8456691411732468986" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7254857710945901442"></a> 				In Perl:<BR/><BR/>{<BR/>    my $person = Person->find( first => ... );<BR/>    my $place  = City->select( sub { ... } );<BR/>    my $thing  = [qw( ever loving blue eyed )];<BR/><BR/>    return $person->name() . " lives in $place where he is known as the "<BR/>        . join( ' ', @$thing ) . ' thing.';<BR/>}<BR/><BR/>No lexical scoping metaprogramming fakery needed.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212206340000#c7254857710945901442" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16445595800382061121" rel="nofollow">chromatic</a> : 11:59 PM</div>
+
+								<span class="item-control blog-admin pid-1129955258"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7254857710945901442" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3128450284692161706"></a> 				Reginald:<BR/><BR/>Yup - that's why my eyes are getting misty.  It's beautiful to see some Scheme in another language.  Scheme remains one of my first loves (but I'm a bit of a language slut and have a lot of loves :-)<BR/><BR/>As for what is and isn't syntactic sugar, I get your point about new metaphors.  I was not using the phrase "syntax sugar" dismissively!  Abstraction is what makes programming possible at all.<BR/><BR/>But it's often useful for a programmer to know how to peek behind the magic curtain when needed.  If you think of Haskell's "do" solely as a way to work with effectful computations or Scala's "for" as a clever way to work with collections then in either case you'll never make it to the point where you build your own monads.<BR/><BR/>At other levels it's powerful to see an OO style object as an encapsulation of identity, state and behavior - or as a closure of several functions that share the same environment - or as a hash table from a name to function (at least in some dynamic OO languages) - or... Each of these different conceptions will lead to different design alternatives.  The first conception will likely lead to lots of interacting mutable objects.  The hashtable interpretation will support designs based on dynamic metaprogramming.  The closure interpretation will allow you to embed functional concepts in those OO languages that don't support it very well (I'm looking at you Java!)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212210780000#c3128450284692161706" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02835376424060382389" rel="nofollow">James Iry</a> : 1:13 AM</div>
+
+								<span class="item-control blog-admin pid-593983781"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3128450284692161706" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7689279086271600686"></a> 				Chromatic:<BR/><BR/>So Perl has something in common with Java? Nice to know :-)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212235260000#c7689279086271600686" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:01 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7689279086271600686" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4417474092619577567"></a> 				Reg, it's probably more accurate to say that Ruby (and Python) get variable declaration wrong then to be amazed that other languages get it right.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212264960000#c4417474092619577567" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16445595800382061121" rel="nofollow">chromatic</a> : 4:16 PM</div>
+
+								<span class="item-control blog-admin pid-1129955258"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4417474092619577567" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6770101651296551153"></a> 				Chromatic:<BR/><BR/>Speaking as someone who learned Algol (in 1974!), Scheme and C++ long before learning Ruby, I am entirely with you on this subject and always have been.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212270540000#c6770101651296551153" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:49 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6770101651296551153" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1308799172489676753"></a> 				Don't get me wrong -- if Java had a similar problem, any workaround would be several times more hideous.  Let's not even think about C++.<BR/><BR/>Credit to Ruby for allowing language-level customization (I mean, not hacking bytecode directly) to fix the problem.  Still, minus a few points for having the problem in the first place.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212284100000#c1308799172489676753" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16445595800382061121" rel="nofollow">chromatic</a> : 9:35 PM</div>
+
+								<span class="item-control blog-admin pid-1129955258"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1308799172489676753" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8427027336374509280"></a> 				Silly question, but can't "let" detect if it is getting a hash parameter and effectively do what "lets" does in that case?<BR/><BR/>In other words, is there really a need for two different methods?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212286440000#c8427027336374509280" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00249199166614051311" rel="nofollow">Sam Ruby</a> : 10:14 PM</div>
+
+								<span class="item-control blog-admin pid-1455640898"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8427027336374509280" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6323228485435033996"></a> 				Sam:<BR/><BR/>What would you do if you wanted one parameter that happened to be a hash, such as let(My_active_record_model.attributes) { |attrs| ... }?<BR/><BR/>I considered this possibility and wondered about detecting it by looking at whether the block takes parameters or not.<BR/><BR/>So let(???) { |x| ... } is the original kind of let and let(???) { ... } behaves likes lets.<BR/><BR/>What do you think?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212286740000#c6323228485435033996" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:19 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6323228485435033996" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7840428587388803367"></a> 				Ah, but what if I want to do a bunch of let nesting?  Won't all those curly braces get noisy?<BR/><BR/>Here's my new syntax suggestion for Ruby: have variables be immutable, and declared like this --<BR/><BR/>let x = 5 in<BR/>blah;<BR/>blah;<BR/>blah;<BR/>let y = 10 in<BR/>foo;<BR/>bar;<BR/>baz<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212670320000#c7840428587388803367" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15576124960718643532" rel="nofollow">Robert Fischer</a> : 8:52 AM</div>
+
+								<span class="item-control blog-admin pid-1999105704"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7840428587388803367" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5309914615464977791"></a> 				Reg --<BR/><BR/>I'd vote for one method that auto-detects the hash.<BR/><BR/>~~ Robert.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212670440000#c5309914615464977791" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15576124960718643532" rel="nofollow">Robert Fischer</a> : 8:54 AM</div>
+
+								<span class="item-control blog-admin pid-1999105704"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5309914615464977791" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7923615836169463065"></a> 				Reginald,<BR/><BR/>Can you discuss how the "let method" is superior to standard variable declaration?<BR/><BR/>def local(&b)<BR/>  b.call<BR/>end<BR/><BR/>local do<BR/>  person = Person.find(:first, ...)<BR/>  place  = City.select { ... }<BR/>  thing  = %w(ever loving blue eyed)<BR/>  "#{person.name} lives in #{place} where he is known as the '#{thing.join(' ')} thing.'"<BR/>end<BR/><BR/>This way will not create new variables accessable outside the block, but will change the value of existing variables.  Is this the major complaint?<BR/><BR/>Thanks!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212684480000#c7923615836169463065" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06620464503288890149" rel="nofollow">Mike Harris</a> : 12:48 PM</div>
+
+								<span class="item-control blog-admin pid-1927085199"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7923615836169463065" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6653416318649176130"></a> 				<I>This way will not create new variables accessable outside the block, but will change the value of existing variables. Is this the major complaint?</I><BR/><BR/>Yes, in Ruby 1.9 local may blow existing variables away.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/05/lets-organize-our-ruby-code.html?showComment=1212684780000#c6653416318649176130" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:53 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6653416318649176130" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

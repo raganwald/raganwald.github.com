@@ -1,0 +1,196 @@
+<html><head><title>Raganwald: June 2005</title>
+
+<style>
+/* style modified from glish: http://www.glish.com/css/ */
+
+body{margin:0px 0px 0px 0px;font-family:trebuchet ms, verdana, sans-serif;background-color:white;}
+#Title{font-size:63px;padding-left:15px;padding-top:10px;text-transform:uppercase;font-family:trebuchet ms, verdana, sans-serif;}
+#Title a {text-decoration:none;color:inherit;}
+#Description{padding:0px;padding-top:10px;font-size:12px;font-weight:normal}
+.DateHeader{border-bottom:none;font-size:15px;text-align:left;margin-top:20px;margin-bottom:14px;padding:1px;padding-left:17px;color:gray;font-family:trebuchet ms, verdana, sans-serif;}
+.PostTitle{font-size:18px;font-weight:bold}
+.Post{padding-left:20px;margin-bottom:20px;text-indent:10px;padding-right:20px;line-height:22px}
+.PostFooter{margin-bottom:15px;margin-left:0px;color:black;font-size:10px}
+.comment-link {margin-left:.6em;}
+@media all {
+  #leftcontent{background-color:whitesmoke;border-right:2px dashed #000;border-bottom:0px dashed #000;float:left;padding-bottom:20px;margin-right:15px;padding:0px;width:67%;border-top:0px dashed #000}
+}
+@media handheld {
+  #leftcontent{border-right:0px dashed #000;float:none;margin:0 5% 0 5%;width:90%;}
+}
+.SideBarTitle{font-weight:bold;font-size:18px}
+h1{font-size:14px;padding-top:10px}
+a{text-decoration:none}
+a:hover{border-bottom:dashed 1px red}
+@media all {
+  #rightcontent{font-size:12px;height:100%;margin-left:0px;text-transform:none;padding-right:10px;background-color:white;}
+}
+@media handheld {
+  #rightcontent{margin:0 5% 0 5%;}
+}
+.blogComments{font-size:15px;text-align:left;margin-top:20px;margin-bottom:14px;padding:1px;padding-left:17px;color:gray;font-family:trebuchet ms, verdana, sans-serif;}
+.blogComment{margin-top:10px;margin-bottom:10px;color:black;text-indent:10px;padding-right:20px;line-height:22px}
+.deleted-comment {font-style:italic;color:gray;}
+.byline{margin-bottom:20px;margin-left:0px;margin-right:10px;color:black;font-size:10px;display:inline}
+#profile-container { }
+.profile-datablock { }
+.profile-img {display:inline;}
+.profile-img img {float:left;margin:0 10px 0px 0;border:4px solid #ccc;}
+#profile-container p { }
+#profile-container .profile-textblock { }
+.profile-data strong {display:block;}
+</style>
+<!-- Meta Information -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="MSSmartTagsPreventParsing" content="true" />
+<meta name="generator" content="Blogger" />
+<link rel="alternate" type="application/atom+xml" title="Raganwald" href="http://www.braithwaite-lee.com/weblog/atom.xml" />
+<link rel="service.post" type="application/atom+xml" title="Raganwald" href="https://www.blogger.com/atom/7618424" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.blogger.com/rsd.g?blogID=7618424" />
+<style type="text/css">
+@import url("http://www.blogger.com/css/blog_controls.css");
+@import url("http://www.blogger.com/dyn-css/authorization.css?blogID=7618424");
+</style>
+
+</head><body>
+<div id="quickSub" style="position:absolute; visibility:hidden; z-index:1000;" onMouseOut="return timeqs();" 
+
+onMouseMove="return delayqs();"></div>
+<script language="JavaScript" src="/weblog/quicksub.js"><!-- quickSub (c) Jason Brome --></script>
+
+<div id="leftcontent">
+	<div id="Title">
+    
+	Raganwald
+	
+
+  </div>
+
+
+   
+   
+        <div class="DateHeader">Wednesday, June 15, 2005</div>
+   
+
+       <div class="Post"><a name="111884505690316553">&nbsp;</a>
+   <span class="PostTitle">
+
+Working code attracts people who want to code</span>
+
+   <div style="clear:both;"></div>Charles Miller made a profound observation:<i><br /></i> <blockquote><i>"Working code attracts people who want to code. Design documents attract people who want to talk about coding</i>."<br /><div style="text-align: right;"><a href="http://fishbowl.pastiche.org/2005/05/08/finding_discord_in_harmony">Finding Discord in Harmony</a><br /></div> </blockquote> He happened to be talking about a new open source initiative, but I couldn't help but relate this simple principle to my experience with agile methodologies.<br /><br />I have found that Big Design Up Front environments attract people who want to talk about software development, while iterative environments attract people who want to develop software. Is it any surpise that in companies where BDUF is predominant, nobody wants to stoop to coding? Everyone wants to be an "architect" or a "Business Analyst" or a "Product Manager."<br /><br />Recently I met a very bright fellow who is implementing a big new framework initiative. Developing within the framework seems to be quite frustrating and time consuming. Of course, there are many buzzword-compliant benefits promised from the framework. But there's a certain "smell" to the project.<br /><br />After some reflection, I realized that the problem with the framework is that the "architects" behind it have little or no interest in software development. Unlike <a href="http://www.rubyonrails.org/">today's flavour-of-the-moment open source framework</a>,* the developers of the framework do not actually use the framework. They're architects, they don't actually code applications. They don't eat their own dogfood.<br /><br />Their framework was developed for people who like design documents, buzzwords, and PowerPoint slides. And for that reason, there is lots of documentation and white papers. But there is precious little in the way of working example applications.<br /><br />I suspect--although I don't actually know--that the framework began with a white paper, and its destiny was forged then and there by that simple act.<br /><br />Turning back toward the light, I think there's a powerful lesson. Begin each project as Scrum begins, with the simplest chunk of code that delivers a benefit. If you're building a framework, start with an example application in mind. Don't make it "hello, framework." begin with something you can use and make sure your framework actually makes your life easier.<br /><br />I'll close with a joke:<br /><blockquote>A programmer is someone who is so irritated by small inconveniences that they will spend weeks writing a script, so they can spend days debugging same script, so they can save five minutes of their time, which they will waste reading slashdot.</blockquote> Just remember that if your work actually saves you some time you've created something of value. And the best way to make that happen is to <span style="font-weight: bold;">start with working code</span>.<br /><br /><span style="font-style: italic;">* Ruby on Rails (link above), is the foundation of </span><a style="font-style: italic;" href="http://www.basecamphq.com/">Basecamp</a><span style="font-style: italic;">, a software service for distributed project management.</span><div style="clear:both; padding-bottom: 0.25em;"></div>&nbsp;
+   <span class="PostFooter">
+   &para; <a href="http://www.raganwald.com/weblog/2005/06/working-code-attracts-people-who-want.html" title="permanent link">10:17 AM</a>&nbsp;<a href="http://www.blogger.com/comment.g?blogID=7618424&amp;postID=111884505690316553"location.href=http://www.blogger.com/comment.g?blogID=7618424&amp;postID=111884505690316553;>2 comments</a>
+ <span class="item-action"><a href="http://www.blogger.com/email-post.g?blogID=7618424&amp;postID=111884505690316553" title="Email Post"><span class="email-post-icon">&nbsp;</span></a></span><span class="item-control admin-1604801951 pid-921744122"><a style="border:none;" href="http://www.blogger.com/post-edit.g?blogID=7618424&amp;postID=111884505690316553&amp;quickEdit=true" title="Edit Post"><span class="quick-edit-icon">&nbsp;</span></a></span>   </span>
+    </div>
+
+ 
+
+   
+        <div class="DateHeader">Tuesday, June 14, 2005</div>
+   
+
+       <div class="Post"><a name="111876612127488148">&nbsp;</a>
+   <span class="PostTitle">
+
+Tune in, turn on, drop in</span>
+
+   <div style="clear:both;"></div>Over on <a href="http://apple.slashdot.org/apple/05/06/14/0057205.shtml?tid=146&tid=3">slashdot</a> there's a fairly predictible thread discussing Steve Jobs' alleged advice to students: drop out of college.<br /><br />There're the usual arguments about why a college education is more than the coursework (it had better be: many CS undergraduate programs would be right at home in a Java Vocational College). There're the usual arguments about how intelligent, drivien indivduals would succeed without a degree. And of course more than a few people shrilly deride Steve for giving dangerous advice.<br /><br />What I found interesting about the quote is that Steve doesn't seem to be saying college is useless and that you should quit college and get a job. Have a read over at <a href="http://www.wired.com/news/culture/0,1284,67836,00.html?tw=wn_tophead_6">Wired</a>:<br /><blockquote>He said his real education started when he "dropped in" on whatever classes interested him -- including calligraphy.    <p>Jobs said he lived off 5-cent soda recycling deposits and free food offered by Hare Krishnas while taking classes.</p>     <p>He told the graduates that few friends could see the value of learning calligraphy at the time but that painstaking attention to detail -- including mastering different "fonts" -- was what set Macintosh apart from its competitors.</p> </blockquote>I take this as meaning that the key is to <a href="http://www.rotten.com/library/bio/mad-science/timothy-leary/"><span style="font-weight: bold;">drop in</span></a> on stuff that ignites your imagination, regardless of the cost. I take this as espousing internships, networking, volunteering, hacking, fiddling, puttering, fiddling, hobbying, auditing, experimenting, and yes, writing code in your garage.<br /><br />p.s. Here's an unrelated email I've been circulating:<br /><br /><span style="font-style: italic;">Hello:</span><br /><br /><span style="font-style: italic;">Some friends of mine are looking for a talented individual with deep</span><span style="font-style: italic;"> Enterprise Java knowledge. Their environment is excellent: laid back</span><span style="font-style: italic;"> atmosphere, plenty of agility, and long-standing relationships with</span><span style="font-style: italic;"> blue chip clients like Apple and ING Direct.</span><br /><br /><span style="font-style: italic;">I can share references from employees and contractors who just love</span><span style="font-style: italic;"> working with this company. Of course, they're looking for the same: an</span><span style="font-style: italic;"> individual with a knapsack bulging with enthusiastic references from</span><span style="font-style: italic;"> people who have just loved working with her/him.</span><br /><br /><span style="font-style: italic;">Their office is a stylish loft just steps from Roy Thompson Hall and</span><span style="font-style: italic;"> their kitchen is stocked with caffeine and sugar. Get in touch with me</span><span style="font-style: italic;"> directly if you'd like to explore an excellent opportunity.</span><br /><br /><span style="font-style: italic;">Warm regards as always...</span><br /><br /><span style="font-style: italic;">p.s. Naturally, almost everyone I know who has the chops to impress me</span><span style="font-style: italic;"> has a great situation going really well. But almost everyone I know</span><span style="font-style: italic;"> who is "smart" and "gets things done" seems to know two or three other</span><span style="font-style: italic;"> people who are smart and get things done... and maybe this email might</span><span style="font-style: italic;"> be perfect for them. Could you please pass this on? Introducing two</span><span style="font-style: italic;"> friends is a great way to get two people to owe you a favour in one</span><span style="font-style: italic;"> easy step :-)</span><div style="clear:both; padding-bottom: 0.25em;"></div>&nbsp;
+   <span class="PostFooter">
+   &para; <a href="http://www.raganwald.com/weblog/2005/06/tune-in-turn-on-drop-in.html" title="permanent link">12:12 PM</a>&nbsp;<a href="http://www.blogger.com/comment.g?blogID=7618424&amp;postID=111876612127488148"location.href=http://www.blogger.com/comment.g?blogID=7618424&amp;postID=111876612127488148;>0 comments</a>
+ <span class="item-action"><a href="http://www.blogger.com/email-post.g?blogID=7618424&amp;postID=111876612127488148" title="Email Post"><span class="email-post-icon">&nbsp;</span></a></span><span class="item-control admin-1604801951 pid-921744122"><a style="border:none;" href="http://www.blogger.com/post-edit.g?blogID=7618424&amp;postID=111876612127488148&amp;quickEdit=true" title="Edit Post"><span class="quick-edit-icon">&nbsp;</span></a></span>   </span>
+    </div>
+
+ 
+
+
+
+</div>
+
+<div id="rightcontent">
+
+	<div id="Description">Passionate software development.</div>
+
+
+	<p>
+<div id="profile-container">
+          <h2 class="sidebar-title">More...</h2>
+<dl class="profile-datablock">
+          <p class="profile-link"> <a href="http://www.raganwald.com/RegBraithwaite.pdf">Reg 
+
+Braithwaite</a> </p>
+          <p class="profile-link"> <a href="http://www.raganwald.com/weblog/">Recent Posts</a></p>
+          <p class="profile-link"> <a href="http://del.icio.us/raganwald/weblog">del.icio.us</a></p>
+</dl>
+          </div>  
+
+<div class="SideBarTitle">ARCHIVES</div>
+
+
+    <a href="http://www.raganwald.com/weblog/archives/2004_07_01_raganwald_archive.html">July 2004</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2004_08_01_raganwald_archive.html">August 2004</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2004_09_01_raganwald_archive.html">September 2004</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2004_10_01_raganwald_archive.html">October 2004</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2004_11_01_raganwald_archive.html">November 2004</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2004_12_01_raganwald_archive.html">December 2004</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2005_01_01_raganwald_archive.html">January 2005</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2005_02_01_raganwald_archive.html">February 2005</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2005_03_01_raganwald_archive.html">March 2005</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2005_04_01_raganwald_archive.html">April 2005</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2005_06_01_raganwald_archive.html">June 2005</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2005_07_01_raganwald_archive.html">July 2005</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2005_08_01_raganwald_archive.html">August 2005</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2005_09_01_raganwald_archive.html">September 2005</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2005_10_01_raganwald_archive.html">October 2005</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2005_11_01_raganwald_archive.html">November 2005</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2006_01_01_raganwald_archive.html">January 2006</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2006_02_01_raganwald_archive.html">February 2006</a> /
+
+    <a href="http://www.raganwald.com/weblog/archives/2006_03_01_raganwald_archive.html">March 2006</a> /
+
+			<script type="text/javascript" language="Javascript">if (location.href.indexOf("archive")!=-1) document.write("<strong><a href=\"http://www.raganwald.com/weblog/\">Current Posts</a></strong>");</script>
+
+	<br /></p>
+
+	<br />
+          <p class="profile-link"> <a href="http://feeds.feedburner.com/raganwald"><span style="font-family: 
+
+verdana, sans-serif;
+font-size: 10px;
+font-weight:bold;
+text-decoration:none;
+color: white;
+background-color: #F60;
+border:1px solid;
+border-color: #FC9 #630 #330 #F96;
+padding:0px 3px 0px 3px;
+margin:0px;">RSS</span></a></p>
+          <p class="profile-link"><a href="http://feeds.feedburner.com/raganwald" onmouseout="return 
+
+timeqs();" onmouseover="return quicksub(this, 'http://feeds.feedburner.com/raganwald');">1-Click 
+
+Subscribe</a></p>
+
+
+</div>
+
+
+
+</body>
+</html>

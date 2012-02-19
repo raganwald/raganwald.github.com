@@ -1,0 +1,414 @@
+<html> 
+<head>
+        
+        <title>Trick or Bleep?</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Friday, December 08, 2006</div>
+			
+
+			<div class="Post"><a name="116562693299794044">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html" title="permanent link">Trick or Bleep?</a></span>
+					<div style="clear:both;"></div>I like to post fun stuff on Fridays. I also repost old stuff from time to time when my brain is page faulting or when something I’m reading reminds me of an old post. Today both were true: I spotted <a href="http://www.iosn.net/Members/ken/blog/20061205" title="KISS (or why MS CS students have a bad time in interviews ...)">this post</a> about interviews going wrong and I remembered <a href="http://weblog.raganwald.com/2004/07/interviewees-perspective.html" title="The Interviewee's Perspective">an interview where I was the hapless victim</a>.<br /><br />There has been some refreshing commentary on the post and also on <a href="http://programming.reddit.com/info/u4pa/comments">reddit</a>. I want to give my thoughts on one issue. Was the interviewer posing a “trick question,” trying to find out how I negotiate conflict? This subject has attracted a lot of attention since Joel Spolsky recently <a href="http://www.joelonsoftware.com/articles/ThePhoneScreen.html" title="The Phone Screen">raised the issue</a>, and while it didn’t cross my mind at the time, it’s worth considering.<br /><br />The question posed to me was, <em>list all of the ways to call instance and class methods in Java</em>. I listed a bunch of things, and at the end, I included:<br /><pre><code>    someInstanceVariable.staticMethod();<br />    // calls the staticMethod of someInstancevariable's declared class<br /></code></pre>The interviewer told me I was wrong, and I shrugged, explaining that I thought I was right, but no big deal if I was wrong, since I never use that style of call, so it wasn’t an issue. The interviewer later told me that he did not like my answer, and indeed I did not get an offer.<br /><br />If this was a trick question, <em>ok, you had me</em>! I am not afraid to argue points where I believe there is a direct connection between the issue and the outcome of software development projects. If I really believe it is irrelevant, I don’t argue even if I have a personal preference. So I’ll happily go along with any particular coding style you advocate (including none), and if you insist that I use Eclipse for Java instead of TextMate, fine.<br /><br /><div style="float: right; margin: 0 0 10px 10px; width: 192px; "><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/gp/product/0201310058?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0201310058.jpg"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;" src="http://weblog.raganwald.com/uploaded_images/effective_java-724431.jpg" border="0" alt="" /></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0201310058" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></div>The problem with that question (let’s be clear, it’s <em>my</em> problem, not the interviewer’s problem), is that I don’t really care whether Java lets you call a static method via an instance of a class. The reason I don’t care, as I explained to the interviewer, is that I will <strong>never</strong> allow that code to get into the repository.<br /><br />For those who are too busy with Lisp to know all of Java’s warts, the problem is that static or class methods are never polymorphic. So if you write:<br /><pre><code>    // (yes, I know about public vs. private. These are obviously in 'package scope')<br /><br />class House {<br />    static String doorAction () { return "closes and locks"; }<br />}<br />class S___House extends House {<br />    static String doorAction () { return "bangs"; }<br />}<br /></code></pre>and you do this:<br /><pre><code>    final House structure = new S___House();<br />System.out.println(structure.doorAction());<br /></code></pre>You get <code>closes and locks</code> instead of <code>bangs</code>. Always. This is <strong>not</strong> what happens with instance methods, and that’s because so-called ‘static methods’ in Java are really global functions that live in class namespaces. The compiler resolves the function <code>doorAction</code> by looking up the declared type of <code>structure</code> at compile time. Its actual type at runtime is irrelevant. C++ programmers recognize this as the difference between <a href="http://en.wikipedia.org/wiki/Virtual_functions">virtual</a> and non-virtual functions.<br /><br />Back to the “trick question.” My problem is that since I never have and never will use this, I’m not going to argue whether it’s legal or not. It will never have the slightest impact on any project I’m on. If you want an argument, let’s discuss why you think we should use this idiom in production code.<br /><br />I honestly don’t think it was a trick question. If the interviewer knew it was legal and wanted an argument, he could have (and I suggest should have) chosen a different thing  to argue, something a little more obvious, such as telling me it is <em>legal and polymorphic</em>, and then seeing whether I (a) know that it is not polymorphic, and (b) argue with him.<br /><br />I don’t use questions like this, but I can see the value of this second question: a really experienced person knows exactly why it isn’t polymorphic and can discuss the kinds of bugs you will get if you try to write code depending on it.<br /><br />What do you think? Was this really a trick question? If so, should I have been more aggressive in arguing the subtle points of Java law?<br /><br />p.s. <span style="font-style: italic;">The interviewer later told me that he did not like my answer, and indeed I did not get an offer</span>: one benefit of much water having passed under the bridge is a more balanced perspective. I no longer assume that this one question is the only reason the interviewer decided I was not appropriate.<br /><br /><div style="margin: 0px 10px 10px 0px; float: left; width: 200px; text-align: center;"><a href="http://www.amazon.com/gp/product/0316172324?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0316172324"><img border="1" src="http://weblog.raganwald.com/uploaded_images/blink_2-736734.jpg"><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0316172324" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></a><br /><span style="font-size:85%;"><em><br />“Blink” examines why people make unconscious decisions. It's very relevant to interviews!</em></span></div>I may have been overqualified, too talkative, too reflective, or even too meticulous (when given the programming challenge of permuting a string, I was apparently the only candidate to ask what the output should be when the string contained duplicate letters). <a href="http://www.gladwell.com/blink/" title="Blink, by Malcolm Gladwell">Perhaps the interviewer had already decided the interview outcome before this question was discussed</a>.<br /><br />And do you know what? I’m not so sure I wouldn’t have reacted the same way as the interviewer. One of the big “No Hire” flags for me is a candidate who doesn’t fundamentally “get” a programming language. Anyone can “Learn Blub in 21 Days,” memorizing code snippets and patterns by rote. But such candidates often have no clue how a language works, how its features interact with each other to make those memorized code snippets work.<br /><br />Let’s say that I’m interviewing and I don’t know that Java (which isn’t particularly OO in theory or in practice) allows this bug of calling a static ‘method’ via an instance of a class. Is that so bad? Of course not, it’s a wart on the language. It’s not like knowing that it is allowed reveals a deep understanding of how Java works. So not knowing this isn’t a fundamental flaw in a Java developer or interviewer.<br /><br />Now a candidate tells me that this thing works. Well, I might jump to the conclusion that the candidate really doesn’t get the difference between static and instance methods, that the candidate will have trouble understanding the various scoping issues involved with instance members and static members. I could easily believe that this candidate will draw a complete blank when working with inner classes.<br /><br />An interviewer who didn’t happen to know this bit of Java trivia might reasonably infer that thinking it works betrays a superficial knowledge of Java.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/java.html">java</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/jobs.html">jobs</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html" title="permanent link">8:14 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Trick or Bleep?</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="116563716474792070"></a> 				IMO questions like these rank barely above useless for determining the quality of the coder being interviewed. A quick run through the compiler will quickly disabuse them of this notion. Isn't that what compilers are for, after all? Hell, I've been writing code for over a decade and I still make mistakes like that on occassion.<BR/><BR/>My favourite interview question is "Tell me what your favourite development language is. Why? Now tell me something you hate about it." Any developer who can't give you something they hate about their favourite language doesn't know that language (and any developer who doesn't have a favourite language has either no passion or no experience).<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html?showComment=1165637160000#c116563716474792070" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.postal-code.com/mrhappy/blog/" rel="nofollow">Chris</a> : 11:06 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116563716474792070" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116563880442588755"></a> 				Thanks, Chris!<BR/><BR/>I like your favourite interview question as well.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html?showComment=1165638780000#c116563880442588755" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:33 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116563880442588755" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116564029666877734"></a> 				It's a cute question, but doesn't show in any way that the person would be able to do anything useful.  There's so much useless esoterica in Java that it really only shows they're good at memorizing things.  It would even be better if the interviewee didn't even know you could call static methods from instances than to have one that would possibly use it for evil.<BR/><BR/>My favorite thing to do is to ask them a design question not related to software to see if they can can generalize the software development process to anything.  For instance, I like to ask QA interviewees how they would test a salt shaker.  If they say, "First, I would find out what the salt shaker should do" and then talk about specification, then it's a good sign.  If they just say, "well, I'd turn it over to see if salt came out", then it's a bad sign.<BR/><BR/>On the subject of development language, I think one of the good things that can come out is that the interviewee realizes that that there's a difference between the syntax and semantics of language.  If they say, "I like Java because it's pretty", they totally miss the point.  I like asking "how would you write an object-oriented program in C", since it leads to a good conversation about different programming languages vs. different programming paradigms.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html?showComment=1165640280000#c116564029666877734" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.philvarner.com" rel="nofollow">Phil</a> : 11:58 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116564029666877734" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116564685051435883"></a> 				A long time ago, during the local (Delft University of Technology) version of Object Oriented Programming 101, the exam consisted primarily of writing a bunch of code.<BR/><BR/>ON PAPER.<BR/><BR/>One of the classes given to us consisted of a bunch of static methods, and because I think writing code on paper is effing ridiculous (java, by the way, which doesn't exactly offer the gamut on brevity), I pulled a ClassName a; followed by a.staticMethod() just to save myself some typing.<BR/><BR/>I also made a bet that I could wrap the exam inside of 30 minutes (you have 3 hours) and get an 8 or up (out of 10).<BR/><BR/>I got a 7... and that particular stunt was marked off.<BR/><BR/>Assuming it was marked off due to bad style, I decided to take it up, and claim that I did it only to avoid writing so much. Turns out it was marked off because he thought (and this is a professor we're talking about) that wasn't legal.<BR/><BR/>Somewhere before it became a shouting match I convinced him to try it which led to an 8.<BR/><BR/>Anecdotal evidence, perhaps, that people just get this wrong and confuse proper style with what the compiler will technically process. I think default installs of eclipse warn you if you try it.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html?showComment=1165646820000#c116564685051435883" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.zwitserloot.com/" rel="nofollow">Reinier Zwitserloot</a> : 1:47 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116564685051435883" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116564829183142321"></a> 				For what it's worth, if I was your interviewer, and if you had hijacked the interview over such an inconsequential topic, I would have no-hired you.  I don't have any patience for coworkers who can't let trivial matters go.<BR/><BR/>You responded in exactly the right manner.  What can I say?  Sometimes your interviewer is an ass, and you can't do anything about it.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html?showComment=1165648260000#c116564829183142321" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Alyosha`</span> : 2:11 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116564829183142321" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116567402881776321"></a> 				.. and, yeah, I'm with alyosha on this one. Frankly you don't know what this guy was expecting, but even money says you do what you did and get away from the topic stating it's totally irrelevant.<BR/><BR/>Personally if ever I have to interview someone I might just reconstruct the situation to see how people handle this kind of thing. I want them to talk about it casually or to let it go entirely, because unlike in this case, there's not always a 'right' answer.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html?showComment=1165674000000#c116567402881776321" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.zwitserloot.com/" rel="nofollow">Reinier Zwitserloot</a> : 9:20 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116567402881776321" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116568892679429743"></a> 				Have you considered that they didn't hire you for reasons other than that specific question?<BR/><BR/>If I was a potential employer of yours and came across this post where you were still worrying over something that happened some time ago, a red flag might go off.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html?showComment=1165688880000#c116568892679429743" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:28 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116568892679429743" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116569436935206433"></a> 				Reg, regarding your addition to the post:<BR/><BR/>I totally disagree. Now, if somehow you created the impression that the legality of that trick is legal, /maybe/. But you -specifically- mentioned that it's not important and that you'd never ever do it, legal or not.<BR/><BR/>The interviewer was being arrogant. And that doesn't work, because, while you nailed the idea that knowing these trivial details doesn't guarantee good programming skills, there's also no language that can reasonably be qualified as 'wart-free', either. Avoiding them like the plague is fine, and taking that to the extreme of not even knowing them is no problem...<BR/><BR/>but not knowing that there are warts at all - that's bad.<BR/><BR/>Especially when we're talking java which has plenty of warts.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html?showComment=1165694340000#c116569436935206433" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.zwitserloot.com/" rel="nofollow">Reinier Zwitserloot</a> : 2:59 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116569436935206433" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116577205552456332"></a> 				Anon:<BR/><BR/>I agree, it is unlikely that the entire decision rested on this question.<BR/><BR/>I'm not worried about potential employers, business partners, or employees reading my blog. In fact, it's part of the reason I write it in the first place.<BR/><BR/>Interviewing candidates is a major part of my job. Dissecting interviews I liked and disliked helps me improve my ability to identify star candidates and to employ interview techniques that they find interesting rather than annoying.<BR/><BR/>Feedback on interview questions from commenters like yourself helps me do a beter job as an interviewer.<BR/><BR/>Thanks.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html?showComment=1165772040000#c116577205552456332" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:34 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116577205552456332" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116584139684016921"></a> 				Chris > I would never answer this kind of question, this would immediately lead to a flame discussion about the language war. IT people I met with is simply too immature to support a balanced discourse, even on the comments on this blog I got sarcastic answer.<BR/><BR/>I don't publicly express opinion on this kind of question anymore, this is simply useless.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/12/trick-or-bleep.html?showComment=1165841340000#c116584139684016921" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">nraynaud</span> : 7:49 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116584139684016921" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

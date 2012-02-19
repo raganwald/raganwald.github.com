@@ -1,0 +1,372 @@
+<html> 
+<head>
+        
+        <title>Exception Handling in Software Development</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Wednesday, February 20, 2008</div>
+			
+
+			<div class="Post"><a name="6371766928993165590">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html" title="permanent link">Exception Handling in Software Development</a></span>
+					<div style="clear:both;"></div><blockquote>Exceptions to the process should be reserved for exceptional circumstances.</blockquote><br />This basic principle came up during a discussion of Crunch Mode. &#8220;Crunch Mode&#8221; is a hip way to say <a href="http://en.wikipedia.org/wiki/Death_march_(software_development">Death March</a>, only you make it sound like it&rsquo;s not so bad because it only happens for a short time at the end of a project, and it&rsquo;s a temporary phenomenon just to tide us over until things return to normal. In other words, Crunch Mode is an exception to the way things are normally done in response to exceptionally tight deadlines.<br /><br />Or is it?<br /><br /><strong>Exception handling</strong><br /><br />I have encountered developers who say &#8220;I know this isn&#8217;t the right way to do things, but this is an exception&#8221; to explain why they are not writing unit tests, refactoring problem code, or any of a number of other practices that they assure me are the right way to write software. Yes, they know the overall value of certain practices. And they understand that the rot they are introducing to the code&#8212;like technical debt&#8212;is dangerous and expensive to carry. Not just for &#8220;future generations of maintenance programmers,&#8221; but for the current team on the current milestone. But this is an exception, damn it!<br /><br />My first question is always how often this has happened in the past. Were they doing this last week? Last milestone? Last project? If the answer is <em>yes</em> (and sadly for me, it has been yes far often than no), then my next job is to stop them from using this excuse. If doing things &#8220;The wrong way&#8221; is common practice on your team, it isn&#8217;t exceptional: <u>It&#8217;s business as usual</u>. And that means you have to change or &#8216;fess up, jut your chin out, and boldly proclaim that you don&#8217;t need no stinkin&#8217; unit tests.<br /><br />Exceptional behaviour is certainly possible and might be the right thing to do under exceptional circumstances. But there are two tests for exceptional circumstances you can apply: First, if they happen frequently, they aren&#8217;t exceptions: The way you handle them is your business as usual.<br /><br />Second, if they can be predicted in advance, they aren&#8217;t exceptions either.<br /><br /><strong>Managing exceptions with your crystal ball</strong><br /><br />I know for a fact that stake holders want things that aren&#8217;t in the telephone book of requirements. I know for a fact that no matter how many rspecs and unit tests I write, handing my software to someone else will uncover bugs. H*ck, I might discover bugs just deploying my software on another system, and I think it&#8217;s an immutable law of software that the more important the person viewing a demo, the more embarrassing the bugs will be.<br /><br /><div class="book"><em></em><hr><em><a name="evtst|a|0884271536" href="http://www.amazon.com/gp/product/0884271536?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0884271536"><img src="http://weblog.raganwald.com/uploaded_images/critical_chain.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0884271536" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br><a name="evtst|a|0884271536" href="http://www.amazon.com/gp/product/0884271536?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0884271536">Critical Chain</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0884271536" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is an amazing book. The narrative form&mdash;a novella detailing a technical project team and their search for a way to manage an uncertain process&mdash;highlights the ways that Critical Chain Project Management handles risks and uncertainty and makes it visible where you can manage it in advance.<br><br>The section on estimating tasks alone is priceless, and I can tell you that the book gave me a vocabulary and a process for effectively negotiating dates and deliverables with my managers.<br></em><hr></div>I cannot tell you with a straight face that any of these &#8220;unplanned things&#8221; require exceptional behaviour on my part. I may not know exactly which bug will arise, but I know statistically that bugs happen, that requirements come into focus, and that estimates are just estimates. I do not say to my boss, &#8220;I had no idea they wanted a view for this behaviour, I had no idea this other thing wouldn&rsquo;t work as expected, therefore we need to finish the work without testing.&#8221;<br /><br />I can&mdash;and do&mdash;expect these things to happen, and therefore I can&mdash;and must&mdash;plan for them.<br /><br />Of course, if you fail to manage appropriately, or fail to convince your team that you ought to manage appropriately, then you will find yourself doing things &#8220;The wrong way.&#8221; But you cannot blame the circumstances, you must blame the choices your team made (or neglected to make) when you first planned your development. You must say, &#8220;We <em>chose</em> this course of action with our eyes wide open back on such-and-such a date.&#8221;<br /><br />I&#8217;ve been talking about coding here, but I usually think about team management as the goats. When people are burning out in a Death March at the end of the project, am I to believe that the manager &#8220;had no choice, the client was unreasonable?&#8221; Let me see. How do all of the projects you manage go? Are they all like this? Must I look at the second test, whether you could have predicted that this client would behave like every other client?<br /><br />Managing projects means either endorsing and advocating things like Death Marches or it means predicting the circumstances that lead to them and making decisions <em>in advance</em> that avoid them.<br /><br /><strong>Captain Crunch</strong>&thinsp;<a href="http://en.wikipedia.org/wiki/John_Draper" title="John Draper"><img src="http://weblog.raganwald.com/uploaded_images/external.png" alt="External Link" title="John Draper" border="0"></a><br /><br />Crunch Time can be a conscious decision. But please, show me where you wrote &#8220;overtime&#8221; in the plan at the start of the project. Show me how you planned to complete the high value, must do well features first, leaving the ones that could be incomplete and buggy for the end when people would be working without sleep.<br /><br />If you fail to plan for Crunch Time, you are not managing your project properly. For example, the traditional model of project management had the software become &#8220;feature complete&#8221; first, and then Crunch Time would inevitably occur during a bug fixing phase. The problem with this is that the team was now painted into a corner where you could not manage the process. Sure, you could decide which bugs to fix, and therefore you had some ability to decide which features were more important than others, but you could only manage the buggy features.<br /><br /><blockquote>If doing things &ldquo;The wrong way&rdquo; is common practice on your team, it isn&rsquo;t exceptional: It&rsquo;s business as usual.</blockquote><br />If something was of lower value but was working properly, you cannot go back and do a buggy job of it in half the time so that the developer would be freed up to fix bugs on something important. Managers knew this, of course, which is why they often whipped developers to complete their work in haste early in the project. Paradoxically, this made it easier to manage priorities in a traditional model.<br /><br />The agile model addresses the issue of managing Crunch Time by doing high value activities first, so that when Crunch Time comes around, you only have low value items. There is no need to whine that you have no choice because a critical feature needs to be ready on Monday. And if you discover something entirely new and unforeseen to do for Monday, you know that it can leapfrog the other items in the backlog because they aren&#8217;t that important.<br /><br />Does agile always eliminate Crunch Time? No, nothing involving humans and free choice always does what you expect. But it is an example of a model where you predict the &#8220;exceptional circumstances&#8221; and prepare for them. There are other ways to predict exceptional circumstances and prepare for them, of course. The point is that the ends of milestones and projects are known to be difficult and challenging and you need to have a plan from day zero.<br /><br />And that is the point of managing software development, whether you are managing your behaviour as a developer, managing a team, managing stake holder expectations, or managing a product: it&#8217;s your job to expect and plan for these things so that the only time you are &#8220;making exceptions&#8221; is when the circumstances are truly exceptional, when rare and unforeseeable opportunities arise.<br /><br /><hr/><em><font size="-1">This essay was provoked (in a good way!) by James Golick&rsquo;s <a href="http://jamesgolick.com/2008/2/18/the-crunch-mode-paradox-turning-superstars-average">Crunch Mode Paradox: Turning Superstars Average</a>.</font></em><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html" title="permanent link">9:48 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Exception Handling in Software Development</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="6902472019246217870"></a> 				I agree with your view on this and your reasoning and we should also recognize that knowledge, which is what your post provides, is the often times the source of change, it is not an active correction mechanism which is what is needed to change the behaviour of people and organizations.  Correction mechanisms are feedback mechanisms and the only one that I can think of for addressing this issue, and I have considered this issue on a number of occasions, is to change how people are paid for their work.<BR/><BR/>Knowledge workers are by in-large salaried employees.  This hides the cost of these wasteful practices, as who knows and pays for how much overtime they work, and how much time they take off recovering from these sessions.  If, knowledge worker - programmers, were classified as hourly workers, who therefore have to to be paid overtime when they work more than whatever the standard number of work hours are for the jurisdiction they work in.  This change would surface the cost of Crunch Mode and also of many other sources of waste.  Now organizations can decide do they just accept the cost or do they do something about it.<BR/><BR/>Norbert<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html?showComment=1203532140000#c6902472019246217870" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13317638971542317743" rel="nofollow">Norbert</a> : 1:29 PM</div>
+
+								<span class="item-control blog-admin pid-1685265156"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6902472019246217870" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7060509253990467734"></a> 				,----<BR/>| The agile model addresses the issue of managing Crunch Time by doing<BR/>| high value activities first, so that when Crunch Time comes around,<BR/>| you only have low value items. There is no need to whine that you have<BR/>| no choice because a critical feature needs to be ready on Monday. And<BR/>| if you discover something entirely new and unforeseen to do for<BR/>| Monday, you know that it can leapfrog the other items in the backlog<BR/>| because they aren’t that important.<BR/>`----<BR/><BR/>The tacit assumptions here are (1) all activities can be known at the<BR/>beginning of a project (2) that the value of all activities are known<BR/>at the beginning of a project and (3) that these values do not change<BR/>relative to each other.  In my experience no project of appreciable<BR/>size will exhibit these properties.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html?showComment=1203579120000#c7060509253990467734" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10947658306851620046" rel="nofollow">lee</a> : 2:32 AM</div>
+
+								<span class="item-control blog-admin pid-2118331907"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7060509253990467734" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2722893649172859555"></a> 				Lee:<BR/><BR/>These are not my assumptions, nor are they assumptions of agile <A HREF="http://agilemanifesto.org/" REL="nofollow">as I understand it</A> and practise it. Agile embraces those assumptions while classical rejects them.<BR/><BR/>For example, all agile processes emphasize iterations specifically because not all requirements are known, the values are not known, and the values change as we gain understanding.<BR/><BR/>The point of the sentence you quote is that if you are constantly obtaining new insight and prioritizing your work within iterations, the amount of work in your backlog that is of the highest value will remain small relative to the work that has already been completed that is of the highest value.<BR/><BR/>Please do post again if you do not feel that the concepts of iterative development + re-prioritizing work between iterations does not address your concern.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html?showComment=1203587640000#c2722893649172859555" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:54 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2722893649172859555" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1015989047177914069"></a> 				That's well and good, but not really always possible. Sometimes the work comes with a target date which you cannot negotiate. Lawmakers, for one, are rarely concerned with how much effort it will take for a company systems' to be adapted.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html?showComment=1205863200000#c1015989047177914069" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07505997833685327219" rel="nofollow">Daniel</a> : 2:00 PM</div>
+
+								<span class="item-control blog-admin pid-1712528103"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1015989047177914069" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

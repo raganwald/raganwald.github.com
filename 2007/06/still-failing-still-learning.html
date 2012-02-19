@@ -1,0 +1,657 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+	<head>
+		<title>
+			Still failing, still learning
+		</title>
+		<link rel="stylesheet" type="text/css" href="/blog.css">
+		<link rel="stylesheet" type="text/css" href="/sunburst.css">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	</head>
+	<body>
+		<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"></a><br>
+			<div class="DateHeader">
+				Friday, June 08, 2007
+			</div>
+			<div class="Post">
+				<a name="7807584909754823107">&nbsp;</a> <span class="PostTitle"><a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html" title="permanent link">Still failing, still learning</a></span>
+				<div style="clear:both;"></div>
+				<br/><center>(<i>This essay appears in the e-book <a href="http://leanpub.com/shippingsoftware">What I've Learned From Failure: A quarter-century of experience shipping software, distilled into fixnum bittersweet essays</a></i>)</center><br/><br/><strong>The good new</strong>s: I’m still learning.<br>
+				<strong>The bad news</strong>: …<em>from <a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html" title="raganwald: What I've learned from failure">failure</a></em>.<br>
+				<br>
+				This post officially announces that my side project (originally named <em>cause &amp; effect</em> and later named <em>certitude</em>) is over.<br>
+				<br>
+				<strong>What I wanted to achieve</strong><br>
+				<br>
+				For those of you who weren’t subjected to one of my enthusiastic rants, here was my <a href="http://weblog.raganwald.com/2005/10/im-not-young-enough-to-know-everything.html" title="raganwald: I'm not young enough to know everything">Graham Question</a>: Can we predict the outcome of a software development project with objective observation?<br>
+				<br>
+				<div class="book">
+					<hr>
+					<em><a href="http://www.amazon.com/gp/product/0071460829?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0071460829"><img border="0" src="http://weblog.raganwald.com/uploaded_images/marketing_warfare.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0071460829" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;"><br>
+					<br>
+					Although most businesspeople would soil their khakis if they had to ride a tank into action, Reis and Trout are right on when they compare the four major strategies of War—Offense, Defense, Flanking, and Guerrilla—to businesses, especially start ups. I rate this even higher than <a href="http://www.amazon.com/gp/product/0060517123?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0060517123">Crossing the Chasm</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0060517123" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;"> for its ability to succinctly explain what growing companies have to do and how to do it to succeed.<br>
+					<br>
+					After you’ve read what I have to say here about my failure, I invite you to read what <a href="http://www.amazon.com/gp/product/0071460829?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0071460829">Marketing Warfare</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0071460829" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;"> has to say about Guerrilla Warfare (just three tactics to pursue!) and see if I'm a case in point.<br></em>
+					<hr>
+				</div>I have always believed that the answer is <em>Yes</em>. And I manage projects that way. But I also strongly believe that the only way to prove that we have an objective understanding of an algorithm is to mechanize it, to write a piece of software that executes your algorithm.<br>
+				<br>
+				So I set out to write a piece of software that, pure and simple, would look at a software development project and show you a traffic light: a green light would mean that the project looks like it’s on track, a yellow light would mean that the project needed help, and a red light would mean that there is no hope.<br>
+				<br>
+				I won’t go into a lot more detail, mostly because this isn’t a story about teeming hordes of customers and me not being able to finish by deadline. It’s a story of inventing a great solution to a problem nobody cares about. But if you absolutely must visualize the application, think of something that gobbles up your MS project files, your bug tracking data, even your burn down spreadsheets, and belches out that traffic light when it’s done. That’s it.<br>
+				<br>
+				So how and why did I fail?<br>
+				<br>
+				<strong>Project management software is social software</strong><br>
+				<br>
+				Reason zero, just as Paul Graham warned, my age. Really. I remember how much code I could crank at age 22, and now that I am double the age, I write an order or magnitude less. I’d like to say that my code is that much better that it makes up for the lack of volume. That might be true if I start a project with a specific end in mind, but the act of experimenting, tinkering, and exploring benefits from being able to turn large amounts of code around in short amounts of time.<br>
+				<br>
+				This is reason zero because I wanted to get it out of the way before explaining why I think I still would have failed if I were 22. But it’s still important to understand, because I might have known that I was going to fail two years ago, instead of today.<br>
+				<br>
+				Reason one that I failed—and this is the most important reason I failed—is that I was trying to tackle a social problem with technology. This can work—ask any dating site zillionaire—but it is a very high-risk strategy for software. Not just for making money, but for what really matters, adoption.<br>
+				<br>
+				<blockquote>
+					Project management is a <em>social problem</em>.
+				</blockquote><br>
+				Project management is a <em>social problem</em>. It is 99.5% about getting everyone who knows something about the state of the project to share what they know with everyone else. Getting all the relevant information is 99.5% of the problem, analyzing the information is 0.5% of the problem.<br>
+				<br>
+				Joel likes to brag about how much trouble FogBugz goes to to make it easy to enter bugs, about how certain kinds of reports are not available to discourage punitive social behaviours like punishing developers who generate too many bugs. This is a strong hint that getting good information is all about managing people’s perception of the likelihood of punishment for telling the truth.<br>
+				<br>
+				Sitting here typing this, I think the company who can do the best job of predicting the outcome of software development projects is <a href="http://inklingmarkets.com/" title="Inkling Markets">Inkling Markets</a>. That’s because their entire business is about finding a way for people to communicate what they really think of something, not just what they think other people want them to say about something. I think <a href="http://news.com.com/Tech+lessons+learned+from+the+wisdom+of+crowds/2100-1014_3-6143896.html?tag=st.num" title="Tech lessons learned from the wisdom of crowds | CNET News.com">Todd Proebsting would agree</a>.<br>
+				<br>
+				This problem isn’t limited to dysfunctional environments where people cower in fear of saying anything except “Sir, Yes Sir” when told to <a href="http://tuxdeluxe.org/node/213" title="&quot;Ye cannae change the laws of physics!&quot; | Tux Deluxe">change the laws of physics</a>.<br>
+				<br>
+				<strong>Lemons, damned lemons, it’s always lemons</strong><br>
+				<br>
+				Project management suffers from a real lemon problem. I <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html" title="raganwald: The Not So Big Software Design">quoted Bruce Schneier at length</a> about this already, so this time I’ll explain things directly:<br>
+				<br>
+				Most managers, especially those with limited experience shipping software on a predictable schedule, do not know how to correlate what they’re told about the project with the likelihood that the project will succeed.<br>
+				<br>
+				Some information is valuable, some is junk. The problem is, managers “buy” information. They trade favours like letting you keep your job for information about how well you are doing your job. So there is a market for information just like a market for cars.<br>
+				<br>
+				They also “sell” information, literally: they have to make a report or a presentation to their superiors, or to stake holders, or to their fellow founders at the <a href="http://ycombinator.com/" title="Y Combinator">YCombinator</a> dinner.<br>
+				<br>
+				When a manager cannot tell the difference between information that is useful for predicting the outcome of a project and information that is not useful for predicting the outcome of a project, she thinks about the next best thing: the “resale value” of the information with people one step removed from the project, like her own manager. So she values things like pretty PowerPoints about the architecture higher than finished pieces of functionality.<br>
+				<br>
+				(This is why I have always sweated my heart out to give good presentations. My teams have depended on me being able to take good information and sell it upstream just as if it were CMM Level Five Buzzword-Compliant Junk).<br>
+				<br>
+				Do managers further removed from a project always value pretty junk more than good, solid information? Not always, but often. And that’s enough for people to be pressured to give the bad information that sells to their manager, while hiding the good information that doesn’t sell. Exactly like the owners of good cars taking their treasures off the market.<br>
+				<br>
+				<strong>Lemon and bay leaf crème brûlée</strong><br>
+				<br>
+				Why does junk information outsell good information? Nice PowerPoint isn’t a good explanation by itself: there are nice PowerPoints explaining Agile, but managers still prefer waterfall.<br>
+				<br>
+				Consider a <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html" title=" The Not So Big Software Design">not so big design</a>. Let’s call completing that design good information: we’ve done a good job finding out what’s really important for the project and making a design that emphasizes the way this project is unique, not the technology stack.<br>
+				<br>
+				Now consider a typical technology design, emphasizing frameworks and technologies. Fully buzzword-compliant.<br>
+				<br>
+				Which one sells better? The <em>technology stack does</em>. Why? Well, for starters, managers have been exposed to seventeen billion dollars worth of advertising talking about the benefits of technology stacks. Nobody is advertising the specific ways the not so big design helps the project. How could they? Those are <em>specific to the project</em>, that’s the whole point.<br>
+				<br>
+				And managers are like anyone else, they compare what you are doing to successful projects they have seen in the past. Once again, the not so big design doesn’t have anything in common with other projects, but the technology stack does. (There are lots of failed projects with technology stacks, of course. But who cites those when bugging the team about whether they will use Hibernate as their ORM?)<br>
+				<br>
+				How did this happen? How did things that have no correlation to the success of a project become more attractive than things that do?<br>
+				<br>
+				<div class="book">
+					<hr>
+					<em><a href="http://www.amazon.com/gp/product/1580630081?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1580630081"><img border="0" src="http://weblog.raganwald.com/uploaded_images/creme_brulee.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=1580630081" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;"><br>
+					<br>
+					Mmmmmm... <a href="http://www.amazon.com/gp/product/1580630081?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1580630081">Elegantly Easy Crème Brûlée</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=1580630081" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;">... The title doesn’t lie, the recipes are easy: even I was able to make tasty desserts! For motivating a team or thanking your family for putting up with your devotion to your start up, dessert is always a good choice :-)<br></em>
+					<hr>
+				</div>Quite simply, people have an incentive to look successful. So they imitate the outward appearances of successful projects. We have a really simple way of completing successful software projects: <a href="http://weblog.raganwald.com/2006/09/wasabi-cannot-cure-rotten-fish.html" title="Wasabi cannot cure rotten fish">we put successful people on them</a>. But we have a broken way of thinking about it: we don’t like to think of the people as being special, we think that what the people do is successful.<br>
+				<br>
+				And by that logic, we can take <em>anyone</em>, have them do the same things as successful people, and our projects will succeed.<br>
+				<br>
+				In a manager’s mind, the measure of whether information is good or not is, <em>Does it measure whether people are doing the same things that successful people have done on projects I’ve been told were successful</em>?<br>
+				<br>
+				This is not the same thing as measuring whether the project is on its way to success at all. This measures the outward appearance of a project. Things that can be measured easily are rarely the most significant things. Behaviours that can be “gamed,” like how many hours a team is working, will be gamed.<br>
+				<br>
+				And as above, even if a manger knows better, does her manager know better? If not, good information will be difficult to sell and she will be under a lot of pressure to serve Lemon Pie.<br>
+				<br>
+				<strong>Off balance sheet transactions</strong><br>
+				<br>
+				There’s another important reason that projects have bad information: the best information is <em>off balance sheet</em>. That’s an expression meaning something a businessperson sweeps under the rug. Try Googling <a href="http://www.google.ca/search?q=Off+Balance+Sheet+Transaction" title="Off Balance Sheet Transaction - Google Search">Off Balance Sheet Transaction</a>. It’s never pretty.<br>
+				<br>
+				In essence, project plans and reports never include the most important information about the likelihood of project success. Never. (I mean never in the same sense that Joel Spolsky means “nobody,” as in “<a href="http://www.joelonsoftware.com/articles/APIWar.html" title="How Microsoft Lost the API War - Joel on Software">fewer than 10,000,000 project plans</a>”).<br>
+				<br>
+				Let me give you a recent example. I was discussing a project with a certain manager in a client organization, and there was a rather linear series of releases. Her question was, <em>Can’t we shorten the plan by looking at the dependencies and starting some releases in parallel with others</em>?<br>
+				<br>
+				Of course we could, but in doing so, we increased the project risk. Just as a single developer has a problem keeping multiple tasks in one brain, a team has the same problem: when working on several unrelated pieces of software at the same time, the individual developers may only work on one thing at a time, but the managers and the testers and especially the stake holders who are thinking about functionality and exercising change control are overloaded, so they will make poorer decisions.<br>
+				<br>
+				And worse, although you might <em>think</em> that there are no dependencies, you only think that at the outset of a project because of assumptions you are making <em>now</em>, before you fully understand what you are getting into. All in all, there’s a reason Agile projects have a practice of working on iterations with single themes, and the reason is to reduce risk.<br>
+				<br>
+				Does this mean that manager wasn’t making a reasonable trade off between risk and time? Maybe she was making a very reasonable choice. But let me ask you this: where on the plan would you see the risk component of the decision? If you were comparing Plan “A,” with the linear releases that finish in August, and Plan “B” with some parallel releases finishing in July, how do you decide which plan is better?<br>
+				<br>
+				Right, you can’t see anything except the difference in dates, so you choose Plan B. The risk component of the plan is off balance sheet. Enjoy your lemon.<br>
+				<br>
+				(And it is very hard for a manager’s people to explain, for the twentieth time, that <em>it is a mistake to try to optimize a project by having everybody working at once, because that crystallizes certain architecture decisions too early, and haven’t you read any Eliyau Goldratt, whose novel <a href="http://www.amazon.com/gp/product/0884271781?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0884271781">The Goal</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0884271781" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;"> explains what’s wrong with optimizing resource engagement when you should be managing project risk</em>? The incentive is for them keep their own counsel and put their <a href="http://reginald.braythwayt.com/RegBraithwaiteDevJune2007_en_US.pdf" title="Reginald Braithwaite">résumés</a> up on the web. Such is life.)<br>
+				<br>
+				A more striking example comes from another project where, for various reasons, there was nearly 100% turnover of the senior staff, and finally an outside firm was brought in to clean it up. Do you think there was a notation on the plan for staff turnover? That has to have a huge risk implication, but the plan where you use the same team from start to finish looks exactly like the plan where new people are brought in for each phase or iteration.<br>
+				<br>
+				Why is risk off balance sheet? I think it’s because people have a blind spot for risk in projects. After the fact of a project, you can always do a postmortem and say, “if we had done this, and this, and if we didn’t do that, we would have succeeded.” So you blame yourself for poor execution.<br>
+				<br>
+				There’s a culture of <em>Boolean thinking</em> about projects and plans. They worked or they didn’t. We’ll be done in July or August. Not “With Plan A, we’re 90% August, 8% September” and “With Plan B, we’re 12% July, 56% August, but 23% September and 7% October!”<br>
+				<br>
+				Decisions that add risk to a project, such as excessive parallelization, or the use of unproved people, or the use of team who have never worked together in the past, or of forcing decisions prematurely, all of these things are not reflected in the plan.<br>
+				<br>
+				(This is another reason there is pressure downwards on developer competence in many organizations. Consider two managers: the first staffs up quickly by selecting available developers, who may not be particularly good. In fact, they are less good then the existing team average. The second moves more cautiously, only adding to the team when the addition improves the average competency of the team. Do you think the second manager will keep their job long enough to finish a project? No, because the ticking time bomb of hiring certain types of developers is off balance sheet, but being understaffed is out there for everyone to criticize.)<br>
+				<br>
+				I had this hope that through a kind of collaborative filtering I could have a piece of software notice that linear plans or plans involving hiring too quickly or whatever had less variance than parallel plans, and adjust the traffic light accordingly. Regardless of what people would say, it would shrug its shoulders and remorselessly remark on the actual historical averages.<br>
+				<br>
+				Nice idea? No, it’s a dud. (Or at least, my execution was a dud!)<br>
+				<br>
+				<strong>Somebody set up us the bomb</strong><br>
+				<br>
+				The second major reason I bombed is that I couldn’t find any buyers. Quite simply, the people who understand these principles are running successful projects. I know lots of people who agree that there is a problem and agree this would help, but <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="raganwald: What I've Learned From Sales, Part I: Don't Feed the Trolls">they don’t think they need help</a>.<br>
+				<br>
+				I couldn’t find anyone holding their head in their hands, saying, “If only I could get the <em>truth</em> about our projects, I could open my budget and shower you with gold.” The people who were aware of the problems with project information were busy using decidedly low tech tools—like hiring good people and having daily meetings and estimating tasks in spreadsheets—to solve their problems.<br>
+				<br>
+				And the people who could use some help quantifying the consequences of their choices—like managers who insist on calcifying decisions very early in a telephone book design document so that they can demonstrate progress in the form of an architecture—they don’t think there’s anything wrong with their approach.<br>
+				<br>
+				Why is that? My conjecture is that people want help with things that fit their model of what’s important. Someone who uses skilled practitioners and XP thinks that limiting risk is important: that’s why they use two week iterations and merciless refactoring rather than up-front design.<br>
+				<br>
+				Someone using a classical BDUF management approach thinks maximizing resource allocation and managing task dependencies is important, that’s why they spend all of their time looking at GANNT and PERT charts. When you try to sell either of them something, they want to know how it will fit the model they have in their head about how to succeed with software development, not why they should consider a new model.<br>
+				<br>
+				And I’m not sure they’re wrong about what’s important to them, personally.<br>
+				<br>
+				If one of those <acronym title="Big Design Up Front">BDUF</acronym> projects fails due to the architecture being a poor fit for what the team discovers is really important about the projects, or from poor decisions being made in haste at the beginning of the project, well… managers will say that the problem was with the people making poor decisions. Such managers are not shopping for tools to help them understand the trade-offs, because they do not believe they are making trade-offs.<br>
+				<br>
+				<div class="book">
+					<hr>
+					<em><a href="http://www.amazon.com/gp/product/0884271536?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0884271536"><img border="0" src="http://weblog.raganwald.com/uploaded_images/critical_chain.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0884271536" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;"><br>
+					<br>
+					<a href="http://www.amazon.com/gp/product/0884271536?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0884271536">Critical Chain</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0884271536" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;"> is an amazing book. The narrative form—a novella detailing a technical project team and their search for a way to manage an uncertain process—is a big win, it highlights the important ways that Critical Chain Project Management handles risks and uncertainty and makes it visible where everyone can manage it.<br>
+					<br>
+					The section on estimating tasks alone is priceless. If you can’t afford a copy and your library doesn’t stock it, borrow mine. You <strong>must</strong> read this book if you participate in software development teams.<br></em>
+					<hr>
+				</div><!--One manager I know told me that Project Management is about managing risks, as if knowing you have only a 5% chance of succeeding means you can always find a way. Given that perspective, how do you sell him a tool that tells him the difference between &#8220;With Plan A, we&#8217;re 90% August, 8% September&#8221; and &#8220;With Plan B, we&#8217;re 12% July, 56% August, but 23% September and 7% October&#8221;? I also believe project Management is about managing risks, and the way I do that is by avoiding them.<br /><br />Can such managers be sold? Of course, eventually. -->Something I learned from selling Macintoshes back in the day is this: <em>only make one sale</em>. Convincing someone they have a problem is one sale. Convincing them you have the solution is another. And convincing them that today is the day to act is a third. If you have to do all three at the same time, you are doomed.<br>
+				<br>
+				This is why experienced companies distinguish <a href="http://weblog.raganwald.com/2004/07/selling-agile-difference-between-sales.html" title="raganwald: Selling Agile: The Difference Between Sales and Marketing">sales from marketing</a>. The first two steps are marketing, the third is selling. When you are a new company, you don’t have the resources to market and sell. You have to work with an established pain point (eliminating the first hurdle), then use PR and limited marketing funds to get the word out that you have solved the problem (the second hurdle). You only have time and energy for the third sale, separating customers from their money.<br>
+				<br>
+				But trying to convince managers that they’re doing it wrong (tactfully), then convince them that they want your product rather than some big rigid waterfall thing or three by five cards and XP, and then convince them that they should write a cheque today…<br>
+				<br>
+				Bad idea. I should know, I discovered that I was trying to do exactly that.<br>
+				<br>
+				Now you understand why I have used so much of this post to rant about the state of project management in software development. When you understand what most companies are doing and why, you understand what will sell, and why. And when I understood that the things my project were measuring and reporting were of little interest to the people who were my market, well...<br>
+				<br>
+				<strong>The not so big business plan</strong><br>
+				<br>
+				I think there are lots of things that will sell, that <em>do</em> sell into this market. When you understand that this is a social problem, when you understand that most information is bad and that the incentives are to value bad information, and for managers to value activities that produce bad information over activities that produce good information, you can make something people <em>will</em> buy.<br>
+				<br>
+				Like books, lectures, methodologies, and video training. If people have a social problem, a social solution is a natural fit.<br>
+				<br>
+				There were interesting possibilities like selling this to BigCo for “process improvement.” But whenever I thought about such ideas, I noticed that the software wasn’t in there. I could have written a book and lectured on these ideas. I could have done a “search and replace” of agile for certitude.<br>
+				<br>
+				A good business plan is one that is really specifically about you and your software. If your plan could be executed by someone else, or with a different project, it simply isn’t the right plan. And all variations of turning this into ConsultingWare were excellent ways of monetizing Reg Braithwaite the brand, but not ways of spreading the adoption of certitude, the product.<br>
+				<br>
+				And so… and so I looked the <a href="http://en.wikipedia.org/wiki/Sunk_cost" title="Sunk cost - Wikipedia, the free encyclopedia">sunken cost fallacy</a> straight in they eye and said, <strong>no more</strong>. As much as I <a href="http://en.wikipedia.org/wiki/Loss_aversion" title="Loss aversion - Wikipedia, the free encyclopedia">hate to lose</a>, I have folded my project and I am sharing with you the important lessons I learned.<br>
+				<br>
+				<strong>Lessons learned</strong><br>
+				<br>
+				Well, the good one is this: Paul Graham is right. If you phrase your venture as a question, you will walk away with something very valuable. I now know a lot more about project management and the culture of software development than I did when I started the project, and I wasn’t exactly a Spring Chicken. And set out to learn about Bayesian Networks and Supervised Classification, but I ended up learning about Unsupervised <a href="http://en.wikipedia.org/wiki/Data_clustering" title="Data clustering - Wikipedia, the free encyclopedia">Clustering</a> and <a href="http://en.wikipedia.org/wiki/Collaborative_filtering" title="Collaborative filtering - Wikipedia, the free encyclopedia">Collaborative Filtering</a>.<br>
+				<br>
+				What a journey.<br>
+				<br>
+				And there is the one I ignored for far too long: Always Be Selling. I can thank friends like <a href="http://www.hyperbio.net/" title="Hyperbio">Leila Boujnane</a>, <a href="http://blog.suthakamal.com/" title="Ambient Thoughts">Sutha Kamal</a>, and Erich Finkelstein for reminding me about this, incessantly. Asking people to “buy” your idea forces you to make something people want. That being said, I think there’s a right amount of “push.” You can’t invent by polling the market. Quickly now, jump in your time machine and go back to 1981 or so. How many people wanted a mouse for their computer? But yet… Always be selling!<br>
+				<br>
+				(There’s a bunch of other stuff that is far more personal, and maybe some of it will appear one day in public, but I wanted to keep this post to essay length, so it’s almost entirely about products and markets.)<br>
+				<br>
+				So, here I am. Older, wiser, and ready for life’s next adventure. It might be more consulting for BigCo. It might be joining a start up and helping someone else’s dream flower. I don’t know, but if you have an idea...<br>
+				<br>
+				<blockquote>
+					My brain is open.
+				</blockquote><br>
+				<div style="text-align: right;">
+					—Pál Erdös
+				</div>
+				<div style="clear:both; padding-bottom:0.25em"></div>
+				<p class="blogger-labels">
+					Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/agile.html">agile</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/passion.html">passion</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a>
+				</p>&nbsp; <span class="PostFooter">¶ <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html" title="permanent link">6:49 PM</a></span>
+				<p id="postfeeds"></p>
+			</div>
+			<div class="blogComments">
+				<a name="comments" id="comments"></a><strong>Comments on “<em>Still failing, still learning</em>”</strong>:<br>
+				<div class="blogComment">
+					<a name="4017252779172256534"></a> Reg, I'm sure I fairly represent your readers/friends in saying:<br>
+					<br>
+					1. Sorry that the project didn't work out.<br>
+					2. Congratulations, however, on the lessons learned.<br>
+					3. Thank you so much for unreservedly sharing this experience.<br>
+					<br>
+					It's an exceptional blogger/person who takes weeks, months or even years of their lives and takes the time to compress the experience so that folks like me can benefit.<br>
+					<br>
+					I know your next venture will be that much better!<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181354400000#c4017252779172256534" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Erich</span> : 10:00 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=4017252779172256534" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="3613066792858870618"></a> I agree. Thanks for sharing your experience. (And in such a thought-provoking post, too.)<br>
+					<br>
+					I also have a side project which, it appears, is not going to work out as I had hoped. I must blog about it one day...<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181355240000#c3613066792858870618" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/06542045668842804974" rel="nofollow">John Rusk</a> : 10:14 PM
+					</div><span class="item-control blog-admin pid-1639075887"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=3613066792858870618" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="2794713791489667871"></a> I got terrible news for you, Reg: predicting the completion date of software projects is a <i>solved problem</i>.<br>
+					<br>
+					It's in <i>The Wisdom Of Crowds</i>. You set up a prediction market. That's all there is to it.<br>
+					<br>
+					It's one of those little bits of information which will <i>remain</i> an edge for anybody who uses it for a long time - possibly forever - because cultural resistance to the idea is huge and the actual implementation difficulty is tiny.<br>
+					<br>
+					(Sorry.)<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181412540000#c2794713791489667871" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 2:09 PM
+					</div><span class="item-control blog-admin pid-855033878"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=2794713791489667871" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="7826156945436741396"></a> Giles:<br>
+					<br>
+					This is <a href="http://homoiconic.com/2006/12/even-fantastically-well-managed.html" rel="nofollow">not news to me</a>, which is why I suggested that Inkling Markets have the best shot at it.<br>
+					<br>
+					That being said...<br>
+					<br>
+					You still need a <i>crowd</i>.<br>
+					<br>
+					Software Development is carried out in relative secrecy. A big company like HP or MSFT can set up a decent market.<br>
+					<br>
+					But how does your average company do it? There are a lot of detail to be worked out so that a sufficiently large market can wager on a medium or small project.<br>
+					<br>
+					And back to the social problem. What makes you think most companies will risk having a crowd betting that they will fail?<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181420100000#c7826156945436741396" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:15 PM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=7826156945436741396" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="2639542089315904412"></a> That sucks!<br>
+					<br>
+					On the other hand, that's one gem of a post, thanks for the valuable lesson.<br>
+					<br>
+					At least this lemon turned into a good vintage Cabernet.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181435280000#c2639542089315904412" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<a href="http://labnotes.org" rel="nofollow">Assaf</a> : 8:28 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=2639542089315904412" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="7478818268150888676"></a> Interesting post but I think it avoids the stating what I'm starting to see as obvious.<br>
+					<br>
+					I'm a profession project manager with BigCo and schooled expensively in most any of the methods you can name.<br>
+					<br>
+					All of these methods assist in providing a framework for success : indeed, just my using formal methodology, you're mitigating the risk of poor administration, quality, communication and so on.<br>
+					<br>
+					But they don't cover everything, and one line ....just one ....screamed out at me as I scanned back over your post<br>
+					<br>
+					"100% churn of the Senior Management"<br>
+					<br>
+					Was that in the risk plan ? 100% churn in significant stakeholders ??<br>
+					<br>
+					It wouldn't have been in mine....and even if it were, how can I influence the chances of something like that happenening ? Have a People guy chat to them about career plan on a regular basis ? and to their bosses to make sure the have no plans to fire them ??<br>
+					<br>
+					So, my point then is that any undertaking of significance will always face the unknown or, more accurately - the unknowable.<br>
+					<br>
+					What ever the size and quanity of know risks you can place- you can double that for risks you can't.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181477820000#c7478818268150888676" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<a href="themodernhumanist.com" rel="nofollow">Jason</a> : 8:17 AM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=7478818268150888676" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="4829930864182382174"></a> <i>"100% churn of the Senior Management"<br>
+					<br>
+					Was that in the risk plan ? 100% churn in significant stakeholders ??</i><br>
+					<br>
+					I think you misunderstood, I said <b>senior staff</b>, which in that particular case meant the people doing the work.<br>
+					<br>
+					Now, you asked, is that in the plan? And if so, what can you do about it?<br>
+					<br>
+					This was not my goal. I wanted to measure the likelihood of success, not prescribe solutions.<br>
+					<br>
+					And many project plans put the names of people next to the tasks to be done or outcomes to be generated.<br>
+					<br>
+					An experienced person would note that the names were changing over the history of the project and raise a red flag.<br>
+					<br>
+					However, most plans themselves have no place for actually noting the risk, for saying "Plan A, where we use one team from start to finish, has lower risk than Plan B where we have churn."<br>
+					<br>
+					That's all I was pointing out. An experienced person would easily note this from the churn, but it is "off balance sheet," it is not formalized or noted.<br>
+					<br>
+					Now as for what you can do about it, I can offer this suggestion:<br>
+					<br>
+					People are less likely to drop out of projects that have realistic plans :-)<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181481420000#c4829930864182382174" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:17 AM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=4829930864182382174" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="8810384988768559766"></a> Thanks for the interesting insights. A question: did you work alone, or did you have a co-founder? I've found that starting alone is one of the main predictors for failure.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181497380000#c8810384988768559766" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:43 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=8810384988768559766" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="1097920690798490670"></a> Your comment about "PERT charts" is actually quite a cogent one. No one I've seen managing software in the last three decades actually uses <a href="http://en.wikipedia.org/?title=Program_Evaluation_and_Review_Technique" rel="nofollow">PERT</a> charts. They use <a href="http://en.wikipedia.org/wiki/Critical_path_method" rel="nofollow">CPM</a> charts, and just <em>call</em> them PERT charts. The key difference is that a task in a PERT charts is marked not just with its expected duration, but with estimates of its minimum and maximum likely duration. One can use this information to predict a probability distribution for project completion times.<br>
+					<br>
+					Oddly, this probability distribution is exactly what you call for in your excellent post, and we have had a tool to produce it since the dawn of software engineering. The fact that nobody actually uses the tool is a good indicator that your analysis is right: nobody cares. CPM charts are for justifying schedules, not for making them right, so why use a fancier methodology that makes it harder to sell lemons?<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181499780000#c1097920690798490670" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<a href="http://fob.po8.org" rel="nofollow">PO8</a> : 2:23 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=1097920690798490670" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="2767531369244764953"></a> PO8:<br>
+					<br>
+					You're absolutely correct, estimation variances are ignored by most practitioners. CCPM also works with variances, although it handles them a different way (with buffers).<br>
+					<br>
+					If people used variances honestly, you would solve some of the problems. For example, the plan where we have a lot of parallelization ought to have larger variances than the plan where we are linear.<br>
+					<br>
+					And there's another factor I left out (I know, it's hard to believe form the length that I actually trimmed material...): In software, many of our choices have a risk impact on acceptance/bugs/quality that is also off-balance sheet.<br>
+					<br>
+					Hiring a newbie vs. an experienced person might make no difference to the duration of a task, but it might have a huge impact on the variance in the expected bug squashing later in the project.<br>
+					<br>
+					I almost never see this in actual plans. What I see is, when the project runs over length (a red flag that there are problems), they <b>shorten</b> the QA phase to make up the difference!<br>
+					<br>
+					Need I go into the consequences?<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181500260000#c2767531369244764953" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:31 PM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=2767531369244764953" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="3547851361843315045"></a> You mean shortening the QA period for a piece of functionality that's so complex that its development has overran its expected duration doesn't work? You'll never get your MBA with that kind of attitude.<br>
+					The concept of a continuous integration-style dashboard for the project overall is pretty intriguing. That said, I think you nailed it with the social aspect - having ungainly software like Project or whatever that helps managers and their teams visualize all the balls that they've got up in the air is one thing, but if your manager doesn't already have enough information to generate some semblance of that green/yellow/red light in their head, then your project's in a bad way.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181515140000#c3547851361843315045" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/05774470881611185492" rel="nofollow">Dave Solomon</a> : 6:39 PM
+					</div><span class="item-control blog-admin pid-1264726869"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=3547851361843315045" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="3509713936987380860"></a> Reg,<br>
+					This is the best post you have written imo. Examination of (and learning from) failure is something almost totally ignored in software.<br>
+					<br>
+					This post forced me to examine some of my pre conceptions and I learned a lot from it.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181532060000#c3509713936987380860" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/03630087669712445498" rel="nofollow">Ravi</a> : 11:21 PM
+					</div><span class="item-control blog-admin pid-752252664"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=3509713936987380860" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="1004804775306859206"></a> <i>And back to the social problem. What makes you think most companies will risk having a crowd betting that they will fail?</i><br>
+					<br>
+					Nothing makes me think that. I said in my first comment that I know most companies won't. That's why it'll remain an edge indefinitely; because there's resistance to the idea, despite its proven effectiveness.<br>
+					<br>
+					Anyway, it's very true that prediction markets are only useful with a crowd. I didn't say I could name a useful implementation; just that a solution exists.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181541900000#c1004804775306859206" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 2:05 AM
+					</div><span class="item-control blog-admin pid-855033878"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=1004804775306859206" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="3580336369159570154"></a> The current-you would be able to write/design software much better than you at 22.<br>
+					<br>
+					In other words, you at 22 might write inexperienced code hence takes more time to get it right.<br>
+					<br>
+					I'm not a believer of whiz-kid who can get it right the first time they do it. Not even those YCombinator companies.<br>
+					<br>
+					Most whiz-kid can create a software, but the code quality is up for questions.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181547180000#c3580336369159570154" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 3:33 AM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=3580336369159570154" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="2041697265580280483"></a> <i>Can we predict the outcome of a software development project with objective observation?<br>
+					<br>
+					I have always believed that the answer is Yes.</i><br>
+					<br>
+					<a href="http://www.idiom.com/~zilla/Work/Softestim/softestim.html" rel="nofollow">This paper</a> has a persuasive theoretical argument (based on algorithmic complexity theory) that the answer is No.<br>
+					<br>
+					If this is true, it's not surprising that you couldn't write a computer program to do it.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181591400000#c2041697265580280483" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/17280512257205721681" rel="nofollow">bob_bane</a> : 3:50 PM
+					</div><span class="item-control blog-admin pid-1972474052"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=2041697265580280483" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="1005882388583607593"></a> Bob:<br>
+					<br>
+					Thanks for <a href="http://www.idiom.com/~zilla/Work/Softestim/softestim.html" rel="nofollow">the link</a>. This is very timely, I read <a href="http://www.amazon.com/gp/product/1400077974?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1400077974" rel="nofollow">Meta Math</a> a few weeks ago, and it was really provocative, on the level of reading <a href="http://www.amazon.com/gp/product/0465026567?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0465026567" rel="nofollow">Godel, Escher, Bach</a> the first time (I especially loved his explanation, early in the book, about why some proofs are more important than others, establishing that merely knowing something is true is not the end of the journey, but perhaps just the beginning of another journey).<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181591940000#c1005882388583607593" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:59 PM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=1005882388583607593" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="1126546098738774604"></a> An ability to predict such outcome is like predicting your future. Gipsy witch will do it better.<br>
+					<br>
+					But what you could measure is a pulse of a project. An idea is simple.<br>
+					<br>
+					1. Measure amount of http requests to reddit/digg/slashdot per programmer. You'll know when he became bored with his task.<br>
+					<br>
+					2. Measure amount of compiler runs per code size. You'll know when your programmer get stuck.<br>
+					<br>
+					3-n. etc.<br>
+					<br>
+					Sure, all this like a blood pressure - only difference from "norm" matters.<br>
+					<br>
+					And it will never substute good project manager whom you could talk.<br>
+					<br>
+					I think five minutes talk each morning and another one in evening could make a much better thing. If manager is good.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181632380000#c1126546098738774604" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/06676314842171772808" rel="nofollow">Ivan Tihonov</a> : 3:13 AM
+					</div><span class="item-control blog-admin pid-2067369459"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=1126546098738774604" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="4186280918100049270"></a> <i>I think five minutes talk each morning and another one in evening could make a much better thing. If manager is good.</i><br>
+					<br>
+					Aye, there's the rub. <i>If manager is good.</i> Otherwise, what you get is a bad project full of people imitating what good people do.<br>
+					<br>
+					That's what makes the whole thing interesting for technology or for machines.<br>
+					<br>
+					What is it, exactly, that tells us the difference between good projects and bad?<br>
+					<br>
+					Or, are there no good projects, just good people?<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181644440000#c4186280918100049270" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:34 AM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=4186280918100049270" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="4276766791202510810"></a> Another great post, Reg.<br>
+					<br>
+					I used to wrestle a ton with these questions when I was working at a small to medium sized company in a not so competitive tech hiring market (Phoenix). There, on my good days, I could definitely be considered a "rockstar" at many top companies.<br>
+					<br>
+					Since moving to the Bay Area recently, it feels much tougher to achieve the same level of "recognition" as one might in a less competitive market.<br>
+					<br>
+					Tech interviews are seeking the top .001% highest IQ types; that just isn't me. I'm more like top 2% on my good days =)<br>
+					<br>
+					While Google, Microsoft, Facebook, etc have an ongoing War for Talent, I wonder if another company could develop a system for developers who most Get Stuff Done, ship code, etc. (as in Joel's "Smart &amp; Gets Stuf Done" goal of hiring)<br>
+					<br>
+					Looking at resumes only measures this trait so much. 2-minute academic coding problems usually measure IQ as opposed to brute coding that is more likely to be done in the wild.<br>
+					<br>
+					Any ideas? =)<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181650500000#c4276766791202510810" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13580092328655756719" rel="nofollow">Shanti Braford</a> : 8:15 AM
+					</div><span class="item-control blog-admin pid-248141202"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=4276766791202510810" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="2347513594736061239"></a> Shanti:<br>
+					<br>
+					<a href="http://weblog.raganwald.com/2007/06/portfolios.html" rel="nofollow">Portfolios</a>.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181654100000#c2347513594736061239" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:15 AM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=2347513594736061239" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="7053010649407581014"></a> <i>What is it, exactly, that tells us the difference between good projects and bad?</i><br>
+					<br>
+					Perhaps there is no such things like good or bad projects. As you said there is projects in which people performs bad and others in which they are good.<br>
+					<br>
+					And it's a manager's job to now how they perform and do a bit of magic to "light their fire" (tm).<br>
+					<br>
+					To know how things are going he must be stuff's best friend. They should be able to say him things they will never tell even to their wifes. Like "i feel bad today so i am going to read reddit till evening". Or "i was writing this whole month. I have done it all wrong.". Or "I am stuck."<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181674980000#c7053010649407581014" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/06676314842171772808" rel="nofollow">Ivan Tihonov</a> : 3:03 PM
+					</div><span class="item-control blog-admin pid-2067369459"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=7053010649407581014" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="3309207353784421976"></a> <i>What is it, exactly, that tells us the difference between good projects and bad?</i><br>
+					<br>
+					Sorry for my tendency to loose topic. :) I am after my recent paradigm shift shock.<br>
+					<br>
+					Ok what we should know is will project ends with success (a good one) or it will fail (a bad one). At partcular point of time.<br>
+					<br>
+					In my opinion software development is not about product-making and project finishing, but rather service-producing.<br>
+					<br>
+					Like a barber we could never predict will customer get what he want or not. Even when he cut his own hairs.<br>
+					<br>
+					Adoption of this idea leads me to several conclusions.<br>
+					<br>
+					Having dead ends and final products is a mistake (industry-wide).<br>
+					<br>
+					Have a product usable from very beginning. Launch it early. No, earlier. (You can not serve to customers if you have none of them).<br>
+					<br>
+					Refine it constantly. (Produce service).<br>
+					<br>
+					When you stop service is dead. Software are not working without humans who drive it.<br>
+					<br>
+					It is mostly ideas of XP but they had theoretical ground behind them, not just a practice.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181676240000#c3309207353784421976" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/06676314842171772808" rel="nofollow">Ivan Tihonov</a> : 3:24 PM
+					</div><span class="item-control blog-admin pid-2067369459"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=3309207353784421976" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="6932681408296259540"></a> Hey Reg,<br>
+					<br>
+					We spoke before, after the Joel On Software meeting. I was working on a "semantic engine". You suggested I incorporate . I'm now considering a couple applications -- social networking and synthetic biology. Do either of these, or semantic web technologies stickle your fancy?<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181755080000#c6932681408296259540" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/04653511283943003766" rel="nofollow">MarXidad</a> : 1:18 PM
+					</div><span class="item-control blog-admin pid-104899770"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=6932681408296259540" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="1137644922398852437"></a> Er, that should be "incorporate bayesian filtering"...<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181755380000#c1137644922398852437" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/04653511283943003766" rel="nofollow">MarXidad</a> : 1:23 PM
+					</div><span class="item-control blog-admin pid-104899770"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=1137644922398852437" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="3275093841945044534"></a> Thanks for a really interesting thoughtful post. As you say, project management is fundamentally a people problem, so very difficult to predict accurately in software.<br>
+					<br>
+					My point however is that I don't see any evidence in your story why your age has anything to do with your venture not working out. On the contrary, understanding the pitfalls of project management is something that takes a bit of maturity and experience, so I think the "now-you" is likely to be better than the "old-you".<br>
+					<br>
+					While I am also a big admirer of Paul Graham's writings, we shouldn't believe everything he says! Though, one of the other great Paul-isms "make something people want" seems to be at the root of the problem here.<br>
+					<br>
+					Best of luck for whatever you turn to next!<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181760000000#c3275093841945044534" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/00143151337676880055" rel="nofollow">Bill R</a> : 2:40 PM
+					</div><span class="item-control blog-admin pid-1159299900"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=3275093841945044534" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="8478552589526006810"></a> "Reason zero, just as Paul Graham warned, my age. Really. I remember how much code I could crank at age 22, and now that I am double the age, I write an order or magnitude less."<br>
+					<br>
+					Thanks for propogating a myth: I too am double 22, but rather than bemoan this fact, just this morning, in perhaps an hour or two, I cranked my third implementation of a web/mvc meta-framework I first conceptualized less than a year ago -- and I wasn't cranking ANY code at 22, let alone 33.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181868960000#c8478552589526006810" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/02165511158780330987" rel="nofollow">jemptymethod</a> : 8:56 PM
+					</div><span class="item-control blog-admin pid-1577455060"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=8478552589526006810" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="7515958344188801017"></a> JEmptyMethod:<br>
+					<br>
+					I am not responsible for what you did or didn't do with your youth when you had it. I report my experience here.<br>
+					<br>
+					I am not bemoaning anything, but I am explaining that at 44, (45 today!) there are some things I don't do as well as I did at 22, and some things I do better.<br>
+					<br>
+					For sheer volume of code, I was better at 22. Heck, for sheer ability to work without sleep, I was better at 22. Most people who have parented a newborn for the first time in their thirties or forties can vouch for the fact that your tolerance for sleep deprivation changes with age.<br>
+					<br>
+					Am I writing better software today? Absolutely. I don't want to trade my experience and knowledge for the vigor of my youth. Volume isn't everything. In fact, I'm not sure that the volume scales with languages. So I agree that a 20-something hacker should be able to out-Java a 40-something hacker due to sheer volume. But can a 20-something Lisper out-hack a 40-something Lisper? Maybe, but I'll bet the difference is sharply reduced. The ratio between hours of coding and ideas is different.<br>
+					<br>
+					That being said, there are many other factors at work in the difference between myself at 20-something and myself at 40-something, some of which I am not going to share with you. The bottom line is, I believe I would have shuttered this business idea a year or even two sooner were I 24.<br>
+					<br>
+					I stand by what I said, and if you If you read what I said, you will realize that I never claimed that I would have succeeded with this business had I been able to crank out more code in less time.<br>
+					<br>
+					So...<br>
+					<br>
+					Carry on with your meta-framework, and I wish you every success.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1181870520000#c7515958344188801017" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:22 PM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=7515958344188801017" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="7512228835396554834"></a> Reg, as you can see I am months behind in my reading... Nice post. It is time for beers; patio is ready!<br>
+					<br>
+					Thanks as always for sharing your thoughts!<br>
+					<br>
+					We are shipping a release in two days so believe me when I say I know what you are talking about! But since we are simple folks we decided that our management mantra was going to be simple: white board(s), great team, daily status meetings, and a notepad (sometimes we even use a spreadsheet!) - stickie notes are great too, specially the rainbow coloured ones! And tickets, tickets, tickets. Broken anything: open a ticket!<br>
+					<br>
+					Let's have a drink soon! Once our release is shipped...<br>
+					<br>
+					Leila<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1184113440000#c7512228835396554834" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<a href="http://www.hyperbio.net" rel="nofollow">Leila Boujnane</a> : 8:24 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=7512228835396554834" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="958243285746131465"></a> You might find the following interesting:<br>
+					<br>
+					http://alumnit.ca/wiki/?SchedUlator<br>
+					<br>
+					You seem to be right about there being no money with this, but we had great success using it nonetheless.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1184900040000#c958243285746131465" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/17021891826074851837" rel="nofollow">Pierre Phaneuf</a> : 10:54 PM
+					</div><span class="item-control blog-admin pid-667682621"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=958243285746131465" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="4868172325138384704"></a> You are now the first result at google for still failing.<br>
+					<br>
+					-- Rasmus<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html?showComment=1186452060000#c4868172325138384704" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 10:01 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=4868172325138384704" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div><br>
+				<p id="postfeeds"></p><br>
+				<br>
+				<br>
+				<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+			</div>
+		</div>
+		<div id="rightcontent">
+			<div class="SideBarTitle">
+				<a href="http://reginald.braythwayt.com">Reg Braithwaite</a>
+			</div><br>
+			<br>
+			<div class="SideBarTitle">
+				Recent Writing
+			</div><a href="http://homoiconic.com">Homoiconic</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Share
+			</div><a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> / <a href="http://github.com/raganwald/andand">andand</a> / <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> / <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> / <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> / <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> / <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Beauty
+			</div><!-- idioms -->
+			<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> / <a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> / <a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> / <a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> / <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a><br>
+			<br>
+			<a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> / <a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> / <a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> / <a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Work
+			</div><a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> / <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Naïve Approach to Hiring People</a> / <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> / <a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> / <a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> / <a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Management
+			</div><a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> / <a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> / <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> / <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> / <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> / <a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I’ve learned from failure</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Notation
+			</div><!-- languages -->
+			<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> / <a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> / <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> / <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> / <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> / <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> / <a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Opinion
+			</div><a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> / <a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> / <a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> / <a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> / <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I’ve Learned From Sales</a> <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Whimsey
+			</div><a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> / <a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin’s Technique for Managing his Manager</a> / <a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> / <a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> / <a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a><br>
+			<br>
+			<div class="SideBarTitle">
+				History
+			</div><a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> / <a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> / <a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> / <a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> / <a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> / <a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> / <a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> / <a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> / <a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> / <a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> / <a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> / <a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> / <a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> / <a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> / <a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> / <a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> / <a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> / <a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> / <a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> / <a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> / <a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> / <a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> / <a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> / <a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> / <a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> / <a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> / <a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> / <a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> / <a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> / <a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> / <a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> / <a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> / <a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> / <a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> / <a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> / <a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> / <a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> / <a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> / <a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> / <a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> / <a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> / <a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> / <a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> / <a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> / <a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> / <a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> / <a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> / <a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /<br>
+			<br>
+		</div>
+		<div style="visibility: hidden">
+			<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+</script> <noscript><img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt=""></noscript>
+		</div>
+	</body>
+</html>

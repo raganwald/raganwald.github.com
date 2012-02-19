@@ -1,0 +1,400 @@
+<html> 
+<head>
+        
+        <title>Would you like a side of referential transparency with your order of static typing?</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Thursday, October 19, 2006</div>
+			
+
+			<div class="Post"><a name="116100787388296516">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2006/10/would-you-like-side-of-referential.html" title="permanent link">Would you like a side of referential transparency with your order of static typing?</a></span>
+					<div style="clear:both;"></div><acronym title="recapitulate: to repeat in concise form">Recapitulating</acronym> some of the arguments <a href="http://weblog.raganwald.com/2006/10/if-sneetches-with-stars-use-java-and.html" title="If Sneetches with Stars use Java, and Sneetches without Stars use Ruby, who uses ML?">for and against static typing</a> has been very refreshing. And thanks to everyone who took the time to share their point of view.<br /><br />Leaving aside the argument that static typing helps your IDE help you, the really big idea behind modern static typing is that because certain properties of variables are invariant, it is tractable to perform a lot of analysis on a program looking for contradictions. For example, we say that <code>foo</code> is an <code>Integer</code>, and then a little later on we call <code>foo.append </code>. Since <code>Integers</code> don’t implement a method for appending, we know that there is an error in the program without having to run the program.<br /><blockquote>Thoſe who would give up E<span style="font-variant: small-caps; text-transform: lowercase;">ssential</span> L<span style="font-variant: small-caps; text-transform: lowercase;">iberty</span> to purchaſe a little T<span style="font-variant: small-caps; text-transform: lowercase;">emporary</span> S<span style="font-variant: small-caps; text-transform: lowercase;">afety</span>, deſerve neither L<span style="font-variant: small-caps; text-transform: lowercase;">iberty</span> nor S<span style="font-variant: small-caps; text-transform: lowercase;">afety</span>.</blockquote><div style="text-align: right;"><a href="http://en.wikiquote.org/wiki/Benjamin_Franklin">Benjamin Franklin</a><br /></div><br />And do you know what? Although I accept that this is true, and even useful, I haven’t personally been swayed by it (I’m just going to give my experience here, not a prescription or advice to others). The problem, as I see it, is that the statically typed languages I’ve used for production work have had such primitive typing systems that I couldn’t use them to <a href="http://weblog.raganwald.com/2006/03/ill-take-static-typing-for-800-alex.html">solve really important problems</a>.<br /><br />Errors where I mistakingly try to call <code>append</code> on a <code>String</code> when I should be calling it on a <code>StringBuffer</code> just don’t make up for all the extra verbiage and the onerous restrictions on meta-programming imposed by popular languages.<br /><br /><div style="text-align: center;"><a href="http://flickr.com/photos/87547772@N00/264113001/" title="Cognitive Hazard"><img src="http://static.flickr.com/109/264113001_f1ed3fb11e.jpg?v=0" alt="Cognitive Hazard" border="0" height="240" width="233" /></a><br /></div><br />But I had a sudden “Oho, you’re busted!” moment a few days ago. Didn’t I write a nice post explaining why <a href="http://weblog.raganwald.com/2006/10/why-are-local-variables-bad.html">mutable local variables are bad</a>? The gist of my argument was… wait for it… <em>mutable things make it hard to move stuff around, because you don’t have those nice invariants to reason about</em>. Hmmm. Could there be a strong parallel between getting rid of mutable variables and static typing?<br /><h4 id="static_typing_and_functional_programming">Static typing and stateless programming</h4>Yes, of course there is. It’s about minimizing the state changes. Static typing is about having just one state for each variable’s type. Programming with immutable variables is about having just one value for each variable. I advocate the latter. Why haven’t I embraced the former?<br /><br />Well… I could argue that dynamic meta-programming is worth more to me than the benefits of static typing. They really are worth a lot more than the benefits of the simplistic typing systems you find in popular languages. But are they worth more than the powerful systems in languages like Haskell or ML? Maybe not.<br /><br />And how dynamic is my meta-programming? I love the fact that I can use constructs like <code>acts_as_versioned</code> in Ruby, but there are languages that allow static meta-programming (like Scheme’s macros) that would go as far for much of what I do. Much farther than the restrictive straight-jacket of popular languages, anyways.<br /><h4 id="paradigm_smells">Paradigm smells</h4>This brings me to <a href="http://obiefernandez.com/presentations/obie_fernandez-agile_dsl_development_in_ruby.pdf">writing DSLs in Ruby</a>. One of the reasons DSLs are incredibly useful is that they are <em>declarative</em>: The what is cleanly separated from the how. Lots of successful DSLs are “business rules”, they aren’t statements to be executed, they’re constraints on the behaviour of a system. Just like static types are constraints.<br /><br />Does this sounds familiar? I’m confessing that one of the reasons I like Ruby is that it’s easy to write things that are static, that don’t change state. But Ruby is all about having flexible things that change at runtime. This is what you might call a <em>paradigm smell</em>, the paradigm of the language—types change on the fly—is at odds with the kind of programs I try to write in Ruby.<br /><br /><span style="font-style: italic;">Isn’t that interesting</span>?<br /><br /><span style="font-size:85%;">p.s. Okay, all of you static typing fans who are rolling up your sleeves to write an “I told you so” comment: before you hit “publish,” ...<br /><br />Are you curious about what would happen if you turned the static typing knob up to eleven? If you took the Red Pill? Could you use a really powerfully typed language to <a href="http://blog.moertel.com/articles/2006/10/18/a-type-based-solution-to-the-strings-problem">detect XSS vulnerabilities in the compiler</a>? Could you switch from an impertitive, loop programming style to a functional style and get rid of mutable variables? Could you express your domain logic declaratively in a DSL instead of in procedures and methods? If a little compile-time analysis is good, how much better could a <span style="font-weight: bold;">lot</span> of compile-time analysis be?<br /></span><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2006/10/would-you-like-side-of-referential.html" title="permanent link">5:21 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Would you like a side of referential transparency with your order of static typing?</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="116129853068654578"></a> 				I don't have enough experience with enough varied languages to weigh in on either side of this debate. <BR/><BR/>But I do have one question. If capitulate means to give in, and you start this post by recapitulating, are you giving in?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/would-you-like-side-of-referential.html?showComment=1161298500000#c116129853068654578" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.jbloomdesign.com" rel="nofollow">Joshua Bloom</a> : 6:55 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116129853068654578" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116133445312921831"></a> 				I'm ready to take the red pill, but I'm not sure I'd want to train my team to modern type systems (even if we used to parctice prolog, Curry, Clean or Mercury are far more complex), moreover given the error reporting problem they induce.<BR/><BR/>Even introducing java 5, "extends", "super" and type inference (yes, there is in java) is a difficult training problem.<BR/><BR/>One other side of the matter (you already blogged about it) is the cost of entry to Haskell/ML jobs to actually practice in a ML-oriented company before bringing the thing to a "normal" company. You need to own a PhD to get a position, and well, I don't.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/would-you-like-side-of-referential.html?showComment=1161334440000#c116133445312921831" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">nraynaud</span> : 4:54 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116133445312921831" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116135591170895832"></a> 				You know, it amazes me that ostensibly smart people like Raganwald, Steve Yegge, etc. don't "get" the main benefit of things like static typing and refactoring IDE's.<BR/><BR/>The main benefit is not about preventing runtime errors.  (Although it can, on occasion, assist with that.)  The benefit is speed and efficiency while editing code, and, consequently a shorter write-compile-test cycle.<BR/><BR/>It's incredibly useful to me to be able find out immediately FROM MY EDITOR that I made a typo, or passed an invalid parameter, or some such, rather than having to wait to compile and run my code before I find out.  This may not sound like much benefit, but multiplied across the hundreds of times a day that I make code changes, it's a huge time savings.<BR/><BR/>Automated refactorings in the IDE are a similar efficiency.  Being able to quickly change the name of a class or method - or even move it to a new package - while having all the housekeeping of updating references get done automatically(!) is a huge time savings.  Things like this let me as a developer focus on "the big picture" (e.g., rename this class) without having to concern myself with the tedious, repetitive, nitty-gritty details of actually carrying out the myriad individual editing changes needed for the operation.<BR/><BR/>These capabilities available to me at editing time as a result of static typing are a huge boon to my productivity - certainly an order of magnitude increase at least.<BR/><BR/>So enough with the "static typing doesn't prevent errors" straw man argument.  "It's about the coding, stupid!"<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/would-you-like-side-of-referential.html?showComment=1161355860000#c116135591170895832" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 10:51 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116135591170895832" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116136187508935092"></a> 				<EM>You know, it amazes me that ostensibly smart people like Raganwald, Steve Yegge, …</EM><BR/><BR/>Steve has his own soapbox. Please stick to critiquing my thoughts here. I would hate for someone to say “Hey Steve, you and Reg both believe X, and he said such-and-such about that, and he’s wrong, therefore, you’re a Putz.”<BR/><BR/>That wouldn’t be fair to him, now would it? For a more concrete example, he does seem fairly smart, whereas I do not. So perhaps the “ostensibly” thing applies to me, but he is unfairly tarnished by my reputation?<BR/><BR/>Anyways, I have a question for you. I wrote something right at the top of the post:<BR/><BR/><EM>Leaving aside the argument that static typing helps your IDE help you</EM><BR/><BR/>So… what part of the words “leaving aside” were unclear? I didn’t say that IDEs help you, but I didn’t say they didn’t. How do you know whether I love IDEs or hate them or feel indifferent?<BR/><BR/>In this post, I don’t say anything one way or the other about IDEs.<BR/><BR/>You say that “static typing helps prevent bugs” is a straw man argument. Please help me become a better writer: where did I go wrong explaining that I’m actually <EM>interested</EM> in investigating statically typed languages?<BR/><BR/>I absolutely, positively did <STRONG>not</STRONG> say that <EM>the only benefit of static typing is preventing bugs, and since it doesn’t do that, it is no damn good</EM>. In fact I linked to a post where someone uses a good static type system to solve an important problem!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/would-you-like-side-of-referential.html?showComment=1161361860000#c116136187508935092" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:31 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116136187508935092" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116136882349605394"></a> 				There's definitely something weird going on here, I agree. But I think it is partly that, as others have put it, Ruby doesn't get in the way.  It isn't purely functional, and that makes some things easier that make learning Haskell more difficult.  It allows functional and declarative styles where that makes sense. And the DSLs are not entirely declarative either, for that matter.<BR/><BR/>The "trouble" with static typing, I think, is the amount of keyboarding, even with automatic completion, when coding.  So "It's the coding, Stupid" is incomplete. Also, this type information gets in the way when trying to read code.  There are things I'd like a Ruby IDE to do, which it cannot. So Ruby isn't perfect either.<BR/>But we know there's no silver bullet.  I suspect we just don't yet know why there isn't.<BR/><BR/>For myself, I'd like to understand functional programming much better than I do. I thereby admit a certain level of ignorance in this debate!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/would-you-like-side-of-referential.html?showComment=1161368820000#c116136882349605394" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">hgs</span> : 2:27 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116136882349605394" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116310801963534675"></a> 				In Haskell you don't have to type the types in code because they can be inferred.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/would-you-like-side-of-referential.html?showComment=1163107980000#c116310801963534675" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 4:33 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116310801963534675" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5176239900234050623"></a> 				@Anonymous, what you fail to notice is that all those fancy refactoring features you're talking about, are not the result of static typing, they were stolen from Smalltalk, a dynamic language.  It's just that in a dead system based on files, you need static typing to implement refactoring, not so in a runtime system like Smalltalk.<BR/><BR/>All you static language fans need to stop pretending that you invented the IDE and refactoring and acknowledge that all that shit came from Smalltalk, which is still a vastly superior environment to work in, and still dynamic.<BR/><BR/>The trouble with static typing isn't how much you have to type, it's that no type system exists which can prove all valid programs. They all suck to some degree, some much less than others, and prevent you from doing things which would otherwise work were it not for the type system.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/would-you-like-side-of-referential.html?showComment=1180292640000#c5176239900234050623" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://onsmalltalk.com" rel="nofollow">Ramon Leon</a> : 3:04 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5176239900234050623" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="192960216253885748"></a> 				Ramon:<BR/><BR/>What you say about Smalltalk's history is true, although a tad abrasively put :-)<BR/><BR/>That being said, the fact that type systems cannot prove program correctness in theory doesn't mean they don't have value in practice.<BR/><BR/>To put the point to the ridiculous extreme, we cannot prove that programs do not halt in theory, but that doesn't stop us from running them in practice.<BR/><BR/>So we can hold out hope for a type system that, whilst incomplete in theory, is useful in practice.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/would-you-like-side-of-referential.html?showComment=1180299840000#c192960216253885748" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:04 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=192960216253885748" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

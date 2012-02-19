@@ -1,0 +1,428 @@
+<html> 
+<head>
+        
+        <title>A growing sense of doom washed over me as I read Steve's latest post</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Wednesday, December 19, 2007</div>
+			
+
+			<div class="Post"><a name="8832340561102542405">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html" title="permanent link">A growing sense of doom washed over me as I read Steve's latest post</a></span>
+					<div style="clear:both;"></div><em>As a few people have noticed, this went out over RSS but was not on my site. The reason is that I &ldquo;pulled&rdquo; it. I started out thinking I would include some choice quotes from Steve&rsquo;s essay and leave it at that, but&hellip; At some point I got enthusiastic and decided I wanted to say something about the culture of moving dirt (I think I have run out of things to say about Java the language, thank goodness). However, reality in the form of interesting work at work popped up, so I decided to put the essay off.<br /><br />Bad luck, the post was already out on RSS. So here it is. I would like to rewrite it fully, just not right now. Sorry for letting it out onto RSS in such a half-baked form. I realize your time is valuable, and I think you deserve better from me.</em><br /><br /><strong>Update</strong>: <a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a>.<br /><hr/><br /><blockquote>I happen to hold a hard-won minority opinion about code bases. In particular I believe, quite staunchly I might add, that the worst thing that can happen to a code base is size&#8230;</blockquote><br /><blockquote>People in the industry are very excited about various ideas that nominally help you deal with large code bases, such as IDEs that can manipulate code as &#8220;algebraic structures&#8221;, and search indexes, and so on. These people tend to view code bases much the way construction workers view dirt: they want great big machines that can move the dirt this way and that. There&#8217;s conservation of dirt at work: you can&#8217;t compress dirt, not much, so their solution set consists of various ways of shovelling the dirt around&#8230;</blockquote><br /><blockquote>It&#8217;s just a mountain of dirt, and you just need big tools to move it around. The tools are exciting but the dirt is not&#8230;</blockquote><br /><blockquote>The problem with Refactoring as applied to languages like Java, and this is really quite central to my thesis today, is that Refactoring makes the code base larger. I&#8217;d estimate that fewer than 5% of the standard refactorings supported by IDEs today make the code smaller. Refactoring is like cleaning your closet without being allowed to throw anything away. <em>If you get a bigger closet, and put everything into nice labelled boxes, then your closet will unquestionably be more organized. But programmers tend to overlook the fact that spring cleaning works best when you&#8217;re willing to throw away stuff you don&#8217;t need</em>&#8230;</blockquote><br /><blockquote>Design Patterns was a mid-1990s book that provided twenty-three fancy new boxes for organizing your closet, plus an extensibility mechanism for defining new types of boxes. It was really great for those of us who were trying to organize jam-packed closets with almost no boxes, bags, shelves or drawers. All we had to do was remodel our houses to make the closets four times bigger, and suddenly we could make them as clean as a Nordstrom merchandise rack.<br /><br />A design pattern isn&#8217;t a feature. A Factory isn&#8217;t a feature, nor is a Delegate nor a Proxy nor a Bridge. They &#8220;enable&#8221; features in a very loose sense, by providing nice boxes to hold the features in. But boxes and bags and shelves take space. And design patterns – at least most of the patterns in the &#8220;Gang of Four&#8221; book – make code bases get bigger. <em>Tragically, the only GoF pattern that can help code get smaller (Interpreter) is utterly ignored by programmers who otherwise have the names of Design Patterns tattooed on their various body parts</em>&#8230;</blockquote><br /><blockquote>If you begin with the assumption that you need to shrink your code base, you will eventually be forced to conclude that you cannot continue to use Java. Conversely, if you begin with the assumption that you must use Java, then you will eventually be forced to conclude that you will have millions of lines of code&#8230;</blockquote><br /><blockquote>You should take anything a &#8220;Java programmer&#8221; tells you with a hefty grain of salt, because an &#8220;X programmer&#8221;, for any value of X, is a weak player. You have to cross-train to be a decent athlete these days. <em>Programmers need to be fluent in multiple languages with fundamentally different &#8220;character&#8221; before they can make truly informed design decisions</em>&#8230;</blockquote><br /><blockquote>Java is like a variant of the game of Tetris in which none of the pieces can fill gaps created by the other pieces, so all you can do is pile them up endlessly.<br /><br />Imagine that you have a tool that lets you manage huge Tetris screens that are hundreds of stories high. In this scenario, stacking the pieces isn&#8217;t a problem, so there&#8217;s no need to be able to eliminate pieces. This is the cultural problem: they don&#8217;t realize they&#8217;re not actually playing the right game anymore&#8230;</blockquote><br /><blockquote>Java-style IDEs intrinsically create a circular problem. The circularity stems from the nature of programming languages: the &#8220;game piece&#8221; shapes are determined by the language&#8217;s static type system. Java&#8217;s game pieces don&#8217;t permit code elimination because Java&#8217;s static type system doesn&#8217;t have any compression facilities – no macros, no lambdas, no declarative data structures, no templates, nothing that would permit the removal of the copy-and-paste duplication patterns that Java programmers think of as &#8220;inevitable boilerplate&#8221;, but which are in fact easily factored out in dynamic languages.<br /><br />Dynamic features make it more difficult for IDEs to work their static code-base-management magic. IDEs don&#8217;t work as well with dynamic code features, so IDEs are responsible for encouraging the use of languages that require&#8230; IDEs. Ouch&#8230;</blockquote><div>&mdash;All quotes from <a href="http://steve-yegge.blogspot.com/2007/12/codes-worst-enemy.html">Code's Worst Enemy</a> by Steve Yegge</div><br />I have read many essays taking the minority position and explaining what is wrong with the &ldquo;Java Programmer&rdquo; mindset (as opposed to the &ldquo;Programmer who happens to use Java mindset&rdquo;), but Steve&rsquo;s essay laid the cultural problems bare for me. He explains the technical issues well, but where this essay really shines is explaining the cultural issues and how they work with the technical issues to create a vicious cycle.<br /><br />Of course I recommend reading the original. But may I add, please do not get sucked into arguing whether Design Patterns are good, or whether IDE refactorings really work, or any of the other <em>technical</em> points that are so much fun to rehash for the millionth time.<br /><br />Instead, consider the cultural forces at work. Cultural problems cannot be solved with technology. If you are an advocate for change, ask yourself what sort of cultural change is needed, not what sort of technical problems need to be solved.<br /><br />And oh yes&hellip; What do <em>you</em> think of his central thesis?<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html" title="permanent link">11:31 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>A growing sense of doom washed over me as I read Steve's latest post</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="3224580940166886899"></a> 				The complexity of today's Java IDEs is somewhat of a self-fulfilling prophecy; I'm not sure how I'd do any programming in Java without Eclipse, frankly.  And that scares me.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html?showComment=1198100400000#c3224580940166886899" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04900886008475308281" rel="nofollow">Patrick Mueller</a> : 4:40 PM</div>
+
+								<span class="item-control blog-admin pid-1788622856"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3224580940166886899" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6862819872262189882"></a> 				Reg,<BR/><BR/>Steve's reasoning is long, convoluted and simplistic. I'd love to see somebody explain in English how lines of code are actually the most important software metric. And "Don't use Java or IDEs!", besides being the kind of backwards reasoning that should've died out with assembly, isn't a serious argument for cultural change. <BR/><BR/>But I do wonder why people praise the simplicity of something like Rails and then argue for complicated tools like macros and Ruby magic. Perhaps the goal isn't simplicity at all. Maybe there's something else that helps a person convince themselves that they don't need an IDE.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html?showComment=1198100940000#c6862819872262189882" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">ocean</span> : 4:49 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6862819872262189882" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2741464088258469769"></a> 				I'll have more to say when I have had a chance to write up <I>my own</I> thoughts.<BR/><BR/>But since you mentioned Assembly, is it possible that the argument in favour of moving upwards from Java is exactly the same argument as moving upwards from Assembly to Fortran?<BR/><BR/>I think LOC are easy to dispute in the small, but also easy to understand in the large. We can debate all day long whether this method or that is more or less clear with ten lines or fifteen.<BR/><BR/>But my experience is that on <I>average</I>, when looking at many examples in the wild (not hand-picked inventions to support my or your argument), code that is briefer by an order of magnitude is better.<BR/><BR/>Is a ten-liner better than a fifteen-liner? Depends, let's see them. But is 100,000 LOC code better than 500,000 LOC? I say yes, yes, yes. <BR/><BR/><I>complicated tools like macros and Ruby magic</I><BR/><BR/>I must say, I'm confused. That must be because I don't find them complicated. Do you?<BR/><BR/>Or are you arguing from the elitist point of view that you personally don't find them complicated, but those <I>other programmers over there</I> find them complicated?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html?showComment=1198101600000#c2741464088258469769" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:00 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2741464088258469769" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9181956207575751642"></a> 				I've always figured it comes down to how much artificial complexity is riding around within your code. That is, the complexity that is there beyond the required inherent complexity of the problem you are trying to solve.<BR/><BR/>An obvious source comes from copying the same bits of code everywhere. Duplicate or triplicate code is more likely to cause problems. Not so obvious, is the complexity that comes from implementing a 'specific' solution multiple times, when a single 'general' one would do. That is complexity that is derived from not having applied a level of abstraction to the problem.<BR/><BR/>In general, less code is less complexity, but it is an arc. You can fall off the other side by being clever or tricky or such. Also, although on a character-by-character basis, a language like APL will massively compress the size of the solution, it does so by essentially increasing the complexity of the 'expression' of the solution itself; that's why it is often called a write-once-read-never language.  Thus there is some amount of language based complexity that can get piled onto of the solution as well.  <BR/><BR/>Paul.<BR/><A HREF="http://theprogrammersparadox.blogspot.com" REL="nofollow">http://theprogrammersparadox.blogspot.com</A><br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html?showComment=1198104840000#c9181956207575751642" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 5:54 PM</div>
+
+								<span class="item-control blog-admin pid-1233049894"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9181956207575751642" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5670224169571637151"></a> 				Hmm, I think features like macros are complex because they are complex. I don't think I've ever met a lisp programmer who didn't think they weren't complex and "hairy." It's another case where, strangely enough, I've often found that the more experienced the programmer the less likely they are to be tempted by such complicated features. It'd be interesting to do look further into this issue.<BR/><BR/>Of course, I agree that 100K LOC is better than 500K LOC. I don't think anybody would argue that we need more code. Such strawman LOCs don't contribute any kind of deeper understanding. There are many different traditions in play here but what interests me are these different notions of simplicity and complexity. Seems to me that there's a lot of programmers out there that imagine complexity is largely a function of language features and so they advocate for more powerful languages. It's an interesting hypothesis, I just don't think it has much basis in practical reality. In fact, I like to show something Ruby on Rails to my colleagues as the perfect example of why language features are never enough. Anyways I look forward to hearing your thoughts. It helps a lot to see where others are coming from.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html?showComment=1198110840000#c5670224169571637151" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">ocean</span> : 7:34 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5670224169571637151" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6295486063187898169"></a> 				I think that macros and templates (and probably many other language features) are complicated because that they "look like" code - that is, they are part of it - but are actually meta code, i.e. code about source code.<BR/><BR/>That means that to read them, you actually have to do some parsing/processing yourself - that is, think like a computer.<BR/><BR/>While to write (non-meta) code, you want to think like a person trying to get the computer to do something.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html?showComment=1198112400000#c6295486063187898169" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06060849250025251883" rel="nofollow">nicolaimoser</a> : 8:00 PM</div>
+
+								<span class="item-control blog-admin pid-321192486"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6295486063187898169" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4793497319893524241"></a> 				I agreed with Stevey all the way through, although I have personally never created codebases of that size. From reading some comments there and here, it occurs to me that I AM probably in the minority The most frequent and forceful argument from the "majority" I've heard is that code reduction isn't the only issue because you have to balance code size with readability. I agree with that but I take readability as a given in a forum like this because it's clear that people in either camp value it very much - no one is going to stand up and say: I think it's better to write code in binary because I can make the code smaller, in this forum anyway. Therefore, I think Stevey's statement is dead on.<BR/>And the way in which you balance writing code that's easy to read vs code that does a lot of magic to make other code small is to use Raganwald's yellow red and green guideline: http://weblog.raganwald.com/2006/12/economizing-can-be-penny-wise-and.html<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html?showComment=1198127700000#c4793497319893524241" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">airportyh</span> : 12:15 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4793497319893524241" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3982750256093883483"></a> 				The key thing I take away from that is that "Refactoring" IDEs are nothing of the kind - or rather, that the kinds of automated "refactoring" they support is nearly useless in relation to the kinds of refactoring a large and messy code base needs. <BR/><BR/>Probably the most important kind of refactoring you can do, to improve a large code base, is to find large chunks of duplicated code and to move them into a common routine; if possible to make them part of a shared base class, but if not, then to just toss it into a utility function which you can call everywhere it's needed.  Result: reduction in LOC, and a single place where bugs may need to be fixed instead of 5.  IDEs do little to help with this, except as glorified editors.<BR/><BR/>Divorce the concept of refactoring from what the IDE will do for you, and both become more useful.  (I'm currently maintaining and enhancing a C# code base, not Java, but AFAICT C# is pretty much Java with a superficially different syntax painted on.)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html?showComment=1198138860000#c3982750256093883483" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Clifton</span> : 3:21 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3982750256093883483" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9043416995879976381"></a> 				After spending six months trying to add a fairly complex feature to an already-huge app, we canned the project. A year in, it wasn't feature-complete, and the light at the end of the tunnel was probably an oncoming train. I was the primary developer, assisted by two others in our beginning rush to get "v0.5" out.<BR/><BR/>I have since come to two conclusions.<BR/><BR/>#1 is that size is evil. I 'knew' that, but didn't have any experience of why. It is because the bigger a project gets, the harder it is to hold in your mind. You spend more time acquiring state, and if the state is too big to hold in working memory, you keep losing pieces of it. To continue Yegge's analogy, you start pushing dirt from here to there, and then re-discover there was a pond along the way. And then you have to get your dirt back out of the pond, and find some other way to get it over there, and the problem has become even more complicated than when it was "too complex" to remember it all. There is much pain there.<BR/><BR/>#2 is that the UI is harder than the backend/engine code. In the backend, each module is fairly decoupled. The UI side necessarily has to deal with Session, User, and Content objects all at once, along with providing the connection between the actual interface and the logic that makes it all work.<BR/><BR/>"How hard can it be?" is your greatest strength in the beginning, because it pushes you to start the project. But it becomes your greatest enemy when it drives you far into the realm of unmanageable complexity.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html?showComment=1198158420000#c9043416995879976381" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">sapphirecat</span> : 8:47 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9043416995879976381" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="818035116046581902"></a> 				<I>I've always figured it comes down to how much artificial complexity is riding around within your code. That is, the complexity that is there beyond the required inherent complexity of the problem you are trying to solve.</I><BR/><BR/>I agree with the above. And I think that this is what Steve Yegge is really talking about here. There's no reason to get nit picky about his decision to use generic LOC as the vehicle, and there's no reason to believe that Yegge is somehow championing cryptic obfuscation as a solution to verbosity (speaking of straw man arguments). <BR/><BR/>One problem with verbose languages is that they'll pressure you into magnifying the inherent complexity of the problem. Sure, a lot of artificial complexity can be avoided with good design and good libraries, but the programming language also has a big impact. Can we really deny this? The LOC-reducing effect that a good language has cannot always be blindly chalked up to "magic" or "tricky clever hacking".<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html?showComment=1198161120000#c818035116046581902" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09978112515173586772" rel="nofollow">Sofal</a> : 9:32 AM</div>
+
+								<span class="item-control blog-admin pid-278936696"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=818035116046581902" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5035436604191327949"></a> 				Design patterns provide "increased flexibility and reusability". Often times, however, there is no need for a solution to be very flexible, and by implementing a design pattern, the developer needlessly increases the complexity of the solution. Joshua Kerievsky in his <A HREF="http://www.amazon.com/Refactoring-Patterns-Addison-Wesley-Signature-Kerievsky/dp/0321213351/ref=pd_bbs_sr_1?ie=UTF8&s=books&qid=1198176812&sr=8-1" REL="nofollow">"Refactoring to Patterns"</A> book suggests "discovering" the need to use a design pattern (which is similar to Bob Martin's thesis that re-use should be discovered, not anticipated). Also, the book contains the discussion of refactoring *from* patterns to a more simple solution.<BR/><BR/>A lot of refactorings that I see in eclipse indeed increase the code size, but more importantly, they decrease its complexity, which is what I'm really after. In the end when we talk about large codebase, we talk about our ability to maintain and extend such a codebase. <BR/><BR/>In my experience #1 problem in that regard is developers' inability to design and maintain abstractions for a given domain/problem. Code duplication is one of the smells of an <A HREF="http://martinfowler.com/bliki/AnemicDomainModel.html" REL="nofollow">anemic domain model</A>, codebase where object model is slightly more than a bag of glorified data structures. Such code bases are brittle, hard to extend and hard to test. <BR/><BR/>#2 problem is large monolithic applications. A lot of times it's feature bloat - Marry Poppendieck's statistic (if I remember correctly) is 60% of the features in an application are not being used. The problem here oftentimes lies with the whole product development team and not just the developers. Agile teams have the customer (or customer representative) on the team to resolve this very problem.<BR/><BR/>I think that Individual developer's abilities and the software development process have much larger impact on the codebase complexity than the choice of the programming language.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html?showComment=1198178100000#c5035436604191327949" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09301294710043467136" rel="nofollow">Dmitri</a> : 2:15 PM</div>
+
+								<span class="item-control blog-admin pid-596199993"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5035436604191327949" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6037032490991310686"></a> 				that way of looking at Tetris awed me<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2007/12/growing-sense-of-doom-washed-over-me-as.html?showComment=1198194780000#c6037032490991310686" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10560123435782819140" rel="nofollow">hdh</a> : 6:53 PM</div>
+
+								<span class="item-control blog-admin pid-1128778455"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6037032490991310686" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

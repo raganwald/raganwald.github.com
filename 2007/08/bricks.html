@@ -1,0 +1,416 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+	<head>
+		<title>
+			Bricks
+		</title>
+		<link rel="stylesheet" type="text/css" href="/blog.css">
+		<link rel="stylesheet" type="text/css" href="/sunburst.css">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	</head>
+	<body>
+		<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"></a><br>
+			<div class="DateHeader">
+				Monday, August 20, 2007
+			</div>
+			<div class="Post">
+				<a name="5994980098191071116">&nbsp;</a> <span class="PostTitle"><a href="http://weblog.raganwald.com/2007/08/bricks.html" title="permanent link">Bricks</a></span>
+				<div style="clear:both;"></div>
+				<br/><center>(<i>This essay appears in the e-book <a href="http://leanpub.com/shippingsoftware">What I've Learned From Failure: A quarter-century of experience shipping software, distilled into fixnum bittersweet essays</a></i>)</center><br/><br/>I’m just finishing off some work with a corporate client before moving back to my natural position in product development (with a <a href="http://mcommons.com/" title="Mobile Commons | Services and Tools to Mobilize Your Cause">really exciting company</a>!).<br>
+				<br>
+				It’s a good time to reflect back over what was straightforward and what was difficult, what worked and what didn’t. It has been a very positive experience overall, and I have learned a few more things. Here are a hotch-potch of thoughts about corporate projects, clumsily organized around a single metaphor.<br>
+				<br>
+				<strong>software is not made of bricks</strong><br>
+				<br>
+				Although very few managers ever express it directly this way, many behave as if developing a piece of software is like building something fairly simple out of bricks. It might be <a href="http://en.wikipedia.org/wiki/Great_Pyramid_of_Giza">something large</a>. But it’s still fairly simple.<br>
+				<br>
+				This is tempting. The inexperienced person thinks that bricks are easy to understand: they’re all the same: if you know how to work with one, you know how to work with them all. You can measure the progress of building something out of bricks by counting the bricks in place. And anyone can contribute, even if only by moving bricks from one place to another using brute force.<br>
+				<br>
+				<div style="text-align: center;">
+					<a href="http://www.flickr.com/photos/lefty/10609694/in/photostream" title="Lego Team Building on flickr"><img border="0" src="/uploaded_images/3114_bricks.jpg"></a><br>
+					<a href="http://www.codinghorror.com/blog/archives/000834.html" title="Thirteen Blog Clichés"><font size="-2">Why this image is a cliché</font></a>
+				</div><br>
+				When you have a brick by brick mentality, deep in your soul you believe that a project contains a fixed amount of work. <strong>It’s just a pile of bricks</strong>. There are so many screens, so many lines of code. You think this to be true because when you examine finished applications, you can count these things. So you engage in a discovery step up front where you estimate how many screens and how much code will be needed, then you play some games with numbers of people and the amount of work they can do per day, and out comes an estimated ship date.<br>
+				<br>
+				You believe that since the finished work contains a fixed number of bricks, <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html" title="Which theory fits the evidence?">it is possible to know in advance how many bricks will be needed, and where they belong in the finished software</a>.<br>
+				<br>
+				This model of software development leads to several natural assumptions about how to organize a project. These assumptions are logical consequences of the belief that software is made of bricks:<br>
+				<br>
+				<strong>assumption: it’s all abut moving bricks</strong><br>
+				<br>
+				The brick by brick mentality thinks of software development as making a pile of bricks. Think of the stereotypical Egyptian Pyramid as an example. There are so many bricks to pile and then you’re done. If it’s all about moving bricks, <strong>any work that moves bricks contributes to the success of the project</strong>.<br>
+				<br>
+				That’s a comforting thought. Just keep those bricks moving. This helps us with all sorts of problems. Some people debate whether star programmers really are twenty times more productive than doofuses. Who cares? As long as the doofus can move bricks, eventually the work will get done.<br>
+				<br>
+				So if you have a poor performer, someone who is slow and not very careful, you can use them on a project. Just find the right place for them where they can’t accidentally wreck the whole pyramid, and they can help. Ok, they are not good with the tricky booby traps or aligning the windows to allow light to strike the altar at the solstice. Fine. But what about ferrying bricks from the <a href="http://en.wikipedia.org/wiki/Dhow" title="Dhow - Wikipedia, the free encyclopedia">dhow</a> to the base of the pyramid? Doesn’t that move the project forward?<br>
+				<br>
+				Can’t you hire almost any warm body with ten working fingers and put them to work <em>somewhere</em>? Perhaps they can fiddle with page layouts, or copy the work of more experienced developers when implementing new features that are similar to existing features. But an extra pair of hands is always helpful, right?<br>
+				<br>
+				<em>software is more complicated than bricks</em><br>
+				<br>
+				This assumption is wrong. The reason it is wrong is that software is deep. It is not a simple pile of bricks. Examining a finished piece of software, it is easy to discern surface forms like patterns, variable names, or rough organization. But the motivations for these choices are often subtle and opaque to the journeyman.<br>
+				<br>
+				You can observe this the next time you are interviewing developer candidates. Ask them to name a design pattern: perhaps they respond, “<a href="http://steve.yegge.googlepages.com/singleton-considered-stupid" title="Stevey's Home Page - Singleton Considered Stupid ">Singleton</a>.” Design patterns are surface forms. Now ask them to explain what problem the pattern solves. They respond, “Ensuring there is exactly one of something.” We are still working with the surface form.<br>
+				<br>
+				Ask <em>why</em> we just want just one of something like a database connection pool. What problem are we solving? Why can’t we use class or static methods to solve this problem? What are the real-world issues with having 1,000 threads sharing a single database connection pool? How would you build ten pools? Or share connections without a single pool?<br>
+				<br>
+				<div class="book">
+					<hr>
+					<em><a name="evtst|a|0884271536" href="http://www.amazon.com/gp/product/0884271536?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0884271536"><img src="http://weblog.raganwald.com/uploaded_images/critical_chain.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0884271536" alt="" style="border: medium none ! important; margin: 0px ! important;" border="0" height="1" width="1"><br>
+					<br>
+					<a name="evtst|a|0884271536" href="http://www.amazon.com/gp/product/0884271536?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0884271536">Critical Chain</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0884271536" alt="" style="border: medium none ! important; margin: 0px ! important;" border="0" height="1" width="1"> is an amazing book. The narrative form—a novella detailing a technical project team and their search for a way to manage an uncertain process—is a big win, it highlights the important ways that Critical Chain Project Management handles risks and uncertainty and makes it visible where everyone can manage it.<br>
+					<br>
+					The section on estimating tasks alone is priceless. If you can’t afford a copy and your library doesn’t stock it, borrow mine. You <strong>must</strong> read this book if you participate in software development teams.<br></em>
+					<hr>
+				</div>All of these questions drive at the deeper issues underlying development choices. A developer who treats their work as moving bricks, who simply copies the surface form of code they encounter, is oblivious to the motivations behind the code. They do not know when to use it and when to forgo it. They do not understand alternative ways of solving the same problem. They reproduce it blindly (and often incorrectly).<br>
+				<br>
+				The result is software that superficially appears to be of acceptable quality because its surface form has things in common with good software. However, just because good software may be constructed out of <a href="http://en.wikipedia.org/wiki/Command_pattern" title="Command pattern - Wikipedia, the free encyclopedia">commands</a> and <a href="http://en.wikipedia.org/wiki/Strategy_pattern" title="Strategy pattern - Wikipedia, the free encyclopedia">strategies</a>, this does not mean that software constructed of commands and strategies is good.<br>
+				<br>
+				What is needed on a software development project are people who understand the nuances, the requirements, the underlying problems. If you think that you are building a pyramid, what you want are architects, not slaves.<br>
+				<br>
+				When you add people to a project who do not deeply understand their work or the problems the project faces, you create the superficial appearance of progress (look at all the bricks!), but you are slowly building up a mass of unworkable code. You may not see the problems immediately, but in time you will discover that everything they have touched needs to be re-written.<br>
+				<br>
+				<em>determine the baseline competence required for a project and don’t violate it</em><br>
+				<br>
+				Once you understand that software is not a simple pile of bricks, you understand that the minimum level of competence required to contribute positively to a project is non-trivial. You can decide for yourself whether you need the mythical great hackers or not. But there is a minimum level of competence, and if you do not allow persons below that level onto your project, you will succeed.<br>
+				<br>
+				If fact, you are far better off with a core of competent people and no sub-competent help than you are with the same group of people and the assistance of “helpers” on the side. Those “helpers” require three or four times as much management attention as the core contributors if you are to keep them from breaking things. And as we’ll see below, re-organizing your project such that there are tasks to keep them busy is usually harmful in and of itself.<br>
+				<br>
+				Protecting yourself from people unlikely to make a positive contribution may require adroit maneuvering on your part. On one project, I explained that we could not complete the work in the time requested by the client. The response was to offer us some part-time assistance by employees of the client. Those particular employees may have been talented, but their experience was not a direct fit for the technical work of the project, and they did not have a full-time commitment to the success of the project.<br>
+				<br>
+				Rejecting such “assistance” is tricky: other managers may have trouble with the idea that the project will move more slowly with the extra help, rather than move more quickly. Those managers see your project as a pile of bricks, and you’ll need to educate them if you are to avoid disaster.<br>
+				<br>
+				<strong>software development is difficult to parallelize</strong><br>
+				<br>
+				The metaphor of a pyramid being built, brick by laborious brick is useful for illustrating another principle. When you assume that an application is a pile of a million bricks, you assume that you can move bricks in parallel. You can have one thousand people on the project, and if each places one brick per hour you will move forward at a constant rate of one thousand bricks per hour.<br>
+				<br>
+				Software is not like this. Parallelizing development has serious and sometimes fatal consequences. The main problem is that the pieces are usually coupled in some way. There are techniques for lowering coupling between “bricks,” but when you set out to place two related bricks simultaneously, you must, perforce, do some kind of design or thinking ahead of time as to how they relate so that you can place them properly.<br>
+				<br>
+				Consider two pieces, <code>A</code> and <code>B</code>. The natural dependency between them is that <code>B</code> depends on <code>A</code>. The right thing to do is to build <code>A</code>, and then <code>B</code> when you are happy with <code>A</code>. But the zealous manager with bricks on her mind asks, “why can’t we decide on an interface, <code>I</code>, between <code>A</code> and <code>B</code>, then build both at once?” They want to build <code>I</code>, then <code>A</code> and <code>B</code> simultaneously.<br>
+				<br>
+				Of course, this constrains <code>A</code> and <code>B</code> tremendously. As you are building them, any flaw or shortcoming with <code>I</code> you discover as you build the pieces will result in rewriting both <code>A</code> and <code>B</code>. Only you are under time constraints so, you just patch and kludge, because the schedule does not have time allocated for redoing things: your motivation in parallelizing <code>A</code> and <code>B</code> was to save time, so the schedule has no room for the possibility that it will take <em>longer</em> to write <code>A</code> and <code>B</code> in parallel than in series.<br>
+				<br>
+				This makes no sense to the person who thinks software is made of bricks! Looking at the <em>finished</em> brick, what’s the problem, it takes <code>x</code> hours to make <code>A</code>, <code>y</code> hours to make <code>B</code>, why would making them in parallel take longer than <code>x + y</code> instead of roughly <code>max(x, y)</code>?<br>
+				<br>
+				Try the following: give piece <code>A</code> to one person, wait for it to be done, and then give piece <code>B</code> to another. Whoops, when the person working on <code>B</code> has a question about how <code>A</code> works, they have to track down the author and <a href="http://weblog.raganwald.com/2007/06/r-e-s-p-e-c-t.html" title="raganwald: R-E-S-P-E-C-T">interrupt</a> her. And if working on <code>B</code> teaches you something about <code>A</code>, is the person working on <code>B</code> supposed to change <code>A</code>? Or is the original developer supposed to backtrack and change it?<br>
+				<br>
+				This explains a well-known nugget of wisdom: One reason adding people to a late project will cause it to slip further is that you are increasing parallelism. If the project was originally at or beyond its natural limit, further parallelism lowers productivity.<br>
+				<br>
+				Or another example. You have 100 reported bugs to fix. You have 100 people. Do you assign one bug to each person? No way! Experience shows that bugs are rarely fully de-coupled form each other. You have to analyze the bugs as a team and try to guess their causes and relationships. If bug forty-nine is a simple text change on a page, anyone can fix it. But if bugs one, four and nine are all related, you need one contributor to address them simultaneously. Sending three people in to fix them in parallel thing would be a disaster.<br>
+				<br>
+				Any time two or more pieces are strongly related either by design or by coupling in the application, it is a mistake to give each one to different people to build or fix.<br>
+				<br>
+				In software, you want to <em>minimize</em> dependencies between pieces, which in turn means being very, very careful to minimize parallelism. Obviously, there must be some parallelism on any project with more than one contributor. But every project has a natural maximum amount of parallelism. Gratuitously chopping tasks into bricks to increase parallelism beyond this natural limit lowers productivity rather than increases it.<br>
+				<br>
+				<em>how to make the team twice as productive without parallelizing everything</em><br>
+				<br>
+				What if you need two pieces, <code>A</code> and <code>B</code>, and you can’t wait for the normal amount of time to develop <code>A</code> and then <code>B</code>? Here’s an idea: instead of treating them like bricks and trying to develop <code>A</code> and <code>B</code> in parallel, why not simply hire one person who works twice as quickly? And have them develop <code>A</code> and <code>B</code> in series?<br>
+				<br>
+				Think about this for a moment. There are a lot of claims out there that good people are three, five, ten, even twenty times as productive as the average. This seems intuitively wrong: when you look at their finished work, it rarely looks that much different from the work of the average person. So you figure the claims can’t be correct.<br>
+				<br>
+				The finished work of the allegedly great person doesn’t look too outlandish. Ok, it has <code>map</code> and <code>reduce</code> instead of loops, and now that we look at it, the so-called great person seems to deliver fewer bricks, not more. What’s going on?<br>
+				<br>
+				Let’s think about bricks for a moment. What if this essay right, and many times building bricks in parallel takes more time than building bricks serially? What if it’s very hard to coördinate the interfaces and contracts between pieces that are built by different people?<br>
+				<br>
+				<div class="book">
+					<hr>
+					<em><br>
+					<a name="evtst|a|0201835959" href="http://www.amazon.com/gp/product/0201835959?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0201835959"><img src="/uploaded_images/mythical_man_month.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201835959" alt="" style="border: medium none ! important; margin: 0px ! important;" border="0" height="1" width="1"><br>
+					<br>
+					Twenty years later, <a name="evtst|a|0201835959" href="http://www.amazon.com/gp/product/0201835959?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0201835959">The Mythical Man-Month: Essays on Software Engineering</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201835959" alt="" style="border: medium none ! important; margin: 0px ! important;" border="0" height="1" width="1"> is still one of the most important books ever written about developing software, from the small to the large. Read the book that spawned the expression, “there is no silver bullet.”<br></em>
+					<hr>
+				</div>If most projects assign related bricks to different people, and most projects further compound this error by trying to “exploit parallelism,” you can get a big productivity win just by bucking the popular choice and asking one person to do all of the related work themselves. They’ll be as productive as a team of other people simply because they aren’t burdened with the heavy cost of parallelism and from the wrong people working on pieces.<br>
+				<br>
+				Of course, you need someone who is able to keep two pieces in their head at one time. That’s one of the advantages of hiring good people: they don’t necessarily need to build things that are twice as complicated: if they can keep twice as much in their head at one time, they can build related things without incurring the costs of splitting development between people.<br>
+				<br>
+				<strong>software is transfinite</strong><br>
+				<br>
+				The other wrong assumption about software being like bricks is that you can measure progress on a software development project by examining physical features of the software, by counting bricks.<br>
+				<br>
+				The underlying thought is that you imagine the finished software as a pyramid of bricks, a pile of them. You count how many bricks will be in the finished application. Now you can measure your progress by counting how many bricks are “done.”<br>
+				<br>
+				This is very wrong, and it leads to troubled projects. The first problem with this assumption has been given above: if you need a million bricks for your application, you ought to be able to make use of absolutely anyone to move the project forward in some small capacity. As long as they move a brick an hour, they are helping. So, a brick a day, a million bricks… let’s employ 1,000 sweating slaves for ten hours a day for one hundred days and we’ll have our pyramid. All we need are an architect and a team of overseers with sharp whips to see to it that they work without flagging.<br>
+				<br>
+				But what happens when the millionth brick is placed and we are nowhere near completion? It turns out that software’s requirements are fluid, so fluid that you could place as many bricks as you like and still not be finished.<br>
+				<br>
+				<blockquote>
+					Measuring software productivity by lines of code is like measuring progress on an airplane by how much it weighs.
+				</blockquote>
+				<div style="text-align: right">
+					—Bill Gates
+				</div><br>
+				<br>
+				In fact, moving a lot of bricks is counterproductive: the physical manifestation of software, like written code, design specifications, unit tests, and so forth, have <em>mass</em> just like bricks. And if you want to redo things, the more mass you have, the harder it is to move and reshape it. In that sense, software is exactly like bricks.<br>
+				<br>
+				Only, what you want to is to move the <em>minimum</em> number of bricks required to test your assumptions about whether the software is complete enough. It will never be complete, but trying to measure completeness by bricks is wrong.<br>
+				<br>
+				There are only two meaningful ways to measure progress on a software development project: the first is to ask the team to estimate how much work remains, given the most up-to-date expectation for the form of the finished application. The second is to measure customer satisfaction.<br>
+				<br>
+				<em>how to measure progress on software development projects with estimated work remaining</em><br>
+				<br>
+				Given the most current understanding of what is to be done to complete the application, it is meaningful to ask the team to estimate how much time will be required to complete the work.<br>
+				<br>
+				This sounds conservative, even traditional. Doesn’t every project do this when they prepare the plan? What’s the catch? The catch is, if you only do it once, you only know your progress once. This differs markedly from the traditional model, where you plan once, estimate once, and thereafter you measure progress against your plan, rather than estimating again.<br>
+				<br>
+				<blockquote>
+					As the project progresses, the client’s requirements change. This is especially true if the client is given the opportunity to interact with the team and engage in the learning process: Agile’s claim that requirements are subject to change is a self-fulfilling prophesy.
+				</blockquote><br>
+				<br>
+				To measure meaningful progress, you must re-estimate on a regular basis. If you wish to give a meaningful progress report every two weeks, you must ask the team to estimate the work remaining every two weeks. if, instead, you simply take how many bricks you thought you needed a few months ago, count how many have been moved to date, and calculate the work remaining through simple subtraction, your reports are drifting further and further away from reality every fortnight.<br>
+				<br>
+				We know that this does not work, both from experience in the field and from critical thinking: as the project progresses, the client’s requirements change. This is especially true if the client is given the opportunity to interact with the team and engage in the learning process: Agile’s claim that requirements are subject to change is a self-fulfilling prophesy.<br>
+				<br>
+				We also know that as we work with the software itself, we learn more about how much work is required to complete the software. For example, if you load a project’s team up with in appropriate contributors, maximize parallelism, and perhaps go three for three by minimizing testing and bug fixing, you will compound a tremendous “technical debt” over time.<br>
+				<br>
+				Measuring “progress” against the original plan does not include the technical debt in your estimate of the work to be completed. Asking the team to estimate the amount of work to be done gives them an opportunity to factor the consequences of technical debt into their estimates. Or of any other factor that reflects what the team is learning over time.<br>
+				<br>
+				In essence, you have an opportunity to include <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html" title="raganwald: Still failing, still learning">off-balance sheet items</a> in your measurement of progress, whereas measuring against bricks would have excluded those factors.<br>
+				<br>
+				<em>how to measure progress on software development projects with customer satisfaction</em><br>
+				<br>
+				Measuring customer satisfaction is easy. All you have to do is ask the customer. A successful project increases satisfaction over time. An unsuccessful project does not. I boldly posit that any project that increases customer satisfaction over time is a successful project, regardless of what was originally written in a specification.<br>
+				<br>
+				<blockquote>
+					There is no simpler or surer way to increase customer satisfaction over the long term than to let them experience the application as it grows and to rate your progress by how much their satisfaction increases with the software itself.
+				</blockquote><br>
+				Customer satisfaction is a key metric because software is not a pile of bricks. It is impossible to predict with certainty the set of requirements that will result in maximum customer satisfaction at the end of the project, so you must measure satisfaction as you go. That being said, there is a pitfall looming when you ask the customer to judge their own satisfaction.<br>
+				<br>
+				Some customers have difficulty understanding the features and characteristics of software that will meet their needs in a cost-effective way. They have trouble distinguishing good software from bad, good applications from lemons.<br>
+				<br>
+				Although such a customer may need a <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html" title="raganwald: The Not So Big Software Design">not-so-big application</a>, they may demand an <a href="http://weblog.raganwald.com/2007/08/people-you-have-to-please-in-enterprise.html" title="raganwald: The people you have to please in the enterprise market are the ones purchasing and supporting the products, not the poor schmucks who use them">Enterprise Solution</a>.<br>
+				<br>
+				This manifests itself in the customer demanding proof of progress in the form of elaborate documents, plans, and diagrams instead of working software that solves a portion of their problem. It manifests in the customer demanding proof that you’ve “hired up” to meet their needs. Although these things have their place, none of them are working software. They are promises to develop software, and <a href="http://en.wikipedia.org/wiki/Subprime_mortgage" title="Subprime lending - Wikipedia, the free encyclopedia">subprime</a> promises at that.<br>
+				<br>
+				<div class="book">
+					<a name="evtst|a|0192801422" href="http://www.amazon.com/gp/product/0192801422?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0192801422"><img src="http://weblog.raganwald.com/uploaded_images/to_mock_a_mockingbird-785706" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0192801422" alt="" style="border: medium none ! important; margin: 0px ! important;" border="0" height="1" width="1"><br>
+					Life is not all project management and wrestling with customers. <a name="evtst|a|0192801422" href="http://www.amazon.com/gp/product/0192801422?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0192801422">To Mock a Mockingbird</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0192801422" alt="" style="border: medium none ! important; margin: 0px ! important;" border="0" height="1" width="1"> is the most enjoyable text on the subject of combinatory logic ever written. What other textbook features starlings, kestrels, and other songbirds? Relax with a copy and let your mind process the business side of development in the background. You’ll be a better manager for it!<br>
+				</div>It is easy to obtain short-term success with such a client: deliver what they ask for. This is the exact business model followed by real estate developers specializing in inexperienced, first-time buyers: offer the superficial features that provide short-term excitement at the expense of long-term satisfaction. In the case of software, you can dazzle the inexperienced customer with head counts, power points, and diagrams showing Jenga-piles of technology.<br>
+				<br>
+				Should you do this? That is up to you, it depends on whether you wish to build short-term customer satisfaction at the expense of long-term satisfaction with the software itself. If you wish to deliver long-term satisfaction with the software, you may need to educate the customer to focus on the software itself.<br>
+				<br>
+				And that means delivering increments of a functioning application for the client to experience. There is no simpler or surer way to increase customer satisfaction over the long term than to let them experience the application as it grows and to rate your progress by how much their satisfaction increases <em>with the software itself</em>.<br>
+				<br>
+				<strong>building software without treating it like a pile of bricks</strong><br>
+				<br>
+				Sometimes, it really does boil down to a few simple ideas, working in concert:<br>
+				<br>
+				<ol>
+					<li>Hire people with a minimal competency. Do not be seduced into accepting “help” from people who are not able to contribute to the team at this level.
+					</li>
+					<li style="list-style: none">
+						<br>
+					</li>
+					<li>Minimize parallelism. Exploit the talent of your best developers by giving them chunks of related work.
+					</li>
+					<li style="list-style: none">
+						<br>
+					</li>
+					<li>Measure progress by continually re-estimating the work to be done and by customer satisfaction. Educate the customer to prefer completed work over documentation and promises.
+					</li>
+				</ol>
+				<div style="clear:both; padding-bottom:0.25em"></div>
+				<p class="blogger-labels">
+					Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a>
+				</p>&nbsp; <span class="PostFooter">¶ <a href="http://weblog.raganwald.com/2007/08/bricks.html" title="permanent link">11:56 AM</a></span>
+				<p id="postfeeds"></p>
+			</div>
+			<div class="blogComments">
+				<a name="comments" id="comments"></a><strong>Comments on “<em>Bricks</em>”</strong>:<br>
+				<div class="blogComment">
+					<a name="3798264500749614360"></a> Very interesting, I agree with all the points you made, but actually, I do think that there is some relationship:<br>
+					<a href="http://gabrielsw.blogspot.com/2007/04/lego-blocks-and-software-development.html" rel="nofollow">Lego blocks and software development</a><br>
+					Some "brick" are common, others had a specialized function, and you need to painstakingly pick the right one and assemble it in the right place.<br>
+					Then, check your structure to see if its what you wanted and its resistance. Maybe you 'll need to scrap parts and rebuild them to get a better fit, or maybe they will break due to an unstable link, and you need to rethink the structure.<br>
+					And is not easy to escalate either! (you'll fight for the pool of blocks :-) )<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1187636220000#c3798264500749614360" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/17525961934302794120" rel="nofollow">Gabriel C.</a> : 2:57 PM
+					</div><span class="item-control blog-admin pid-1188428457"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=3798264500749614360" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="9107447163574874182"></a> I'm a bit concerned that if I have some super-coder develop the most important part of my project, and then that super-code falls ill, cuts off a finger, or falls prey to a head hunter, we're in deep trouble - in the course of the project, nobody got close enough to the super-coder's code to understand the code and pick up the lose ends. Any ideas on this?<br>
+					<br>
+					A related problem is that the quality of a super-coder's work is very hard to assess for anyone else on the team.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1187637600000#c9107447163574874182" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<a href="http://www.wuenschenswert.net" rel="nofollow">axel</a> : 3:20 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=9107447163574874182" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="7281784046792072340"></a> <i>I'm a bit concerned that if I have some super-coder develop the most important part of my project, and then that super-code falls ill, cuts off a finger, or falls prey to a head hunter, we're in deep trouble - in the course of the project, nobody got close enough to the super-coder's code to understand the code and pick up the lose ends. Any ideas on this?</i><br>
+					<br>
+					Isn't this true of any coder's work? Possibly it's even more true of the novice's work: the inexperienced coder often uses very simple constructs but piles them on top of each other in great heaps.<br>
+					<br>
+					In any case, my opinion is that shared code ownership is the answer for all teams at all levels of experience. There is no short cut.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1187637720000#c7281784046792072340" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:22 PM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=7281784046792072340" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="1123159948219159779"></a> As noted on reddit.com:<br>
+					<br>
+					<a href="http://programming.reddit.com/info/2gxfp/comments/c2gz9h" rel="nofollow">Working with real bricks is surprisingly difficult as well</a>.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1187638740000#c1123159948219159779" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:39 PM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=1123159948219159779" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="1380957682236730227"></a> axel : this is all the "increase the bus size" is all about. My team is currently in troubles since one developer is in holidays and has committed a large chunk of strange code (maybe Reg will write about generic platforms vs. appliances in the future ?) before going.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1187641560000#c1380957682236730227" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/10731759726416767980" rel="nofollow">Nicolas</a> : 4:26 PM
+					</div><span class="item-control blog-admin pid-476049150"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=1380957682236730227" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="3821587757641315697"></a> Great stuff, Reg - keep it coming. I cringe when I hear software development compared to building a house, or to a factory pipeline. Articles like this are indispensable to be able to refer to when needing to educate a project manager (and them being unwilling to read a full book or two).<br>
+					<br>
+					That said, a crucial point is yet missing, namely the once-removed nature of software development: the final product that the customer can use doesn't exist except at <b>runtime</b>. Thus, if the software is indeed meant to build a house (or pyramid), developing the software still isn't about <i>directly</i> building the house, but about implementing a <i>process</i> that, when activated, cranks out a house for the customer to use. (And, of course, since these things are made from nothing, it can build not just one house, but as many identical copies as needed.)<br>
+					<br>
+					This has the obvious implications: if the customer reports that the roof is lopsided, the software developer can't directly fix the customer's house. Rather, he must rather tinker with the <b>process</b> for producing houses (maybe cranking out a number of transient test houses to verify the fix), one step removed from the actual house that needs fixing. The resulting corrected meta-house process (i.e. the software) must then be shipped off to the customer, where it will build a house to replace his old one (and he may have to transfer all the furniture from the old to the new through a process called <em>data conversion</em> ;-))<br>
+					<br>
+					The only exception to the above might be systems where the code actually <i>is</i> "alive" in some sense, such as Smalltalk images. Would love to see you pen an article on this aspect of the problem. If you don't, I'll have to eventually attempt it myself ;-)<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1187644740000#c3821587757641315697" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/12670756684434923124" rel="nofollow">Arto Bendiken</a> : 5:19 PM
+					</div><span class="item-control blog-admin pid-1520878601"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=3821587757641315697" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="6435743861581273332"></a> Excellent post.<br>
+					<br>
+					An issue you allude to is the project management problem. Most estimates are for a given task in isolation, whereas is fact the effort/duration of a task is heavily impacted by where it fits in the "project plan" (that is, who does it, what else have they/are they doing, etc etc).<br>
+					<br>
+					The idea that a project manager can take these estimates and move them around independently of each other is a fundamental problem in project management thinking.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1187664060000#c6435743861581273332" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/12671257642300933058" rel="nofollow">Phil</a> : 10:41 PM
+					</div><span class="item-control blog-admin pid-2044518710"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=6435743861581273332" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="6646125169968480857"></a> I would go more with puzzle pieces than bricks. They are all different sizes and some are interchangeable, finding the right mix is alway part of the problem.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1187665920000#c6646125169968480857" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/09342925044275662111" rel="nofollow">Rick</a> : 11:12 PM
+					</div><span class="item-control blog-admin pid-1489075954"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=6646125169968480857" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="3183166864673945566"></a> A great counter to the "value = lines of code" attitude can be found in programming languages like "J" where the equivalent of a page of Java (or a paragraph of python/perl) can be reduced to one line. It's mind blowing, you're looking at programs with a density of +/- one function per 2 characters...<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1187703780000#c3183166864673945566" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/05069754492441409539" rel="nofollow">David</a> : 9:43 AM
+					</div><span class="item-control blog-admin pid-1105664874"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=3183166864673945566" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="8070637748101694303"></a> I think it is important to distinguish between application development and framework development.<br>
+					<br>
+					We've got a pretty rich Software Product Line for specifying and generating custom web apps and find that we can estimate project scope pretty accurately by number of screens, actions and objects (given provisos for anything that fits outside of the provided DSLs).<br>
+					<br>
+					I agree that architecting and developing a truly custom application or a framework is better with a small number of great hackers, but believe there is a real case for removing degrees of freedom from the development of specific apps within a SPL to allow much less competent people to develop apps within a domain that meet their needs.<br>
+					<br>
+					One of the issues I have with some developers is how much time they spend reinventing the wheel - especially if they are developing large numbers of apps within a similar technical domain.<br>
+					<br>
+					For developing truly custom apps, I agree 100% with the posting, but I wonder how many of the apps we develop really need to have a custom architecture . . .<br>
+					<br>
+					There is a place for prefabbed but customizable web apps as well as houses!<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1187712960000#c8070637748101694303" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/06990511944233970050" rel="nofollow">Peter Bell</a> : 12:16 PM
+					</div><span class="item-control blog-admin pid-1377411285"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=8070637748101694303" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="1765400286076443540"></a> Great post Reginald,<br>
+					<br>
+					I'm really interested in your statement that 'There are a lot of claims out there that good people are three, five, ten, even twenty times as productive as the average'.<br>
+					<br>
+					Can you reference any of these claims?<br>
+					<br>
+					It's something I'd agree with from my own observations, but I'd love some broader evidence to back it up.<br>
+					<br>
+					cheers,<br>
+					Matt<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1187782440000#c1765400286076443540" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/05567198491032149050" rel="nofollow">matt</a> : 7:34 AM
+					</div><span class="item-control blog-admin pid-572861178"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=1765400286076443540" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="6511365496426708146"></a> The economics seem to work in our favour as well: <a href="http://fishdujour.typepad.com/blog/2005/06/software_develo.html" rel="nofollow">Software Developer Cost Benefit Analysis</a><br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1188056760000#c6511365496426708146" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<a href="http://fishdujour.typepad.com" rel="nofollow">Gavin Terrill</a> : 11:46 AM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=6511365496426708146" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="3270670474898703969"></a> A really interesting post!<br>
+					<br>
+					I must admit I agree with almost all of it but am wary of treating "software development" as a methodology. Software <i>can</i> be developed like a building if you so desire and I can imagine situations where this would be appropriate (ie, the most cost-effective), although not my preference.<br>
+					<br>
+					For example, many companies now <i>demand</i> the use of low-cost offshore resource in their development teams. While certainly not doofuses, they are often sufficiently far from "the nuances, the requirements and the underlying problems" to be restricted in their productivity through no fault of their own.<br>
+					<br>
+					Are we to retrain these developers, change the business' mandate or adjust our software development methodology so as to fit into this facet of the real world?<br>
+					<br>
+					I know what I'd rather do - and also what I'm permitted to do ...<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1188821940000#c3270670474898703969" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<a href="http://www.codingthearchitecture.com" rel="nofollow">kseal</a> : 8:19 AM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=3270670474898703969" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="8209186796185593699"></a> Can I post my resume here?!? I'm trying to get out of the brick inducstry.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1196193600000#c8209186796185593699" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">nollchr</span> : 3:00 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=8209186796185593699" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="5530368063530755652"></a> Excellent article! Software projects are design/innovation/creation projects, not production projects. Your notion on bricks correspond to my reasoning that there is no well defined std. unit of work for software, thus traditional "production" ways of working will not do. Software demands adaptive planning, not predictive.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2007/08/bricks.html?showComment=1197454380000#c5530368063530755652" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/04713017021495019171" rel="nofollow">tommy</a> : 5:13 AM
+					</div><span class="item-control blog-admin pid-1174995694"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=5530368063530755652" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div><br>
+				<p id="postfeeds"></p><br>
+				<br>
+				<br>
+				<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+			</div>
+		</div>
+		<div id="rightcontent">
+			<div class="SideBarTitle">
+				<a href="http://reginald.braythwayt.com">Reg Braithwaite</a>
+			</div><br>
+			<br>
+			<div class="SideBarTitle">
+				Recent Writing
+			</div><a href="http://homoiconic.com">Homoiconic</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Share
+			</div><a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> / <a href="http://github.com/raganwald/andand">andand</a> / <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> / <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> / <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> / <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> / <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Beauty
+			</div><!-- idioms -->
+			<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> / <a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> / <a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> / <a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> / <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a><br>
+			<br>
+			<a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> / <a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> / <a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> / <a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Work
+			</div><a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> / <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Naïve Approach to Hiring People</a> / <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> / <a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> / <a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> / <a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Management
+			</div><a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> / <a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> / <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> / <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> / <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> / <a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I’ve learned from failure</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Notation
+			</div><!-- languages -->
+			<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> / <a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> / <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> / <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> / <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> / <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> / <a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Opinion
+			</div><a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> / <a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> / <a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> / <a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> / <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I’ve Learned From Sales</a> <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Whimsey
+			</div><a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> / <a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin’s Technique for Managing his Manager</a> / <a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> / <a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> / <a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a><br>
+			<br>
+			<div class="SideBarTitle">
+				History
+			</div><a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> / <a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> / <a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> / <a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> / <a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> / <a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> / <a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> / <a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> / <a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> / <a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> / <a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> / <a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> / <a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> / <a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> / <a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> / <a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> / <a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> / <a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> / <a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> / <a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> / <a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> / <a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> / <a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> / <a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> / <a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> / <a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> / <a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> / <a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> / <a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> / <a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> / <a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> / <a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> / <a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> / <a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> / <a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> / <a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> / <a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> / <a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> / <a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> / <a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> / <a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> / <a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> / <a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> / <a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> / <a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> / <a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> / <a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> / <a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /<br>
+			<br>
+		</div>
+		<div style="visibility: hidden">
+			<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+</script> <noscript><img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt=""></noscript>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,407 @@
+<html> 
+<head>
+        
+        <title>Is your IDE tilting at the dynamic language windmill?</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Friday, October 20, 2006</div>
+			
+
+			<div class="Post"><a name="116136483351520278">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2006/10/is-your-ide-tilting-at-dynamic.html" title="permanent link">Is your IDE tilting at the dynamic language windmill?</a></span>
+					<div style="clear:both;"></div>Quite a few programmers love having powerful IDEs. These IDEs perform certain simple refactorings somewhat automatically, they can take a compiled language and make it seem a little more like an interpreted language, they can find certain types of errors as you type…<br /><br />In short, they do a lot of drudge work on the programmer’s behalf. What’s not to like about this? <strong>Nothing</strong>. These are useful tools. I have been working with Eclipse lately when editing Java, although I really don’t care one way or another. I like what it does but I’m fundamentally indifferent to its existence.<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://weblog.raganwald.com/uploaded_images/ferris_wheel-772595.jpg"><img style="margin: 0pt 0pt 10px 10px; float: right; cursor: pointer;" src="http://weblog.raganwald.com/uploaded_images/ferris_wheel-769229.jpg" alt="" border="0" /></a>Of course, there are <a href="http://www.zwitserloot.com/">more than a few people</a> who espouse the idea that the most powerful features of these IDEs are only possible with statically typed languages. And that this productivity is so important that it—ummm—<em>eclipses</em> all other considerations such as which language allows you to express a program with the least redundancy.<br /><br />How interesting.<br /><h4 id="do_all_powerful_ides_require_static_typing">Do all powerful IDEs require static typing?</h4>The idea that IDEs make you more productive is nothing particularly specific to statically typed languages. Have you ever heard of an editor called <a href="http://www.gnu.org/software/emacs/">Emacs</a>? Did you know that some of the hairiest, most dynamic, self-modifying code ever written was once part of Emacs? And that the author of that dynamic, self-modifying code, some fellow named <a href="http://en.wikipedia.org/wiki/James_Gosling">Jim</a>, went on to develop a popular statically typed language?<br /><br />Anyways, lots of people use Emacs for Lisp (don’t you love the symmetry? you need to use Lisp for Emacs). They <a href="http://www.windley.com/archives/2006/10/when_you_pick_your_tools_pick_those_that_can_build_tools.shtml">invest a lot of time making themselves more productive</a>.<br /><br />So here’s what I see from my chair: There’s this group of star-bellied sneetches who say “the important thing about being a productive programmer is having a tool that makes you productive.” And there’s this group of sneetches who say <em>the same dammned thing</em>. The only difference between them is that the star-bellied sneetches say that the productivity of the tool is all about the special things the tool can do when the programs are written in statically typed languages. The plain sneetches love the tool that they can customize so heavily it feels like a personal extension of their mind.<br /><br />Hmmm.<br /><h4 id="who_deserves_a_title_bout">Who deserves a title bout?</h4>The thing that strikes me as obvious is that <em>I’m the wrong person to argue with a star-bellied sneetch</em>. I use a fairly nice text editor, <a href="http://macromates.com/">TextMate</a>, but it doesn’t do 1% of what Emacs does and while it does a lot more than I ever figured out how to make Eclipse do, it also doesn’t even try to do a lot of the star-bellied stuff like move methods around.<br /><br />The right thing to do is to get two people who both agree that productivity from IDEs is important to debate how to do it. That way there’s one, clear point of debate: <em>does an IDE + static typing beat a programmable editor by an order of magnitude</em>?<br /><br />Debating with me is going to be entertaining but inconclusive, because we’ll be mixing several arguments up: are IDEs important, and if they are, what’s the best way to make an IDE powerful, and if that is the best way, is it so good that it outweighs other considerations for choosing a programming language? If you stop by my house, that’s a conversation that is going to put a serious dent in my collection of single malts.<br /><h4 id="the_third_perspective">The third perspective</h4>I’m not a sneetch in this matter. I spend far, far more time thinking about code than I do editing code. Therefore, I invest more energy looking for ways to improve the way I think about code than I do looking for ways to improve the way I edit code.<br /><br />Kinda something not entirely unlike what happens when you sit down to improve the performance of a program. First you profile. Then you choose what to optimize. I’ve profiled myself, and what I need is more help deciding what to do than I do doing it.<br /><br />I am also holding on to a somewhat axiomatic (and irrepressibly optimistic) belief that some languages have orders of magnitude higher <a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html">signal-to-noise</a> ratio than others. This is important for understanding why I am reluctant to pick a language because my IDE likes it.<br /><br />For starters, one needs to understand the goal of all this refactoring: it’s to have better code. Better languages also achieve this goal. let’s look at a simple example and work backwards from that to the importance of languages.<br /><h4 id="delegation_and_dynamic_programming">Delegation and dynamic programming</h4>Delegation in Ruby is easy because you have <code>send</code> and you have <code>method_missing</code>, so even if you don’t feel like using the built-in <code>SimpleDelegator</code> or <code>Forwardable</code>, you can forward messages whenever and however you like.<br /><br />Whereas in Java, you need to define an <code>Interface</code>, then make sure that <code>person_doing_the_actual_work</code> implements the interface, then you can use a <code>DynamicProxy</code> to implement delegation. Note that you can’t delegate to a built-in class unless it implements an interface, so you can delegate to <code>ArrayList</code> (because it implements the <code>List</code> interface), but you can’t delegate to <code>String</code>.<br /><br />(Well, you can <span style="font-style: italic;">forward</span> calls to classes that don't implement interfaces, but you can't make the delegator look like a delegatee. So what you really have is a kind of private inheritence. You cannot, for example, decorate a <code>StringBuffer</code> so that you can set a flag for whether it has been encoded for display in HTML or not, and decorate the append method so that you can throw an exception when an unencoded <code>String</code> is appended to an encoded <code>StringBuffer</code>).<br /><br />Why can’t you just generate the delegation using the IDE’s handy-dandy feature?<br /><br />The problem is that code generation produces a static change. It’s a one-time thing, like one of those push-button programming wizards from <a href="http://finance.yahoo.com/q/bc?t=1y&s=MSFT&amp;amp;amp;amp;amp;amp;amp;l=on&z=m&amp;q=l&c=AAPL">MSFT</a>. If you change interfaces, perhaps you are refactoring something else, your delegation breaks. So you have to write something relatively dynamic.<br /><br />In Ruby, it looks things up at run time. I’ll settle for something that can reflect at compile time. But either way, you can’t just do it once. You have to have dynamic code handle the forwarding.<br /><br />(There are exactly similar problems in all sorts of code. If you write some serialization code by hand or with an IDE, you have a problem when you expand an object. The old code doesn’t know how to serialize the new members. You have to make sure your serialization code reflects on the object so it can keep up with all changes.)<br /><br />I find that IDEs are nice, but even the most sophisticated IDEs are… static. They make one-time changes to code. I’m far more interested in languages that let me write code that writes code, in languages that let me write code that doesn't <span style="font-style: italic;">need</span> a lot of rewriting and fixing across the board when I make a change. (This is just my perspective. I’m still learning a lot about the intersection between theory and practice in programming languages.)<br /><br />But this is why you’re tilting at windmills when you ask me why I don’t eschew Ruby for Java just so I can “rename class.”<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2006/10/is-your-ide-tilting-at-dynamic.html" title="permanent link">1:18 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Is your IDE tilting at the dynamic language windmill?</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="116136772459696586"></a> 				So, where do you live?  I'd love the chance to deplete your stash of single malts.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/is-your-ide-tilting-at-dynamic.html?showComment=1161367680000#c116136772459696586" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">brent</span> : 2:08 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116136772459696586" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116138321149206062"></a> 				One thing I find is often overlooked in the perennial IDE wars is code navigation features. After all, it has become commonplace to say that code is much more often read than written. IDEs can help, specially when facing an entirely new code base. A few helpful features are: jump to declaration (F3 in Eclipse); method call hierarchy (CTRL+ALT+H); find occurrences (CTRL+SHIFT+G); quick hierarchy (CTRL+T) - to find where the current method was declared and where it was overwritten in the inheritance tree; browser-like navigation (back, forward); open type (CTRL+SHIFT+T). That's about all I could remember now... <BR/>I'm not arguing that all these features are only possible in statically typed languages, my point is simply that language aware IDEs can help with much more than just refactorings.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/is-your-ide-tilting-at-dynamic.html?showComment=1161383160000#c116138321149206062" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03350776762967743057" rel="nofollow">Rafaeldff</a> : 6:26 PM</div>
+
+								<span class="item-control blog-admin pid-1024725660"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116138321149206062" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116138418307865881"></a> 				<I>One thing I find is often overlooked in the perennial IDE wars is code navigation features.</I><BR/><BR/>Fair enough, but it's probably better to compare notes with an Emacs user. Or a Smalltalk refactoring browser user. Or the author of BicycleRepairMan, an intelligent editor for Python.<BR/><BR/>I agree these features are useful. And I use them, for example I never use F3, but CTRL-click seems to do the same thing.<BR/><BR/>I'm just not prepared to give up an entire programming language for one of these features.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/is-your-ide-tilting-at-dynamic.html?showComment=1161384180000#c116138418307865881" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:43 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116138418307865881" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116139270934606350"></a> 				I confess, I find it difficult to take <A HREF="http://www.thepublandlord.com" REL="nofollow">the Pub Landlord</A> of development seriously on any issue, let alone the greatness of IDEs. But if the IDE <I>is</I> the revolution, surely what you want is an editor so tightly integrated with the language it's editing that there's no observable difference between the two - that the extension language for the editor <I>is</I> the language it's editing...? At what point does that cease to be an IDE and become "the editor is now part of the language", so that it can take advantage not only of static declaration, but of dynamic information too?<BR/><BR/>But then, it always seemed to me that the only reason there was even a debate about this was because of the silly insistence on writing code in batches because that's the way it was done 50 years ago when you left your stack of punched cards to compile overnight... Honestly, if the work that has been put into optimising batch-mode compilers and duplicating the functionality in the tools to be used with them over the past 40 years had instead been channelled into figuring out how to extract standalone binary lumps from, and enable effective collaboration between, interactive dynamic environments... well, for a start we'd all be using Lisp and Smalltalk machines. ;)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/is-your-ide-tilting-at-dynamic.html?showComment=1161392700000#c116139270934606350" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03775254923855147509" rel="nofollow">Gwenhwyfaer</a> : 9:05 PM</div>
+
+								<span class="item-control blog-admin pid-23579630"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116139270934606350" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116139300362765493"></a> 				Reg :<BR/>I did use the refactoring browser (yes, Smalltalk is my first OO language), and it is far less comfortable than eclipse and intellij. I'm not arguing in the static types debates, only on this point. Renaming methods without having to go for each use (even if the browser brings me there automagically) is easier for instance.<BR/><BR/>Moreover, I think your delegation point is not quiet right, because even if Proxy on concrete classes would have been possible, it wouldn't have reduced the signal-to-noise ratio.<BR/><BR/>In language design, you have some forces: the user's desire (I want to write common stuff concisely, I want my mistakes to be outlined as soon as possible ...), the implemetor's desire (I don't want the compiler to be rocket science), the linguist desire (I want the language's construction to be sound). Then since implementor and designer did some compromises on user's back; come tools (IDE, JDO enhancers, parsers generators, xdoclet ...)<BR/><BR/>For the time being, I will only speak about sound type systems : "static type system" means "type are checked statically and dynamically" while "dynamic type system" means "types are checked only at runtime"<BR/><BR/>In addressing user's ease of use, there are various trends:<BR/>- meta-programming (with a spectrum going from C++ to smalltalk)<BR/>- simple syntax + tools (java) where the syntax is kept simple so that tools vendors have less pain at building their tools <BR/>- huge syntax that addresses by adhoc constructions the most common needs of developers (C#, old-school O'caml) where there is less space for tools.<BR/><BR/>There is another problem: semantic weakening. Each time you transform a sentence from one language to another, you lower the semantic. This is simply because it is easier to split a graph in various nodes than collapsing various nodes representing a pattern in one node. Imagine your delegation problem in english: "I want to delegate all methods but getName to delegatee". It will probably be transformed in a if + equation over the message selector in smalltalk, and tranformed in InvocationHandler + string equation in java.<BR/>Each time a tool does some work, semantic weakens, eventually everything end in PE or ELF executable format (or interpreted in some now rare cases).<BR/><BR/>Ok, so the problem for users is keeping as close as possible of the idea in their head while writing *and* reading code. <BR/>Basically, there are 2 ways for the delegation problem: a tool (like a refactoring menu) but it will weaken your semantic and produce much code of weak semantic, or a special language construct. <BR/>This is where static and dynamic typing split. In dynamic types systems, checking types at compile time is not an objective so you can produce a generic construction for various things, semantic is not very high (the word "delegation" isn't envolved) but not so low that code size will explode. Since static types soundness is not an objective, they emphasise on code and grammar size. In static type systems, the only way is creating a special construct, (imagine some sort of "language of design patterns"), semantic level and code size are fine but the grammar size explodes and moves very fast under user pressure. <BR/><BR/>Of course, the truth is that java introduced some generic construction, and no language actually put the "ad hoc construction" knob up to eleven. Compromises were made, but my point  was showing that are the forces driving the choices of the various actors.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/is-your-ide-tilting-at-dynamic.html?showComment=1161393000000#c116139300362765493" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Nicolas Raynaud</span> : 9:10 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116139300362765493" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116139703723335721"></a> 				<I>I'm just not prepared to give up an entire programming language for one of these features.</I><BR/><BR/>Well, of course. Again, my only point was that language aware IDEs offer help in more ways than just refactoring. Regarding your examples, the Smalltalk Browser is IMO a language aware IDE. Personally, I didn't quite got the hang of the Squeak Smalltalk Refactoring Browser when I last tried it, and would actually love to take up on your hypothetical suggestion of comparing notes with an experienced user. (don't take me wrong, I really liked Smalltalk - no other language that I know of has a syntax close to being so perfectly expressive). Now, EMACS is a different story, and I find hard to believe that one can be more productive coding in it than on a state of the art IDE (modulo experience and talent issues...).<BR/><BR/>Regarding the actual issue, I quite like statically typed languages - even pedestrian type systems like what we encounter in Java or C#. Right now, for instance, I'm coding in Scala, and loving it. My hope is that static metaprogramming can bring the expressibility of a statically typed language closer to that of, say, Ruby. I say "hope" because I don't have any real experience with macro systems.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/is-your-ide-tilting-at-dynamic.html?showComment=1161397020000#c116139703723335721" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03350776762967743057" rel="nofollow">Rafaeldff</a> : 10:17 PM</div>
+
+								<span class="item-control blog-admin pid-1024725660"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116139703723335721" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116139875964476730"></a> 				<I>- simple syntax + tools (java) where the syntax is kept simple so that tools vendors have less pain at building their tools </I><BR/><BR/>Thank you for giving me a laugh. Sure, I had a couple of beers at the bar before reading this, but clearly not as many as you did.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/is-your-ide-tilting-at-dynamic.html?showComment=1161398700000#c116139875964476730" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04021475986523692663" rel="nofollow">llimllib</a> : 10:45 PM</div>
+
+								<span class="item-control blog-admin pid-893808273"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116139875964476730" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116140609880510893"></a> 				<I>I think your delegation point is not quiet right, because even if Proxy on concrete classes would have been possible, it wouldn't have reduced the signal-to-noise ratio.</I><BR/><BR/>If you're saying that using InvocationHandlers and DynamicProxies don't reduce the signal-to-noise ratio, I have to agree.<BR/><BR/>They impose a lot of overhead that only pays off because there's no other way to do certain kind sof things in Java.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/is-your-ide-tilting-at-dynamic.html?showComment=1161406080000#c116140609880510893" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:48 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116140609880510893" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116172661804755976"></a> 				OFF-TOPIC<BR/><BR/>EMACS is to IDE <BR/>as <BR/>DRILL is to HOLE<BR/><BR/>I hate EMACS mostly because I am too dumb to use it. As a product manager and hobbyist programmer that is an immediate killer for me. It doesn't help that I met RMS once and he completely turned me off to everything opensource including gcc and EMACS.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/is-your-ide-tilting-at-dynamic.html?showComment=1161726600000#c116172661804755976" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.giampierodeciantis.com" rel="nofollow">Gp</a> : 5:50 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116172661804755976" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

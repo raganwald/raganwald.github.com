@@ -1,0 +1,393 @@
+<html> 
+<head>
+        
+        <title>Separating the concern of "what to do" from "how to do it quickly"</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Monday, July 07, 2008</div>
+			
+
+			<div class="Post"><a name="7377687769282712835">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2008/07/separating-concerns-of-what-to-do-from.html" title="permanent link">Separating the concern of "what to do" from "how to do it quickly"</a></span>
+					<div style="clear:both;"></div>Over the week-end, I put together a rudimentary <a href="http://weblog.raganwald.com/2008/07/sneak-peek-unhygienic-rewriting-ruby-by.html" title="Sneak Peek: Unhygienic Rewriting Ruby by Example">rewrite-by-example</a> feature for the rewrite gem (please be patient, I won&#8217;t be adding this feature to the gem until it has gone through a few more design iterations). The first thing I tried to do with it was simulating <a href="http://en.wikipedia.org/wiki/Hygienic_macro" title="Hygienic macro - Wikipedia, the free encyclopedia">unhygienic macros</a>:<pre><code><br />Unhygienic.from {<br /><br />    __to_receiver.andand.__to_message(__splat_parameters)<br /><br />}.to {<br /><br />    lambda { |andand_temp|<br />      andand_temp.__to_message(__splat_parameters) if andand_temp<br />    }.call(__to_receiver)<br /><br />}</code></pre><br />What this code produces is a sexp-rewriter that does a global search-and-replace. It looks for code like this:<pre><code><br />Person.find(:first, ...).andand.friends(true)</code></pre><br />And replaces it inline with:<pre><code><br />lambda { |andand_temp|<br />    andand_temp.friends(true) if andand_temp<br />}.call(Person.find(:first, ...))</code></pre><br />Declarative rewriting by example is a darn sight better than hand-written sexp manipulation:<br /><pre><code><br />def process_call(exp)<br />  exp.shift<br />  receiver_sexp = exp.first<br />  if matches_andand_invocation(receiver_sexp)<br />    exp.shift<br />    mono_parameter = Rewrite.gensym()<br />    s(:call, <br />      s(:iter, <br />        s(:fcall, :lambda), <br />        s(:dasgn_curr, mono_parameter), <br />        s(:if, <br />          s(:call, s(:dvar, mono_parameter), :nil?), <br />          s(:nil), <br />          begin<br />            s(:call, <br />              s(:dvar, mono_parameter), <br />              *(exp.map { |inner| process_inner_expr inner })<br />            )<br />          ensure<br />            exp.clear<br />          end<br />        )<br />      ), <br />      :call, <br />      s(:array, <br />        process_inner_expr(receiver_sexp[1])<br />      )<br />    )<br />  else<br />    begin<br />      s(:call,<br />        *(exp.map { |inner| process_inner_expr inner })<br />      )<br />    ensure<br />      exp.clear<br />    end<br />  end<br />end</code></pre><br />But back to rewriting by example:<pre><code><br />Unhygienic.from {<br /><br />    __to_receiver.andand.__to_message(__splat_parameters)<br /><br />}.to {<br /><br />    lambda { |andand_temp|<br />      andand_temp.__to_message(__splat_parameters) if andand_temp<br />    }.call(__to_receiver)<br /><br />}</code></pre><br /> As you can deduce, it is using some magic symbols. In the &#8220;from&#8221; part of the definition, <em>__to_receiver</em> and <em>__to_message</em> mean &#8220;Match something here and name the result <em>receiver</em> and <em>message</em> respectively,&#8221; while <em>__splat_parameters</em> means &#8220;Match a list of things here and name the result <em>parameters</em>.&#8221;<br /><br />In the &#8220;to&#8221; part of the definitions, those magic symbols insert whatever was matched in the from. This is a crude approximation of how regular expressions capture things with () and insert them with $1..$n, only there is no way to capture any arbitrary sub-pattern. You can use any names you want, as long as they have the magic prefixes <em>__to_</em> or <em>__splat_</em>. (Magic symbols are a blight upon all that is right and good with code, suggestions for a better way to express capturing by name gratefully solicited!)<br /><br /><div class="book"><em><a href="http://www.amazon.com/gp/product/026256100X?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=026256100X"><img border="0" src="http://weblog.raganwald.com/uploaded_images/seasoned_schemer.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=026256100X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br />Speaking of select, inject, and other higher-order functions, <a href="http://www.amazon.com/gp/product/026256100X?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=026256100X">The Seasoned Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=026256100X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> is devoted to the myriad uses of first class functions. This book is approachable and a delight to read, but the ideas are provocative and when you close the back cover you will be able to compose programs from functions in powerful new ways.<br><br></em></div>The example above is very much like a Lisp macro. In Lisp, everything is an sexp, so of course macro invocations are sexps just as function calls are sexps. In Ruby, some things look like function calls, some things look like method invocations. In this particular case, &#8220;Person.find(:first, &#8230;).andand.friends(true)&#8221; looks like a method invocation, but it actually behaves like a macro invocation.<br /><br />Although it looks like a method, the rewriter version of #andand is not polymorphic. You can&#8217;t override #andand in any classes, just as you can&#8217;t override other syntactic constructions like &#8220;&amp;&amp;&#8221; or &#8220;!&#8221;. This bothers OO purists, however I am a member of the OO radical fringe who take purity to another level, a level where <a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html" title="IS-STRICTLY-EQUIVALENT-TO-A">overriding functionality is not allowed to violate Liskov Equivalence</a>. <br /><br />(I personally do not care for the idea that something like #andand sometimes means one thing and sometimes means another, just as many people would completely freak out if !foo didn&#8217;t always mean &#8220;not foo.&#8221;)<br /><br /><strong>beyond macros</strong><br /><br />Rewriting goes beyond adding new functions and verbs (I personally consider #andand to be an adverb). Basically, what we have here is an extremely weak version of XSLT for Ruby code. Match this, turn it into that. IMO, XSLT transformations is a much better analogy than macro expansion. Rewriters can match and replace fairly arbitrary expressions, not just implement things that look like function calls and method calls.<br /><br />Consider this hypothetical example:<pre><code><br />Unhygienic.from {<br /><br />    __to_receiver.select { |__to_x| <br />        __to_select_body <br />    }.inject(__to_seed) { |__to_acc, __to_y| <br />        __to_inject_body<br />    }<br /><br />}.to {<br /><br />    __to_receiver.inject(__to_seed) { |__to_acc, __to_x|<br />        if __to_select_body<br />            __to_y = __to_x<br />            __to_inject_body<br />        else<br />            __to_acc<br />        end<br />    }<br /><br />}</code></pre><br />This would transformation code like this:<pre><code><br />heads_of_state = locations.select { |any_loc| <br />    zips_in_this_state.include? any_loc.zip_code<br />}.inject(0) { |heads, loc_in_state|<br />    heads + loc_in_state.head_count<br />}</code></pre><br />Into this:<pre><code><br />heads_of_state = locations.inject({}) { |heads, any_loc|<br />    if zips_in_this_state.include? any_loc.zip_code<br />        loc_in_state = any_loc<br />        heads + loc_in_state.head_count<br />    else<br />        heads<br />    end<br />}</code></pre><br />This is an example of an <em>optimization</em>.<br /><br />For a large class of expressions chaining a select and an inject (the ones that don&#8217;t rely on side effects), this transformation retains the original semantics while rewriting the code to only traverse the collection once and to eliminate the creation of an intermediate collection.<br /><br />Of course, compilers do this kind of thing all the time for many types of optimizations, so it&#8217;s tempting to wait for someone else to write a <a href="http://c2.com/cgi/wiki?SufficientlySmartCompiler" title="Sufficiently Smart Compiler">sufficiently smart compiler</a> that can figure these things out. There are two troubles with waiting for someone else to do it. First, we might be that someone&#8212;maybe we&#8217;re the one who ought to Just Do It, and waiting for someone else won&#8217;t work because nobody else is going to do it.<br /><br />Second, many problems like this are intractable in the general case. It&#8217;s hard (in the mathematical sense) to know when select {&#8230;. }.inject { &#8230; } can be transformed like this in an imperative language without accidentally stepping on some hidden side-effect. But just because it&#8217;s hard in the general case doesn&#8217;t mean it isn&#8217;t easy in the specific case. For example, you might be the sort of person who <em>never</em> knowingly relies on side effects in select and inject expressions.<br /><br />So <em>you</em> could use this optimization, while a compiler-level optimization would be a disaster: even if 99.9% of the code out there wouldn&#8217;t break, the programmers behind the 0.1% of the broken programs would be furiously blogging about how Ruby wasn&#8217;t ready for the Enterprise.<br /><br /><strong>optimizing your code</strong><br /><br />The joy and the pain of optimizing your code is that you don&#8217;t need rewrite to perform that optimization. The joy is that if you discover chaining select and inject is a performance hog somewhere in your code, you simply rewrite the code yourself.<br /><br />The pain is that the code is no longer in the form you originally decided best represents its intent. In the trivial example I gave above, a rewritten version looks reasonable, especially if you rewrite it with #each in an imperative style:<pre><code><br />heads_of_state = 0<br />locations.each { |any_loc|<br />    if zips_in_this_state.include? any_loc.zip_code<br />        heads_of_state += any_loc.head_count<br />    end<br />}</code></pre><br />Now I&#8217;m not going to say that this is necessarily more or less readable than:<pre><code><br />heads_of_state = locations.select { |any_loc| <br />    zips_in_this_state.include? any_loc.zip_code<br />}.inject(0) { |heads, loc_in_state|<br />    heads + loc_in_state.head_count<br />}</code></pre><br />Some people actively dislike using #select and #inject, so they might feel the #each version is better. For once, let&#8217;s talk about something other than a <a href="http://en.wikipedia.org/wiki/Color_of_the_bikeshed" title="Color of the bikeshed - Wikipedia, the free encyclopedia">bike shed</a>. Let&#8217;s focus on the fact that foo.select {&#8230;}.inject {&#8230;} says one thing: &#8220;Filter this collection using this predicate, and then fold the result as follows.&#8221; Whereas foo.each {&#8230;} says &#8220;Iterate over this collection doing the following thing with each element.&#8221;<br /><br />If you wrote this as a #select/#inject pair, you might have a good reason for doing so. Perhaps most of your program is written in a functional style. Perhaps you like to signal that the there are no side effects in those snippets of code and your team share this understanding of how selects and injects are written.<br /><br />Granting that you believe that #select and #inject do a better job of communicating the code&#8217;s intent to your fellow team members, it&#8217;s a win to optimize the code (in the compiler or using a rewriter) behind the scenes rather than rewrite it yourself. The code retains its semantics and the form you have decided best expresses its intent, while using less memory and running faster.<br /><br /><strong>separation of concerns</strong><br /><br />What we have just done with our trivial example is separated two concerns: The concerns of how to best express an algorithm and the concern of how to best implement an algorithm. If for whatever reason&#8212;furious hand-waving to avoid arguing how to write loops&#8212;we believe that the best way to express a certain algorithm for readability is not the best way to express a certain algorithm for performance, we have two separate concerns: How to write readable code and how to write <strike>performant</strike> fast code.<br /><br />Doesn&#8217;t it make sense to separate those concerns? So that the code explaining what the algorithm is supposed to do is in one place and the code expressing how to make such things go fast is in another?<br /><br />This is pure speculation here, but I am conjecturing that being able to rewrite arbitrary snippets of code could be used like a compiler optimization directive. When debugging, you don&#8217;t rewrite the code. But when things have stabilized and you need to tweak performance, instead of rewriting the code, you use rewriters to do it for you, separating the concern of &ldquo;what to do&rdquo; from the concern of  &ldquo;how to do it quickly.&rdquo;<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2008/07/separating-concerns-of-what-to-do-from.html" title="permanent link">7:45 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Separating the concern of "what to do" from "how to do it quickly"</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="4698059818407077513"></a> 				Are you sure you wouldn't rather just be programming in Haskell? First you come up with andand which is just the <A HREF="http://haskell.org/ghc/docs/latest/html/libraries/base/Data-Maybe.html" REL="nofollow">Maybe monad</A> and now you're reinventing <A HREF="http://www.haskell.org/ghc/docs/latest/html/users_guide/rewrite-rules.html" REL="nofollow">rewrite rules</A>. Of course I'm stuck with C++ at work and tend to keep cramming approximations of things I use in Haskell into my C++ code so maybe I shouldn't be throwing stones.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/separating-concerns-of-what-to-do-from.html?showComment=1215466020000#c4698059818407077513" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01838925956817921960" rel="nofollow">brett</a> : 5:27 PM</div>
+
+								<span class="item-control blog-admin pid-153799757"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4698059818407077513" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="959700964262385137"></a> 				Brett:<BR/><BR/>Andand is not the Maybe monad, Maybe is considerably more generalized.<BR/><BR/>Now, I am quite aware of rewrite rules in Haskell, I tried to do a fairly comprehensive review of everything that looked remotely like code generation features. It is no co&iuml;ncidence that this gem is called rewrite.<BR/><BR/>That being said, I am not particularly interested in switching to Haskell for most of the same reasons I don&rsquo;t return to Scheme every time I find something irritating about Ruby.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/separating-concerns-of-what-to-do-from.html?showComment=1215469200000#c959700964262385137" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:20 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=959700964262385137" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2530789896207868055"></a> 				The optimization you are describing is called <A HREF="http://homepages.inf.ed.ac.uk/wadler/topics/deforestation.html" REL="nofollow">deforestation</A> and was pioneered by Philip Wadler. There's plenty of related work, <A HREF="ftp://ftp.diku.dk/diku/semantics/papers/D-300.ps.gz" REL="nofollow">Positive supercompilation</A>, <A HREF="http://www.pllab.riec.tohoku.ac.jp/~ohori/research/OhoriSasanoPOPL07.pdf" REL="nofollow">Lightweight fusion by fixed point promotion</A> and many others. <BR/><BR/>Notice that the shortcut fusion in GHC (implemented through the rewrite rules) is a different beast, but it also removes some intermediate structures.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/separating-concerns-of-what-to-do-from.html?showComment=1215518220000#c2530789896207868055" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03667797130930251147" rel="nofollow">Peter</a> : 7:57 AM</div>
+
+								<span class="item-control blog-admin pid-1214880333"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2530789896207868055" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6243515509245156858"></a> 				Peter:<BR/><BR/>Thanks, I recall reading about deforestation some time ago, and then forgotten all about it.<BR/><BR/>As described here, it is fairly simple to implement using rewriting. I am very, very interested in building rewrite up to handle much more complicated transformations.<BR/><BR/>In my hand-written rewriters there is a facility for merging let lambdas, something like a special-case of lambda=lifting. I would like to be able to express things like lambda-lifting using a declarative be example" style rather than writing sexp transformations imperatively.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/separating-concerns-of-what-to-do-from.html?showComment=1215520560000#c6243515509245156858" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:36 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6243515509245156858" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1468396669178633897"></a> 				Jeez, I kind of come across like a jerk in that earlier comment. Sorry about that. Guess I shouldn't be trying to fire off a quick comment while waiting for a compilation to finish since C++ sometimes makes me a bit cranky.<BR/><BR/>I agree that Maybe in Haskell is more generalized than andand but I always thought that andand captured the essence of what Maybe is good for in the monadic sense, i.e. chaining a bunch of Maybe returning functions together and short-circuiting when you get Nothing (or nil in andand's case).<BR/><BR/>Another thing that your rewriting above does is eliminate a space leak. Try running <BR/><BR/>[1,2,3,4,5,6].select{|x| puts "s#{x}"; x % 2 == 0}.map{|x| puts "m#{x}"; x + 1}<BR/><BR/>in irb and you get all the s1, s2, etc. messages before you get any of the m2, m4 messages printed out. So select has to generate the entire list before map can consume it. By fusing select and map you not only avoid unneeded function calls but you avoid generating the intermediate list as well. I suppose another solution would be to add lazy versions of select and map to Enumerable that in turn return a proxy object that applies the filtering and mapping lazily in order to avoid generating the intermediate list. But then the list interface is probably fat enough already without adding lazy analogs for most of the methods.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/separating-concerns-of-what-to-do-from.html?showComment=1215535560000#c1468396669178633897" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01838925956817921960" rel="nofollow">brett</a> : 12:46 PM</div>
+
+								<span class="item-control blog-admin pid-153799757"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1468396669178633897" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6855028566603730589"></a> 				Brett:<BR/><BR/>You did not come across as a jerk! In fact, I feel bad that I did not quote more of the things I have read and absorbed over the years.<BR/><BR/>I think what your message (and Peter's message) points out is the importance of research, by which I mean, reading what has already been written.<BR/><BR/>Going off on a tangent, what I expect from university graduates is to know about things like Monads and Deforestation and Lambda Lifting and what-not when they arrive for their first day on the Java Job.<BR/><BR/>Our industry has a bad habit of either ignoring its own history or repeating it, badly.<BR/><BR/>So thanks for the input!<BR/><BR/>Now to the optimization. Yes, the issue of eliminating the intermediate list is very important:<BR/><BR/><EM>For a large class of expressions chaining a select and an inject (the ones that don’t rely on side effects), this transformation retains the original semantics while rewriting the code to only traverse the collection once and to eliminate the creation of an intermediate collection.</EM><BR/><BR/>You are right that the semantics of expressions with side effects are changed because of the interleaved ordering. Correct me if I&rsquo;m wrong, but isn&rsquo;t this related to the Array Monad?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/separating-concerns-of-what-to-do-from.html?showComment=1215536700000#c6855028566603730589" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:05 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6855028566603730589" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7042242076580216141"></a> 				Oops, missed that bit about "to eliminate the creation of an intermediate collection". Oh well, now you've got an example of what that means for free.<BR/><BR/>Hmmm, not sure that I know of an <I>Array</I> monad. There's the <A HREF="http://www.haskell.org/all_about_monads/html/listmonad.html" REL="nofollow">list monad</A> but that deals with non-deterministic computations and doesn't seem to have much bearing here. There's also the <A HREF="http://haskell.org/ghc/docs/latest/html/libraries/base/Control-Monad-ST.html" REL="nofollow">ST monad</A> that allows strict stateful computations including operating on <A HREF="http://haskell.org/ghc/docs/latest/html/libraries/array/Data-Array-ST.html" REL="nofollow">mutable arrays</A> (<A HREF="http://brett-hall.blogspot.com/2008/01/haskell-shuffling.html" REL="nofollow">here's</A> and example). In the ST monad, and by extension the IO monad which is built on top of the of the ST monad, there's a <I>world</I> object that is passed around in the background creating a data dependency between the monad actions. This makes sure that they are run in sequence, not something you can take for granted in a lazy by default  language. The updating of the world object, actually each action creates a new world object that is passed to the next action, allows the use of mutable variables in a language that doesn't actually support them. The upshot of all this structure is that you can restrict side-effects to actions run in the ST monad and know that the rest of your program is side-effect free, unsafePerformIO and its ilk notwithstanding. This would fix your rewrite issues above since you would be sure when it was OK to modify things without breaking side-effect reliant code. Of course retrofitting something like that into Ruby would a tall order at this point.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/07/separating-concerns-of-what-to-do-from.html?showComment=1215575700000#c7042242076580216141" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01838925956817921960" rel="nofollow">brett</a> : 11:55 PM</div>
+
+								<span class="item-control blog-admin pid-153799757"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7042242076580216141" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,400 @@
+<html> 
+<head>
+        
+        <title>How to Use Acceptance Tests to Ship Software</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Friday, July 30, 2004</div>
+			
+
+			<div class="Post"><a name="109008359785826210">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2004/07/how-to-use-acceptance-tests-to-ship.html" title="permanent link">How to Use Acceptance Tests to Ship Software</a></span>
+					<div style="clear:both;"></div>Validation tests are tests that measure some aspect of an implementation's behaviour against an expectation and answer whether the software complies with the expectation. For example, a test that measures the time required to perform a specific task is not a validation test. A test that measures the time required to perform a specific task and compares it to a benchmark is a validation test.
+<br />
+<br />One very strong benefit of using validation tests is that creating the tests forces the development team to achieve detailed and objective designs. This extends beyond the coding team to include program and product management: <span style="FONT-WEIGHT: bold">writing tests that validate compliance with requirements force product management to articulate detailed and objective requirements</span>.
+<br />
+<br />Thinking the requirements through in detail is more valuable than thinking the design through in detail: if the design is not solid, you will end up with a poor solution to a good problem. This can be refactored. If the requirement are not well understood, you will end up with a solution to the wrong problem: this is more difficult to change.
+<br />
+<br />The two most important types of validation tests are:
+<br /></span><ul><li>Acceptance tests, which validate an implementation's compliance with requirements. </li><li>Unit tests, which validate an implementation's compliance with a design. </li></span></ul><span style="FONT-WEIGHT: bold">Acceptance Tests
+<br />
+<br /></span>Acceptance tests validate an implementation's compliance with requirements. One style of development is to write detailed requirements and then translate the requirements into acceptance tests. When the requirements are sufficiently detailed, the acceptance tests flow freely from the requirements and the role of the team is to validate that the acceptance tests properly express the requirements.
+<br />
+<br />A lightweight approach is to write less detailed requirements and to consider the acceptance tests as an extension of the requirements document. This works well in smaller organizations. When using the lightweight approach, it is important that customer or market facing contributors retain 'ownership' of the expression of requirements. A protocol I have seen work very well is for a program manager to write requirements, and then the program manager negotiates acceptance tests with the programming team.
+<br />
+<br />The program manager <em>owns</em> the definition of the acceptance tests, and the programming team <em>validates</em> the tests, raising red flags if they have concerns or cannot 'connect the dots' between the requirements and the acceptance tests. For example, a programmer is allowed to reject any acceptance test that validates an implementation rather than a requirement. This is quite properly the province of unit tests and not an issue for the program manager to determine.
+<br />
+<br />Let's review this last point. Consider a high-level Market Requirements Document ("MRD"). What does it mean to "flesh out the MRD with more detail" or to "drill down into one of the requirements"? Well, it doesn't mean "write specs for a solution." That's a common pitfall: when asked for more detail, product managers get sucked into designing software.
+<br />
+<br />More detail for an MRD should mean "describe the problem to be solved in more detail." The most useful detail possible is a complete list of acceptance tests.
+<br />
+<br />Writing an acceptance test is easy: write a sentence that begins: "the software is acceptable when..." Now all you have to do is make sure that your acceptance test is implementation-free, just like any good requirement. This test is now a detailed expansion of some requirement. Write as many acceptance tests as you can.
+<br />
+<br />For incredible leverage, automate your acceptance tests using tools like <a href="http://fitnesse.org/FitNesse.WhatIsFitNesse">Fitnesse</a>.
+<br />
+<br /><span style="FONT-WEIGHT: bold">Unit Tests </span>
+<br />
+<br />Unit tests validate an implementation's compliance with a design. Since requirements are implementation-free, there should be no coupling between the definition of unit tests and the definition of acceptance tests.
+<br />
+<br />Unit tests express one and only one fact, which they express in the abstract: code that is written with well chosen and sufficient unit tests can be considered of good quality and likely to be delivered on time with high confidence. Customer or market facing contributors such as program managers have an abstract interest in unit tests for this reason.
+<br />
+<br /><span style="FONT-WEIGHT: bold">Why Unit Test are not Acceptance Tests</span>
+<br />
+<br />Unit tests should not be confused with acceptance tests, for the same reasons that
+<br /></span><ul><li>the design should not be confused with the requirements</li><li>the project plan should not be confused with the release plan, and,</li><li>technical management should not be confused with product management</li></span></ul>A design is one possible solution to the problem of "writing software that complies with the requirements." A project plan is one possible solution to the problem of "implementing a design using the available resources in compliance with the release plan." Technical management is the art of finding and implementing these solutions.
+<br />
+<br />Unit tests should not be confused with acceptance tests because they do not express some requirement of the release plan: it is possible to completely refactor the design and the project plan, rewriting every single unit test, without changing any of the acceptance tests. But changes to acceptance tests reflect changes to the product contract: they are an element of the Plan of Record.
+<br />
+<br /><span style="FONT-WEIGHT: bold">Bugs and Defects</span>
+<br />
+<br />When a release (internal or external) is tested, bugs are inevitable. A bug report expresses a kind of validation test in the negative: "the software ought to... But instead it..." A good bug report explains how to reproduce the problem: "Install the software on a dual Triton system with less an 4GB of RAM, then boot it in greedy mode..."
+<br />
+<br />This is a validation test. Ideally, this test was already expressed as an acceptance or unit test. In practice, a bug report often expresses an implicit test, one that wasn't spelled out as part of the process. This is not a bad thing: tests evolve as the team's understanding evolves.
+<br />
+<br />It's important to distinguish bugs that reflect shortcomings in acceptance from bugs that reflect shortcomings in design. If you look at a bug and it reflects some fundamental aspect of the requirements of the software, you need to treat it with considerably more care than a bug that reflects some shortcoming in design.
+<br />
+<br />I call such bugs "defects." A defect must absolutely, positively be remedied, because if the software does not conform to the acceptance criteria, it is not "done."
+<br />
+<br />For example, you may have a requirement that some aspect of the UI conform to generally accepted principles. Say there's a menu option that displays a shortcut key, but the key doesn't work. That bug is interesting. You can write a unit test for this bug: "pressing control J should invoke the Jump command."
+<br />
+<br />But that isn't an acceptance test. An acceptance test would be "for every menu item that displays a shortcut key, the shortcut key should invoke the command." Why the generalization? Because one way to fix the broken control J would be to not display the shortcut key in the menu. The software would still conform to the acceptance test, but it would fail the unit test.
+<br />
+<br />Bug reports are an excellent source of acceptance criteria, however product management and development need to analyze the tests to decide which bugs are defects and to extract acceptance criteria, just as requirements need to be analyzed to remove implementation, design, and specifications.
+<br />
+<br />I'll end with one anti-pattern: if you don't distinguish bugs that reflect acceptance shortfalls from bugs that reflect implementation shortfalls, you paint yourself into a corner where you cannot manage the bug list: all you can do is try to fix as much as you can and hope for the best.
+<br />
+<br />If you separate the defects out and give them their own special place in your process, you are now (a) learning more about the detailed requirements of your software, and (b) you have a smaller list of defects that must absolutely, positively be fixed. Prioritizing defects over bugs is one excellent way to raise your chances of shipping acceptable software on time.
+<br /></span>
+<br /><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/agile.html">agile</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2004/07/how-to-use-acceptance-tests-to-ship.html" title="permanent link">9:50 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>How to Use Acceptance Tests to Ship Software</em>&rdquo;</strong>:<br/>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

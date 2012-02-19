@@ -1,0 +1,506 @@
+<html> 
+<head>
+        
+        <title>Tool Time
+</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Thursday, March 06, 2008</div>
+			
+
+			<div class="Post"><a name="2103872147105392610">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2008/03/tool-time.html" title="permanent link">Tool Time</a></span>
+					<div style="clear:both;"></div><blockquote>&lsquo;Tool&rsquo; is a popular metaphor for a programming language but it&rsquo;s very limited. &lsquo;Rule&rsquo; might be a better metaphor. A language defines, quite literally, what you can and can&rsquo;t do. People who argue for languages with more power are actually arguing for less rules.</blockquote><div>&mdash;<a href="http://blogs.concedere.net:8080/blog/discipline/?permalink=Links-03-06-2008.html">Azubuko Obele</a></div><br />Is this really about &ldquo;more power?&rdquo; Or is this about whether a language has one obvious way to do things vs. more than one way to do things? Python is a considerably more powerful language than Java, but I would consider both languages to be firmly in the &ldquo;It&rsquo;s a good thing to impose rules on the programmer&rdquo; camp.<br /><br />It&rsquo;s true that languages like Ruby permit programmers <em>more freedom</em>. But is it because such languages give programmers the tools to turn boilerplate into abstractions? Or is it because these languages provide multiple programming paradigms and because they have cultures encouraging programmer responsibility?<br /><br /><div class="book"><hr/><em><a href="http://www.amazon.com/gp/product/1598631128?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=1598631128"><img border="0" src="http://weblog.raganwald.com/uploaded_images/python_programming.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=1598631128" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><a href="http://www.amazon.com/gp/product/1598631128?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=1598631128">Python Programming for the Absolute Beginner</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=1598631128" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> is a must read for the programmer who hasn&rsquo;t dived into Python yet. There&rsquo;s a reason Google endorses Python. Find out why with this essential book: it introduces the language gently yet takes you as far as you want to go.</em><hr/></div>Java and Python are good languages to contrast. Java began with the idea that removing programmer freedom would produce better programs. Java was built by removing features from C++, and the result is a language with little power (<a title="Finding the Signal-to-Noise Ratio in the Never-Ending Language Debate" href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html">whatever that means</a>) and little freedom.<br /><br />Python was also built with the philosophy that removing certain programmer freedoms would produce better programs, however Guido has been careful not to reject features simply because programmers might misuse them. Instead, he has been careful to design Python such that there are few features he deems unnecessary. His definition of unnecessary is a feature where there already exists a perfectly serviceable way to do it in Python.<br /><br />Guido has also tried to remove choice in things that don&rsquo;t matter, like indentation, while growing the language with features that fit within Python&rsquo;s style and design &aelig;sthetic. The result is a language where programs are easy to read, where you do not have little dialects everywhere.<br /><br />Yet, Python programmers rarely chafe that they are constrained from doing what they need to do. Clearly, it is possible to impose rules and to gently guide programmers towards a standard way to express ideas without hobbling them.<br /><br />Haskell is quite possibly the most extremely limiting language in common use: there is one way to do everything, mathematically pure <a title="Why Why Functional Programming Matters Matters" href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">functional programming</a>. You have <a title="Can your type checking system do this?" href="http://weblog.raganwald.com/2007/07/can-your-type-checking-system-do-this.html">strong, expressive static typing</a>. Would anyone argue that switching from Java to Haskell is an attempt to deal with fewer rules and fewer restrictions, an attempt to gain more freedom as a programmer? Likewise, the <a href="http://factorcode.org/">Factor</a> programming language imposes a single, constraining set of rules on the programmer: programmers switching to Factor must relinquish their local variables to gain Factor&rsquo;s higher-order programming power.<br /><br />Power and freedom are related ideas. So it is easy to see why many languages that provide more power also provide more freedom than hobbled languages. The trouble is that some languages are built as collections of unrelated features smooshed together, just as some programs are hotch potches of checkbox features. Good design in every field accomplishes the &ldquo;antigravity&rdquo; trick of accomplishing more with less. With poor design, adding new power requires adding more check boxes, more features, more ways to do things that interact with each other unexpectedly. It is not surprising that some reasonable people resist growing languages that are not designed well, that cannot grow in power without throwing more features on top of the pile.<br /><br />But languages can provide more power while also providing more rules and, paradoxically, less freedom. It&rsquo;s just that they provide less freedom to do things that are unimportant to the language designer (like fully unconstrained lambdas in Python) or less freedom to do things that make it difficult to reason about a program&rsquo;s behavior (like dynamic typing or state changes in Haskell). This is accomplished through careful design from the outset, through having a guiding philosophy, and through building on sound foundations.<br /><br />The issue is not that more power equals more freedom, just that more power (whatever that means) equals a certain kind of freedom denied to those who use less powerful languages. It does not mean more freedom overall, it may mean less freedom overall.<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.hiarchive.co.uk/images/3.21.Binford.2p.jpg"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px;" src="http://www.hiarchive.co.uk/images/3.21.Binford.2p.jpg" border="0" alt="" /></a><br /><center><font size="-1"><em>The Binford 6100 Man&rsquo;s Kitchen is for the chef who is not afraid of power: it features a Binford Macrowave with 3 settings&mdash;High, Really High and Split-your-own-atoms. Photo courtesy <a href="http://www.hiarchive.co.uk/binford.php">Binford Tools</a>.</em></font></center><br />I conclude that it is possible to argue for and against language &ldquo;power&rdquo; quite separately from arguing for and against constraining programmers with rules. &ldquo;Collection of Rules&rdquo; is a decent metaphor for programming languages, and some languages have more rules than others. But it is orthogonal to the metaphor of languages as tools and the discussion of to what extent providing programmers with more powerful tools leads to better programs.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2008/03/tool-time.html" title="permanent link">2:57 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Tool Time</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="7763660310892475067"></a> 				I suspect python programmers don't chafe largely because those who do chafe switch languages.  I found some features of python attractive for awhile but ultimately Guido's (sp?) removal of features drove me crazy and encouraged me to move over to ruby.<BR/><BR/>Now maybe in theory taking out of features and providing one way to do things is reasonable but the way choosen in python just seems too unfriendly towards a more functional/abstract approach to code.  It is still allowed but seems disfavored in the deciscions.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1204837620000#c7763660310892475067" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12167366567189261911" rel="nofollow">TruePath</a> : 4:07 PM</div>
+
+								<span class="item-control blog-admin pid-1366395209"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7763660310892475067" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6401588834878997385"></a> 				@truepath: What features did he remove that bothered you? I've only seen Python gain features in the last 7 years.<BR/><BR/>He moved reduce() from __builtins__ to functools? Continued to shoot down tail recursion?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1204868160000#c6401588834878997385" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 12:36 AM</div>
+
+								<span class="item-control blog-admin pid-831715508"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6401588834878997385" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6461797295794015827"></a> 				The premise is wrong. A computer language is not akin to rules, but akin to mathematics. Hell, it <I>is</I> mathematics!<BR/><BR/>So, compare it to algebra. The more theorems you have, the more powerful you are. Are theorems freedom? Not, of course not. Theorems are fundamental truths that can be combined to more easily achieve further results.<BR/><BR/>So it is with languages. In the absence of more powerful theorems, the solution to your problems will take longer to write. Or, you could first "prove" these theorems and then use them. Which would be like writing an interpreter or a compiler. In fact, that happens more often than you might think, as every DFA is also an interpreter.<BR/><BR/>So, what's this about freedom and the quality (for some values of quality...) of the programs written in a language?<BR/><BR/>Well, it's actually quite simple. We, humans, think naturally in some ways and not in others, logic notwithstanding. We are not computers.<BR/><BR/>Let me give an example here, because most people tend to disregard the above as obvious and irrelevant. The sun rose today, and it rose yesterday, and, in fact, I don't recall a single day of my life in which the sun didn't rise. I'm told this has been going on for a long time, and I'm inclined to believe so. The instinctual reaction of most people to this fact is to believe that it follows that the sun will rise tomorrow.  And it <I>is</I> instinct. It's the basis of conditioning, that which makes the scalded cat afraid of cold water.<BR/><BR/>Yet, as most of the readers here will know, this has absolutely no basis in logic. If you wrote a program depending on that, it would be incorrect. And you can bet your ass it would crash within the first day of production usage. :-)<BR/><BR/>So, we are good at some stuff, but not at others. The pumping lemma is powerful, but is it easy to use? What's easier, deduction or reductio ad absurdum? Personally, I have always been an absurdum man.<BR/><BR/>And that's where the "rules" come in. It's not about rules. It's about providing theorems which we are not naturally disposed to misuse instead of those that we are. And, guys, some of those theorems we might misuse are actually more powerful.<BR/><BR/>Which, IMHO, is the case of deduction. In my own experience, people tend to screw up deduction much more easily than R.A.A., but deduction is certainly the more powerful of the two. Q.O.D. ;-)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1204895880000#c6461797295794015827" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07505997833685327219" rel="nofollow">Daniel</a> : 8:18 AM</div>
+
+								<span class="item-control blog-admin pid-1712528103"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6461797295794015827" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4162446250546755340"></a> 				#daniel "A computer language is not akin to rules, but akin to mathematics. Hell, it is mathematics!"<BR/><BR/>Nope, they(most of them) aren't.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1204932420000#c4162446250546755340" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01319655075997712313" rel="nofollow">njharman</a> : 6:27 PM</div>
+
+								<span class="item-control blog-admin pid-1284758685"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4162446250546755340" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5240791228011448922"></a> 				"Power" and "Freedom" are marketing terms; they are positive-sounding words describing a trade-off between concerns. Stan Lee teaches us that the flip side of Power is responsibility: Java was much better than C++ not because it gave programmers less power, but because it also required a lot less responsibility from them: They no longer had to free every object they allocated, they no longer had to be careful of accidentally tripping over unintended compiler-generated copy constructors or dangling pointers.<BR/><BR/>One of my favorite things about Perl (and valid for most other scripting/dynamic/high-level languages, I guess) is that I can avoid a lot of arithmetic, incrementing loop counters and messing with array indexes, because I can work with lists, which are supported by the language with operations like foreach, push, shift, map, etc.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1204936500000#c5240791228011448922" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13679383318383597174" rel="nofollow">Dotan Dimet</a> : 7:35 PM</div>
+
+								<span class="item-control blog-admin pid-1959759351"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5240791228011448922" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="221058757669718679"></a> 				Dotan:<BR/><BR/>I guess my feeling is that Power and Freedom, while imprecise terms, are not really traded off against each other in all languages.<BR/><BR/>I'm not stating that they are always orthogonal. For example, I don't know how to add power to Java without adding a lot of freedom in the sense of supporting different dialects of Java.<BR/><BR/>But when switching or deigning languages, I do think there is some opportunity to choose power with either more or less freedom according to what you feel is most appropriate.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1204938900000#c221058757669718679" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:15 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=221058757669718679" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1526608999075442962"></a> 				njharman said most languages are not mathematics.<BR/><BR/>Well, they are. They are all turing machines.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1205026500000#c1526608999075442962" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07505997833685327219" rel="nofollow">Daniel</a> : 8:35 PM</div>
+
+								<span class="item-control blog-admin pid-1712528103"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1526608999075442962" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6832636557713569074"></a> 				Saying that programming languages are mathematics because mathematics describes their properties is like saying that human beings are physics because physics describes our properties.<BR/><BR/>Sure, everything is Quantum Electrodynamics. However, QED is not helpful when trying to hire a programmer or woo a mate. Likewise, many important properties of programming languages can be precisely defined by mathematics.<BR/><BR/>However, many other important properties cannot. For example, we have not arrived at a consensus on how short or long programs ought to be. Too short, and we complain about them being unreadable. Too long, and we complain about them being unreadable.<BR/><BR/>They may all be Turing-equivalent (they are <I>not</I> Turing machines), however mathematics is silent on subject like this, which are sometimes likened to HCI and Human Factors, Psychology, Design, Writing, and many other fields.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1205026860000#c6832636557713569074" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:41 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6832636557713569074" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4786523580657014480"></a> 				Well, ok, turing-equivalents. My point is that no matter how humans look upon a language, the language itself is turing machine-like.<BR/><BR/>A computer language is _not_ a natural language. It doesn't convey emotion, it doesn't have subtexts. You won't find expletives in them. :-)<BR/><BR/>There are a number of ways in which language is used, but computer languages are much more limited that that. A computer language deals with commanding the CPU, and nothing else.<BR/><BR/>Whether you use // or /* */ is irrelevant. It doesn't matter if a javadoc can extract API-describing remarks. You can completely change these things and the execution of a program won't change a bit.<BR/><BR/>Whether a program is short of long won't change a bit what the language is doing.<BR/><BR/>It's like saying birds are more than bird because some of them are more pretty than others. A bird isn't pretty, a bird simply <B>is</B>. The prettyness an attribute of your relationship with the bird.<BR/><BR/>Same thing with languages. Languages are CPU commands. The relationship might not seem obvious, just like the pumping lemma doesn't seem to follow from basic group theory, but there is a clearly defined path from one to the other.<BR/><BR/>Humans relationship with computer languages doesn't change the nature of computer languages. A computer language is not a set of rules of what you can do or cannot rule. All computer languages can do the same things, because they are all equivalent. I can add pointers right back to Java by the simple expedient of allocating a huge array and handling all my data in this array.<BR/><BR/>So I stand by what I said. Computer languages are mathematics. They are a set of theorems and lemmas which you use to write instructions to a virtual turing machine, whether you understand this or not. And if you don't understand this, you are prone to misuse them. :-)<BR/><BR/>Our relationship with the languages is certainly affected by what the language has available. Some things are easier for humans to deal with than others. Some can greatly reduce the size of a program, by providing theorems to you instead of making you write them. But their nature is all the same.<BR/><BR/>To deny it, is like to deny that a set of equations used for civil engineering is not mathematics because it's being used in a different context than pure mathematics.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1205074620000#c4786523580657014480" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07505997833685327219" rel="nofollow">Daniel</a> : 10:57 AM</div>
+
+								<span class="item-control blog-admin pid-1712528103"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4786523580657014480" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7420903446292799420"></a> 				Daniel:<BR/><BR/>I agree with half of what you say, in that programming languages are equivalent in the Turing-equivalent sense and that programming languages are not equivalent in the ease-of-programming sense.<BR/><BR/>Now if you think the Turing-equivalent sense is the most important thing about programming languages, please be my guest. That is one of the most important things we have discovered about computer science but, IMO, one of the most irrelevant things we have discovered about software development.<BR/><BR/>You can jeer all you like, but knowing that I can Greenspun anything I like in Java doesn't help me much. As a matter of fact, I wrote a Scheme interpreter in Java back in 1999, so I am keenly aware that if you can do it in Scheme, you can (in a certain sense) do it in Java.<BR/><BR/>But does that help me ship software? Not really. Can I walk into a BigCo Java environment, embed my Scheme interpreter, and write code in Scheme that is really Java? No, although it is Java in a certain theoretical sense, it is Scheme in a practical sense that will arouse a certain heated objection from my colleagues that want Java code written in a Java style.<BR/><BR/>What does this matter? It matters in that although we can make a Java program produce the same result as a Scheme program, we cannot write a Java program in any arbitrary "style" permitted by the compiler. We have cultural limits that place strong bound son how easy or difficult it is to write certain programs in each of the various languages.<BR/><BR/>And why does that matter if the results are the same? Because software development is not free. In theory, programs always work, as we can produce any result we like.<BR/><BR/>In practice, programming is a probabalistic exercise. We have imperfect understanding of our requirements, insufficient testing, and never enough time to write the code as well as we are able. Therefore, ease of use of a programming language has a strong influence on the likelihood of a desirable outcome of a software development effort.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1205076960000#c7420903446292799420" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:36 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7420903446292799420" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="475841880468012393"></a> 				Where does language 'expressiveness' fit into this discussion? For example, it could be argued that C++ is a very powerful language, and affords the programmer a great deal of freedom, but it is not very expressive in the sense that you can't do a lot with a small amount of code. I guess languages like Lisp, Python and Ruby are the opposite to this in the sense that you can achieve a lot more with less code. I would say that this made them more expressive. But does it make them more powerful? You couldn't write a device driver in Python!<BR/><BR/>I'm guess I'm asking, when you talk about language 'power', is this a synonym for expressiveness?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1205118960000#c475841880468012393" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://www.postlude.co.uk/blog" rel="nofollow">postlude</a> : 11:16 PM</div>
+
+								<span class="item-control blog-admin pid-1949673304"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=475841880468012393" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1630852639769253366"></a> 				Reginald, I'm not dismissing the differences between languages. I'm disagreeing with the assumption that they are differences between "rules" -- particularly in the sense of "limits".<BR/><BR/>IMO (being as emphatic as I am, I can't really put the H there... :), they are differences between "theorems" we use to help us achieve our goals.<BR/><BR/>For instance, in machine code there is no "for" loop as most of us would understand them. What you have are conditional jumps based on CPU flags.<BR/><BR/>But from that we developed a very useful construct, which is the "for" loop.<BR/><BR/>Now, even though the "for" loop is a very powerful construct, it is often prone to misuse. Few people can really truly simulate in their minds a "for" loop, so errors in that construct are not uncommon.<BR/><BR/>Now, a "foreach" (list iterator or mapper) construct might not be as flexible as a "for" construct, but it is easier for us to understand.<BR/><BR/>But that's not because I'm not disallowing people from walking a linked list themselves, or whatever, but because I'm using a construct human minds deal with more ease.<BR/><BR/>I'm not preaching that all computer languages are applied mathematics and, therefore, they are all equal. What I'm saying is that it is not rules that make a language powerful or prone to correct programs, but the selection of computer language "theorems". And those theorems may be powerful <I>and</I> easy to use at the same time.<BR/><BR/>Well... I'll try to leave it off now. Either I'm being misunderstood, or I'm misunderstanding you all.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1205154360000#c1630852639769253366" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07505997833685327219" rel="nofollow">Daniel</a> : 9:06 AM</div>
+
+								<span class="item-control blog-admin pid-1712528103"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1630852639769253366" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2915089410878598040"></a> 				<I>Java began with the idea that removing programmer freedom would produce better programs. Java was built by removing features from C++, and the result is a language with little power (whatever that means) and little freedom.</I><BR/><BR/>Egads!  That is so misleading!<BR/><BR/>Java began with the idea that <B>removing unnecessary complexity</B> would make for a more productive language.  And frankly, on that count, it succeeded!  Java is a far more productive language to code in than C++ - which is exactly what they were trying to achieve!<BR/><BR/>By abstracting away implementation details that programmers were being forced to waste time dealing with that were at best a huge chore and at worst a huge source of bugs (like manual memory management, array overflow checking, etc.) Java developers could spend far more time than C++ developers on *what* they were trying code, rather than *how* to code it.<BR/><BR/>Yes, since then languages like Ruby have taken this further, and have further abstracted away irritating implementation details that Java developers have to deal with.<BR/><BR/>But phrasing this as "Java began with the idea that removing programmer freedom would produce better programs" is absurdly misleading!  You can't honestly believe that that was Jim Gosling's motivation back then, can you?!?!?  It's been pretty well recorded by now exactly why Gosling made some of the design decisions he did with Java, and I think it's pretty clear that most of them stem from the desire to remove unnecessary complexity, not to arbitrarily remove freedom.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1206031260000#c2915089410878598040" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07507874974953997438" rel="nofollow">David</a> : 12:41 PM</div>
+
+								<span class="item-control blog-admin pid-862960033"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2915089410878598040" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4441463289457762784"></a> 				David:<BR/><BR/>Yes, I have been following Java closely for a decade, and I have read Gosling and Steele on the subject of its design.<BR/><BR/>So:<BR/><BR/>Your statement argues two things which are not mutually exclusive. language designers do not remove freedoms out of a sadistic desire to hobble programmers.<BR/><BR/>Language designers remove freedoms precisely to optimize the language for the cases that the designer feels involve necessary complexity at the expense of the cases that the designers feel involve unnecessary complexity.<BR/><BR/>Most languages these days remove the ability to directly manipulate CPU registers. It's a clear case of somebody deciding that register allocation is unnecessary complexity, and frankly I am quite content not using the register keyword any more.<BR/><BR/>However, that is also the removal of a freedom. The two things go together in many cases.<BR/><BR/>Or what about Python's enforced indentation? Guido obviously removed the freedom to express your program in the visual style you prefer. And while he was at it, he was forced to remove your freedom to compose arbitrary lambdas.<BR/><BR/>This latter point is a major constraint in comparison to languages like Lisp, Smalltalk, and Ruby. But of course, Guido's motivation was to remove the accidental complexity faced by programmers trying to read code written in an unfamiliar style.<BR/><BR/>So the two statements are compatible: <I>Java began with the idea that removing programmer freedom would produce better programs</I> can be true while the statement <I>Java's design choices stem from the desire to remove unnecessary complexity</I> is also true. the two are both true and intrinsically related when the design choices in question were deliberate choices to remove flexibility in order to remove what the designer felt was unnecessary complexity.<BR/><BR/>So... no need for us to argue.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1206043320000#c4441463289457762784" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:02 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4441463289457762784" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8319857395407746514"></a> 				<I>So the two statements are compatible: "Java began with the idea that removing programmer freedom would produce better programs" can be true while the statement "Java's design choices stem from the desire to remove unnecessary complexity" is also true. the two are both true and intrinsically related<BR/>...<BR/>So... no need for us to argue.</I><BR/><BR/>Agreed, but the former carries a far more negative connotation, IMO, which is why I felt the need to chime in.  I just thought you could have worded it in a much more positive way.  This way it kinda just comes across as yet another Java-bashing blog post.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1206046140000#c8319857395407746514" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07507874974953997438" rel="nofollow">David</a> : 4:49 PM</div>
+
+								<span class="item-control blog-admin pid-862960033"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8319857395407746514" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6981162990480235797"></a> 				David:<BR/><BR/>I do not find Java-as-a-language interesting enough to go out of my way to write about it very often. That is neither a positive nor a negative statement: languages intended to run the back ends for large banks are not supposed to be particularly interesting. If they are, it is as a side-effect.<BR/><BR/>The post in question is about programmer freedoms. I thought that the line about Java was appropriate in context. I hardly see the entire post as "Java bashing," not do I see that line as bashing Java one way or the other.<BR/><BR/>Quite frankly, I have written an awful lot of Java code, and at this point I don't lose too much sleep over Java's shortcomings for the simple reason that I think it has reached an evolutionary dead end. Or an optimal state for its chosen nice. I do not forsee much evolution from a language with such a large installed base and such a large, diverse user base.<BR/><BR/>So why complain if it will not change much?<BR/><BR/>OTOH, Ruby has many faults, but the language is actively evolving. Not only is the language itself changing, but people are spinning new languages off it.<BR/><BR/>Carping about Ruby is far more likely to produce change than carping about Java, thus you find me devoting entire articles to my opinion about Ruby's shortcomings:<BR/><BR/><A HREF="http://weblog.raganwald.com/2008/02/turtles-all-way-down-please.html" REL="nofollow">Yurtles all the way down, please</A>, or perhaps <A HREF="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html" REL="nofollow">The significance of the meta-circular interpreter</A> for example.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1206047640000#c6981162990480235797" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:14 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6981162990480235797" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3223464277171785517"></a> 				Oh dear, my spelling has produced a malapropism: "Yertle the Turtle" comes to mind. Perhaps I have unintentionally Godwinned myself?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1206047760000#c3223464277171785517" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:16 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3223464277171785517" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8966239655019279033"></a> 				Regarding your question: "Would anyone argue that switching from Java to Haskell is an attempt to deal with fewer rules and fewer restrictions, an attempt to gain more freedom as a programmer?"<BR/><BR/>I would. (Or at least toward Haskell-like programming by way of Scala.)<BR/><BR/>Type inference, structural typing, and higher-order functions conspire to free me from the redundancy and boilerplate, free me to write expressions and functions that state more directly what I mean, and free me to create functions when and where I need them.<BR/><BR/>Let me suggest tht "freedom" is a very overloaded term. Simplicity in some aspects of the language (e.g. smaller syntax) provides more freedom in others. There isn't a single numerical "freedom score" that compares one language to another on a simple linear scale.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1209300480000#c8966239655019279033" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15225671465200387626" rel="nofollow">uncial</a> : 8:48 AM</div>
+
+								<span class="item-control blog-admin pid-952365352"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8966239655019279033" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="51240144467755347"></a> 				First of all I think there is a bit of confusion about what way computer languages ARE mathematics.  This statement is actually true in two ways.<BR/><BR/>It is true in the sense of computer languages all being reducable to mathematics in a formal sense but that's the uninteresting sense.  It's also true in the sense that the <B>practice</B> of mathematics, particularly the development of notation and syntax to guide problem solving is really the same thing going on during the creation of productive programming languages.<BR/><BR/>For instance the difference between programming is say python from assembely language lets one do tasks trivially that would have taken weeks previously because the abstractions give you the appropriate options.  Similarly the reason the greeks got stumped at even the simplest algebra problems was because they lacked the appropriate abstraction of writing things like x*x and so forth.<BR/><BR/>Note that <I>I agree</I> that the strength of a particular kind of abstraction lies as much in as what it makes hard to express as in what it makes easy.  The reason notation like x*y*x is appropriate in algebra is as much because it makes it inconvenient to distinguish x*(y*x) from (x*y)*x.  In fact I would go so far as to say the reason math is able to build on itself is through the adoption of abstractions that make it difficult to do the wrong things and easy to do the right ones (here difficult get confused by associativity easy to apply it).  <BR/><BR/>The question is all about WHICH choices you make and whether the options you take away guide the user in the correct or incorrect direction.  More on this in a moment<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1211069880000#c51240144467755347" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12167366567189261911" rel="nofollow">TruePath</a> : 8:18 PM</div>
+
+								<span class="item-control blog-admin pid-1366395209"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=51240144467755347" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4402182694246540923"></a> 				As a mathematician (well if I finish this thesis rather than posting on the internet) let me assure you it's <B>not true</B> that the more theorems the better.  In fact this is a big reason why people outperform automated theorem provers.  <B>Rather than merely generate long lists of theorems good mathematicians create an elegant abstraction that makes it easy to build further abstractions above it</B> so rather than continuing to muck about with long lists of theorems they prove several key theorems and then introduce a further layer of abstraction.  Programmers do the same when they choose not to merely build huge lists of functions but define APIs, use MVC etc..<BR/><BR/>Guido's design philosophy misses this critical point.  What makes abstractions work isn't that they let you solve 90% of problems <I>at that level</I> but that they support clean meta-abstractions.  Guido tends to reject simple elegant building blocks that might make it slightly tougher to write that 90% of code but would offer intellectual coherency and elegance to support further meta-abstraction.<BR/><BR/>I mean suppose in calculus we adopted the same idea.  90% of the time we want to take the derivative of functions written in terms of +,*,/ and exponentiation (e.g. y=(x*x+x)/x^x ) and we could make the lives of all intro calc students infinitely easier by dropping the epsilon-delta limit definition of the derivative and just defining the derivative of a product, sum etc..  90% of the cases are covered but what happens when we want to talk about tangent lines to y=sin(x). We wouldn't be unable to deal with these questions, we could define it in terms of limits of derivatives of approximating polynomials and get the same answer but now it becomes impossible to elegantly build the next layer of abstraction.  Suddenly every time we want to prove a theorem about the derivative of f(x) we have to break it into cases.<BR/><BR/>To give a programming example where the more complex initial solution is the better one consider the notation in lisp.  Sure, the parenthesises and infix(?) notation make it harder to write 95% of code but the regularity and elegance allow macros to be defined elegantly more than making up for the loss in that 95%.  <BR/><BR/>--<BR/><BR/>Still, having said this as a practical matter python may be making the right decisions to be a productive language for <I>most</I> users.  It's quite plausible that the average python user is never going to graduate to the next level of abstraction anyway (many declarative programmers never figure out currying or functionals) so it might be more productive for the average user but it's not for me.<BR/>---<BR/><BR/>Ruby came close to doing it right but it has a far too messy syntax and not enough thought into a unifying data model to be quite right.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1211071800000#c4402182694246540923" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12167366567189261911" rel="nofollow">TruePath</a> : 8:50 PM</div>
+
+								<span class="item-control blog-admin pid-1366395209"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4402182694246540923" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8341504207320140218"></a> 				One quick concrete example.<BR/><BR/>Generators, iterators etc.. in python are all special cases thus occupy valuable mental real estate.  These are all instances of a more fundamental underlying abstraction in ruby that may be more difficult to use at first but ultimately is more elegant.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1211071920000#c8341504207320140218" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12167366567189261911" rel="nofollow">TruePath</a> : 8:52 PM</div>
+
+								<span class="item-control blog-admin pid-1366395209"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8341504207320140218" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2116621214623424032"></a> 				Factor has a library called locals that implements local variables.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1254603604670#c2116621214623424032" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11762539936947906697" rel="nofollow">George</a> : 5:00 PM</div>
+
+								<span class="item-control blog-admin pid-303863217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2116621214623424032" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="139444004708736962"></a> 				http://factor-language.blogspot.com/2009/09/survey-of-domain-specific-languages-in.html<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2008/03/tool-time.html?showComment=1254706949121#c139444004708736962" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:42 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=139444004708736962" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

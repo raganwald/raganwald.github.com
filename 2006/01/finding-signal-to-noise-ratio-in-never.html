@@ -1,0 +1,505 @@
+<html> 
+<head>
+        
+        <title>Finding the Signal-to-Noise Ratio in the Never-Ending Language Debate</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Tuesday, January 03, 2006</div>
+			
+
+			<div class="Post"><a name="113630985287415026">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html" title="permanent link">Finding the Signal-to-Noise Ratio in the Never-Ending Language Debate</a></span>
+					<div style="clear:both;"></div>Once again the web is buzzing with one of the most boring debates ever, namely "what's the best programming language?" I will not rehash the arguments. I'll try to restrain myself to stating my position, giving my reasons, and then toss in speculation on why a certain web framework is growing like wildfire.<br /><br />My position is simple: <span style="font-weight: bold;">the language operating at the highest level of abstraction while not suffering from project-killing defects is the one I want to use</span>. My algorithm is simple: throw away languages that will scuttle my project, and pick the highest level language out of those that remain. (I'm not going to discuss defects. They are a matter of taste and lead us down an unhappy path.)<br /><br />I believe that programming is an idiomatic activity. We learn idioms and then apply a kind of pattern-matching to recognise problems that can be solved with an idiom we already know. Some idioms are easier to express than others in each programming language. (Does the Weak <a href="http://en.wikipedia.org/wiki/Sapir-Whorf_Hypothesis">Sapir-Whorf Hypothesis</a> apply to programming?)<br /><br />Sure, all languages are Turing Complete and therefore equivalent in theory, but in practice you might find that the only way to express an idiom from Language A in Language B is to write a A->B compiler or interpreter in B.<br /><blockquote>  Greenspun's Tenth Rule of Programming: "Any sufficiently complicated C or Fortran program contains an ad-hoc, informally-specified, bug-ridden, slow implementation of half of Common Lisp."</blockquote>Does that sound too academic? Consider this: how would you write a <a href="http://en.wikipedia.org/wiki/Continuation">continuation</a>-based framework (like <a href="http://seaside.st/">Seaside</a>) in <a href="http://rifers.org/wiki/display/RIFE/Web+continuations">Java</a>?<br /><br />This, incidentally, is why the language debate will never end. Programmers naturally learn and know the idioms <a href="http://en.wikipedia.org/wiki/Affordance">afforded</a> by their language. So when you say "In my language I can very easily do X and Y," the programmers using other languages always say "But nobody needs X or Y. We're busy doing Z."<br /><br />So let's talk about idioms instead of so-called features like syntax. What does it mean for one language to be "higher level" than another? To have a "higher level of abstraction"? My own interpretation is simple:<br /><br />One language is higher-level than another if it expresses more idioms in fewer bits than the other language. Or fewer lines of code. Or fewer symbols. There's a really simple language idiom for this: Programs in a higher-level language have a high <a href="http://catb.org/%7Eesr/jargon/html/S/signal-to-noise-ratio.html">signal to noise ratio</a>.<br /><br />For example, there are these "design patterns" that all of the COBOL^H^H^H^H^H Java programmers like to use. One of these is called <a href="http://128.42.6.89/JavaResources/DesignPatterns/VisitorPattern.htm">Visitor</a>: "<span style="font-style: italic;">One key advantage of using the Visitor Pattern is        that adding new operations to perform upon your data structure is very        easy. All you have to do is create a new Visitor and define the operation        there.  This is the result of the very distinct separation of variant        and invariant behavior in the    Visitor pattern.   The invariant behaviors are represented by the data  structure elements and    the abstract Visitor.   The variant behaviors are encapsulated in the concrete Visitors.</span>"<br /><br />Got that? How many lines of code do you need in Java? Here's how you express the Java idiom of the Visitor pattern in Ruby:<br /><br /><span style="font-family:courier new;">concrete.each { |thingy| visitor.visit thingy }</span><br /><br />Do you think I'm making this thing about brevity up?<br /><br />Here's something I found this morning. This fellow is explaining why interviewees can use any language they like to solve a problem, provided it's black:<br /><blockquote>When I interview someone, I usually let them use the language of their choice with between C, C++, C# and Java... It's not that I have something against Ruby or other fourth generation languages, but I found that these languages work at a level of abstraction that is a little too high to give me a meaningful insight on the candidate for a forty-five minute interview.  There are plenty of very interesting problems that are hard to solve even in Ruby or Python (and actually, it's quite likely this is the kind of problem that the candidate will be struggling with if she gets hired), but formulating the question and writing the solution would take several hours.<br /><div style="text-align: right;"><a href="http://beust.com/weblog/archives/000352.html">The Language of Interviews</a><br /></div></blockquote>Let me see if I can condense this: there is a class of problems that are non-trivial to solve in C# and Java but are trivial in Ruby and Python. Hot <a href="http://www.randsinrepose.com/archives/2006/01/01/swear_a_bit.html">damn</a>, I could have skipped writing this whole thing and simply posted the quote.<br /><br />(By the way, do you buy that something non-trivial to solve in Ruby must necessarily require hours to explain and to write out? Neither do I. I am not bashing the post here. That point is really a very small aside. But I don't have any trouble thinking of Ruby, Python, or Lisp problems that would require only a few minutes to explain and would be appropriate for an interview.)<br /><br />Now, there's some idea that you can build your own idioms in any programming language. We have various names for the technique (like procedures, subroutines, objects, modules, and macros), but the argument is that you can build up a library or framework of idioms and then you can ultimately express yourself with startling brevity.<br /><br />So some state that all languages are equal because if something is difficult to express you build your new idioms into the language and presto, you have a high signal-to-noise ratio in your programs.<br /><br />This argument has a major, glaring, flaw: <span style="font-style: italic;">the mechanism for building idioms in each language is an idiom itself, and it tends to be the most rigidly limiting idiom on the language</span>. C++ is a language for defining abstract data types that look just like built in types. In SmallTalk everything is an object that belongs to a class. And so on. Let's call this the language's "meta-idiom."<br /><br />The argument about idioms applies to meta-idioms. So if you want to build new idioms in a language, you need to use its meta-idioms. Some languages provide higher signal-to-noise on meta-idioms than others. Some languages make it easier to construct your own idioms than others. So even though all languages may provide some mechanism for raising the signal-to-noise ratio, not all are equal when it comes to using their mechanisms.<br /><br />So, I've written that I believe that not all languages are equal. I've written that I believe that an important metric for comparing languages is the signal-to-noise ratio, as measured by the brevity of expressing idioms. Now I will conclude by revisiting the affordances argument.<br /><br />Some languages make it easier to express some idioms than others. How? See the paragraph above about signal-to-noise ratio. Given that some things are easier than others in each language, wouldn't you expect that <span style="font-weight: bold;">there will be a very few languages that can express an order of magnitude more idioms in an order of magnitude less code than the 'average' language</span>?<br /><br />(If you don't think so, why not? Doesn't practically everything you've ever seen operate on a power law distribution? Why should programming languages be different?)<br /><br />So, I expect that some languages will do a better job of expressing a larger set of idioms than others. Now, here's the key question: does the number of idioms that a language affords <span style="font-style: italic;">matter</span>?<br /><br />I diverge from the wise men who write <a href="http://paulgraham.com/articles.html">essays </a>on this topic. I think it matters to me, but it is unlikely to sway anyone's decision. My simple observation is that programmers develop and use idioms that are easy to express in their language. They 'cut with the grain.'<br /><br />When considering one language over another, my first consideration, naturally, is with the idioms I already know. Does the new language help? This consideration is exactly like almost any other "upgrade" consideration. When considering an upgrade, the first thing you want to do is solve an existing problem.<br /><blockquote>When I purchased an iMac for my home, I had no need for playing DVD's. So I was very close to buying the 17" model. Luckily, I purchased the 20" model so I would have more desktop for programming. I already had a 17" monitor on my development box, and it was starting to feel cramped. Now that I have the 20" iMac, I love watching DVD's on it and I'm very happy I didn't settle for the model that seemed to suit what I thought I would need.<br /></blockquote>Once you're satisfied that the upgrade meets your needs and solves a problem, you go ahead. Later on, you'll discover a whole new world of features. These grow on you, until one day you ask yourself how you ever lived without them.<br /><br />And so it is with programming languages. I can write about meta-programming in Ruby and Scheme for six more posts, but if you aren't meta-programming now, my guess is that you won't switch. You simply don't think in terms of that idiom, so you perceive it to be a "nice to have," but not essential.<br /><br />What will get you to move up the ladder is when someone shows you how to solve an existing problem in fewer bits. This, you can recognise. Did I say signal-to-noise? Imagine your favourite music on AM radio in your grandparents' car. Now imagine you hear it on a beautiful stereo. More signal! Less noise!<br /><br />But you aren't going to switch because someone says "if you think listening to music is fantastic, just wait until you hook up a keyboard and use GarageBand to compose music..." That simply doesn't mean anything to you until you've already bought your new iMac.<br /><br />So although I fervently believe that a better language will allow you to express more idioms than you are currently using, I know that you are unlikely to switch for that reason. So I'm not going to write about how cool it is that someone could add "acts_as_versioned" to the Rails framework. You probably only care about whether "acts_as_versioned" saves you a ton of boilerplate versioning data in your application.<br /><br />Speaking of Rails, I'm going to conclude with my take on one reason why <a href="http://rubyonrails.org/">Rails</a> is taking off and Seaside is not. Rails allows programmers to express the idioms they already know (relational databases, web-backed MVC, stateless event handling plus a global session store) in fewer bits.<br /><br />Seaside provides a whole new idiom, continuations, that IMO is more powerful. I think you end up with an even higher signal-to-noise ratio with a Seaside app than with a Rails app. Why? Because continuations afford you a much higher degree of controller reuse.<br /><br />Now, here's the catch: if you try to imagine your current application running on both Rails and on Seaside, you probably won't see much difference between the two (although they'll both be an order of magnitude better than ASP.NET). They will look the same because you designed your application with idioms that both Rails and Seaside support.<br /><br />To get a big win, you'd have to rethink your application's flow and logic. You'd have to "think in Seaside." And you're not going to do that. So you pick Rails, like so many others have picked it, because it looks just like your ASP app, only all the noise has gone away. It's all signal, baby.<br /><br />Now, do you see the thing here? Ruby has been around for a while, but nobody switched. Why? Because they couldn't see how its new idioms would help them. Every time a programmer considered switching from <a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html">Blub</a> to Ruby, she was presented with all these new idioms, like dynamic types. None of this meant anything to her, because they didn't appear to make the idioms she already knew more compact. No win.<br /><br />But now she looks and she sees her existing web idioms, and she sees them expressed with way fewer bits, and she is suddenly prepared to learn this Ruby thing if it will let her say:<br /><br /><pre>class Language &lt; ActiveRecord::Base<br />has_and_belongs_to_many :idioms<br />end<br /></pre><br />Happy New Year!<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/ruby.html">ruby</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html" title="permanent link">12:24 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Finding the Signal-to-Noise Ratio in the Never-Ending Language Debate</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="113632142786736534"></a> 				self-promotion on reddit pays :-P<BR/><BR/>I really enjoyed your article, but you could have made three from it:<BR/><BR/>* What's trivial where?<BR/>* It's all about meta-idioms<BR/>* You won't switch for a new idiom<BR/><BR/>Nevertheless you now have a place in my feedreader. Happy New Year!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136321400000#c113632142786736534" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10583886682640063796" rel="nofollow">beza1e1</a> : 3:50 PM</div>
+
+								<span class="item-control blog-admin pid-1324473775"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113632142786736534" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113632186171907397"></a> 				Thanks for the kind words. I would have liked to include all three ideas but do so in 1/3 the space.<BR/><BR/>Obviously, *I* lack the necessary signal-to-noise ratio to be a "higher level" blogger.<BR/><BR/>p.s. I realize self-promotion is frowned upon in some circles yet welcomed in others. I included a comment on reddit to make sure that I was not misrepresenting my role.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136321820000#c113632186171907397" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:57 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113632186171907397" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113633679949427154"></a> 				Doesn't the definition of signal and noise depend on who you are talking to?<BR/><BR/>I don't understand 1 line of your Ruby code. It's all noise to me. I have to learn to read the signal. And some point cleaning up the noise from another signal is easier than learning to make sense of a new noise that says the same thing.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136336760000#c113633679949427154" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.giampierodeciantis.com" rel="nofollow">Giampiero</a> : 8:06 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113633679949427154" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113633904719068828"></a> 				GP, you're mixing two different arguments.<BR/><BR/>I think you're actually making a valid point about ROI: you need to make an investment to learn a new anything before it pays back. So a marginal improvement in signal-to-noise might not justify a large investment in rewiring your brain.<BR/><BR/>But just because you choose not to decode the signal doesn't make it noise: the signal is the minimum set of bits that carry information, and the rest is noise. This is an objective reality, as I can prove by executing the code in irb.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136339040000#c113633904719068828" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:44 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113633904719068828" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113633940809965819"></a> 				I am dissappointed. You said not a word of business objectives and their relationship to a) getting paid and b) producing artefacts by programming.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136339400000#c113633940809965819" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 8:50 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113633940809965819" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113634020079109655"></a> 				"You said not a word of..."<BR/><BR/>Remarkably true. And these are words that ought to be said. Thanks for the suggestion for future posts.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136340180000#c113634020079109655" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:03 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113634020079109655" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113634254374493871"></a> 				"Frandlesizzle" - which in Giampieroian means:<BR/><BR/>On perfectly technical merits, you are right that I am mixing my arguments.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136342520000#c113634254374493871" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.giampierodeciantis.com" rel="nofollow">Giampiero</a> : 9:42 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113634254374493871" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113638009891809969"></a> 				Business objectives: I went to a presentation recently about code generation. The guy said, if we're both consultants, and I'm using code generation and you're not, I'm going to kick your tail, because I'll be more productive. If we're both employees, I'm going to provide better value to my employer, same reason.<BR/><BR/>Using language abstractions that get rid of repetitive code has the same effect.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136380080000#c113638009891809969" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 8:08 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113638009891809969" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113639892838617435"></a> 				Here's an interesting item: the exercises from the first six chapters of "Thinking in Java" done in both Lisp and Java. You can easily compare the signal-to-noise ratio for both languages.<BR/><BR/>My suggestion is that if ou think one of the twois incomprehensible but clearly carries less noise, learn that language.<BR/><BR/>http://bc.tech.coop/blog/040430.html<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136398920000#c113639892838617435" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:22 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113639892838617435" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113643888080114832"></a> 				I read up on Ruby. It's a nice language, no doubt. I can finally read that code that you wrote. <BR/><BR/>concrete.each { |thingy| visitor.visit(thingy)} #I'm a sucker for parentheses<BR/><BR/>which would be the following equivalent in C#<BR/><BR/>foreach (T thingy in conrete)<BR/>{<BR/>    visitor.visit(thingy);<BR/>}<BR/><BR/>That wrapped up single line of code is pretty sexy compared to the whole foreach construct.<BR/><BR/>I concede my original point. It was off base. The point was supposed to be more like "the 'best' language isn't always the 'better' language" or something like that. <BR/><BR/>But thanks for making me look this up. Very interesting. I also read about erlang because of you. That was less pleasant than Ruby.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136438880000#c113643888080114832" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.giampierodeciantis.com" rel="nofollow">Giampiero</a> : 12:28 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113643888080114832" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113647211486564896"></a> 				<I>...the mechanism for building idioms in each language is an idiom itself, and it tends to be the most rigidly limiting idiom on the language.</I><BR/><BR/>I was bracing myself for the next sentence, which I fully expected to be something like this: "Lisp is the only language where the mechanism for building idioms is itself the dominant idiom."<BR/><BR/>Have I been reading too much Paul Graham, or is that something you thought of as well, but didn't include because you knew this sort of thing causes most audiences to say "oh, it's gonna be <I>that</I> kind of article" and leave?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136472060000#c113647211486564896" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">some idiot</span> : 9:41 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113647211486564896" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113647472585010031"></a> 				GP:<BR/><BR/>What you say is true, but only expresses part of the whole truth. The Java expression of the visitor pattern also requires a whole lot of other scaffolding.<BR/><BR/>I may expand on this in a more technical post... one day...<BR/><BR/>Some idiot:<BR/><BR/>Unfortunate choice of handle, your comment does not strike me as idiotic :-)<BR/><BR/>I have certainly heard the argument that building idioms is the dominant idiom in Lisp. I do not buy this argument in theory, but I do buy it in practice.<BR/><BR/>In theory, high level languages ought to be used to build enough abstractions and idioms that you can express the core logic of an application in very few lines.<BR/><BR/>In practice, most people just use "off the shelf" and "design pattern" idioms in most Blub languages and don't bother creating new ones. (The big exception is the field of framework creation).<BR/><BR/>While Lisp and Scheme afford a wider variety of meta-idioms, I wonder if there is a cultural bias at play?<BR/><BR/>If enough people write essays saying "Lisp is about meta-idioms" and enough corporations mandate that "Blub is about writing code that can be outsourced to people who can't learn new idioms," will self-reinforcing cultures grow around the languages?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136474700000#c113647472585010031" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:25 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113647472585010031" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113648315525287136"></a> 				Mea Culpa:<BR/><BR/>My comment about another post strayed from discussing the words into speculation. I have struck out the offending phrase.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136483100000#c113648315525287136" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:45 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113648315525287136" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113651348982737779"></a> 				I think self-reinforcing cultures are already in place, at least as far as Lisp/non-Lisp dichotomy is concerned. Lispers look down on everyone else as intellectually inferior or at best uninformed, and non-Lispers see Lispers as pompous ineffectual ivory-tower jerks. Neither of the camps is very interested in what the other one is up to; both evolve separately.<BR/><BR/>I kind of like it this way, to be honest. The alternative seems to imply the need for compromises, and  that is the best way to kill new ideas. Only natural selection can guide evolution of programming, and certainly not contrived idealistic cooperation.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136513460000#c113651348982737779" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">some (apparently non-complete) idiot</span> : 9:11 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113651348982737779" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113657212182400010"></a> 				FWIW, I use Seaside and the reason I prefer Seaside is fairly well summed up <A HREF="http://www.cincomsmalltalk.com/userblogs/avi/blogView?showComments=true&entry=3284695382" REL="nofollow">here</A>.<BR/><BR/>For me, its all about the environment.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136572080000#c113657212182400010" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.blackbagops.net" rel="nofollow">Todd Blanchard</a> : 1:28 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113657212182400010" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113673396505512546"></a> 				Hi Reginald, i liked you article ... the signal-to-noise ratio was a good abstraction to the discussion.<BR/><BR/>But i think here:<BR/><BR/><I>I think you're actually making a valid point about ROI: you need to make an investment to learn a new anything before it pays back. So a marginal improvement in signal-to-noise might not justify a large investment in rewiring your brain.</I><BR/><BR/>you have contradicted yourself when you said that about Seaside:<BR/><BR/><I>To get a big win, you'd have to rethink your application's flow and logic. You'd have to "think in Seaside." And you're not going to do that. So you pick Rails, like so many others have picked it, because it looks just like your ASP app, only all the noise has gone away. It's all signal, baby. </I><BR/><BR/>Putting basically i think that Seaside provides another level of abstraction dealing with the <A HREF="http://developers.slashdot.org/comments.pl?sid=173296&cid=14418980" REL="nofollow"><BR/>limitations<BR/></A> of http stateless protocol with continuations and fomenting reuse. There many other gains on using it (on the OO paradigm) but there is no space here for it.<BR/><BR/>And that's why i think you contradicted yourself, as you said: <I> But just because you choose not to decode the signal doesn't make it noise </I><BR/><BR/>Actually i work with Python and Java, and only played with RoR and Seaside so please correct me if i'm wrong.<BR/><BR/>So, all this let me thinking that the signal depends on the receiver too (people) not only on emitter (the 'bits'), correct?<BR/><BR/>Cheers!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136733960000#c113673396505512546" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Paulo Sérgio</span> : 10:26 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113673396505512546" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113673687597990607"></a> 				Paulo:<BR/><BR/>I don't think there's a contradiction when I say you need a good ROI and when I say most people won't rewrite their applications to take advantage of Seaside.<BR/><BR/>My point about ROI is that you should consider it before switching. It may not be worth switching between, say, Groovy and Nice. It might be worth switching from Visual Basic to Seaside.<BR/><BR/>Now about not switching to Seaside. I may not have made myself clear: I didn't say there wasn't a return switching to Seaside, only that most people won't perceive the return because they haven't embraced the idioms it affords, namely Smalltalk's elegance, the Smalltalk development environment, and a continuation based framework.<BR/><BR/>So they see a big investment, but can't see a big return. Rails looks like a bigger return to the bulk of the market because it's seasier to see the reduction in noise for existing idioms.<BR/><BR/>Now as to your last point. In the discussion with GP, my point was that just because you can't understand something, that doesn't mean it's noise.<BR/><BR/>However, it's possible that you understand something but don't value it. I suggest that for most programmers, they can learn what Seaside is expressing, but they don't appreciate how valuable it would be if they tried it.<BR/><BR/>The problem is that it has good signal-to-noise, but it's signalling an idiom that is not in the "popular" approaches.<BR/><BR/>I was trying hard to distinguish between the signal-to-noise issue and the idiom vocabulary issue. I see I could have done a better job on that.<BR/><BR/>Thanks for your comment!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136736840000#c113673687597990607" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:14 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113673687597990607" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113691263413727594"></a> 				An interesting article on applying continuations to web development:<BR/><BR/>http://www-128.ibm.com/developerworks/library/j-contin.html<BR/><BR/>My understanding is that this is one of the (but not the only!) key ideas behind Seaside.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1136912580000#c113691263413727594" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:03 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113691263413727594" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113708183154794146"></a> 				After years of developing software, I can tell you that the choice of programming language is secondary to the choice of IDE. A good or great IDE allows me to spend more time on the most important thing - namely solving business issues. A bad or average IDE forces me to spend more time on unimportant things - debugging and writing code.<BR/><BR/>Say what you will about the Basic language, but I still maintain that, to this day, the Visual Basic (Studio) 6.0 is the best programming IDE ever created. The ability to step into your code at any moment and inspect any value or object yields huge productivity gains. The VB 6 IDE offers "Intellisense" on the Basic language AND any objects you define and create - another big productivity gain.<BR/><BR/>I've used many IDE's in my career and I've never run across an IDE that is in the same ballpark with Visual Studio 6 in it's overall simplicity, productivity and power.<BR/><BR/>-msanders (another idiot)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1137081780000#c113708183154794146" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:03 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113708183154794146" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113708247869004784"></a> 				"After years of developing software, I can tell you that the choice of programming language is secondary to the choice of IDE."<BR/><BR/>Would you be interested to know that you have much in common with the Smalltalk community?<BR/><BR/>The SmallTalk development environment, the language, and the choice to build SmallTalk in SmallTalk are all facets of this diamond.<BR/><BR/>http://www.cincomsmalltalk.com/userblogs/avi/blogView?showComments=true&entry=3284695382<BR/><BR/>If you do a little googling, you will come across lots of information about SmallTalk's refactoring browser, live debugger, and other mature tools.<BR/><BR/>Not that anyone would ever want to switch from VB (see the main body of the post). I'm just pointing out that there is a lot of support for the thesis that the quality of tools is more important than the potential of the language.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1137082440000#c113708247869004784" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:14 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113708247869004784" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="113726079867783926"></a> 				Lines of Code (LOC) is proportional to the probability of error and programmer productivity. Finding a language of brevity is then directly related to the cost and schedule as well as potential success. Ruby currently floats to the top in this category. Why would a project not consider this? The biggest argument against it is the switching cost, which exists with any legacy system.<BR/><BR/>There are a couple of other points that make it more powerful the fact that Ruby supports <A HREF="http://www.cs.helsinki.fi/u/lealanko/alanko04types.ps.gz" REL="nofollow">full reflection</A>. Other languages to date only cover portions of full reflection.<BR/><BR/>The duck typing is the most interesting aspect of the language. Formal typing like <A HREF="http://www.haskell.org" REL="nofollow">Haskell</A> is everything if I'm doing work for the NSA, but if I slinging web pages or some corporation, it isn't needed--testing and QA is what's needed. So why half-ass the type system like C/C++/Java did?<BR/><BR/>In the eighties the promise of 4th generational languages (4GLs) was all the buzz. It fizzled like most of the buzz of the last 4 decades of computing. Ruby actually delivers all the promises made about 4GLs. <BR/><BR/>On top of all that, it just works.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1137260760000#c113726079867783926" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15512749855429351362" rel="nofollow">Shawn Garbett</a> : 12:46 PM</div>
+
+								<span class="item-control blog-admin pid-1405698219"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=113726079867783926" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116008034900868293"></a> 				<I>choosing a programming language because of signal-to-noise ratio is like picking woodworking tools based on the prettiness of rubberized grip handles.</I><BR/><BR/>--qwe1234 on <A HREF="http://programming.reddit.com/info/kya4/comments" REL="nofollow">programming.reddit.com</A><br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1160080320000#c116008034900868293" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:32 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116008034900868293" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116102148670073995"></a> 				SNR is the amount of boilerplate cdoe to actual code neaded in a more powerful languige<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html?showComment=1161021480000#c116102148670073995" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16719790120157897782" rel="nofollow">george</a> : 1:58 PM</div>
+
+								<span class="item-control blog-admin pid-1998939235"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116102148670073995" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

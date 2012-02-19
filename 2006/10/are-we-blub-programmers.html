@@ -1,0 +1,589 @@
+<html> 
+<head>
+        
+        <title>Are we Blub programmers?</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Thursday, October 12, 2006</div>
+			
+
+			<div class="Post"><a name="116068720976582522">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html" title="permanent link">Are we Blub programmers?</a></span>
+					<div style="clear:both;"></div>From time to time I open my email and find someone asking a question:<br /><br /><blockquote>What the hell is Blub? I take from context that it may be a pejorative generalist term for programming languages that encourage writing pablum instead of programs. Or maybe it really is a new language out there that has a huge following I'm unaware of. </blockquote><div style="text-align: right;"><a href="http://chalain.livejournal.com/">Chalain</a>, the "<span style="font-style: italic;">if you're not having fun, you're doing</span><span style="font-style: italic;"> it wrong</span>" guy<br /></div><br /><a style="margin: 0pt 0pt 10px 10px; float: right;" href="http://www.flickr.com/photos/raganwald/15824364/" title="Preparing to climb Lollipop Kids"><img src="http://static.flickr.com/10/15824364_16defaae5e_m.jpg" alt="Preparing to climb Lollipop Kids" border="0" height="240" width="180" /></a>Actually, Blub is a hypothetical programming language Paul Graham invented when describing something very interesting: the <span style="font-style: italic;">Blub Paradox</span>:<br /><br /><blockquote>Blub falls right in the middle of the abstractness continuum... As long as our hypothetical Blub programmer is looking down the power continuum, he knows he's looking down. Languages less powerful than Blub are obviously less powerful, because they're missing some feature he's used to. But when our hypothetical Blub programmer looks in the other direction, up the power continuum, he doesn't realize he's looking up. What he sees are merely weird languages... Blub is good enough for him, because he thinks in Blub.</blockquote><div style="text-align: right;">Paul Graham, <a href="http://www.paulgraham.com/avg.html">Beating the Averages</a><br /></div><br />The interesting things about this paradox is that almost <span style="font-style: italic;">any</span> language could be Blub. The pre-requisites for a language being Blub are (a) there is at least one language less powerful than Blub, (b) there is at least one language <span style="font-style: italic;">more</span> powerful than Blub, and (c) that there be at least one programmer using Blub who accepts (a) but refutes (b) because he or she cannot see how the more powerful language is more powerful. She does not think in the <a href="http://www.braithwaite-lee.com/weblog/2006/01/finding-signal-to-noise-ratio-in-never.html">idioms</a> that the more powerful language affords.<br /><br /><div style="margin: 0pt 10px 10px 0pt; width: 240px; float: left; text-align: center; font-size: 85%;"><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FLittle-MLer-Matthias-Felleisen%2Fdp%2F026256114X%2Fsr%3D1-1%2Fqid%3D1165759722%3Fie%3DUTF8%26s%3Dbooks&amp;amp;amp;amp;tag=raganwald001-20&linkCode=ur2&amp;camp=1789&creative=9325"><img style="cursor: pointer;" src="http://weblog.raganwald.com/uploaded_images/little_mler-705423.jpg" alt="" border="0" height="180" width="180" /></a><em><br /><br />The Little MLer introduces ML (and Ocaml) through a series of entertaining and straightforward exercises leading up to the construction of the Y Combinator.<br /><br />ML and OCaml introduce powerful strong typing and type inference. Both are great languages to learn: you will stretch your understanding of defining types and writing correct programs.<br /></em></div>When <span style="font-style: italic;">I</span> use the term, I am thinking of the language and also the programmers around it. Could Java be Blub? Sometimes, possibly often, but only when I'm thinking about Java programmers who dismiss Ruby's features as unnecessary. <a href="http://t-a-w.blogspot.com/2006/08/programming-in-blub.html">Could Ruby be Blub</a>? Sometimes, but only when I'm thinking about Ruby programmers who dismiss macros as unimportant.<br /><br /><a href="http://weblog.raganwald.com/2006/12/lisp-is-not-last-word.html">Could Lisp be Blub?</a> I suspect that Erlang and Haskell programmers might say that it is, provided we can find a Lisp programmer who feels that all progress in programming languages stopped when Common Lisp was standardized.<br /><br />At the same time, Java is not Blub when I am thinking of programmers <a href="http://weblog.raganwald.com/2006/10/in-praise-of-informed-choices.html">who are perfectly aware of its shortcomings and deliberately Greenspun around them for pragmatic reasons</a>. The same goes for any other language: it is sometimes Blub, and sometimes not Blub.<br /><br />So... I use the term "Blub" to refer to a programming language in the context of intransigent programmers who feel that their chosen tool is the best tool possible.<br /><br /><blockquote>Programming consists of overcoming two things: accidental difficulties, things which are difficult because you happen to be using inadequate programming tools, and things which are <em>actually difficult</em>, which no programming tool or language is going to solve. </blockquote><div style="text-align: right;"><a href="http://www.joelonsoftware.com/items/2006/10/12.html">Joel Spolsky reviewing Beyond Java<br /></a></div><br />This provokes a very obvious question: <span style="font-style: italic;">How do we know which things are accidentally difficult and which are actually difficult</span>? Is it only because we haven't discovered the right tool yet?<br /><br />It's easy to find a Java programmer who believes that all of the Design Patterns in the GoF's book are necessary. She believes that the difficulties of applying those patterns are actual difficulties of programming systems. It is only when she learns a different language that she realizes how the patterns were strongly driven by limitations in Java's object model.<br /><br />At that point she has an epiphany and understands that what she thought were actual difficulties were merely accidental difficulties. And the line between "accidental" and "actual" moves for her.<br /><br />No matter how much each us us thinks we know right now, are we nevertheless like this Java programmer, unable to see the difference between accidental and actual differences because we simply haven't discovered a more powerful tool?<br /><br />Are we Blub programmers?<br /><br /><span style="font-size:85%;"><span style="font-style: italic;">update</span>: <a href="http://weblog.raganwald.com/2006/10/in-praise-of-informed-choices.html">In praise of informed choices</a> and </span><a href="http://weblog.raganwald.com/2006/12/lisp-is-not-last-word.html">Lisp is not the last word</a><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/java.html">java</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/lispy.html">lispy</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/popular.html">popular</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html" title="permanent link">4:40 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Are we Blub programmers?</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="116069099087614623"></a> 				Yes.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160690940000#c116069099087614623" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://dstowell.org/blog" rel="nofollow">dstowell</a> : 6:09 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116069099087614623" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116070772139049148"></a> 				Yes. And Java == Blub.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160707680000#c116070772139049148" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 10:48 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116070772139049148" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116070999231980969"></a> 				<I>Java == Blub</I><BR/><BR/>I can summarize my thinking so far as being <B>There are no Blub languages, only Blub programmers</B>, but I admit that if there is a canonical Blub language, Java is probably it right now.<BR/><BR/>But then again, C++ programmers were highly Blub a decade ago. Could it be that whatever is the popular choice attracts Blub thinking?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160709960000#c116070999231980969" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:26 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116070999231980969" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116071309549589914"></a> 				I think there are neither Blub languages nor Blub programmers, but Blub language-programmer-project intersections.<BR/><BR/>I say this because, to me at least, Blub is synonymous with an improper choice of resources. I know this isn't the "canonical" definition of it, but I like mine better. Abstractions are great when they are needed, but using them when they are not is close to Rube Goldberg-oriented programming.<BR/><BR/>So, are we Blub programmers, under my definition? The scary answer is that most of the time we don't know. Highly specified languages aside (SQL, for example) it is difficult to tell if more abstractive ability, or speed, or better libraries, or _________ would be better for your project. <BR/><BR/>In the end would Java's libraries prove to be more of a benefit than Ruby's blocks? That almost sounds like comparing apples and bicycles, but it could be a very important question. It also seems like one that is almost impossible to answer in some cases.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160713080000#c116071309549589914" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://recursivethought.com" rel="nofollow">Adam Jones</a> : 12:18 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116071309549589914" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116073271613812080"></a> 				I like that verbalization of Greenspun!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160732700000#c116073271613812080" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://beza1e1.tuxen.de" rel="nofollow">beza1e1</a> : 5:45 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116073271613812080" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116074002575869168"></a> 				It is not logic to say that this or that language is Blub, not even Java, because it depends on the programmer denying the existence (or usefulness) of more powerful programming languages.<BR/>Actually, Blub may be more of a type of programmers than a programming languages.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160740020000#c116074002575869168" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://pupeno.com" rel="nofollow">Pupeno</a> : 7:47 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116074002575869168" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116074248851287490"></a> 				SQL is Blub to anyone who has used QUEL...<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160742480000#c116074248851287490" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">John Hascall</span> : 8:28 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116074248851287490" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116074688663585720"></a> 				It really is pretty easy to tell the difference between accidental and actual difficulties although acknowledging the algorithm is a little depressing. First recall:<BR/>There are two ways of constructing a software design. One way is to make it so simple that there are obviously no deficiencies. And the other way is to make it so complicated that there are no obvious deficiencies. <BR/>C.A.R. Hoare<BR/>If you use the first approach all of your problems are actual. When you use the second approach all your problems are accidental.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160746860000#c116074688663585720" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 9:41 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116074688663585720" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116074729832290349"></a> 				<I>If you use the first approach all of your problems are actual. When you use the second approach all your problems are accidental.</I><BR/><BR/>LOL funny, thanks!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160747280000#c116074729832290349" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:48 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116074729832290349" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116074780610830794"></a> 				Is it <A HREF="http://t-a-w.blogspot.com/2006/08/programming-in-blub.html" REL="nofollow">just me</A> or did others also notice that Paul Graham who coined the term is the ultimate Blub programmer ? His belief in Lisp being the ultimate programming language is so strong that he <A HREF="http://paulgraham.com/noop.html" REL="nofollow">outright rejects alternative paradigms of programming</A>.<BR/><BR/>If you want a language that makes your favourite one look like Blub, seriously try Ruby or Smalltalk (or Lisp, but everybody already knows that one ;-) ).<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160747760000#c116074780610830794" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16972845140253292628" rel="nofollow">taw</a> : 9:56 AM</div>
+
+								<span class="item-control blog-admin pid-1598631960"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116074780610830794" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116074819292428934"></a> 				In fairness to Paul Graham, he has worked on and off for years on a successor to Lisp called Arc.<BR/><BR/>This suggests that he can think of at least one language that is further up the power continuum...<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160748180000#c116074819292428934" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:03 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116074819292428934" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116075048047379772"></a> 				This is Paul Graham brand stupidity at its finest!<BR/><BR/>Programming languages are not on some mythical scale, with bad ones at the bottom and good ones at the top. Some programming languages are better at some things than others, period. You use the right language for the right job.<BR/><BR/>Paul Graham has never heard of such a concept. He thinks there is a right way (his way, his language, his concept) and everything else is wrong.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160750460000#c116075048047379772" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 10:41 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116075048047379772" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116075302930644951"></a> 				<I>If you use the first approach all of your problems are actual. When you use the second approach all your problems are accidental.</I><BR/><BR/>Aha, so if I use the second approach then all the actual problems go away? Sure, I get a bunch of accidental ones but I should be able to handle that. From now on all my programs will be complex so that I can avoid actual problems!<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160752980000#c116075302930644951" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13272830598221833253" rel="nofollow">Josef</a> : 11:23 AM</div>
+
+								<span class="item-control blog-admin pid-1967455618"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116075302930644951" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116075341672584592"></a> 				Reginald Braithwaite: Yeah, but Arc is like old Lisps (from what I can tell it's half-CL half-Scheme), not anything different like <A HREF="http://t-a-w.blogspot.com/2006/07/rlisp-lisp-naturally-embedded-in-ruby.html" REL="nofollow">RLisp</A> or <A HREF="http://people.csail.mit.edu/jrb/goo/" REL="nofollow">Goo</A> (both try to merge Lisp and Smalltalk/Ruby-style object-oriented programming).<BR/>I even believe that Arc is likely to be pretty good Lisp when it comes out, but it will be nothing more than Lisp.<BR/><BR/>Even the most bluby programmer of Blub has a few ideas how Blub could be improved, but the changes tend to be pretty small.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160753400000#c116075341672584592" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16972845140253292628" rel="nofollow">taw</a> : 11:30 AM</div>
+
+								<span class="item-control blog-admin pid-1598631960"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116075341672584592" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116075392728193725"></a> 				I misread "Blub" to be "bulb".<BR/>As in when a programmer burns out<BR/>his employer just throws him away<BR/>and screws in a new one.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160753880000#c116075392728193725" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:38 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116075392728193725" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116075425743773496"></a> 				<I>Programming languages are not on some mythical scale, with bad ones at the bottom and good ones at the top. Some programming languages are better at some things than others, period. You use the right language for the right job.</I><BR/><BR/>This seems to argue that the continuum is local, not global.<BR/><BR/>Let's day that is true. Within a particular problem domain, some languages are better than others, are they not?<BR/><BR/>And is it not possible that a programmer in that problem domain is using a language in the middle of the continuum for that domain and does not accept that the better languages for that problem domain are actually better?<BR/><BR/>So: I wonder if your argument is orthogonal to the existance of Blub programmers?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160754240000#c116075425743773496" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:44 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116075425743773496" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116075727632152475"></a> 				There is no "power continuum."  There is an n-dimensional space containing the set of all turing-complete languages.<BR/><BR/>Besides, k makes lisp look like a heap of broken rubble.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160757240000#c116075727632152475" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:34 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116075727632152475" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116076075353558929"></a> 				LISP is at the top of the scale. The reason why is simple, the features of new "innovative" languages can all be implemented in LISP, without changing the language.<BR/><BR/>Secondly, it always amuses me to read things like:<BR/>not anything different like RLisp or Goo (both try to merge Lisp and Smalltalk/Ruby-style object-oriented programming).<BR/>Never heard of CLOS I guess...<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160760720000#c116076075353558929" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:32 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116076075353558929" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116076178808550822"></a> 				<I>LISP is at the top of the scale. The reason why is simple, the features of new "innovative" languages can all be implemented in LISP, without changing the language.</I><BR/><BR/>I'm not disagreeing with you, but do know that Java programmers say much the same thing about Java?<BR/><BR/>For example, before the latest discussion of adding syntactic sugar for closures, Java programmers felt that you could represent functions with singletons and/or anonymous inner classes.<BR/><BR/>I guess it boils down to this: you will explain that the Java people are wrong, because Lisp contains X and Java does not contain X, and simulating X with Java idioms is not the same thing as implementing X properly.<BR/><BR/>And I will ask you: why do you think there isn't another language out there that has a feature Y, and although you can implement Y in Lisp using Lisp idioms, the Y programmers will claim that implementing Y with Lisp idioms is not the same thing as implementing Y "properly"?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160761740000#c116076178808550822" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:49 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116076178808550822" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116076733323123333"></a> 				I would argue that Paul Grahams characterization, as funny as it is, is meaningless and even worse: it indicates a bad separation of concerns. That a language is particularly suited for some kind of self-referential gimmicks does not qualify it a good application programming language and won't make it superiour than a pair of a language and a meta-programming system such as OCaml and Camlp4 that are closely related to each other. In the end its easy to put (Ocaml, Camlp4) or (Python, EasyExtend) at the top of everything ( however different they are ) and forget about Lisp. Saying this I recommend doing blubb, blubb with <I>Blub</I> and its so called paradox.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160767320000#c116076733323123333" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 3:22 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116076733323123333" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116076805175047580"></a> 				<I>it's easy to put (Ocaml, Camlp4) or (Python, EasyExtend) at the top of everything ( however different they are ) and forget about Lisp. Saying this I recommend doing blubb, blubb with Blub and its so called paradox. </I><BR/><BR/>You show some knowledge of meta-programming and its applicability to application developement. Now honestly: haven't you met people who say that these features are irrelevant, that their "popular" language is "Good Enough"?<BR/><BR/>One of the reasons I believe in the paradox is that I've lived through it going through several incarnations. I remember when people dismissed OOP as needless junk, unimportant for serious programming and too slow.<BR/><BR/>I remember when people dismissed GC memory as to slow, and a crutch for incompetent programmers rather than a means of freeing up valuable programming time for high priority thinking.<BR/><BR/>Today people tell me that dynamic meta-programming is not neccesary for "Enterprise" work. I won't take a stand and claim that Ruby, Lisp, or the languages you mention are the wave of the future, but it's pretty obvious to me that the people dismissing meta-programming are Blubbering :-)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160768040000#c116076805175047580" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:34 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116076805175047580" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116076905286173375"></a> 				Anonymous: You're such a Blub programmer :-)<BR/><BR/>CLOS is not Smalltalk/Ruby-style object-oriented programming. It is very different.<BR/><BR/>One can argue which way of doing OOP is better (considering that I wrote <A HREF="http://t-a-w.blogspot.com/2006/07/rlisp-lisp-naturally-embedded-in-ruby.html" REL="nofollow">RLisp</A> you can guess my opinion), but to claim they're the same thing is simply uninformed.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160769000000#c116076905286173375" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16972845140253292628" rel="nofollow">taw</a> : 3:50 PM</div>
+
+								<span class="item-control blog-admin pid-1598631960"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116076905286173375" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116079621982282965"></a> 				<I>You show some knowledge of meta-programming and its applicability to application developement. Now honestly: haven't you met people who say that these features are irrelevant, that their "popular" language is "Good Enough"?</I><BR/><BR/>Of course there are programming language conservatives as there are conservatives in any other area of life. But even those people usually don't dismiss any progress but simply find language customizations as usefull as adapting english grammar for having a conversation with different people on the street. So it is basically about designing programs and share knowledge across teams / a programmers community. Java people don't strive for "growing the language" but the library and argue for consistency of its design although I suspect they simply refer to their own established conventions and <I>language-games</I>. As we know these include also IDEs and XML that are external to the language but are considered as part of the languages <I>eco-system</I>. Maybe we shall reverse the perspective and call the Grahamian macho programmer as restricted and narrow-minded ( as has been done in general culture by the typical male chauvinist super-hero)? He is ignorant to programming language <I>eco-systems</I> simply because he advocates a language that pretends to "have it all" - as if you enter the design space of Haskell by adding some lazy evaluation operator to Ruby or Lisp ...<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160796180000#c116079621982282965" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:23 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116079621982282965" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116083214728689746"></a> 				<I>She does not think in the idioms that the more powerful language affords.</I><BR/><BR/>Or she does have idioms "above the level" of the language, but it hasn't occurred to her that a language could or should encompass those idioms - the <A HREF="http://newbabe.pobox.com/~mjd/blog/prog/design-patterns.html" REL="nofollow">Design Patterns</A> pitfall.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1160832120000#c116083214728689746" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.st-and.ac.uk/~lrc1" rel="nofollow">Leo Comerford</a> : 9:22 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116083214728689746" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116309885887349439"></a> 				<I>And I will ask you: why do you think there isn't another language out there that has a feature Y, and although you can implement Y in Lisp using Lisp idioms, the Y programmers will claim that implementing Y with Lisp idioms is not the same thing as implementing Y "properly"?</I><BR/><BR/>Because Lisp doesn't force any idioms onto you. Lisp, in its most general sense, is a uniform notation for programs. That's it. Understood as a language family rather than a specific language (say, CLOS), <B>Lisp doesn't imply any idioms at all.</B> I can't think of any idiom that can't be expressed in Lisp.<BR/><BR/>You may now be going to argue that whenever you design new idioms in Lisp notation, you're actually creating a new language. True, but the one thing that distinguishes creating languages within Lisp from creating them outside of it, is that languages embedded into Lisp can be <B>integrated</B> with it as well as with each other extroardinarily easily. Plus you get the uniform syntax for free, which makes reading the new language very easy for Lispers.<BR/><BR/>Extending a Lisp program and designing Lisp-based languages is <B>the same thing</B>. That's what makes Lisp special.<BR/><BR/>Oh, and yes, you can implement a Smalltalkesque, message-passing object system for Common Lisp. But why would anyone want to do that? CLOS is a proper superset of that kind of system.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1163098800000#c116309885887349439" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.kompottkin.de.vu/" rel="nofollow">Matthias Benkard</a> : 2:00 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116309885887349439" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116310108896019607"></a> 				<I>Lisp, in its most general sense, is a uniform notation for programs.</I><BR/><BR/>First, thank you for pointing out Lisp's greatest strength, namely that it is a generalized programming language (Scheme especially and almost absurdly so) and it builds industrial-strength "domain-specific languages" right out of the box.<BR/><BR/>I will point out two caveats:<BR/><BR/>First, while you can represent any program and any idiom in Lisp, you do so using Lisp's syntax-free s-exprs.<BR/><BR/>This is its greatest strength and its greatest weakness. There are some benefits to syntactic sugar.<BR/><BR/>For example, Python has a strict whitespace rule. This is diametrically opposed to Lisp's philosophy.<BR/><BR/>I'm not saying Python is better than Lisp, but clearly some people value the syntactic magic of significant whitespace.<BR/><BR/>A true Lisper says "it matters not, once a program is parsed it is an abstract syntax tree, and a Lisp AST looks like a Python AST." But a Python lover says that the readability of the program before parsing does matter.<BR/><BR/>I'm not saying that Python is better, or that the significant whitespace (which irritates many programmers) is a good idea.<BR/><BR/>But I am asking whether all idioms really can be reduced to ASTs and implemented using Lisp's Bottom Up Programming without losing their character?<BR/><BR/>Second, Lisp <A HREF="http://weblog.raganwald.com/2006/01/finding-signal-to-noise-ratio-in-never.html" REL="nofollow">has its own idioms for building or mimicking idioms</A>. Who is to say that there aren't better ways out there?<BR/><BR/>At best, we might say that Lisp is the best language discovered so far for building other languages. But I'm an optimist, and I believe that we may still improve on its language-building strength.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1163101080000#c116310108896019607" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:38 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116310108896019607" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="116474241374605064"></a> 				<I>It's easy to find a Java programmer who believes that all of the Design Patterns in the GoF's book are necessary. She believes that the difficulties of applying those patterns are actual difficulties of programming systems. It is only when she learns a different language that she realizes how the patterns were strongly driven by limitations in Java's object model.</I><BR/><BR/>GoF predates Java by a couple of years and uses C++ and smalltalk in code examples. The patterns <I>are</I> a good fit for Java's limitations, because they are so similar to those of C++.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1164742380000#c116474241374605064" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">jaybee</span> : 2:33 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=116474241374605064" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="939748656147859716"></a> 				I think the problem with asking these questions is that whether language A is more powerful than language B is not clearly defined; in theory we can move from language A to language B by implementing a compiler for B in A, so languages A and B are equivalent in power (so long as they are "Turing complete").  But in practice something is wrong with this statement, so one could reasonably propose that there is no good existing model for the power of languages in the sense that you are trying to ask about.  Thus I think the only real answer to your question would be to develop a model so that we can meaningfully talk about the power of programming languages.<BR/><BR/>A simple model could use language subsets, and we could say A is a subset of B iff there exists a mapping from every program a in A to equivalent program b in B s.t. the mapping is a CFL when encoded as a language as a set of tuples (a, b).  But I think this model is flawed because I'm guessing that it will show that all conventional programming languages which are "Turing-complete" at compile time are subsets of each other and all other conventional programming languages are subsets of the "Turing-complete" ones.<BR/><BR/>So I'm guessing that a better model is needed, and I'm not sure exactly what the better model would be.  Is it possible to capture the practical aspects of whether a language A allows you to typically get away with writing an order or three orders of magnitude less code than language B?  I think this theoretical exercise may be solvable, and it's definitely worth trying (is there any literature on this?) as it would allow us to get a much better handle on what a "powerful language" is.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1173933240000#c939748656147859716" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02568908952592933174" rel="nofollow">Connelly</a> : 12:34 AM</div>
+
+								<span class="item-control blog-admin pid-703742905"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=939748656147859716" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2930520824810000893"></a> 				Oops, I guess I can't edit posts.  Ignore that talk about mappings and CFLs as it is wrong (one can just implement a compiler in one language and call the compiler in the other language to show that any Turing-complete language is a "subset" of any other language, and once the compiler is written, the translation process between language A and B requires nothing more powerful than a DFA).  Don't know what I was thinking.  But it still seems like we should be able to define what we mean when we say "a language is powerful" or else point out some theoretical reason why we can't define this.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1173933600000#c2930520824810000893" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02568908952592933174" rel="nofollow">Connelly</a> : 12:40 AM</div>
+
+								<span class="item-control blog-admin pid-703742905"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2930520824810000893" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2215952227444615069"></a> 				"things which are actually difficult, which no programming tool or language is going to solve."<BR/><BR/>--> i tend to see this as more pragmatic stuff like <BR/><BR/>'getting the business people to actual decide that yeh, green is a good enough colour for the bikeshed'<BR/><BR/>tasks like that are hard, and until your software gives them a solution that they can agree on, the problem isn't really solved. <BR/><BR/>so these are the 'actually difficult' problems -- problems that are waaay outside the scope of the tools you've got, even lisp.<BR/><BR/>so some problems are 'actually difficult', and others are, like you said 'accidentally difficult' and 'accidentally actually difficult'<BR/><BR/>lb (secretGeek.net)<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1176197280000#c2215952227444615069" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:28 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2215952227444615069" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4523294148746418959"></a> 				Connelly: see http://citeseer.ist.psu.edu/felleisen90expressive.html<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1190763960000#c4523294148746418959" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">David Hopwood</span> : 7:46 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4523294148746418959" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4418410644755844655"></a> 				I know I'm very late to this discussion, but one thing I think a number of people miss is that blub languages are optimal given the constraint of a person's or group's knowledge.<BR/><BR/>If I wish to do an achievable programming task X, then there's both a best possible language (given my knowledge of programming languages) that I know that can X (in other words, given what I know, I'll be able to pick out a language that fits what I know and satisfies my project objectives as best I can).<BR/><BR/>Then I can extend this list of programming languages to those I've heard of. That is, with some effort, I may be able to find a better language (as far as I can tell) for the task X. As I see it, the blub condition occurs when I see no language better than the one I already know.<BR/><BR/>As I see it, in the absence of costly experimentation, the blub language is optimal. I cannot come up with a better language unless I look around and try out some other languages. And there's no guarantee that I'll find something better for my purposes that will justify the effort I put into the search.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1193263320000#c4418410644755844655" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02011583095865586408" rel="nofollow">Karl</a> : 6:02 PM</div>
+
+								<span class="item-control blog-admin pid-1048822605"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4418410644755844655" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1775704918494949944"></a> 				Give me a memory model, add, mov, compare and conditional jump and I can solve any problem. Any language offering more is fine to me.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1213950540000#c1775704918494949944" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18249115402462412317" rel="nofollow">Giancarlo Niccolai</a> : 4:29 AM</div>
+
+								<span class="item-control blog-admin pid-107714005"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1775704918494949944" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5804696304254875545"></a> 				Giancarlo:<BR/><BR/><I>Give me a memory model, add, mov, compare and conditional jump and I can solve any problem. Any language offering more is fine to me.</I><BR/><BR/>More of the same is just more of the same. When can we start thinking out side of Von Neumann&rsquo;s box?<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1213958640000#c5804696304254875545" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:44 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5804696304254875545" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7266204938966750029"></a> 				There's no doubt: Clipper,VB6, THEOS Basic and PHP are paradigmatical Blubs... I recognise them when I see them. You won't find just one programmer in those languages wondering what's the big deal with Java/C#/Ruby... MOST of them Blub-think.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2006/10/are-we-blub-programmers.html?showComment=1216065900000#c7266204938966750029" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07728347868566489801" rel="nofollow">jambo</a> : 4:05 PM</div>
+
+								<span class="item-control blog-admin pid-196678142"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7266204938966750029" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

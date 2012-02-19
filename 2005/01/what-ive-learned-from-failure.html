@@ -1,0 +1,620 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+	<head>
+		<title>
+			What I've learned from failure
+		</title>
+		<link rel="stylesheet" type="text/css" href="/blog.css">
+		<link rel="stylesheet" type="text/css" href="/sunburst.css">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	</head>
+	<body>
+		<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"></a><br>
+			<div class="DateHeader">
+				Friday, January 07, 2005
+			</div>
+			<div class="Post">
+				<a name="110506474145257282">&nbsp;</a> <span class="PostTitle"><a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html" title="permanent link">What I've learned from failure</a></span>
+				<div style="clear:both;"></div>
+				<br/><center>(<i>This essay appears in the e-book <a href="http://leanpub.com/shippingsoftware">What I've Learned From Failure: A quarter-century of experience shipping software, distilled into fixnum bittersweet essays</a></i>)</center><br/><br/>
+				<blockquote>
+					I have been fired from more jobs than most people have had.<br>
+				</blockquote>
+				<div style="text-align: right;">
+					<a href="http://www.blogmaverick.com/">Mark Cuban</a><br>
+				</div><br>
+				<strong>Why does failure matter?</strong><br>
+				<br>
+				It's a funny thing. After almost twenty years of drawing a paycheque for creating software, people generally want to hire me because they want me to duplicate the successes I've had. The model seems to be "do the things you've done successfully before, and you'll be successful now."<br>
+				<br>
+				My experience is that this has never worked on its own. Success in software development is at least as much about avoiding failure modes as it is about "best practices." I conjecture it's because software development on a commercial scale is so hard that almost any mistake will sink a project if left uncorrected or even worse, actively encouraged.<br>
+				<blockquote>
+					We tend to seek easy, single-factor explanations of success. For most important things, though, success actually requires avoiding many separate causes of failure.<br>
+				</blockquote>
+				<div style="text-align: right;">
+					Jared Diamond<br>
+				</div><br>
+				With that in mind, I've taken a little time to jot down some thoughts about situations where I've personally failed. I'm not going to tell you about some theoretical anti-pattern, or relate some broken thing I've fixed, I'm going to share things that caused me to leap from the deck of a burning boat to avoid drowning.<br>
+				<blockquote>
+					If you decide to run with the ball, just count on fumbling and getting the shit knocked out of you, but never forget how much fun it is just to be able to run with the ball<br>
+				</blockquote>
+				<div style="text-align: right;">
+					Jimmy Buffett<br>
+				</div><br>
+				Some of them, in retrospect, would be comical if it wasn't for the human misery, damaged careers, and money wasted on failed projects. Or worse, in my opinion, the opportunity cost of putting good people to work on things that never end up delighting the world. I weep for what might have been.<br>
+				<br>
+				<strong>The four most important causes of failure</strong><br>
+				<blockquote>
+					Things which matter most must never be at the mercy of things which matter least.<br>
+				</blockquote>
+				<div style="text-align: right;">
+					Johann Wolfgang Von Goethe (1749-1832)<br>
+				</div><br>
+				The first thing I've learned from failure is that the four things which matter most are:<br>
+				<ol>
+					<li>The quality of the people doing the development
+					</li>
+					<li>The expected value of the product to its stakeholders
+					</li>
+					<li>The fitness of the proposed solution
+					</li>
+					<li>The quality of project management and expectations communication
+					</li>
+				</ol>In my experience, you need all four working to have a successful project. I've personally failed when even one of those four things was bad and not corrected immediately. If two, three, or all four were wrong, my discovery is that I've been unable to avert disaster. (This list obviously doesn't cover all of the factors needed for business success: I'm just talking about getting the software to ship).<br>
+				<br>
+				<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/exec/obidos/tg/detail/-/0976694026/?tag2=raganwald001-20"><img style="margin: 0pt 0pt 10px 10px; float: right; cursor: pointer;" src="http://weblog.raganwald.com/uploaded_images/behind_closed_doors-736290.jpg" alt="" border="0"></a>Now that I've learned this, I have four new things to evaluate when placed in charge of a new project. And regardless of what I'm told, I'm going to investigate these four things every time, right away, without fail.<br>
+				<br>
+				I've never seen a project where strength in one area made up for weaknesses in others. I've never personally seen a great technology platform, for example, that magically enabled low-quality developers to produce commercial-quality results.<br>
+				<br>
+				And don't talk to me about XP being a magic bullet: all of the good XP teams I've seen happened to have quality developers, a valuable objective, decent technology, and yes, good project management.<br>
+				<br>
+				<strong>People</strong><br>
+				<blockquote>
+					I think the root of your mistake is saying that macros don't scale to larger groups. The real truth is that macros don't scale to stupider groups.<br>
+				</blockquote>
+				<div style="text-align: right;">
+					<a href="http://www.paulgraham.com/">Paul Graham</a> on the <a href="http://ll4.csail.mit.edu/">Lightweight Languages</a> mailing list<br>
+				</div><br>
+				I've been involved with strong teams and weak teams, and the weak teams always failed. Weak teams have individuals whose performance is weak. The strongest indication of a weak team is the realization that if you were to quit and start your own business, you wouldn't try to poach any of your colleagues.<br>
+				<br>
+				Painful experience has taught me some of the signs that a team doesn't have the chops to perform up to par. The first sign of a weak team is poor hiring practices.<br>
+				<br>
+				Developing software is a difficult job. It requires a panoply of strengths. Hiring good people is never as simple as interviewing three people with "five years of J2EE" on their résumés and making an offer to the best of the three. Strong teams have almost impossibly high hiring standards. Strong teams will always leave a desk empty rather than settling for less than the best.<br>
+				<br>
+				Another sign of a weak team is poor development hygiene. There are dozens of development practices that seem trivial to the inexperienced outsider or to the manager focusing on "big wins." Examples of development hygiene include source code versioning, maintenance of an accurate bug or issue database, significant use of automated testing, continuous integration, and specifications that are kept current (whether incredibly detailed or high-level overviews).<br>
+				<br>
+				One team I audited were not just unwilling, but were actually unable to build a product that was in sustaining development. In other words, the product was in the field, in use by customers, and the team were not able to rebuild it from source. They were issuing all of their bug fixes as patches on their existing binaries. This was not a good sign.<br>
+				<br>
+				Does this mean that nothing can be done if the team is weak? Not exactly. Some of the time I've had the authority to replace members of the team. I've always had the ability to set an example and suggest practices. But sometimes I've thought that an organization would be unreceptive to calls for change. And for want of courage, projects have been lost.<br>
+				<br>
+				The bottom line is that when I've failed to recognize weakness in the team and/or failed to take immediate and decisive action to bring the team up to world-class strength, I've failed.<br>
+				<blockquote>
+					Argue with idiots, and you become an idiot.<br>
+					If you compete with slaves you become a slave.<br>
+				</blockquote>
+				<div style="text-align: right;">
+					<a href="http://www.paulgraham.com/">Paul Graham</a> and Norbert Weiner, respectively<br>
+				</div><br>
+				I've mentioned that I've failed with weak teams. Would you believe I've compounded this failure by failing with weak stakeholders? Whenever I've had stakeholders who didn't have the horsepower or the will to recognize that a project was in trouble, I've wound up in the E.R. having the brick dust removed from my forehead.<br>
+				<blockquote>
+					A chicken and a pig decided to open a diner together. The pig asked the chicken what they should call their new restaurant. The chicken suggested "Ham and Eggs." The pig thought about it for a while, then decided she didn't want any part of the venture. "You," she told the chicken, "would only be interested in serving breakfast. I'd be committed."<br>
+				</blockquote>
+				<div style="text-align: right;">
+					as told by <a href="http://www.controlchaos.com/">Ken Schwaber</a><br>
+				</div><br>
+				Getting away from weak teams, another source of failure is the omnipresent threat of "chickens." A chicken is not necessarily a weak individual, but a sign of a weak management structure. A chicken is an individual who has significant authority over your project, but does not make a personal commitment to the success of the project. Significant authority includes the authority to impose constraints on the team.<br>
+				<br>
+				Even a single chicken can take a project out. Chickens are a special case of "external dependencies." Special, because they are often politically entrenched. I've worked with teams where the pay scale was determined by an edict from H.R. They were literally prevented from hiring top talent, and it wasn't a question of budget: they did not have the freedom to replace three mediocre programmers with two good programmers for the same price.<br>
+				<br>
+				Another situation involved a team that were continually pestered to include functionality and architecture for "strategic" reasons by a Business Development person. Although senior management made the importance of the strategic functionality clear, they were unwilling to relax tactical requirements like the ship date or the target revenues. They had to constantly manage the "chicken" in order to succeed.<br>
+				<br>
+				I've managed around chickens here and there, but I've failed to deliver a successful project whenever I've failed to limit the effect of chickens on the management of projects.<br>
+				<br>
+				<strong>Action</strong><br>
+				<blockquote>
+					Always dive down into a problem and get your hands on the deepest issue behind the problem. All other considerations are to dismissed as "engineering details"; they can be sorted out after the basic problem has been solved.<br>
+				</blockquote>
+				<div style="text-align: right;"></div>
+				<div style="text-align: right;">
+					Chris Crawford<br>
+				</div><br>
+				The next thing I've learned from my failures is something familiar to the test-driven development crowd. It's mandatory to fail early. You need to know you're in trouble right away. That's essential when taking over an existing project or starting something new. You have to find out how you're doing within weeks. Not quarters, not months. The longer you wait, the more inertia the failure will have.<br>
+				<br>
+				<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/gp/product/0884271536/104-5191901-1508708?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=xm2&amp;creativeASIN=0884271536"><img style="float:left; margin:0 10px 10px 0;cursor:pointer; cursor:hand;" src="http://weblog.raganwald.com/uploaded_images/critical_chain-794734.jpg" border="0" alt=""></a>You have to come in, take over, and establish some incredibly short-term goals and be prepared to take action based on the project's performance. I've learned that there's no such thing as too little time between milestones. Looking back at projects where I've failed, many contained some uncertainty or risk that I didn't address immediately.<br>
+				<br>
+				In one case there was a critical piece of functionality that was so important the entire architecture was designed around it. The CTO and every developer swore it was the greatest thing since sliced bread. I made a back-of-the-envelope risk calculation and scheduled testing of that functionality to begin three months before the project was to be delivered.<br>
+				<br>
+				A week before the function was to go into test, the technical lead informed me that it didn't work, had never worked, and that no attempt to fix it would work, because there was a major, glaring flaw that had been overlooked. A rewrite would be required.<br>
+				<br>
+				The stakeholders agreed and appointed a new team to handle the rewrite. Needless to say, the old team's job security suffered a major hit.<br>
+				<br>
+				Today, older and wiser, I would demand immediate proof of feasibility of all critical pieces of the product, no matter how obvious things may be to everyone else. I should have said "Great! It's a slam dunk! Wonderful, let's schedule a demo next week." At least we would have felt the pain early.<br>
+				<br>
+				<strong>Details</strong><br>
+				<br>
+				Whenever I've allowed the details of a project to escape me, I've failed. On one project, the technical lead was a Ph.D. and refused to describe his work, saying that although I was the managing product development, he wasn't going to try to explain his rarified code or architecture to a layperson.<br>
+				<blockquote>
+					No, I'm not presponsible for what happened. I'm accountable for how we dealt with it, but I'm not responsible for it.
+				</blockquote>
+				<div style="text-align: right;">
+					Julian Fantino<br>
+				</div><br>
+				Needless to say, I was unable to ship a successful project. On another project the CEO would ask me the same question every few days: "draw on my whiteboard who's working on what." I had no trouble with this on that particular project, but looking back there have been projects where I was not tracking people's work on a day to day basis.<br>
+				<br>
+				And I can tell you, whenever the details of a project have slipped from my grasp, the project has started to drift into trouble. I make no apologies for now insisting on knowing exactly who, what, where, when, and why. There's a big difference between being asked to explain your work in detail and being told how to do your job.<br>
+				<br>
+				My personal experience is that attention to detail has always accompanied successful projects.; losing track of the details has always accompanied failing projects.<br>
+				<br>
+				<strong>The Schedule</strong><br>
+				<blockquote>
+					In most companies if a good quality project ships late then the managers will still get it in the neck whereas if poor quality project ships on time then the managers say "we did our best - obviously the dev team seem to be of a poor standard".<br>
+				</blockquote>
+				<div style="text-align: right;">
+					Daniel H. Steinberg<br>
+				</div><br>
+				Dates are sacred. I've learned this lesson in good times and bad. Stakeholders treasure good dates. Stakeholders despise bad dates and the people who make flawed promises. That would have been me, more than once.<br>
+				<br>
+				<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/gp/product/0130676349/104-5191901-1508708?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=xm2&amp;creativeASIN=0130676349"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;" src="http://weblog.raganwald.com/uploaded_images/asdws-735191.jpg" border="0" alt=""></a>Every time, the lesson has been clear. Don't get the dates wrong. I'll confess: I don't really think Scrum is an order of magnitude more effective than anything else at producing beautiful, world-changing software. It may be worse. But it does produce software every month, month after month.<br>
+				<br>
+				And every time I've delivered software on schedule milestone after milestone, my influence and standing with stakeholders has grown. And every time I've missed a date, I've suffered, regardless of whether the late software was demonstrably better than what was originally planned for the missed date.<br>
+				<blockquote>
+					If documents don't serve to avoid stupid things, mitigate risks or calculate budgets then what are they for? They're to show you have a "process" and a "paper trail" so that you can get ISO certified. That's all they look for, they don't care if you read them or not.
+				</blockquote>
+				<div style="text-align: right;">
+					Skagg on <a href="http://discuss.fogcreek.com/joelonsoftware/">http://discuss.fogcreek.com/joelonsoftware/</a>
+				</div><br>
+				Back to the measurable processes. I've learned from failure that stakeholders like to know what's going on. I hate producing useless documentation. The net result is that I've tried to find the happy medium where I generate weekly management reports on projects.<br>
+				<br>
+				A management report is something that is used to actually make a decision. Everything else is garbage. I've learned that when I haven't had management reports for a project, failure has resulted. Worse, sometimes I've had documents and metrics that were used to justify bad decisions that sank the ship.<br>
+				<br>
+				So my lesson from these failures is that every project needs a set of regular reports that contain information you'll actually use to make decisions.<br>
+				<br>
+				<strong>Software</strong><br>
+				<blockquote>
+					Few projects are cancelled because their designs and implementation weren't complicated enough. Many are cancelled because they become so complicated that no one can understand them anymore; any attempt to change or extend the system results in so many unintended side effects that continuing to extend the system becomes practically impossible.<br>
+				</blockquote>
+				<div style="text-align: right;">
+					Steve McConnell<br>
+				</div><br>
+				One of the reasons people associate me with "Agile" development approaches is that I'm always trying to simplify, simplify, simplify. This is because almost every time I added something to a milestone, I've gotten burned. It seems like it's always better to say "just finish what we planned, get that 100% functional, and then we'll add foobars."<br>
+				<br>
+				I recently got burned twice in the same project adding functionality in between milestones. Both times I was sure that the changes were low risk. Both times I burned myself. Now I'm licking my wounds and swearing I'll never, ever break my agile principles of restricting scope changes to between increments.
+				<blockquote>
+					It's important to remember that when you start from scratch there is absolutely no reason to believe that you are going to do a better job than you did the first time. First of all, you probably don't even have the same programming team that worked on version one, so you don't actually have "more experience". You're just going to make most of the old mistakes again, and introduce some new problems that weren't in the original version.<br>
+				</blockquote>
+				<div style="text-align: right;">
+					<a href="http://www.joelonsoftware.com/articles/fog0000000069.html">Things You Should Never Do, Part I</a><br>
+				</div><br>
+				Here's something that I've screwed up repeatedly. Sometimes I've bounced back, sometimes the project has paid the ultimate price. The grand "this time we'll get it right" mantra is absolute garbage.<br>
+				<blockquote>
+					It had taken 3 years of tuning to get code that could read the 60 different types of FTP servers, those 5000 lines of code may have looked ugly, but at least they worked.
+				</blockquote>
+				<div style="text-align: right;">
+					Lou Montulli, one of the founding engineers at Netscape<br>
+				</div><br>
+				Don't talk to me about porting to Java, or new design patterns. If you must refactor, refactor here, and there, and there to solve this, and that, and the other specific problem that has a specific feature or bug attached to it. And show me that you had 100% unit testing coverage on the affected code and completed each refactoring in a day or so and then ran all the unit tests and got a green light.<br>
+				<br>
+				If you can't do that, you're going to fail. I know it, because I've failed when I didn't do that. And when I cried on a friend's shoulder, he told me "I also made that mistake once, and I suffered the same horrible fate."<br>
+				<br>
+				Thinking that a major rewrite is going to solve all of your problems is just revisiting my four things that matter most and planning on having one, the fitness of the proposed solution, overpower defects in the people, expected value, and process. It won't happen.<br>
+				<br>
+				A major rewrite should produce a major new product that offers an order of magnitude more expected value. And you'll need to be 100% sure your team has the horsepower to get the job done and is going to use a process that can handle the load. I say this because I've tried and failed to rewrite entire applications, and I've taken over other people's rewrite projects and failed there too.<br>
+				<br>
+				<strong>Power</strong><br>
+				<blockquote>
+					Some days you are the bug, some days you are the windshield.
+				</blockquote>I've learned a little about politics from failing. What I've learned is that if you stick your neck out and evangelize change, you will be blamed if you do not achieve results. You may or may not care about that. But be aware of the fact that making changes involves spending your personal credibility. If you don't want to lose it, don't ante up: get out of the project.<br>
+				<blockquote>
+					Don't have good ideas if you aren't willing to be responsible for them.<br>
+				</blockquote>
+				<div style="text-align: right;">
+					Alan Perlis<br>
+				</div><br>
+				And if you decide to make changes, have the courage to go 100% with your gut. I've failed more than once when I watered down my convictions in order to appease dissenters. The only thing worse than evangelizing change and failing is looking back and realized you might have succeeded if you'd held firm on your convictions. What a waste!<br>
+				<blockquote>
+					Making an employee work and profiting from that work are two different things.<br>
+				</blockquote>
+				<div style="text-align: right;">
+					Eliyahu Goldratt<br>
+				</div><br>
+				I've seen a number of "sweat shops," and I've worked in several places where long hours and rhinoplastic intimacy with the grind stone were demanded of the team. I can honestly say that hard work makes no long-term difference to failing software development teams.<br>
+				<br>
+				I disagree with those who say that long hours are 100% detrimental to software development: I''ve seen lots of situations where people worked around the clock, motivated by passion. But those were successful projects.<br>
+				<br>
+				I've learned that redoubling effort when a project is in trouble has not fixed the project. The conclusion I draw is that although teams have worked long hours on many successful projects, there is no causal relationship between long hours and success (It's another example of the fallacy of "best practices": copying a single element of a successful project does not guarantee that another project will be improved).<br>
+				<br>
+				My experience with failing projects is that the exhortation "<a href="http://www.imdb.com/title/tt0151804/quotes">Ahh, I'm going to have to go ahead and ask you to come in on Sunday, too...</a>" has always been interpreted as punishment, not a meaningful way to fix the project. It has had no effect on under-performing members of the team and tends to strongly demotivate the people who are pulling more than their fair share of the weight.<br>
+				<blockquote>
+					It is impossible to sharpen a pencil with a blunt axe. It is equally vain to try to do it with ten blunt axes instead.
+				</blockquote>
+				<div style="text-align: right;">
+					Edsger Dijkstra<br>
+				</div><br>
+				Good luck convincing stakeholders of this. One of the reasons people love to hand out overtime like candy is that hours in the office are measurable. The team's behind? Make them stay until midnight every night. Even if it doesn't work, the executive handing out this order can be sure she can measure compliance.<br>
+				<br>
+				The bottom line is, it's easy to measure how many axes you're using to sharpen a pencil. When you discover that a blunt axe isn't sharpening the pencil, how do you propose to measure "sharpness"? How do you measure "working smarter"?
+				<blockquote>
+					If we wish to count lines of code, we should not regard them as lines produced but as lines spent.<br>
+				</blockquote>
+				<div style="text-align: right;">
+					Edsger Dijkstra<br>
+				</div><br>
+				So another thing I've learned about failure is that when things start to go wrong, stakeholders want two things:<br>
+				<ol>
+					<li>New processes<br>
+					</li>
+					<li>A way to measure compliance with the new processes
+					</li>
+				</ol>Overtime meets both criteria nicely, as do other simple panaceas like generating reports with every build or compliance with coding standards.<br>
+				<br>
+				Fixing failing projects demands lots of things that are easy to measure and some that aren't. I've learned that if you don't control your stakeholder's expectations around change, you'll find yourself fending off demands for things like overtime and reports.<br>
+				<br>
+				<strong>History</strong><br>
+				<blockquote>
+					Even when my proposals are seen as significant improvements, they are often rejected on the grounds that they are not intuitive. It is a classic Catch-22: The client wants something that is significantly superior to the competition. But if it is to be superior, it must be different. (Typically, the greater the improvement, the greater the difference.) Therefore, it cannot be intuitive, that is, familiar. What the client wants is an interface with at most marginal differences from current practice... that, somehow, makes a major improvement.<br>
+				</blockquote>
+				<div style="text-align: right;">
+					Jef Raskin<br>
+				</div><br>
+				When I've been brought in specifically to "work out" a failing project I've failed when I didn't have the authority and support to make major changes. This is saying the same thing I've said several times already, but it needs to be repeated.<br>
+				<br>
+				Often, the stakeholders have just finished casting someone into the darkness and think that they've cast failure into the darkness with him. Take a moment and look up the definition of the word "<a href="http://dictionary.reference.com/search?q=scapegoat&amp;r=67">scapegoat</a>." They may have symbolically cleansed the project of sin, but the sins remain, and I have inherited them whenever I've allowed the project to continue to do business as usual.<br>
+				<blockquote>
+					The most damaging phrase in the language is, <em>It's always been done that way.</em><br>
+				</blockquote>
+				<div style="text-align: right;">
+					Rear Admiral Grace Hopper<br>
+				</div><br>
+				I've heard dozens of variations on the same line (yes, I've failed dozens of times!) The line is "Well, so-and-so failed because he didn't x. But now you're here, you'll get x cleaned up, and we'll start succeeding right away. We were hardly failing, really, a little behind, nothing serious."<br>
+				<br>
+				Every time I've been told that, things have ended up being seriously dire. No, it wasn't as simple as implementing monthly sprints or formalizing acceptance tests or nightly builds. The rot went right to the core and the stakeholders were usually (unwittingly) enabling it by not understanding or being in denial of the real problems. When people don't see the depth of the problem, they don't accept the importance of making changes.<br>
+				<br>
+				It has boiled down to something so simple that you've probably heard it described in jest as the definition of insanity. If a project has been doing things a certain way, and the stakeholders are not 100% happy with the results, doing things substantially the same way will not produce substantial changes in the results.<br>
+				<br>
+				<strong>Finishing</strong><br>
+				<blockquote>
+					There are two kinds of people in the world: those who finish what they started.
+				</blockquote>Getting back to failing early, I've learned it's important to completely fail. Get fired. Shoot the project, then burn its corpse. Melt the CVS repository and microwave the backup CDs. When things go wrong, I've often tried to play the hero from start to finish. Guess what? Some projects are doomed no matter what. Some need skills I don't possess. And some need a fresh face.<br>
+				<blockquote>
+					The best way to fix a bad project is to not be part of it.<br>
+				</blockquote>
+				<div style="text-align: right;">
+					Norman Nunley &amp; Michael Schwern<br>
+				</div><br>
+				I've ridden more than one project down in flames, and as painful as it is to 'fess up and admit defeat, it's important to know when to fold your cards and quit. Yes, that sounds defeatist. But most success stories are comebacks from personal failures, not wondrous turn-arounds.<br>
+				<br>
+				Sometimes you shouldn't finish what you started. Sometimes you shouldn't finish what somebody else started.<br>
+				<br>
+				Every essay ought to end with a summary. Since this isn't an essay, I'll end with an adaptation of a Taoist story:<br>
+				<blockquote>
+					A musician performed a new piece he had written for his best friend. The friend sat in wonder and listened to the entire piece. When it was over, he nodded and told the musician that the music was wonderful. But what, he wondered, did the piece mean?<br>
+					<br>
+					The musician nodded at this question and bent over his instrument, then played the entire piece again from the beginning.
+				</blockquote>
+				<div style="clear:both; padding-bottom:0.25em"></div>
+				<p class="blogger-labels">
+					Labels: <a rel='tag' href="http://weblog.raganwald.com/labels/agile.html">agile</a>, <a rel='tag' href="http://weblog.raganwald.com/labels/passion.html">passion</a>
+				</p>&nbsp; <span class="PostFooter">¶ <a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html" title="permanent link">7:33 PM</a></span>
+				<p id="postfeeds"></p>
+			</div>
+			<div class="blogComments">
+				<a name="comments" id="comments"></a><strong>Comments on “<em>What I've learned from failure</em>”</strong>:<br>
+				<div class="blogComment">
+					<a name="110531423001976132"></a> I enjoyed this entry even more than usual.<br>
+					<br>
+					I agree with you that Agile methods aren't a magic bullet for making great software. However, they do offer some focused, practical techniques that address your 4 key points of software success, and that is what drew me to them in the first place.<br>
+					<br>
+					Unfortunately, it seems very easy to follow the form of certain Agile practices and lose sight of the substance of these four pillars of success.<br>
+					<br>
+					Thanks for the piece!<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1105314180000#c110531423001976132" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/16522553852433145054" rel="nofollow">Marc Hamann</a> : 6:43 PM
+					</div><span class="item-control blog-admin pid-2036922593"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=110531423001976132" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="110533328075461147"></a> Thanks for the comment! Yes, I'm even more committed to Agile now that I've reflected on the failures I've witnessed and/or perpetrated.<br>
+					<br>
+					My comment about XP was simply to say that good practices alone cannot solve certain types of problems.<br>
+					<br>
+					What makes me even more committed to Agile is the realization that good practices can reveal root causes of failure early in a project.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1105333260000#c110533328075461147" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:01 AM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=110533328075461147" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="110574200718203765"></a> I am appreciating your article especially now as my company heads toward an ginormous planned rewrite (which I'm 100% against).<br>
+					<br>
+					Superficially, there's a contradiction between the advice to fix a large sytem by making carefully delimited refactorings, and the advice to make substantial changes in order to get significant results. Maybe I'm not clear on what you mean by doing things a substantially different way.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1105741980000#c110574200718203765" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/09839532299808900672" rel="nofollow">Brad Williams</a> : 5:33 PM
+					</div><span class="item-control blog-admin pid-1323490592"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=110574200718203765" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="110574317388816545"></a> Yes, there are two contradictory suggestions, and there's no easy answer: sometimes neither suggestion works!<br>
+					<br>
+					But to clarify, I would point out that strictly speaking, "refactoring" is changing the code to clean it up, not to add functionality. My experience is that doing a major rewrite just to clean up code and fix bugs leads to failure.<br>
+					<br>
+					I guess I was trying to say that a major rewrite is so risky and problematical that it had better offer an order of magnitude of improvement in expected value to have a chance.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1105743120000#c110574317388816545" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:52 PM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=110574317388816545" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="110715368963596546"></a> Insightful narration.<br>
+					Whether one gets fired or quits as long as one learns can only be beneficial.<br>
+					One thing that I have never done is "agreeing with dissenters" especially when I have known "dissenters" to be wrong.<br>
+					<br>
+					Nice article!<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1107153660000#c110715368963596546" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:41 AM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=110715368963596546" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="113700174760783857"></a> This is truly a great article.<br>
+					<br>
+					It has a lot of good ways of looking at things that will help beginners like myself.<br>
+					<br>
+					I think you've touched on many of the engineering sensibilities that some have called for that will help bring the kind of maturity enjoyed in older disciplines into the computer field.<br>
+					<br>
+					In your mention of "the grand 'this time we'll get it right' mantra", I was reminded of a conversation with some programming friends last night. He said "complacency is dangerous", that we should try not to feel like we've solved a big design problem. It's hard to tell when you've solved a big design problem, as opposed to, for example having the tests pass for all the different types of FTP servers.<br>
+					<br>
+					I'm going to try not to reward myself mentally for solving a design problem unless it results in something working well, or a belief that it's easier to understand use that's confirmed by other people.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1137001740000#c113700174760783857" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<a href="http://www.benatkin.com/" rel="nofollow">Ben Atkin</a> : 12:49 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=113700174760783857" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="113700194880171319"></a> A better way to put it might be this: if there's not an expected order-of-magnitude improvement expected from the rewrite (and desired by the stakeholders), there probably won't be enough power/interest to finish the project.<br>
+					<br>
+					Need is a fair ruler for determining which route to go in a project, which choice of several to take. When you don't have a need as large as the deed, the process of a rewrite will take over the purpose of success.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1137001920000#c113700194880171319" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Alan Shields</span> : 12:52 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=113700194880171319" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="113701656775115389"></a> I think that there is a common co-occurrence of projects that have so evolved beyond their original design as to present maintenance problems, and projects that do not have documented requirements.<br>
+					<br>
+					Any project without documented requirements (including business rules) is at high risk of failure in rewrite, because there's no way to measure correctness other than "doesw it do exactly what the prior version did"!<br>
+					<br>
+					- daveg<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1137016560000#c113701656775115389" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 4:56 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=113701656775115389" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="113702086404636059"></a> "Few projects are cancelled because their designs and implementation weren't complicated enough. Many are cancelled because they become so complicated that no one can understand them anymore"<br>
+					<br>
+					This is a clever saying, but it only holds true because it's fundamentally easier to make a simple design/implementation more complicated in an effort to meet requirements than it is to make a complicated design/implementation simpler and still meet requirements.<br>
+					<br>
+					Other than this, I agree with most everything. I will say however that the argument against rewrite doesn't seem to apply to whole classes of projects, in my experience: projects that can be done by one or two people; projects that you were the original lead on and you're the lead on the rewrite; apps that were written the first time by people who knew less about the problem they were trying to solve than you do; and finally, software so phenomenally bad that it's impossible to modify and verify that you haven't broken anything. There's a lot of software lying around that meets these conditions.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1137020820000#c113702086404636059" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:07 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=113702086404636059" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="113702526360176732"></a> Maybe I don't read enough blogs but this article was one of the best I've ever read, I've been trying to create complex software in teams for 15 years and success has been difficult. Of all the failure scenarios described I would nominate a "poor authority model" as the single biggest problem. I'm impressed you managed to ever get hold of real authority. I'm actually pretty depressed about IT and my career: I can't seem to find a good team to work with... all the mechanisms in place to create teams (recruitment etc) seem to be barely functional. We need a "team creation" mechanism that works.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1137025260000#c113702526360176732" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 7:21 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=113702526360176732" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="113704279247437219"></a> Excellent article. I've often made a similar point to colleagues, that some of the most valuable experiences I've ever had as a software developer were on two major projects, at two different companies, both of which failed spectacularly. In my defense I'll say that I had no input on how those projects were managed -- I was only a senior developer in both cases. And in both cases, it was glaringly obvious to me early on that the projects were doomed, primarily due to mismanagement and a lot of the reasons you describe above.<br>
+					<br>
+					I left both projects before they tanked, telling the coworkers I left behind that I wasn't going to waste my skills polishing brass on the Titanic, writing code that would never see the light of day.<br>
+					<br>
+					And as far as death-march type overtime goes, I have no problem working nights and weekends to deliver a milestone on time. I've done it numerous times. But if the project is doomed anyway, and there's zero chance of success, that's when I start updating my resume.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1137042780000#c113704279247437219" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Dave G</span> : 12:13 AM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=113704279247437219" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="113704591642847379"></a> Thanks for the article, Reg. This is my first time here (from reddit I think.) Haven't read the whole article yet but I will come back to it.<br>
+					<br>
+					The inline quotes you have are great. If you don't mind me saying so, there are however a number of sentences in the article that may have been overlooked during your editing stage. I was only going to point out the first example below, but couldn't resist the second one when I saw it ;)<br>
+					<br>
+					1) "... three mediocre programmers with a two good programmers for the same price."<br>
+					<br>
+					2) "There's a big difference between asked to explain your work in detail and being told how to do your job."<br>
+					<br>
+					Just out of curiosity, do you have any business relationships with Paul Graham?<br>
+					<br>
+					All the best.<br>
+					<br>
+					~chrish<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1137045900000#c113704591642847379" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:05 AM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=113704591642847379" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="114314644450653392"></a> A while ago I received an email from Shawn Garbett (http://garbett.org) saying, in part:<br>
+					<br>
+					"I just had an interview for VP of Engineering and for review I used your post ["What I've Learned From Failure"] beforehand. I aced the interview and got the job. There was of course experience and background I brought to the table, but that post is worthy of an MBA. I was actually asked where I got my MBA (I don't have one) after reviewing your points during the interview."<br>
+					<br>
+					That just blows me away. He emailed today to say things are going well, and that his experience is really paying off. Congratulations, Shawn!<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1143146400000#c114314644450653392" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:40 PM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=114314644450653392" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="114314689005502020"></a> Chrish:<br>
+					<br>
+					Thanks for spotting the bugs! No, I do not have a business relationship with Paul Graham.<br>
+					<br>
+					I do think he's onto something interesting with YCombinator, and I enjoyed Startup School 2005.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1143146880000#c114314689005502020" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:48 PM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=114314689005502020" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="114436033735758848"></a> A great read comparing Vista to OS/2, with insights into the politics of multiple development teams:<br>
+					<br>
+					http://www.theregister.com/2006/04/06/os_vista_coding/<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1144360320000#c114436033735758848" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:52 PM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=114436033735758848" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="114449171103235837"></a> A friend of mine translated http://a-bettik.livejournal.com/3787.html as follows:<br>
+					<br>
+					"without topic", title<br>
+					<br>
+					interesting article about management of software projects: "link to raganwal.com article"<br>
+					<br>
+					after english paragraph: from our team, i would have probably tried to withdraw only one person<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1144491660000#c114449171103235837" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<a href="http://blog.rictic.com" rel="nofollow">Peter</a> : 6:21 AM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=114449171103235837" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="115703978828092318"></a> You asked for spelling corrections. I believe "I've worked with teams where the pay scale was determined by an <b>edit</b> from H.R." should read "I've worked with teams where the pay scale was determined by an <b>edict</b> from H.R."<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1157039760000#c115703978828092318" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:56 AM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=115703978828092318" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="115703999156020835"></a> Also, "A week before the function was <b>go</b> go into test" is probably "A week before the function was <b>to</b> go into test"<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1157039940000#c115703999156020835" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:59 AM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=115703999156020835" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="115704059394668730"></a> <i>You asked for spelling corrections.</i><br>
+					<br>
+					Nice, thanks!<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1157040540000#c115704059394668730" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:09 PM
+					</div><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=115704059394668730" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="115995447335045278"></a> Great Post . i read it thrice over last week . very insightfull<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1159954440000#c115995447335045278" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/10079032946958487411" rel="nofollow">PRASHANT SINGH</a> : 5:34 AM
+					</div><span class="item-control blog-admin pid-645197348"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=115995447335045278" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="116223135835932479"></a> ***<br>
+					Superficially, there's a contradiction between the advice to fix a large sytem by making carefully delimited refactorings, and the advice to make substantial changes in order to get significant results. Maybe I'm not clear on what you mean by doing things a substantially different way.<br>
+					***<br>
+					You see, they want you to fix something, but they want you to fix it THEIR way, because THEY KNOW BETTER than you.<br>
+					<br>
+					Maybe. Maybe not. How can you resolve such a conflict?<br>
+					<br>
+					Whenever there is a conflict, there is nothing better than showing evidence.<br>
+					<br>
+					And if you can perform a test, that's better evidence!!!<br>
+					<br>
+					So create a prototype to show what you mean. The prototype can show what works and what doesn't. Then all the talking is innecessary: You have a working prototype.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1162231320000#c116223135835932479" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:02 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116223135835932479" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="116229114295134019"></a> This is the best article I've read about software project management in years!!!<br>
+					<br>
+					Sincerely, thanks for explaining things so clearly and articulated.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1162291140000#c116229114295134019" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/18038018428980968123" rel="nofollow">Common Sense</a> : 5:39 AM
+					</div><span class="item-control blog-admin pid-921514862"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116229114295134019" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="116229384943051618"></a> Very interesting and illuminating.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1162293840000#c116229384943051618" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<a href="http://www.genady.net/rmi/" rel="nofollow">genady</a> : 6:24 AM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116229384943051618" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="116237170716224979"></a> wow, now i have a well documented proof to support my arguments. :) thanks for putting them in such a nice way.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1162371660000#c116237170716224979" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/14590152472447165309" rel="nofollow">thecancerus</a> : 4:01 AM
+					</div><span class="item-control blog-admin pid-1717665035"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116237170716224979" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="116242285732217461"></a> Very interesting reading! I usually don't read blogs but you may have get me started.<br>
+					<br>
+					I am currently looking for a new job. When reading your examples of good development hygiene I thought that it would be a good thing to check this up before accepting a job. Do you have any other recommendations for what to check before accepting a job, either more examples of good development hygiene or anything else?<br>
+					<br>
+					Thanks<br>
+					JMan<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1162422840000#c116242285732217461" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:14 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116242285732217461" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="116959014038447680"></a> Thanks for the insights. I will see if I can use then to get through the new and risky project I am getting involved in at work as a pig to the management's chickens! :O)<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1169590140000#c116959014038447680" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:09 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=116959014038447680" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="4367873036475799123"></a> I don’t read much but thank you for sharing your experience. I don’t know if I left last job or got fired but it was beneficial for me on someone else expense. Doesn’t matter anymore, lesson learned on my part gained maturity and will never work on any project without documentation.<br>
+					<br>
+					SKA<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1195614540000#c4367873036475799123" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;"></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 10:09 PM
+					</div><span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=4367873036475799123" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div>
+				<div class="blogComment">
+					<a name="900187532167804679"></a> thx dear for such a lovely article.<br>
+					<div class="byline">
+						<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html?showComment=1223386380000#c900187532167804679" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;"></span>&nbsp;<a href="http://www.blogger.com/profile/03389091503997419005" rel="nofollow">MANOJ KUMAR</a> : 9:33 AM
+					</div><span class="item-control blog-admin pid-765320623"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&amp;postID=900187532167804679" title="Delete Comment"><span class="delete-comment-icon">&nbsp;</span></a></span>
+				</div><br>
+				<p id="postfeeds"></p><br>
+				<br>
+				<br>
+				<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+			</div>
+		</div>
+		<div id="rightcontent">
+			<div class="SideBarTitle">
+				<a href="http://reginald.braythwayt.com">Reg Braithwaite</a>
+			</div><br>
+			<br>
+			<div class="SideBarTitle">
+				Recent Writing
+			</div><a href="http://homoiconic.com">Homoiconic</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Share
+			</div><a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> / <a href="http://github.com/raganwald/andand">andand</a> / <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> / <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> / <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> / <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> / <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Beauty
+			</div><!-- idioms -->
+			<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> / <a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> / <a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> / <a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> / <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a><br>
+			<br>
+			<a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> / <a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> / <a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> / <a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Work
+			</div><a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> / <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Naïve Approach to Hiring People</a> / <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> / <a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> / <a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> / <a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Management
+			</div><a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> / <a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> / <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> / <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> / <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> / <a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I’ve learned from failure</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Notation
+			</div><!-- languages -->
+			<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> / <a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> / <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> / <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> / <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> / <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> / <a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Opinion
+			</div><a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> / <a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> / <a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> / <a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> / <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I’ve Learned From Sales</a> <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a><br>
+			<br>
+			<div class="SideBarTitle">
+				Whimsey
+			</div><a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> / <a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin’s Technique for Managing his Manager</a> / <a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> / <a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> / <a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a><br>
+			<br>
+			<div class="SideBarTitle">
+				History
+			</div><a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> / <a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> / <a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> / <a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> / <a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> / <a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> / <a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> / <a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> / <a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> / <a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> / <a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> / <a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> / <a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> / <a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> / <a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> / <a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> / <a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> / <a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> / <a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> / <a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> / <a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> / <a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> / <a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> / <a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> / <a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> / <a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> / <a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> / <a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> / <a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> / <a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> / <a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> / <a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> / <a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> / <a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> / <a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> / <a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> / <a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> / <a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> / <a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> / <a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> / <a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> / <a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> / <a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> / <a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> / <a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> / <a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> / <a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> / <a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /<br>
+			<br>
+		</div>
+		<div style="visibility: hidden">
+			<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+</script> <noscript><img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt=""></noscript>
+		</div>
+	</body>
+</html>

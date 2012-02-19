@@ -1,0 +1,351 @@
+<html> 
+<head>
+        
+        <title>Striking up a conversation about my business idea</title>
+
+	<link rel="stylesheet" type="text/css" href="/blog.css" />
+	<link rel="stylesheet" type="text/css" href="/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://weblog.raganwald.com/"><img src="http://weblog.raganwald.com/assets/raganwald_2008_350_150" 
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Tuesday, October 04, 2005</div>
+			
+
+			<div class="Post"><a name="112826870067085698">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://weblog.raganwald.com/2005/10/striking-up-conversation-about-my.html" title="permanent link">Striking up a conversation about my business idea</a></span>
+					<div style="clear:both;"></div>A personal note:<br /><br />This post is quite off topic from the theme (if there is a theme) of this weblog. I try to share my experience (good and bad). By experience, I mean things I believe to be the case thanks to having experienced them from concept to action right through to consequences.<br /><br />Now I'm sharing some of my thoughts as I fashion a concept into a piece of software art. As I haven't suffered the consequences, I have no experience to impart.<br /><br />All I can say in defense of these posts is:<br /><br /><span style="font-style: italic;">"Our show may not be fancy, but it's noisy and it's free!"<br /><br />...<br /></span><br />From "<a href="http://www.randsinrepose.com/archives/2005/09/30/signs_of_art.html">Signs of Art</a>":<br /><p></p><blockquote><p><span style="font-style: italic;">Art is "the documentation of a thousand interesting decisions"</span>. <span style="font-size:85%;">[emphasis mine]</span><br /></p>   <p>Let's take that apart word by word:</p>   <p><b>"The documentation..."</b> In order to qualify as art, you've got to be able to share it with others. This means capturing it on some canvas whether it's <a href="http://www.amazon.com/exec/obidos/tg/detail/-/0440180295?v=glance" target="_blank" class="blines3" title="Link outside of this blog">paper</a>, a <a href="http://www.imdb.com/title/tt0114814/" target="_blank" class="blines3" title="Link outside of this blog">DVD</a>, a <a href="http://www.alistapart.com/" target="_blank" class="blines3" title="Link outside of this blog">web page</a>, a <a href="http://maps.google.com/maps?oi=map&q=Boston,+MA" target="_blank" class="blines3" title="Link outside of this blog">city</a>, or <a href="http://www.flickr.com/photos/alenahra/16568666/" target="_blank" class="blines3" title="Link outside of this blog">your skin</a>. If you can't share your art, it's not art. It's a conversation with yourself and I'm sure you're fascinating, but why not share it with the rest of us?</p>   <p><b>"... a thousand..." </b> A thousand is a swag. It describes that there needs to be some perception of effort for a work to be art... I'm not suggesting that an outside observer needs to look at art and say, "Gee, that looks hard to do. I couldn't do that." The observer needs to experience something in the piece whether it's the size, weight, or complexity of the work and can't be created with a single trivial decision.</p>   <p><b>"...interesting decisions...</b>" Now, here's the heart. Art is when someone captures a set of decisions worth remembering. Blue or red? Serif or sans serif? Ruby or Python? ... It's a personal thing. Some decisions will inspire, some will bore and the sum of all the decisions will affect each person differently.</p>   <p>Software is art.<br /></p> <div style="text-align: right;">—Michael "<a href="http://en.wikipedia.org/wiki/Rands">Rands</a>" Lopp</div></blockquote><p>Well, I've been having "a conversation with myself" for two years and it's time to share. I'm pretty confident I've made quite a few decisions. Are they interesting? You be the judge. Some of them are fashionable right now (delivering an AJAX application on a subscription basis), some not (development tools).<br /></p>   <p></p><blockquote>I'm going to kvetch about the so-called "intellectual property" laws: they make it hard to have a meaningful dialogue with the world. That's because they're really about <a href="http://www.jwz.org/doc/iwtbf.html">keeping secrets, not possession of property</a>.<br /></blockquote>I'm not worried about my ideas being "stolen." For starters, if anything I'm considering is so obvious that someone reads it and yells "<span style="font-style: italic;">that's it, let's do it, yeah!</span>" based on my description, then I'm pretty sure there are already a dozen people already doing it and we're only talking about adding one more competitor.<br /><p></p> <blockquote><p>"Don't worry about people stealing your ideas. If your ideas are any good, you'll have to ram them down people's throats."<br /></p>   <div style="text-align: right;">—Howard Aiken</div> </blockquote> <p>So here goes, I'm going to start talking about the business model. I think it's pretty safe to say that I will not ever apply for a business method patent.</p> <p><span style="font-weight: bold;">Where's the beef?</span><br /></p> <p>Let's start with the business idea. There are two value propositions. The first value proposition is "the beef." It's how we will attract users and grow. <span style="font-weight: bold;">We help individual members of a software development team build software</span>. The first value proposition is all about the team members: the product managers, the team leaders, the testers, and the programmers.<br /></p>Here's the product:<br /><blockquote>Our product is a <a href="http://en.wikipedia.org/wiki/Wiki">wiki</a>. It's a web site that describes the state of their software development project. The value proposition to team members is that the wiki helps our users organize their work and communicate with their team mates.</blockquote>  <ul>       </ul>There's a bit more than repackaging any of the zillions of free <a href="http://en.wikipedia.org/wiki/List_of_wiki_software">wiki servers</a>:<br /><ul>   <li>There is special support for the semantics of software development. There is an <a href="http://en.wikipedia.org/wiki/Ontology">ontology</a> that includes entities like code, builds, releases, acceptance tests, defects, and, of course, deadlines.</li><li>There is special support for tracking and inspecting the history of projects.<br /></li>    <li>There is integration with existing tools like issue tracking software and source code control.<br /></li> </ul>Before I get into some of the details, let's look at the business idea from Rands' software as art perspective. What are some of the decisions that drove the first value proposition and the wiki approach?<br /><br /><span style="font-weight: bold;">One decision is to sell from the bottom up</span> (for more about that, here's <a href="/2005/08/yester-dreams.html">my rueful explanation</a>). That drives an approach to the product. For example: the product has to provide value to even a single user on a team; it has to integrate with existing tools; and it cannot require a server installation.<br /><br />The fallout from the bottom-up decision (actually it was a reversal of another decision) has been heavy. Most of the big wins I conjectured for a software development team have been "boil the pond" stories: they only work if the entire team adopts a practice.<br /><br />When you think of one user at a time, you have to think a lot smaller in some ways. Two things that stand out are helping people <span style="font-weight: bold;">organize their own work</span> and <span style="font-weight: bold;">communicate clearly</span>. Thus the wiki.<br /><br />Decisions are at least as much about what a project <span style="font-style: italic;">isn't</span> than what it is. I have a jillion ideas about how wonderful things will be when a critical mass of users on a single project adopt the product. Nevertheless, <span style="font-weight: bold;">it isn't about making teams effective, it's about making individuals effective</span>.<br /><br />I also have strong opinions about the benefits of integrating release management with continuous integration, source code control and automated acceptance testing. Nevertheless, <span style="font-weight: bold;">it isn't a build and/or release tool</span>.<br /><br />I think I have some idea what kind of development software <a href="http://www.jwz.org/doc/groupware.html">managers want to buy</a>. There's always a workflow component. Nevertheless, <span style="font-weight: bold;">it isn't about setting up a process and constraining users' behaviour</span>.<br /><br />I'll be circulating more detail soon, including the second value proposition. Please feel free to comment publicly or privately: I welcome all feedback.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://weblog.raganwald.com/2005/10/striking-up-conversation-about-my.html" title="permanent link">4:00 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Striking up a conversation about my business idea</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="112966865267791343"></a> 				have you seen Trac? (http://www.edgewall.com/trac/)  Sounds at least superficially similar to what you describe.<br />
+								<div class="byline"><a href="http://weblog.raganwald.com/2005/10/striking-up-conversation-about-my.html?showComment=1129668600000#c112966865267791343" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11003648392946638242" rel="nofollow">Jonathan Ellis</a> : 4:50 PM</div>
+
+								<span class="item-control blog-admin pid-301203205"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=112966865267791343" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://weblog.raganwald.com/welcome.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://reginald.braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://weblog.raganwald.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://weblog.raganwald.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://weblog.raganwald.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://weblog.raganwald.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://weblog.raganwald.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://weblog.raganwald.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://weblog.raganwald.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://weblog.raganwald.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://weblog.raganwald.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://weblog.raganwald.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://weblog.raganwald.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://weblog.raganwald.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://weblog.raganwald.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://weblog.raganwald.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://weblog.raganwald.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://weblog.raganwald.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://weblog.raganwald.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://weblog.raganwald.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://weblog.raganwald.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://weblog.raganwald.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://weblog.raganwald.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://weblog.raganwald.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://weblog.raganwald.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://weblog.raganwald.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://weblog.raganwald.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://weblog.raganwald.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://weblog.raganwald.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://weblog.raganwald.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://weblog.raganwald.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://weblog.raganwald.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://weblog.raganwald.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://weblog.raganwald.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://weblog.raganwald.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>
