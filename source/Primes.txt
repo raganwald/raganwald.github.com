@@ -1,0 +1,49 @@
+/**
+ *   Primes.Java
+ *   Copyright 2002, Reginald Braithwaite-Lee
+ *   http://www.braithwaite-lee.com/
+ *
+ */
+
+public class Primes
+{
+
+public static void main (String[] args)
+{
+	String help = "Use \"java Primes 1000\" to print 1,000 prime numbers";
+	int numberOfPrimes = 1000;
+	if (0 == args.length ) {
+		System.out.println(help);
+	}
+	if ( args.length > 0 ) {
+		try {
+			numberOfPrimes = Integer.parseInt(args[0]);
+		}
+		catch (NumberFormatException nfe) {
+			System.out.println(help);
+		}
+
+	} 
+	System.out.println(2);
+	System.out.println(3);
+	int[] primes = new int[numberOfPrimes - 1];
+	primes[0] = 3;
+	for (int iNumOfPrime = 1; iNumOfPrime < primes.length; iNumOfPrime++) {
+		int candidate = primes[iNumOfPrime-1];
+		int remainder = 0;
+		do {
+			candidate += 2;
+			for (int iTest = 0; iTest < iNumOfPrime; iTest++) {
+				if ( primes[iTest]*primes[iTest] > candidate ) {
+					remainder = -1;
+					break;
+				}
+				if ( (remainder = candidate % primes[iTest]) == 0 ) break;
+			}
+		} while ( 0 == remainder );
+		System.out.println( primes[iNumOfPrime] = candidate );
+	}
+}
+
+}
+

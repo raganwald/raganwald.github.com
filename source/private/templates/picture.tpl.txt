@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+	<TITLE>PICTURE.NAME</TITLE>
+	<!-- COMP PAGE TEMPLATE -->
+</HEAD>
+<BODY>
+
+<IMG
+	SRC="PICTURE.PUBLICURLPREFIXPICTURE.COMPNAME"
+	HEIGHT=PICTURE.COMPHEIGHT
+	WIDTH=PICTURE.COMPWIDTH><BR>
+<TABLE>
+	<TR><TD>Name:</TD><TD>PICTURE.NAME</TD></TR>
+	<TR VALIGN=TOP><TD>Caption:</TD><TD>PICTURE.CAPTION</TD></TR>
+	<TR><TD>Dimensions:</TD><TD>PICTURE.HEIGHT by PICTURE.WIDTH</TD></TR>
+</TABLE>
+
+<p>The image on this page is a low resolution sample for viewing
+purposes only. A high resolution image suitable for print media
+can be downloaded separately: instructions are at the <A HREF="#bottom">bottom</A>
+of this page. By downloading an image, client agrees
+to the terms of the following license agreement:</p>
+
+<h4>License Agreement</h4>
+
+<p>All use of wireshooter.com images is limited to one-time editorial use
+unless otherwise specified in writing by wireshooter.com. Client agrees
+to pay the previously negotiated rate of images with individual
+contributing photographers.</p>
+
+<p>All photographs may not be resold, republished or repackaged in any
+media without prior written consent from individual contributing
+photographers. All photographs should be credited with the ©2000 notice
+preceding the photographer's name.</p>
+
+<p>No model releases or other releases exist on any wireshooter.com 
+images.</p>
+
+<p>No wireshooter.com images may be stored in any electronic database for
+future use unless agreed to in writing by the individual contributing
+photographers.</p>
+
+<A NAME="bottom"><p>Click the appropriate link:</p>
+
+<p><B><A HREF="PICTURE.CLIENTURLPREFIXPICTURE.SRC">I agree</A></B>
+to the terms of this license (Shift-click to download).</p>
+
+<p><B><A HREF="/">I do not agree</A></B> and do not wish to download this image.</p></A>
+
+</BODY>
+</HTML>

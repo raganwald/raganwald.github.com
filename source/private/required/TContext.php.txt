@@ -1,0 +1,87 @@
+<?php
+
+// TContext.php
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+class TContext
+{
+
+var $table;
+var $columns = array();
+var $values = array();
+var $top = -1;
+
+function TContext($tableName)
+{
+	assert( $tableName );
+	$this->table = $tableName;
+}
+
+function pushBoolean($columnName, $booleanValue)
+{
+	assert( 'boolean' == gettype($booleanValue) );
+	assert( is_string($columnName) );
+	assert( $columnName );
+	
+	$this->top++;
+	
+	assert( !isset($this->columns[$top]) );
+	assert( !isset($this->values[$top]) );
+	
+	$this->columns[$top] = $columnName;
+	$this->values[$top] = $booleanValue;
+}
+
+function pushString($columnName, $stringValue)
+{
+	assert( is_string($stringValue) );
+	assert( is_string($columnName) );
+	assert( $columnName );
+	assert( $stringValue );
+	
+	$this->top++;
+	
+	assert( !isset($this->columns[$top]) );
+	assert( !isset($this->values[$top]) );
+	
+	$this->columns[$top] = $columnName;
+	$this->values[$top] = $stringValue;
+}
+
+function pop ()
+{
+	assert( $top >= 0 );
+	assert( isset($this->columns[$top]) );
+	assert( isset($this->values[$top]) );
+	
+	unset( $this->columns[$top] );
+	unset( $this->values[$top] );
+	
+	$top--;
+}
+
+function getSize ()
+{
+	return $top + 1;
+}
+
+}
+
+?>

@@ -1,0 +1,7 @@
+<!-- Template for no index -->
+
+<BR>
+<BR>
+<FONT SIZE=4>
+Sorry, there are no items in this category.
+</FONT>

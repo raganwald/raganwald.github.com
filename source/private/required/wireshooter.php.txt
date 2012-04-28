@@ -1,0 +1,103 @@
+<?php
+
+// wireshooter.php
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+class TSizeLimit
+{
+
+var $X = 0;
+var $Y = 0;
+
+function TSizeLimit ($x_, $y_)
+{
+	$this->X = $x_;
+	$this->Y = $y_;
+}
+
+}
+
+$THUMBNAIL_LIMIT = new TSizeLimit(128,128);
+$COMP_LIMIT = new TSizeLimit(512,512);
+
+define("defaultcopyright","www.wireshooter.com/copyright 2000 Christine Chew");
+define("copyfontsize",1);
+
+class TSiteStructure
+{
+
+var $root = 'c:/program files/apache group/apache/htdocs';
+var $publicimages = '/public/images/';
+var $clientsimages = '/clients/images/';
+var $publicstructure = '/public/html/';
+
+function ensureDir ($path)
+{
+	$type = filetype( $path );
+	
+	if ( '' == $type )
+	{
+		if ( !mkdir($path, 0700) ) {
+			echo( "can't create directory $path ($type)" );
+			exit;
+		}
+	}
+	elseif ( !'dir' == $type ) {
+		echo( "$path is not a directory: '$type'" );
+		exit;
+	}
+	
+}
+
+function simpleHash ($name, $hashlen) {
+	// assumes 8 bit characters!
+	return substr( $this->longHash($name,'simple hash'), 0, $hashlen );
+}
+
+function longHash
+(
+	$name,
+	$hashsalt = 'rock and roll and roll and rock, baby sweet loving dont you ever stop'
+)
+{
+	// assumes 8 bit characters!
+	return md5( trim($name) . $hashsalt );
+}
+
+function publicDirName ($photoname) {
+	return $this->simpleHash($photoname,2);
+}
+
+function clientsDirName ($photoname) {
+	return $this->longHash($photoname);
+}
+
+function TSiteStructure ()
+{
+	$this->ensureDir($this->root . $this->publicimages);
+	$this->ensureDir($this->root . $this->clientsimages);
+	$this->ensureDir($this->root . $this->publicstructure);
+}
+
+}
+
+$WIRESHOOTER = new TSiteStructure();
+
+?>

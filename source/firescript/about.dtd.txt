@@ -1,0 +1,201 @@
+<?xml encoding="UTF-8"?>
+<!--
+************************************************************************
+about.dtd - a text DTD
+Based on a DTD written by David Megginson <dmeggins@microstar.com>
+************************************************************************
+-->
+
+<!-- French character entities -->
+
+<!--
+	<!ENTITY quot "?">
+	<!ENTITY amp "?">
+	<!ENTITY lt "?">
+	<!ENTITY gt "?">
+
+	<!ENTITY #161 "?">
+	<!ENTITY #162 "?">
+	<!ENTITY #163 "?">
+	<!ENTITY #164 "?">
+	<!ENTITY #165 "?">
+	<!ENTITY #166 "?">
+	<!ENTITY #167 "?">
+	<!ENTITY #168 "?">
+	<!ENTITY #169 "?">
+	<!ENTITY #170 "?">
+	<!ENTITY #171 "?">
+	<!ENTITY #172 "?">
+	<!ENTITY #173 "?">
+	<!ENTITY #174 "?">
+	<!ENTITY #175 "?">
+	<!ENTITY #177 "?">
+	<!ENTITY #180 "?">
+	<!ENTITY #181 "?">
+	<!ENTITY #182 "?">
+	<!ENTITY #183 "?">
+	<!ENTITY #184 "?">
+	<!ENTITY #186 "?">
+	<!ENTITY #187 "?">
+	<!ENTITY #191 "?">
+-->
+	<!ENTITY Agrave "?">
+	<!ENTITY Aacute "?">
+	<!ENTITY Acirc "?">
+	<!ENTITY Atilde "?">
+	<!ENTITY Auml "?">
+	<!ENTITY Aring "?">
+	<!ENTITY AElig "?">
+	<!ENTITY Ccedil "?">
+	<!ENTITY Egrave "?">
+	<!ENTITY Eacute "?">
+	<!ENTITY Ecirc "?">
+	<!ENTITY Euml "?">
+	<!ENTITY Igrave "?">
+	<!ENTITY Iacute "?">
+	<!ENTITY Icirc "?">
+	<!ENTITY Iuml "?">
+	<!ENTITY ETH "?">
+	<!ENTITY Ntilde "?">
+	<!ENTITY Ograve "?">
+	<!ENTITY Oacute "?">
+	<!ENTITY Ocirc "?">
+	<!ENTITY Otilde "?">
+	<!ENTITY Ouml "?">
+	<!ENTITY Oslash "?">
+	<!ENTITY Ugrave "?">
+	<!ENTITY Uacute "?">
+	<!ENTITY Ucirc "?">
+	<!ENTITY Uuml "?">
+	<!ENTITY Yacute "?">
+	<!ENTITY THORN "?">
+	<!ENTITY szlig "?">
+	<!ENTITY agrave "?">
+	<!ENTITY aacute "?">
+	<!ENTITY acirc "?">
+	<!ENTITY atilde "?">
+	<!ENTITY auml "?">
+	<!ENTITY aring "?">
+	<!ENTITY aelig "?">
+	<!ENTITY ccedil "?">
+	<!ENTITY egrave "?">
+	<!ENTITY eacute "?">
+	<!ENTITY ecirc "?">
+	<!ENTITY euml "?">
+	<!ENTITY igrave "?">
+	<!ENTITY iacute "?">
+	<!ENTITY icirc "?">
+	<!ENTITY iuml "?">
+	<!ENTITY ieth "?">
+	<!ENTITY ntilde "?">
+	<!ENTITY ograve "?">
+	<!ENTITY oacute "?">
+	<!ENTITY ocirc "?">
+	<!ENTITY otilde "?">
+	<!ENTITY ouml "?">
+<!--
+	<!ENTITY #247 "?">
+-->
+	<!ENTITY oslash "?">
+	<!ENTITY ugrave "?">
+	<!ENTITY uacute "?">
+	<!ENTITY ucirc "?">
+	<!ENTITY uuml "?">
+	<!ENTITY yacute "?">
+	<!ENTITY thorn "?">
+
+<!-- Inline mixed content -->
+<!ENTITY % inline "#PCDATA|emphasis">
+
+<!-- The whole about -->
+<!ELEMENT about (front, body)>
+
+<!-- The front matter -->
+<!ELEMENT front (title, company+, author, revision-history)>
+
+<!-- the company descriptions -->
+<!ELEMENT company (%inline;)*>
+<!ATTLIST company
+  language (English|French) "English">
+
+<!-- The about's title -->
+<!ELEMENT title (%inline;)*>
+
+<!-- The about's author(s) -->
+<!ELEMENT author (%inline;)*>
+
+<!-- The revision history of the electronic text -->
+<!ELEMENT revision-history (item+)>
+
+<!-- An item in the revision history -->
+<!ELEMENT item (%inline;)*>
+
+<!-- The main body of the about -->
+<!-- in this version, we don't support inline images -->
+
+<!ELEMENT body (p | IMG | BR)+>
+
+<!-- A single metrical p -->
+<!ELEMENT p (%inline;)*>
+<!ATTLIST p
+  language (English|French) "English">
+
+<!-- An emphasised phrase -->
+<!ELEMENT emphasis (%inline;)*>
+
+<!--=================== Images ===========================================-->
+
+<!--
+    -- a Uniform Resource Identifier,
+       see [URI]
+    -->
+<!ENTITY % URI "CDATA">
+
+<!ENTITY % Text "CDATA">
+
+<!ENTITY % LAlign "(top|bottom|left|right)">
+
+<!-- line break -->
+
+<!ELEMENT BR EMPTY>
+<!ATTLIST BR
+	clear	%Text;       #IMPLIED>
+
+<!-- Length defined in strict DTD for cellpadding/cellspacing -->
+<!ENTITY % Length "CDATA"> <!-- nn for pixels or nn% for percentage length -->
+
+<!ENTITY % MultiLength "CDATA"> <!-- pixel, percentage, or relative -->
+
+<!ENTITY % MultiLengths "CDATA"> <!-- comma-separated list of MultiLength -->
+
+<!ENTITY % Pixels "CDATA"> <!-- integer representing length in pixels -->
+
+<!ENTITY % IAlign "(top|middle|bottom|left|right)"> <!-- center? -->
+
+<!-- To avoid problems with text-only UAs as well as 
+   to make image content understandable and navigable 
+   to users of non-visual UAs, you need to provide
+   a description with ALT, and avoid server-side image maps -->
+
+
+<!ELEMENT IMG EMPTY>
+<!-- Embedded image -->
+
+<!ATTLIST IMG
+  src         %URI;          #REQUIRED
+  alt         %Text;         #REQUIRED
+  longdesc    %URI;          #IMPLIED
+  height      %Length;       #IMPLIED
+  width       %Length;       #IMPLIED
+  usemap      %URI;          #IMPLIED
+  ismap       (ismap)        #IMPLIED
+  align       %IAlign;       #IMPLIED
+  border      %Length;       #IMPLIED
+  hspace      %Pixels;       #IMPLIED
+  vspace      %Pixels;       #IMPLIED
+  >
+
+<!-- USEMAP points to a MAP element which may be in this document
+  or an external document, although the latter is not widely supported -->
+
+<!-- end of DTD -->

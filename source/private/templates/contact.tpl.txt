@@ -1,0 +1,14 @@
+<!-- template for contact information -->
+
+<FONT SIZE=3>
+<p>For more information about wireshooter.com, or to
+license images, contact:</p>
+<p>Christine Chew<BR>
+&nbsp;&nbsp;&nbsp;email: <A HREF="mailto:shooter@neosport.com">shooter@neosport.com</a> phone: 416-608-3900</p>
+<p>Heinz Ruckemann<BR>
+&nbsp;&nbsp;&nbsp;email: <A HREF="mailto:upivpix@axionet.com">upivpix@axionet.com</a></p></FONT>
+<FONT SIZE=2>
+<p>Wireshooter site built by Reg Braithwaite-Lee<BR>
+&nbsp;&nbsp;&nbsp;email: <A HREF="mailto:reg@yell-it-out.com">reg@yell-it-out.com</a></p>
+<p>and designed by Tara Chew<BR>
+&nbsp;&nbsp;&nbsp;email: <A HREF="mailto:isoteric@altavista.com">isoteric@altavista.com</a></p></FONT>

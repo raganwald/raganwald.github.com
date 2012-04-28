@@ -1,0 +1,154 @@
+<?php
+
+// wiregrinder.php
+// grinds a site out of the blackboard pictures!
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+require_once('TMirrorGrinder.php');
+
+class TContext
+{
+
+var $element;
+var $children;
+
+function TContext ()
+{
+	$this->children = array();
+}
+
+}
+
+function getNewIndex ($tagName)
+{
+	echo("...trying $tagName<BR>");
+	switch ( strtolower($tagName) ) {
+		case 'mirror':
+			echo('...found!!!<BR>');
+			return new TMirrorGrinder();
+			break;
+		default:
+			return false;
+	}
+}
+
+// we have to do some mucking with the stack:
+//
+// PHP's array index operator is a reference,
+// but the assignment operator passes by value!
+
+$wg_context_stack = array();
+$wg_next_stack_index = 0;
+
+function wg_HandleStartElement ($parser, $name, $attributes)
+{
+	global $wg_context_stack, $wg_next_stack_index;
+	
+	$element = getNewIndex($name);
+	$wg_context_stack[$wg_next_stack_index] = new TContext();
+	if ( $element ) {
+		echo('...elemental<BR>');
+		$element->setAttributes($attributes);
+		if ( $wg_next_stack_index ) { // this has a parent!
+			$topIndex = $wg_next_stack_index - 1;
+			$wg_context_stack[$topIndex]->children[] = $element; // add this element to the parent's context!
+		}
+	}
+	$wg_context_stack[$wg_next_stack_index]->element = $element; // may be null
+	echo( $wg_context_stack[$wg_next_stack_index]->element . ' -> ' . $element . '<BR>' );
+	$wg_next_stack_index++;
+	echo( "&lt;$name&gt;<BR>" );
+}
+
+function wg_HandleEndElement ($parser, $name)
+{
+	global $wg_context_stack, $wg_next_stack_index;
+	
+	if ( $wg_next_stack_index > 0 ) {
+		$wg_next_stack_index--; // pop this element off
+		// we can now grind this element
+		if ( $wg_context_stack[$wg_next_stack_index]->element ) { // there actually was something to grind
+			echo('...grinding!<BR>');
+			$wg_context_stack[$wg_next_stack_index]->element->doGrind();
+		}
+		else echo('...not grinding<BR>');
+		unset($wg_context_stack[$wg_next_stack_index]->element);
+		unset($wg_context_stack[$wg_next_stack_index]);
+	}
+	echo( "&lt;/$name&gt;<BR>" );
+
+}
+
+// TTagGrinder can grind any tag. It knows how to create a tag from
+// the name of the tag.
+class TTagGrinder
+{
+
+var $bufSize = 4096;
+var $parser = 0;
+
+function TTagGrinder ()
+{
+	$this->ensureParser();
+	
+}
+
+function ensureParser () {
+	if ( !$this->parser ) {
+		$this->parser = xml_parser_create();
+		if ( !$this->parser ) {
+			die('Unable to create XML parser');
+		}
+		xml_set_element_handler($this->parser,"wg_HandleStartElement","wg_HandleEndElement");
+	}
+}
+
+function doGrind($filePath)
+{
+	$this->ensureParser();
+	
+	if ( !($fp = fopen($filePath,'r')) ) {
+		die("Could not open $filePath for reading!");
+	}
+	
+	while ( $data = fread($fp, $this->bufSize) ) {
+		if ( !xml_parse($this->parser, $data, feof($fp)) ) {
+			xml_parser_free($this->parser);
+			die (
+				sprintf(
+					"XML Error %d %d",
+					xml_get_current_line_number($parser),
+					xml_get_current_column_number($parser)
+				)
+			);
+		}
+	}
+}
+
+function release () {
+	if ( $this->parser ) {
+		xml_parser_free($this->parser);
+		$this->parser = 0;
+	}
+}
+
+}
+
+?>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-16" standalone="no"?>
+
+<!DOCTYPE about PUBLIC "-//Braithwaite-Lee-Megginson//DTD Simple about//EN" "about.dtd">
+
+<about>
+
+<front>
+	<title>John Sartz</title>
+	<company language="English">Global Strategy</company>
+	<company language="French">Strat&eacute;gie Globale Inc.</company>
+	<author>Global Strategy</author>
+	<revision-history>
+		<item>06-14-1998 Converted to XML by Reginald Braithwaite-Lee</item>
+	</revision-history>
+</front>
+
+
+<body>
+
+	<IMG ALIGN="MIDDLE" SRC="http://www.globalstrat.com/shared_images/global_strategy_logo.GIF" WIDTH="201" HEIGHT="103" BORDER="0" ALT="Logo"/>
+	
+	<BR/>
+	
+	<IMG ALIGN="RIGHT" SRC="/xml/sartz.jpg" WIDTH="160" HEIGHT="203" ALT="John Sartz"/>
+	
+	<p language="English">John Sartz is a graduate of the University of California at Berkeley and
+	has an MBA from the University of Toronto. He manages over $500 million in assets
+	in the Global Strategy Canadian Small Cap Fund and the Canadian Opportunities
+	Fund.</p>
+	
+	<p language="French">John Sartz est dipl&ocirc;m&eacute; de l'Universit&eacute; de la Californie
+	&agrave; Berkeleyet d&eacute;tient un MBA de l'Universit&eacute; de Toronto. Il g&egrave;re un
+	actif d'environ 600 millions de dollars dans le Fonds canadien de petites capitalisations et
+	le Fonds de perspectives canadiennes.</p>
+	
+	<p language="English">John, a well-respected portfolio manager with more than 25 years of
+	experience in Canadian equity investing, and touted as one of the best and
+	most knowledgeable small-cap managers in Canada, joined Global Strategy this
+	fall as Vice-President, Investments.</p>
+	
+	<p language="French">John, un gestionnaire de portefeuille respect&eacute; qui compte plus de
+	25 ans d'exp&eacute;rience dans les placements en actions au Canada, est aussi reconnu comme
+	l'un des meilleurs gestionnaires de portefeuilles de petites capitalisations et comme l'un
+	de ceux qui connaissent le mieux ce domaine au Canada. Il est vice-pr&eacute;sident,
+	placements &agrave; la Soci&eacute;t&eacute; financi&egrave;re Strat&eacute;gie Globale Inc.</p>
+	
+</body>
+
+</about>

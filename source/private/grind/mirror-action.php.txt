@@ -1,0 +1,245 @@
+<!-- 
+	mirror-action.php
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+-->
+
+<?php
+
+require_once('admin.php');
+
+function refuseToValidateMirror ($message, $ftp_stream = 0) {
+	$header = 'Location: mirror.php?';
+	$header .= '&message='.urlencode($message);
+	$values = array(
+		'ftp_host' => $ftp_host,
+		'ftp_root_dir' => $ftp_root_dir,
+		'ftp_user' => $ftp_user
+	);
+	while ( list($key,$value) = each($values) ) {
+		$header .= '&';
+		$header .= urlencode($key);
+		$header .= '=';
+		$header .= urlencode($value);
+	}
+	header($header);
+	if ( $ftp_stream ) ftp_quit($ftp_stream);
+	exit;
+}
+
+function mirror_dir ($optimize, $recursive = true, $pattern = '.*') {
+
+	// we are IN the created offset directories
+	
+	// echo("\rpattern = '$pattern'<BR>");
+
+	global $ftp_stream;
+	
+	$temp_ftp_names = ftp_nlist($ftp_stream,'.');
+	$ftp_names = array();
+	if ( $temp_ftp_names) {
+		reset($temp_ftp_names);
+		while ( list($idx,$name) = each($temp_ftp_names) ) {
+			$ftp_names[$name] = $name;
+		}
+	}
+	
+	$local_root_dir_handle = opendir('.');
+	if ( !$local_root_dir_handle ) return false;
+	
+	while ( $file = readdir($local_root_dir_handle) ) {
+
+		if ( '.'  == $file ) continue;
+		if ( '..' == $file ) continue;
+		
+		if ( 'dir' == filetype($file) ) {
+			if ( $recursive ) {
+				if ( !@ftp_chdir($ftp_stream, $file) ) {
+					@ftp_mkdir ($ftp_stream, $file);
+					@ftp_site ($ftp_stream, "CHMOD 755 $file");
+					if ( !@ftp_chdir($ftp_stream, $file) ) return false;
+					echo("\rMade directory $file<BR>");
+				}
+				else print "\r<LI>Navigated to directory $file:<UL>";
+				if ( !chdir($file) ) return false;
+				if ( !mirror_dir($optimize,$recursive,$pattern) ) return false;
+				if ( !@ftp_chdir($ftp_stream, '..') ) return false;
+				chdir('..');
+				print "</UL></LI>";
+			}
+		}
+		else if ( 'file' == filetype($file) ) {
+			if ( !eregi($pattern,$file,$arr) ) {
+				// echo ( "\r<LI>Skipping $file</LI>" );
+				continue;
+			}
+			if ( $ftp_names[$file] ) { // exists
+				if ( $optimize ) {
+					echo ( "\r<LI>Detected existing copy of $file: skipping.</LI>" );
+					continue;
+				}
+				if ( !ftp_delete($ftp_stream,$file) ) {
+					echo ( "\r<LI><B>Unable to delete old copy of $file.</B></LI>" );
+					continue;
+				}
+			}
+			if ( !ftp_put($ftp_stream, $file, $file, FTP_BINARY) ) {
+				echo ( "\r<LI><B>Unable to put $file.</B></LI>" );
+				continue;
+			}
+			else {
+				ftp_site ($ftp_stream, "CHMOD 644 $file");
+				echo("\r<LI>Put $file successfully.</LI>");
+			}
+		}
+	}
+	
+	closedir($local_root_dir_handle);
+	
+	flushAll();
+	
+	return true;
+
+}
+
+function top_mirror_dir ($offset_path = '', $optimize = false, $recursive = true, $pattern = '.*') {
+
+	global $ftp_stream;
+	global $ftp_root_dir;
+	global $local_root_dir;
+
+	assert($ftp_root_dir != '');
+	assert($local_root_dir != '');
+	assert(ftp_chdir ($ftp_stream, $ftp_root_dir));
+	assert(chdir($local_root_dir));
+	
+	echo("<OL>");
+
+	$offset_array = explode ( '/', $offset_path );
+	
+	reset($offset_array);
+	while ( list($idx,$dir_name) = each($offset_array) ) {
+		if ( $dir_name ) {
+			echo( "\r<LI>Navigating to $dir_name</LI>\r<UL>");
+			if ( !@ftp_chdir($ftp_stream, "$dir_name") ) {
+				echo( "<LI>Making $dir_name</LI>");
+				@ftp_mkdir ($ftp_stream, "$dir_name");
+				@ftp_site ($ftp_stream, "CHMOD 755 $dir_name");
+				if ( !@ftp_chdir($ftp_stream, "$dir_name") ) return false;
+			}
+			if ( !chdir($dir_name) ) return false;
+			echo( "\r<LI>$dir_name ok</LI></UL>");
+		}
+	}
+
+	echo ( mirror_dir($optimize,$recursive,$pattern) ?
+				"\r<LI>$offset_path mirrored successfully.</LI>" :
+				"\r<LI>$offset_path <B>failed</b>! Mirror manually.</LI>" );
+	echo("</OL>");
+		
+}
+
+if ( !$ftp_host || !$ftp_root_dir || !$ftp_user ) {
+	refuseToValidateMirror('Please supply an FTP host, FTP directory, user name, and password.');
+}
+
+$ftp_stream = ftp_connect ($ftp_host);
+if ( !$ftp_stream ) {
+	refuseToValidateMirror("Unable to open an FTP connection to $ftp_host.");
+}
+
+$is_logged_in = @ftp_login ($ftp_stream, $ftp_user, $ftp_password);
+if ( !$is_logged_in ) {
+	refuseToValidateMirror("Unable to log in as $ftp_user. Check the user and password.",$ftp_stream);
+}
+	
+if ( !ftp_chdir ($ftp_stream, $ftp_root_dir) ) {
+	refuseToValidateMirror("$ftp_root_dir does not exist or is inaccessible.",$ftp_stream);
+}
+if ( !chdir($local_root_dir) ) {
+	refuseToValidateMirror("$local_root_dir does not exist or is inaccessible.",$ftp_stream);
+}
+
+// from here on in we no longer refuse to validate
+
+?>
+
+<HTML>
+<HEAD><TITLE>Mirroring build to production site</TITLE></HEAD>
+<BODY>
+<H1>Mirroring build to production site</H1>
+
+<?php
+
+require_once('wireshooter.php');
+
+$local_root_dir = $WIRESHOOTER->root;
+
+
+if ( $mirror_images )
+	top_mirror_dir(
+		$WIRESHOOTER->clientsimages,
+		$optimize_images
+	);
+
+if ( $mirror_tc )
+	top_mirror_dir(
+		$WIRESHOOTER->publicimages,
+		$optimize_images,
+		true, // recursive!
+		'(\.jpg|\.jpeg)$' // jpegs only
+	);
+
+if ( $mirror_html ) {
+	top_mirror_dir(
+		$WIRESHOOTER->publicstructure,
+		false, // do not optimize
+		true, // recursive
+		'(\.htm|\.html)$' // HTML only
+	);
+	top_mirror_dir(
+		$WIRESHOOTER->publicimages, // do the comp pages too
+		false, // do not optimize
+		true, // recursive
+		'(\.htm|\.html)$' // HTML only
+	);
+}
+
+top_mirror_dir( // support graphics
+		'/bg/',
+		false
+	);
+
+top_mirror_dir( // home pages
+		'/',
+		false,
+		false // do not recurse!
+	);
+
+?>
+
+<HR>
+
+<B>Done!</B><BR>
+<BR>
+<A HREF="/private/admin/index.html">Admin</A>&nbsp;<A HREF="http://www.wireshooter.com/">Browse Production Site</A>
+
+</BODY>
+</HTML>

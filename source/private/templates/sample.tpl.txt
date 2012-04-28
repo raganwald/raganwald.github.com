@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+	<TITLE>PICTURE.NAME (Sample)</TITLE>
+	<!-- SAMPLE PAGE TEMPLATE -->
+</HEAD>
+<BODY>
+
+<IMG
+	SRC="PICTURE.PUBLICURLPREFIXPICTURE.COMPNAME"
+	HEIGHT=PICTURE.COMPHEIGHT
+	WIDTH=PICTURE.COMPWIDTH><BR>
+<TABLE>
+	<TR><TD>Name:</TD><TD>PICTURE.NAME</TD></TR>
+	<TR VALIGN=TOP><TD>Caption:</TD><TD>PICTURE.CAPTION</TD></TR>
+	<TR><TD>Original Dimensions:</TD><TD>PICTURE.HEIGHT by PICTURE.WIDTH</TD></TR>
+</TABLE>
+
+<I><p>This image is provided as a sample of content available from
+www.wireshooter.com. The image on this page is a low resolution sample for viewing
+purposes only. A high resolution image suitable for print media can be licensed from
+www.wireshooter.com by request.</P></I>
+<p>For more information about wireshooter.com, or to
+license images, contact:</p>
+<p>Christine Chew<BR>
+&nbsp;&nbsp;&nbsp;email: <A HREF="mailto:shooter@neosport.com">shooter@neosport.com</a> phone: 416-608-3900</p>
+<p>Heinz Ruckemann<BR>
+&nbsp;&nbsp;&nbsp;email: <A HREF="mailto:upivpix@axionet.com">upivpix@axionet.com</a></p>
+
+</BODY>
+</HTML>

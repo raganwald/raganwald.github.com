@@ -1,0 +1,83 @@
+<?php
+	// TAbstractRootPage.php
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+class TAbstractRootPage
+{
+
+var $doGindMe = true;
+var $childrenArray = array();
+
+function TAbstractRootPage () {
+	die( 'TAbstractRootPage is an abstract class!' );
+}
+
+// relative to its parent!
+function getRelativeURL () {
+	die('TAbstractRootPage.getRelativeURL is an abstract method!');
+}
+
+function getRelativePath () {
+	die('TAbstractRootPage.getRelativePath is an abstract method!');
+}
+
+function getLabel () {
+	die('TAbstractRootPage.getLabel is an abstract method!');
+}
+
+function setAttributes ($attributeArray)
+{
+}
+
+function setChildren (&$in_childrenArray)
+{
+	$childrenArray = $in_childrenArray;
+}
+
+function addChild (&$child)
+{
+	$childrenArray[] = $child;
+}
+
+// Must always declare this as taking a reference
+
+function _decorateContext(&$context) {
+	die( 'TAbstractRootPage._decorateContext(&$context) is an abstract method!' );
+}
+
+// Must always declare this as taking a reference
+
+function _doGrind (&$context) {
+	die( 'TAbstractRootPage._doGrind() is an abstract method!' );
+}
+
+function doGrind (&$context) {
+	if ( $this->doGrindMe ) {
+		$this->_decorateContext($context); // adds any local context information
+		$this->_doGrind($context); // adds any local context information
+		$this->doGrindMe = false;
+		return true;
+	}
+	return false;
+}
+
+}
+
+?>

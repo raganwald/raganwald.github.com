@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+	<TITLE>PICTURE.NAME Download</TITLE>
+</HEAD>
+<BODY>
+
+<p><IMG
+	SRC="PICTURE.CLIENTURLPREFIXPICTURE.COMPNOCOPYNAME"
+	HEIGHT=PICTURE.COMPNOCOPYHEIGHT
+	WIDTH=PICTURE.COMPNOCOPYWIDTH></p>
+
+<H1>PICTURE.NAME Download</H1>
+
+<p><TABLE>
+	<TR VALIGN=TOP><TD>Caption:</TD><TD>PICTURE.CAPTION</TD></TR>
+	<TR><TD>Dimensions:</TD><TD>PICTURE.HEIGHT by PICTURE.WIDTH</TD></TR>
+</TABLE></p>
+
+<p>Downloading of this digital file("PICTURE.SRC") binds you to a specific license agreement.</p>
+
+<p>For more information, click <A HREF="PICTURE.PUBLICURLPREFIXPICTURE.HTML">here</A>.</p>
+
+<p>Shift-click <A HREF="PICTURE.CLIENTURLPREFIXPICTURE.SRC">here</A> to download a high resolution image.</p>
+
+</BODY>
+</HTML>
