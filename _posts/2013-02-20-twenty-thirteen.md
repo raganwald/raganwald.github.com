@@ -87,6 +87,8 @@ And that, as they say, is that. This is where I'm going to be doing my "raganwal
 
 > "You know why I don't play ballads any more? Because I love to play ballads"--Miles Davis
 
+([discuss](http://news.ycombinator.com/item?id=5253592))
+
 ### post scriptum
 
 Here is some Jekyll Templating embedded in a markdown file, just to show that if you want to do some yak-shaving, you can. Here is a list of posts, dynamically generated:
