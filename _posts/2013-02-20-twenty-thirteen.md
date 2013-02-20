@@ -100,3 +100,5 @@ Here is some Jekyll Templating embedded in a markdown file, just to show that if
     {% endfor %}
   </ul>
 </div>
+
+### end note
