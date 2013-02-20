@@ -1,0 +1,240 @@
+<?php
+
+// thumbnails.php
+
+// writes one (or more) pages displaying image thumbnails
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+require_once('wiretemplates.php');
+require_once('wireshooter.php');
+
+define('THUMB_WIDTH',4); // number of thumbs in a row
+define('THUMB_HEIGHT',2); // maximum numbers of rows on a single page
+
+function thumbAssignRow ( $sql_result )
+{
+	global $tpl;
+	global $tpl_associations;
+	global $WIRESHOOTER;
+	
+	// use all lowercase!!!
+	if ( $sql_result && ($row = mysql_fetch_array($sql_result,MYSQL_ASSOC)) ) {
+		//print "<HR>";
+		reset($row); // not needed???
+		while ( list($fieldname,$fieldvalue) = each($row) ) {
+			$tpl->assign('PICTURE.' . strtoupper($fieldname),$fieldvalue);
+			//print "<BR>$fieldname: $fieldvalue";
+		}
+	
+		// make detail pages
+		
+		if ( $tpl_associations[$row['picturetemplate']] = '' ) {
+			$tpl->parse('PICTURE-PAGE','picture');
+		}
+		else $tpl->parse('PICTURE-PAGE',$row['picturetemplate']);
+		
+		if ( $row['html'] == '' ) return false;
+		if ( $row['publicurlprefix'] == '' ) return false;
+		
+		$public_page_path = $WIRESHOOTER->root . $row['publicurlprefix'] . $row['html'];
+		//print "<BR>$public_page_path";
+		
+		// public page with summary information
+		if ( !$fp = fopen($public_page_path,'w') ) return false;
+		if ( !fputs($fp,$tpl->fetch('PICTURE-PAGE')) ) return false;
+		
+		fclose($fp);
+		
+		if ( $tpl_associations[$row['downloadtemplate']] = '' ) {
+			$tpl->parse('DOWNLOAD-PAGE','download');
+		}
+		else $tpl->parse('DOWNLOAD-PAGE',$row['downloadtemplate']);
+		
+		if ( $row['shortclienturlprefix'] == '' ) return false;
+		if ( $row['download'] == '' ) return false;
+		
+		$download_page_path = $WIRESHOOTER->root . $row['shortclienturlprefix'] . $row['download'];
+		
+		// download page with no copyright comp and download link
+		if ( !$fp = fopen($download_page_path,'w') ) return false;
+		if ( !fputs($fp,$tpl->fetch('DOWNLOAD-PAGE')) ) return false;
+
+		fclose($fp);
+	
+		return true;
+	}
+	else return false;
+}
+
+function thumbnails
+(
+	$sql_result, // sql result
+	$title 					= 'Images',
+	$raw_page_name			= 'index',				// assume *in* correct directory at this point. future version mauy make multiple copies
+	$thumbs_template		= 'thumbnails',			// thumbnails template
+	$thumbs_none_template	= 'thumbnails-none',	// no thumbnails template
+	$row_template			= 'thumbnail-row',		// row template
+	$cell_template			= 'thumbnail-cell',
+	$empty_cell_template	= 'thumbnail-empty-cell'
+)
+{
+
+	global $tpl;
+	$THUMB_PAGE = THUMB_WIDTH * THUMB_HEIGHT;
+	
+	$filenamearray = array();
+	
+	assert($sql_result);
+	
+	if ( !eregi('^(.*)\.(htm|html)$',$raw_page_name,$arr) ) {
+		$base_page_name = $raw_page_name;
+		$page_suffix = 'html';
+	}
+	else {
+		$base_page_name = $arr[1];
+		$page_suffix = $arr[2];
+	}
+	
+	$tpl->assign('WIRESHOOTER.TITLE',$title);
+
+	$num_thumbs = mysql_num_rows($sql_result);
+	if ( $num_thumbs > 0 ) {
+		$num_pages = floor($num_thumbs/$THUMB_PAGE)
+			+ ( ($num_thumbs % $THUMB_PAGE > 0) ? 1 : 0 );
+		$tpl->ASSIGN( 'THUMB-NUMBEROFPAGES', $num_pages );
+		for ( $page = 1; $page <= $num_pages; $page++ ) {
+			$num_full_rows_on_this_page = $page < $num_pages ?
+				THUMB_HEIGHT
+				: (	floor(($num_thumbs - (($page - 1) * $THUMB_PAGE))/THUMB_WIDTH)
+					);
+			$left_over = $page < $num_pages ?
+				0
+				: $num_thumbs % THUMB_WIDTH;
+			for ($i = 0; $i < $num_full_rows_on_this_page; $i++ ) {
+				thumbAssignRow($sql_result);
+				$tpl->parse('THUMBNAIL-CELL-CONTENT',$cell_template);
+				for ($j = 1; $j < THUMB_WIDTH; $j++) {
+					thumbAssignRow($sql_result);
+					$tpl->parse('THUMBNAIL-CELL-CONTENT',".$cell_template");
+				}
+				if ( 0 == $i ) {
+					$tpl->parse('THUMBNAIL-ROW-CONTENT',$row_template);
+				}
+				else $tpl->parse('THUMBNAIL-ROW-CONTENT',".$row_template");
+			}
+			if ( $left_over > 0 ) {
+				thumbAssignRow($sql_result);
+				$tpl->parse('THUMBNAIL-CELL-CONTENT',$cell_template);
+				for ($i = 1; $i < $left_over; $i++) {
+					thumbAssignRow($sql_result);
+					$tpl->parse('THUMBNAIL-CELL-CONTENT',".$cell_template");
+				}
+				for ($i = $left_over; $i < THUMB_WIDTH; $i++) {
+					$tpl->assign('EMPTY-CELL-COMMENT',"http://www.yell-it-out.com/");
+					$tpl->parse('THUMBNAIL-CELL-CONTENT',".$empty_cell_template");
+				}
+				if ( 0 == $num_full_rows_on_this_page ) {
+					$tpl->parse('THUMBNAIL-ROW-CONTENT',$row_template);
+				}
+				else $tpl->parse('THUMBNAIL-ROW-CONTENT',".$row_template");
+			}
+			
+			if ( 2 == $page ) { // do special case previous
+				$tpl->assign(
+					'THUMB-PREV-PREFIX',
+					"<A HREF='$base_page_name.$page_suffix'>"
+				);
+				$tpl->assign( 'THUMB-PREV-SUFFIX',  '</A>' );
+				$tpl->assign( 'THUMB-PREV-CONTENT', 'prev' );
+			}
+			elseif ( $page > 2 ) { // do previous
+				$tpl->assign(
+					'THUMB-PREV-PREFIX',
+					"<A HREF='$base_page_name"
+					. ($page - 1)
+					. ".$page_suffix'>"
+				);
+				$tpl->assign( 'THUMB-PREV-SUFFIX',  '</A>' );
+				$tpl->assign( 'THUMB-PREV-CONTENT', 'prev' );
+			}
+			else { // no previous
+				$tpl->assign( 'THUMB-PREV-PREFIX',  '' );
+				$tpl->assign( 'THUMB-PREV-SUFFIX',  '' );
+				$tpl->assign( 'THUMB-PREV-CONTENT', '' );
+			}
+			
+			if ( $page < $num_pages ) { // do next
+				$tpl->assign(
+					'THUMB-NEXT-PREFIX',
+					"<A HREF='$base_page_name"
+					. ($page + 1)
+					. ".$page_suffix'>"
+				);
+				$tpl->assign( 'THUMB-NEXT-SUFFIX',  '</A>' );
+				$tpl->assign( 'THUMB-NEXT-CONTENT', 'next' );
+			}
+			else {// no next
+				$tpl->assign( 'THUMB-NEXT-PREFIX',  '' );
+				$tpl->assign( 'THUMB-NEXT-SUFFIX',  '' );
+				$tpl->assign( 'THUMB-NEXT-CONTENT', '' );
+			}
+			
+			$tpl->ASSIGN( 'THUMB-PAGE', $page );
+			
+			$tpl->parse('WIRESHOOTER-CONTENT',$thumbs_template);
+			$tpl->parse('WIRESHOOTER-PAGE','wireshooter');
+			if ( 1 == $page ) {
+				$page_name = "$base_page_name.$page_suffix";
+			}
+			else $page_name = "$base_page_name$page.$page_suffix";
+			if ( !$fp = fopen($page_name,'w') ) {
+				echo("Cannot open $page_name for writing");
+				exit;
+			}
+			if ( !fputs($fp,$tpl->fetch('WIRESHOOTER-PAGE')) ) {
+				echo("Cannot write to $page_name");
+				exit;
+			}
+			fclose($fp);
+			$filenamearray[] = $page_name;
+		}
+	}
+	else {
+		$page_name = "$base_page_name.$page_suffix";
+		$tpl->parse('WIRESHOOTER-CONTENT',$thumbs_none_template);
+		$tpl->parse('WIRESHOOTER-PAGE','wireshooter');
+		//$tpl->fetch('WIRESHOOTER-PAGE');
+		if ( !$fp = fopen("$base_page_name.$page_suffix",'w') ) {
+			echo("Cannot open $base_page_name.$page_suffix for writing");
+			exit;
+		}
+		if ( !fputs($fp,$tpl->fetch('WIRESHOOTER-PAGE')) ) {
+			echo("Cannot write to $base_page_name.$page_suffix");
+			exit;
+		}
+		fclose($fp);
+		$filenamearray[] = $page_name;
+	}
+	
+	return $filenamearray;
+	
+}
+
+?>

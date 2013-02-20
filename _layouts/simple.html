@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include head_tags.html %}
+    </head>
+    <body>
+      
+      {% include simple_header_div.html %}
+
+    <div class="wrapper">
+
+      <section>
+        {% include title_div.html %}
+
+        {{ content }}
+        
+        {% include footer.html %}
+        
+      </section>
+      <br/>
+      
+        {% include foot_tags.html %}
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+
+    </body>
+</html>

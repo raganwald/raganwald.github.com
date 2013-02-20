@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+        <LINK REL=StyleSheet HREF="/assets/css/pygments.css" TYPE="text/css" MEDIA=screen>
+        <title>The Madness of King JavaScript</title>
+    </head>
+    <body>
+      
+            <div id="header">
+        <nav>
+          <li class="fork"><a 
+            href="https://leanpub.com/javascript-allonge"
+            title="A strong cup of functions, objects, combinators, and decorators"
+            >JavaScript Allongé</a>&nbsp;</li>
+          <li class="fork"><a 
+            href="http://ristrettolo.gy"
+            title="An intense doppio of programming"
+            >CoffeeScript Ristretto</a>&nbsp;</li>
+          <li class="fork"><a 
+            href="http://combinators.info"
+            title="Raganwald's collected adventures in Combinatory Logic and Ruby Meta-Programming"
+            >The “Kestrels” Book</a>&nbsp;</li>
+          <li class="fork"><a
+            href="http://allong.es" 
+            title="All of the JavaScript Allongé receipies in a free library"
+            >allong.es</a>&nbsp;</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+                <div id="title">
+          <h1>The Madness of King JavaScript</h1>
+          <hr>
+          <span class="credits left">This blog is written by <a href="http://braythwayt.com">Reg "raganwald" Braithwaite</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <p>From time to time, people notice something is very wrong with functional-style programming in JavaScript. For example:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">].</span><span class="nx">map</span><span class="p">(</span><span class="nb">parseFloat</span><span class="p">);</span>
+  <span class="c1">//=&gt; [1, 2, 3]</span>
+  
+<span class="c1">// HOWEVER:</span>
+
+<span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">].</span><span class="nx">map</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">);</span>
+  <span class="c1">//=&gt; [ 1, NaN, NaN ]</span>
+</code></pre></div>
+
+<p>Shouts of “William-Thomas-Fredrick” ensue. The strange behaviour of <code>.map(parseInt)</code> is caused by the interaction of one language choice and two library choices. When all three come together, you get an unexpected result:</p>
+
+<ol>
+  <li>The language feature is that JavaScript does not enforce function arity. So you can define a function with three arguments but pass one parameter. Or pass five parameters to a function that only expects one.</li>
+  <li><code>.map</code> is designed such that it passes <em>three</em> parameters to the mapper function. The first is the element, the second is the index of the element, and the third is the context (the array, in this case).</li>
+  <li><code>.parseInt</code> works just fine with one parameter, but <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/parseInt">you can also pass an additional parameter to define the radix</a>.</li>
+</ol>
+
+<p>So what happens here? Well, the <code>.map</code> method is passing in a string and a number on each call, and <code>parseInt</code> is interpreting that number as a radix. Boom.</p>
+
+<p>Okay. So?</p>
+
+<p>Well, reasonable people can take either or both of the following two positions:</p>
+
+<ol>
+  <li>You need to know your language and libraries. If you don’t, you’re at fault.</li>
+  <li>Libraries should be designed to avoid suprises. <code>.map</code> being so “helpful” with the extra parameters is not helpful and contrary to practice elsewhere. This is a design problem, not a programmer problem. (There should be a <code>.map</code> and a <code>.mapWithIndex</code> in the library, not one function trying to do too many jobs)</li>
+</ol>
+
+<p>There’s plenty of opportunity to debate those positions, but if you have chosen to use JavaScript because “On the whole it’s a good thing for a particular project,” here are two different things you can do to avoid surprising yourself or colleagues who haven’t read this blog post.</p>
+
+<h3 id="first-use-a-safer-mapping-construct">first, use a safer mapping construct</h3>
+
+<p>There’s nothing wrong with rolling your own mapper. I’m a big fan of combinators, so I use <code>.splat</code> from the <a href="http://allong.es">allong.es</a> library. Splat looks something like this:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">splat</span> <span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">fn</span> <span class="o">=</span> <span class="nx">functionalize</span><span class="p">(</span><span class="nx">fn</span><span class="p">);</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">__map</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">something</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">something</span><span class="p">)</span> <span class="p">});</span>
+  <span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>And we use it like this:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">splat</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">splat</span><span class="p">;</span>
+
+<span class="nx">splat</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">)([</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">]);</span>
+  <span class="c1">//=&gt; [1, 2, 3]</span>
+</code></pre></div>
+
+<p>Splat looks a little different than map because instead of operating directly on an array, it turns a function expecting one argument into a “splatter” expecting an array. And of course, there’s a <code>splatWithIndex</code> if that’s what you need, although your should probably just use <code>.map</code> for that.</p>
+
+<blockquote>
+  <p>WHy the crazy idea of using a splatter instead of a mapping method or function? This is a bit of a digression, but when you have a  function that takes a single argument, you can combine it with almost any other function that takes one argument, like <code>fluent</code> or <code>maybe</code> from the <a href="http://allong.es">allong.es</a> library, or perhaps <code>debounce</code> from the Underscore library.</p>
+</blockquote>
+
+<h3 id="second-use-a-safer-function">second, use a safer function</h3>
+
+<p>The <a href="http://allong.es">allong.es</a> library includes a very handy “variadic” function for turning a function that takes one argument into a function that takes more than one argument. It also includes <code>unary</code> for turning a function that takes more than one argument into a function that takes one argument, it looks like this:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">unary</span> <span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">fn</span> <span class="o">=</span> <span class="nx">functionalize</span><span class="p">(</span><span class="nx">fn</span><span class="p">);</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">fn</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">fn</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">else</span> <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">something</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">something</span><span class="p">);</span>
+	<span class="p">};</span>
+<span class="p">}</span> 
+</code></pre></div>
+
+<p>We use it like this:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">unary</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">unary</span><span class="p">;</span>
+
+<span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">].</span><span class="nx">map</span><span class="p">(</span><span class="nx">unary</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">));</span>
+  <span class="c1">//=&gt; [ 1, 2, 3 ]</span>
+</code></pre></div>
+
+<p><a href="http://allong.es">allong.es</a> also includes the <code>applyLast</code> function for partial application. It takes any function and lets you bind a value to the last parameter it expects. We can use this with functions like <code>parseInt</code> like so:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">applyRight</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">applyRight</span><span class="p">;</span>
+
+<span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">].</span><span class="nx">map</span><span class="p">(</span><span class="nx">applyRight</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
+  <span class="c1">//=&gt; [ 1, 2, 3 ]</span>
+</code></pre></div>
+
+<p>This works because we’ve bound <code>10</code> to the radix parameter, so the additional parameters that <code>map</code> supplies are ignored.</p>
+
+<p>JavaScript can have some surprises for us, but it has an inherent functional flexibility that allows us to make our own sandpaper to smooth out its knots and whorls.</p>
+
+
+
+        <p>My recent work:</p>
+
+        <p><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé"><img src="http://i.minus.com/iW2E1A8M5UWe6.jpeg" alt="JavaScript Allongé" /></a><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/coffeescript-ristretto" title="CoffeeScript Ristretto"><img src="http://i.minus.com/iMmGxzIZkHSLD.jpeg" alt="CoffeeScript Ristretto" /></a><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/combinators" title="Kestrels, Quirky Birds, and Hopeless Egocentricity"><img src="http://i.minus.com/ibw1f1ARQ4bhi1.jpeg" alt="Kestrels, Quirky Birds, and Hopeless Egocentricity" /></a></p>
+
+        <ul>
+          <li><a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé">JavaScript Allongé</a>, <a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé">CoffeeScript Ristretto</a>, and my <a href="http://leanpub.com/u/raganwald">other books</a>.</li>
+          <li><a href="http://allong.es">allong.es</a>, practical function combinators and decorators for JavaScript.</li>
+          <li><a href="https://github.com/raganwald/method-combinators">Method Combinators</a>, a CoffeeScript/JavaScript library for writing method decorators, simply and easily.</li>
+          <li><a href="http://github.com/raganwald/jquery-combinators">jQuery Combinators</a>, what else? A jQuery plugin for writing your own fluent, jQuery-like code. </li>
+        </ul>
+
+        <hr />
+        
+        <hr />
+
+<p>(Spot a bug or a spelling mistake? This is a Github repo, <a href="https://github.com/braythwayt/braythwayt.github.com">fork it and send me a pull request</a>!)</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="http://braythwayt.com">Reg Braithwaite</a></td>
+      <td><a href="http://twitter.com/raganwald">@raganwald</a></td>
+    </tr>
+  </tbody>
+</table>
+
+
+        </div>
+        
+      </section>
+      <br/>
+      
+        <!-- insert google analytics here -->
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+
+    </body>
+</html>

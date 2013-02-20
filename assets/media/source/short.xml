@@ -1,0 +1,33 @@
+<search function="short">
+  <name>Make a Shorter Link</name>
+  <description>
+    Abbreviate long and convoluted URLs.<br/>
+    <div class="helpboxDescLabels">Example:</div>
+    <table class="helpboxDescTable">
+  		<tr><td>short http://www.braithwaite-lee.com/assets/media/source/index.html</td></tr>
+  	</table>
+  </description>
+  <category>Functions</category>
+  <link>http://www.makeashorterlink.com/</link>
+  <contributor>Reginald Braithwaite-Lee</contributor>
+  <email>raganwald_at_yahoo_dot_com</email>
+  
+  <form name="makeashorterlinkf"
+        action="http://www.makeashorterlink.com/index.php"
+        method="post">
+    <input type="hidden" name="url"/>
+  </form>
+  
+  <script><![CDATA[
+    function short(q)
+    {
+      if( nullArgs("short", q) )
+        return false;
+      else
+      {
+        document.makeashorterlinkf.url.value = q;
+        submitForm(makeashorterlinkf);
+      }
+    }
+  ]]></script>
+</search>

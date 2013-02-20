@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>comprehension.rb</title>
+	<style type="text/css">
+	      @import url(http:assets/css/sunburst.css);
+	</style>
+</head>
+
+<body><pre class="textmate-source sunburst"><span class="source source_ruby source_ruby_rails"><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>!/usr/bin/env ruby
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  Created by Reginald Braithwaite on 2007-03-14.
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  Copyright (c) 2007. All rights reserved.
+</span>
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>                    Version 2, December 2004
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Copyright (C) 2004 Sam Hocevar
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  22 rue de Plaisance, 75014 Paris, France
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Everyone is permitted to copy and distribute verbatim or modified
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> copies of this license document, and changing it is allowed as long
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> as the name is changed.
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  0. You just DO WHAT THE FUCK YOU WANT TO.
+</span>
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> A Comprehension produces lists. It isn't just a syntactic form,
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> it is an object that can be inspected and modified or built
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> dynamically.
+</span>
+<span class="meta meta_require meta_require_ruby"><span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">require</span> <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>dsl<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span></span>
+
+<span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">Comprehension</span></span>
+  
+<span class="meta meta_rails meta_rails_controller">  <span class="keyword keyword_control keyword_control_ruby">class</span> &lt;&lt; <span class="variable variable_language variable_language_ruby">self</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">combinations_by_sum</span></span> n, *lists
+      <span class="keyword keyword_control keyword_control_ruby">if</span> lists.size == <span class="constant constant_numeric constant_numeric_ruby">1</span>
+        <span class="keyword keyword_control keyword_control_ruby">if</span> n &gt;= lists.first.size
+          []
+        <span class="keyword keyword_control keyword_control_ruby">else</span>
+          [ [ lists.first[n] ] ]
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        ns = (<span class="constant constant_numeric constant_numeric_ruby">0</span>..(n &lt; lists.first.size ? n : lists.first.size - <span class="constant constant_numeric constant_numeric_ruby">1</span>))
+        ns.map {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|n2| [n2, lists.first[n2]] }.inject([]) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|acc, pair| 
+          n3, first_list_element = *pair
+          acc + combinations_by_sum(n - n3, *(lists[<span class="constant constant_numeric constant_numeric_ruby">1</span>..-<span class="constant constant_numeric constant_numeric_ruby">1</span>])).map {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|ec| [first_list_element] + ec }
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">end</span> 
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">cartesian_product_from</span></span> n, *lists, &amp;block
+      by_sum = combinations_by_sum(n, *lists)
+      <span class="keyword keyword_control keyword_control_ruby">if</span> by_sum.empty?
+        []
+      <span class="keyword keyword_control keyword_control_ruby">elsif</span> <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">block_given?</span>
+        (by_sum + cartesian_product_from(n + <span class="constant constant_numeric constant_numeric_ruby">1</span>, *lists)).map {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|tuple| block.call(*tuple) }
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        by_sum + cartesian_product_from(n + <span class="constant constant_numeric constant_numeric_ruby">1</span>, *lists)
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">cartesian_product</span></span> *lists, &amp;block
+      arrs = lists.map <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|given|
+        <span class="keyword keyword_control keyword_control_ruby">if</span> given.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>[]</span>) &amp;&amp; given.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>empty?</span>)
+          given
+        <span class="keyword keyword_control keyword_control_ruby">else</span>
+          given.to_a
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">if</span> arrs.empty?
+        [] <span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> the product of no lists is empty
+</span>      <span class="keyword keyword_control keyword_control_ruby">elsif</span> arrs.detect {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|each_list| each_list.empty? }
+        [] <span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> the product of any set of lists containing an empty list is empty
+</span>      <span class="keyword keyword_control keyword_control_ruby">elsif</span> <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">block_given?</span>  
+        cartesian_product_from(<span class="constant constant_numeric constant_numeric_ruby">0</span>, *arrs, &amp;block)
+      <span class="keyword keyword_control keyword_control_ruby">else</span>    
+        cartesian_product_from(<span class="constant constant_numeric constant_numeric_ruby">0</span>, *arrs)
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  </span><span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">attr_accessor</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>mapping</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>terms</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>where</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">initialize</span></span> &amp;block
+    <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>terms</span> = {}
+    <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>mapping</span> = block <span class="keyword keyword_control keyword_control_ruby">if</span> <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">block_given?</span>
+    <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>where</span> = <span class="constant constant_language constant_language_ruby">nil</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">given</span></span> assignments = {}, &amp;block
+    <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>where</span> = block <span class="keyword keyword_control keyword_control_ruby">if</span> <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">block_given?</span>
+    assignments.each {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|term, value| <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>terms</span>[term] = value }
+    names = terms.keys.sort {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|a, b| a.to_s &lt;=&gt; b.to_s }
+    values = names.map {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|term| terms[term].map {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|value| {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>term =&gt; value } } }
+    product_of_assignments = <span class="variable variable_language variable_language_ruby">self</span>.class.cartesian_product(*values).map <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|list_of_assignments|
+      list_of_assignments.inject {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|acc, ass| acc.merge(ass) }
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">if</span> where
+      product_of_assignments = product_of_assignments.select <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|assignments|
+        with <span class="variable variable_other variable_other_constant variable_other_constant_ruby">Let</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+</span>          let(assignments, &amp;where)
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">if</span> mapping
+      product_of_assignments.map <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|assignments|
+        with <span class="variable variable_other variable_other_constant variable_other_constant_ruby">Let</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+</span>          let(assignments, &amp;mapping)
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">else</span>
+      product_of_assignments
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+<span class="meta meta_class meta_class_ruby">  <span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">DSL<span class="entity entity_other entity_other_inherited-class entity_other_inherited-class_ruby"> <span class="punctuation punctuation_separator punctuation_separator_inheritance punctuation_separator_inheritance_ruby">&lt;</span> DomainSpecificLanguage</span></span></span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">list</span></span> &amp;block
+      <span class="support support_class support_class_ruby">Comprehension</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span> &amp;block
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+<span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ==============
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = Test Cases =
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ==============
+</span>
+<span class="meta meta_require meta_require_ruby"><span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">require</span> <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>test/unit<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span></span>
+
+<span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">TestComprehension<span class="entity entity_other entity_other_inherited-class entity_other_inherited-class_ruby"> <span class="punctuation punctuation_separator punctuation_separator_inheritance punctuation_separator_inheritance_ruby">&lt;</span> Test::Unit::TestCase</span></span></span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_simple_cases</span></span>
+    with <span class="support support_class support_class_ruby">Comprehension</span>::<span class="variable variable_other variable_other_constant variable_other_constant_ruby">DSL</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+</span>      assert_equal(
+          [<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_numeric constant_numeric_ruby">2</span>, <span class="constant constant_numeric constant_numeric_ruby">3</span>],
+          list {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>x + <span class="constant constant_numeric constant_numeric_ruby">1</span> }.given(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">0</span>..<span class="constant constant_numeric constant_numeric_ruby">2</span>) )
+      assert_equal(
+          [[<span class="constant constant_numeric constant_numeric_ruby">0</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>a</span>], [<span class="constant constant_numeric constant_numeric_ruby">0</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>b</span>], [<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>a</span>], [<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>b</span>]],
+          list {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>[x, y] }.given(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; [<span class="constant constant_numeric constant_numeric_ruby">0</span>, <span class="constant constant_numeric constant_numeric_ruby">1</span>], <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span> =&gt; [<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>a</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>b</span>]) )
+      assert_equal(
+          [<span class="constant constant_numeric constant_numeric_ruby">2</span>, <span class="constant constant_numeric constant_numeric_ruby">4</span>, <span class="constant constant_numeric constant_numeric_ruby">6</span>, <span class="constant constant_numeric constant_numeric_ruby">8</span>, <span class="constant constant_numeric constant_numeric_ruby">10</span>],
+          list {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>x }.given(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">10</span>) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>x % <span class="constant constant_numeric constant_numeric_ruby">2</span> == <span class="constant constant_numeric constant_numeric_ruby">0</span> } )
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">plus_seven</span></span> num
+    num + <span class="constant constant_numeric constant_numeric_ruby">7</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">times_maker</span></span> num
+    lambda {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>x * num }
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_closure_cases</span></span>
+    two = <span class="constant constant_numeric constant_numeric_ruby">2</span>
+    triple = times_maker(<span class="constant constant_numeric constant_numeric_ruby">3</span>)
+    with <span class="support support_class support_class_ruby">Comprehension</span>::<span class="variable variable_other variable_other_constant variable_other_constant_ruby">DSL</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+</span>      assert_equal(
+          [<span class="constant constant_numeric constant_numeric_ruby">2</span>, <span class="constant constant_numeric constant_numeric_ruby">4</span>, <span class="constant constant_numeric constant_numeric_ruby">6</span>],
+          list {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>x * two }.given(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">3</span>) )
+      assert_equal(
+          [<span class="constant constant_numeric constant_numeric_ruby">3</span>, <span class="constant constant_numeric constant_numeric_ruby">6</span>, <span class="constant constant_numeric constant_numeric_ruby">9</span>],
+          list(&amp;triple).given(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">3</span>) )
+      assert_equal(
+          [<span class="constant constant_numeric constant_numeric_ruby">8</span>, <span class="constant constant_numeric constant_numeric_ruby">9</span>, <span class="constant constant_numeric constant_numeric_ruby">10</span>],
+          list {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>plus_seven(x) }.given(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">3</span>) )
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+<span class="keyword keyword_control keyword_control_ruby">end</span>
+
+</span></pre>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<HTML>
+	<!-- template for home page only -->
+<HEAD>
+	<TITLE>WIRESHOOTER-TITLE</TITLE>
+</HEAD>
+<BODY BGCOLOR="black" TEXT="red" alink="yellow" vlink="yellow">
+
+<TABLE WIDTH=760 HEIGHT=420 BORDER=0 CELLSPACING=0>
+<TR>
+	<TD WIDTH=634 ALIGN="LEFT" VALIGN="TOP" BACKGROUND="/bg/wireshooter-home-o.jpg">
+		<P ALIGN=CENTER><IMG SRC="/bg/wireshooter-logo.gif" HEIGHT=79 WIDTH=599 ALT="www.wireshooter.com"></p>
+		<BLOCKQUOTE>
+		<FONT SIZE=3><B>
+		<p ALIGN=LEFT>All rights reserved. Republication or redistribution of wireshooter.com
+		content is expressly prohibited without the prior written consent of
+		wireshooter.com.</p>
+		<p ALIGN=CENTER>© 2000 wireshooter.com</p></B>
+		</FONT>
+		</BLOCKQUOTE>
+	</TD>
+	<TD WIDTH=126 ALIGN="RIGHT" VALIGN="MIDDLE" BACKGROUND="/bg/strokes.jpg">
+		WIRESHOOTER-MENU
+	</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

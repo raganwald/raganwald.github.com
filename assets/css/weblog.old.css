@@ -1,0 +1,80 @@
+/* style modified from glish: http://www.glish.com/css/ */
+
+	body{margin:0px 0px 0px 0px;font-family:trebuchet ms, verdana, sans-serif;background-color:white;}
+	#Title{font-size:63px;padding-left:15px;padding-top:10px;text-transform:uppercase;font-family:trebuchet ms, verdana, sans-serif;}
+	#Title a {text-decoration:none;color:inherit;}
+	#Description{padding:0px;padding-top:10px;font-size:12px;font-weight:normal}
+	.DateHeader{border-bottom:none;font-size:15px;text-align:left;margin-top:20px;margin-bottom:14px;padding:1px;padding-left:17px;color:gray;font-family:trebuchet ms, verdana, sans-serif;}
+	.PostTitle{font-size:18px;font-weight:bold}
+	.Post{padding-left:20px;margin-bottom:20px;text-indent:10px;padding-right:20px;line-height:22px}
+	.PostFooter{margin-bottom:15px;margin-left:0px;color:black;font-size:10px}
+	.comment-link {margin-left:.6em;}
+	@media all {
+		#leftcontent{background-color:white;border-right:2px dashed #000;border-bottom:0px dashed #000;float:left;padding-bottom:20px;margin-right:15px;padding:0px;width:67%;border-top:0px dashed #000}
+	}
+	@media handheld {
+		#leftcontent{border-right:0px dashed #000;float:none;margin:0 5% 0 5%;width:90%;}
+	}
+	.SideBarTitle{font-weight:bold;font-size:18px}
+	h1{font-size:14px;padding-top:10px}
+	a{text-decoration:none}
+	a:hover{border-bottom:dashed 1px red}
+	@media all {
+		#rightcontent{font-size:12px;height:100%;margin-left:0px;text-transform:none;padding-right:10px;background-color:whitesmoke;}
+	}
+	@media handheld {
+		#rightcontent{margin:0 5% 0 5%;}
+	}
+	.blogComments{
+		color:#333;
+		font-weight:normal;
+		background:#F0F0F8;
+		line-height:140%;
+		padding-left:20px;
+		margin-bottom:20px;
+		text-indent:10px;
+		padding-right:20px;
+	}
+	.blogComment{
+		color:#333;
+		font-weight:normal;
+		margin-bottom:10px
+	}
+	.deleted-comment {font-style:italic;color:gray;}
+	.byline{margin-bottom:20px;margin-left:0px;margin-right:10px;color:black;font-size:10px;display:inline}
+	#profile-container { }
+	.profile-datablock { }
+	.profile-img {display:inline;}
+	.profile-img img {float:left;margin:0 10px 0px 0;border:4px solid #ccc;}
+	#profile-container p { }
+	#profile-container .profile-textblock { }
+	.profile-data strong {display:block;}
+
+	blockquote:first-letter {
+		background: #f8f6f6 url(/assets/media/quoteleft.gif)left top no-repeat;
+		letter-spacing: -.06em; padding-left:30px;font-size:1.6em; 
+	}
+
+	blockquote {
+		background: white url(/assets/media/quoteright.gif) right bottom no-repeat;
+		font-weight: normal; font-style:oblique; color: #444;
+		margin: 0px 50px 10px 20px; padding: 0px 25px 0px 4px;
+		line-height:1.5; border-top:1px solid white;
+		border-bottom:1px solid white; 
+	}
+
+	div.book {
+		float: right; width: 240px; margin-left: 10px; font-style: italic; text-align: center; font-size: 80%;
+	}
+
+	blockquote + div {
+		text-align: right;
+	}
+	
+	.snaptalent_wrapper { 
+		margin: 0 auto; 
+	}
+	
+	.snaptalent_content {
+		border-style: none;
+	}

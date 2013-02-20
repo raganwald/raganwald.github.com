@@ -1,0 +1,98 @@
+<?php
+
+// upload.php
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+require_once('wireshooter.php');
+require_once('wiretemplates.php');
+require_once('image-schema.php'); // determines which fields are present
+	
+function printUploadForm ($table, $picture_template='picture')
+{
+	global $tpl;
+	global $imageSchema;
+
+	if ( $copyright ) {
+		$tpl->assign('UPLOAD.DEFAULT-COPYRIGHT',$copyright);
+	}
+	else {
+		$tpl->assign('UPLOAD.DEFAULT-COPYRIGHT',defaultcopyright);
+	}
+	$tpl->assign('UPLOAD.ACTION','upload-action.php');
+	if ( $message ) {
+		$message = "<HR>$message";
+	}
+	$tpl->assign('UPLOAD.MESSAGE',$message);
+	// parse rows first
+	$fields = $imageSchema->fieldNameStrings($table);
+	$types = $imageSchema->fieldTypes($table);
+	$defaults = $imageSchema->fieldDefaults($table);
+	$labels = $imageSchema->fieldLabels($table);
+	$hiddenFields = '';
+	reset($fields);
+	while ( list($key,$fieldName) = each($fields) ) {
+		$eachType = $types[$fieldName];
+		if ( !($eachDefault = $$fieldName) ) {
+			$eachDefault = $defaults[$fieldName];
+		}
+		//	print "\r<BR>" . $labels[$fieldName];
+		//	print "\r<BR>" . $fieldName;
+		//	print "\r<BR>" . $eachType;
+		//	print "\r<BR>" . $eachDefault;
+		if ( 'HIDDEN' == $eachType ) {
+			$hiddenFields .= "<INPUT TYPE=HIDDEN NAME=\"$fieldName\" VALUE=\"$eachDefault\">";
+		}
+		elseif ( 'TEXTAREA' == $eachType ) {
+			$tpl->assign(
+				array(
+					'UPLOAD.FIELD.LABEL'   => $labels[$fieldName],
+					'UPLOAD.FIELD.NAME'    => $fieldName,
+					'UPLOAD.FIELD.TYPE'    => $eachType,
+					'UPLOAD.FIELD.DEFAULT' => $eachDefault
+				)
+			);
+			$tpl->parse("FIELDS",".textarea");
+		}
+		else {
+			$tpl->assign(
+				array(
+					'UPLOAD.FIELD.LABEL'   => $labels[$fieldName],
+					'UPLOAD.FIELD.NAME'    => $fieldName,
+					'UPLOAD.FIELD.TYPE'    => $eachType,
+					'UPLOAD.FIELD.DEFAULT' => $eachDefault
+				)
+			);
+			$tpl->parse("FIELDS",".upload.field");
+		}
+	}
+	$hiddenFields .= "<INPUT TYPE=HIDDEN NAME=\"TABLE\" VALUE=\"$table\">";
+	$hiddenFields .= "<INPUT TYPE=HIDDEN NAME=\"PICTURETEMPLATE\" VALUE=\"$picture_template\">";
+	$tpl->assign('UPLOAD.HIDDEN',$hiddenFields);
+	
+	if ( $picture_template == 'sample' ) {
+		$tpl->assign('UPLOAD.TITLE',"Upload Sample Image to $table");
+	}
+	else $tpl->assign('UPLOAD.TITLE',"Upload Downloadable Image to $table");
+	
+	$tpl->parse("UPLOAD-CONTENT",'upload');
+	$tpl->FastPrint("UPLOAD-CONTENT");
+}
+
+?>

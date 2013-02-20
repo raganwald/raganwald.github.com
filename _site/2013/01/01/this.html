@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+        <LINK REL=StyleSheet HREF="/assets/css/pygments.css" TYPE="text/css" MEDIA=screen>
+        <title>More than you ever wanted to know about "this" in JavaScript, Part I</title>
+    </head>
+    <body>
+      
+            <div id="header">
+        <nav>
+          <li class="fork"><a 
+            href="https://leanpub.com/javascript-allonge"
+            title="A strong cup of functions, objects, combinators, and decorators"
+            >JavaScript Allongé</a>&nbsp;</li>
+          <li class="fork"><a 
+            href="http://ristrettolo.gy"
+            title="An intense doppio of programming"
+            >CoffeeScript Ristretto</a>&nbsp;</li>
+          <li class="fork"><a 
+            href="http://combinators.info"
+            title="Raganwald's collected adventures in Combinatory Logic and Ruby Meta-Programming"
+            >The “Kestrels” Book</a>&nbsp;</li>
+          <li class="fork"><a
+            href="http://allong.es" 
+            title="All of the JavaScript Allongé receipies in a free library"
+            >allong.es</a>&nbsp;</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+                <div id="title">
+          <h1>More than you ever wanted to know about "this" in JavaScript, Part I</h1>
+          <hr>
+          <span class="credits left">This blog is written by <a href="http://braythwayt.com">Reg "raganwald" Braithwaite</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <p><em>This is the first in a series of excerpts from the book <a href="http://leanpub.com/javascript-allonge">JavaScript Allongé</a> on the common theme of “this,” also known as “function context.” <a href="http://braythwayt.com/2013/01/03/function_and_method_decorators.html">Part II is here</a>. The posts are intended to stand alone: There’s no need to read the entire book to benefit from reading this material.</em></p>
+
+<h3 id="what-is-this-and-why-do-we-need-it">what is “this” and why do we need it?</h3>
+
+<p>In JavaScript, it’s easy to make things that look and behave like object without using function prototypes or “this.” Here’s a Queue:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">QueueMaker</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">queue</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">array</span><span class="o">:</span> <span class="p">[],</span> 
+    <span class="nx">head</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> 
+    <span class="nx">tail</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="nx">pushTail</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">queue</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="nx">queue</span><span class="p">.</span><span class="nx">tail</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span>
+    <span class="p">},</span>
+    <span class="nx">pullHead</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">value</span><span class="p">;</span>
+  
+      <span class="k">if</span> <span class="p">(</span><span class="nx">queue</span><span class="p">.</span><span class="nx">tail</span> <span class="o">&gt;=</span> <span class="nx">queue</span><span class="p">.</span><span class="nx">head</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">value</span> <span class="o">=</span> <span class="nx">queue</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="nx">queue</span><span class="p">.</span><span class="nx">head</span><span class="p">];</span>
+        <span class="nx">queue</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="nx">queue</span><span class="p">.</span><span class="nx">head</span><span class="p">]</span> <span class="o">=</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nx">queue</span><span class="p">.</span><span class="nx">head</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">value</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">size</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="nx">queue</span><span class="p">.</span><span class="nx">tail</span> <span class="o">-</span> <span class="nx">queue</span><span class="p">.</span><span class="nx">head</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+  <span class="k">return</span> <span class="nx">queue</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">queue</span> <span class="o">=</span> <span class="nx">QueueMaker</span><span class="p">();</span>
+<span class="nx">queue</span><span class="p">.</span><span class="nx">pushTail</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">);</span>
+<span class="nx">queue</span><span class="p">.</span><span class="nx">pushTail</span><span class="p">(</span><span class="s1">&#39;JavaScript&#39;</span><span class="p">);</span>
+<span class="nx">queue</span><span class="p">.</span><span class="nx">pushTail</span><span class="p">(</span><span class="s1">&#39;Lovers&#39;</span><span class="p">);</span>
+<span class="nx">queue</span><span class="p">.</span><span class="nx">pullHead</span><span class="p">();</span>
+  <span class="c1">//=&gt; &#39;Hello&#39;</span>
+</code></pre></div>
+
+<p>Let’s make a shallow copy of our queue using Underscore’s <code>_.extend</code>:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">copyOfQueue</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">({},</span> <span class="nx">queue</span><span class="p">);</span>
+
+<span class="nx">queue</span> <span class="o">!==</span> <span class="nx">copyOfQueue</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+</code></pre></div>
+
+<p>Wait a second. We know that array values are references. So it probably copied a reference to the original array. That would be bad! Let’s make a copy of the array as well:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">copyOfQueue</span><span class="p">.</span><span class="nx">array</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">copyOfQueue</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">queue</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Now let’s pull the head off the original:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">queue</span><span class="p">.</span><span class="nx">pullHead</span><span class="p">();</span>
+  <span class="c1">//=&gt; &#39;JavaScript&#39;</span>
+</code></pre></div>
+
+<p>If we’ve copied everything properly, we should get the exact same result when we pull the head off the copy:</p>
+
+<div class="highlight"><pre><code class="javascript">   
+<span class="nx">copyOfQueue</span><span class="p">.</span><span class="nx">pullHead</span><span class="p">();</span>
+  <span class="c1">//=&gt; &#39;Lovers&#39;</span>
+</code></pre></div>
+
+<p>What!? Even though we carefully made a copy of the array to prevent aliasing, it seems that our two queues behave like aliases of each other. The problem is that while we’ve carefully copied our array and other elements over, <em>the closures all share the same environment</em>, and therefore the functions in <code>copyOfQueue</code> all operate on the first queue’s private data, not on the copies.</p>
+
+<blockquote>
+  <p>This is a general issue with closures. Closures couple functions to environments, and that makes them very elegant in the small, and very handy for making opaque data structures. Alas, their strength in the small is their weakness in the large. When you’re trying to make reusable components, this coupling is sometimes a hindrance.</p>
+</blockquote>
+
+<p>Let’s take an impossibly optimistic flight of fancy and redesign our queue:</p>
+
+<div class="highlight"><pre><code class="javascript"> 
+<span class="kd">function</span> <span class="nx">AmnesiacQueueMaker</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">array</span><span class="o">:</span> <span class="p">[],</span> 
+    <span class="nx">head</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> 
+    <span class="nx">tail</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="nx">pushTail</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">myself</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">myself</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="nx">myself</span><span class="p">.</span><span class="nx">tail</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">pullHead</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">myself</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">value</span><span class="p">;</span>
+      
+      <span class="k">if</span> <span class="p">(</span><span class="nx">myself</span><span class="p">.</span><span class="nx">tail</span> <span class="o">&gt;=</span> <span class="nx">myself</span><span class="p">.</span><span class="nx">head</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">value</span> <span class="o">=</span> <span class="nx">myself</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="nx">myself</span><span class="p">.</span><span class="nx">head</span><span class="p">];</span>
+        <span class="nx">myself</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="nx">myself</span><span class="p">.</span><span class="nx">head</span><span class="p">]</span> <span class="o">=</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nx">myself</span><span class="p">.</span><span class="nx">head</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">size</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">myself</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="nx">myself</span><span class="p">.</span><span class="nx">tail</span> <span class="o">-</span> <span class="nx">myself</span><span class="p">.</span><span class="nx">head</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">queueWithAmnesia</span> <span class="o">=</span> <span class="nx">AmnesiacQueueMaker</span><span class="p">();</span>
+<span class="nx">queueWithAmnesia</span><span class="p">.</span><span class="nx">pushTail</span><span class="p">(</span><span class="nx">queueWithAmnesia</span><span class="p">,</span> <span class="s1">&#39;Hello&#39;</span><span class="p">);</span>
+<span class="nx">queueWithAmnesia</span><span class="p">.</span><span class="nx">pushTail</span><span class="p">(</span><span class="nx">queueWithAmnesia</span><span class="p">,</span> <span class="s1">&#39;JavaScript&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+<p>The <code>AmnesiacQueueMaker</code> makes queues with amnesia: They don’t know who they are, so every time we invoke one of their functions, we have to tell them who they are. You can work out the implications for copying queues as a thought experiment: We don’t have to worry about environments, because every function operates on the queue you pass in.</p>
+
+<p>The killer drawback, of course, is making sure we are always passing the correct queue in every time we invoke a function. What to do?</p>
+
+<h3 id="whats-all-this">what’s all <code>this</code>?</h3>
+
+<p>Any time we must do the same repetitive thing over and over and over again, we industrial humans try to build a machine to do it for us. JavaScript is one such machine:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">BanksQueueMaker</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">array</span><span class="o">:</span> <span class="p">[],</span> 
+    <span class="nx">head</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> 
+    <span class="nx">tail</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="nx">pushTail</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">tail</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">pullHead</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">value</span><span class="p">;</span>
+      
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tail</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">head</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">value</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">head</span><span class="p">];</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">head</span><span class="p">]</span> <span class="o">=</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">head</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">size</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tail</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">head</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">banksQueue</span> <span class="o">=</span> <span class="nx">BanksQueueMaker</span><span class="p">();</span>
+<span class="nx">banksQueue</span><span class="p">.</span><span class="nx">pushTail</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">);</span>
+<span class="nx">banksQueue</span><span class="p">.</span><span class="nx">pushTail</span><span class="p">(</span><span class="s1">&#39;JavaScript&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+<p>Every time you invoke a function that is a member of an object, JavaScript binds that object to the name <code>this</code> in the environment of the function just as if it was an argument. Now we can easily make copies:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">copyOfQueue</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">banksQueue</span><span class="p">);</span>
+<span class="nx">copyOfQueue</span><span class="p">.</span><span class="nx">array</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">copyOfQueue</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">banksQueue</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+<span class="p">}</span>
+  
+<span class="nx">banksQueue</span><span class="p">.</span><span class="nx">pullHead</span><span class="p">();</span>
+  <span class="c1">//=&gt; &#39;Hello&#39;</span>
+
+<span class="nx">copyOfQueue</span><span class="p">.</span><span class="nx">pullHead</span><span class="p">();</span>
+  <span class="c1">//=&gt; &#39;Hello&#39;</span>
+</code></pre></div>
+
+<p>Presto, we now have a way to copy arrays. By getting rid of the closure and taking advantage of <code>this</code>, we have functions that are more easily portable between objects, and the code is simpler as well.</p>
+
+<h3 id="more-about-invoking-a-function-thats-a-member-of-an-object">more about “invoking a function that’s a member of an object”</h3>
+
+<p>JavaScript binds “this” whenever you do this: <code>object.foo(...)</code>, or this: <code>object['foo'](...)</code>. But it doesn’t bind “this” when you do this:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="nx">object</span><span class="p">.</span><span class="nx">foo</span><span class="p">;</span>
+<span class="nx">fn</span><span class="p">(...);</span>
+</code></pre></div>
+
+<p>Or this:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="nx">object</span><span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">];</span>
+<span class="nx">fn</span><span class="p">(...);</span>
+</code></pre></div>
+
+<p>Watch out!</p>
+
+<h2 id="what-context-applies-when-we-call-a-function">What context applies when we call a function?</h2>
+
+<p>We just learned that when a function is called as an object method, the name <code>this</code> is bound in its environment to the object acting as a “receiver.” For example:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">someObject</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">returnMyThis</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">someObject</span><span class="p">.</span><span class="nx">returnMyThis</span><span class="p">()</span> <span class="o">===</span> <span class="nx">someObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+</code></pre></div>
+
+<p>We’ve constructed a method that returns whatever value is bound to <code>this</code> when it is called. It returns the object when called, just as described.</p>
+
+<h3 id="its-all-about-the-way-the-function-is-called">it’s all about the way the function is called</h3>
+
+<p>JavaScript programmers talk about functions having a “context” when being called. <code>this</code> is bound to the context (Too bad the language binds the context to the name <code>this</code> instead of the name <code>context</code>!) The important thing to understand is that the context for a function being called is set by the way the function is called, not the function itself.</p>
+
+<p>This is an important distinction. Consider closures: As we discussed repeatedly in blog posts and books about JavaScript, a function’s free variables are resolved by looking them up in their enclosing functions’ environments. You can always determine the functions that define free variables by examining the source code of a JavaScript program, which is why this scheme is known as Lexical Scope<sup id="fnref:lexical-scope"><a href="#fn:lexical-scope" rel="footnote">1</a></sup>.</p>
+
+<p>A function’s context cannot be determined by examining the source code of a JavaScript program. Let’s look at our example again:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">someObject</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">someFunction</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">someObject</span><span class="p">.</span><span class="nx">someFunction</span><span class="p">()</span> <span class="o">===</span> <span class="nx">someObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+</code></pre></div>
+
+<p>What is the context of the function <code>someObject.someFunction</code>? Don’t say <code>someObject</code>! Watch this:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">someFunction</span> <span class="o">=</span> <span class="nx">someObject</span><span class="p">.</span><span class="nx">someFunction</span><span class="p">;</span>
+
+<span class="nx">someFunction</span> <span class="o">===</span> <span class="nx">someObject</span><span class="p">.</span><span class="nx">someFunction</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+
+<span class="nx">someFunction</span><span class="p">()</span> <span class="o">===</span> <span class="nx">someObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; false</span>
+</code></pre></div>
+
+<p>It gets weirder:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">anotherObject</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">someFunction</span><span class="o">:</span> <span class="nx">someObject</span><span class="p">.</span><span class="nx">someFunction</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">anotherObject</span><span class="p">.</span><span class="nx">someFunction</span> <span class="o">===</span> <span class="nx">someObject</span><span class="p">.</span><span class="nx">someFunction</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+  
+<span class="nx">anotherObject</span><span class="p">.</span><span class="nx">someFunction</span><span class="p">()</span> <span class="o">===</span> <span class="nx">anotherObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+  
+<span class="nx">anotherObject</span><span class="p">.</span><span class="nx">someFunction</span><span class="p">()</span> <span class="o">===</span> <span class="nx">someObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; false</span>
+</code></pre></div>
+
+<p>So it amounts to this: The exact same function can be called in two different ways, and you end up with two different contexts. If you call it using <code>someObject.someFunction()</code> syntax, the context is set to the receiver. If you call it using any other expression for resolving the function’s value (such as <code>someFunction()</code>), you get something else. Let’s investigate:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="p">(</span><span class="nx">someObject</span><span class="p">.</span><span class="nx">someFunction</span><span class="p">)()</span> <span class="o">==</span> <span class="nx">someObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+  
+<span class="nx">someObject</span><span class="p">[</span><span class="s1">&#39;someFunction&#39;</span><span class="p">]()</span> <span class="o">===</span> <span class="nx">someObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+  
+<span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;someFunction&#39;</span><span class="p">;</span>
+
+<span class="nx">someObject</span><span class="p">[</span><span class="nx">name</span><span class="p">]()</span> <span class="o">===</span> <span class="nx">someObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+</code></pre></div>
+
+<p>Interesting!</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">baz</span><span class="p">;</span>
+
+<span class="p">(</span><span class="nx">baz</span> <span class="o">=</span> <span class="nx">someObject</span><span class="p">.</span><span class="nx">someFunction</span><span class="p">)()</span> <span class="o">===</span> <span class="k">this</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+</code></pre></div>
+
+<p>How about:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">someObject</span><span class="p">.</span><span class="nx">someFunction</span> <span class="p">];</span>
+
+<span class="nx">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]()</span> <span class="o">===</span> <span class="nx">arr</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+</code></pre></div>
+
+<p>It seems that whether you use <code>a.b()</code> or <code>a['b']()</code> or <code>a[n]()</code> or <code>(a.b)()</code>, you get context <code>a</code>. </p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">returnThis</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="k">this</span><span class="p">;</span> <span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">aThirdObject</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">someFunction</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">returnThis</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">returnThis</span><span class="p">()</span> <span class="o">===</span> <span class="k">this</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+
+<span class="nx">aThirdObject</span><span class="p">.</span><span class="nx">someFunction</span><span class="p">()</span> <span class="o">===</span> <span class="k">this</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+</code></pre></div>
+
+<p>And if you don’t use <code>a.b()</code> or <code>a['b']()</code> or <code>a[n]()</code> or <code>(a.b)()</code>, you get the global environment for a context, not the context of whatever function is doing the calling. To simplify things, when you call a function with <code>.</code> or <code>[]</code> access, you get an object as context, otherwise you get the global environment.</p>
+
+<h3 id="setting-your-own-context">setting your own context</h3>
+
+<p>There are actually two other ways to set the context of a function. And once again, both are determined by the caller. As you probably know, everything in JavaScript behaves like an object, including functions. Functions have methods themselves, and one of them is <code>call</code>.</p>
+
+<p>Here’s <code>call</code> in action:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">returnThis</span><span class="p">()</span> <span class="o">===</span> <span class="nx">aThirdObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; false</span>
+
+<span class="nx">returnThis</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">aThirdObject</span><span class="p">)</span> <span class="o">===</span> <span class="nx">aThirdObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+  
+<span class="nx">anotherObject</span><span class="p">.</span><span class="nx">someFunction</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">someObject</span><span class="p">)</span> <span class="o">===</span> <span class="nx">someObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+</code></pre></div>
+
+<p>When you invoke a function with <code>call</code>, you set the context by passing it in as the first parameter. Other arguments are passed to the function in the normal manner. Much hilarity can result from <code>call</code> shenanigans like this:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+    <span class="nx">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">];</span>
+    
+<span class="nx">a</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]);</span>
+  <span class="c1">//=&gt; [1,2,3,2,1]</span>
+  
+<span class="nx">a</span><span class="p">.</span><span class="nx">concat</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">b</span><span class="p">,[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]);</span>
+  <span class="c1">//=&gt; [4,5,6,2,1]</span>
+</code></pre></div>
+
+<p>But now we thoroughly understand what <code>a.b()</code> really means: It’s synonymous with <code>a.b.call(a)</code>. Whereas in a browser, <code>c()</code> is synonymous with <code>c.call(window)</code>.</p>
+
+<h3 id="apply-arguments-and-contextualization">apply, arguments, and contextualization</h3>
+
+<p>JavaScript has another automagic binding in every function’s environment. <code>arguments</code> is a special object that behaves a little like an array (Just enough to be frustrating, to be perfectly candid!)</p>
+
+<p>For example:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">third</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="nx">third</span><span class="p">(</span><span class="mi">77</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">73</span><span class="p">);</span>
+  <span class="c1">//=&gt; 75</span>
+</code></pre></div>
+
+<p>Hold that thought for a moment. JavaScript also provides a fourth way to set the context for a function. <code>apply</code> is a method implemented by every function that takes a context as its first argument, and it takes an array or array-like thing of arguments as its second argument. That’s a mouthful, let’s look at an example:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">third</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+  <span class="c1">//=&gt; 3</span>
+
+<span class="nx">third</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]);</span>
+  <span class="c1">//=&gt; 3</span>
+</code></pre></div>
+
+<p>Now let’s put the two together. Here’s another travesty:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+    <span class="nx">accrete</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">concat</span><span class="p">;</span>
+    
+<span class="nx">accrete</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]);</span>
+  <span class="c1">//=&gt; Gobbledygook!</span>
+</code></pre></div>
+
+<p>We get the result of concatenating <code>[4,5]</code> onto an array containing the global environment. Not what we want! Behold:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">contextualize</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">accrete</span> <span class="o">=</span> <span class="nx">contextualize</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">concat</span><span class="p">,</span> <span class="nx">a</span><span class="p">);</span>
+<span class="nx">accrete</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]);</span>
+  <span class="c1">//=&gt; [ 1, 2, 3, 4, 5 ]</span>
+</code></pre></div>
+
+<p>Our <code>contextualize</code> function returns a new function that calls a function with a fixed context. It can be used to fix some of the unexpected results we had above. Consider:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">aFourthObject</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">uncontextualized</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="nx">contextualized</span><span class="o">:</span> <span class="nx">contextualize</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+      <span class="p">})</span>
+    <span class="p">},</span>
+    <span class="nx">a</span> <span class="o">=</span> <span class="nx">aFourthObject</span><span class="p">.</span><span class="nx">uncontextualized</span><span class="p">,</span>
+    <span class="nx">b</span> <span class="o">=</span> <span class="nx">aFourthObject</span><span class="p">.</span><span class="nx">contextualized</span><span class="p">;</span>
+    
+<span class="nx">a</span><span class="p">()</span> <span class="o">===</span> <span class="nx">aFourthObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; false</span>
+
+<span class="nx">b</span><span class="p">()</span> <span class="o">===</span> <span class="nx">aFourthObject</span><span class="p">;</span>
+  <span class="c1">//=&gt; true</span>
+</code></pre></div>
+
+<p>Wrapping a function so that it has a fixed context is called <em>binding</em> a function’s context. There are various ways to bind a context and also to <em>avoid</em> binding a context for a function. We’ll discuss binding in more detail in part II, but for now, consider the function combinator <code>compose</code>:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">compose</span> <span class="p">(</span><span class="nx">fn1</span><span class="p">,</span> <span class="nx">fn2</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">compose_</span> <span class="p">(</span><span class="nx">something</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn1</span><span class="p">(</span><span class="nx">fn2</span><span class="p">(</span><span class="nx">something</span><span class="p">));</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">add1</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">times3</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="mi">3</span> <span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">collatz</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">add1</span><span class="p">,</span> <span class="nx">times3</span><span class="p">);</span>
+
+<span class="nx">collatz</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+  <span class="c1">//=&gt; 16</span>
+</code></pre></div>
+
+<p>Works just fine with “pure” functions. Let’s try it with something a little more complicated, our queue. Let’s say we have a wonderful, brilliant, amazing idea. We want to leave queues working just fine, but we’re going to modify one queue to always return the size of the queue after pushing or pulling things. And while we’re engaging in our flight of fancy, we’ll use <code>compose</code> to do it:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">BanksQueueMaker</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">array</span><span class="o">:</span> <span class="p">[],</span> 
+    <span class="nx">head</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> 
+    <span class="nx">tail</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="nx">pushTail</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">tail</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">pullHead</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">value</span><span class="p">;</span>
+      
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tail</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">head</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">value</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">head</span><span class="p">];</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">head</span><span class="p">]</span> <span class="o">=</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">head</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">size</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tail</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">head</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">queue</span> <span class="o">=</span> <span class="nx">BanksQueueMaker</span><span class="p">();</span>
+
+<span class="nx">queue</span><span class="p">.</span><span class="nx">pushTail</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">queue</span><span class="p">.</span><span class="nx">size</span><span class="p">,</span> <span class="nx">queue</span><span class="p">.</span><span class="nx">pushTail</span><span class="p">);</span>
+<span class="nx">queue</span><span class="p">.</span><span class="nx">pullHead</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">queue</span><span class="p">.</span><span class="nx">size</span><span class="p">,</span> <span class="nx">queue</span><span class="p">.</span><span class="nx">pullHead</span><span class="p">);</span>
+
+<span class="nx">queue</span><span class="p">.</span><span class="nx">pushTail</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">);</span>
+  <span class="c1">//=&gt; TypeError: Cannot set property &#39;NaN&#39; of undefined</span>
+</code></pre></div>
+
+<p>The problem with our <code>compose</code> method is that it took functions that expected a context and called them without a context. We can rewrite it:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">compose</span> <span class="p">(</span><span class="nx">fn1</span><span class="p">,</span> <span class="nx">fn2</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">compose_</span> <span class="p">(</span><span class="nx">something</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn1</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">fn2</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">something</span><span class="p">));</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">queue</span> <span class="o">=</span> <span class="nx">BanksQueueMaker</span><span class="p">();</span>
+
+<span class="nx">queue</span><span class="p">.</span><span class="nx">pushTail</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">queue</span><span class="p">.</span><span class="nx">size</span><span class="p">,</span> <span class="nx">queue</span><span class="p">.</span><span class="nx">pushTail</span><span class="p">);</span>
+<span class="nx">queue</span><span class="p">.</span><span class="nx">pullHead</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">queue</span><span class="p">.</span><span class="nx">size</span><span class="p">,</span> <span class="nx">queue</span><span class="p">.</span><span class="nx">pullHead</span><span class="p">);</span>
+
+<span class="nx">queue</span><span class="p">.</span><span class="nx">pushTail</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">);</span>
+  <span class="c1">//=&gt; 1</span>
+</code></pre></div>
+
+<p>Now it works. In Part II, we’ll take a much closer look at writing functions that are “context-agnostic” like our second version of <code>compose</code>, and we’ll take a closer look at objects and methods.</p>
+
+<blockquote>
+  <p>Now the obvious question is, why did we want to do that? And if we did want to do that, why did we use compose? Well, we’re working with a blog post and it’s easier to work with the methods in front of us than introduce an entirely new use case. But if you look at libraries like <a href="http://underscorejs.org">Underscore</a> or <a href="http://allong.es">allong.es</a>, you’ll see plenty of functions designed to be composed with methods, like <code>once</code>, <code>debounce</code>, <code>throttle</code>, <code>fluent</code>, and so forth.</p>
+</blockquote>
+
+<h2 id="summary-of-part-i">Summary of Part I</h2>
+
+<p>You don’t strictly <em>need</em> “this” to encapsulate data in objects, but “this” gives you the flexibility to share functions between objects. “this” is automatically set by JavaScript when you call a function in a method-calling style, or when you use <code>.call</code> or <code>.apply</code> to call a function. This can be used to force the context for a function, which is called <em>binding</em> the context to a function. In some cases, you want to write helper functions and combinators in a context-agnostic style.</p>
+
+<p>Thanks for being patient enough to read the whole thing!</p>
+
+<p>(<a href="http://www.reddit.com/r/javascript/comments/179j51/more_than_you_ever_wanted_to_know_about_this_in/">discuss</a>)</p>
+
+<h3 id="end-notes">End notes:</h3>
+<div class="footnotes">
+  <ol>
+    <li id="fn:lexical-scope">
+      <p><a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping">Lexical Scope</a><a href="#fnref:lexical-scope" rel="reference">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+        <p>My recent work:</p>
+
+        <p><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé"><img src="http://i.minus.com/iW2E1A8M5UWe6.jpeg" alt="JavaScript Allongé" /></a><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/coffeescript-ristretto" title="CoffeeScript Ristretto"><img src="http://i.minus.com/iMmGxzIZkHSLD.jpeg" alt="CoffeeScript Ristretto" /></a><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/combinators" title="Kestrels, Quirky Birds, and Hopeless Egocentricity"><img src="http://i.minus.com/ibw1f1ARQ4bhi1.jpeg" alt="Kestrels, Quirky Birds, and Hopeless Egocentricity" /></a></p>
+
+        <ul>
+          <li><a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé">JavaScript Allongé</a>, <a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé">CoffeeScript Ristretto</a>, and my <a href="http://leanpub.com/u/raganwald">other books</a>.</li>
+          <li><a href="http://allong.es">allong.es</a>, practical function combinators and decorators for JavaScript.</li>
+          <li><a href="https://github.com/raganwald/method-combinators">Method Combinators</a>, a CoffeeScript/JavaScript library for writing method decorators, simply and easily.</li>
+          <li><a href="http://github.com/raganwald/jquery-combinators">jQuery Combinators</a>, what else? A jQuery plugin for writing your own fluent, jQuery-like code. </li>
+        </ul>
+
+        <hr />
+        
+        <hr />
+
+<p>(Spot a bug or a spelling mistake? This is a Github repo, <a href="https://github.com/braythwayt/braythwayt.github.com">fork it and send me a pull request</a>!)</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="http://braythwayt.com">Reg Braithwaite</a></td>
+      <td><a href="http://twitter.com/raganwald">@raganwald</a></td>
+    </tr>
+  </tbody>
+</table>
+
+
+        </div>
+        
+      </section>
+      <br/>
+      
+        <!-- insert google analytics here -->
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+
+    </body>
+</html>

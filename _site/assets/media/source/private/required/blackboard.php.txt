@@ -1,0 +1,337 @@
+<?php
+
+// blackboard.php
+// first round is NAIVE!!!
+//
+// ready to add case insensitivity
+//
+// future enhancement: store a link identifier in a cookie!
+//
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+require_once('sql.php');
+require_once('types.php');
+require_once('image-schema.php');
+require_once('simplify.php');
+
+DEFINE( 'BLACKBOARD_ID_FIELD_NAME', 'ID' );
+DEFINE( 'BLACKBOARD_DATE_FIELD_NAME', 'date' );
+
+class TBlackboard {
+
+var $ID_FIELD_NAME = 'ID';
+var $ID_FIELD_DEFINITION = 'integer not null AUTO_INCREMENT primary key';
+var $SECONDARY_ID_FIELD_DEFINITION = 'integer not null';
+var $DEFAULT_FIELD_DEFINITION = 'varchar(255)';
+var $STRING_FIELD_DEFINITION = 'varchar(255)';
+var $INTEGER_FIELD_DEFINITION = 'integer';
+var $MANYTOMANYSEPARATOR = ';';
+
+var $db;
+var $sqlStruct = array(); // sqlStruct is actual SQL table names
+var $simpleToSql = array();
+var $table_names;
+
+function TBlackboard ($db_ = SQL_DATABASE, $ok_to_add = FALSE) {
+	$this->db = $db_;
+	$exists = mysql_select_db($this->db);
+	assert ( $exists || $ok_to_add );
+	if ( !$exists ) {
+		$created_ok = mysql_create_db($db_);
+		assert( $created_ok );
+	}
+	$this->getTableNames();
+	return;
+}
+
+function hasTable ( $table_name ) {
+	assert ($table_name != '' );
+	return $this->table_names[$table_name] != NULL;
+}
+
+function getTableNames () {
+	// returns an array of table names!
+	$this->sqlStruct = array();
+	$result = mysql_list_tables($this->db);
+	
+	assert( $result );
+	
+	$sql_table_names = array();
+	$this->table_names = array();
+	
+	$num_rows = mysql_num_rows($result);
+	//assert( $num_rows > 0 );
+	$num_fields = mysql_num_fields($result);
+	//assert( 1 == $num_fields );
+	for ($i = 0; $i < $num_rows; $i++) {
+		$row_array = mysql_fetch_row($result);
+		$each_table_name = $row_array[0];
+		$this->getFieldNames($each_table_name);
+		$sql_table_names[] = $each_table_name;
+		$this->table_names[$each_table_name] = $each_table_name;
+	}
+	
+	return $sql_table_names;
+}
+
+function getFieldNames ($table_name) {
+	assert( $table_name != '' );
+	assert( TYPE_STRING == gettype($table_name) );
+	
+	$this->sqlStruct[$table_name] = array();
+	$simple_table_name = simplifydir($table_name);
+	$this->simpleToSql[$simple_table_name] = array();
+	
+	$result = mysql_list_fields($this->db,$table_name);
+	assert( $result );
+	for ($i = 0; $i < mysql_num_fields($result); $i++) {
+		$each_field_name = mysql_field_name($result,$i);
+		assert( $each_field_name );
+		$this->sqlStruct[$table_name][$each_field_name] = $each_field_name;
+		$this->simpleToSql[$simple_table_name][simplify($each_field_name)] = $each_field_name;
+	}
+	return $this->sqlStruct[$table_name];
+}
+
+function addRecord ($table_name, $in_array) {
+	assert( $table_name != '' );
+	assert( $in_array );
+	assert( TYPE_STRING == gettype($table_name) );
+	assert( TYPE_ARRAY == gettype($in_array) );
+	
+	global $imageSchema;
+	
+	$record_array = array();
+	while ( list($each_field_name,$each_field_value) = each($in_array) ) {
+		if ( is_string($each_field_value) ) {
+			$record_array[simplify($each_field_name)] = addslashes($each_field_value);
+		}
+		else if ( is_double($each_field_value)
+					|| is_float($each_field_value)
+					|| is_real($each_field_value)
+					|| is_int($each_field_value) ) {
+			$record_array[simplify($each_field_name)] = intval($each_field_value);
+		}
+		else if ( gettype($each_field_value) == 'boolean' ) {
+			$record_array[simplify($each_field_name)] = intval($each_field_value);
+		}
+		else { // default for unrecognized
+			$record_array[simplify($each_field_name)] = addslashes($each_field_value);
+		}
+	}
+
+	if ( !$record_array[BLACKBOARD_DATE_FIELD_NAME] ) {
+		// add default date: today (local)]
+		$datearray = getdate(time());
+		$record_array[BLACKBOARD_DATE_FIELD_NAME] =
+			$datearray['year'] . '-' . $datearray['mon'] . '-' . $datearray['mday'];
+	}
+	else {
+		$datearray = explode('-',strtr(trim($record_array[BLACKBOARD_DATE_FIELD_NAME]),'/ ','--'));
+		if ( $datearray[0] > 31 ) {
+			$datearray['year'] = $datearray[0];
+			$datearray['mon'] = $datearray[1];
+			$datearray['mday'] = $datearray[2];
+		}
+		elseif ( $datearray[2] > 31 ) {
+			$datearray['mon'] = $datearray[0];
+			$datearray['mday'] = $datearray[1];
+			$datearray['year'] = $datearray[2];
+		}
+		if ( $datearray['year'] < 90 ) {
+			$datearray['year'] += 2000;
+		}
+		elseif ( $datearray['year'] < 100 ) {
+			$datearray['year'] += 1900; // legacy
+		}
+		if ( !checkdate($datearray['mon'],$datearray['mday'],$datearray['year']) ) {
+			$datearray = getdate(time());
+			echo(
+				$record_array[BLACKBOARD_DATE_FIELD_NAME]
+				. ' is invalid: try '
+				. $datearray['year'] . '-' . $datearray['mon'] . '-' . $datearray['mday']
+			);
+		}
+		$record_array[BLACKBOARD_DATE_FIELD_NAME] =
+			$datearray['year'] . '-' . $datearray['mon'] . '-' . $datearray['mday'];
+	}
+	
+	echo ( BLACKBOARD_DATE_FIELD_NAME . ': ' . $record_array[BLACKBOARD_DATE_FIELD_NAME] . '<BR>' );
+	
+	$this->getTableNames();
+	
+	$grindStyles = $imageSchema->fieldGrinds($table_name);
+	$sqlTypes = $imageSchema->fieldSQLTypes($table_name);
+	
+	if ( !$this->simpleToSql[$table_name] ) {
+		// make a new table!!!
+		$field_name_array = array( BLACKBOARD_ID_FIELD_NAME => BLACKBOARD_ID_FIELD_NAME );
+		$create_table_statement = "create table $table_name ( "
+			. BLACKBOARD_ID_FIELD_NAME . " " . $this->ID_FIELD_DEFINITION;
+		$this->sqlStruct[$table_name] = array();
+		$this->simpleToSql[$table_name] = array();
+		reset($record_array);
+		while ( list($each_field_name,$each_field_value) = each($record_array) ) {
+			//echo("$each_field_value is type ".gettype($each_field_value)." <BR>");
+			if ( $sqlTypes[$each_field_name] ) {
+				$column_definition = $sqlTypes[$each_field_name];
+			}
+			elseif ( is_string($each_record_field_value) ) {
+				$column_definition = $this->STRING_FIELD_DEFINITION;
+			}
+			elseif ( is_integer($each_record_field_value) || gettype($each_record_field_value) == 'boolean' ) {
+				$column_definition = $this->INTEGER_FIELD_DEFINITION;
+			}
+			else {
+				$column_definition = $this->DEFAULT_FIELD_DEFINITION;
+			}
+			if ( $each_field_name != BLACKBOARD_ID_FIELD_NAME ) {
+				$create_table_statement .= ", $each_field_name $column_definition";
+				$field_name_array[$each_field_name] = $each_field_name;
+			}
+			if ( $grindStyles[$each_field_name] == $imageSchema->manytomany ) {
+				$manytomanytablename = $each_field_name . '_' . BLACKBOARD_ID_FIELD_NAME;
+				echo("many to many table $manytomanytablename<BR>");
+				if ( !$this->simpleToSql[$manytomanytablename] ) {
+					$create_manytomany_table_statement =
+						"create table $manytomanytablename ( $each_field_name $column_definition not null";
+					$create_manytomany_table_statement .= ', ' . BLACKBOARD_ID_FIELD_NAME . ' '
+						. $this->SECONDARY_ID_FIELD_DEFINITION . ')';
+					echo(" Create many to many table: $create_manytomany_table_statement  <BR>");
+					$result = mysql_query($create_manytomany_table_statement);
+					assert( $result );
+					echo('created<BR>');
+					$this->sqlStruct[$manytomanytablename][BLACKBOARD_ID_FIELD_NAME] = BLACKBOARD_ID_FIELD_NAME;
+					$this->simpleToSql[$manytomanytablename][BLACKBOARD_ID_FIELD_NAME] = BLACKBOARD_ID_FIELD_NAME;
+					$this->sqlStruct[$manytomanytablename][$each_field_name] = $each_field_name;
+					$this->simpleToSql[$manytomanytablename][$each_field_name] = $each_field_name;
+				}
+			}
+			$this->sqlStruct[$table_name][$each_field_name] = $each_field_name;
+			$this->simpleToSql[$table_name][$each_field_name] = $each_field_name;
+		}
+		$create_table_statement .= ' )';
+		echo(" Create table: $create_table_statement  <BR>");
+		$result = mysql_query($create_table_statement);
+		assert( $result );
+	}
+	else {
+		reset( $record_array );
+		// insert columns
+		while ( list($each_record_field_name,$each_record_field_value) = each($record_array) ) {
+			if ( !$this->simpleToSql[$table_name][$each_record_field_name] ) {
+				// insert a column
+				if ( $sqlTypes[$each_record_field_name] ) {
+					$column_definition = $sqlTypes[$each_record_field_name];
+				}
+				elseif ( is_string($each_record_field_value) ) {
+					$column_definition = $this->STRING_FIELD_DEFINITION;
+				}
+				elseif ( is_integer($each_record_field_value) || gettype($each_record_field_value) == 'boolean' ) {
+					$column_definition = $this->INTEGER_FIELD_DEFINITION;
+				}
+				else {
+					$column_definition = $this->DEFAULT_FIELD_DEFINITION;
+				}
+				$column_statement = sprintf(SQL_ADD_COLUMN,$table_name,$each_record_field_name,$column_definition);
+				echo(" Insert column: $column_statement <BR>");
+				$result = mysql_query($column_statement);
+				assert( $result );
+				if ( 0 == $result ) return;
+				$this->simpleToSql[$table_name][$each_record_field_name] = $each_record_field_name;
+				echo(" Insert column: $each_record_field_name succeeded!<BR>");
+				$this->sqlStruct[$table_name][$each_record_field_name] = $each_record_field_name;
+				$this->simpleToSql[$table_name][$each_record_field_name] = $each_record_field_name;
+				if ( $grindStyles[$each_field_name] == $imageSchema->manytomany ) {
+					$manytomanytablename = $each_field_name . '_' . BLACKBOARD_ID_FIELD_NAME;
+					if ( !$this->simpleToSql[$table_name] ) {
+						$create_manytomany_table_statement =
+							"create table $manytomanytablename ( $each_field_name $column_definition not null";
+						$create_manytomany_table_statement .= ', ' . BLACKBOARD_ID_FIELD_NAME . ' '
+							. $this->SECONDARY_ID_FIELD_DEFINITION . ')';
+						$result = mysql_query($create_manytomany_table_statement);
+						assert( $result );
+						$this->sqlStruct[$manytomanytablename][BLACKBOARD_ID_FIELD_NAME] = BLACKBOARD_ID_FIELD_NAME;
+						$this->simpleToSql[$manytomanytablename][BLACKBOARD_ID_FIELD_NAME] = BLACKBOARD_ID_FIELD_NAME;
+						$this->sqlStruct[$manytomanytablename][$each_field_name] = $each_field_name;
+						$this->simpleToSql[$manytomanytablename][$each_field_name] = $each_field_name;
+					}
+				}
+			}
+		}
+	}
+	// write insert statement
+	// could be rolled into loop above
+	
+	reset( $record_array );
+	if ( list($each_record_field_name,$each_record_field_value) = each($record_array) ) { // why?
+		$column_names = $this->simpleToSql[$table_name][$each_record_field_name];
+		$values = "'" . $each_record_field_value . "'";
+		while ( list($each_record_field_name,$each_record_field_value) = each($record_array) ) {
+			$column_names .= ", " . $this->simpleToSql[$table_name][$each_record_field_name];
+			$values .= ", '" . $each_record_field_value . "'";
+			if ( $grindStyles[$each_record_field_name] == $imageSchema->manytomany ) {
+				// perform insert over many to many
+				$manytomanytablename = $each_record_field_name . '_' . BLACKBOARD_ID_FIELD_NAME;
+				$insert_statement = "INSERT INTO $manytomanytablename ( $each_record_field_name, ";
+				$insert_statement .= BLACKBOARD_ID_FIELD_NAME;
+				$insert_statement .= ") VALUES ( $manytomanyvalue )";
+			}
+		}
+		$insert_statement = "INSERT INTO $table_name ( $column_names ) VALUES ( $values )";
+		echo(" Insert record: $insert_statement  <BR>");
+		$result = mysql_query($insert_statement);
+		assert($result);
+		if ( $result ) {
+			echo(" Insert record: $insert_statement succeeded!<BR>");
+			reset($record_array);
+			$id = mysql_insert_id(); // assumes single user!
+			while ( list($each_record_field_name,$each_record_field_value) = each($record_array) ) {
+				if ( $grindStyles[$each_record_field_name] == $imageSchema->manytomany ) {
+					// perform insert over many to many
+					$manytomanytablename = $each_record_field_name . '_' . BLACKBOARD_ID_FIELD_NAME;
+					$array_of_values = explode($this->MANYTOMANYSEPARATOR,$each_record_field_value);
+					reset($array_of_values);
+					while ( list($idx,$eachvalue) = each($array_of_values) ) {
+						$eachvalue = "'" . addslashes(trim($eachvalue)) . "'"; // possibly add comma correction here!
+						$insert_statement = "INSERT INTO $manytomanytablename ( $each_record_field_name, ";
+						$insert_statement .= BLACKBOARD_ID_FIELD_NAME;
+						$insert_statement .= " ) VALUES ( $eachvalue, '$id' )";
+						$result = mysql_query($insert_statement);
+						assert($result);
+						if ( $result ) {
+							echo(" Insert many to many record: $insert_statement succeeded!<BR>");
+						}
+						else echo(" Insert many to many record: $insert_statement failed!<BR>");
+					}
+				}
+			}
+		}
+		else echo(" Insert record: $insert_statement failed!<BR>");
+		return ( $result != 0 );
+	}
+	return false;
+}
+
+}
+
+$BLACKBOARD = new TBlackboard();
+
+?>

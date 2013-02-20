@@ -1,0 +1,264 @@
+QuickStart Wizard
+
+on preOpenCard
+  updateButtons
+end preOpenCard
+
+on updateButtons
+  if there is a button "Next"
+  then set the disabled of button "Next" to not canGoNext()
+  if the groupnames of this cd contains "option"
+  then
+    if fld "Text" is empty
+    then put "false" into fld "Text"
+    set the hilite of btn "option" to fld "Text"
+  end if
+end updateButtons
+
+function canGoNext
+  if the groupnames of this cd contains "OneLineFolderBrowser"
+  then
+    if the disabled of group "OneLineFolderBrowser"
+    then return true
+    else return validFolder(fld "Text")
+  else
+    if the groupnames of this cd contains "PortNumber"
+    then return (fld "Text" is not empty)
+    else return true
+  end if
+end canGoNext
+
+on arrowKey direction
+  if direction is "right" then send "mouseUp" to button "Next"
+  if direction is "left" then send "mouseUp" to button "Prev"
+end arrowkey
+
+on browseFile
+  -- systemFileSelector property might help...
+  -- load them up
+  local defaultS
+  local titleS
+  if the titleString of this card is not empty
+  then put the titleString of this card into titleS
+  else
+    if exists(fld "label")
+    then put fld "Label" into titleS
+    else put "Choose a Folder" into titleS
+  end if
+  if field "Text" is empty then put the defaultString of this card into defaultS
+  else put field "Text" into defaultS
+  answer file the promptString of this card\
+      with defaultS\
+      with filter the filtersString of this card\
+      titled the titleString of this card
+  if it is not empty then put it into field "Text"
+  --put it
+end browseFile
+
+on browseFolder
+  local temp
+  put fld "Text" into temp
+  getFolder temp
+  put temp into fld "Text"
+end browseFolder
+
+on addFolder
+  local temp
+  put "" into temp
+  getFolder temp
+  if temp = empty then exit addFolder
+  if fld "MultiLineText" is empty
+  then put temp into fld "MultiLineText"
+  else
+    repeat for each line eachLine in fld "MultiLineText"
+      if eachLine = temp then exit addFolder
+    end repeat
+    put (return & temp) after fld "MultiLineText"
+    updateRemoveButton
+  end if
+end addFolder
+
+on getFolder @where
+  local defaultS
+  local titleS
+  if the titleString of this card is not empty
+  then put the titleString of this card into titleS
+  else
+    if exists(fld "label")
+    then put fld "Label" into titleS
+    else put "Choose a Folder" into titleS
+  end if
+  if where is empty then put the defaultString of this card into defaultS
+  else put where into defaultS
+  answer folder the promptString of this card\
+      with defaultS\
+      titled titleS
+  if it is not empty then put it into where
+end getFolder
+
+on updateRemoveButton
+  put the hilitedLines of fld "MultiLineText" of this cd
+  if the hilitedLines of fld "MultiLineText" of this cd is empty
+  then set the disabled of btn "removeLines" of this cd to true
+  else set the disabled of btn "removeLines" of this cd to false
+end updateRemoveButton
+
+on removeLines
+  local hlLines
+  if exists(fld "MultiLineText" )
+  then
+    put the hilitedLines of fld "MultiLineText" into hlLines
+    if hlLines is empty
+    then answer "Nothing hilighted" with "OK"
+    else
+      repeat with lineNumber  = the number of lines in fld "MultiLineText" down to one
+        if lineNumber is among the items of hlLines
+        then delete line lineNumber of fld "MultiLineText"
+      end repeat
+    end if
+  else answer "can't removeLines: no field 'MultiLineText'" with "OK"
+  updateRemoveButton
+end removeLines
+
+function validFolder path
+  if path is empty then return false
+  else
+    if there is a directory path
+    then return true
+    else return false
+  end if
+end validFolder
+
+on doGoPrevious thisbg prevbg
+  lock screen
+  if thisbg is empty
+  then go prev cd
+  else
+    local currbg
+    put thisbg into currbg
+    repeat forever
+      if the id of this cd is the id of the first cd of bg currbg
+      then
+        go last cd of bg prevbg
+        put prevbg into currbg
+      else go prev cd of bg currbg
+      if there is a fld "Text" of this cd
+      then
+        get the short name of this cd
+        if it is not empty and the first char of it is "_"
+        then
+          -- deal with a ss variable
+          if exactLineOffset(it,the userMods of this stack) is not zero
+          then
+            exit repeat
+          end if
+        else exit repeat -- it is not empty and the first char of it is "_"
+      else exit repeat -- there is a fld "Text" of this cd
+    end repeat
+  end if
+  unlock screen
+end doGoPrevious
+
+on doGoNext thisbg nextbg
+  lock screen
+  local bgName
+  if canGoNext()
+  then
+    if thisbg is empty
+    then go next cd
+    else
+      local currbg
+      put thisbg into currbg
+      repeat forever
+        if the id of this cd is the id of the last cd of bg currbg
+        then
+          go first cd of bg nextbg
+          put nextbg into currbg
+        else go next cd of bg currbg
+        -- now validate user can enter
+        if there is a fld "Text" of this cd
+        then
+          get the short name of this cd
+          if it is not empty and the first char of it is "_"
+          then
+            -- deal with a ss variable
+            if exactLineOffset(it,the userMods of this stack) is not zero
+            then
+              put "here!"
+              exit repeat
+            end if
+          else exit repeat -- it is not empty and the first char of it is "_"
+        else exit repeat -- there is a fld "Text" of this cd
+      end repeat
+    end if -- thisbg is empty
+  end if -- canGoNext()
+  unlock screen
+end doGoNext
+
+function exactLineOffset fragment container
+  local lnNum
+  put lineOffset(fragment,container) into lnNum
+  if lnNum is zero
+  then return zero
+  else
+    if line lnNum of container is fragment
+    then return lnNum
+    else return zero
+  end if
+end exactLineOffset
+
+on removeMod whichCard
+  local currSet
+  put the customPropertySet of this stack into currSet
+  local mandatory
+  get the customProperties["svr-values"] of this stack
+  if it[whichCard] is not empty
+  then put true into mandatory
+  else
+    get the customProperties["task-values"] of this stack
+    put (it[whichCard] is not empty) into mandatory
+  end if
+  set the customPropertySet of this stack to empty
+  innerRemoveMod whichCard
+  set the customPropertySet of this stack to currSet
+end removeMod
+
+on innerRemoveMod whichCard
+  local mods
+  put the userMods of this stack into mods
+  get the lineOffset(whichCard,mods)
+  if it is not zero
+  then
+    delete line it of mods
+    set the userMods of this stack to mods
+  end if
+end innerRemoveMod
+
+on addMod whichCard
+  local currSet
+  put the customPropertySet of this stack into currSet
+  local mandatory
+  get  the customProperties["svr-values"] of this stack
+  if it[whichCard] is not empty
+  then put true into mandatory
+  else
+    get the customProperties["task-values"] of this stack
+    put (it[whichCard] is not empty) into mandatory
+  end if
+  set the customPropertySet of this stack to empty
+  if mandatory
+  then innerRemoveMod whichCard
+  else innerAddMod whichCard
+  set the customPropertySet of this stack to currSet
+end addMod
+
+on innerAddMod whichCard
+  local mods
+  put the userMods of this stack into mods
+  get the lineOffset(whichCard,mods)
+  if it is zero
+  then
+    put whichCard into line (one + the number of lines of mods) of mods
+    set the userMods of this stack to mods
+  end if
+end innerAddMod

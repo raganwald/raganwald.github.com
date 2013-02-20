@@ -1,0 +1,333 @@
+<?php
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+require_once('wireshooter.php');
+require_once('wiretemplates.php');
+require_once('image-schema.php');
+require_once('blackboard.php');
+require_once('simplify.php');
+
+// later we will enhance by moving to a 'failure' folder
+function refuseToValidate($message) {
+	global $copyright;
+	global $fieldValues;
+	$header = 'Location: upload.php?';
+	$header .= 'copyright='.urlencode($copyright);
+	$header .= '&message='.urlencode("Sorry, unable to process this request because: $message");
+	reset($fieldValues);
+	while ( list($key,$value) = each($fieldValues) ) {
+		$header .= '&';
+		$header .= urlencode($key);
+		$header .= '=';
+		$header .= urlencode($value);
+	}
+	header($header);
+	exit;
+}
+
+assert($TABLE);
+
+$fieldValues = array();
+$fields = $imageSchema->fieldNameStrings($TABLE);
+$mandatories = $imageSchema->mandatoryFieldWarnings($TABLE);
+$types = $imageSchema->fieldTypes($TABLE);
+reset($fields);
+$missingMandatory = '';
+while ( list($key,$fieldName) = each($fields) ) {
+	if ( $fieldName != 'TABLE' ) {
+		if ( strtoupper($types[$fieldName]) == "CHECKBOX" ) {
+			$fieldValues[$fieldName] = isset($$fieldName);
+		}
+		elseif ( $$fieldName  ) {
+			$fieldValues[$fieldName] = $$fieldName;
+		}
+		elseif ( $mandatories[$fieldName] && '' == $missingMandatory ) {
+			$missingMandatory = $mandatories[$fieldName];
+		}
+		elseif ( $mandatories[$fieldName] ) {
+			$missingMandatory .= ' ' . $mandatories[$fieldName];
+		}
+	}
+}
+
+if ( '' != $missingMandatory ) {
+	refuseToValidate($missingMandatory);
+}
+
+if ( '' == $photofile || 'none' == $photofile ) {
+	refuseToValidate('You must specify an image file');
+}
+
+if ( '' == $photoname ) {
+	$photoname = $photofile_name;
+}
+
+if ( !$photoname ) {
+	refuseToValidate( 'no name provided' );
+	// handle error and return, probably with a redirect
+	exit;
+}
+
+if ( !eregi('^(.*)\.(jpg|jpeg)$',$photoname,$arr) ) {
+	$rawbasename = $photoname;
+}
+else $rawbasename = $arr[1];
+	
+$suffix = 1;
+$basename = strtr(
+		$rawbasename, 
+		' ~!@#$%^&*()_+|\=-0987654321`{}[]:;<>?/.,QWERTYUIOPLKJHGFDSAZXCVBNMqwertyuioplkjhgfdsazxcvbnm',
+		'------------------0987654321-------------QWERTYUIOPLKJHGFDSAZXCVBNMQWERTYUIOPLKJHGFDSAZXCVBNM'
+		);
+
+while ( $suffix < 999 ) {
+
+	$publicdir       = $WIRESHOOTER->root . $WIRESHOOTER->publicimages  . $WIRESHOOTER->publicDirName($basename)  . '/';
+	$clientsdir      = $WIRESHOOTER->root . $WIRESHOOTER->clientsimages . $WIRESHOOTER->clientsDirName($basename) . '/';
+	$clientsdirshort = $WIRESHOOTER->root . $WIRESHOOTER->clientsimages . $WIRESHOOTER->publicDirName($basename)  . '/';
+	$WIRESHOOTER->ensureDir($publicdir);
+	$WIRESHOOTER->ensureDir($clientsdir);
+	$WIRESHOOTER->ensureDir($clientsdirshort);
+	if ( !chdir($publicdir) ) {
+		refuseToValidate("unable to use $publicdir");
+		exit;
+	}
+	elseif ( !chdir($clientsdir) ) {
+		refuseToValidate("unable to use $clientsdir");
+		exit;
+	}
+	
+	if ( '' == filetype("$publicdir$basename_t.jpg")
+		&& '' == filetype("$publicdir$basename_c.jpg")
+		&& '' == filetype("$clientsdir$basename.jpg")
+		&& '' == filetype("$clientsdir$basename_cnc.jpg") ) break;
+	
+	++$suffix;
+	$basename = "$rawbasename-$suffix";
+
+}
+	
+if ( $suffix > 9999 ) {
+	refuseToValidate( "Can't create $basename files. Directory problems?" );
+	exit;
+}
+
+// now make the images
+
+// first, the original in all its glory
+
+chdir($clientsdir);
+
+$originalimage = $basename . '.jpg';
+
+if ( !copy("$upload_tmp_dir$photofile",$originalimage) ) {
+	refuseToValidate("unable to copy $upload_tmp_dir$photofile to $basename");
+	exit;
+}
+
+$photoimage = @ImageCreateFromJPEG($originalimage);
+
+if ( '' == $photoimage ) {
+	refuseToValidate("Can't create an image from $originalimage");
+	exit;
+}
+
+$photosize = GetImageSize($originalimage);
+
+// now we make a comp without a copyright. it goes in the clients folder as well
+// no asumptions, because our test images might be smaller in one or both axes
+
+if ( $photosize[0] > $COMP_LIMIT->X ) {
+	if ( $photosize[1] > $COMP_LIMIT->Y ) {
+		$compheight = round( $photosize[1] * $COMP_LIMIT->X / $photosize[0] );
+		if ( $compheight <= $COMP_LIMIT->Y ) {
+			$compwidth = $COMP_LIMIT->X;
+		}
+		else {
+			$compwidth = round( $photosize[0] * $COMP_LIMIT->Y / $photosize[1] );
+			if ( $compwidth <= $COMP_LIMIT->X ) {
+				$compheight = $COMP_LIMIT->Y;
+			}
+			else {
+				refuseToValidate("comp $compheight and $compwidth are bad!");
+				exit;
+			}
+		}
+	}
+	else {
+		$compheight = round( $photosize[1] * $COMP_LIMIT->X / $photosize[0] );
+		$compwidth = $COMP_LIMIT->X;
+	}
+}
+elseif ( $photosize[1] > $COMP_LIMIT->Y ) {
+	$compheight = round( $photosize[1] * $COMP_LIMIT->X / $photosize[0] );
+	$compwidth = $COMP_LIMIT->X;
+}
+else {
+	$compheight = $photosize[1];
+	$compwidth = $photosize[0];
+}
+
+$compnocopy = ImageCreate( $compwidth, $compheight );
+if ( !ImageCopyResized($compnocopy,$photoimage,0,0,0,0,$compwidth,$compheight,$photosize[0],$photosize[1]) ) {
+	refuseToValidate("Can't create comp");
+	exit;
+}
+
+ImageJPEG($compnocopy,$basename . '_cnc.jpg');
+ImageDestroy($compnocopy);
+
+// ready for the public files
+
+chdir($publicdir);
+
+// enhance with font calculations!
+// note that this ordering is dependant on calculating height and width immediately prior.
+
+$copyheight = ImageFontHeight(copyfontsize) + 10;
+
+if ( '' == $copyright ) {
+	$copyright = defaultcopyright;
+}
+
+$compcopy = ImageCreate( $compwidth, $compheight + $copyheight );
+if ( !ImageCopyResized($compcopy,$photoimage,0,0,0,0,$compwidth,$compheight,$photosize[0],$photosize[1]) ) {
+	refuseToValidate("Can't create comp with copyright");
+	exit;
+}
+
+$white = ImageColorClosest ($compcopy, 255, 255, 255);
+$black  = ImageColorClosest ($compcopy, 0, 0, 0);
+ImageFilledRectangle ($compcopy, 0, $compheight, $compwidth, $compheight + $copyheight, $black);
+ImageString ($compcopy, 1, 5, $compheight + 5, $copyright, $white); 
+
+ImageJPEG($compcopy,$basename . '_c.jpg');
+ImageDestroy($compcopy);
+
+// assume the thumbnail is always smaller than the jpeg
+
+$thumbheight = round( $photosize[1] * $THUMBNAIL_LIMIT->X / $photosize[0] );
+if ( $thumbheight <= $THUMBNAIL_LIMIT->Y ) {
+	$thumbwidth = $THUMBNAIL_LIMIT->X;
+}
+else {
+	$thumbwidth = round( $photosize[0] * $THUMBNAIL_LIMIT->Y / $photosize[1] );
+	if ( $thumbwidth <= $THUMBNAIL_LIMIT->X ) {
+		$thumbheight = $THUMBNAIL_LIMIT->Y;
+	}
+	else {
+		refuseToValidate("thumb $thumbheight and $thumbwidth are bad!");
+		exit;
+	}
+}
+$thumbnail = ImageCreate( $thumbwidth, $thumbheight );
+if ( !ImageCopyResized($thumbnail,$photoimage,0,0,0,0,$thumbwidth,$thumbheight,$photosize[0],$photosize[1]) ) {
+	refuseToValidate("Can't create thumbnail");
+	exit;
+}
+
+ImageJPEG($thumbnail,$basename . '_t.jpg');
+ImageDestroy($thumbnail);
+
+$fieldValues['THUMBSRC'] = $basename . '_t.jpg';
+$fieldValues['THUMBWIDTH'] = $thumbwidth;
+$fieldValues['THUMBHEIGHT'] = $thumbheight;
+
+ImageDestroy($photoimage);
+
+$fieldValues['NAME'] = $basename;
+$fieldValues['SRC'] = $originalimage;
+$fieldValues['HEIGHT'] = $photosize[0];
+$fieldValues['WIDTH'] = $photosize[1];
+
+$fieldValues['COMPNAME'] = $basename . '_c.jpg';
+$fieldValues['COMPHEIGHT'] = $compheight + $copyheight;
+$fieldValues['COMPWIDTH'] = $compwidth;
+
+$fieldValues['COMPNOCOPYNAME'] = $basename . '_cnc.jpg';
+$fieldValues['COMPNOCOPYHEIGHT'] = $compheight;
+$fieldValues['COMPNOCOPYWIDTH'] = $compwidth;
+
+$fieldValues['PUBLICDIRPATH'] = $publicdir;
+$fieldValues['CLIENTDIRPATH'] = $clientsdir;
+$fieldValues['PUBLICURLPREFIX'] = $WIRESHOOTER->publicimages . $WIRESHOOTER->publicDirName($basename) . '/';
+$fieldValues['CLIENTURLPREFIX'] = $WIRESHOOTER->clientsimages . $WIRESHOOTER->clientsDirName($basename) . '/';
+$fieldValues['SHORTCLIENTURLPREFIX'] = $WIRESHOOTER->clientsimages . $WIRESHOOTER->publicDirName($basename) . '/';
+
+if ( $tpl_associations[$PICTURETEMPLATE] == '' ) {
+	$fieldValues['picturetemplate'] = 'picture';
+}
+else $fieldValues['picturetemplate'] = $PICTURETEMPLATE;
+
+if ( $tpl_associations[$fieldValues[$DOWNLOADTEMPLATE]] == '' ) {
+	$fieldValues['downloadtemplate'] = 'download';
+}
+else $fieldValues['downloadtemplate'] = $DOWNLOADTEMPLATE;
+
+$fieldValues['HTML'] = $basename . '.html';
+$fieldValues['DOWNLOAD'] = $basename . '_d.html';
+
+
+/*
+
+reset($fieldValues);
+while ( list($fieldname,$fieldvalue) = each($fieldValues) ) {
+	$tpl->assign('PICTURE.' . strtoupper($fieldname),$fieldvalue);
+}
+
+$tpl->parse('PICTURE','picture');
+// public page with summary information
+if ( !$fp = fopen($fieldValues['HTML'],'w') ) {
+	refuseToValidate('Cannot open ' . $fieldValues['HTML'] . ' for writing');
+	exit;
+}
+if ( !fputs($fp,$tpl->fetch('PICTURE')) ) {
+	refuseToValidate('Cannot write to ' . $fieldValues['HTML']);
+	exit;
+}
+fclose($fp);
+
+$tpl->parse('DOWNLOAD','download');
+// download page with no copyright comp and download link
+if ( !$fp = fopen($clientsdirshort . $fieldValues['DOWNLOAD'],'w') ) {
+	refuseToValidate('Cannot open ' . $fieldValues['DOWNLOAD'] . ' for writing');
+	exit;
+}
+if ( !fputs($fp,$tpl->fetch('DOWNLOAD')) ) {
+	refuseToValidate('Cannot write to ' . $fieldValues['DOWNLOAD']);
+	exit;
+}
+fclose($fp);
+
+*/
+
+reset($fieldValues);
+
+$BLACKBOARD->addRecord($TABLE, $fieldValues);
+
+?>
+
+<HTML>
+
+<HR>
+
+<A HREF="/private/admin/index.html">Admin</A>
+
+</HTML>

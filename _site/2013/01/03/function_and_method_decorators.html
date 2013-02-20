@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+        <LINK REL=StyleSheet HREF="/assets/css/pygments.css" TYPE="text/css" MEDIA=screen>
+        <title>Function and Method Decorators</title>
+    </head>
+    <body>
+      
+            <div id="header">
+        <nav>
+          <li class="fork"><a 
+            href="https://leanpub.com/javascript-allonge"
+            title="A strong cup of functions, objects, combinators, and decorators"
+            >JavaScript Allongé</a>&nbsp;</li>
+          <li class="fork"><a 
+            href="http://ristrettolo.gy"
+            title="An intense doppio of programming"
+            >CoffeeScript Ristretto</a>&nbsp;</li>
+          <li class="fork"><a 
+            href="http://combinators.info"
+            title="Raganwald's collected adventures in Combinatory Logic and Ruby Meta-Programming"
+            >The “Kestrels” Book</a>&nbsp;</li>
+          <li class="fork"><a
+            href="http://allong.es" 
+            title="All of the JavaScript Allongé receipies in a free library"
+            >allong.es</a>&nbsp;</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+                <div id="title">
+          <h1>Function and Method Decorators</h1>
+          <hr>
+          <span class="credits left">This blog is written by <a href="http://braythwayt.com">Reg "raganwald" Braithwaite</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <p>(a/k/a <strong>“More than you ever wanted to know about “this” in JavaScript, Part II”</strong>)</p>
+
+<p><em>This is the second of two excerpts from the book <a href="http://leanpub.com/javascript-allonge">JavaScript Allongé</a> on the common theme of “this,” also known as “function context.” The posts are intended to stand alone: There’s no need to read the entire book to benefit from reading this material. <a href="http://braythwayt.com/2013/01/01/this.html" title="More than you ever wanted to know about &quot;this&quot; in JavaScript, Part I">Part I is here</a>, along with discussion <a href="http://www.reddit.com/r/javascript/comments/179j51/more_than_you_ever_wanted_to_know_about_this_in/">here</a>.</em></p>
+
+<hr />
+
+<p>In <a href="http://braythwayt.com/2013/01/01/this.html" title="More than you ever wanted to know about &quot;this&quot; in JavaScript, Part I">Part I</a>, we compared and contrasted two versions of function composition. The first version is more-or-less a direct port of <code>compose</code> in functional languages that don’t have any notion of a context:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">compose</span> <span class="p">(</span><span class="nx">fn1</span><span class="p">,</span> <span class="nx">fn2</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">compose_</span> <span class="p">(</span><span class="nx">something</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn1</span><span class="p">(</span><span class="nx">fn2</span><span class="p">(</span><span class="nx">something</span><span class="p">));</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">add1</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">times3</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="mi">3</span> <span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">collatz</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">add1</span><span class="p">,</span> <span class="nx">times3</span><span class="p">);</span>
+
+<span class="nx">collatz</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+  <span class="c1">//=&gt; 16</span>
+</code></pre></div>
+
+<p>It simply calls functions. It works with functions that don’t have a context or are bound to a specific context. It doesn’t work if you’re trying to pass a context. That happens when you’re calling methods, so this version of <code>compose</code> doesn’t work with functions that are used as method implementations.</p>
+
+<p>Here’s one that does work. It uses <code>.call</code> to carefully pass the current context along:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">compose</span> <span class="p">(</span><span class="nx">fn1</span><span class="p">,</span> <span class="nx">fn2</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">compose_</span> <span class="p">(</span><span class="nx">something</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn1</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">fn2</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">something</span><span class="p">));</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>The second version of compose is <em>context-agnostic</em>. It doesn’t interfere with the context by erasing it or injecting a context. In this second part, we’re going to take a short look at the concept and its relation to the <em>Function Decorator Pattern</em>.</p>
+
+<h3 id="the-function-decorator-pattern">the function decorator pattern</h3>
+
+<p>A “function decorator” is a function that consumes a function and returns a decorated version of the function it consumes. For example, the <a href="http://underscorejs.org">Underscore</a> and <a href="http://allong.es">allong.es</a> libraries both include the “once” function decorator. Here’s a function you might want to call:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">preloadLotsOfStuff</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>What if you only want to execute it once but you might want to call it from multiple points in the code? You can do something like this:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">hasntRun</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">preloadLotsOfStuff</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">hasntRun</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">hasntRun</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="c1">// ...</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>Now we’re cluttering up the code with two orthogonal concerns:</p>
+
+<ol>
+  <li>How to preload lost of stuff;</li>
+  <li>How to ensure you only do that once.</li>
+</ol>
+
+<p>The better way forward is with a function decorator, like this:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;underscore&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">preloadLotsOfStuff</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">once</span><span class="p">(</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>As you can see from the <a href="http://underscorejs.org/docs/underscore.html">source code</a>, <code>once</code> is simple:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">_</span><span class="p">.</span><span class="nx">once</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">func</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">ran</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">memo</span><span class="p">;</span>
+  <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ran</span><span class="p">)</span> <span class="k">return</span> <span class="nx">memo</span><span class="p">;</span>
+    <span class="nx">ran</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="nx">memo</span> <span class="o">=</span> <span class="nx">func</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+    <span class="nx">func</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">memo</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>Notice that <code>_.once</code> takes a function as an argument, and returns a new function wrapping the original with the “decoration” behaviour. We call <code>_.once</code> the function decorator, and the anonymous wrapper function the <em>decoration</em>.</p>
+
+<p>That’s the function decorator pattern in a nutshell. You have three pieces: a function decorator that wraps your function with a decoration function. This separates concerns and makes reusing the decoration behaviour trivial.</p>
+
+<h3 id="writing-our-own-decorators">writing our own decorators</h3>
+
+<p>We can write our own function decorators very easily. Let’s take an extremely simple example: logging the result of a function. Instead of:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">numberOfLoginAttempts</span> <span class="p">(</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">attempts</span><span class="p">;</span>
+  <span class="c1">//...</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">attempts</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">attempts</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>We want a decorator that does the logging for us. Like this:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">logsItsResult</span> <span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>Now, whenever we wish to log the result of a function, we write:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">numberOfLoginAttempts</span> <span class="o">=</span> <span class="nx">logsItsResult</span><span class="p">(</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">attempts</span><span class="p">;</span>
+  <span class="c1">//...</span>
+  <span class="k">return</span> <span class="nx">attempts</span><span class="p">;</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>This post is ostensibly about “this.” Well, what are the functions that care the most about “this?” Methods! Can we use our decorator on a method? Yes. Instead of:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">User</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">passwordHash</span><span class="p">,</span> <span class="nx">salt</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="nx">User</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">passwordHash</span><span class="p">,</span> <span class="nx">salt</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">passwordHash</span> <span class="o">=</span> <span class="nx">passwordHash</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">salt</span> <span class="o">=</span> <span class="nx">sale</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">User</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isAnAdministrator</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">hasAdminPrivs</span><span class="p">;</span>
+  <span class="c1">//...</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">hasAdminPrivs</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">hasAdminPrivs</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>We can use our decorator on the method’s function just as we used it on a “global” function:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">User</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isAnAdministrator</span> <span class="o">=</span> <span class="nx">logsItsResult</span><span class="p">(</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">hasAdminPrivs</span><span class="p">;</span>
+  <span class="c1">//...</span>
+  <span class="k">return</span> <span class="nx">hasAdminPrivs</span><span class="p">;</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>The key is to always write function decorators so that they are context agnostic: They need to call the decorated function with <code>.call</code> or <code>.apply</code>, passing the current context.</p>
+
+<h3 id="what-we-get-from-using-the-function-decorator-pattern">what we get from using the function decorator pattern:</h3>
+
+<p>Although we’re working with one-liners to keep things compact, here’s what we get:</p>
+
+<ol>
+  <li>We <em>untangle</em> concerns central to a method (like whether a user is an administrator) from cross-cutting concerns (like what we want to log).</li>
+  <li>We extract the cross-cutting functionality into a function. We can use that to DRY up functions and methods <em>scattered</em> across our code.</li>
+</ol>
+
+<p>(I’ve emphasized the words “tangled” and “scattered” because a big part of good coding comes down to reducing tangling and scattering.)</p>
+
+<h3 id="why-being-context-agnostic-matters">why being context-agnostic matters</h3>
+
+<p>Writing context-agnostic function decorators makes them work equally well with ordinary functions and with methods. As a rule-of-thumb, if you don’t have a good reason not to be context-agnostic, you should write all higher-order functions in a context-agnostic fashion.</p>
+
+<p>Thanks for being patient enough to read the whole thing!</p>
+
+<p>(<a href="http://www.reddit.com/r/javascript/comments/17pqjh/function_and_method_decorators/">discuss</a>)</p>
+
+
+
+        <p>My recent work:</p>
+
+        <p><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé"><img src="http://i.minus.com/iW2E1A8M5UWe6.jpeg" alt="JavaScript Allongé" /></a><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/coffeescript-ristretto" title="CoffeeScript Ristretto"><img src="http://i.minus.com/iMmGxzIZkHSLD.jpeg" alt="CoffeeScript Ristretto" /></a><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/combinators" title="Kestrels, Quirky Birds, and Hopeless Egocentricity"><img src="http://i.minus.com/ibw1f1ARQ4bhi1.jpeg" alt="Kestrels, Quirky Birds, and Hopeless Egocentricity" /></a></p>
+
+        <ul>
+          <li><a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé">JavaScript Allongé</a>, <a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé">CoffeeScript Ristretto</a>, and my <a href="http://leanpub.com/u/raganwald">other books</a>.</li>
+          <li><a href="http://allong.es">allong.es</a>, practical function combinators and decorators for JavaScript.</li>
+          <li><a href="https://github.com/raganwald/method-combinators">Method Combinators</a>, a CoffeeScript/JavaScript library for writing method decorators, simply and easily.</li>
+          <li><a href="http://github.com/raganwald/jquery-combinators">jQuery Combinators</a>, what else? A jQuery plugin for writing your own fluent, jQuery-like code. </li>
+        </ul>
+
+        <hr />
+        
+        <hr />
+
+<p>(Spot a bug or a spelling mistake? This is a Github repo, <a href="https://github.com/braythwayt/braythwayt.github.com">fork it and send me a pull request</a>!)</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="http://braythwayt.com">Reg Braithwaite</a></td>
+      <td><a href="http://twitter.com/raganwald">@raganwald</a></td>
+    </tr>
+  </tbody>
+</table>
+
+
+        </div>
+        
+      </section>
+      <br/>
+      
+        <!-- insert google analytics here -->
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+
+    </body>
+</html>

@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+	<TITLE>UPLOAD.TITLE</TITLE>
+</HEAD>
+<!-- fields are determined by image-schema.php -->
+<BODY>
+
+<H1>UPLOAD.TITLE</H1>
+
+<FORM ACTION="UPLOAD.ACTION" METHOD=POST ENCTYPE="multipart/form-data">
+	<TABLE>
+	<TR><TD COLSPAN=2><H3>Image File</H2></TD></TR>
+	<TR>
+		<TD VALIGN=TOP>Upload this photo:</TD><TD VALIGN=TOP><INPUT TYPE=FILE NAME="photofile" SIZE=60></TD>
+	</TR>
+	<TR>
+		<TD VALIGN=TOP>Copyright notice:</TD><TD VALIGN=TOP><INPUT TYPE=TEXT NAME="copyright"
+		VALUE="UPLOAD.DEFAULT-COPYRIGHT" SIZE=60></TD>
+	</TR>
+	<TR><TD COLSPAN=2><HR></TD></TR>
+	<TR><TD COLSPAN=2><H3>Image Fields</H2></TD></TR>
+<!-- BEGIN DYNAMIC BLOCK: upload.field -->
+	<TR>
+		<TD VALIGN=TOP>UPLOAD.FIELD.LABEL:</TD>
+		<TD VALIGN=TOP>
+			<INPUT TYPE="UPLOAD.FIELD.TYPE" NAME="UPLOAD.FIELD.NAME"
+				VALUE="UPLOAD.FIELD.DEFAULT" SIZE=60>
+		</TD>
+	</TR>
+<!-- END DYNAMIC BLOCK: upload.field -->
+	<TR><TD COLSPAN=2><HR></TD></TR>
+	<TR>
+		<TD></TD>
+		<TD VALIGN=TOP>
+			<INPUT TYPE=SUBMIT VALUE="Upload Image">
+		</TD>
+	</TR>
+	</TABLE>
+	<B>UPLOAD.MESSAGE</B>
+	
+	UPLOAD.HIDDEN
+
+</FORM>
+
+</BODY>
+</HTML>

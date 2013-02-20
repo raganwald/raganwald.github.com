@@ -1,0 +1,407 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Domain Specific Language support in Ruby</title>
+	<style type="text/css">
+	      @import url(http:assets/css/sunburst.css);
+	</style>
+</head>
+
+<body>
+	
+	<pre class="textmate-source sunburst"><span class="source source_ruby source_ruby_rails">
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> See "An Approach to Composing Domain-Specific Languages in Ruby":
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> <a href="http://raganwald.com/2007/03/approach-to-composing-domain-specific.html" title="An Approach to Composing Domain-Specific Languages in Ruby">http://raganwald.com/2007/03/approach-to-composing-domain-specific.html</a>
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  Created by Reginald Braithwaite on 2007-03-11.
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  Copyright (c) 2007. All rights reserved.
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>                    Version 2, December 2004
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Copyright (C) 2004 Sam Hocevar
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  22 rue de Plaisance, 75014 Paris, France
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Everyone is permitted to copy and distribute verbatim or modified
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> copies of this license document, and changing it is allowed as long
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> as the name is changed.
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  0. You just DO WHAT THE FUCK YOU WANT TO.
+	</span>
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> A Domain Specific Language is used to introduce a new scope with an embedded set of methods.
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> The idea is to avoid polluting the global namespace. Instead of adding methods to Kernel, we
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> add methods to a new DomainSpecificLanguage, and then we can evaluate code with the new language
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> using the #eval class method or using the #with method added to Kernel.
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> For a similar approach, see http://www.infoq.com/articles/eval-options-in-ruby
+	</span>
+	<span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">DomainSpecificLanguage</span></span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> See http://whytheluckystiff.net/articles/seeingMetaclassesClearly.html
+	</span>
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">metaclass</span></span>; <span class="keyword keyword_control keyword_control_ruby">class</span> &lt;&lt; <span class="variable variable_language variable_language_ruby">self</span>; <span class="variable variable_language variable_language_ruby">self</span>; <span class="keyword keyword_control keyword_control_ruby">end</span>; <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">meta_eval</span></span> &amp;blk; metaclass.instance_eval &amp;blk; <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Adds methods to a metaclass
+	</span>  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">meta_def</span></span> name, &amp;blk
+	    meta_eval {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>define_method name, &amp;blk }
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> See http://onestepback.org/index.cgi/Tech/Ruby/RubyBindings.rdoc
+	</span>  
+	<span class="meta meta_class meta_class_ruby">  <span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">ReadOnlyReference</span></span>
+	    <span class="meta meta_function meta_function_method meta_function_method_with-arguments meta_function_method_with-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">initialize</span><span class="punctuation punctuation_definition punctuation_definition_parameters punctuation_definition_parameters_ruby">(</span><span class="variable variable_parameter variable_parameter_function variable_parameter_function_ruby">var_name, vars</span><span class="punctuation punctuation_definition punctuation_definition_parameters punctuation_definition_parameters_ruby">)</span></span>
+	      <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>getter</span> = eval <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>lambda { <span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>var_name<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span> }<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span>, vars
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">value</span></span>
+	      <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>getter</span>.call
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">attr_reader</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>outer_binding</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>outer_self</span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> instances of a DomainSpecificLanguage are created each time
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> a block is evaluated with that language. The instance is
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> intialized with the block's binding.
+	</span>  
+	  <span class="meta meta_function meta_function_method meta_function_method_with-arguments meta_function_method_with-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">initialize</span><span class="punctuation punctuation_definition punctuation_definition_parameters punctuation_definition_parameters_ruby">(</span><span class="variable variable_parameter variable_parameter_function variable_parameter_function_ruby">given_binding</span><span class="punctuation punctuation_definition punctuation_definition_parameters punctuation_definition_parameters_ruby">)</span></span>
+	    <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>outer_binding</span> = given_binding
+	    <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>outer_self</span> = <span class="support support_class support_class_ruby">ReadOnlyReference</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>self</span>, given_binding)
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> some jiggery-pokery to access methods defined in the block's
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> scope, because when the block is evaluated with the DomainSpecificLanguage,
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> we use #instance_eval to set &lt;tt&gt;self&lt;/tt&gt; to the DomainSpecificLanguage
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> instance.
+	</span>  <span class="meta meta_function meta_function_method meta_function_method_with-arguments meta_function_method_with-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">method_missing</span><span class="punctuation punctuation_definition punctuation_definition_parameters punctuation_definition_parameters_ruby">(</span><span class="variable variable_parameter variable_parameter_function variable_parameter_function_ruby">symbol, *args, &amp;block</span><span class="punctuation punctuation_definition punctuation_definition_parameters punctuation_definition_parameters_ruby">)</span></span>
+	    <span class="keyword keyword_control keyword_control_ruby">if</span> args.empty?
+	      r = <span class="support support_class support_class_ruby">ReadOnlyReference</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(symbol, outer_binding)
+	      meta_def(symbol) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>r.value }
+	      r.value
+	    <span class="keyword keyword_control keyword_control_ruby">else</span>
+	      outer_self.value.send symbol, *args, &amp;block
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="meta meta_rails meta_rails_controller">  <span class="keyword keyword_control keyword_control_ruby">class</span> &lt;&lt; <span class="variable variable_language variable_language_ruby">self</span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Evaluates a block in the context of a new DomainSpecificlanguage
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> instance.
+	</span>    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">eval</span></span> &amp;block
+	      <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(block.binding).instance_eval(&amp;block)
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  </span><span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> We open Kernel and add just one method for introducing DomainSpecificLanguages
+	</span>
+	<span class="meta meta_module meta_module_ruby"><span class="keyword keyword_control keyword_control_module keyword_control_module_ruby">module</span> <span class="entity entity_name entity_name_type entity_name_type_module entity_name_type_module_ruby">Kernel</span></span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Evaluate a block with a DomainSpecificLanguage
+	</span>  
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">with</span></span> dsl_class, &amp;block
+	    dsl_class.eval(&amp;block)
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Let is a DomainSpecificLanguage that actually creates DomainSpecificLanguages.
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Let works a lot like &lt;tt&gt;let&lt;/tt&gt; in Scheme. Your provide a hash of names and value
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> expressions. The value expressions are evaluated in the outer scope, and then we have
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> a little domain specific language wher ethe inner scope has the names all bound to the
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> values. E.g.
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> &lt;tt&gt;
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> with Let do
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>     let :x =&gt; 100, :y =&gt; 50 do
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>         print "#{x + y} should equal fifty"
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>     end
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> end
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> &lt;/tt&gt;
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Within the Let DomainSpecificLanguage, you can declare multiple &lt;tt&gt;let&lt;/tt&gt; statements and nest
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> them as you please.
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> One important limitation: you cannot bind a value to a name that is already a local variable.
+	</span>
+	<span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">Let<span class="entity entity_other entity_other_inherited-class entity_other_inherited-class_ruby"> <span class="punctuation punctuation_separator punctuation_separator_inheritance punctuation_separator_inheritance_ruby">&lt;</span> DomainSpecificLanguage</span></span></span>
+
+	<span class="meta meta_class meta_class_ruby">  <span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">Scope<span class="entity entity_other entity_other_inherited-class entity_other_inherited-class_ruby"> <span class="punctuation punctuation_separator punctuation_separator_inheritance punctuation_separator_inheritance_ruby">&lt;</span> DomainSpecificLanguage</span></span></span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> initializes a Scope. In addition to the outer binding, we also pass in the
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> hash of names and values. Note the check to ensure we are not trying to
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> override a lcoal variable.
+	</span>    
+	    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">initialize</span></span> given_binding, let_clauses = {}
+	      let_clauses.each <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|symbol, value| 
+	        var_name = symbol.to_s
+	        <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">raise</span> <span class="support support_class support_class_ruby">ArgumentError</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(<span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>Cannot override local <span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>var_name<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span>) <span class="keyword keyword_control keyword_control_ruby">if</span> eval(<span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>local_variables<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span>, given_binding).detect {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|local| local == var_name  }
+	        meta_eval {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span><span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">attr_accessor</span>(var_name) }
+	        send <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span><span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>var_name<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span>=<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span>, value
+	      <span class="keyword keyword_control keyword_control_ruby">end</span>
+	      <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">super</span>(given_binding)
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Define a new Scope: you're really defining a new DomainSpecificLanguage
+	</span>  
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">let</span></span> let_clauses = {}, &amp;block
+	    <span class="support support_class support_class_ruby">Scope</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(block.binding, let_clauses).instance_eval(&amp;block)
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="meta meta_rails meta_rails_controller">  <span class="keyword keyword_control keyword_control_ruby">class</span> &lt;&lt; <span class="variable variable_language variable_language_ruby">self</span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> If you just want a one-off
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> def eval let_clauses = {}, &amp;block
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>   Scope.new(block.binding, let_clauses).instance_eval(&amp;block)
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> end
+	</span>    
+	  </span><span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> A DomainSpecificDelegator is a DSL that delegates methods to a class or object.
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> The main use is to separate the mechanics of scoping from the methods of a utility
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> class.
+	</span>
+	<span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">DomainSpecificDelegator<span class="entity entity_other entity_other_inherited-class entity_other_inherited-class_ruby"> <span class="punctuation punctuation_separator punctuation_separator_inheritance punctuation_separator_inheritance_ruby">&lt;</span> DomainSpecificLanguage</span></span></span>
+
+	<span class="meta meta_rails meta_rails_controller">  <span class="keyword keyword_control keyword_control_ruby">class</span> &lt;&lt; <span class="variable variable_language variable_language_ruby">self</span>
+
+	<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> insert one or more #delegate_to calls in the class definition, giving a receiver
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> and a hash. Each hash pair is of the form &lt;tt&gt;verb =&gt; method&lt;/tt&gt; where verb is the
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> name you will use in the DSL and method is the method in the receiver that will handle
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> it.
+	</span>    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">delegate_to</span></span> receiver, method_hash
+	      <span class="variable variable_other variable_other_readwrite variable_other_readwrite_class variable_other_readwrite_class_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@@</span>delegations</span> ||= {}
+	      method_hash.each {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|verb, method_name| <span class="variable variable_other variable_other_readwrite variable_other_readwrite_class variable_other_readwrite_class_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@@</span>delegations</span>[verb.to_s] = [receiver, method_name.to_s] }
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  </span><span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">method_missing</span></span> symbol, *args, &amp;block
+	    receiver, method_name = *<span class="variable variable_other variable_other_readwrite variable_other_readwrite_class variable_other_readwrite_class_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@@</span>delegations</span>[symbol.to_s]
+	    <span class="keyword keyword_control keyword_control_ruby">if</span> receiver
+	      receiver.send method_name, *args, &amp;block
+	    <span class="keyword keyword_control keyword_control_ruby">else</span>
+	      <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">super</span>(symbol, *args, &amp;block)
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="keyword keyword_control keyword_control_ruby">end</span></span>
+	
+	</pre>
+	<hr/>
+	<pre class="textmate-source sunburst">
+	
+	<span class="source source_ruby source_ruby_rails"><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>!/usr/bin/env ruby
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  Created by Reginald Braithwaite on 2007-03-11.
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  Copyright (c) 2007. All rights reserved.
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>                    Version 2, December 2004
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Copyright (C) 2004 Sam Hocevar
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  22 rue de Plaisance, 75014 Paris, France
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Everyone is permitted to copy and distribute verbatim or modified
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> copies of this license document, and changing it is allowed as long
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> as the name is changed.
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+	</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  0. You just DO WHAT THE FUCK YOU WANT TO.
+	</span>
+	<span class="meta meta_require meta_require_ruby"><span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">require</span> <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>test/unit<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span></span>
+	<span class="meta meta_require meta_require_ruby"><span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">require</span> <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>dsl<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span></span>
+
+	<span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">DefinesVariable<span class="entity entity_other entity_other_inherited-class entity_other_inherited-class_ruby"> <span class="punctuation punctuation_separator punctuation_separator_inheritance punctuation_separator_inheritance_ruby">&lt;</span> DomainSpecificLanguage</span></span></span>
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">y</span></span>
+	    <span class="constant constant_numeric constant_numeric_ruby">5</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+	<span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">DefinesMethodWithBlock<span class="entity entity_other entity_other_inherited-class entity_other_inherited-class_ruby">  <span class="punctuation punctuation_separator punctuation_separator_inheritance punctuation_separator_inheritance_ruby">&lt;</span> DomainSpecificLanguage</span></span></span>
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">say</span></span> something
+	    something
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+	<span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">TestDomainSpecificLanguage<span class="entity entity_other entity_other_inherited-class entity_other_inherited-class_ruby"> <span class="punctuation punctuation_separator punctuation_separator_inheritance punctuation_separator_inheritance_ruby">&lt;</span> Test::Unit::TestCase</span></span></span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_simple_read</span></span>
+	    x = <span class="constant constant_numeric constant_numeric_ruby">100</span>
+	    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">500</span>, <span class="support support_class support_class_ruby">DomainSpecificLanguage</span>.eval {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>x * <span class="constant constant_numeric constant_numeric_ruby">5</span> })
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_define_reader</span></span>
+	    x = <span class="constant constant_numeric constant_numeric_ruby">100</span>
+	    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">500</span>, <span class="support support_class support_class_ruby">DefinesVariable</span>.eval {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>x * y })
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_define_method</span></span>
+	    assert_nothing_raised(<span class="variable variable_other variable_other_constant variable_other_constant_ruby">Exception</span>) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span><span class="support support_class support_class_ruby">DefinesMethodWithBlock</span>.eval {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>say <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>hello<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span> } }
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_uses_lambda</span></span>
+	    double = lambda {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|x| x * <span class="constant constant_numeric constant_numeric_ruby">2</span> }
+	    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">8</span>, <span class="support support_class support_class_ruby">DomainSpecificLanguage</span>.eval {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>double.call(<span class="constant constant_numeric constant_numeric_ruby">4</span>) })
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">square</span></span> x
+	    x * x
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_uses_method</span></span>
+	    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">16</span>, <span class="support support_class support_class_ruby">DomainSpecificLanguage</span>.eval {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>square(<span class="constant constant_numeric constant_numeric_ruby">4</span>) })
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="meta meta_rails meta_rails_unit_test"><span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">DomainSpecificDelegatorTestHelper<span class="entity entity_other entity_other_inherited-class entity_other_inherited-class_ruby"> <span class="punctuation punctuation_separator punctuation_separator_inheritance punctuation_separator_inheritance_ruby">&lt;</span> DomainSpecificDelegator</span></span></span>
+
+	  delegate_to <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>hello<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>say</span> =&gt; <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>to_s</span>
+
+	</span><span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">TestDomainSpecificDelegator<span class="entity entity_other entity_other_inherited-class entity_other_inherited-class_ruby"> <span class="punctuation punctuation_separator punctuation_separator_inheritance punctuation_separator_inheritance_ruby">&lt;</span> Test::Unit::TestCase</span></span></span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_say</span></span>
+	    with <span class="variable variable_other variable_other_constant variable_other_constant_ruby">DomainSpecificDelegatorTestHelper</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>      assert_equal(<span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>hello<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>, say)
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">world</span></span>
+	    <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>world<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_outer_scope_method</span></span>
+	    with <span class="variable variable_other variable_other_constant variable_other_constant_ruby">DomainSpecificDelegatorTestHelper</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>      assert_equal(<span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>hello world<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>, <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span><span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>say<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span> <span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>world<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span>)
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">TestLet<span class="entity entity_other entity_other_inherited-class entity_other_inherited-class_ruby"> <span class="punctuation punctuation_separator punctuation_separator_inheritance punctuation_separator_inheritance_ruby">&lt;</span> Test::Unit::TestCase</span></span></span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_cannot_try_to_override_locals</span></span>
+	    with <span class="variable variable_other variable_other_constant variable_other_constant_ruby">Let</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>      local_var = <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>snafu</span>
+	      assert_raise(<span class="variable variable_other variable_other_constant variable_other_constant_ruby">ArgumentError</span>) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>        let <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>local_var</span> =&gt; <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>fubar</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do 
+	</span>          fail();
+	        <span class="keyword keyword_control keyword_control_ruby">end</span>
+	      <span class="keyword keyword_control keyword_control_ruby">end</span>
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_scoping</span></span>
+	    with <span class="variable variable_other variable_other_constant variable_other_constant_ruby">Let</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>      let <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">2</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>        assert_equal(<span class="constant constant_numeric constant_numeric_ruby">1</span>, x) 
+	        assert_equal(<span class="constant constant_numeric constant_numeric_ruby">2</span>, y)
+	      <span class="keyword keyword_control keyword_control_ruby">end</span>
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_access_to_outer_locals</span></span>
+	    with <span class="variable variable_other variable_other_constant variable_other_constant_ruby">Let</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>      x = <span class="constant constant_numeric constant_numeric_ruby">1</span>
+	      let <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">2</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>        assert_equal(<span class="constant constant_numeric constant_numeric_ruby">3</span>, x + y)
+	      <span class="keyword keyword_control keyword_control_ruby">end</span>
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">z</span></span>
+	    -<span class="constant constant_numeric constant_numeric_ruby">1</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_access_to_outer_methods</span></span>
+	    with <span class="variable variable_other variable_other_constant variable_other_constant_ruby">Let</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>      let <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">1</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>        assert_equal(<span class="constant constant_numeric constant_numeric_ruby">0</span>, x + z)
+	      <span class="keyword keyword_control keyword_control_ruby">end</span>
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_nesting</span></span>
+	    with <span class="variable variable_other variable_other_constant variable_other_constant_ruby">Let</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>      let <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">0</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">1</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>        assert_equal(<span class="constant constant_numeric constant_numeric_ruby">1</span>, x + y)
+	        let <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">2</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>          assert_equal(<span class="constant constant_numeric constant_numeric_ruby">3</span>, x + y) 
+	        <span class="keyword keyword_control keyword_control_ruby">end</span>
+	        assert_equal(<span class="constant constant_numeric constant_numeric_ruby">0</span>, x)
+	      <span class="keyword keyword_control keyword_control_ruby">end</span> 
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_assignment</span></span>
+	    with <span class="variable variable_other variable_other_constant variable_other_constant_ruby">Let</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>      let <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">0</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">1</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>        assert_equal(<span class="constant constant_numeric constant_numeric_ruby">1</span>, x + y)
+	        let <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">2</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>          assert_equal(<span class="constant constant_numeric constant_numeric_ruby">3</span>, x + y) 
+	          x = <span class="constant constant_numeric constant_numeric_ruby">5</span>
+	          assert_equal(<span class="constant constant_numeric constant_numeric_ruby">5</span>, x)
+	          assert_equal(<span class="constant constant_numeric constant_numeric_ruby">2</span>, x()) <span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> assignment creates a local that shadows the method.
+	</span>          <span class="variable variable_language variable_language_ruby">self</span>.x = <span class="constant constant_numeric constant_numeric_ruby">7</span>
+	          assert_equal(<span class="constant constant_numeric constant_numeric_ruby">5</span>, x)
+	          assert_equal(<span class="constant constant_numeric constant_numeric_ruby">7</span>, x()) <span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> you can hack around the read only nature, but it's not pretty
+	</span>        <span class="keyword keyword_control keyword_control_ruby">end</span>
+	        assert_equal(<span class="constant constant_numeric constant_numeric_ruby">0</span>, x)
+	      <span class="keyword keyword_control keyword_control_ruby">end</span>
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_let_and_block_parameters</span></span>
+	    with <span class="variable variable_other variable_other_constant variable_other_constant_ruby">Let</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>      let <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_language constant_language_ruby">nil</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>        (<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">10</span>).each {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|x| assert !x.nil? }
+	        assert_nil(x)
+	      <span class="keyword keyword_control keyword_control_ruby">end</span>
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	  <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">attr_accessor</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>w</span>
+
+	  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_outer_assigment</span></span>
+	    w = <span class="constant constant_numeric constant_numeric_ruby">5</span>
+	    with <span class="variable variable_other variable_other_constant variable_other_constant_ruby">Let</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>      let <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; <span class="constant constant_numeric constant_numeric_ruby">5</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+	</span>        assert_equal(<span class="constant constant_numeric constant_numeric_ruby">25</span>, w * x)
+	        w = <span class="constant constant_numeric constant_numeric_ruby">7</span>
+	        assert_equal(<span class="constant constant_numeric constant_numeric_ruby">35</span>, w * x)
+	      <span class="keyword keyword_control keyword_control_ruby">end</span>
+	    <span class="keyword keyword_control keyword_control_ruby">end</span>
+	    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">7</span>, w)
+	  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+	<span class="keyword keyword_control keyword_control_ruby">end</span>
+	</span>
+	
+	</pre>
+
+<div style="visibility: hidden">
+	<<script src="http://feeds.feedburner.com/~s/raganwald?i=http://raganwald.com/assets/media/source/dsl_and_let.html" type="text/javascript" charset="utf-8"></script>
+	<script language="JavaScript" type="text/javascript" src="http://pub44.bravenet.com/counter/code.php?id=382140&usernum=3754613835&cpv=2">
+	</script>
+	<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+	</script>
+	<noscript>
+		<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+	</noscript>
+</div>
+
+</body>
+</html>

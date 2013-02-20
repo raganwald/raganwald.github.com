@@ -1,0 +1,105 @@
+<!--
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+
+-->
+
+<HTML>
+<?php
+
+// resetdb.php
+//
+// use with caution! (duh!)
+
+if ( $action != '' ) {
+
+	require_once('image-schema.php');
+	require_once('sql.php');
+	require_once('blackboard.php');
+
+	$table_names = $imageSchema->tableNames();
+	reset($table_names);
+	while ( list($idx,$table) = each($table_names) )
+	{
+		print "\rChecking SQL Table $table<BR>";
+		if ( $BLACKBOARD->hasTable($table) ) {
+			print "\rDelete Images from SQL Table $table<BR>";
+			
+			$delete_statement = "DELETE FROM $table";
+			$sql_result = mysql_query($delete_statement);
+			if ( $sql_result ) {
+				$images_deleted = mysql_affected_rows();
+				print "\r$images_deleted images deleted!<BR>";
+			}
+		
+			$grinds = $imageSchema->fieldGrinds($table); // array of fields to grind!
+			$labels = $imageSchema->fieldLabels($table);
+			
+			reset($grinds);
+			while ( list($fieldname,$fieldgrindtype) = each($grinds) ) {
+				if ( $fieldgrindtype == $imageSchema->manytomany ) {
+					$manytomanytablename = $fieldname . '_' . BLACKBOARD_ID_FIELD_NAME;
+					print "\rDelete Many to Many SQL Table $manytomanytablename<BR>";
+					
+					$delete_statement = "DELETE FROM $manytomanytablename";
+					$sql_result = mysql_query($delete_statement);
+					if ( $sql_result ) {
+						$images_deleted = mysql_affected_rows();
+						print "\r$images_deleted image links deleted!<BR>";
+					}
+				}
+			}
+		}
+	}
+}
+else {
+?>
+
+<!-- show form -->
+<HEAD><TITLE>Reset Database?</TITLE></HEAD>
+<BODY>
+<H1>Reset Database?</H1>
+<TABLE>
+	<TR>
+		<TD COLSPAN=2>
+			<I>Resetting the database means all images will be lost and must<BR>
+			   be uploaded again. There is no undo and no way of recovering<BR>
+			   the lost images or information such as captions.</I><BR>
+		</TD>
+	</TR>
+	<TR>
+		<TD ALIGN=LEFT>
+			<FORM ACTION="index.html">
+				<INPUT TYPE="SUBMIT" VALUE="Cancel">
+			</FORM>
+		</TD>
+		<TD ALIGN=RIGHT>
+			<FORM ACTION="resetdb.php">
+				<INPUT TYPE="HIDDEN" NAME="action" VALUE="true">
+				<INPUT TYPE="SUBMIT" VALUE="Reset">
+			</FORM>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+
+<?php
+}
+?>
+</HTML>

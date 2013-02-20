@@ -1,0 +1,131 @@
+#Denumerable
+
+# Copyright 2002 Reginald Braithwaite-Lee. All Rights Reserved.
+# http://www.braithwaite-lee.com/tips/denumerables.html
+
+module Denumerable
+  
+  #must define :denumerableIteratorFactory, :denumerableIteratorFactory=
+  #initialize must support NO ARGUMENTS
+
+def detect (&detectionBlock)
+   iterator = self.denumerableIteratorFactory[]
+   begin
+     ret = iterator[]
+   end until ret.nil? or detectionBlock[ret]
+   ret
+end
+ 
+ def first
+   self.denumerableIteratorFactory[].call()
+ end
+  
+  def collect (&collectionBlock)
+     d = self.class.new
+     d.denumerableIteratorFactory= lambda {
+       iterator = self.denumerableIteratorFactory[]
+       lambda {
+         if val = iterator[] then
+           collectionBlock[val]
+         else
+           nil
+         end }
+     }
+     d
+  end
+
+def select (&selectionBlock)
+   d = self.class.new
+   d.denumerableIteratorFactory= lambda {
+     iterator = self.denumerableIteratorFactory[]
+     lambda {
+       begin
+         ret = iterator[]
+       end until ret.nil? or selectionBlock[ret]
+       ret
+     }
+   }
+   d
+ end
+ 
+def cartesianProduct(denumerable, &productBlock)
+   d = self.class.new
+   d.denumerableIteratorFactory= lambda {
+     myIterator = self.denumerableIteratorFactory[]
+     denumerableIterator = denumerable.denumerableIteratorFactory[]
+     lastDenumerable = denumerableIterator[] 
+     lastMy = myIterator[]
+     myResults = [lastMy]
+     denumerableResults = [lastDenumerable]
+     iDenumerable = total = 0
+     iMy = total - iDenumerable
+     if lastDenumerable.nil? || lastMy.nil? then
+       lambda { nil } # multiplying nil by a stream
+     else
+       lambda {
+         if lastDenumerable.nil? && lastMy.nil? && total > (myResults.length + denumerableResults.length - 2) then ##both finite, both limits
+           nil
+         else
+           ret = productBlock.call(myResults[iMy],denumerableResults[iDenumerable])
+           # ready to inner iterate
+           raise "bad inner iteration 1" if (iMy + iDenumerable) != total
+           iMy += 1
+           iDenumerable -= 1
+           if iMy > total || iDenumerable < 0 || iMy == myResults.length then # outer iterate
+             total +=1 # increment total
+             unless lastDenumerable.nil? then # grow cache if able
+               lastDenumerable = denumerableIterator[]
+               denumerableResults << lastDenumerable unless lastDenumerable.nil?
+             end
+             unless lastMy.nil? then # grow cache if able
+               lastMy = myIterator[]
+               myResults << lastMy unless lastMy.nil?
+             end
+             unless lastDenumerable.nil? then
+               iDenumerable = total
+             else
+               iDenumerable = denumerableResults.length - 1
+             end
+             iMy = total - iDenumerable
+           end # iMy > total || iDenumerable < 0 || iMy == myResults.length
+          ret
+        end
+      }
+    end
+  }
+  d
+end # method cartesianProduct
+
+alias * cartesianProduct
+
+def each
+  iterator = self.denumerableIteratorFactory[]
+  value = nil
+  while value = iterator[] do
+    yield(value)
+  end
+end
+
+def until (&testBlock)
+  u = self.class.new
+  u.denumerableIteratorFactory = lambda {
+    myIterator = self.denumerableIteratorFactory[];
+    value = :notnil
+    lambda {
+      unless value.nil?
+        value = myIterator[];
+        unless value.nil?
+          value = nil if testBlock[value]
+        end
+      end
+      value
+    }
+  }
+  u
+end
+
+
+end #Module Denumerable
+
+
+

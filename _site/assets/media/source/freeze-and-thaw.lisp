@@ -1,0 +1,1 @@
+(begin	(define-macro	(freeze expr)			(cons 'lambda (cons '() (list code)))	(define-macro	(thaw expr)			(list expr))	(define foo (freeze (+ 3 4)))	(thaw foo))

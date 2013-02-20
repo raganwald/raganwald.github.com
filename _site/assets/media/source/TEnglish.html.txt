@@ -1,0 +1,85 @@
+<HTML>
+	<SERVER>
+		(define navDate ((file:funds.tbn :head) :elementAt navpsdate))
+		(define compoundDate ((file:funds.tbn :head) :elementAt returndate))
+		(define moneymarket (file:mm.tbn :head))
+		(define clean	[ value | (if (== value "n/a") "--" value)])
+		(define makeRows [ fundType fundCategory |
+			(file:funds.tbn :writeSelect
+				[ fund |
+					(define lookup (file:NAVajoLookup.tbn :detectEqual FUNDNUMBER fund#fundnumber))
+					(if	lookup
+						(and	(== lookup#CATEGORY fundCategory)
+								(== lookup#TYPE fundType))
+						"")]
+				[ fund |
+					(define lookup (file:NAVajoLookup.tbn :detectEqual FUNDNUMBER fund#fundnumber))
+					<HTML>
+						<TR>
+							<TD ALIGN=LEFT><SERVER>lookup#ENGLISH</SERVER></TD>
+							<TD ALIGN=RIGHT><SERVER>(clean fund#oneyearreturn)</SERVER></TD>
+							<TD ALIGN=RIGHT><SERVER>(clean fund#twoyearreturn)</SERVER></TD>
+							<TD ALIGN=RIGHT><SERVER>(clean fund#threeyearreturn)</SERVER></TD>
+							<TD ALIGN=RIGHT><SERVER>(clean fund#fiveyearreturn)</SERVER></TD>
+							<TD ALIGN=RIGHT><SERVER>fund#navps</SERVER></TD>
+						</TR>
+					</HTML>])])
+		(define international <HTML><FONT FACE=HELVETICA SIZE=2><B>International 20% RRSP-Eligible</B></FONT></HTML>)
+		(define diversified <HTML><FONT FACE=HELVETICA SIZE=2><B>Diversified 100% RRSP-Eligible</B></FONT></HTML>)
+		(define canadian <HTML><FONT FACE=HELVETICA SIZE=2><B>Canadian 100% RRSP-Eligible</B></FONT></HTML>)
+		(define mm <HTML><FONT FACE=HELVETICA SIZE=2><B>Money Market 100% RRSP-Eligible</B></FONT></HTML>)
+		(define fullrow [ text | <HTML><TR><TD COLSPAN=6 ALIGN=LEFT><SERVER>text</SERVER></TD></TR></HTML>])
+		""
+	</SERVER>
+	<HEAD>
+	  <META NAME="GENERATOR" CONTENT="NAVajo">
+	  <TITLE>English Net Asset Values</TITLE>
+	</HEAD>
+	<BODY BGCOLOR="#ffffff">
+		<TABLE WIDTH=300 CELLSPACING=5 CELLPADDING=5>
+			<CAPTION><B>Compound Total Returns % to <SERVER>compoundDate</SERVER><B></CAPTION>
+			<TH>&nbsp;</TH><TH>1 yr</TH><TH>2 yr</TH><TH>3 yr</TH><TH>5 yr</TH>
+			<TH>Current<BR>NAV $<BR>
+			<FONT SIZE=1>at <SERVER>navDate</SERVER></FONT></TH>
+			<SERVER>(fullrow <HTML><H2>Equity and Balanced Funds</H2></HTML>)</SERVER>
+			<SERVER>
+				(+
+					(fullrow international)
+					(makeRows "EquityBalanced" "International")
+					(fullrow diversified)
+					(makeRows "EquityBalanced" "Diversified")
+					(fullrow canadian)
+					(makeRows "EquityBalanced" "Canadian"))
+			</SERVER>
+			
+			<SERVER>(fullrow <HTML><H2>Fixed Income Funds</H2></HTML>)</SERVER>
+			<SERVER>
+				(+
+					(fullrow international)
+					(makeRows "Fixed" "International")
+					(fullrow diversified)
+					(makeRows "Fixed" "Diversified")
+					(fullrow canadian)
+					(makeRows "Fixed" "Canadian"))
+			</SERVER>
+		</TABLE>
+		<BR><BR>
+		<TABLE WIDTH=300 CELLSPACING=5 CELLPADDING=5>
+			<CAPTION><B>Money Market yields % to <SERVER>moneymarket#yielddate</SERVER></B></CAPTION>
+			<SERVER>(fullrow <HTML><H2>Money Market Fund</H2></HTML>)</SERVER>
+			<TH>&nbsp;</TH>
+			<TH>Current<BR>Yield (%)</TH>
+			<TH>Effective<BR>Yield (%)</TH>
+			<TH>Current<BR>NAV $</TH>
+			<TR>
+				<TD COLSPAN=4 ALIGN=LEFT><SERVER>mm</SERVER></TD>
+			</TR>
+			<TR>
+				<TD ALIGN=LEFT>Money Market</TD>
+				<TD ALIGN=RIGHT><SERVER>moneymarket#currentyield</SERVER></TD>
+				<TD ALIGN=RIGHT><SERVER>moneymarket#effectiveyield</SERVER></TD>
+				<TD ALIGN=RIGHT><SERVER>moneymarket#navps</SERVER></TD>
+			</TR>
+		</TABLE>
+	</BODY>
+</HTML>

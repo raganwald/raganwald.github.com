@@ -1,0 +1,278 @@
+<html><head><title>Raganwald</title>
+
+<style>
+/* style modified from glish: http://www.glish.com/css/ */
+
+body{margin:0px 0px 0px 0px;font-family:trebuchet ms, verdana, sans-serif;background-color:white;}
+#Title{font-size:63px;padding-left:15px;padding-top:10px;text-transform:uppercase;font-family:trebuchet ms, verdana, sans-serif;}
+#Title a {text-decoration:none;color:inherit;}
+#Description{padding:0px;padding-top:10px;font-size:12px;font-weight:normal}
+.DateHeader{border-bottom:none;font-size:15px;text-align:left;margin-top:20px;margin-bottom:14px;padding:1px;padding-left:17px;color:gray;font-family:trebuchet ms, verdana, sans-serif;}
+.PostTitle{font-size:18px;font-weight:bold}
+.Post{padding-left:20px;margin-bottom:20px;text-indent:10px;padding-right:20px;line-height:22px}
+.PostFooter{margin-bottom:15px;margin-left:0px;color:black;font-size:10px}
+.comment-link {margin-left:.6em;}
+@media all {
+  #leftcontent{background-color:whitesmoke;border-right:2px dashed #000;border-bottom:0px dashed #000;float:left;padding-bottom:20px;margin-right:15px;padding:0px;width:67%;border-top:0px dashed #000}
+}
+@media handheld {
+  #leftcontent{border-right:0px dashed #000;float:none;margin:0 5% 0 5%;width:90%;}
+}
+.SideBarTitle{font-weight:bold;font-size:18px}
+h1{font-size:14px;padding-top:10px}
+a{text-decoration:none}
+a:hover{border-bottom:dashed 1px red}
+@media all {
+  #rightcontent{font-size:12px;height:100%;margin-left:0px;text-transform:none;padding-right:10px;background-color:white;}
+}
+@media handheld {
+  #rightcontent{margin:0 5% 0 5%;}
+}
+.blogComments{font-size:15px;text-align:left;margin-top:20px;margin-bottom:14px;padding:1px;padding-left:17px;color:gray;font-family:trebuchet ms, verdana, sans-serif;}
+.blogComment{margin-top:10px;margin-bottom:10px;color:black;text-indent:10px;padding-right:20px;line-height:22px}
+.deleted-comment {font-style:italic;color:gray;}
+.byline{margin-bottom:20px;margin-left:0px;margin-right:10px;color:black;font-size:10px;display:inline}
+#profile-container { }
+.profile-datablock { }
+.profile-img {display:inline;}
+.profile-img img {float:left;margin:0 10px 0px 0;border:4px solid #ccc;}
+#profile-container p { }
+#profile-container .profile-textblock { }
+.profile-data strong {display:block;}
+
+blockquote:first-letter {
+background: #f8f6f6 url(/assets/media/quoteleft.gif)left top no-repeat;
+letter-spacing: -.06em; padding-left:30px;font-size:1.6em; }
+
+blockquote {
+background: #f8f6f6 url(/assets/media/quoteright.gif) right bottom no-repeat;
+font-weight: normal; font-style:oblique; color: #444;
+margin: 0px 50px 10px 20px; padding: 0px 25px 0px 4px;
+line-height:1.5; border-top:1px solid #efefef;
+border-bottom:1px solid #efefef; }
+
+div.book {
+    float: right; width: 240px; margin-left: 10px; font-style: italic; text-align: center; font-size: 80%;
+}
+
+</style>
+<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+<!-- Meta Information -->
+<!-- put "BlogMetaData" between angle-dollar and dollar angle  to restore defaults -->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="MSSmartTagsPreventParsing" content="true" />
+<meta name="generator" content="Blogger" />
+<link rel="alternate" type="application/atom+xml" title="Raganwald (Atom 0.3)" href="http://feeds.feedburner.com/raganwald" />
+<link rel="alternate" type="application/rss+xml" title="Raganwald (RSS 2.0)" href="http://feeds.feedburner.com/raganwald" />
+<link rel="service.post" type="application/atom+xml" title="Raganwald" href="https://www.blogger.com/atom/7618424" />
+<link rel="service.post" type="application/atom+xml" title="Raganwald (Atom 1.0)" href="http://www.blogger.com/feeds/7618424/posts/full" />
+
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.blogger.com/rsd.g?blogID=7618424" />
+<style type="text/css">
+@import url("http://www.blogger.com/css/blog_controls.css");
+@import url("http://www.blogger.com/dyn-css/authorization.css?blogID=7618424");
+</style>
+
+<!-- /Meta Information -->
+</head><body>
+
+<div id="leftcontent">
+	<div id="Title" style="background: #FFFFFF; padding-bottom: 12px;">
+    
+	<img src="http://raganwald.github.com/assets/media/raganwald.png" width="352" height="90" border="0" alt="raganwald" title="raganwald, now with Web 2.0 beta goodness"/>
+	
+
+  </div>
+
+
+   
+   
+        <div class="DateHeader">Sunday, March 11, 2007</div>
+   
+
+       <div class="Post"><a name="1990194990621630996">&nbsp;</a>
+   <span class="PostTitle">
+
+<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html" title="permanent link">Why Why Functional Programming Matters Matters</a></span>
+   <div style="clear:both;"></div>I recently re-read the amazing paper <a href="http://www.math.chalmers.se/~rjmh/Papers/whyfp.html">Why Functional Programming Matters</a> (&#8220;WhyFP&#8221;). Although I thought that I understood WhyFP when I first read it a few years ago, when I had another look last weekend I suddenly understood that I had missed an important message.<sup>1</sup><br /><br />Now obviously (can you guess from the title?) the paper is about the importance of one particular style of programming, functional programming. And when I first read the paper, I took it at face value: I thought, &#8220;Here are some reasons why functional programming languages matter.&#8221;<br /><br />On re-reading it, I see that the paper contains insights that apply to programming in general. I don&#8217;t know why this surprises me. The fact is, programming language design revolves around program design. A language&#8217;s design reflects the opinions of its creators about the proper design of programs.<br /><br />In a very real sense, the design of a programming language is a strong expression of the opinions of the designer about good programs. When I first read WhyFP, I thought the author was expressing an opinion about the design of good programming languages. Whereas on the second reading, I realized he was expressing an opinion about the design of good programs.<br /><br /><strong>Can we add though subtraction?</strong><br /><br /><blockquote><br />  It is a logical impossibility to make a language more powerful by omitting features, no matter how bad they may be. <br /></blockquote><br /><br />Is this obvious? So how do we explain that one reason Java is considered &#8220;better than C++&#8221; is because it omits manual memory management? And one reason many people consider Java &#8220;better than Ruby&#8221; is because you cannot open base classes like <code>String</code> in Java? So no, it is not obvious. Why not?<br /><br />The key is the word <em>better</em>. It&#8217;s not the same as the phrase <em>more powerful</em>.<sup>2</sup> The removal or deliberate omission of these features is an expression about the idea that programs which do not use these features are better than programs which do. Any feature (or removal of a feature) which makes the programs written in the language better makes the language better. Thus, it <em>is</em> possible to make a language &#8220;better&#8221; by removing features that are considered harmful,<sup>3</sup> if by doing so it makes programs in the language better programs.<br /><br />In the opinion of the designers of Java, programs that do not use <code>malloc</code> and <code>free</code> are safer than those that do. And the opinion of the designers of Java is that programs that do not modify base classes like <code>String</code> are safer than those that do. The Java language design emphasizes a certain kind of safety, and to a Java language designer, safer programs are better programs.<br /><br />&#8220;More powerful&#8221; is a design goal just like &#8220;safer.&#8221; But yet, what does it mean? We understand what a safer language is. It&#8217;s a language where programs written in the language are safer. But what is a &#8220;more powerful&#8221; language? That programs written in the language are more powerful? What does that mean? Fewer symbols (the &#8220;golf&#8221; metric)?<br /><br />WhyFP asserts that you cannot make a language more powerful through the removal of features. To paraphrase an argument from the paper, <em>if removing harmful features was useful by itself, C and C++ programmers would simply have stopped using</em> <code>malloc</code> <em>and</em> <code>free</code> <em>twenty years ago</em>. Improving on C/C++ was not just a matter of removing <code>malloc</code> and <code>free</code>, it was also a matter of adding automatic garbage collection.<br /><br /><blockquote><br />  This space, wherein the essay ought to argue that Java compensates for its closed base classes by providing a more powerful substitute feature, left intentionally blank.<br /></blockquote><br /><br />At the same time, there is room for arguing that some languages are improved by the removal of harmful features. To understand why they may be improved but not more powerful, we need a more objective definition of what it means for a language to be &#8220;more powerful.&#8221; Specifically, what quality does a more powerful programming language permit or encourage in programs?<br /><br />When we understand what makes a program &#8220;better&#8221; in the mind of a language designer, we can understand the choices behind the language.<br /><br /><strong>Factoring</strong><br /><br />Factoring a program is the act of dividing it into units that are composed to produce the working software.<sup>4</sup> Factoring happens as part of the design. (<em>Re</em>-factoring is the act of rearranging an existing program to be factored in a different way). If you want to compare this to factoring in number theory, a well designed program has lots of factors, like the number <code>3,628,800</code> (<code>10!</code>). A <a href="http://www.laputan.org/mud/">Big Ball of Mud</a> is like the number <code>3,628,811</code>, a prime.<br /><br />Composition is the construction of programs from smaller programs. So factoring is to composition as division is to multiplication.<br /><br />Factoring programs isn&#8217;t really like factoring simple divisors. The most important reason is that programs can be factored in orthogonal ways. When you break a program into subprograms (using methods, subroutines, functions, what-have-you), that&#8217;s one axis of factoring. When you break an a modular program up into modules, that&#8217;s another, orthogonal axis of factoring.<br /><br />Programs that are well-factored are more desirable than programs that are poorly factored.<br /><br /><blockquote><br />  In computer science, <strong>separation of concerns</strong> (SoC) is the process of breaking a program into distinct features that overlap in functionality as little as possible. A concern is any piece of interest or focus in a program.<br />  <br />  SoC is a long standing idea that simply means a large problem is easier to manage if it can be broken down into pieces; particularly so if the solutions to the sub-problems can be combined to form a solution to the large problem.<br />  <br />  The term separation of concerns was probably coined by Edsger W. Dijkstra in his paper <a href="http://www.cs.utexas.edu/users/EWD/transcriptions/EWD04xx/EWD447.html">On the role of scientific thought</a>.<br /></blockquote><br />&#8212;Excerpts from the Wikipedia entry on <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">Separation of Concerns</a><br /><br />Programs that separate their concerns are well-factored. There&#8217;s a principle of software development, <a href="http://www.amazon.com/gp/product/0201379430?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=211189&amp;creative=374929&amp;creativeASIN=0201379430" title="Object Design: Roles, Responsibilities, and Collaborations">responsibility-driven design</a>. Each component should have one clear responsibility, and it should have everything it needs to carry out its responsibility.<br /><br />This is the separation of concerns again. Each component of a program having one clearly defined responsibility means each concern is addressed in one clearly defined place.<br /><br /><blockquote><br />  Let’s ask a question about Monopoly (and Enterprise software). Where do the rules live? In a noun-oriented design, the rules are smooshed and smeared across the design, because every single object is responsible for knowing everything about everything that it can ‘do’. All the verbs are glued to the nouns as methods.<br /></blockquote><br />&#8212;<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a><br /><br />In a game design where you have important information about a rule smeared all over the object hierarchy, you have very poor separation of concerns. It looks at first like there&#8217;s a clear factoring &#8220;Baltic Avenue has a method called <code>isUpgradableToHotel</code>,&#8221; but when you look more closely you realize that every object representing a property is burdened with knowing almost all of the rules of the game.<br /><br /><div class="book"><a name="evtst|a|0201379430" href="http://www.amazon.com/gp/product/0201379430?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0201379430"><img src="http://raganwald.github.com/assets/images/old//object_design-719894.jpg" border="0" height="160" width="128"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201379430" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br><a name="evtst|a|0201379430" href="http://www.amazon.com/gp/product/0201379430?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0201379430">Object Design: Roles, Responsibilities, and Collaborations</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201379430" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> focuses on the practice of designing objects as integral members of a community where each object has specific roles and responsibilities. The authors present the latest practices and techniques of Responsibility-Driven Design and show how you can apply them as you develop modern object-based applications.<br><br></div>The concerns are not clearly separated: there&#8217;s no one place to look and understand the behaviour of the game.<br /><br />Programs that separate their concerns are better programs than those that do not. And languages that facilitate this kind of program design are better than those that hamper it.<br /><br /><strong>Power through features that separate concerns</strong><br /><br />One thing that makes a programming language &#8220;more powerful&#8221; in my opinion is the provision of more ways to factor programs. Or if you prefer, <em>more axes of composition</em>. The more different ways you can compose programs out of subprograms, the more powerful a language is. <br /><br />Do you remember <a href="http://en.wikipedia.org/wiki/Structured_programming">Structured Programming</a>? The gist is, you remove <code>goto</code> and you replace it with well-defined control flow mechanisms: some form of subroutine call and return, some form of selection mechanism like Algol-descendant <code>if</code>, and some form of repetition like Common Lisp&#8217;s <code>loop</code> macro.<br /><br />Dijkstra&#8217;s view on structured programming was that it promoted the separation of concerns. The factoring of programs into blocks with well-defined control flow made it easy to understand blocks and rearrange programs in different ways. Programs with indiscriminate jumps did not factor well (if at all): they were difficult to understand and often could not be rearranged at all.<br /><br />Structured <a href="http://dmoz.org/Computers/Programming/Languages/Assembly/68k/">68k ASM</a> programming is straightforward in theory. You just need a lot of boilerplate, design patterns, and the discipline to stick to your convictions. But of course, lots of 68k ASM programming in practice is only partially structured. Statistically speaking, 68k ASM is not a structured programming language even though structured programming is possible in 68k ASM.<br /><br />Structured Pascal programming is straightforward both in theory and in practice. Pascal facilitates separation of concerns through structured programming. So we say that Pascal &#8220;is more powerful than 68k ASM&#8221; to mean that in practice, programs written in Pascal are more structured than programs written in 68k ASM because Pascal provides facilities for separating concerns that are missing in 68k ASM.<br /><br /><strong>For example: working with lists</strong><br /><br />Consider this snippet of iterative code:<br /><br /><pre class="textmate-source sunburst"><br /><span class="source source_java"><span class="storage storage_type storage_type_java">int</span> numberOfOldTimers = <span class="constant constant_numeric constant_numeric_java">0</span>;<br /><span class="meta meta_definition meta_definition_constructor meta_definition_constructor_java"><span class="entity entity_name entity_name_function entity_name_function_constructor entity_name_function_constructor_java">for</span> <span class="meta meta_definition meta_definition_param-list meta_definition_param-list_java">(<span class="storage storage_type storage_type_java">Employee</span> emp: employeeList</span>) </span>{<br /><span class="meta meta_definition meta_definition_constructor meta_definition_constructor_java">    <span class="entity entity_name entity_name_function entity_name_function_constructor entity_name_function_constructor_java">for</span> <span class="meta meta_definition meta_definition_param-list meta_definition_param-list_java">(<span class="storage storage_type storage_type_java">Department</span> dept: departmentsInCompany</span>) </span>{<br />        <span class="keyword keyword_control keyword_control_java">if</span> (emp.getDepartmentId() <span class="keyword keyword_operator keyword_operator_comparison keyword_operator_comparison_java">==</span> dept.getId() <span class="keyword keyword_operator keyword_operator_logical keyword_operator_logical_java">&amp;&amp;</span> emp.getYearsOfService() <span class="keyword keyword_operator keyword_operator_comparison keyword_operator_comparison_java">&gt;</span> dept.getAge()) {<br />            <span class="keyword keyword_operator keyword_operator_increment-decrement keyword_operator_increment-decrement_java">++</span>numberOfOldTimers;<br />        }<br />    }<br />}<br /></span><br /></pre><br />This is an improvement on older practices.<sup>5, 6</sup> For one thing, the <code>for</code> loops hide the implementation details of iterating over <code>employeeList</code> and <code>departmentsInCompany</code>. Is this better because you have less to type? Yes. Is it better because you eliminate the fence-post errors associated with loop variables? Of course.<br /><br />But most interestingly, you have the beginnings of a <em>separation of concerns</em>: how to iterate over a single list is separate from what you do in the iteration.<br /><br /><blockquote><br />  Try calling a colleague on the telephone and explaining what we want as succinctly as possible. Do you say &#8220;We want a loop inside a loop and inside of that an if, and&#8230;&#8221;? Or do you say &#8220;We want to count the number of employees that have been with the company longer than their departments have existed.&#8221;<br /></blockquote><br /><br />One problem with the <code>for</code> loop is that it can only handle one loop at a time. We have to nest loops to work with two lists at once. This is patently wrong: there&#8217;s nothing inherently nested about what we&#8217;re trying to do. We can demonstrate this easily: try calling a colleague on the telephone and explaining what we want as succinctly as possible. Do you say &#8220;We want a loop inside a loop and inside of that an if, and&#8230;&#8221;?<br /><br />No, we say, &#8220;We want to count the number of employees that have been with the company longer than their departments have existed.&#8221; There&#8217;s no discussion of nesting.<br /><br />In this case, a limitation of our tool has caused our concerns to intermingle again. The concern of &#8220;How to find the employees that have been with the company longer than their departments have existed&#8221; is intertwined with the concern of &#8220;count them.&#8221; Let&#8217;s try a different notation that separates the details of <em>how to find</em> from the detail of <em>counting what we&#8217;ve found</em>:<br /><br /><pre class="textmate-source sunburst"><br /><span class="source source_ruby">old_timers = (employees * departments).select <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|emp, dept|<br />  emp.department_id == dept.id &amp;&amp; emp.years_of_service &gt; dept.age<br /><span class="keyword keyword_control keyword_control_ruby">end</span><br />number_of_old_timers = old_timers.size<br /></span><br /></pre><br />Now we have separated the concern of finding from counting. And we have hidden the nesting by using the <code>*</code> operator to create a Cartesian product of the two lists. Now let&#8217;s look at what we used to filter the combined list, <code>select</code>. The difference is more than just semantics, or counting characters, or the alleged pleasure of fooling around with closures.<br /><br /><div class="book"><br>  <a name="evtst|a|0521644089" href="http://www.amazon.com/gp/product/0521644089?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521644089"><img src="http://raganwald.github.com/assets/images/old//haskell_school_of_expression.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;amp;amp;o=1&amp;a=0521644089" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br>I’m not a Haskell user (yet), but <a name="evtst|a|0521644089" href="http://www.amazon.com/gp/product/0521644089?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521644089">The Haskell School of Expression: Learning Functional Programming through Multimedia</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;amp;amp;o=1&amp;a=0521644089" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> has received rave reviews and comes with solid recommendations. It’s on my <a href="http://www.amazon.com/gp/registry/wishlist/3A2XEHODQK2WP/ref=wl_web/">wish list</a> if you’re feeling generous!<br><br></div><code>*</code> and <code>select</code> facilitates separating the concerns of how to filter things (like iterate over them applying a test) from the concern of what we want to filter. So languages that make this easy are more powerful than languages that do not. In the sense that they facilitate additional axes of factoring.<br /><br /><strong>The Telephone Test</strong><br /><br />Let&#8217;s look back a few paragraphs. We have an example of the &#8220;Telephone Test:&#8221; when code very closely resembles how you would explain your solution over the telephone, we often say it is &#8220;very high level.&#8221; The usual case is that such code expresses a lot more <em>what</em> and a lot less <em>how</em>. The concern of what has been very clearly separated from the concern of how: you can&#8217;t even <em>see</em> the how if you don&#8217;t go looking for it.<br /><br />In general, we think this is a good thing. But it isn&#8217;t free: somewhere else there is a mass of code that supports your brevity. When that extra mass of code is built into the programming language, or is baked into the standard libraries, it is nearly free and obviously a Very Good Thing. A language that doesn&#8217;t just separate the concern of how but does the work for you is very close to &#8220;something for nothing&#8221; in programming.<br /><br />But sometimes you have to write the <em>how</em> as well as the <em>what</em>. It isn&#8217;t always handed to you. In that case, it is still valuable, because the resulting program still separates concerns. It still factors into separate components. The components can be changed.<br /><br />I recently separated the concern of describing &#8220;how to generate sample curves for some data mining&#8221; from the concern of &#8220;managing memory when generating the curves.&#8221; I did so by writing my own lazy evaluation code (Both the <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">story</a> and the <a href="http://raganwald.com/assets/media/source/lazy_lists.html">code</a> are on line). Here&#8217;s the key &#8220;what&#8221; code that generates an infinite list of parameters for sample bezi&eacute;r curves:<br /><br /><pre class="textmate-source sunburst"><br /><span class="source source_ruby"><span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">magnitudes</span></span><br />  <span class="support support_class support_class_ruby">LazyList</span>.binary_search(<span class="constant constant_numeric constant_numeric_ruby">0.0</span>, <span class="constant constant_numeric constant_numeric_ruby">1.0</span>)<br /><span class="keyword keyword_control keyword_control_ruby">end</span><br /><br /><span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">control_points</span></span><br />  <span class="support support_class support_class_ruby">LazyList</span>.cartesian_product(magnitudes, magnitudes) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|x, y|<br />    <span class="support support_class support_class_ruby">Dictionary</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>( <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; x, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span> =&gt; y )<br />  <span class="keyword keyword_control keyword_control_ruby">end</span><br /><span class="keyword keyword_control keyword_control_ruby">end</span><br /><br /><span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">order_one_flows</span></span> args = {}<br />  height, width = (args[<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>height</span>] || <span class="constant constant_numeric constant_numeric_ruby">100.0</span>), (args[<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>width</span>] || <span class="constant constant_numeric constant_numeric_ruby">100.0</span>)<br />  <span class="support support_class support_class_ruby">LazyList</span>.cartesian_product(<br />      magnitudes, control_points, control_points, magnitudes<br />  ) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|initial_y, p1, p2, final_y|<br />    <span class="support support_class support_class_ruby">FlowParams</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(<br />      height, width, initial_y * height,<br />      <span class="support support_class support_class_ruby">CubicBezierParams</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(<br />        <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; width,          <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span> =&gt; final_y * height,<br />        <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x1</span> =&gt; p1.x * width,  <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y1</span> =&gt; p1.y * height,<br />        <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x2</span> =&gt; p2.x * width,  <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y2</span> =&gt; p2.y * height<br />      )<br />    )<br />  <span class="keyword keyword_control keyword_control_ruby">end</span><br /><span class="keyword keyword_control keyword_control_ruby">end</span><br /></span><br /></pre><br />That&#8217;s it. Just as I might tell you on the phone: &#8220;Magnitudes&#8221; is a list of numbers between zero and one created by repeatedly dividing the intervals in half, like a binary search. &#8220;Control Points&#8221; is a list of the Cartesian product of magnitudes with itself, with one magnitude assigned to <code>x</code> and the other to <code>y</code>. And so forth.<br /><br />I will not say that the sum of this code and the code that actually implements infinite lists is shorter than imperative code that would intermingle loops and control structures, <a href="http://www.amazon.com/gp/product/B000002J27?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=B000002J27" title="A Trick of the Tail by Genesis, Track 2, Entangled">entangling</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=B000002J27" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> <em>what</em> with <em>how</em>. I will say that it separates the concerns of what and how, and it separates them in a different way than <code>select</code> separated the concerns of what and how.<br /><br /><strong>So why does &#8220;Why Functional Programming Matters&#8221; matter again?</strong><br /><br />The great insight is that better programs separate concerns. They are factored more purely, and the factors are naturally along the lines of responsibility (rather than in Jenga piles of <code>abstract</code> <code>virtual</code> <code>base</code> <code>mixin</code> <code>module</code> <code>class</code> <code>proto_</code> <code>extends</code> <code>private</code> <code>implements</code>). Languages that facilitate better separation of concerns are more powerful in practice than those that don&#8217;t.<br /><br />WhyFP illustrates this point beautifully with the same examples I just gave: <a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">first-class functions</a> and <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">lazy evaluation</a>, both prominent features of modern functional languages like Haskell.<br /><br />WhyFP&#8217;s value is that it expresses an opinion about what makes programs better. It backs this opinion up with reasons why modern functional programming languages are more powerful than imperative programming languages. But even if you don&#8217;t plan to try functional programming tomorrow, the lessons about better programs are valuable for your work in <em>any</em> language today.<br /><br />That&rsquo;s why <a href="http://www.math.chalmers.se/~rjmh/Papers/whyfp.html">Why Functional Programming Matters</a> matters.<br /><br /><hr /><ol><li>And now I&#8217;m worried: what am I <em>still</em> missing?</li><br /><li>Please let&#8217;s not have a discussion about <a href="http://en.wikipedia.org/wiki/Turing-complete">Turing Equivalence</a>. Computer Science &#8220;Theory&#8221; tells us &#8220;there&#8217;s no such thing as more powerful.&#8221; Perhaps we share the belief that <em>In theory, there&#8217;s no difference between theory and practice. But in practice, there is</em>.</li><br /><li>I am not making the claim that <em>I</em> consider memory management or unsealed base classes harmful, but I argue that there exists at least one person who does.</li><br /><li>The word &#8220;factor&#8221; has been a little out of vogue in recent times. But thanks to an excellent <a href="http://programming.reddit.com/info/18td4/comments">post on reddit</a>, it could make a comeback.</li><br /><li>So much so that we won&#8217;t even bother to show what loops looked like in the days of <code>for (int i = 0; i &lt; employeeList.size(); ++i)</code>. </li><br /><li>Another organization might merge employees and departments, or have each department &ldquo;own&rdquo; a collection of employees. This makes our example easier, but now the <em>data</em> doesn&rsquo;t factor well. Everything we&rsquo;ve learned from databases in the last forty years tells us that we often need to find new ways to compose our data. The relational model factors well. The network model factors poorly.</li><br /></ol><div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/archives/labels/java ruby.html">java ruby</a></p>&nbsp;
+<script src="http://feeds.feedburner.com/~s/raganwald?i=http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html" type="text/javascript" charset="utf-8"></script>
+   <span class="PostFooter">
+   &para; <a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html" title="permanent link">10:21 PM</a>&nbsp;<a href="http://www2.blogger.com/comment.g?blogID=7618424&postID=1990194990621630996"location.href=http://www2.blogger.com/comment.g?blogID=7618424&postID=1990194990621630996;>11 comments</a>
+
+
+<span class="item-action"><a href="http://www2.blogger.com/email-post.g?blogID=7618424&postID=1990194990621630996" title="Email Post"><span class="email-post-icon">&nbsp;</span></a></span><span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www2.blogger.com/post-edit.g?blogID=7618424&postID=1990194990621630996" title="Edit Post"><span class="quick-edit-icon">&nbsp;</span></a></span> </span> 
+
+    </div>
+
+ 
+
+
+
+</div>
+
+<div id="rightcontent">
+
+	<div id="Description">&#8220;A programming tool is like a freeway: It takes you somewhere in the universe of results. All programming tools are to some extent generalized to handle the needs of a large number of programmers. They are like freeways that take you to the most popular beaches or the most crowded resorts. He who would climb the remote peaks must forsake the freeway and make his way by foot. The exertion of a week's simple sweat can place the programmer on a mountain peak from which are visible new territories of creative opportunity invisible to those who veer away from steep grades.&#8221;&#8212;Chris Crawford</div>
+
+
+	<p>
+
+
+          <h2 class="sidebar-title">More...</h2>
+
+          <a href="http://braythwayt.com">Reg Braithwaite</a> /
+
+          <a href="http://raganwald.github.com/">Recent Posts</a>
+
+          <br/>
+
+          <script type="text/javascript" src="http://del.icio.us/feeds/js/networkbadge/raganwald?name;icon=s"></script>  
+
+          <br/>
+
+
+<div class="SideBarTitle">Popular</div>
+
+    <a href="http://raganwald.github.com/2006/11/first-seven-books-i-would-buy-if-my_17.html">The first seven books I would buy if my shelves were bare</a> /
+
+    <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I've Learned From Sales, Part I: Don't Feed the Trolls</a> and 
+	<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html">Part II: Wanna Bet?</a> /
+
+    <a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a> /
+
+    <a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a> /
+
+    <a href="http://raganwald.github.com/2006/04/why-do-we-resist-idea-that-programming.html">Why do we resist the idea that programming might be hard?</a> /
+
+    <a href="http://raganwald.github.com/2006/10/are-we-blub-programmers.html">Are we Blub programmers?</a> /
+
+    <a href="http://raganwald.github.com/2006/08/dear-agile-metaprogrammer.html">Dear Agile Metaprogrammer</a> /
+
+    <a href="http://raganwald.github.com/2006/03/ill-take-static-typing-for-800-alex.html">I'll take Static Typing for $800, Alex</a> /
+
+    <a href="http://raganwald.github.com/2006/03/fair-and-balanced-look-at-static-vs.html">A
+    "fair and balanced" look at the static vs. dynamic typing schism</a> /
+
+    <a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I've learned from failure</a> /
+    
+    <a href="http://raganwald.github.com/2006/01/finding-signal-to-noise-ratio-in-never.html">Finding the Signal-to-Noise Ratio in the Never-Ending Language Debate</a> /
+    
+    <a href="http://raganwald.github.com/2005/10/im-not-young-enough-to-know-everything.html">I'm not young enough to know everything</a> /
+    
+    <a href="http://raganwald.github.com/2004/10/beware-of-turing-tar-pit.html">Beware of the Turing Tar-Pit</a>
+    
+    	<br />
+    
+	<br />
+
+	<div class="SideBarTitle">Jobs and Companies</div>
+
+    <a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+    <a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a> /
+    
+    <a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a> /
+    
+    <a href="http://raganwald.github.com/2005/03/are-you-thinking-of-working-for-start.html">Are you thinking of working for a start up?</a> /
+    
+    <a href="http://raganwald.github.com/2004/08/taking-work-personally.html">Taking Work Personally</a>
+
+    	<br />
+
+        <br />
+
+<div class="SideBarTitle">History</div>
+
+
+    <a href="http://raganwald.github.com/archives/2004_07_01_archive.html">July 2004</a> /
+
+    <a href="http://raganwald.github.com/archives/2004_08_01_archive.html">August 2004</a> /
+
+    <a href="http://raganwald.github.com/archives/2004_09_01_archive.html">September 2004</a> /
+
+    <a href="http://raganwald.github.com/archives/2004_10_01_archive.html">October 2004</a> /
+
+    <a href="http://raganwald.github.com/archives/2004_11_01_archive.html">November 2004</a> /
+
+    <a href="http://raganwald.github.com/archives/2004_12_01_archive.html">December 2004</a> /
+
+    <a href="http://raganwald.github.com/archives/2005_01_01_archive.html">January 2005</a> /
+
+    <a href="http://raganwald.github.com/archives/2005_02_01_archive.html">February 2005</a> /
+
+    <a href="http://raganwald.github.com/archives/2005_03_01_archive.html">March 2005</a> /
+
+    <a href="http://raganwald.github.com/archives/2005_04_01_archive.html">April 2005</a> /
+
+    <a href="http://raganwald.github.com/archives/2005_06_01_archive.html">June 2005</a> /
+
+    <a href="http://raganwald.github.com/archives/2005_07_01_archive.html">July 2005</a> /
+
+    <a href="http://raganwald.github.com/archives/2005_08_01_archive.html">August 2005</a> /
+
+    <a href="http://raganwald.github.com/archives/2005_09_01_archive.html">September 2005</a> /
+
+    <a href="http://raganwald.github.com/archives/2005_10_01_archive.html">October 2005</a> /
+
+    <a href="http://raganwald.github.com/archives/2005_11_01_archive.html">November 2005</a> /
+
+    <a href="http://raganwald.github.com/archives/2006_01_01_archive.html">January 2006</a> /
+
+    <a href="http://raganwald.github.com/archives/2006_02_01_archive.html">February 2006</a> /
+
+    <a href="http://raganwald.github.com/archives/2006_03_01_archive.html">March 2006</a> /
+
+    <a href="http://raganwald.github.com/archives/2006_04_01_archive.html">April 2006</a> /
+
+    <a href="http://raganwald.github.com/archives/2006_05_01_archive.html">May 2006</a> /
+
+    <a href="http://raganwald.github.com/archives/2006_06_01_archive.html">June 2006</a> /
+
+    <a href="http://raganwald.github.com/archives/2006_07_01_archive.html">July 2006</a> /
+
+    <a href="http://raganwald.github.com/archives/2006_08_01_archive.html">August 2006</a> /
+
+    <a href="http://raganwald.github.com/archives/2006_09_01_archive.html">September 2006</a> /
+
+    <a href="http://raganwald.github.com/archives/2006_10_01_archive.html">October 2006</a> /
+
+    <a href="http://raganwald.github.com/archives/2006_11_01_archive.html">November 2006</a> /
+
+    <a href="http://raganwald.github.com/archives/2006_12_01_archive.html">December 2006</a> /
+
+    <a href="http://raganwald.github.com/archives/2007_01_01_archive.html">January 2007</a> /
+
+    <a href="http://raganwald.github.com/archives/2007_02_01_archive.html">February 2007</a> /
+
+    <a href="http://raganwald.github.com/archives/2007_03_01_archive.html">March 2007</a> /
+
+			<script type="text/javascript" language="Javascript">if (location.href.indexOf("archive")!=-1) document.write("<strong><a href=\"http://raganwald.github.com/index.html\">Current Posts</a></strong>");</script>
+<br/></p>
+<p></p>
+
+<p class="profile-link"><a href="http://feeds.feedburner.com/raganwald" rel="alternate" type="application/rss+xml"><img src="http://www.feedburner.com/fb/images/pub/feed-icon16x16.png" alt="" style="vertical-align:middle;border:0"/></a>&nbsp;<a href="http://feeds.feedburner.com/raganwald" rel="alternate" type="application/rss+xml">Subscribe in a reader</a></p>
+
+<p class="profile-link"><a href="http://www.bloglines.com/sub/http://feeds.feedburner.com/raganwald" title="Passionate Software Development" type="application/rss+xml"><img src="http://www.bloglines.com/images/sub_modern11.gif" alt="Subscribe in Bloglines" style="border:0"/></a></p>
+
+<p class="profile-link"><a href="http://fusion.google.com/add?feedurl=http://feeds.feedburner.com/raganwald"><img src="http://buttons.googlesyndication.com/fusion/add.gif" width="104" height="17" style="border:0" alt="Add to Google"/></a></p>
+
+<p class="profile-link"><a href="http://add.my.yahoo.com/rss?url=http://feeds.feedburner.com/raganwald" title="Passionate Software Development"><img src="http://us.i1.yimg.com/us.yimg.com/i/us/my/addtomyyahoo4.gif" alt="" style="border:0"/></a></p>
+
+<p class="profile-link"><a href="http://www.newsgator.com/ngs/subscriber/subext.aspx?url=http://feeds.feedburner.com/raganwald" title="Passionate Software Development"><img src="http://www.newsgator.com/images/ngsub1.gif" alt="Subscribe in NewsGator Online" style="border:0"/></a></p>
+
+<p class="profile-link"><a href="http://www.rojo.com/add-subscription?resource=http://feeds.feedburner.com/raganwald" title="Passionate Software Development"><img src="http://www.rojo.com/corporate/images/add-to-rojo.gif" alt="Subscribe in Rojo" style="border:0"/></a></p>
+
+
+</div>
+
+<div style="visibility: hidden">
+<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+</script>
+<noscript>
+    <img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+</noscript>
+</div>
+
+</body>
+</html>

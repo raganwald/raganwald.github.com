@@ -1,0 +1,12 @@
+<HTML>
+<HEAD>
+	<TITLE>No Pictures</TITLE>
+</HEAD>
+<BODY>
+
+<H1>No Pictures</H1>
+
+<p>Sorry, there are no pictures matching this description in the database.</p>
+
+</BODY>
+</HTML>
