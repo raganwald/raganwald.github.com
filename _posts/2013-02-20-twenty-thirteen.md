@@ -65,7 +65,7 @@ But building locally is optional. The site is rebuilt by Github when I push and 
 
 Like the old thing, I get the ability to ask for pull requests. That's huge, I get a lot of good corrections that way.
 
-I guess I could embed Disqus comments if I wanted to, but I enjoy outsourcing discussion to Hacker News, Reddit, or wherever. Let them play whack-a-mole with incivility. And besides, I am not one of these super-bloggers with his own community. There are people who like myy writing, and that's great, but it's a win for everyone if the comments praising my writing are alongside those pointing out where it could me, um, "even better." I think there's more of that when people discuss things elsewhere.
+I guess I could embed Disqus comments if I wanted to, but I enjoy outsourcing discussion to Hacker News, Reddit, or wherever. Let them play whack-a-mole with incivility. And besides, I am not one of these super-bloggers with his own community. There are people who like my writing, and that's great, but it's a win for everyone if the comments praising my writing are alongside those pointing out where it could me, um, "even better." I think there's more of that when people discuss things elsewhere.
 
 I get one-click publishing, I just have to click in a Github client rather than on some web abomination.
 
@@ -95,7 +95,7 @@ As you can see, I've turned pygments on to do source highlighting. I also use Kr
 
 [^pg]: Paul Graham has suggested that I can cut down my wordiness by moving a lot of non-core observations into footnotes. He may have something there.
 
-And that, as they say, is that. This is where I'm going to be doing my "raganwald" tech blogging for the next little while. I'll giuss four years, since that's about how long it is before the world changes enough to warrant throwing it all out and starting over.
+And that, as they say, is that. This is where I'm going to be doing my "raganwald" tech blogging for the next little while. I'll guess four years, since that's about how long it is before the world changes enough to warrant throwing it all out and starting over.
 
 > "You know why I don't play ballads any more? Because I love to play ballads"--Miles Davis
 
