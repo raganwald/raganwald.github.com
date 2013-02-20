@@ -1,6 +1,6 @@
 ---
 title: The "Drunken Walk" Programming Problem
-layout: homoiconic
+layout: dark
 tags: javascript
 ---
 

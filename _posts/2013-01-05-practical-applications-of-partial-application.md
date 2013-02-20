@@ -1,5 +1,5 @@
 ---
-layout: homoiconic
+layout: dark
 title: Practical Applications of Partial Application
 tags: javascript
 ---

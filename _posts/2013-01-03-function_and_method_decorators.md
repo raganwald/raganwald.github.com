@@ -1,5 +1,5 @@
 ---
-layout: homoiconic
+layout: dark
 title: Function and Method Decorators
 tags: javascript
 ---

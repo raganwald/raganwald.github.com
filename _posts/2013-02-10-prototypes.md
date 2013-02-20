@@ -1,5 +1,5 @@
 ---
-layout: homoiconic
+layout: dark
 title: Classes vs. Prototypes in JavaScript
 tags: javascript
 recent_work: true

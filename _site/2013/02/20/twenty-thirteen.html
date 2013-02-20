@@ -51,7 +51,9 @@
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
         </div>
 
-        <p>A little more than four years ago, I tried an experiment: On October 27, 2008 I pushed <a href="https://github.com/raganwald/homoiconic/blob/master/2008-10-27/unfold.markdown">some text in markdown format</a> to Github, and a new kind of bloggy thing called <a href="https://github.com/raganwald/homoiconic">Homoiconic</a> was born.</p>
+        <h2 id="how-to-use-github-pages-for-a-technical-blog-and-why-im-using-it">How to use Github Pages for a technical blog and why I’m using it</h2>
+
+<p>A little more than four years ago, I tried an experiment: On October 27, 2008 I pushed <a href="https://github.com/raganwald/homoiconic/blob/master/2008-10-27/unfold.markdown">some text in markdown format</a> to Github, and a new kind of bloggy thing called <a href="https://github.com/raganwald/homoiconic">Homoiconic</a> was born.</p>
 
 <p>As a blog, it was lame. Markdown is seriously limited as a word processor. Github prevented me from doing anything interesting with layouts. A repo has terrible indexing of old posts. No comments or JavaScript to embed anything useful. I didn’t own my own domain, a serious flaw.</p>
 
@@ -76,25 +78,123 @@
 <p>In the last twelve months or so, I’ve been embracing <a href="http://pages.github.com">Github Pages</a> for some projects. In exchange for fiddling with a domain registrar, I can host things on my own domains, like:</p>
 
 <ul>
-  <li>http://allong.es</li>
-  <li>http://recursiveuniver.se</li>
-  <li>http://oscin.es</li>
+  <li><a href="http://allong.es">http://allong.es</a>: A free library of <a href="https://leanpub.com/javascript-allonge">JavaScript Allongé</a> recipes.</li>
+  <li><a href="http://recursiveuniver.se">http://recursiveuniver.se</a>: An implementation of HashLife, in Literate CoffeeScript.</li>
+  <li><a href="http://oscin.es">http://oscin.es</a>: Combinatory Logic in JavaScript.</li>
 </ul>
 
 <p>I’m even hosting free versions of some of my books:</p>
 
 <ul>
-  <li>http://combinators.info</li>
-  <li>http://ristrettolo.gy</li>
+  <li><a href="http://combinators.info">http://combinators.info</a>: <a href="https://leanpub.com/combinators">Kestrels, Quirky Birds, and Hopeless Egocentricity</a>.</li>
+  <li><a href="http://ristrettolo.gy">http://ristrettolo.gy</a>: <a href="https://leanpub.com/coffeescript-ristretto">CoffeeScript Ristretto</a>.</li>
 </ul>
 
-<p>And with those under my belt, I took the plunge and moved all of my writing from 2013 over to http://braythwayt.com. I’m now using Jekyll to publish my “bloggy thing” to Github. I get the same lame lack of ability to format my posts, but I can now waste time with layouts.</p>
+<p>And with those under my belt, I took the plunge and moved all of my writing from 2013 over to <a href="http://raganwald.com">http://raganwald.com</a>. I’m now using Jekyll to publish my “bloggy thing” to Github. I get the same lame lack of ability to format my posts, but I can now waste time with layouts.</p>
 
 <p>And I get my own domain, that’s a win. And the layouts let me do things like pimp my books on every page without doing a global search-and-replace. Or add analytics to the blog. We’ll see if I do much more than just post.</p>
 
 <h3 id="my-workflow">my workflow</h3>
 
-<p>http://braythwayt.com is kept in a separate github repository</p>
+<p>I do a more complicated thing with Jekyll on my <a href="http://ristrettolo.gy">http://ristrettolo.gy</a> site, where I use an asset pipeline to compile CoffeeScript. It’s a book about CoffeeScript, the interactive behaviour should be written in CoffeeScript!</p>
+
+<p>But here on <a href="http://raganwald.com">http://raganwald.com</a>, I use the basic (and free) Jekyll behaviour built into Github Pages. That means absolutely no Jekyll plugins. Which suits me fine.</p>
+
+<p>New posts go into a <code>_posts</code> folder, with a special name. This one is <code>2013-02-20-twenty-thirteen.md</code>. The top of each post has some YAML junk:</p>
+
+<div class="highlight"><pre><code class="yaml"><span class="nn">---</span>
+<span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Twenty Thirteen</span>
+<span class="l-Scalar-Plain">layout</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dark</span>
+<span class="nn">---</span>
+</code></pre></div>
+
+<p>If both of those things are set up correctly, the post is automatically published when I push to github. It’s poured into the “dark” layout and the resulting HTML is available at  <a href="http://raganwald.com/2013/02/20/twenty-thirteen.html">http://raganwald.com/2013/02/20/twenty-thirteen.html</a>. I can preview my work by running <code>jekyll</code> on the command line, <code>jekyll --auto</code> if I want it to rebuild the site locally whenever it detects changes, or <code>jekyll --server 3333</code> if I want to run a preview web server on port 3333.</p>
+
+<p>But building locally is optional. The site is rebuilt by Github when I push and that’s what’s published to the web.</p>
+
+<h3 id="my-setup">my setup</h3>
+
+<p>Following Github’s instructions, I registered my domain and configured the DNS to resolve to Github’s servers at <code>204.232.175.78</code>. That takes anywhere from a few hours to a few days before a new domain starts 404-ing at Github, showing that the DNS is set up properly.</p>
+
+<p>For each top-level domain, you need a fresh Github account with a special repo. For example, you can set up <code>whizzbang2000</code> as a Github free account and then create a repo <code>whizzbang200.github.com</code>. I then give my <code>raganwald</code> account collaboration privileges and we’re off to the races. For <a href="http://raganwald.com">http://raganwald.com</a>, I’m already the guy, so there’s no need to set up a separate account.</p>
+
+<p>I drop a <code>CNAME</code> file into the repo. For <a href="http://raganwald.com">http://raganwald.com</a>, the file contains the text <code>raganwald.com</code>. Once you push that, Github starts resolving hits to <code>raganwald.com</code> to whatever you are publishing. You could drop an index.html file in there, or an index.md with some YAML to tell Github how to build it, or go wild with Liquid Tags, it’s up to you.</p>
+
+<p>A nice thing about Jekyll is that you can control the Markdown rendering with the <code>_config.yaml</code> file:</p>
+
+<div class="highlight"><pre><code class="yaml"><span class="l-Scalar-Plain">pygments</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">lsi</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+<span class="l-Scalar-Plain">safe</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+<span class="l-Scalar-Plain">markdown</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">kramdown</span>
+<span class="l-Scalar-Plain">exclude</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">config.rb, README.md</span>
+</code></pre></div>
+
+<p>As you can see, I’ve turned pygments on to do source highlighting. I also use Kramdown because that’s what Leanpub uses when it renders my books, so I want the maximum possible compatibility between the two. And I like being able to use footnotes.<sup id="fnref:pg"><a href="#fn:pg" rel="footnote">1</a></sup></p>
+
+<p>And that, as they say, is that. </p>
+
+<p>p.s. Here is some Jekyll Templating embedded in a markdown file, just to show that if you want to do some yak-shaving, you can:</p>
+
+<div class="related">
+  <ul>
+    
+    <li>
+<span>February 20, 2013</span> <a href="/2013/02/20/twenty-thirteen.html">Twenty Thirteen</a>
+    </li>
+    
+    <li>
+<span>February 19, 2013</span> <a href="/2013/02/19/michael-feathers.html">Better to leave it in the social sphere</a>
+    </li>
+    
+    <li>
+<span>February 18, 2013</span> <a href="/2013/02/18/drunken-walk-solution.html">Solving the "Drunken Walk" problem with iterators</a>
+    </li>
+    
+    <li>
+<span>February 17, 2013</span> <a href="/2013/02/17/a-drunken-walk.html">The "Drunken Walk" Programming Problem</a>
+    </li>
+    
+    <li>
+<span>February 15, 2013</span> <a href="/2013/02/15/turtles-and-iterators.js.html">Tortoises, Teleporting Turtles, and Iterators (JavaScript)</a>
+    </li>
+    
+    <li>
+<span>February 15, 2013</span> <a href="/2013/02/15/turtles-and-iterators.html">Tortoises, Teleporting Turtles, and Iterators (CoffeeScript)</a>
+    </li>
+    
+    <li>
+<span>February 10, 2013</span> <a href="/2013/02/10/prototypes.html">Classes vs. Prototypes in JavaScript</a>
+    </li>
+    
+    <li>
+<span>January  5, 2013</span> <a href="/2013/01/05/practical-applications-of-partial-application.html">Practical Applications of Partial Application</a>
+    </li>
+    
+    <li>
+<span>January  4, 2013</span> <a href="/2013/01/04/effective-javascript.html">Effective JavaScript Reviewed</a>
+    </li>
+    
+    <li>
+<span>January  3, 2013</span> <a href="/2013/01/03/function_and_method_decorators.html">Function and Method Decorators</a>
+    </li>
+    
+    <li>
+<span>January  2, 2013</span> <a href="/2013/01/02/madness.html">The Madness of King JavaScript</a>
+    </li>
+    
+    <li>
+<span>January  1, 2013</span> <a href="/2013/01/01/this.html">More than you ever wanted to know about "this" in JavaScript, Part I</a>
+    </li>
+    
+  </ul>
+</div>
+<div class="footnotes">
+  <ol>
+    <li id="fn:pg">
+      <p>Paul Graham has suggested that I can cut down my wordiness by moving a lot of non-core observations into footnotes. He may have something there.<a href="#fnref:pg" rel="reference">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
 
 
         <p>My recent work:</p>
@@ -112,7 +212,7 @@
         
         <hr />
 
-<p>(Spot a bug or a spelling mistake? This is a Github repo, <a href="https://github.com/braythwayt/braythwayt.github.com">fork it and send me a pull request</a>!)</p>
+<p>(Spot a bug or a spelling mistake? This is a Github repo, <a href="https://github.com/raganwald/raganwald.github.com">fork it and send me a pull request</a>!)</p>
 
 <table>
   <tbody>

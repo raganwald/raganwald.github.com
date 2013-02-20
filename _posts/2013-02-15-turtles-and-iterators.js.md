@@ -1,5 +1,5 @@
 ---
-layout: homoiconic
+layout: dark
 title: Tortoises, Teleporting Turtles, and Iterators (JavaScript)
 tags: javascript
 ---

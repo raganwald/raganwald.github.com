@@ -1,5 +1,5 @@
 ---
-layout: homoiconic
+layout: dark
 title: Effective JavaScript Reviewed
 tags: javascript books
 ---
