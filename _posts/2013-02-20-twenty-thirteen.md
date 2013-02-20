@@ -3,7 +3,7 @@ title: Twenty Thirteen
 layout: dark
 ---
 
-## How to use Github Pages for a technical blog and why I'm using it
+## Why I've moved back to proper blogging, and how I'm using Github ages to do it
 
 A little more than four years ago, I tried an experiment: On October 27, 2008 I pushed [some text in markdown format](https://github.com/raganwald/homoiconic/blob/master/2008-10-27/unfold.markdown) to Github, and a new kind of bloggy thing called [Homoiconic](https://github.com/raganwald/homoiconic) was born.
 
