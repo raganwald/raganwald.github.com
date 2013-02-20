@@ -61,6 +61,18 @@ If both of those things are set up correctly, the post is automatically publishe
 
 But building locally is optional. The site is rebuilt by Github when I push and that's what's published to the web.
 
+### benefits
+
+Like the old thing, I get the ability to ask for pull requests. That's huge, I get a lot of good corrections that way.
+
+I guess I could embed Disqus comments if I wanted to, but I enjoy outsourcing discussion to Hacker News, Reddit, or wherever. Let them play whack-a-mole with incivility. And besides, I am not one of these super-bloggers with his own community. There are people who like myy writing, and that's great, but it's a win for everyone if the comments praising my writing are alongside those pointing out where it could me, um, "even better." I think there's more of that when people discuss things elsewhere.
+
+I get one-click publishing, I just have to click in a Github client rather than on some web abomination.
+
+I get a complete edit history. It's git!
+
+Overall, I think this is going to go well.
+
 ### my setup
 
 Following Github's instructions, I registered my domain and configured the DNS to resolve to Github's servers at `204.232.175.78`. That takes anywhere from a few hours to a few days before a new domain starts 404-ing at Github, showing that the DNS is set up properly.
