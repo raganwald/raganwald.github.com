@@ -91,7 +91,7 @@ And that, as they say, is that. This is where I'm going to be doing my "raganwal
 
 ### post scriptum
 
-Here is some Jekyll Templating embedded in a markdown file, just to show that if you want to do some yak-shaving, you can. Here is a list of posts, dynamically generated:
+Here is some Jekyll Templating embedded in a markdown file, just to show that if you want to do some yak-shaving, you can. This is a list of posts, dynamically generated:
 
 <div class="related">
   <ul>
