@@ -20,7 +20,7 @@ Bertie quickly whips out a JavaScript IDE he has devised, and he writes himself 
 {% highlight javascript %}
 function Numbers () {
   var number = 0;
-  return function SeatNumber () {
+  return function () {
     return number++;
   };
 };
@@ -205,7 +205,9 @@ i();
 Bertie is satisfied, but the natives are restless, so he keeps coding, then reaches for his bullhorn:
 
 {% highlight javascript %}
-var RedditorSeats = map(PeopleOnTheBuses(), function (o) { return 'bus: ' + o.bus + ', seat: ' + o.seat; }),
+var RedditorSeats = map(PeopleOnTheBuses(), function (o) { 
+      return 'bus: ' + o.bus + ', seat: ' + o.seat; 
+    }),
     i = MoveToSeat(RedditorSeats, OddNumbers());
 
 i();
@@ -216,9 +218,9 @@ i();
   //=> 'bus: 1, seat: 0 -> 5'
 i();
   //=> 'bus: 0, seat: 2 -> 7'
-RedditorSeats();
+i();
   //=> 'bus: 1, seat: 1 -> 9'
-RedditorSeats();
+i();
   //=> 'bus: 2, seat: 0 -> 11'
   
 // ...
