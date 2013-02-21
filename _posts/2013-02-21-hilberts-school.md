@@ -92,7 +92,9 @@ while (true)
 //=> 0 -> 1, 1 -> 3, 2 -> 5, 3 -> 7, ...
 {% endhighlight %}
 
-Jeff's fans take the odd-numbered seats one by one and Bertie has managed to add an infinite number of students to an infinitely large but full auditorium. he's so pleased, he let's Jeff be the guest lecturer. The audience has loved Bertie's abstract approach to programming so far, but they're hungry for practical knowledge and Jeff enthrals them  with a walkthrough of how the Discourse User Experience is implemented. As a bonus, he shares his insights into programming productivity. By the end of the day, everyone is typing over 100wpm and has placed an order for multiple wall-sized monitors on eBay.
+Jeff's fans take the odd-numbered seats one by one and Bertie has managed to add an infinite number of students to an infinitely large but full auditorium. he's so pleased, he let's Jeff be the guest lecturer. The audience has loved Bertie's abstract approach to programming so far, but they're hungry for practical knowledge and Jeff enthrals them  with a walkthrough of how the Discourse User Experience is implemented.
+
+As a bonus, he shares his insights into programming productivity. By the end of the day, everyone is typing over 100wpm and has placed an order for multiple wall-sized monitors on eBay.
 
 ### day four
 
@@ -203,11 +205,12 @@ RedditorSeats();
 // ...
 {% endhighlight %}
 
-Well, this seats an infinite number of Redditors on an infinite number of buses in an infinite auditorium that was already full. He does a code walkthrough, then segues on to talk about other interesting aspects of Georg Cantor[^cantor]'s work. By the time he finishes with a discussion of the Hypergame[^kongregate] proof of the infinite number of infinities, everyone has forgotten that they came to scoff.
+Well, this seats an infinite number of Redditors on an infinite number of buses in an infinite auditorium that was already full. He does a code walkthrough, then segues on to talk about other interesting aspects of Georg Cantor[^cantor]'s work and a digression into Hotel Management.[^grand] By the time he finishes with a discussion of the Hypergame[^kongregate] proof of the infinite number of infinities, everyone has forgotten that they came to scoff.
 
 [^cantor]: [https://en.wikipedia.org/wiki/Georg_Cantor](https://en.wikipedia.org/wiki/Georg_Cantor)
 [allong.es]: http://allong.es "Free recipes from JavaScript Allongé"
 [^kongregate]: [http://www.kongregate.com/forums/9/topics/93615](http://www.kongregate.com/forums/9/topics/93615)
+[^grand]: [https://en.wikipedia.org/wiki/Hilbert's_paradox_of_the_Grand_Hotel](https://en.wikipedia.org/wiki/Hilbert's_paradox_of_the_Grand_Hotel)
 
 ### day five
 
