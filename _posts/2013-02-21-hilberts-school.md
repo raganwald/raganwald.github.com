@@ -100,7 +100,7 @@ As a bonus, he shares his insights into programming productivity.[^jeff] By the 
 
 [^jeff]: "As far as I'm concerned, you can never be too rich, too thin, or have too much screen space."--[Three Monitors For Every User](http://www.codinghorror.com/blog/2010/04/three-monitors-for-every-user.html)
 
-<a href="http://www.flickr.com/photos/raver_mikey/4118859026/" title="Nice selection of REAL buses! by Gene Hunt, on Flickr"><img src="http://farm3.staticflickr.com/2516/4118859026_ee4f8ce254.jpg" width="500" height="375" alt="Nice selection of REAL buses!"></a>
+<a href="http://www.flickr.com/photos/raver_mikey/4118859026/" title="Nice selection of REAL buses! by Gene Hunt, on Flickr"><img src="http://farm3.staticflickr.com/2516/4118859026_ee4f8ce254_z.jpg" width="640" height="480" alt="Nice selection of REAL buses!"></a>
 
 ### day four
 
