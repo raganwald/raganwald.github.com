@@ -70,13 +70,13 @@ i();
 // ...
 {% endhighlight %}
 
-He has constructed an iterator with instructions for moving seats. he tells the first person to move from seat zero to seat one million, the second from one to one million and one, and so forth. This means that seats 0 through 999,999 become vacant, so the 1,000,000 new students have a place to sit. Day Two goes well, and he is very pleased with his venture.
+He has constructed an iterator with instructions for moving seats. Bertie tells the first person to move from seat zero to seat one million, the second from one to one million and one, and so forth. This means that seats 0 through 999,999 become vacant, so the 1,000,000 new students have a place to sit. Day Two goes well, and he is very pleased with his venture.
 
 ### day three
 
 His fame spreads, and Jeff Atwood starts a discussion about Bertie's JavaScript school on his new [Discourse](http://www.discourse.org) discussion platform. There's so much interest, Jeff charters a bus with an infinite number of seats and brings his infinite number of fans to Bertie's school for Day Three. The bus's seats have numbers from zero just like the auditorium.
 
-All of the students from Day Two have returned, so the auditorium is already full. Bertie is perplexed, but after scratching his head for a few moments, whips out his bullhorn and write the following JavaScript. To save electrons, he uses shorthand notation this time:
+All of the students from Day Two have returned, so the auditorium is already full. Bertie is perplexed, but after scratching his head for a few moments, whips out his bullhorn and write the following JavaScript:
 
 {% highlight javascript %}
 var EvenNumbers = function () {
@@ -118,9 +118,9 @@ i();
 // ...
 {% endhighlight %}
 
-he calls out the seat numbers on Jeff's bus and the number of an odd-numbered (and therefore vacant) seat in the auditorium for them to occupy. Bertie has managed to add an infinite number of students to an infinitely large but full auditorium.
+Bertie calls out the seat numbers on Jeff's bus and the number of an odd-numbered (and therefore vacant) seat in the auditorium for them to occupy. Bertie has managed to add an infinite number of students to an infinitely large but full auditorium.
 
-He's so pleased, he let's Jeff be the guest lecturer. The audience has loved Bertie's abstract approach to programming so far, but they're hungry for practical knowledge and Jeff enthrals them  with a walkthrough of how the Discourse User Experience is implemented.
+He's so pleased, Bertie lets Jeff be the guest lecturer. The audience has loved Bertie's abstract approach to programming so far, but they're hungry for practical knowledge and Jeff enthrals them  with a walkthrough of how the Discourse User Experience is implemented.
 
 As a bonus, Jeff shares his insights into programming productivity.[^jeff] By the end of the day, everyone is typing over 100wpm and has placed an order for multiple wall-sized monitors on eBay.
 
