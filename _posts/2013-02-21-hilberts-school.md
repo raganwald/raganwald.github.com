@@ -60,10 +60,10 @@ Well, this gets the person in seat zero into seat 1,000,000, the person in seat 
 
 His fame spreads, and Jeff Atwood starts a discussion about Bertie's JavaScript school on his new [Discourse](http://www.discourse.org) discussion platform. There's so much interest, Jeff charters a bus with an infinite number of seats and brings his infinite number of fans to Bertie's school for Day Three. The bus's seats have numbers from zero just like the auditorium.
 
-Bertie is perplexed, but after scratching his head for a few moments, whips out his bullhorn and write the following JavaScript. To save electrons, he uses shorthand notation this time:
+All of the students from Dat Two have returned, so the auditorium is already full. Bertie is perplexed, but after scratching his head for a few moments, whips out his bullhorn and write the following JavaScript. To save electrons, he uses shorthand notation this time:
 
 {% highlight javascript %}
-map = require('allong.es').iterators.map
+var map = require('allong.es').iterators.map
 
 var seats = SeatGenerator();
 var MoveAgainPlease = map(seats, function (oldSeat) {
@@ -76,7 +76,7 @@ while (true)
 //=> 0 -> 0, 1 -> 2, 2 -> 4, 3 -> 6, ...
 {% endhighlight %}
 
-Now all the students are in the even numbered seats, so he's ready to seat Jeff's fans:
+Now all the existing students are in the even numbered seats, so he's ready to seat Jeff's fans:
 
 {% highlight javascript %}
 map = require('allong.es').iterators.map
@@ -98,15 +98,15 @@ As a bonus, he shares his insights into programming productivity. By the end of 
 
 ### day four
 
-All this excitement has a downside: Reddit hears about what's going on and an infinite number of subreddits, each of which has an infinite number of redditors all decide to show up on day four to disrupt his lecture with trolling about how lame JavaScript is as a programming language. Each sends an infinitely large bus, with ever seat full. Like Jeff's bus, each bus numbers its seat from zero and as luck would have it, each bus has has a number and the buses are numbered from zero.
+Day Three went weill, so all the students return and the auditorium remains full. Everyone is very pleased and looking forward to Day Four.
+
+But the excitement has a downside: Reddit hears about what's going on and an infinite number of subreddits, each of which has an infinite number of redditors, all decide to show up on day four to disrupt his lecture with trolling about how lame JavaScript is as a programming language. Each sends an infinitely large bus, with every seat full. Like Jeff's bus, each bus numbers its seat from zero and as luck would have it, each bus has has a number and the buses are numbered from zero.
 
 Bertie has to seat an infinite number of infinite groups of people, in an infinite auditorium that is already full! Now what? Out comes the bullhorn and yesterday's program, and he quickly moves all of his existing students into the even-numbered seats, leaving an infinite number of odd seats available for newcomers.
 
-Now he writes a new program:
+He writes a new program:
 
 {% highlight javascript %}
-map = require('allong.es').iterators.map
-
 function Numbers () {
   var number = 0;
   return function SeatNumber () {
@@ -131,7 +131,7 @@ var FiniteIterators = function () {
 };
 {% endhighlight %}
 
-He has a cup of tea and contemplates his work so far. `finiteIterators` is an iterator over an infinite collection of iterators, each of which uniquely identifies a bus and seat on that bus. They look something like this:
+He has an Espresso Allongé and contemplates his work so far. `finiteIterators` is an iterator over an infinite collection of iterators, each of which uniquely identifies a bus and seat on that bus. They look something like this:
 
 {% highlight javascript %}
 { bus: 0, seat: 0}
@@ -172,7 +172,7 @@ i();
 // ...
 {% endhighlight %}
 
-Bertie is satisfied, but the natives are restless, so he turns to Espresso, keeps coding, then reaches for his bullhorn:
+Bertie is satisfied, but the natives are restless, so he keeps coding, then reaches for his bullhorn:
 
 {% highlight javascript %}
 function zip (iter1, iter2) {
@@ -205,7 +205,7 @@ RedditorSeats();
 // ...
 {% endhighlight %}
 
-Well, this seats an infinite number of Redditors on an infinite number of buses in an infinite auditorium that was already full. He does a code walkthrough, then segues on to talk about other interesting aspects of Georg Cantor[^cantor]'s work and a digression into Hotel Management.[^grand] By the time he finishes with a discussion of the Hypergame[^kongregate] proof of the infinite number of infinities, everyone has forgotten that they came to scoff.
+Well, this seats an infinite number of Redditors on an infinite number of buses in an infinite auditorium that was already full. He does a code walkthrough with the students, then segues on to talk about other interesting aspects of Georg Cantor[^cantor]'s work and a digression into Hotel Management.[^grand] By the time he finishes with a discussion of the Hypergame[^kongregate] proof of the infinite number of infinities, everyone has forgotten that they came to scoff.
 
 [^cantor]: [https://en.wikipedia.org/wiki/Georg_Cantor](https://en.wikipedia.org/wiki/Georg_Cantor)
 [allong.es]: http://allong.es "Free recipes from JavaScript Allongé"
@@ -214,9 +214,9 @@ Well, this seats an infinite number of Redditors on an infinite number of buses 
 
 ### day five
 
-On Day Five, everyone is back and he announces that there will be a test. "Outside our doors," he announces, "Are a countably infinite number of aircraft carriers, each of which has a countably infinitely large flight deck. Parked on each flight deck are a countably infinite number of buses, each of which contains--you guessed it--a countably infinite number of sailors and air crew eager to join our school for the next semester."
+On Day Five, everyone is back and he announces that there will be a test. *"Outside our doors,"* he announces, *"Are a countably infinite number of aircraft carriers, each of which has a countably infinitely large flight deck. Parked on each flight deck are a countably infinite number of buses, each of which contains--you guessed it--a countably infinite number of sailors and air crew eager to join our school for the next semester."*
 
-"Write a JavaScript program to seat them all in our lecture hall. If your program works, you may come up to the front and receive your signed diploma. Good luck!"
+*"Write a JavaScript program to seat them all in our lecture hall. If your program works, you may come up to the front and receive your signed diploma. Good luck!"*
 
 ### post scriptum
 
