@@ -3,7 +3,9 @@ title: Hilbert's Grand JavaScript School
 layout: dark
 ---
 
-Dr. Hilbert "Bertie" David grows tired of blogging about JavaScript, and decides to cash in on he seemingly inexhaustible supply of impressionable young minds seeking to **Learn JavaScript in Five Days**. He opens his Grand JavaScript School on the shores of the Andaman Sea in Thailand, and with some clever engineering, he is able to install a *countably infinite* number of seats in his lecture hall.
+Dr. Hilbert "Bertie" David grows tired of blogging about JavaScript, and decides to cash in on he seemingly inexhaustible supply of impressionable young minds seeking to "Learn JavaScript in Five Days."
+
+He opens his *Grand JavaScript School* on the shores of the Andaman Sea in Thailand, and with some clever engineering, he is able to install a *countably infinite* number of seats in his lecture hall.
 
 ### day one
 
