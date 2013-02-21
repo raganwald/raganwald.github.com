@@ -28,7 +28,7 @@ while (true)
 
 He simply calls out the numbers as they are printed, and the students file into the auditorium in an orderly fashion, filling it completely. Well, the first day is very long indeed. But Bertie has an infinite supply of bitcoins and things go well.
 
-Avoiding the well-travelled road of explaining "this," "closures," or "monads," he decides to explain functional iterators using [the Tortoise and Hare algorithm][^tortoise] as an example. People are scratching their heads, but on the second day, all of the students from the first day return. So it must have been a decent lecture.
+Avoiding the well-travelled road of explaining "this," "closures," or "monads," he decides to explain functional iterators using the Tortoise and Hare algorithm[^tortoise] as an example. People are scratching their heads, but on the second day, all of the students from the first day return. So it must have been a decent lecture.
 
 [^tortoise]: [http://raganwald.com/2013/02/15/turtles-and-iterators.js.html](http://raganwald.com/2013/02/15/turtles-and-iterators.js.html)
 
@@ -201,7 +201,7 @@ RedditorSeats();
 // ...
 {% endhighlight %}
 
-Well, this seats an infinite number of Redditors on an infinite number of buses in an infinite auditorium that was already full. He does a code walkthrough, then segues on to talk about other interesting aspects of [Georg Cantor][^cantor]'s work. By the time he finishes with a discussion of the [Hypergame proof of the infinite number of infinities][^kongregate], everyone has forgotten that they came to scoff.
+Well, this seats an infinite number of Redditors on an infinite number of buses in an infinite auditorium that was already full. He does a code walkthrough, then segues on to talk about other interesting aspects of Georg Cantor[^cantor]'s work. By the time he finishes with a discussion of the Hypergame[^kongregate] proof of the infinite number of infinities, everyone has forgotten that they came to scoff.
 
 [^cantor]: [https://en.wikipedia.org/wiki/Georg_Cantor](https://en.wikipedia.org/wiki/Georg_Cantor)
 [allong.es]: http://allong.es "Free recipes from JavaScript Allongé"
