@@ -166,7 +166,9 @@ He has an Espresso Allongé and contemplates his work so far. `Diagonals` is an 
 ...
 {% endhighlight %}
 
-Now he writes himself a `concatenate` iterator for iterators:
+If you think of the buses and seats forming a square, the diagonals iterator makes a path from one corner and works its way out, enumerating over every possible combination of bus and seat. Thus, given countably infinite time, it will list every one of the countably infinite number of Redditors on each of the countably infinite number of buses.
+
+To move forward, Bertie needs a `concatenate` iterator for iterators:
 
 {% highlight javascript %}
 function concatenate (iteratorOfIterators) {
