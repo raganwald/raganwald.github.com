@@ -18,14 +18,14 @@ Well, an infinite number of students show up on the first day. "Line up please!"
 Bertie quickly whips out a JavaScript IDE he has devised, and he writes himself a functional iterator. Instead of iterating over a data structure in memory, it generates seat numbers on demand:
 
 {% highlight javascript %}
-function SeatGenerator () {
+function Numbers () {
   var number = 0;
   return function SeatNumber () {
     return number++;
   };
 };
 
-var seats = SeatGenerator();
+var seats = Numbers();
 while (true)
   console.log(seats());
 
@@ -47,18 +47,30 @@ Out comes the IDE and the bullhorn. This time, he uses the [allong.es] library a
 {% highlight javascript %}
 map = require('allong.es').iterators.map
 
-var seats = SeatGenerator();
-var MovePlease = map(seats, function (oldSeat) {
-  var newSeat = oldSeat + 1000000;
-  return "Will the person in seat " + oldSeat + " please move to seat " + newSeat + " and sit down when it becomes vacant."
-});
-while (true)
-  console.log(MovePlease());
+var oldSeats = Numbers(),
+    newSeats = map(Numbers(), function (n) { return n + 1000000; });
+    
+function MoveToSeat (from, to) {
+  return function () {
+    return '' + from() + ' -> ' + to();
+  }
+}
 
-//=> "Will the person in seat 0 please move to seat 1000000 and sit down when it becomes vacant.", ...
+var i = MoveToSeat(oldSeats, newSeats);
+
+i();
+  //=> 0 -> 1000000
+i();
+  //-> 1 -> 1000001
+i();
+  //-> 2 -> 1000002
+i();
+  //=> 3 -> 1000003
+
+// ...
 {% endhighlight %}
 
-Well, this gets the person in seat zero into seat 1,000,000, the person in seat 1 into seat 1,000,001, and so on, and this means that seats 0 through 999,999 become vacant, so the 1,000,000 new students have a place to sit. Day two goes well, and he is very pleased with his venture.
+He has constructed an iterator with instructions for moving seats. he tells the first person to move from seat zero to seat one million, the second from one to one million and one, and so forth. This means that seats 0 through 999,999 become vacant, so the 1,000,000 new students have a place to sit. Day Two goes well, and he is very pleased with his venture.
 
 ### day three
 
@@ -67,38 +79,50 @@ His fame spreads, and Jeff Atwood starts a discussion about Bertie's JavaScript 
 All of the students from Day Two have returned, so the auditorium is already full. Bertie is perplexed, but after scratching his head for a few moments, whips out his bullhorn and write the following JavaScript. To save electrons, he uses shorthand notation this time:
 
 {% highlight javascript %}
-var map = require('allong.es').iterators.map
+var EvenNumbers = function () {
+  return map(Numbers(), function (n) { return n * 2; });
+}
 
-var seats = SeatGenerator();
-var MoveAgainPlease = map(seats, function (oldSeat) {
-  var newSeat = oldSeat * 2;
-  return '' + oldSeat + ' -> ' + newSeat;
-});
-while (true)
-  console.log(MovePlease());
-  
-//=> 0 -> 0, 1 -> 2, 2 -> 4, 3 -> 6, ...
+var i = MoveToSeat(Numbers(), EvenNumbers());
+
+i();
+  //=> 0 -> 0
+i();
+  //-> 1 -> 2
+i();
+  //-> 2 -> 4
+i();
+  //=> 3 -> 6
+
+// ...
 {% endhighlight %}
 
 Now all the existing students are in the even numbered seats, so he's ready to seat Jeff's fans:
 
 {% highlight javascript %}
-map = require('allong.es').iterators.map
+var OddNumbers = function () {
+  return map(Numbers(), function (n) { return n * 2 + 1; });
+}
 
-var seats = SeatGenerator();
-var TakeASeat = map(seats, function (busSeat) {
-  var auditoriumSeat = busSeat * 2 + 1;
-  return '' + busSeat + ' -> ' + auditoriumSeat;
-});
-while (true)
-  console.log(TakeASeat());
-  
-//=> 0 -> 1, 1 -> 3, 2 -> 5, 3 -> 7, ...
+var i = MoveToSeat(Numbers(), OddNumbers());
+
+i();
+  //=> 0 -> 1
+i();
+  //-> 1 -> 3
+i();
+  //-> 2 -> 5
+i();
+  //=> 3 -> 7
+
+// ...
 {% endhighlight %}
 
-Jeff's fans take the odd-numbered seats one by one and Bertie has managed to add an infinite number of students to an infinitely large but full auditorium. he's so pleased, he let's Jeff be the guest lecturer. The audience has loved Bertie's abstract approach to programming so far, but they're hungry for practical knowledge and Jeff enthrals them  with a walkthrough of how the Discourse User Experience is implemented.
+he calls out the seat numbers on Jeff's bus and the number of an odd-numbered (and therefore vacant) seat in the auditorium for them to occupy. Bertie has managed to add an infinite number of students to an infinitely large but full auditorium.
 
-As a bonus, he shares his insights into programming productivity.[^jeff] By the end of the day, everyone is typing over 100wpm and has placed an order for multiple wall-sized monitors on eBay.
+He's so pleased, he let's Jeff be the guest lecturer. The audience has loved Bertie's abstract approach to programming so far, but they're hungry for practical knowledge and Jeff enthrals them  with a walkthrough of how the Discourse User Experience is implemented.
+
+As a bonus, Jeff shares his insights into programming productivity.[^jeff] By the end of the day, everyone is typing over 100wpm and has placed an order for multiple wall-sized monitors on eBay.
 
 [^jeff]: "As far as I'm concerned, you can never be too rich, too thin, or have too much screen space."--[Three Monitors For Every User](http://www.codinghorror.com/blog/2010/04/three-monitors-for-every-user.html)
 
@@ -115,14 +139,7 @@ Bertie has to seat an infinite number of infinite groups of people, in an infini
 He writes a new program:
 
 {% highlight javascript %}
-function Numbers () {
-  var number = 0;
-  return function SeatNumber () {
-    return number++;
-  };
-};
-
-var FiniteIterators = function () {
+var Diagonals = function () {
   return map(Numbers(), function (n) {
     var bus = 0;
     return function () {
@@ -139,7 +156,7 @@ var FiniteIterators = function () {
 };
 {% endhighlight %}
 
-He has an Espresso Allongé and contemplates his work so far. `finiteIterators` is an iterator over an infinite collection of iterators, each of which uniquely identifies a bus and seat on that bus. They look something like this:
+He has an Espresso Allongé and contemplates his work so far. `Diagonals` is an iterator over an infinite collection of iterators, each of which uniquely identifies a bus and seat on that bus. They look something like this:
 
 {% highlight javascript %}
 { bus: 0, seat: 0}
@@ -169,7 +186,12 @@ function concatenate (iteratorOfIterators) {
   };
 };
 
-var i = concatenate(FiniteIterators());
+var PeopleOnTheBuses = function () {
+  return concatenate(Dialognals());
+};
+
+var i = PeopleOnTheBuses();
+
 i();
   //=> { bus: 0, seat: 0 }
 i();
@@ -183,32 +205,21 @@ i();
 Bertie is satisfied, but the natives are restless, so he keeps coding, then reaches for his bullhorn:
 
 {% highlight javascript %}
-function zip (iter1, iter2) {
-  return function () {
-    var value = [iter1(), iter2()];
-    if (value[0] == null && value[1] == null) {
-      return void 0
-    }
-    else return value;
-  };
-};
+var RedditorSeats = map(PeopleOnTheBuses(), function (o) { return 'bus: ' + o.bus + ', seat: ' + o.seat; }),
+    i = MoveToSeat(RedditorSeats, OddNumbers());
 
-RedditorSeats = map(zip(concatenate(FiniteIterators()), Numbers()), function (pair) {
-  return 'bus: ' + pair[0].bus +', seat: ' + pair[0].seat + ' -> auditorium seat ' + (pair[1] * 2 + 1);
-});
-
+i();
+  //=> 'bus: 0, seat: 0 -> 1'
+i();
+  //=> 'bus: 0, seat: 1 -> 3'
+i();
+  //=> 'bus: 1, seat: 0 -> 5'
+i();
+  //=> 'bus: 0, seat: 2 -> 7'
 RedditorSeats();
-  //=> 'bus: 0, seat: 0 -> auditorium seat 1'
+  //=> 'bus: 1, seat: 1 -> 9'
 RedditorSeats();
-  //=> 'bus: 0, seat: 1 -> auditorium seat 3'
-RedditorSeats();
-  //=> 'bus: 1, seat: 0 -> auditorium seat 5'
-RedditorSeats();
-  //=> 'bus: 0, seat: 2 -> auditorium seat 7'
-RedditorSeats();
-  //=> 'bus: 1, seat: 1 -> auditorium seat 9'
-RedditorSeats();
-  //=> 'bus: 2, seat: 0 -> auditorium seat 11'
+  //=> 'bus: 2, seat: 0 -> 11'
   
 // ...
 {% endhighlight %}
@@ -228,6 +239,6 @@ On Day Five, everyone is back and he announces that there will be a test. *"Outs
 
 ### post scriptum
 
-While the students busy themselves writing the test, he sends a pull request to integrate his `concatenate` and `zip` functions into [allong.es]
+While the students busy themselves writing the test, he sends a pull request to integrate his `concatenate` function into [allong.es].
 
 ### end notes
