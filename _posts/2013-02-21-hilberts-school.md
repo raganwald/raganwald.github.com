@@ -60,7 +60,7 @@ Well, this gets the person in seat zero into seat 1,000,000, the person in seat 
 
 His fame spreads, and Jeff Atwood starts a discussion about Bertie's JavaScript school on his new [Discourse](http://www.discourse.org) discussion platform. There's so much interest, Jeff charters a bus with an infinite number of seats and brings his infinite number of fans to Bertie's school for Day Three. The bus's seats have numbers from zero just like the auditorium.
 
-All of the students from Dat Two have returned, so the auditorium is already full. Bertie is perplexed, but after scratching his head for a few moments, whips out his bullhorn and write the following JavaScript. To save electrons, he uses shorthand notation this time:
+All of the students from Day Two have returned, so the auditorium is already full. Bertie is perplexed, but after scratching his head for a few moments, whips out his bullhorn and write the following JavaScript. To save electrons, he uses shorthand notation this time:
 
 {% highlight javascript %}
 var map = require('allong.es').iterators.map
