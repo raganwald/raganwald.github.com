@@ -34,6 +34,8 @@ Avoiding the well-travelled road of explaining "this," "closures," or "monads," 
 
 [^tortoise]: [http://raganwald.com/2013/02/15/turtles-and-iterators.js.html](http://raganwald.com/2013/02/15/turtles-and-iterators.js.html)
 
+<a href="http://www.flickr.com/photos/quinet/6105449498/" title="Island panorama 3 by quinet, on Flickr"><img src="http://farm7.staticflickr.com/6079/6105449498_2bb67e2fd2_z.jpg" width="640" height="289" alt="Island panorama 3"></a>
+
 ### day two
 
 In fact, a few people liked the lecture so much that they recommended it to their friends, and he one million additional students lined up for seats in his class on the morning of the second day. He has an infinite number of seats, but they are all full. What can he do?
@@ -98,9 +100,11 @@ As a bonus, he shares his insights into programming productivity.[^jeff] By the 
 
 [^jeff]: "As far as I'm concerned, you can never be too rich, too thin, or have too much screen space."--[Three Monitors For Every User](http://www.codinghorror.com/blog/2010/04/three-monitors-for-every-user.html)
 
+<a href="http://www.flickr.com/photos/raver_mikey/4118859026/" title="Nice selection of REAL buses! by Gene Hunt, on Flickr"><img src="http://farm3.staticflickr.com/2516/4118859026_ee4f8ce254.jpg" width="500" height="375" alt="Nice selection of REAL buses!"></a>
+
 ### day four
 
-Day Three went weill, so all the students return and the auditorium remains full. Everyone is very pleased and looking forward to Day Four.
+Day Three went well, so all the students return and the auditorium remains full. Everyone is very pleased and looking forward to Day Four.
 
 But the excitement has a downside: Reddit hears about what's going on and an infinite number of subreddits, each of which has an infinite number of redditors, all decide to show up on day four to disrupt his lecture with trolling about how lame JavaScript is as a programming language. Each sends an infinitely large bus, with every seat full. Like Jeff's bus, each bus numbers its seat from zero and as luck would have it, each bus has has a number and the buses are numbered from zero.
 
