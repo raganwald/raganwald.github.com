@@ -94,7 +94,9 @@ while (true)
 
 Jeff's fans take the odd-numbered seats one by one and Bertie has managed to add an infinite number of students to an infinitely large but full auditorium. he's so pleased, he let's Jeff be the guest lecturer. The audience has loved Bertie's abstract approach to programming so far, but they're hungry for practical knowledge and Jeff enthrals them  with a walkthrough of how the Discourse User Experience is implemented.
 
-As a bonus, he shares his insights into programming productivity. By the end of the day, everyone is typing over 100wpm and has placed an order for multiple wall-sized monitors on eBay.
+As a bonus, he shares his insights into programming productivity.[^jeff] By the end of the day, everyone is typing over 100wpm and has placed an order for multiple wall-sized monitors on eBay.
+
+[^jeff]: "As far as I'm concerned, you can never be too rich, too thin, or have too much screen space."--[Three Monitors For Every User](http://www.codinghorror.com/blog/2010/04/three-monitors-for-every-user.html)
 
 ### day four
 
