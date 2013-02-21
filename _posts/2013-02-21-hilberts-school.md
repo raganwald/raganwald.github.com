@@ -230,6 +230,13 @@ i();
 
 Well, this seats an infinite number of Redditors on an infinite number of buses in an infinite auditorium that was already full. He does a code walkthrough with the students, then segues on to talk about other interesting aspects of Georg Cantor[^cantor]'s work and a digression into Hotel Management.[^grand] By the time he finishes with a discussion of the Hypergame[^kongregate] proof of the infinite number of infinities, everyone has forgotten that they came to scoff.
 
+He finishes with a summary of what he learned seating students:
+
+1. You can put a countably infinite number of seats into a one-to-one correspondence with the numbers, therefore they have the same *cardinality*.
+2. You can add a finite number to an countably infinite number and put your new number into a one-to-one correspondence with the numbers, therefore infinity plus a finite number has the same cardinality as the numbers.
+3. You can add infinity to infinity and put your new number into a one-to-one correspondence with the numbers, therefore infinity plus infinity has the same cardinality as the numbers. By induction, you can add a finite number of infinities together and have the same cardinality as the numbers.
+4. You can add an infinite number of infinities to infinity and put your new number into a one-to-one correspondence with the numbers, therefore an infinity times infinity has the same cardinality as the numbers.
+
 [^cantor]: [https://en.wikipedia.org/wiki/Georg_Cantor](https://en.wikipedia.org/wiki/Georg_Cantor)
 [allong.es]: http://allong.es "Free recipes from JavaScript Allongé"
 [^kongregate]: [http://www.kongregate.com/forums/9/topics/93615](http://www.kongregate.com/forums/9/topics/93615)
@@ -237,9 +244,11 @@ Well, this seats an infinite number of Redditors on an infinite number of buses 
 
 ### day five
 
-On Day Five, everyone is back and he announces that there will be a test. *"Outside our doors,"* he announces, *"Are a countably infinite number of aircraft carriers, each of which has a countably infinitely large flight deck. Parked on each flight deck are a countably infinite number of buses, each of which contains--you guessed it--a countably infinite number of sailors and air crew eager to join our school for the next semester."*
+On Day Five, everyone is back and he announces that there will be a test: *"Outside our doors,"* he announces, *"Are a countably infinite number of aircraft carriers, each of which has a countably infinitely large flight deck. Parked on each flight deck are a countably infinite number of buses, each of which contains--you guessed it--a countably infinite number of sailors and air crew eager to join our school for the next semester."*
 
-*"Write a JavaScript program to seat them all in our lecture hall. If your program works, you may come up to the front and receive your signed diploma. Good luck!"*
+*"Write a JavaScript program to seat them all in our lecture hall. If your program works, you may come up to the front and receive your signed diploma. If you can prove that no program works, you will also receive your diploma. Good luck!"*
+
+In other words, Bertie wants his students to use JavaScript to figure out whether infinity cubed is countable. Is it?
 
 ### post scriptum
 
