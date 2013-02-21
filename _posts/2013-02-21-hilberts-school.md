@@ -7,6 +7,8 @@ Dr. Hilbert "Bertie" David grows tired of blogging about JavaScript, and decides
 
 He opens his *Grand JavaScript School* on the shores of the Andaman Sea in Thailand, and with some clever engineering, he is able to install a *countably infinite* number of seats in his lecture hall.
 
+<a href="http://www.flickr.com/photos/quinet/6105449498/" title="Island panorama 3 by quinet, on Flickr"><img src="http://farm7.staticflickr.com/6079/6105449498_2bb67e2fd2_z.jpg" width="640" height="289" alt="Island panorama 3"></a>
+
 ### day one
 
 Well, an infinite number of students show up on the first day. "Line up please!" he calls out to them with a bullhorn of his own invention. "Line up! Good. Each of you has a number. The first person in line is zero, the next person is one, and so on. The machine will call out a number. When you hear your number, step forward, pay your fee in bitcoins, take your receipt, then you may enter the lecture hall and find the seat with your number on it. Thank you, the lecture will begin when everyone has been seated."
@@ -34,11 +36,9 @@ Avoiding the well-travelled road of explaining "this," "closures," or "monads," 
 
 [^tortoise]: [http://raganwald.com/2013/02/15/turtles-and-iterators.js.html](http://raganwald.com/2013/02/15/turtles-and-iterators.js.html)
 
-<a href="http://www.flickr.com/photos/quinet/6105449498/" title="Island panorama 3 by quinet, on Flickr"><img src="http://farm7.staticflickr.com/6079/6105449498_2bb67e2fd2_z.jpg" width="640" height="289" alt="Island panorama 3"></a>
-
 ### day two
 
-In fact, a few people liked the lecture so much that they recommended it to their friends, and he one million additional students lined up for seats in his class on the morning of the second day. He has an infinite number of seats, but they are all full. What can he do?
+In fact, a few people liked the lecture so much that they recommended it to their friends, and one million additional students are lined up for seats in his class on the morning of the second day. He has an infinite number of seats in the auditorium, but they are all full. What can he do?
 
 Out comes the IDE and the bullhorn. This time, he uses the [allong.es] library and writes the following:
 
