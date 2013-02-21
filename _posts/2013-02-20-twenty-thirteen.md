@@ -77,7 +77,9 @@ Overall, I think this is going to go well.
 
 Following Github's instructions, I registered my domain and configured the DNS to resolve to Github's servers at `204.232.175.78`. That takes anywhere from a few hours to a few days before a new domain starts 404-ing at Github, showing that the DNS is set up properly.
 
-For each top-level domain, you need a fresh Github account with a special repo. For example, you can set up `whizzbang2000` as a Github free account and then create a repo `whizzbang200.github.com`. I then give my `raganwald` account collaboration privileges and we're off to the races. For [http://raganwald.com](http://raganwald.com), I'm already the guy, so there's no need to set up a separate account.
+For each top-level domain, you have two choices. First, and most complicated, you need a fresh Github account with a special repo. For example, you can set up `whizzbang2000` as a Github free account and then create a repo `whizzbang200.github.com`. I then give my `raganwald` account collaboration privileges and we're off to the races. For [http://raganwald.com](http://raganwald.com), I'm already the guy, so there's no need to set up a separate account.
+
+Second, you can set up an ordinary repo under your own account, but your site must be in the `gh-pages` branch. That's what most people do if they have more than one site to manage.
 
 I drop a `CNAME` file into the repo. For [http://raganwald.com](http://raganwald.com), the file contains the text `raganwald.com`. Once you push that, Github starts resolving hits to `raganwald.com` to whatever you are publishing. You could drop an index.html file in there, or an index.md with some YAML to tell Github how to build it, or go wild with Liquid Tags, it's up to you.
 
