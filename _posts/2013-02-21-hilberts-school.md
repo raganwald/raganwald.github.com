@@ -3,9 +3,11 @@ title: Hilbert's Grand JavaScript School
 layout: dark
 ---
 
-Dr. Hilbert "Bertie" David grows tired of blogging about JavaScript, and decides to cash in on he seemingly inexhaustible supply of impressionable young minds seeking to "Learn JavaScript in Five Days."
+Dr. Hilbert "Bertie" David grows tired of blogging about JavaScript, and decides to cash in on the seemingly inexhaustible supply of impressionable young minds seeking to "Learn JavaScript in Five Days."
 
-He opens his *Grand JavaScript School* on the shores of the Andaman Sea in Thailand, and with some clever engineering, he is able to install a *countably infinite* number of seats in his lecture hall.
+He opens his *Grand JavaScript School* on the shores of the Andaman Sea in Thailand, and with some clever engineering, he is able to install a countably infinite[^count] number of seats in his lecture hall.
+
+[^count]: Meaning, he is able to put the seats in a one-to-one correspondence with the whole numbers. He does this by numbering the seats from zero.
 
 <a href="http://www.flickr.com/photos/quinet/6105449498/" title="Island panorama 3 by quinet, on Flickr"><img src="http://farm7.staticflickr.com/6079/6105449498_2bb67e2fd2_z.jpg" width="640" height="289" alt="Island panorama 3"></a>
 
