@@ -7,7 +7,7 @@ Dr. Hilbert "Bertie" David grows tired of blogging about JavaScript, and decides
 
 He opens his *Grand JavaScript School* on the shores of the Andaman Sea in Thailand, and with some clever engineering, he is able to install a countably infinite[^count] number of seats in his lecture hall.
 
-[^count]: Meaning, he is able to put the seats in a one-to-one correspondence with the whole numbers. He does this by numbering the seats from zero.
+[^count]: Meaning, he is able to put the seats in a one-to-one correspondence with the natural numbers. He does this by numbering the seats from zero. See [Countable Sets](https://en.wikipedia.org/wiki/Countable_set).
 
 <a href="http://www.flickr.com/photos/quinet/6105449498/" title="Island panorama 3 by quinet, on Flickr"><img src="http://farm7.staticflickr.com/6079/6105449498_2bb67e2fd2_z.jpg" width="640" height="289" alt="Island panorama 3"></a>
 
@@ -244,7 +244,7 @@ He finishes with a summary of what he learned seating students:
 
 ### day five
 
-On Day Five, everyone is back and he announces that there will be a test: *"Outside our doors,"* he announces, *"Are a countably infinite number of aircraft carriers, each of which has a countably infinitely large flight deck. Parked on each flight deck are a countably infinite number of buses, each of which contains--you guessed it--a countably infinite number of sailors and air crew eager to join our school for the next semester."*
+On Day Five, everyone is back and he announces that there will be a test: *"Outside our doors,"* he announces, *"Are an infinite number of aircraft carriers, each of which has an infinitely large flight deck. Parked on each flight deck are an infinite number of buses, each of which contains--you guessed it--an infinite number of sailors and air crew eager to join our school for the next semester."*
 
 *"Write a JavaScript program to seat them all in our lecture hall. If your program works, you may come up to the front and receive your signed diploma. If you can prove that no program works, you will also receive your diploma. Good luck!"*
 
