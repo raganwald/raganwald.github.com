@@ -254,4 +254,8 @@ In other words, Bertie wants his students to use JavaScript to figure out whethe
 
 While the students busy themselves writing the test, he sends a pull request to integrate his `concatenate` function into [allong.es].
 
+### post-post scriptum
+
+[Dr. Hilbert's School Has Been Closed For Admissions Irregularities](http://raganwald.com/2013/02/22/breaking-news-programming-school-closed.html)
+
 ### end notes
