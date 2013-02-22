@@ -1,5 +1,5 @@
 ---
-title: Programming School Closed for Discriminatory Practices
+title: Hilbert's School Closed for Discriminatory Practices
 layout: dark
 ---
 
