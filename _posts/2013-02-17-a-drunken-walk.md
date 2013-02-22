@@ -90,7 +90,9 @@ function tortoiseAndHareLoopDetector (iterable) {
 };
 {% endhighlight %}
 
-We now have a function that will operate on anything that responds to the `.iterate()` method. It's classic "Duck Typed" Object-Orientation. So, how shall we put it to work?
+We now have a function that will operate on anything that responds to the `.iterate()` method.[^not-exactly] It's classic "Duck Typed" Object-Orientation. So, how shall we put it to work?
+
+[^not-exactly]: As Chris Johnsen [points out](https://github.com/braythwayt/braythwayt.github.com/commit/a92cb21fe8f16438ca5326161458f99101e0ded3#commitcomment-2672985): *The list-specific implementation of tortoiseAndHareLoopDetector (also in the prior post) compares “locations” (i.e. “cons cell” object identity), but this version compares values; this introduces a bug with respect to iterators whose values do not represent their “locations”. In particular, the LinkedList iterator can trigger this bug since its values do not (necessarily) represent their “locations”: when a list has identical values at positions N and 2N, the function will return true whether or not the list/iterable actually has a looping tail.* In other words, the iterable version only works for lists that have unique values for each "cell."
 
 ### a drunken walk
 
