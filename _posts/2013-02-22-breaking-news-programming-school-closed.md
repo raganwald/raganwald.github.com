@@ -1,5 +1,5 @@
 ---
-title: Breaking News: Programming School Closed for Discriminatory Practices
+title: Programming School Closed for Discriminatory Practices
 layout: dark
 ---
 
