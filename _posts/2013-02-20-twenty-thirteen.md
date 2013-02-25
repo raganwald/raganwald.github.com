@@ -65,7 +65,7 @@ But building locally is optional. The site is rebuilt by Github when I push and 
 
 Like the old thing, I get the ability to ask for pull requests. That's huge, I get a lot of good corrections that way.
 
-I guess I could embed Disqus comments if I wanted to, but I enjoy outsourcing discussion to Hacker News, Reddit, or wherever. Let them play whack-a-mole with incivility. And besides, I am not one of these super-bloggers with his own community. There are people who like my writing, and that's great, but it's a win for everyone if the comments praising my writing are alongside those pointing out where it could me, um, "even better." I think there's more of that when people discuss things elsewhere.
+I guess I could embed Disqus comments if I wanted to, but I enjoy outsourcing discussion to Hacker News, Reddit, or wherever. Let them play whack-a-mole with incivility. And besides, I am not one of these super-bloggers with his own community. There are people who like my writing, and that's great, but it's a win for everyone if the comments praising my writing are alongside those pointing out where it could be, um, "even better." I think there's more of that when people discuss things elsewhere.
 
 I get one-click publishing, I just have to click in a Github client rather than on some web abomination.
 
