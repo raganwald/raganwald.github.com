@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+        <LINK REL=StyleSheet HREF="/assets/css/pygments.css" TYPE="text/css" MEDIA=screen>
+        <title>Hilbert's Grand JavaScript School</title>
+    </head>
+    <body>
+      
+            <div id="header">
+        <nav>
+          <li class="fork"><a 
+            href="https://leanpub.com/javascript-allonge"
+            title="A strong cup of functions, objects, combinators, and decorators"
+            >JavaScript Allongé</a>&nbsp;</li>
+          <li class="fork"><a 
+            href="http://ristrettolo.gy"
+            title="An intense doppio of programming"
+            >CoffeeScript Ristretto</a>&nbsp;</li>
+          <li class="fork"><a 
+            href="http://combinators.info"
+            title="Raganwald's collected adventures in Combinatory Logic and Ruby Meta-Programming"
+            >The “Kestrels” Book</a>&nbsp;</li>
+          <li class="fork"><a
+            href="http://allong.es" 
+            title="All of the JavaScript Allongé receipies in a free library"
+            >allong.es</a>&nbsp;</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+                <div id="title">
+          <h1>Hilbert's Grand JavaScript School</h1>
+          <hr>
+          <span class="credits left">This blog is written by <a href="http://braythwayt.com">Reg "raganwald" Braithwaite</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <p>Dr. Hilbert “Bertie” David grows tired of blogging about JavaScript, and decides to cash in on the seemingly inexhaustible supply of impressionable young minds seeking to “Learn JavaScript in Five Days.”</p>
+
+<p>He opens his <em>Grand JavaScript School</em> on the shores of the Andaman Sea in Thailand, and with some clever engineering, he is able to install a countably infinite<sup id="fnref:count"><a href="#fn:count" rel="footnote">1</a></sup> number of seats in his lecture hall.</p>
+
+<p><a href="http://www.flickr.com/photos/quinet/6105449498/" title="Island panorama 3 by quinet, on Flickr"><img src="http://farm7.staticflickr.com/6079/6105449498_2bb67e2fd2_z.jpg" width="640" height="289" alt="Island panorama 3" /></a></p>
+
+<h3 id="day-one">day one</h3>
+
+<p>Well, an infinite number of students show up on the first day. “Line up please!” he calls out to them with a bullhorn of his own invention. “Line up! Good. Each of you has a number. The first person in line is zero, the next person is one, and so on. The machine will call out a number. When you hear your number, step forward, pay your fee in bitcoins, take your receipt, then you may enter the lecture hall and find the seat with your number on it. Thank you, the lecture will begin when everyone has been seated.”</p>
+
+<p>Bertie quickly whips out a JavaScript IDE he has devised, and he writes himself a functional iterator. Instead of iterating over a data structure in memory, it generates seat numbers on demand:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">Numbers</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">number</span><span class="o">++</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">seats</span> <span class="o">=</span> <span class="nx">Numbers</span><span class="p">();</span>
+<span class="k">while</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">seats</span><span class="p">());</span>
+
+<span class="c1">//=&gt; 0, 1, 2, 3, ...</span>
+</code></pre></div>
+
+<p>He simply calls out the numbers as they are printed, and the students file into the auditorium in an orderly fashion, filling it completely. Well, the first day is very long indeed. But Bertie has an infinite supply of bitcoins and things go well.</p>
+
+<p>Avoiding the well-travelled road of explaining “this,” “closures,” or “monads,” he decides to explain functional iterators using the Tortoise and Hare algorithm<sup id="fnref:tortoise"><a href="#fn:tortoise" rel="footnote">2</a></sup> as an example. People are scratching their heads, but on the second day, all of the students from the first day return. So it must have been a decent lecture.</p>
+
+<h3 id="day-two">day two</h3>
+
+<p>In fact, a few people liked the lecture so much that they recommended it to their friends, and one million additional students are lined up for seats in his class on the morning of the second day. He has an infinite number of seats in the auditorium, but they are all full. What can he do?</p>
+
+<p>Out comes the IDE and the bullhorn. This time, he uses the <a href="http://allong.es" title="Free recipes from JavaScript Allongé">allong.es</a> library and writes the following:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">map</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">iterators</span><span class="p">.</span><span class="nx">map</span>
+
+<span class="kd">var</span> <span class="nx">oldSeats</span> <span class="o">=</span> <span class="nx">Numbers</span><span class="p">(),</span>
+    <span class="nx">newSeats</span> <span class="o">=</span> <span class="nx">map</span><span class="p">(</span><span class="nx">Numbers</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">+</span> <span class="mi">1000000</span><span class="p">;</span> <span class="p">});</span>
+    
+<span class="kd">function</span> <span class="nx">MoveToSeat</span> <span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="nx">from</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39; -&gt; &#39;</span> <span class="o">+</span> <span class="nx">to</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">MoveToSeat</span><span class="p">(</span><span class="nx">oldSeats</span><span class="p">,</span> <span class="nx">newSeats</span><span class="p">);</span>
+
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; 0 -&gt; 1000000</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//-&gt; 1 -&gt; 1000001</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//-&gt; 2 -&gt; 1000002</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; 3 -&gt; 1000003</span>
+
+<span class="c1">// ...</span>
+</code></pre></div>
+
+<p>He has constructed an iterator with instructions for moving seats. Bertie tells the first person to move from seat zero to seat one million, the second from one to one million and one, and so forth. This means that seats 0 through 999,999 become vacant, so the 1,000,000 new students have a place to sit. Day Two goes well, and he is very pleased with his venture.</p>
+
+<h3 id="day-three">day three</h3>
+
+<p>His fame spreads, and Jeff Atwood starts a discussion about Bertie’s JavaScript school on his new <a href="http://www.discourse.org">Discourse</a> discussion platform. There’s so much interest, Jeff charters a bus with an infinite number of seats and brings his infinite number of fans to Bertie’s school for Day Three. The bus’s seats have numbers from zero just like the auditorium.</p>
+
+<p>All of the students from Day Two have returned, so the auditorium is already full. Bertie is perplexed, but after scratching his head for a few moments, whips out his bullhorn and write the following JavaScript:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">EvenNumbers</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">map</span><span class="p">(</span><span class="nx">Numbers</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">MoveToSeat</span><span class="p">(</span><span class="nx">Numbers</span><span class="p">(),</span> <span class="nx">EvenNumbers</span><span class="p">());</span>
+
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; 0 -&gt; 0</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//-&gt; 1 -&gt; 2</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//-&gt; 2 -&gt; 4</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; 3 -&gt; 6</span>
+
+<span class="c1">// ...</span>
+</code></pre></div>
+
+<p>Now all the existing students are in the even numbered seats, so he’s ready to seat Jeff’s fans:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">OddNumbers</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">map</span><span class="p">(</span><span class="nx">Numbers</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">MoveToSeat</span><span class="p">(</span><span class="nx">Numbers</span><span class="p">(),</span> <span class="nx">OddNumbers</span><span class="p">());</span>
+
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; 0 -&gt; 1</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//-&gt; 1 -&gt; 3</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//-&gt; 2 -&gt; 5</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; 3 -&gt; 7</span>
+
+<span class="c1">// ...</span>
+</code></pre></div>
+
+<p>Bertie calls out the seat numbers on Jeff’s bus and the number of an odd-numbered (and therefore vacant) seat in the auditorium for them to occupy. Bertie has managed to add an infinite number of students to an infinitely large but full auditorium.</p>
+
+<p>He’s so pleased, Bertie lets Jeff be the guest lecturer. The audience has loved Bertie’s abstract approach to programming so far, but they’re hungry for practical knowledge and Jeff enthrals them  with a walkthrough of how the Discourse User Experience is implemented.</p>
+
+<p>As a bonus, Jeff shares his insights into programming productivity.<sup id="fnref:jeff"><a href="#fn:jeff" rel="footnote">3</a></sup> By the end of the day, everyone is typing over 100wpm and has placed an order for multiple wall-sized monitors on eBay.</p>
+
+<p><a href="http://www.flickr.com/photos/raver_mikey/4118859026/" title="Nice selection of REAL buses! by Gene Hunt, on Flickr"><img src="http://farm3.staticflickr.com/2516/4118859026_ee4f8ce254_z.jpg" width="640" height="480" alt="Nice selection of REAL buses!" /></a></p>
+
+<h3 id="day-four">day four</h3>
+
+<p>Day Three went well, so all the students return and the auditorium remains full. Everyone is very pleased and looking forward to Day Four.</p>
+
+<p>But the excitement has a downside: Reddit hears about what’s going on and an infinite number of subreddits, each of which has an infinite number of redditors, all decide to show up on day four to disrupt his lecture with trolling about how lame JavaScript is as a programming language. Each sends an infinitely large bus, with every seat full. Like Jeff’s bus, each bus numbers its seat from zero and as luck would have it, each bus has has a number and the buses are numbered from zero.</p>
+
+<p>Bertie has to seat an infinite number of infinite groups of people, in an infinite auditorium that is already full! Now what? Out comes the bullhorn and yesterday’s program, and he quickly moves all of his existing students into the even-numbered seats, leaving an infinite number of odd seats available for newcomers.</p>
+
+<p>He writes a new program:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">Diagonals</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">map</span><span class="p">(</span><span class="nx">Numbers</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">bus</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">seat</span> <span class="o">=</span> <span class="nx">n</span> <span class="o">-</span> <span class="nx">bus</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">bus</span> <span class="o">&lt;=</span> <span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span>
+          <span class="nx">bus</span><span class="o">:</span> <span class="nx">bus</span><span class="o">++</span><span class="p">,</span>
+          <span class="nx">seat</span><span class="o">:</span> <span class="nx">seat</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">};</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>He has an Espresso Allongé and contemplates his work so far. <code>Diagonals</code> is an iterator over an infinite collection of iterators, each of which uniquely identifies a bus and seat on that bus. They look something like this:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">0</span> <span class="p">}</span>
+<span class="p">...</span>
+</code></pre></div>
+
+<p>If you think of the buses and seats forming a square, the diagonals iterator makes a path from one corner and works its way out, enumerating over every possible combination of bus and seat. Thus, given countably infinite time, it will list every one of the countably infinite number of Redditors on each of the countably infinite number of buses.</p>
+
+<p>To move forward, Bertie needs a <code>concatenate</code> iterator for iterators:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">concatenate</span> <span class="p">(</span><span class="nx">iteratorOfIterators</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">thisIterator</span> <span class="o">=</span> <span class="nx">iteratorOfIterators</span><span class="p">();</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">myself</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">value</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">thisIterator</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
+      <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span>
+    <span class="nx">value</span> <span class="o">=</span> <span class="nx">thisIterator</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">thisIterator</span> <span class="o">=</span> <span class="nx">iteratorOfIterators</span><span class="p">();</span>
+      <span class="k">return</span> <span class="nx">myself</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">PeopleOnTheBuses</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">concatenate</span><span class="p">(</span><span class="nx">Dialognals</span><span class="p">());</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">PeopleOnTheBuses</span><span class="p">();</span>
+
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; { bus: 0, seat: 0 }</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; { bus: 0, seat: 1 }</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; { bus: 1, seat: 0 }</span>
+  
+<span class="c1">// ...</span>
+</code></pre></div>
+
+<p>Bertie is satisfied, but the natives are restless, so he keeps coding, then reaches for his bullhorn:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">RedditorSeats</span> <span class="o">=</span> <span class="nx">map</span><span class="p">(</span><span class="nx">PeopleOnTheBuses</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span> 
+      <span class="k">return</span> <span class="s1">&#39;bus: &#39;</span> <span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">bus</span> <span class="o">+</span> <span class="s1">&#39;, seat: &#39;</span> <span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">seat</span><span class="p">;</span> 
+    <span class="p">}),</span>
+    <span class="nx">i</span> <span class="o">=</span> <span class="nx">MoveToSeat</span><span class="p">(</span><span class="nx">RedditorSeats</span><span class="p">,</span> <span class="nx">OddNumbers</span><span class="p">());</span>
+
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; &#39;bus: 0, seat: 0 -&gt; 1&#39;</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; &#39;bus: 0, seat: 1 -&gt; 3&#39;</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; &#39;bus: 1, seat: 0 -&gt; 5&#39;</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; &#39;bus: 0, seat: 2 -&gt; 7&#39;</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; &#39;bus: 1, seat: 1 -&gt; 9&#39;</span>
+<span class="nx">i</span><span class="p">();</span>
+  <span class="c1">//=&gt; &#39;bus: 2, seat: 0 -&gt; 11&#39;</span>
+  
+<span class="c1">// ...</span>
+</code></pre></div>
+
+<p>Well, this seats an infinite number of Redditors on an infinite number of buses in an infinite auditorium that was already full. He does a code walkthrough with the students, then segues on to talk about other interesting aspects of Georg Cantor<sup id="fnref:cantor"><a href="#fn:cantor" rel="footnote">4</a></sup>’s work and a digression into Hotel Management.<sup id="fnref:grand"><a href="#fn:grand" rel="footnote">5</a></sup> By the time he finishes with a discussion of the Hypergame<sup id="fnref:kongregate"><a href="#fn:kongregate" rel="footnote">6</a></sup> proof of the infinite number of infinities, everyone has forgotten that they came to scoff.</p>
+
+<p>He finishes with a summary of what he learned seating students:</p>
+
+<ol>
+  <li>You can put a countably infinite number of seats into a one-to-one correspondence with the numbers, therefore they have the same <em>cardinality</em>.</li>
+  <li>You can add a finite number to an countably infinite number and put your new number into a one-to-one correspondence with the numbers, therefore infinity plus a finite number has the same cardinality as the numbers.</li>
+  <li>You can add infinity to infinity and put your new number into a one-to-one correspondence with the numbers, therefore infinity plus infinity has the same cardinality as the numbers. By induction, you can add a finite number of infinities together and have the same cardinality as the numbers.</li>
+  <li>You can add an infinite number of infinities to infinity and put your new number into a one-to-one correspondence with the numbers, therefore an infinity times infinity has the same cardinality as the numbers.</li>
+</ol>
+
+<h3 id="day-five">day five</h3>
+
+<p>On Day Five, everyone is back and he announces that there will be a test: <em>“Outside our doors,”</em> he announces, <em>“Are an infinite number of aircraft carriers, each of which has an infinitely large flight deck. Parked on each flight deck are an infinite number of buses, each of which contains–you guessed it–an infinite number of sailors and air crew eager to join our school for the next semester.”</em></p>
+
+<p><em>“Write a JavaScript program to seat them all in our lecture hall. If your program works, you may come up to the front and receive your signed diploma. If you can prove that no program works, you will also receive your diploma. Good luck!”</em></p>
+
+<p>In other words, Bertie wants his students to use JavaScript to figure out whether infinity cubed is countable. Is it?</p>
+
+<h3 id="post-scriptum">post scriptum</h3>
+
+<p>While the students busy themselves writing the test, he sends a pull request to integrate his <code>concatenate</code> function into <a href="http://allong.es" title="Free recipes from JavaScript Allongé">allong.es</a>.</p>
+
+<h3 id="post-post-scriptum">post-post scriptum</h3>
+
+<p><a href="http://raganwald.com/2013/02/22/breaking-news-programming-school-closed.html">Dr. Hilbert’s School Has Been Closed For Admissions Irregularities</a></p>
+
+<h3 id="end-notes">end notes</h3>
+<div class="footnotes">
+  <ol>
+    <li id="fn:count">
+      <p>Meaning, he is able to put the seats in a one-to-one correspondence with the natural numbers. He does this by numbering the seats from zero. See <a href="https://en.wikipedia.org/wiki/Countable_set">Countable Sets</a>.<a href="#fnref:count" rel="reference">&#8617;</a></p>
+    </li>
+    <li id="fn:tortoise">
+      <p><a href="http://raganwald.com/2013/02/15/turtles-and-iterators.js.html">http://raganwald.com/2013/02/15/turtles-and-iterators.js.html</a><a href="#fnref:tortoise" rel="reference">&#8617;</a></p>
+    </li>
+    <li id="fn:jeff">
+      <p>“As far as I’m concerned, you can never be too rich, too thin, or have too much screen space.”–<a href="http://www.codinghorror.com/blog/2010/04/three-monitors-for-every-user.html">Three Monitors For Every User</a><a href="#fnref:jeff" rel="reference">&#8617;</a></p>
+    </li>
+    <li id="fn:cantor">
+      <p><a href="https://en.wikipedia.org/wiki/Georg_Cantor">https://en.wikipedia.org/wiki/Georg_Cantor</a><a href="#fnref:cantor" rel="reference">&#8617;</a></p>
+    </li>
+    <li id="fn:grand">
+      <p><a href="https://en.wikipedia.org/wiki/Hilbert's_paradox_of_the_Grand_Hotel">https://en.wikipedia.org/wiki/Hilbert’s_paradox_of_the_Grand_Hotel</a><a href="#fnref:grand" rel="reference">&#8617;</a></p>
+    </li>
+    <li id="fn:kongregate">
+      <p><a href="http://www.kongregate.com/forums/9/topics/93615">http://www.kongregate.com/forums/9/topics/93615</a><a href="#fnref:kongregate" rel="reference">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+        
+        
+        
+        <hr/>
+
+        <p>My recent work:</p>
+
+        <p><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé"><img src="http://i.minus.com/iW2E1A8M5UWe6.jpeg" alt="JavaScript Allongé" /></a><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/coffeescript-ristretto" title="CoffeeScript Ristretto"><img src="http://i.minus.com/iMmGxzIZkHSLD.jpeg" alt="CoffeeScript Ristretto" /></a><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/combinators" title="Kestrels, Quirky Birds, and Hopeless Egocentricity"><img src="http://i.minus.com/ibw1f1ARQ4bhi1.jpeg" alt="Kestrels, Quirky Birds, and Hopeless Egocentricity" /></a></p>
+
+        <ul>
+          <li><a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé">JavaScript Allongé</a>, <a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé">CoffeeScript Ristretto</a>, and my <a href="http://leanpub.com/u/raganwald">other books</a>.</li>
+          <li><a href="http://allong.es">allong.es</a>, practical function combinators and decorators for JavaScript.</li>
+          <li><a href="https://github.com/raganwald/method-combinators">Method Combinators</a>, a CoffeeScript/JavaScript library for writing method decorators, simply and easily.</li>
+          <li><a href="http://github.com/raganwald/jquery-combinators">jQuery Combinators</a>, what else? A jQuery plugin for writing your own fluent, jQuery-like code. </li>
+        </ul>
+
+        <hr />
+        
+        <hr />
+
+<p>(Spot a bug or a spelling mistake? This is a Github repo, <a href="https://github.com/raganwald/raganwald.github.com">fork it and send me a pull request</a>!)</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="http://braythwayt.com">Reg Braithwaite</a></td>
+      <td><a href="https://twitter.com/share" class="twitter-share-button" data-via="raganwald">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></td>
+      <td><a href="https://twitter.com/raganwald" class="twitter-follow-button" data-show-count="false">Follow @raganwald</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></td>
+    </tr>
+  </tbody>
+</table>
+
+
+        </div>
+        
+      </section>
+      <br/>
+      
+        <!-- insert google analytics here -->
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+
+    </body>
+</html>
