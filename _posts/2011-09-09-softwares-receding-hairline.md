@@ -29,8 +29,8 @@ Likewise with software, it is sometimes difficult to pull out a calendar and say
 
 This is as true of life as it is of software and hairlines. You cannot make all decisions based on short timeframes. Sometimes you have to do things that are _important but not urgent._ It is never urgent to read a new book, or learn an unpopular programming language, or refactor code that isn't blocking you from implementing a new feature. If you are programming in Java, it is never urgent to switch to Scala. If you are implementing Java, it is certainly never urgent to release a feature that would force your legacy users to rewrite some of their code.
 
-But if you make all your decisions according to their urgency, one day you wake up with a receding hairline and a million lines of Java code running on a compiler that simply can't accommodate new language features without three years of finangling. It's entirely up to you how to proceed.
+But if you make all your decisions according to their urgency, one day you wake up with a receding hairline and a million lines of Java code running on a compiler that simply can't accommodate new language features without three years of finagling. It's entirely up to you how to proceed.
 
 For my part, I am going to do the following: The next time I am prioritizing features with a client and tasks with my team, I am going to explicitly ask the group to name three things to do that are _important but not urgent_. And with any luck, we'll do some of them, and I won't wake up one day explaining that what looks like a straightforward change will take years to implement.
 
-[^pg]
+[^pg]: Paul Graham used the comb-over analogy in an optimistic, positive way in "[The Age of the Essay](http://paulgraham.com/essay.html)." Wonderful read.
