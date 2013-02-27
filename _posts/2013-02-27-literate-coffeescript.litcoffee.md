@@ -93,6 +93,6 @@ The other news, and yes I've buried the lede by leaving it for last, is that Cof
 
 ![A literate blog post](/assets/images/literate-coffeescript.png)
 
-Does it work? It certainly does, and I have a very powerful use case for it. This blog post was written as a literate CoffeeScript document, so I was able to run it by typing `coffee 2013-02-27-literate-coffeescript.litcoffee`. Even more excitingly, Jekyll seems perfectly content to parse `.litcoffee` files as Markdown, so whenever I want to write about CoffeeScript, I can directly execute the code examples without any copying and pasting. 
+Does it work? It certainly does, and I have a very powerful use case for it. This blog post was written as a literate CoffeeScript document, so I was able to run it by typing `coffee 2013-02-27-literate-coffeescript.litcoffee`. For the moment, Jekyll insists on parsing  `.litcoffee` files as test, so whenever I want to write about CoffeeScript, I need to add a `.md` to the suffix before pushing to the server. But that's still much better than error-prone cutting and pasting of snippets, and in the fullness of time I hope Jekyll will recognize `.litcoffee` as Markdown, and/or CoffeeScript will recognize `.coffee.md` as literate CoffeeScript.
 
 That's going to be a big time saver.
