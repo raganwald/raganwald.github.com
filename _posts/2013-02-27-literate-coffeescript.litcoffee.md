@@ -57,7 +57,9 @@ Other benefits would include being able to use combinators on constructors:
     SingletonRouter = once(Router)
     ###
 
-However, we're not going to be able to do that any more. It's not a huge deal, there are other ways to work around these infrequent use cases, and overall the benefit of having constructors constrained to always return the instance is likely to far outweigh the lack of flexibility. Besides, CoffeeScript doesn't stop you from writing a JavaScript-style class:
+However, we're not going to be able to do that any more. It's not a huge deal, there are other ways to work around these infrequent use cases, and overall the benefit of having constructors constrained to always return the instance is likely to far outweigh the lack of flexibility.
+
+Besides, CoffeeScript doesn't stop you from writing a JavaScript-style class:
 
     Contact = (@name, @emails...) ->
       self = if this instanceof Contact then this else new Contact()
@@ -91,6 +93,8 @@ The other news, and yes I've buried the lede by leaving it for last, is that Cof
 >
 > I'm fairly excited about this direction for the language, and am looking forward to writing (and more importantly, reading) more programs in this style. As 1.5.0 is the first version of CoffeeScript that supports it, let us know if you have any ideas for improving the feature.
 
-Does it work? It certainly does, and I have a very powerful use case for it. This blog post was written as a literate CoffeeScript document, so I was able to run it by typing `coffee 2013-02-27-literate-coffeescript.litcoffee`. For the moment, Jekyll insists on parsing  `.litcoffee` files as test, so whenever I want to write about CoffeeScript, I need to add a `.md` to the suffix before pushing to the server. But that's still much better than error-prone cutting and pasting of snippets, and in the fullness of time I hope that CoffeeScript will recognize `.coffee.md` as literate CoffeeScript](https://github.com/jashkenas/coffee-script/issues/2736).
+Does it work? It certainly does, and I have a very powerful use case for it. This blog post was written as a literate CoffeeScript document, so I was able to run it by typing `coffee 2013-02-27-literate-coffeescript.litcoffee`.
+
+For the moment, Jekyll insists on parsing  `.litcoffee` files as test, so whenever I want to write about CoffeeScript, I need to add a `.md` to the suffix before pushing to the server. But that's still much better than error-prone cutting and pasting of snippets, and in the fullness of time I hope that CoffeeScript will recognize `.coffee.md` as literate CoffeeScript](https://github.com/jashkenas/coffee-script/issues/2736).
 
 That's going to be a big time saver.
