@@ -48,7 +48,7 @@
           <h1>Implementing the Sieve of Eratosthenes with Functional Programming</h1>
           <hr>
           <span class="credits left">This blog is written by <a href="http://braythwayt.com">Reg "raganwald" Braithwaite</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+          <span class="credits right">Fixes welcome: <a href="https://github.com/raganwald/raganwald.github.com">fork and submit a pull request</a></span>
         </div>
 
         <p>Programming interviews often include a “Fizzbuzz” test, some simple programming task that is intended to establish that the candidate can, in fact, program something trivial. It isn’t intended as a deep architectural dive or as an algorithms challenge. Under ideal, non-pressure situations it shouldn’t take more than fifteen minutes to complete.</p>
@@ -109,7 +109,7 @@
 
 <h3 id="accumulate-with-return">accumulate with return</h3>
 
-<p>In [The Drunken Walk Programming problem], we were introduced to the <code>accumulate</code> function. It works a lot like a fold, reduce, or inject method: It iterates over a collection, accumulating a state along the way. The special sauce in <code>accumulate</code> is that instead of waiting for the end of the collction and returning a single value, <code>accumulate</code> returns an iterator that iterates over the state value as it iterates over the list. For example:</p>
+<p>In <a href="http://raganwald.com/2013/02/17/a-drunken-walk.html">The Drunken Walk Programming problem</a>, we were introduced to the <code>accumulate</code> function. It works a lot like a fold, reduce, or inject method: It iterates over a collection, accumulating a state along the way. The special sauce in <code>accumulate</code> is that instead of waiting for the end of the collection and returning a single value, <code>accumulate</code> returns an iterator that iterates over the state value as it iterates over the list. For example:</p>
 
 <div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">accumulate</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">iterators</span><span class="p">.</span><span class="nx">accumulate</span><span class="p">,</span>
     <span class="nx">FlatArrayIterator</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">iterators</span><span class="p">.</span><span class="nx">FlatArrayIterator</span><span class="p">;</span>
@@ -158,16 +158,19 @@
 
 <p><code>accumulateWithReturn</code> takes a function that returns <em>two</em> values as an array. The first is the state for the next iteration, the second is the value to return for that iteration. So how does that help?</p>
 
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Sieve_of_Eratosthenes_animation.gif" alt="Animated Sieve of Eratosthenes" /></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Sieve_of_Eratosthenes_animation.gif" alt="Animated Sieve of Eratosthenes" /><br />
+<em>Illustrated Sieve from <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Wikipedia</a></em></p>
 
 <h3 id="sieving-numbers">sieving numbers</h3>
 
-<p>Let’s consider what we want to do to “sieve” all the multiples of a number from the natural numbers. Essentially, we want to count as we go along. If our number is “5,” we count 1, 2, 3, 4, “stroke out!” 1, 2, 3, 4, “stroke out!”</p>
+<p>Let’s consider what we want to do to “sieve” all the multiples of a number from the natural numbers. Essentially, we want to count as we go along. If our number is “5,” we count 1, 2, 3, 4, “stroke out!” 1, 2, 3, 4, “stroke out!” We could also choose to count <em>down</em>, as in 5, 4, 3, 2, “stroke out!” 5, 4, 3, 2, “stroke out!” We’ll go with counting down,although you’re welcome to rewrite it counting up and see that we get the same results.</p>
 
-<p>Thus, we want to maintain a counter as we iterate through the numbers. But what do we want to return? If the counter is less than our number, we return the number. But if our counter is the number, we return some special flag indicating we’ve stroked the number our and reset our count.</p>
+<p>Thus, we want to maintain a counter as we iterate through the numbers. But what do we want to return? If the counter is greater than one, we return the number. But if our counter reaches one, we return some special flag indicating we’ve stroked the number our and reset our count to our number.</p>
 
 <blockquote>
   <p>Obviously, this could be much easier: We can take the modulus of the number directly with a simple <code>map</code>. But that isn’t the <em>literal</em> Sieve of Eratosthenes. And gosh-diddley-honest, we are going to implement this algorithm literally.</p>
+
+  <p>For more on what makes an algorithm a genuine Sieve of Eratosthenes, Melissa O’Neill has written a terrific paper: <a href="http://www.cs.tufts.edu/%7Enr/comp150fp/archive/melissa-oneill/Sieve-JFP.pdf">The Genuine Sieve of Eratosthenes</a>.</p>
 </blockquote>
 
 <p>Here we are. We’ll use <code>false</code> as our value for numbers being stroked out:</p>
@@ -177,19 +180,19 @@
     
 <span class="kd">function</span> <span class="nx">SieveMultiplesOf</span> <span class="p">(</span><span class="nx">iter</span><span class="p">,</span> <span class="nx">aPrime</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">accumulateWithReturn</span><span class="p">(</span><span class="nx">iter</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">counter</span><span class="p">,</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">counter</span><span class="o">++</span> <span class="o">===</span> <span class="nx">aPrime</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">counter</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">counter</span><span class="o">--</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">counter</span> <span class="o">=</span> <span class="nx">aPrime</span><span class="p">;</span>
       <span class="k">return</span> <span class="p">[</span><span class="nx">counter</span><span class="p">,</span> <span class="kc">false</span><span class="p">];</span>
     <span class="p">}</span>
     <span class="k">else</span> <span class="k">return</span> <span class="p">[</span><span class="nx">counter</span><span class="p">,</span> <span class="nx">number</span><span class="p">]</span>
-  <span class="p">},</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="p">},</span> <span class="nx">aPrime</span><span class="p">);</span>
 <span class="p">};</span>
 
 <span class="kd">var</span> <span class="nx">numbersFromOne</span> <span class="o">=</span> <span class="nx">unfold</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
 <span class="p">});</span>
     
-<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">SieveMultiplesOf</span><span class="p">(</span><span class="nx">numbers</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">SieveMultiplesOf</span><span class="p">(</span><span class="nx">numbersFromOne</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
 <span class="nx">i</span><span class="p">();</span>
   <span class="c1">//=&gt; 1</span>
 <span class="nx">i</span><span class="p">();</span>
@@ -206,20 +209,7 @@
 
 <p>Notice that we can sieve an already sieved iteration:</p>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">accumulateWithReturn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">iterators</span><span class="p">.</span><span class="nx">accumulateWithReturn</span><span class="p">,</span>
-    <span class="nx">unfold</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">iterators</span><span class="p">.</span><span class="nx">unfold</span><span class="p">;</span>
-    
-<span class="kd">function</span> <span class="nx">SieveMultiplesOf</span> <span class="p">(</span><span class="nx">iter</span><span class="p">,</span> <span class="nx">aPrime</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">accumulateWithReturn</span><span class="p">(</span><span class="nx">iter</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">counter</span><span class="p">,</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">counter</span><span class="o">++</span> <span class="o">===</span> <span class="nx">aPrime</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">counter</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-      <span class="k">return</span> <span class="p">[</span><span class="nx">counter</span><span class="p">,</span> <span class="kc">false</span><span class="p">];</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">return</span> <span class="p">[</span><span class="nx">counter</span><span class="p">,</span> <span class="nx">number</span><span class="p">]</span>
-  <span class="p">},</span> <span class="mi">1</span><span class="p">);</span>
-<span class="p">};</span>
-
-<span class="kd">var</span> <span class="nx">numbersFromOne</span> <span class="o">=</span> <span class="nx">unfold</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">numbersFromOne</span> <span class="o">=</span> <span class="nx">unfold</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
 <span class="p">});</span>
 
@@ -250,16 +240,16 @@
 
 <p>We’re just about ready!</p>
 
-<h3 id="the-full-algorithm">the full algorithm</h3>
+<h3 id="the-final-step">the final step</h3>
 
 <p>With an unfold, we start with a seed and transform it with every iteration into the next value to be returned. That, in a nutshell, is what we’re going to do with an iteration over the numbers from two: transform it with every iteration by sieving it.</p>
 
 <p>So we expect to see something like this in the middle of our code:</p>
 
-<div class="highlight"><pre><code class="javascript"><span class="nx">numbersFromTwo</span> <span class="o">=</span> <span class="nx">SieveMultiplesOf</span><span class="p">(</span><span class="nx">numbersFromTwo</span><span class="p">,</span> <span class="nx">nextPrimeNumber</span><span class="p">);</span>
+<div class="highlight"><pre><code class="javascript"><span class="nx">remainingNumbers</span> <span class="o">=</span> <span class="nx">SieveMultiplesOf</span><span class="p">(</span><span class="nx">remainingNumbers</span><span class="p">,</span> <span class="nx">nextPrimeNumber</span><span class="p">);</span>
 </code></pre></div>
 
-<p>However, we don’t actually want to return the sieved numbers with each iteration, we want to return each prime. SO we need an unfold that separates state from the return value. Hmmm. <code>accumulateWithReturn</code> is just like <code>accumulate</code>, only it separates state from return value. Could it be that <code>unfoldWithReturn</code> is just like unfold but separates state from return value?</p>
+<p>However, we don’t actually want to return the sieved numbers with each iteration, we want to return each prime. So we need an unfold that separates state from the return value. Hmmm. <code>accumulateWithReturn</code> is just like <code>accumulate</code>, only it separates state from return value. Could it be that <code>unfoldWithReturn</code> is just like unfold but separates state from return value?</p>
 
 <p>Yes: </p>
 
@@ -295,13 +285,14 @@
 
 <p>The first number not crossed out is always the next prime to return. So, we return the new state consisting of the remaining numbers with multiples of the new prime number crossed out, and the new prime number as our return value.</p>
 
-<p>All that remains is to summarize:</p>
+<h3 id="the-complete-solution">the complete solution</h3>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">accumulateWithReturn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">iterators</span><span class="p">.</span><span class="nx">accumulateWithReturn</span><span class="p">,</span>
-    <span class="nx">unfold</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">iterators</span><span class="p">.</span><span class="nx">unfold</span><span class="p">,</span>
-    <span class="nx">unfoldWithReturn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">iterators</span><span class="p">.</span><span class="nx">unfoldWithReturn</span><span class="p">,</span>
-    <span class="nx">find</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">iterators</span><span class="p">.</span><span class="nx">find</span><span class="p">,</span>
-    <span class="nx">take</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">iterators</span><span class="p">.</span><span class="nx">take</span><span class="p">;</span>
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">I</span>                    <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">iterators</span><span class="p">,</span>
+    <span class="nx">accumulateWithReturn</span> <span class="o">=</span> <span class="nx">I</span><span class="p">.</span><span class="nx">accumulateWithReturn</span><span class="p">,</span>
+    <span class="nx">unfold</span>               <span class="o">=</span> <span class="nx">I</span><span class="p">.</span><span class="nx">unfold</span><span class="p">,</span>
+    <span class="nx">unfoldWithReturn</span>     <span class="o">=</span> <span class="nx">I</span><span class="p">.</span><span class="nx">unfoldWithReturn</span><span class="p">,</span>
+    <span class="nx">find</span>                 <span class="o">=</span> <span class="nx">I</span><span class="p">.</span><span class="nx">find</span><span class="p">,</span>
+    <span class="nx">take</span>                 <span class="o">=</span> <span class="nx">I</span><span class="p">.</span><span class="nx">take</span><span class="p">;</span>
     
 <span class="kd">function</span> <span class="nx">PrimeNumbers</span> <span class="p">()</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">numbersFromTwo</span> <span class="o">=</span> <span class="nx">unfold</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
@@ -310,12 +301,12 @@
   
   <span class="kd">function</span> <span class="nx">SieveMultiplesOf</span> <span class="p">(</span><span class="nx">iter</span><span class="p">,</span> <span class="nx">aPrime</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">accumulateWithReturn</span><span class="p">(</span><span class="nx">iter</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">counter</span><span class="p">,</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">counter</span><span class="o">++</span> <span class="o">===</span> <span class="nx">aPrime</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">counter</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">counter</span><span class="o">--</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">counter</span> <span class="o">=</span> <span class="nx">aPrime</span><span class="p">;</span>
         <span class="k">return</span> <span class="p">[</span><span class="nx">counter</span><span class="p">,</span> <span class="kc">false</span><span class="p">];</span>
       <span class="p">}</span>
       <span class="k">else</span> <span class="k">return</span> <span class="p">[</span><span class="nx">counter</span><span class="p">,</span> <span class="nx">number</span><span class="p">]</span>
-    <span class="p">},</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">},</span> <span class="nx">aPrime</span><span class="p">);</span>
   <span class="p">};</span>
   
   <span class="k">return</span> <span class="nx">unfoldWithReturn</span><span class="p">(</span><span class="nx">numbersFromTwo</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">remainingNumbers</span><span class="p">)</span> <span class="p">{</span>
@@ -333,7 +324,28 @@
   <span class="c1">//=&gt; 2, 3, 5, ..., 7901, 7907, 7919</span>
 </code></pre></div>
 
-<p>We’re done!</p>
+<p>The source code for the utility functions we’re using can all be reviewed online in <a href="https://github.com/raganwald/allong.es/blob/master/lib/iterators.js" title="iterators.js on github">iterators.js</a>.</p>
+
+<p>(<a href="http://www.reddit.com/r/javascript/comments/196zit/implementing_the_sieve_of_eratosthenes_with/">discuss</a>)</p>
+
+<h3 id="bonus">bonus</h3>
+
+<p>Eratosthenes actually advocated an optimization of this algorithm. I left it out initially because it changes <code>SieveMultiplesOf</code> in such a way that it isn’t as easy to verify its behaviour separately because it’s coupled to the way numbers are taken off the front of the iterators:</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">SieveMultiplesOf</span> <span class="p">(</span><span class="nx">iter</span><span class="p">,</span> <span class="nx">aPrime</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">accumulateWithReturn</span><span class="p">(</span><span class="nx">iter</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">counter</span><span class="p">,</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">counter</span><span class="o">--</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">counter</span> <span class="o">=</span> <span class="nx">aPrime</span><span class="p">;</span>
+      <span class="k">return</span> <span class="p">[</span><span class="nx">counter</span><span class="p">,</span> <span class="kc">false</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">return</span> <span class="p">[</span><span class="nx">counter</span><span class="p">,</span> <span class="nx">number</span><span class="p">]</span>
+  <span class="p">},</span> <span class="nx">aPrime</span> <span class="o">*</span> <span class="p">(</span><span class="nx">aPrime</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h3 id="post-script">post script</h3>
+
+<p>I actually failed that particular interview test when I took it. I can’t tell you why, it was “Just one of those days,” I guess. But I’ve never forgotten the fact that no matter how simple the test, interviews are high-pressure situations where anyone can “choke.” Well, maybe not anyone. But I certainly can.</p>
 
 
         
@@ -341,7 +353,7 @@
         
         <hr/>
 
-        <p>My recent work:</p>
+        <h3>my recent work</h3>
 
         <p><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé"><img src="http://i.minus.com/iW2E1A8M5UWe6.jpeg" alt="JavaScript Allongé" /></a><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/coffeescript-ristretto" title="CoffeeScript Ristretto"><img src="http://i.minus.com/iMmGxzIZkHSLD.jpeg" alt="CoffeeScript Ristretto" /></a><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/combinators" title="Kestrels, Quirky Birds, and Hopeless Egocentricity"><img src="http://i.minus.com/ibw1f1ARQ4bhi1.jpeg" alt="Kestrels, Quirky Birds, and Hopeless Egocentricity" /></a></p>
 
@@ -351,12 +363,16 @@
           <li><a href="https://github.com/raganwald/method-combinators">Method Combinators</a>, a CoffeeScript/JavaScript library for writing method decorators, simply and easily.</li>
           <li><a href="http://github.com/raganwald/jquery-combinators">jQuery Combinators</a>, what else? A jQuery plugin for writing your own fluent, jQuery-like code. </li>
         </ul>
+        
+      </section>
 
         <hr />
         
+      <br/>
+        
         <hr />
 
-<p>(Spot a bug or a spelling mistake? This is a Github repo, <a href="https://github.com/raganwald/raganwald.github.com">fork it and send me a pull request</a>!)</p>
+<p>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></p>
 
 <table>
   <tbody>
@@ -364,17 +380,11 @@
       <td><a href="http://braythwayt.com">Reg Braithwaite</a></td>
       <td><a href="https://twitter.com/share" class="twitter-share-button" data-via="raganwald">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></td>
-      <td><a href="https://twitter.com/raganwald" class="twitter-follow-button" data-show-count="false">Follow @raganwald</a>
+      <td><a href="https://twitter.com/RaganwaldsPen" class="twitter-follow-button" data-show-count="false">Follow @RaganwaldsPen</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></td>
     </tr>
   </tbody>
 </table>
-
-
-        </div>
-        
-      </section>
-      <br/>
       
         <!-- insert google analytics here -->
 
