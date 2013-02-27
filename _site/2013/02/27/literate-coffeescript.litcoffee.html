@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <LINK REL=StyleSheet HREF="/assets/css/pygments.css" TYPE="text/css" MEDIA=screen>
+    <title>Two Brief Points About CoffeeScript 1.5</title>
+    </head>
+  <body>
+    <div id="container">
+      <div class="inner">
+        
+              <div id="header">
+        <h1>Two Brief Points About CoffeeScript 1.5</h1>
+        <h2>by Reg Braithwaite</h2>
+      </div><!-- end header -->
+
+
+
+        <hr>
+
+        <section id="main_content">
+          <h3 id="first-constructors-must-return-their-instance">first, constructors must return their instance</h3>
+
+<p>Jeremy Ashkenas recently announced that CoffeeScript 1.5 is out. One of its changes concerns constructors created with CoffeeScript’s <code>class</code> keyword. It used to be possible to write this:</p>
+
+<pre><code>###
+class Weird
+  constructor: -&gt;
+    return "a string"
+###
+</code></pre>
+
+<p>And when you wrote <code>new Weird()</code>, you’d get <code>"a string"</code>, not an instance of <code>Weird</code>. This is no longer the case. Now when you write the above, you hget an error: <em>CANNOT RETURN A VALUE FROM A CONSTRUCTOR: ““A STRING”” IN CLASS WEIRD</em>. Does this matter? Only in edge cases. in <a href="http://leanpub.com/javascript-allonge">JavaScript Allongé</a>, I borrowed a pattern from <a href="http://effectivejs.com">Effective JavaScript</a>. Here’s the use case. Consider this constructor with a variable number of arguments:</p>
+
+<pre><code>class Contact
+  constructor: (@name, @emails...) -&gt;
+</code></pre>
+
+<p>We can write things like <code>new Contact('raganwald', 'reg@braythwayt.com', 'reg@raganwald.com')</code>. Good. Now: How do we call this programmatically if we have an array of contacts? Don’t say “Use<code>.apply</code>,” that doesn’t work for constructors, just for normal functions. So we have to rewrite its signature. Or do we?</p>
+
+<pre><code>###
+class Contact
+  constructor: (@name, @emails...) -&gt;
+    self = if this instanceof Contact then this else new Contact()
+    self.name = name
+    self.emails = emails
+    return self
+  doSomething: -&gt;
+    # ...
+  doSomethingElse: -&gt;
+    # ...
+###
+</code></pre>
+
+<p>Then, whenever we wanted to use <code>.apply</code>, we could:</p>
+
+<pre><code>### 
+testArray = ['raganwald', 'reg@braythwayt.com', 'reg@raganwald.com']
+  
+Contact.apply(null, testArray)
+  #=&gt; returns a new contact record
+###
+</code></pre>
+
+<p>Other benefits would include being able to use combinators on constructors:</p>
+
+<pre><code>###
+class Router
+  constructor: (something, somethingElse) -&gt;
+    self = if this instanceof Contact then this else new Contact()
+    self.something = something
+    self.somethingElse = somethingElse
+    return self
+
+SingletonRouter = once(Router)
+###
+</code></pre>
+
+<p>However, we’re not going to be able to do that any more. It’s not a huge deal, there are other ways to work around these infrequent use cases, and overall the benefit of having constructors constrained to always return the instance is likely to far outweigh the lack of flexibility.</p>
+
+<p>Besides, CoffeeScript doesn’t stop you from writing a JavaScript-style class:</p>
+
+<pre><code>Contact = (@name, @emails...) -&gt;
+  self = if this instanceof Contact then this else new Contact()
+  self.name = name
+  self.emails = emails
+  return self
+Contact::doSomething = -&gt;
+  # ...
+Contact::doSomethingElse = -&gt;
+  # ...
+  
+console.log new Contact('raganwald', 'reg@braythwayt.com', 'reg@raganwald.com')
+  #=&gt; { name: 'raganwald',
+  #     emails: 
+  #     [ 'reg@braythwayt.com', 'reg@raganwald.com' ] }
+
+testArray = ['raganwald', 'reg@braythwayt.com', 'reg@raganwald.com']
+  
+Contact.apply(null, testArray)
+  #=&gt; { name: 'raganwald',
+  #     emails: 
+  #     [ 'reg@braythwayt.com', 'reg@raganwald.com' ] }
+</code></pre>
+
+<h3 id="second-literate-coffeescript">second, literate coffeescript</h3>
+
+<p>The other news, and yes I’ve buried the lede by leaving it for last, is that CoffeeScript now supports a “literate” mode. Here’s what Jeremy has to say:</p>
+
+<blockquote>
+  <p>Besides being used as an ordinary programming language, CoffeeScript may also be written in “literate” mode. If you name your file with a  .litcoffee extension, you can write it as a Markdown document — a document that also happens to be executable CoffeeScript code. The compiler will treat any indented blocks (Markdown’s way of indicating source code) as code, and ignore the rest as comments.</p>
+
+  <p>Just for kicks, a little bit of the compiler is currently implemented in this fashion: See it as a document, raw, and properly highlighted in a text editor.</p>
+
+  <p>I’m fairly excited about this direction for the language, and am looking forward to writing (and more importantly, reading) more programs in this style. As 1.5.0 is the first version of CoffeeScript that supports it, let us know if you have any ideas for improving the feature.</p>
+</blockquote>
+
+<p>Does it work? It certainly does, and I have a very powerful use case for it. This blog post was written as a literate CoffeeScript document, so I was able to run it by typing <code>coffee 2013-02-27-literate-coffeescript.litcoffee</code>.</p>
+
+<p>For the moment, Jekyll insists on parsing  <code>.litcoffee</code> files as text, so whenever I want to write about CoffeeScript, I need to add a <code>.md</code> to the suffix before pushing to the server. But that’s still much better than error-prone cutting and pasting of snippets, and in the fullness of time I hope that CoffeeScript will recognize <code>.coffee.md</code> as literate CoffeeScript](https://github.com/jashkenas/coffee-script/issues/2736).</p>
+
+<p>That’s going to be a big time saver.</p>
+
+        </section>
+
+                <footer>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+
+          <table>
+            <tbody>
+              <tr>
+                <td><a href="http://braythwayt.com">Reg Braithwaite</a></td>
+                <td><a href="https://twitter.com/share" class="twitter-share-button" data-via="raganwald">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></td>
+                <td><a href="https://twitter.com/RaganwaldsPen" class="twitter-follow-button" data-show-count="false">Follow @RaganwaldsPen</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></td>
+              </tr>
+            </tbody>
+          </table>
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>

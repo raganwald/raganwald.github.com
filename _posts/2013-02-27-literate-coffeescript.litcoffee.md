@@ -1,5 +1,5 @@
 ---
-layout: dark
+layout: tactile
 title: Two Brief Points About CoffeeScript 1.5
 ---
 
