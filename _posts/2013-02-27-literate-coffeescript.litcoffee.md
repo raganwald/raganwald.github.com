@@ -11,10 +11,10 @@ Jeremy Ashkenas recently announced that CoffeeScript 1.5 is out. One of its chan
     ###
     class Weird
       constructor: ->
-        return "a string"
+        return { exclamation: "That's Strange" }
     ###
         
-And when you wrote `new Weird()`, you'd get `"a string"`, not an instance of `Weird`. This is no longer the case. Now when you write the above, you hget an error: *CANNOT RETURN A VALUE FROM A CONSTRUCTOR: ""A STRING"" IN CLASS WEIRD*. Does this matter? Only in edge cases. in [JavaScript Allongé][ja], I borrowed a pattern from [Effective JavaScript](http://effectivejs.com). Here's the use case. Consider this constructor with a variable number of arguments:
+And when you wrote `new Weird()`, you'd get a plain object, not an instance of `Weird`. This is no longer the case. Now when you write the above, you get an error: *CANNOT RETURN A VALUE FROM A CONSTRUCTOR: "{ EXCLAMATION: "THAT'S STRANGE" }" IN CLASS WEIRD*. Does this matter? Only in edge cases. in [JavaScript Allongé][ja], I borrowed a pattern from [Effective JavaScript](http://effectivejs.com). Here's the use case. Consider this constructor with a variable number of arguments:
 
 [ja]: http://leanpub.com/javascript-allonge
 
@@ -60,7 +60,9 @@ Other benefits would include being able to use combinators on constructors:
 
 However, we're not going to be able to do that any more. It's not a huge deal, there are other ways to work around these infrequent use cases, and overall the benefit of having constructors constrained to always return the instance is likely to far outweigh the lack of flexibility.
 
-Besides, CoffeeScript doesn't stop you from writing a JavaScript-style class:
+### working around the change
+
+You can work around this issue very easily. CoffeeScript doesn't stop you from writing a JavaScript-style class, so you can simply write your constructor function directly, eschewing the convenience of the `class` keyword:
 
     Contact = (@name, @emails...) ->
       self = if this instanceof Contact then this else new Contact()
