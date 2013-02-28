@@ -1,7 +1,7 @@
 ---
 layout: tactile
 title: Function and Method Decorators
-tags: javascript
+ad: javascript-allonge
 ---
 
 (a/k/a **"More than you ever wanted to know about "this" in JavaScript, Part II"**)

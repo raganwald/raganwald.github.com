@@ -1,7 +1,7 @@
 ---
 layout: tactile
 title: Effective JavaScript Reviewed
-tags: javascript books
+ad: javascript-allonge
 ---
 
 [![Effective JavaScript](http://i.minus.com/ibjveCleaJzli1.png)](http://effectivejs.com)

@@ -1,8 +1,7 @@
 ---
 layout: tactile
 title: Classes vs. Prototypes in JavaScript
-tags: javascript
-recent_work: true
+ad: javascript-allonge
 ---
 
 *From time to time people mention that they've heard that JavaScript doesn't have classes, that it uses "prototypical inheritance," and what is the difference between class-based inheritance and prototype-based inheritance?*

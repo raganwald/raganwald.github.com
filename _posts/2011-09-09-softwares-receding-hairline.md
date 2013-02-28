@@ -1,6 +1,7 @@
 ---
 title: Software's Receding Hairline
 layout: tactile
+ad: javascript-allonge
 ---
 
 The news is out that the Java Programming Language is going to have a clean, simple syntax for lambdas [Real Soon Now](http://www.urbandictionary.com/define.php?term=real%20soon%20now). It seems that after two or three or maybe even five years of wrangling, the various committees have decided on a syntax, [mostly](http://mail.openjdk.java.net/pipermail/lambda-dev/2011-September/003936.html).
