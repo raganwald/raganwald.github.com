@@ -1,5 +1,5 @@
 ---
-layout: dark
+layout: tactile
 title: Effective JavaScript Reviewed
 tags: javascript books
 ---

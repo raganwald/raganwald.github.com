@@ -1,6 +1,6 @@
 ---
 title: The "Drunken Walk" Programming Problem
-layout: dark
+layout: tactile
 tags: javascript
 ---
 

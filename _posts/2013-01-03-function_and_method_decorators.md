@@ -1,5 +1,5 @@
 ---
-layout: dark
+layout: tactile
 title: Function and Method Decorators
 tags: javascript
 ---

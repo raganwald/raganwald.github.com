@@ -1,5 +1,5 @@
 ---
-layout: dark
+layout: tactile
 title: Tortoises, Teleporting Turtles, and Iterators (CoffeeScript)
 tags: coffeescript
 ---

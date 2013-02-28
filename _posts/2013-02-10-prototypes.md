@@ -1,5 +1,5 @@
 ---
-layout: dark
+layout: tactile
 title: Classes vs. Prototypes in JavaScript
 tags: javascript
 recent_work: true

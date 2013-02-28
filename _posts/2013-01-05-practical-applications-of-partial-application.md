@@ -1,5 +1,5 @@
 ---
-layout: dark
+layout: tactile
 title: Practical Applications of Partial Application
 tags: javascript
 ---

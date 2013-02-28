@@ -1,6 +1,6 @@
 ---
 title: Hilbert's Grand JavaScript School
-layout: dark
+layout: tactile
 ---
 
 Dr. Hilbert "Bertie" David grows tired of blogging about JavaScript, and decides to cash in on the seemingly inexhaustible supply of impressionable young minds seeking to "Learn JavaScript in Five Days."

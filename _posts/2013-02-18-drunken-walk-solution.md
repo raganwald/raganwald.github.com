@@ -1,6 +1,6 @@
 ---
 title: Solving the "Drunken Walk" problem with iterators
-layout: dark
+layout: tactile
 tags: javascript
 ---
 
