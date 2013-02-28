@@ -1,6 +1,6 @@
 ---
 title: Hilbert's School Closed for Discriminatory Practices
-layout: dark
+layout: tactile
 ---
 
 Much has been made of the lack of diversity in the technology field. While there are many causes for it and not all of the factors represent intentional or even systemic discrimination, there are from time to time disturbing incidents that make me despair. One such has just been revealed to me, and I am proud to be the one with the scoop.
