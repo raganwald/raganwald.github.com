@@ -1,5 +1,5 @@
 ---
-title: raganwald.com
+title: index.html
 layout: tactile
 ---
 

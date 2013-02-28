@@ -1,13 +1,9 @@
 ---
 layout: tactile
-title: Tortoises, Teleporting Turtles, and Iterators (CoffeeScript)
-tags: coffeescript
+title: Tortoises, Teleporting Turtles, and Iterators
+preamble: <p>(These code examples are in CoffeeScript. <a href="./turtles-and-iterators.js.html">Click here</a> for code examples in JavaScript.)</p><p>A good long while ago (The First Age of Internet Startups), someone asked me one of those pet algorithm questions. It was, “Write an algorithm to detect a loop in a linked list, in constant space.”</p>
+ad: coffeescript-ristretto
 ---
-
-(These code examples are in CoffeeScript. [Click here](./turtles-and-iterators.js.html) for code examples in JavaScript.)
-
-A good long while ago (The First Age of Internet Startups), someone asked me one of those pet algorithm questions. It was, "Write an algorithm to detect a loop in a linked list, in constant space."
-
 I'm not particularly surprised that I couldn't think up an answer in a few minutes at the time. And to the interviewer's credit, he didn't terminate the interview on the spot, he asked me to describe the kinds of things going through my head.
 
 I think I told him that I was trying to figure out if I could adapt a hashing algorithm such as XORing everything together. This is the "trick answer" to a question about finding a missing integer from a list, so I was trying the old, "Transform this into [a problem you've already solved](http://www-users.cs.york.ac.uk/susan/joke/3.htm#boil)" meta-algorithm. We moved on from there, and he didn't reveal the "solution."
@@ -18,7 +14,7 @@ I went home and pondered the problem. I wanted to solve it. Eventually, I came u
 
 Some time later, I was told that the correct solution was:
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 class LinkedList
   constructor: (@content, @next = undefined) ->
   appendTo: (content) ->
@@ -51,7 +47,7 @@ This algorithm is called "The Tortoise and the Hare," and was discovered by Robe
 
 At the time, I couldn't think of any way to use hashing to solve the problem, so I gave up and tried to fit this into a powers-of-two algorithm. My first pass at it was clumsy, but it was roughly equivalent to this:
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 teleportingTurtleLoopDetector = (list) ->
   speed = 1
   turtle = rabbit = list
@@ -85,7 +81,7 @@ Reading about these algorithms today reminded me of a separation of concerns iss
 
 Let's consider a remarkably simple problem: Finding the sum of the elements of an array. In iterative style, it looks like this:
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 sum = (array) ->
   total = 0
   total += number for number in array
@@ -98,7 +94,7 @@ There are two roads ahead. One involves a generalized `reduce` or `fold` method 
 
 Since we don't have iterators baked into the underlying JavaScript engine yet, we'll write our iterators as functions:
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 class LinkedList
   constructor: (@content, @next = undefined) ->
   appendTo: (content) ->
@@ -138,7 +134,7 @@ Summing an array that can contain nested arrays adds a degree of complexity. Wri
 
 > This business of managing your own stack may seem weird to anyone born after 1970, but old fogeys fondly remember that after walking barefoot to and from University uphill in a blizzard both ways, the interview question brain teaser of the day was to write a "Towers of Hanoi" solver in a language like BASIC that didn't have reentrant subroutines.
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 LeafIterator = (array) ->
   index = 0
   state = []
@@ -169,7 +165,7 @@ We've successfully separated the issue of what one does with data from how one t
 
 Just as pure functional programmers love to talk monads, newcomers to functional programming in multi-paradigm languages often drool over [folding] a/k/a mapping/injecting/reducing. We're just a level of abstraction away:
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 fold = (iter, binaryFn, seed) ->
   acc = seed
   element = iter()
@@ -191,7 +187,7 @@ Fold turns an iterator over a finite data structure into an accumulator. And onc
 
 Iterators are functions. When they iterate over an array or linked list, they are traversing something that is already there. But they could, in principle, manufacture the data as they go. Let's consider the simplest example:
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 NumberIterator = (base = 0) ->
   number = base
   ->
@@ -213,7 +209,7 @@ fromOne()
   
 And here's another one:
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 FibonacciIterator = ->
   previous = 0
   current = 1
@@ -240,7 +236,7 @@ A function that starts with a seed and expands it into a data structure is calle
 
 This business of going on forever has some drawbacks. Let's introduce an idea: A function that takes an Iterator and returns another iterator. We can start with `take`, an easy function that returns an iterator that only returns a fixed number of elements:
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 take = (iter, numberToTake) ->
   count = 0
   ->
@@ -267,7 +263,7 @@ oneToFive()
   
 With `take`, we can do things like return the squares of the first five numbers:
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 square take NumberIterator(1), 5
   #=> [ 1,
   #     4,
@@ -278,21 +274,21 @@ square take NumberIterator(1), 5
   
 How about the squares of the odd numbers from the first five numbers?
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 square odds take NumberIterator(1), 5
   #=> TypeError: object is not a function
 {% endhighlight %}
   
 Bzzzt! Our `odds` function returns an array, not an iterator.
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 square  take odds(NumberIterator(1)), 5
   #=> RangeError: Maximum call stack size exceeded
 {% endhighlight %}
   
 You can't take the first five odd numbers at all, because `odds` tries to get the entire set of numbers and accumulate the odd ones in an array. This can be fixed. For unfolds and other infinite iterators, we need more functions that transform one iterator into another:
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 iteratorMap = (iter, unaryFn) ->
   ->
     element = iter()
@@ -316,7 +312,7 @@ oddsFilter = (iter) -> iteratorFilter iter, odd
   
 Now we can do things like take the sum of the first five odd squares of fibonacci numbers:
 
-{% highlight javascript %}
+{% highlight coffeescript %}
 foldingSum take (oddsFilter squaresIterator FibonacciIterator()), 5
   #=> 205
 {% endhighlight %}

@@ -1,6 +1,7 @@
 ---
 layout: tactile
 title: Two Brief Points About CoffeeScript 1.5
+ad: coffeescript-ristretto
 ---
 
 ### first, constructors must return their instance
@@ -87,13 +88,13 @@ Besides, CoffeeScript doesn't stop you from writing a JavaScript-style class:
 
 The other news, and yes I've buried the lede by leaving it for last, is that CoffeeScript now supports a "literate" mode. Here's what Jeremy has to say:
 
-> Besides being used as an ordinary programming language, CoffeeScript may also be written in "literate" mode. If you name your file with a  .litcoffee extension, you can write it as a Markdown document — a document that also happens to be executable CoffeeScript code. The compiler will treat any indented blocks (Markdown's way of indicating source code) as code, and ignore the rest as comments.
+> "Besides being used as an ordinary programming language, CoffeeScript may also be written in "literate" mode. If you name your file with a  .litcoffee extension, you can write it as a Markdown document — a document that also happens to be executable CoffeeScript code. The compiler will treat any indented blocks (Markdown's way of indicating source code) as code, and ignore the rest as comments."
 >
-> Just for kicks, a little bit of the compiler is currently implemented in this fashion: See it as a document, raw, and properly highlighted in a text editor.
+> "Just for kicks, a little bit of the compiler is currently implemented in this fashion: See it as a document, raw, and properly highlighted in a text editor."
 >
-> I'm fairly excited about this direction for the language, and am looking forward to writing (and more importantly, reading) more programs in this style. As 1.5.0 is the first version of CoffeeScript that supports it, let us know if you have any ideas for improving the feature.
+> "I'm fairly excited about this direction for the language, and am looking forward to writing (and more importantly, reading) more programs in this style. As 1.5.0 is the first version of CoffeeScript that supports it, let us know if you have any ideas for improving the feature."
 
-Does it work? It certainly does, and I have a very powerful use case for it. This blog post was written as a literate CoffeeScript document, so I was able to run it by typing `coffee 2013-02-27-literate-coffeescript.litcoffee`.
+Does it work? It certainly does, and I have a very powerful use case for it. This blog post was written as a literate CoffeeScript document, so I was able to run it by typing `coffee 2013-02-27-literate-coffeescript.litcoffee` on the command line.
 
 For the moment, Jekyll insists on parsing  `.litcoffee` files as text, so whenever I want to write about CoffeeScript, I need to add a `.md` to the suffix before pushing to the server. But that's still much better than error-prone cutting and pasting of snippets, and in the fullness of time I hope that CoffeeScript will recognize `.coffee.md` as literate CoffeeScript](https://github.com/jashkenas/coffee-script/issues/2736).
 
