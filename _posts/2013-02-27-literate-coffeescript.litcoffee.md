@@ -98,6 +98,6 @@ The other news, and yes I've buried the lede by leaving it for last, is that Cof
 
 Does it work? It certainly does, and I have a very powerful use case for it. This blog post was written as a literate CoffeeScript document, so I was able to run it by typing `coffee 2013-02-27-literate-coffeescript.litcoffee` on the command line.
 
-For the moment, Jekyll insists on parsing  `.litcoffee` files as text, so whenever I want to write about CoffeeScript, I need to add a `.md` to the suffix before pushing to the server. But that's still much better than error-prone cutting and pasting of snippets, and in the fullness of time I hope that CoffeeScript will recognize `.coffee.md` as literate CoffeeScript](https://github.com/jashkenas/coffee-script/issues/2736).
+For the moment, Jekyll insists on parsing  `.litcoffee` files as text, so whenever I want to write about CoffeeScript, I need to add a `.md` to the suffix before pushing to the server. But that's still much better than error-prone cutting and pasting of snippets, and in the fullness of time I hope that CoffeeScript will recognize `.coffee.md` as [Literate CoffeeScript](https://github.com/jashkenas/coffee-script/issues/2736).
 
 That's going to be a big time saver.
