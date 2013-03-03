@@ -5,7 +5,7 @@ layout: tactile
 
 ## Why I've moved back to proper blogging, and how I'm using Github Pages to do it
 
-A little more than four years ago, I tried an experiment: On October 27, 2008 I pushed [some text in markdown format](https://github.com/raganwald/homoiconic/blob/master/2008-10-27/unfold.markdown) to Github, and a new kind of bloggy thing called [Homoiconic](https://github.com/raganwald/homoiconic) was born.
+A little more than four years ago, I tried an experiment: On October 27, 2008 I pushed [some text in markdown format](https://Github.com/raganwald/homoiconic/blob/master/2008-10-27/unfold.markdown) to Github, and a new kind of bloggy thing called [Homoiconic](https://Github.com/raganwald/homoiconic) was born.
 
 As a blog, it was lame. Markdown is seriously limited as a word processor. Github prevented me from doing anything interesting with layouts. A repo has terrible indexing of old posts. No comments or JavaScript to embed anything useful. I didn't own my own domain, a serious flaw.
 
@@ -57,7 +57,7 @@ layout: tactile
 ---
 {% endhighlight %}
 
-If both of those things are set up correctly, the post is automatically published when I push to github. It's poured into the "dark" layout and the resulting HTML is available at  [http://raganwald.com/2013/02/20/twenty-thirteen.html](http://raganwald.com/2013/02/20/twenty-thirteen.html). I can preview my work by running `jekyll` on the command line, `jekyll --auto` if I want it to rebuild the site locally whenever it detects changes, or `jekyll --server 3333` if I want to run a preview web server on port 3333.
+If both of those things are set up correctly, the post is automatically published when I push to Github. It's poured into the "tactile" layout, and the resulting HTML is available at  [http://raganwald.com/2013/02/20/twenty-thirteen.html](http://raganwald.com/2013/02/20/twenty-thirteen.html). I can preview my work by running `jekyll` on the command line, `jekyll --auto` if I want it to rebuild the site locally whenever it detects changes, or `jekyll --server 3333` if I want to run a preview web server on port 3333.
 
 But building locally is optional. The site is rebuilt by Github when I push and that's what's published to the web.
 
@@ -65,7 +65,9 @@ But building locally is optional. The site is rebuilt by Github when I push and 
 
 Like the old thing, I get the ability to ask for pull requests. That's huge, I get a lot of good corrections that way.
 
-I guess I could embed Disqus comments if I wanted to, but I enjoy outsourcing discussion to Hacker News, Reddit, or wherever. Let them play whack-a-mole with incivility. And besides, I am not one of these super-bloggers with his own community. There are people who like my writing, and that's great, but it's a win for everyone if the comments praising my writing are alongside those pointing out where it could be, um, "even better." I think there's more of that when people discuss things elsewhere.
+I guess I could embed Disqus comments if I wanted to, but I enjoy outsourcing discussion to Hacker News, Reddit, or wherever. Let *them* play whack-a-mole with incivility.
+
+I am not one of these super-bloggers with his own community. There are people who like my writing, and that's great, but it's a win for everyone if the comments praising my writing are alongside those pointing out where it could be, um, "even better." I think there's more of that when people discuss things elsewhere.
 
 I get one-click publishing, I just have to click in a Github client rather than on some web abomination.
 
