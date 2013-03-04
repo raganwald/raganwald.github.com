@@ -42,11 +42,11 @@
           
           <p>(a/k/a <strong>“More than you ever wanted to know about “this” in JavaScript, Part II”</strong>)</p>
 
-<p><em>This is the second of two excerpts from the book <a href="http://leanpub.com/javascript-allonge">JavaScript Allongé</a> on the common theme of “this,” also known as “function context.” The posts are intended to stand alone: There’s no need to read the entire book to benefit from reading this material. <a href="http://braythwayt.com/2013/01/01/this.html" title="More than you ever wanted to know about &quot;this&quot; in JavaScript, Part I">Part I is here</a>, along with discussion <a href="http://www.reddit.com/r/javascript/comments/179j51/more_than_you_ever_wanted_to_know_about_this_in/">here</a>.</em></p>
+<p><em>This is the second of two excerpts from the book <a href="http://leanpub.com/javascript-allonge">JavaScript Allongé</a> on the common theme of “this,” also known as “function context.” The posts are intended to stand alone: There’s no need to read the entire book to benefit from reading this material. <a href="http://raganwald.com/2013/01/01/this.html" title="More than you ever wanted to know about &quot;this&quot; in JavaScript, Part I">Part I is here</a>, along with discussion <a href="http://www.reddit.com/r/javascript/comments/179j51/more_than_you_ever_wanted_to_know_about_this_in/">here</a>.</em></p>
 
 <hr />
 
-<p>In <a href="http://braythwayt.com/2013/01/01/this.html" title="More than you ever wanted to know about &quot;this&quot; in JavaScript, Part I">Part I</a>, we compared and contrasted two versions of function composition. The first version is more-or-less a direct port of <code>compose</code> in functional languages that don’t have any notion of a context:</p>
+<p>In <a href="http://raganwald.com/2013/01/01/this.html" title="More than you ever wanted to know about &quot;this&quot; in JavaScript, Part I">Part I</a>, we compared and contrasted two versions of function composition. The first version is more-or-less a direct port of <code>compose</code> in functional languages that don’t have any notion of a context:</p>
 
 <div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">compose</span> <span class="p">(</span><span class="nx">fn1</span><span class="p">,</span> <span class="nx">fn2</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span> <span class="nx">compose_</span> <span class="p">(</span><span class="nx">something</span><span class="p">)</span> <span class="p">{</span>

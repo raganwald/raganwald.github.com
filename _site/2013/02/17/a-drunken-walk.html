@@ -40,7 +40,7 @@
           
           
           
-          <p>In <a href="http://braythwayt.com/2013/02/15/turtles-and-iterators.js.html">Tortoises, Teleporting Turtles, and Iterators</a>, we looked at the “Tortoise and Hare” algorithm for detecting a linked list. Like many such algorithms, it “tangles” two different concerns:</p>
+          <p>In <a href="http://raganwald.com/2013/02/15/turtles-and-iterators.js.html">Tortoises, Teleporting Turtles, and Iterators</a>, we looked at the “Tortoise and Hare” algorithm for detecting a linked list. Like many such algorithms, it “tangles” two different concerns:</p>
 
 <ol>
   <li>The mechanism for iterating over a list.</li>
@@ -100,7 +100,7 @@
 
 <h3 id="refactoring-the-tortoise-and-hare">refactoring the tortoise and hare</h3>
 
-<p>In <a href="http://braythwayt.com/2013/02/15/turtles-and-iterators.js.html">the previous post</a>, we refactored other algorithms, but not the Tortoise and Hare. Let’s do that now: We’ll refactor it to use iterators instead of directly operate on linked lists. We’ll add an <code>.iterator()</code> method to linked lists, and we’ll rewrite our loop detector function to take an “iterable” instead of a list:</p>
+<p>In <a href="http://raganwald.com/2013/02/15/turtles-and-iterators.js.html">the previous post</a>, we refactored other algorithms, but not the Tortoise and Hare. Let’s do that now: We’ll refactor it to use iterators instead of directly operate on linked lists. We’ll add an <code>.iterator()</code> method to linked lists, and we’ll rewrite our loop detector function to take an “iterable” instead of a list:</p>
 
 <div class="highlight"><pre><code class="javascript"><span class="nx">LinkedList</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">iterator</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
@@ -201,7 +201,7 @@
 <span class="p">})();</span>
 </code></pre></div>
 
-<p>In <a href="http://braythwayt.com/2013/02/15/turtles-and-iterators.js.html">Tortoises, Teleporting Turtles, and Iterators</a>, we saw the <code>fold</code> function that converts a finite iterator into a value:</p>
+<p>In <a href="http://raganwald.com/2013/02/15/turtles-and-iterators.js.html">Tortoises, Teleporting Turtles, and Iterators</a>, we saw the <code>fold</code> function that converts a finite iterator into a value:</p>
 
 <div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">fold</span> <span class="p">(</span><span class="nx">iter</span><span class="p">,</span> <span class="nx">binaryFn</span><span class="p">,</span> <span class="nx">seed</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">acc</span><span class="p">,</span> <span class="nx">element</span><span class="p">;</span>
@@ -259,7 +259,7 @@
 
 <p>One possible solution is posted separately to prevent spoilers. Try at least thinking it through before peeking!</p>
 
-<p><a href="http://braythwayt.com/2013/02/18/drunken-walk-solution.html">Solving the “Drunken Walk” problem with iterators</a>.</p>
+<p><a href="http://raganwald.com/2013/02/18/drunken-walk-solution.html">Solving the “Drunken Walk” problem with iterators</a>.</p>
 <div class="footnotes">
   <ol>
     <li id="fn:not-exactly">

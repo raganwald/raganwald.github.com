@@ -9,7 +9,7 @@ ad: javascript-allonge
 *This is the second of two excerpts from the book [JavaScript Allongé][ja] on the common theme of "this," also known as "function context." The posts are intended to stand alone: There's no need to read the entire book to benefit from reading this material. [Part I is here][I], along with discussion [here][proggit_i].*
 
 [ja]: http://leanpub.com/javascript-allonge
-[I]: http://braythwayt.com/2013/01/01/this.html "More than you ever wanted to know about "this" in JavaScript, Part I"
+[I]: http://raganwald.com/2013/01/01/this.html "More than you ever wanted to know about "this" in JavaScript, Part I"
 [proggit_i]: http://www.reddit.com/r/javascript/comments/179j51/more_than_you_ever_wanted_to_know_about_this_in/
 [allong.es]: http://allong.es
 [u]:http://underscorejs.org
