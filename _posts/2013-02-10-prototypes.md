@@ -66,15 +66,15 @@ class Queue
   
   def pullHead
     if !@isEmpty
-      @array[@head]).tap { |value|
-        @array[@head] = null
+      @array[@head].tap { |value|
+        @array[@head] = nil
         @head += 1
       }
     end
   end
   
   def isEmpty
-    !!(@tail < @head)
+    @tail < @head
   end
 end
 {% endhighlight %}
