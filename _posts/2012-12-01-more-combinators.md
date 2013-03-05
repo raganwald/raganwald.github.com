@@ -1,6 +1,7 @@
 ---
 title: "More Combinator Recipes in JavaScript: Partial, Bound, Send and Fluent"
 layout: tactile
+ad: javascript-allonge
 ---
 
 (This post follows [Part I]. The recipes in this post are excerpted the book [JavaScript Allongé](http://leanpub.com/javascript-allonge).)
@@ -13,7 +14,7 @@ Partial application is such a common need that many libraries provide some form 
 
 These two recipes are for quickly and simply applying a single argument, either the leftmost or rightmost.
 
-```javascript
+{% highlight javascript %}
 function lpartial (fn, larg) {
   var slice = Array.prototype.slice;
   
@@ -43,31 +44,31 @@ var sayHelloToCeline = rpartial(greet, 'Celine');
 
 sayHelloToCeline('Eartha')
   //=> 'Hello, Celine, my name is Eartha'
-```
+{% endhighlight %}
 
 Now we can revisit [splat](https://github.com/raganwald/homoiconic/blob/master/2012/12/combinators_1.md#splat). If we were using [Underscore] to ensure that we worked in older browsers, we could write:
 
-```javascript
+{% highlight javascript %}
   function splat (fn) {
     return function (list) {
       return _.map(list, fn)
     }
   }
-```
+{% endhighlight %}
 
 This is really a partial application of `map` in disguise. Let's make it obvious:
 
-```javascript
+{% highlight javascript %}
 function splat (fn) {
   return rpartial(_.map, fn)
 }
-```
+{% endhighlight %}
 
 ### partial with template arguments
 
 `lpartial` and `rpartial` work, but are cumbersome if we want to partially apply a function with a "hole" in the arguments, e.g. 
 
-```javascript   
+{% highlight javascript %}   
 function formal (greeting, you, me) {
     return greeting + ", " + you + ", my name is " + me
 }
@@ -79,11 +80,11 @@ var hiMyNameIsPeter = rpartial(lpartial(formal,'Hi'), 'Peter');
 
 hiMyNameIsPeter('Stu')
   //=> 'Hi, Stu, my name is Peter'
-```
+{% endhighlight %}
 
 The "partial" function in this recipe works with any function that does not expect any of its arguments to be `undefined`, and is also context-agnostic.
 
-```javascript
+{% highlight javascript %}
 function partial (fn) {
   var fn = arguments[0],
       args = Array.prototype.slice.call(arguments, 1),
@@ -127,18 +128,18 @@ var hiMyNameIsPeter = partial(formal, 'Hi', undefined, 'Peter');
 
 hiMyNameIsPeter('Stu')
   //=> 'Hi, Stu, my name is Peter'
-```
+{% endhighlight %}
 
 As you can see, `partial` takes a template of arguments and returns a function that applies all the arguments that aren't undefined. If there are still some undefined arguments, it returns a partial function again. The one caveat is that if the function supplied expects a variable number of arguments, you should supply the "template" arguments directly to `partial`.
 
-```javascript
+{% highlight javascript %}
 var addAll = partial(function () {
   return Array.prototype.reduce.call(arguments, function (a, b) { return a + b})
 }, 1, undefined, 3);
 
 addAll(2)
   //=> 6
-```
+{% endhighlight %}
 
 As noted above, our partial recipe allows us to create functions that are partial applications of functions that are context aware. We'd need a different recipe if we wish to create partial applications of object methods.
 
@@ -146,36 +147,36 @@ As noted above, our partial recipe allows us to create functions that are partia
 
 Which brings us to a question: Why can't we use `Function.prototype.bind`? Well, it is opinionated about binding the context. Consider this awful code:
 
-```javascript
+{% highlight javascript %}
 function hello (person) {
   return "Hello, " + person.name + ", my name is " + this.name
 }
-```
+{% endhighlight %}
     
 We can write:
 
-```javascript
+{% highlight javascript %}
 hello.call({ name: 'Fred' }, { name: 'Wilma' })
   //=> "hello, Wilma, my name is Fred"
-```
+{% endhighlight %}
 
 And we can partially apply this function:
 
-```javascript
+{% highlight javascript %}
 helloWilma = partial(hello, { name: 'Wilma' });
 
 helloWilma.call({ name: 'Fred' })
   //=> "hello, Wilma, my name is Fred"
-```
+{% endhighlight %}
 
 This cannot be accomplished with `Function.prototype.bind`:
 
-```javascript
+{% highlight javascript %}
 helloBetty = hello.bind({ name: 'Bjarne' }, { name: 'Betty' });
 
 helloBetty.call({ name: 'Bam Bam' })
   //=> 'Hello, Betty, my name is Bjarne'
-```
+{% endhighlight %}
       
 The context has been forcibly bound and neither `.call` nor `.apply` will override this.
 

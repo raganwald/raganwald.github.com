@@ -1,6 +1,7 @@
 ---
 title: Combinator Recipes for Working With Objects in JavaScript
 layout: tactile
+ad: javascript-allonge
 ---
 
 (This post is Part I of [II][Part II]. The recipes in this post are excerpted the book [JavaScript Allongé](http://leanpub.com/javascript-allonge).)
