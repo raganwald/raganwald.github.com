@@ -144,7 +144,7 @@ Converting a polyary function into a nested series of unary functions is called 
 
 Our `rightmostCurry` function curries any binary function into a chain of unary functions starting with the second argument. This is a "rightmost" curry because it starts at the right.
 
-The opposite order would be a "leftmost" curry. Most logicians work with leftmost currying, so when we wright a leftmost curry, most people just call it "curry:"
+The opposite order would be a "leftmost" curry. Most logicians work with leftmost currying, so when we write a leftmost curry, most people just call it "curry:"
 
 {% highlight javascript %}
 function curry (binaryFn) {
