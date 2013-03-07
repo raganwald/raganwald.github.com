@@ -4,8 +4,6 @@ layout: default
 ad: javascript-allonge
 ---
 
-*And: Why does it really matter?*
-
 I was participating in [wroc_love.rb] last week-end, and one of the presenters put up a slide mentioning [partial application] and [currying]. "The difference between them is not important right now," he said, and pressed on. And it wasn't.
 
 [partial application]: https://en.wikipedia.org/wiki/Partial_application
@@ -57,7 +55,7 @@ function mapWrapper (list, unaryFn) {
 };
 {% endhighlight %}
 
-Now we'll \_\_\_\_\_\_ our wrapper, breaking it into two nested functions that each take one function:
+Next we'll break our binary wrapper function into two nested unary functions:
 
 {% highlight javascript %}
 function mapWrapper (unaryFn) {
@@ -74,7 +72,7 @@ mapWrapper(square)([1, 2, 3]);
   //=> [1, 4, 9]
 {% endhighlight %}
 
-Instead of a binary map function that returns our result, we now have a unary function that returns a unary function that returns our result. So where's the partial application? Let's get our hands on the second unary function:
+Instead of a binary `map` function that returns our result, we now have a unary function that returns a unary function that returns our result. So where's the partial application? Let's get our hands on the second unary function:
 
 {% highlight javascript %}
 var squareAll = mapWrapper(square);
@@ -273,7 +271,7 @@ Yes. And no. Here are some further directions to explore on your own:
 
 Thanks for reading, if you discover a bug in the code, please either [fork the repo][repo] and submit a pull request, or [submit an issue on Github][issue].
 
-[tao]: A Taoist ordered a vegetarian hot dog from a street vendor: "Make me one with everything."
+[^tao]: A Taoist ordered a vegetarian hot dog from a street vendor: "Make me one with everything."
 [^also]: There are a lot of other reasons to curry functions, but this is an article about the relationship between currying and partial application, not an introduction to combinatory logic and functional programming :-)
 [allong.es]: http://allong.es
 [ja]: http://leanpub.com/javascript-allonge
