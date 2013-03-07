@@ -108,8 +108,6 @@ function wrapper (unaryFn) {
 Rename `map` and the two arguments:
 
 {% highlight javascript %}
-
-{% highlight javascript %}
 function wrapper (secondArg) {
   return function (firstArg) {
     return binaryFn(firstArg, secondArg);
