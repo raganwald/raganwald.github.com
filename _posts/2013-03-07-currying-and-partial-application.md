@@ -14,7 +14,7 @@ But here we are, it's a brand new day, and we've already read five different exp
 
 ### arity
 
-Before we jump in, let's get some terminology straight. Functions have *arity*, meaning the number of arguments they accept. A "unary" function accepts one argument, a "polyary" function takes more than one argument. There are specialized terms we can use: A "binary" function accepts two, a "ternary" function accepts three, and you can rustle about with greek or latin words and invent names for functions that accept more than three arguments. I often use *n-ary* notation for such functions, as in "7-ary" rather than "heptary."
+Before we jump in, let's get some terminology straight. Functions have *arity*, meaning the number of arguments they accept. A "unary" function accepts one argument, a "polyadic" function takes more than one argument. There are specialized terms we can use: A "binary" function accepts two, a "ternary" function accepts three, and you can rustle about with greek or latin words and invent names for functions that accept more than three arguments.
 
 Some functions accept a variable number of arguments, we call them *variadic*, although variadic functions and functions taking no arguments aren't our primary focus in this essay.
 
@@ -137,7 +137,7 @@ squareAll([5, 7, 5]);
   //=> [25, 49, 25]
 {% endhighlight %}
 
-Converting a polyary function into a nested series of unary functions is called **currying**, after Haskell Curry, who popularized the technique. He actually rediscovered the combinatory logic work of [Moses Schönfinkel][moses], so we could easily call it "schönfinkeling."[^birds]
+Converting a polyadic function into a nested series of unary functions is called **currying**, after Haskell Curry, who popularized the technique. He actually rediscovered the combinatory logic work of [Moses Schönfinkel][moses], so we could easily call it "schönfinkeling."[^birds]
 
 [moses]: https://en.wikipedia.org/wiki/Moses_Schönfinkel
 [^birds]: When Raymond Smullyan wrote his seminal introduction to combinatory logic, he called it "To Mock a Mockingbird" and used forests of birds as his central metaphor to pay tribute to Schönfinkel, whose name means "Beautiful Bird" in German.
@@ -226,7 +226,7 @@ function rightmostUnaryPartialApplication (binaryFn, secondArg) {
 };
 {% endhighlight %}
 
-[^caveat]: All of our implementations are grossly simplified. Full implementations can handle polyary functions with more than two arguments and are context-agnostic.
+[^caveat]: All of our implementations are grossly simplified. Full implementations can handle polyadic functions with more than two arguments and are context-agnostic.
 
 `rightmostUnaryPartialApplication` is a bit much, so we'll alias it `applyLast`:
 
@@ -255,18 +255,18 @@ As with leftmost and rightmost currying, you want to have both in your toolbox s
 
 ### so what's the difference between currying and partial application?
 
-"Currying is the decomposition of a polyary function into a chain of nested unary functions. Thus decomposed, you can partially apply one or more arguments,[^also] although the curry operation itself does not apply any arguments to the function."
+"Currying is the decomposition of a polyadic function into a chain of nested unary functions. Thus decomposed, you can partially apply one or more arguments,[^also] although the curry operation itself does not apply any arguments to the function."
 
-"Partial application is the conversion of a polyary function into a function taking fewer arguments arguments by providing one or more arguments in advance."
+"Partial application is the conversion of a polyadic function into a function taking fewer arguments arguments by providing one or more arguments in advance."
 
 ### is that all there is?
 
 Yes. And no. Here are some further directions to explore on your own:
 
 1. We saw how to use currying to implement partial application. Is it possible to implement partial application with currying? Why? Why not?[^tao]
-2. All of our examples of partial application have concerned converting binary functions into unary functions by providing one argument. Write more general versions of `applyFirst` and `applyLast` that provide one argument to any polyary function. For example, if you have a function that takes four arguments, `applyFirst` should return a function taking three arguments.
-3. When you have `applyFirst` and `applyLast` working with all polyary functions, try implementing `applyLeft` and `applyRight`: `applyLeft` takes a polyary function and one *or more* arguments and leftmost partially applies them. So if you provide it with a ternary function and two arguments, it should return a unary function. `applyRight` does the same with rightmost application.
-4. Rewrite curry and rightmostCurry to accept any polyary function. So just as a binary function curries into two nested unary functions, a ternary function should curry into three nested unary functions and so on.
+2. All of our examples of partial application have concerned converting binary functions into unary functions by providing one argument. Write more general versions of `applyFirst` and `applyLast` that provide one argument to any polyadic function. For example, if you have a function that takes four arguments, `applyFirst` should return a function taking three arguments.
+3. When you have `applyFirst` and `applyLast` working with all polyadic functions, try implementing `applyLeft` and `applyRight`: `applyLeft` takes a polyadic function and one *or more* arguments and leftmost partially applies them. So if you provide it with a ternary function and two arguments, it should return a unary function. `applyRight` does the same with rightmost application.
+4. Rewrite curry and rightmostCurry to accept any polyadic function. So just as a binary function curries into two nested unary functions, a ternary function should curry into three nested unary functions and so on.
 5. Review the source code for [allong.es], the functional programming library extracted from [JavaScript Allongé][ja], especially [partial_application.js][pa].
 
 Thanks for reading, if you discover a bug in the code, please either [fork the repo][repo] and submit a pull request, or [submit an issue on Github][issue].
