@@ -271,7 +271,7 @@ Yes. And no. Here are some further directions to explore on your own:
 
 Thanks for reading, if you discover a bug in the code, please either [fork the repo][repo] and submit a pull request, or [submit an issue on Github][issue].
 
-([discuss]())
+([discuss](http://www.reddit.com/r/javascript/comments/19urej/whats_the_difference_between_currying_and_partial/))
 
 ---
 
