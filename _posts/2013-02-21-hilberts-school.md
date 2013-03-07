@@ -1,6 +1,6 @@
 ---
 title: Hilbert's Grand JavaScript School
-layout: tactile
+layout: default
 ad: javascript-allonge
 ---
 

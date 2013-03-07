@@ -1,6 +1,6 @@
 ---
 title: Combinator Recipes for Working With Objects in JavaScript
-layout: tactile
+layout: default
 ad: javascript-allonge
 ---
 

@@ -1,5 +1,5 @@
 ---
-layout: tactile
+layout: default
 title: Effective JavaScript Reviewed
 ad: javascript-allonge
 ---

@@ -1,6 +1,6 @@
 ---
 title: "More Combinator Recipes in JavaScript: Partial, Bound, Send and Fluent"
-layout: tactile
+layout: default
 ad: javascript-allonge
 ---
 

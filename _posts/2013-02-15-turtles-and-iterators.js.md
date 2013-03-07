@@ -1,5 +1,5 @@
 ---
-layout: tactile
+layout: default
 title: Tortoises, Teleporting Turtles, and Iterators
 ad: javascript-allonge
 preamble: <p>(These code examples are in JavaScript. <a href="./turtles-and-iterators.html">Click here</a> for code examples in CoffeeScript.)</p><p>A good long while ago (The First Age of Internet Startups), someone asked me one of those pet algorithm questions. It was, “Write an algorithm to detect a loop in a linked list, in constant space.”</p>

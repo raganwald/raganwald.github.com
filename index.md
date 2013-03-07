@@ -1,6 +1,6 @@
 ---
 title: index.html
-layout: tactile
+layout: default
 ad: combinators
 ---
 

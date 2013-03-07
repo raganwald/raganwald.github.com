@@ -1,5 +1,5 @@
 ---
-layout: tactile
+layout: default
 title: Practical Applications of Partial Application
 ad: javascript-allonge
 ---

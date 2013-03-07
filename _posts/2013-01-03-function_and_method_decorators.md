@@ -1,5 +1,5 @@
 ---
-layout: tactile
+layout: default
 title: Function and Method Decorators
 ad: javascript-allonge
 ---

@@ -1,6 +1,6 @@
 ---
 title: Software's Receding Hairline
-layout: tactile
+layout: default
 ad: shippingsoftware
 ---
 

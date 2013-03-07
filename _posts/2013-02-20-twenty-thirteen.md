@@ -1,6 +1,6 @@
 ---
 title: Twenty Thirteen
-layout: tactile
+layout: default
 ---
 
 ## Why I've moved back to proper blogging, and how I'm using Github Pages to do it
@@ -53,7 +53,7 @@ New posts go into a `_posts` folder, with a special name. This one is `2013-02-2
 {% highlight yaml %}
 ---
 title: Twenty Thirteen
-layout: tactile
+layout: default
 ---
 {% endhighlight %}
 

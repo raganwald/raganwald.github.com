@@ -1,5 +1,5 @@
 ---
-layout: tactile
+layout: default
 title: Classes vs. Prototypes in JavaScript
 ad: javascript-allonge
 ---

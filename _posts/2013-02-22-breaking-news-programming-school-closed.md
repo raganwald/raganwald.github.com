@@ -1,6 +1,6 @@
 ---
 title: Hilbert's School Closed for Discriminatory Practices
-layout: tactile
+layout: default
 ad: javascript-allonge
 ---
 
