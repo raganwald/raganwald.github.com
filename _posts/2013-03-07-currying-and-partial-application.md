@@ -4,7 +4,7 @@ layout: default
 ad: javascript-allonge
 ---
 
-I was participating in [wroc_love.rb] last week-end, and one of the presenters put up a slide mentioning [partial application] and [currying]. "The difference between them is not important right now," he said, and pressed on. And it wasn't.
+I was participating in [wroc_love.rb] last week-end, and one of the presenters put up a slide mentioning [partial application] and [currying]. "The difference between them is not important right now," he said, pressing on. And it wasn't.
 
 [partial application]: https://en.wikipedia.org/wiki/Partial_application
 [currying]: https://en.wikipedia.org/wiki/Currying
