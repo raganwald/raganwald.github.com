@@ -1,5 +1,5 @@
 ---
-title: What's the difference between Partial Application and Currying?
+title: What's the difference between Currying and Partial Application?
 layout: default
 ad: javascript-allonge
 ---
