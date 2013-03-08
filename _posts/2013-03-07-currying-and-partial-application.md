@@ -234,7 +234,7 @@ function rightmostUnaryPartialApplication (binaryFn, secondArg) {
 var applyLast = rightmostUnaryPartialApplication;
 {% endhighlight %}
 
-And here're our `squareAll and `doubleAll` functions built with `applyLast``:
+And here're our `squareAll` and `doubleAll` functions built with `applyLast`:
 
 {% highlight javascript %}
 var squareAll = applyLast(map, square),
