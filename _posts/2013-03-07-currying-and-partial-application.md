@@ -140,7 +140,7 @@ squareAll([5, 7, 5]);
 Converting a polyadic function into a nested series of unary functions is called **currying**, after Haskell Curry, who popularized the technique. He actually rediscovered the combinatory logic work of [Moses Schönfinkel][moses], so we could easily call it "schönfinkeling."[^birds]
 
 [moses]: https://en.wikipedia.org/wiki/Moses_Schönfinkel
-[^birds]: When Raymond Smullyan wrote his seminal introduction to combinatory logic, he called it "To Mock a Mockingbird" and used forests of birds as his central metaphor to pay tribute to Schönfinkel, whose name means "Beautiful Bird" in German.
+[^birds]: When Raymond Smullyan wrote his seminal introduction to combinatory logic, he called it "To Mock a Mockingbird" and used forests of birds as his central metaphor to pay tribute to Schönfinkel. Schön means "beautiful" and Fink means "finch" in German, although Finkl may be Yiddish for "sparkle." So his name may mean "beautiful finch," or it may mean "beautiful sparkle."
 
 Our `rightmostCurry` function curries any binary function into a chain of unary functions starting with the second argument. This is a "rightmost" curry because it starts at the right.
 
