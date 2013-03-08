@@ -2,6 +2,7 @@
 title: "More Combinator Recipes in JavaScript: Partial, Bound, Send and Fluent"
 layout: default
 ad: javascript-allonge
+categories: homoiconic
 ---
 
 (This post follows [Part I]. The recipes in this post are excerpted the book [JavaScript Allongé](http://leanpub.com/javascript-allonge).)

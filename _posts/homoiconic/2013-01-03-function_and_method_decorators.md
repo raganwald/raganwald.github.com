@@ -2,6 +2,7 @@
 layout: default
 title: Function and Method Decorators
 ad: javascript-allonge
+categories: homoiconic
 ---
 
 (a/k/a **"More than you ever wanted to know about "this" in JavaScript, Part II"**)

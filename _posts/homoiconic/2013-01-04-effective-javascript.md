@@ -2,6 +2,7 @@
 layout: default
 title: Effective JavaScript Reviewed
 ad: javascript-allonge
+categories: homoiconic
 ---
 
 [![Effective JavaScript](http://i.minus.com/ibjveCleaJzli1.png)](http://effectivejs.com)

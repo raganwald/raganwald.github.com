@@ -2,6 +2,7 @@
 layout: default
 title: Practical Applications of Partial Application
 ad: javascript-allonge
+categories: homoiconic
 ---
 
 What is [partial application](http://en.wikipedia.org/wiki/Partial_application)? And most importantly, why do we care about it?
