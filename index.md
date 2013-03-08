@@ -13,7 +13,7 @@ This is the new technical weblog for [Reginald "raganwald" Braithwaite](http://b
 <div class="related">
   <ul>
     {% for post in site.posts %}
-      {% unless post.categories contains "noindex" or post.categories contains "homoiconic" %}
+      {% unless post.categories contains "noindex" or post.categories contains "posterous" or post.categories contains "homoiconic" %}
         <li>
     <span>{{ post.date | date: "%B %e, %Y" }}</span> <a href="{{ post.url }}">{{ post.title }}</a>
         </li>
@@ -22,11 +22,25 @@ This is the new technical weblog for [Reginald "raganwald" Braithwaite](http://b
   </ul>
 </div>
 
-### reposts of earlier material
+### homoiconic reposts
 
 <div class="related">
   <ul>
     {% for post in site.categories.homoiconic %}
+      {% unless post.categories contains "noindex" %}
+        <li>
+    <span>{{ post.date | date: "%B %e, %Y" }}</span> <a href="{{ post.url }}">{{ post.title }}</a>
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</div>
+
+### posterous reposts
+
+<div class="related">
+  <ul>
+    {% for post in site.categories.posterous %}
       {% unless post.categories contains "noindex" %}
         <li>
     <span>{{ post.date | date: "%B %e, %Y" }}</span> <a href="{{ post.url }}">{{ post.title }}</a>
