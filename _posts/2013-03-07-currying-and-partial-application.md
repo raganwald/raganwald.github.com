@@ -271,6 +271,8 @@ Yes. And no. Here are some further directions to explore on your own:
 
 Thanks for reading, if you discover a bug in the code, please either [fork the repo][repo] and submit a pull request, or [submit an issue on Github][issue].
 
+p.s. Another essay you might find interesting: [Practical Applications of Partial Application](http://raganwald.com/2013/01/05/practical-applications-of-partial-application.html).
+
 ([discuss](http://www.reddit.com/r/javascript/comments/19urej/whats_the_difference_between_currying_and_partial/))
 
 ---
