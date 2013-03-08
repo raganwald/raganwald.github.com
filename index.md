@@ -13,7 +13,7 @@ This is the new technical weblog for [Reginald "raganwald" Braithwaite](http://b
 <div class="related">
   <ul>
     {% for post in site.posts %}
-      {% unless post.categories contains "noindex" %}
+      {% unless post.categories contains "noindex" or post.categories contains "homoiconic" %}
         <li>
     <span>{{ post.date | date: "%B %e, %Y" }}</span> <a href="{{ post.url }}">{{ post.title }}</a>
         </li>
