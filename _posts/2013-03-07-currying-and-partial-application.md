@@ -78,7 +78,7 @@ Instead of a binary `map` function that returns our result, we now have a unary 
 var squareAll = mapWrapper(square);
   //=> [function]
 
-squareAll([1, 4, 9]);
+squareAll([1, 2, 3]);
   //=> [1, 4, 9]
 squareAll([5, 7, 5]);
   //=> [25, 49, 25]
