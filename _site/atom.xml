@@ -1,0 +1,1343 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+  <title>raganwald.com</title>
+  <link href="http://raganwald.com/"/>
+  <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
+  <updated>2013-03-11T21:38:32-04:00</updated>
+  <id>http://raganwald.com/</id>
+  <author>
+    <name>Reginald Braithwaite</name>
+    <email>reg@braythwayt.com</email>
+  </author>
+
+  
+    
+      <entry>
+        <id>http://raganwald.com/2013/03/07/currying-and-partial-application</id>
+        <link type="text/html" rel="alternate" href="http://raganwald.com/2013/03/07/currying-and-partial-application.html"/>
+        <title>What's the difference between Currying and Partial Application?</title>
+        <published>2013-03-07T00:00:00-05:00</published>
+        <updated>2013-03-07T00:00:00-05:00</updated>
+        <author>
+          <name>Reginald Braithwaite</name>
+          <uri>http://raganwald.com/</uri>
+        </author>
+        <content type="html">&lt;p&gt;I was participating in &lt;a href=&quot;http://wrocloverb.com&quot;&gt;wroc_love.rb&lt;/a&gt; last week-end, and &lt;a href=&quot;http://steveklabnik.com&quot;&gt;Steve Klabnik&lt;/a&gt; put up a slide mentioning &lt;a href=&quot;https://en.wikipedia.org/wiki/Partial_application&quot;&gt;partial application&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Currying&quot;&gt;currying&lt;/a&gt;. “The difference between them is not important right now,” he said, pressing on. And it wasn’t.&lt;/p&gt;
+
+&lt;p&gt;But here we are, it’s a brand new day, and we’ve already read five different explanations of &lt;code&gt;this&lt;/code&gt; and closures this week, but only three or four about currying, so let’s get into it.&lt;/p&gt;
+
+&lt;h3 id=&quot;arity&quot;&gt;arity&lt;/h3&gt;
+
+&lt;p&gt;Before we jump in, let’s get some terminology straight. Functions have &lt;em&gt;arity&lt;/em&gt;, meaning the number of arguments they accept. A “unary” function accepts one argument, a “polyadic” function takes more than one argument. There are specialized terms we can use: A “binary” function accepts two, a “ternary” function accepts three, and you can rustle about with greek or latin words and invent names for functions that accept more than three arguments.&lt;/p&gt;
+
+&lt;p&gt;Some functions accept a variable number of arguments, we call them &lt;em&gt;variadic&lt;/em&gt;, although variadic functions and functions taking no arguments aren’t our primary focus in this essay.&lt;/p&gt;
+
+&lt;h3 id=&quot;partial-application&quot;&gt;partial application&lt;/h3&gt;
+
+&lt;p&gt;Partial application is straightforward. We could start with addition or some such completely trivial example, but if you don’t mind we’ll have a look at something from the &lt;a href=&quot;http://allong.es&quot;&gt;allong.es&lt;/a&gt; JavaScript library that is of actual use in daily programming.&lt;/p&gt;
+
+&lt;p&gt;As a preamble, let’s make ourselves a &lt;code&gt;map&lt;/code&gt; function that maps another function over a list:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;__map&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[].&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;__map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;square&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;square&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; [1, 4, 9]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;map&lt;/code&gt; is obviously a binary function, &lt;code&gt;square&lt;/code&gt; is a unary function. When we called &lt;code&gt;map&lt;/code&gt; with arguments &lt;code&gt;[1, 2, 3]&lt;/code&gt; and &lt;code&gt;square&lt;/code&gt;, we &lt;em&gt;applied&lt;/em&gt; the arguments to the function and got our result.&lt;/p&gt;
+
+&lt;p&gt;Since &lt;code&gt;map&lt;/code&gt; takes two arguments, and we supplied two arguments, we &lt;em&gt;fully applied&lt;/em&gt; the arguments to the function. So what’s partial application? Supplying fewer arguments. Like supplying one argument to &lt;code&gt;map&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now what happens if we supply one argument to &lt;code&gt;map&lt;/code&gt;? We can’t get a result without the other argument, so what we get back is a unary function that takes the other argument and produces the result we want.&lt;/p&gt;
+
+&lt;p&gt;If we’re going to apply one argument to &lt;code&gt;map&lt;/code&gt;, let’s make it the &lt;code&gt;unaryFn&lt;/code&gt;. We’ll start with the end result and work backwards. First thing we do, is set up a wrapper around map:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mapWrapper&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Next we’ll break our binary wrapper function into two nested unary functions:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mapWrapper&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we can supply our arguments one at a time:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;mapWrapper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;square&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; [1, 4, 9]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Instead of a binary &lt;code&gt;map&lt;/code&gt; function that returns our result, we now have a unary function that returns a unary function that returns our result. So where’s the partial application? Let’s get our hands on the second unary function:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;squareAll&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mapWrapper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;square&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; [function]&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;squareAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; [1, 4, 9]&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;squareAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; [25, 49, 25]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We’ve just partially applied the value &lt;code&gt;square&lt;/code&gt; to the function &lt;code&gt;map&lt;/code&gt;. We got back a unary function, &lt;code&gt;squareAll&lt;/code&gt;, that we could use as we liked. Partially applying &lt;code&gt;map&lt;/code&gt; in this fashion is handy, so much so that the &lt;a href=&quot;http://allong.es&quot;&gt;allong.es&lt;/a&gt; library includes a function called &lt;code&gt;splat&lt;/code&gt; that does this exact thing.&lt;/p&gt;
+
+&lt;p&gt;If we had to physically write ourselves a wrapper function every time we want to do some partial application, we’d never bother. Being programmers though, we can automate this. There are two ways to do it.&lt;/p&gt;
+
+&lt;h3 id=&quot;currying&quot;&gt;currying&lt;/h3&gt;
+
+&lt;p&gt;First up, we can write a function that returns a wrapper function. Sticking with binary function, we start with this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;wrapper&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Rename &lt;code&gt;map&lt;/code&gt; and the two arguments:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;wrapper&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;firstArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;firstArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And now we can wrap the whole thing in a function that takes &lt;code&gt;binaryFn&lt;/code&gt; as an argument:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rightmostCurry&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;firstArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;firstArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So now we’ve ‘abstracted’ our little pattern. We can use it like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rightmostCurriedMap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rightmostCurry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;squareAll&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rightmostCurriedMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;square&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;squareAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; [1, 4, 9]&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;squareAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; [25, 49, 25]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Converting a polyadic function into a nested series of unary functions is called &lt;strong&gt;currying&lt;/strong&gt;, after Haskell Curry, who popularized the technique. He actually rediscovered the combinatory logic work of &lt;a href=&quot;https://en.wikipedia.org/wiki/Moses_Schönfinkel&quot;&gt;Moses Schönfinkel&lt;/a&gt;, so we could easily call it “schönfinkeling.”&lt;sup id=&quot;fnref:birds&quot;&gt;&lt;a href=&quot;#fn:birds&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Our &lt;code&gt;rightmostCurry&lt;/code&gt; function curries any binary function into a chain of unary functions starting with the second argument. This is a “rightmost” curry because it starts at the right.&lt;/p&gt;
+
+&lt;p&gt;The opposite order would be a “leftmost” curry. Most logicians work with leftmost currying, so when we write a leftmost curry, most people just call it “curry:”&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;curry&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;firstArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;firstArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;curriedMap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;curry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;oneToThreeEach&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;curriedMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;oneToThreeEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;square&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; [1, 4, 9]&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;oneToThreeEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; [2, 4, 6]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;When would you use a regular curry and when would you use a rightmost curry? It really depends on your usage. In our binary function example, we’re emulating a kind of subject-object grammar. The first argument we want to use is going to be the subject, the second is going to be the object.&lt;/p&gt;
+
+&lt;p&gt;So when we use a rightmost curry on &lt;code&gt;map&lt;/code&gt;, we are setting up a “sentence” that makes the mapping function the subject.&lt;/p&gt;
+
+&lt;p&gt;So we read &lt;code&gt;squareAll([1, 2, 3])&lt;/code&gt; as “square all the elements of the array [1, 2, 3].” By using a rightmost curry, we made “squaring” the subject and the list the object. Whereas when we used a regular curry, the list became the subject and the mapper function became the object.&lt;/p&gt;
+
+&lt;p&gt;Another way to look at it that is a little more like “patterns and programming” is to think about what you want to name and/or reuse. Having both kinds of currying lets you name and/or reuse either the mapping function or the list.&lt;/p&gt;
+
+&lt;h3 id=&quot;partial-application-1&quot;&gt;partial application&lt;/h3&gt;
+
+&lt;p&gt;So many words about currying! What about “partial application?” Well, if you have currying you don’t need partial application. And conversely, if you have partial application you don’t need currying. So when you write this kind of essay, it’s easy to spend a lot of words describing one of these two things and then explain everything else on top of what you already have.&lt;/p&gt;
+
+&lt;p&gt;Let’s look at our rightmost curry again:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rightmostCurry&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;firstArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;firstArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You might find yourself writing code like this over and over again:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;squareAll&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rightmostCurry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;square&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;doubleAll&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rightmostCurry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This business of making a rightmost curry and then immediately applying an argument to it is extremely common, and when something’s common we humans like to name it. And it has a name, it’s called a &lt;em&gt;rightmost unary partial application of the map function&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;What a mouthful. Let’s take it step by step:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;rightmost: From the right.&lt;/li&gt;
+  &lt;li&gt;unary: One argument.&lt;/li&gt;
+  &lt;li&gt;partial application: Not applying all of the arguments.&lt;/li&gt;
+  &lt;li&gt;map: To the map function.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;So what we’re really doing is applying one argument to the map function. It’s a binary function, so that means what we’re left with is a unary function. Again, functional languages and libraries almost always include a first-class function to do this for us.&lt;/p&gt;
+
+&lt;p&gt;We &lt;em&gt;could&lt;/em&gt; build one out of a rightmost curry:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rightmostUnaryPartialApplication&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rightmostCurry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;However it is usually implemented in more direct fashion:&lt;sup id=&quot;fnref:caveat&quot;&gt;&lt;a href=&quot;#fn:caveat&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rightmostUnaryPartialApplication&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;firstArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;firstArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;rightmostUnaryPartialApplication&lt;/code&gt; is a bit much, so we’ll alias it &lt;code&gt;applyLast&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;applyLast&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rightmostUnaryPartialApplication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And here’re our &lt;code&gt;squareAll&lt;/code&gt; and &lt;code&gt;doubleAll&lt;/code&gt; functions built with &lt;code&gt;applyLast&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;squareAll&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;applyLast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;square&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;doubleAll&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;applyLast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can also make an &lt;code&gt;applyFirst&lt;/code&gt; function (we’ll skip calling it “leftmostUnaryPartialApplication”):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;applyFirst&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;firstArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;binaryFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;firstArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;secondArg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As with leftmost and rightmost currying, you want to have both in your toolbox so that you can choose what you are naming and/or reusing.&lt;/p&gt;
+
+&lt;h3 id=&quot;so-whats-the-difference-between-currying-and-partial-application&quot;&gt;so what’s the difference between currying and partial application?&lt;/h3&gt;
+
+&lt;p&gt;“Currying is the decomposition of a polyadic function into a chain of nested unary functions. Thus decomposed, you can partially apply one or more arguments,&lt;sup id=&quot;fnref:also&quot;&gt;&lt;a href=&quot;#fn:also&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; although the curry operation itself does not apply any arguments to the function.”&lt;/p&gt;
+
+&lt;p&gt;“Partial application is the conversion of a polyadic function into a function taking fewer arguments arguments by providing one or more arguments in advance.”&lt;/p&gt;
+
+&lt;h3 id=&quot;is-that-all-there-is&quot;&gt;is that all there is?&lt;/h3&gt;
+
+&lt;p&gt;Yes. And no. Here are some further directions to explore on your own:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;We saw how to use currying to implement partial application. Is it possible to implement partial application with currying? Why? Why not?&lt;sup id=&quot;fnref:tao&quot;&gt;&lt;a href=&quot;#fn:tao&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+  &lt;li&gt;All of our examples of partial application have concerned converting binary functions into unary functions by providing one argument. Write more general versions of &lt;code&gt;applyFirst&lt;/code&gt; and &lt;code&gt;applyLast&lt;/code&gt; that provide one argument to any polyadic function. For example, if you have a function that takes four arguments, &lt;code&gt;applyFirst&lt;/code&gt; should return a function taking three arguments.&lt;/li&gt;
+  &lt;li&gt;When you have &lt;code&gt;applyFirst&lt;/code&gt; and &lt;code&gt;applyLast&lt;/code&gt; working with all polyadic functions, try implementing &lt;code&gt;applyLeft&lt;/code&gt; and &lt;code&gt;applyRight&lt;/code&gt;: &lt;code&gt;applyLeft&lt;/code&gt; takes a polyadic function and one &lt;em&gt;or more&lt;/em&gt; arguments and leftmost partially applies them. So if you provide it with a ternary function and two arguments, it should return a unary function. &lt;code&gt;applyRight&lt;/code&gt; does the same with rightmost application.&lt;/li&gt;
+  &lt;li&gt;Rewrite curry and rightmostCurry to accept any polyadic function. So just as a binary function curries into two nested unary functions, a ternary function should curry into three nested unary functions and so on.&lt;/li&gt;
+  &lt;li&gt;Review the source code for &lt;a href=&quot;http://allong.es&quot;&gt;allong.es&lt;/a&gt;, the functional programming library extracted from &lt;a href=&quot;http://leanpub.com/javascript-allonge&quot;&gt;JavaScript Allongé&lt;/a&gt;, especially &lt;a href=&quot;https://github.com/raganwald/allong.es/blob/master/lib/partial_application.js&quot;&gt;partial_application.js&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Thanks for reading, if you discover a bug in the code, please either &lt;a href=&quot;https://github.com/raganwald/raganwald.github.com&quot;&gt;fork the repo&lt;/a&gt; and submit a pull request, or &lt;a href=&quot;https://github.com/raganwald/raganwald.github.com/issues&quot;&gt;submit an issue on Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;p.s. Another essay you might find interesting: &lt;a href=&quot;http://raganwald.com/2013/01/05/practical-applications-of-partial-application.html&quot;&gt;Practical Applications of Partial Application&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;(&lt;a href=&quot;http://www.reddit.com/r/javascript/comments/19urej/whats_the_difference_between_currying_and_partial/&quot;&gt;discuss&lt;/a&gt;)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;notes:&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:birds&quot;&gt;
+      &lt;p&gt;When Raymond Smullyan wrote his seminal introduction to combinatory logic, he called it “To Mock a Mockingbird” and used forests of birds as his central metaphor to pay tribute to Schönfinkel. Schön means “beautiful” and Fink means “finch” in German, although Finkl may be Yiddish for “sparkle.” So his name may mean “beautiful finch,” or it may mean “beautiful sparkle.”&lt;a href=&quot;#fnref:birds&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:caveat&quot;&gt;
+      &lt;p&gt;All of our implementations are grossly simplified. Full implementations can handle polyadic functions with more than two arguments and are context-agnostic.&lt;a href=&quot;#fnref:caveat&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:also&quot;&gt;
+      &lt;p&gt;There are a lot of other reasons to curry functions, but this is an article about the relationship between currying and partial application, not an introduction to combinatory logic and functional programming :-)&lt;a href=&quot;#fnref:also&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:tao&quot;&gt;
+      &lt;p&gt;A Taoist ordered a vegetarian hot dog from a street vendor: “Make me one with everything,” he requested politely.&lt;a href=&quot;#fnref:tao&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</content>
+      </entry>
+    
+  
+    
+      <entry>
+        <id>http://raganwald.com/2013/02/27/literate-coffeescript.litcoffee</id>
+        <link type="text/html" rel="alternate" href="http://raganwald.com/2013/02/27/literate-coffeescript.litcoffee.html"/>
+        <title>Two Brief Points About CoffeeScript 1.5</title>
+        <published>2013-02-27T00:00:00-05:00</published>
+        <updated>2013-02-27T00:00:00-05:00</updated>
+        <author>
+          <name>Reginald Braithwaite</name>
+          <uri>http://raganwald.com/</uri>
+        </author>
+        <content type="html">&lt;h3 id=&quot;first-constructors-must-return-their-instance&quot;&gt;first, constructors must return their instance&lt;/h3&gt;
+
+&lt;p&gt;Jeremy Ashkenas recently announced that CoffeeScript 1.5 is out. One of its changes concerns constructors created with CoffeeScript’s &lt;code&gt;class&lt;/code&gt; keyword. It used to be possible to write this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;###
+class Weird
+  constructor: -&amp;gt;
+    return { exclamation: &quot;That's Strange&quot; }
+###
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And when you wrote &lt;code&gt;new Weird()&lt;/code&gt;, you’d get a plain object, not an instance of &lt;code&gt;Weird&lt;/code&gt;. This is no longer the case. Now when you write the above, you get an error: &lt;em&gt;CANNOT RETURN A VALUE FROM A CONSTRUCTOR: “{ EXCLAMATION: “THAT’S STRANGE” }” IN CLASS WEIRD&lt;/em&gt;. Does this matter? Only in edge cases. in &lt;a href=&quot;http://leanpub.com/javascript-allonge&quot;&gt;JavaScript Allongé&lt;/a&gt;, I borrowed a pattern from &lt;a href=&quot;http://effectivejs.com&quot;&gt;Effective JavaScript&lt;/a&gt;. Here’s the use case. Consider this constructor with a variable number of arguments:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Contact
+  constructor: (@name, @emails...) -&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can write things like &lt;code&gt;new Contact('raganwald', 'reg@braythwayt.com', 'reg@raganwald.com')&lt;/code&gt;. Good. Now: How do we call this programmatically if we have an array of contacts? Don’t say “Use&lt;code&gt;.apply&lt;/code&gt;,” that doesn’t work for constructors, just for normal functions. So we have to rewrite its signature. Or do we?&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;###
+class Contact
+  constructor: (@name, @emails...) -&amp;gt;
+    self = if this instanceof Contact then this else new Contact()
+    self.name = name
+    self.emails = emails
+    return self
+  doSomething: -&amp;gt;
+    # ...
+  doSomethingElse: -&amp;gt;
+    # ...
+###
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then, whenever we wanted to use &lt;code&gt;.apply&lt;/code&gt;, we could:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;### 
+testArray = ['raganwald', 'reg@braythwayt.com', 'reg@raganwald.com']
+  
+Contact.apply(null, testArray)
+  #=&amp;gt; returns a new contact record
+###
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Other benefits would include being able to use combinators on constructors:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;###
+class Router
+  constructor: (something, somethingElse) -&amp;gt;
+    self = if this instanceof Contact then this else new Contact()
+    self.something = something
+    self.somethingElse = somethingElse
+    return self
+
+SingletonRouter = once(Router)
+###
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;However, we’re not going to be able to do that any more. It’s not a huge deal, there are other ways to work around these infrequent use cases, and overall the benefit of having constructors constrained to always return the instance is likely to far outweigh the lack of flexibility.&lt;/p&gt;
+
+&lt;h3 id=&quot;working-around-the-change&quot;&gt;working around the change&lt;/h3&gt;
+
+&lt;p&gt;You can work around this issue very easily. CoffeeScript doesn’t stop you from writing a JavaScript-style class, so you can simply write your constructor function directly, eschewing the convenience of the &lt;code&gt;class&lt;/code&gt; keyword:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Contact = (@name, @emails...) -&amp;gt;
+  self = if this instanceof Contact then this else new Contact()
+  self.name = name
+  self.emails = emails
+  return self
+Contact::doSomething = -&amp;gt;
+  # ...
+Contact::doSomethingElse = -&amp;gt;
+  # ...
+  
+console.log new Contact('raganwald', 'reg@braythwayt.com', 'reg@raganwald.com')
+  #=&amp;gt; { name: 'raganwald',
+  #     emails: 
+  #     [ 'reg@braythwayt.com', 'reg@raganwald.com' ] }
+
+testArray = ['raganwald', 'reg@braythwayt.com', 'reg@raganwald.com']
+  
+Contact.apply(null, testArray)
+  #=&amp;gt; { name: 'raganwald',
+  #     emails: 
+  #     [ 'reg@braythwayt.com', 'reg@raganwald.com' ] }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;second-literate-coffeescript&quot;&gt;second, literate coffeescript&lt;/h3&gt;
+
+&lt;p&gt;The other news, and yes I’ve buried the lede by leaving it for last, is that CoffeeScript now supports a “literate” mode. Here’s what Jeremy has to say:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“Besides being used as an ordinary programming language, CoffeeScript may also be written in “literate” mode. If you name your file with a  .litcoffee extension, you can write it as a Markdown document — a document that also happens to be executable CoffeeScript code. The compiler will treat any indented blocks (Markdown’s way of indicating source code) as code, and ignore the rest as comments.”&lt;/p&gt;
+
+  &lt;p&gt;“Just for kicks, a little bit of the compiler is currently implemented in this fashion: See it as a document, raw, and properly highlighted in a text editor.”&lt;/p&gt;
+
+  &lt;p&gt;“I’m fairly excited about this direction for the language, and am looking forward to writing (and more importantly, reading) more programs in this style. As 1.5.0 is the first version of CoffeeScript that supports it, let us know if you have any ideas for improving the feature.”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Does it work? It certainly does, and I have a very powerful use case for it. This blog post was written as a literate CoffeeScript document, so I was able to run it by typing &lt;code&gt;coffee 2013-02-27-literate-coffeescript.litcoffee&lt;/code&gt; on the command line.&lt;/p&gt;
+
+&lt;p&gt;For the moment, Jekyll insists on parsing  &lt;code&gt;.litcoffee&lt;/code&gt; files as text, so whenever I want to write about CoffeeScript, I need to add a &lt;code&gt;.md&lt;/code&gt; to the suffix before pushing to the server. But that’s still much better than error-prone cutting and pasting of snippets, and in the fullness of time I hope that CoffeeScript will recognize &lt;code&gt;.coffee.md&lt;/code&gt; as &lt;a href=&quot;https://github.com/jashkenas/coffee-script/issues/2736&quot;&gt;Literate CoffeeScript&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;That’s going to be a big time saver.&lt;/p&gt;
+</content>
+      </entry>
+    
+  
+    
+      <entry>
+        <id>http://raganwald.com/2013/02/23/sieve</id>
+        <link type="text/html" rel="alternate" href="http://raganwald.com/2013/02/23/sieve.html"/>
+        <title>Implementing the Sieve of Eratosthenes with Functional Programming</title>
+        <published>2013-02-23T00:00:00-05:00</published>
+        <updated>2013-02-23T00:00:00-05:00</updated>
+        <author>
+          <name>Reginald Braithwaite</name>
+          <uri>http://raganwald.com/</uri>
+        </author>
+        <content type="html">&lt;p&gt;Programming interviews often include a “Fizzbuzz” test, some simple programming task that is intended to establish that the candidate can, in fact, program something trivial. It isn’t intended as a deep architectural dive or as an algorithms challenge. Under ideal, non-pressure situations it shouldn’t take more than fifteen minutes to complete.&lt;/p&gt;
+
+&lt;p&gt;One common exercise is to print out some prime numbers, perhaps a hundred or a thousand. We’ll write a JavaScript program to do that, and we’ll implement the well-known Sieve of Eratosthenes algorithm.&lt;/p&gt;
+
+&lt;h3 id=&quot;functional-iterators&quot;&gt;functional iterators&lt;/h3&gt;
+
+&lt;p&gt;Our approach will rest on &lt;em&gt;functional iterators&lt;/em&gt;, stateful functions that you call over and over again to get values. Functional iterators return &lt;code&gt;undefined&lt;/code&gt; if and when they have no more values to provide. Functional iterators are handy for two reasons: They decouple the mechanism of iterating over a data structure from what you do with its values, and they are also handy for dealing with data structures that may be so large as to be unwieldy, including infinitely large data sets.&lt;/p&gt;
+
+&lt;p&gt;To implement our Sieve of Eratosthenes, we’re going to use a few of the tools provided by &lt;a href=&quot;http://allong.es&quot; title=&quot;JavaScript Recipes from JavaScript Allongé&quot;&gt;allong.es&lt;/a&gt;, the JavaScript Function Utility Belt. Let’s get started.&lt;/p&gt;
+
+&lt;h3 id=&quot;unfolding&quot;&gt;unfolding&lt;/h3&gt;
+
+&lt;p&gt;All implementations of the Sieve rest on filtering numbers that are divisible by any smaller prime number. To be true to the spirit of the Sieve, you must emulate the behaviour of filtering all of the numbers going forward, not iterating forward and checking each number against a list of primes.&lt;/p&gt;
+
+&lt;p&gt;So the first thing we’ll need is a collection of natural numbers. Since we don’t know how many numbers we’ll need, we might as well start with all of the numbers from two upwards. That’s very easy to write as an iterator:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;NumbersFromTwo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;number&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;NumbersFromTwo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 2&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 3&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 4&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As you can see, we have a stateful function that returns &lt;code&gt;2&lt;/code&gt; the first time you call it, and thereafter returns the next largest natural number.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;NumbersFromTwo&lt;/code&gt; is a specific case of a very general pattern: Starting with a seed, generate an iteration where each value generated is calculated by applying a function to the previous value. When you start with a list, collection, or iteration and “reduce” it to a value, computer scientists call that a “fold.” And the reverse operation, its dual, is called an “unfold.”&lt;/p&gt;
+
+&lt;p&gt;For a very simple case like this, we don’t really need to be explicit about our unfolding, but for the sake of seeing how things work, let’s use a helper function from the &lt;a href=&quot;http://allong.es&quot; title=&quot;JavaScript Recipes from JavaScript Allongé&quot;&gt;allong.es&lt;/a&gt; library and rewrite it as an unfold:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unfold&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;allong.es&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unfold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unfold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 2&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 3&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 4&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;unfold&lt;/code&gt; returns an iterator. The first time you call the iterator, it returns the seed. Thereafter, it applies the function to the previous value to determine the next value to return. It may not seem like much of a win for a very short function, but making an unfold explicit like this also makes it easier to reason about the iterator than if you wrote a stateful function by hand.&lt;/p&gt;
+
+&lt;p&gt;Now we have a function that iterates over the natural numbers starting with 2. How would we “sieve” it?&lt;/p&gt;
+
+&lt;h3 id=&quot;accumulate-with-return&quot;&gt;accumulate with return&lt;/h3&gt;
+
+&lt;p&gt;In &lt;a href=&quot;http://raganwald.com/2013/02/17/a-drunken-walk.html&quot;&gt;The Drunken Walk Programming problem&lt;/a&gt;, we were introduced to the &lt;code&gt;accumulate&lt;/code&gt; function. It works a lot like a fold, reduce, or inject method: It iterates over a collection, accumulating a state along the way. The special sauce in &lt;code&gt;accumulate&lt;/code&gt; is that instead of waiting for the end of the collection and returning a single value, &lt;code&gt;accumulate&lt;/code&gt; returns an iterator that iterates over the state value as it iterates over the list. For example:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;accumulate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;allong.es&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;accumulate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;FlatArrayIterator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;allong.es&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;FlatArrayIterator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;accumulate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;FlatArrayIterator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;acc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 1&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 3&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 6&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 10&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 15&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Instead of returning the sum of the array as a single value, this iterator created with &lt;code&gt;accumulate&lt;/code&gt; iterates over the running total.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;accumulate&lt;/code&gt; is a terrific tool, but it does conflate the state with the value returned. Thus, you often find yourself writing a map from the accumulated state to the values you want. In some cases this can be either expensive or unclear, so &lt;a href=&quot;http://allong.es&quot; title=&quot;JavaScript Recipes from JavaScript Allongé&quot;&gt;allong.es&lt;/a&gt; provides a function that separates the concerns of accumulating state from generating values.&lt;/p&gt;
+
+&lt;p&gt;Here’s a ridiculous “square of the running total” example:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;accumulateWithReturn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;allong.es&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;accumulateWithReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;FlatArrayIterator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;allong.es&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;FlatArrayIterator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;accumulateWithReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;FlatArrayIterator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;acc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;acc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;acc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 1&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 9&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 36&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 100&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 225&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;accumulateWithReturn&lt;/code&gt; takes a function that returns &lt;em&gt;two&lt;/em&gt; values as an array. The first is the state for the next iteration, the second is the value to return for that iteration. So how does that help?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/b/b9/Sieve_of_Eratosthenes_animation.gif&quot; alt=&quot;Animated Sieve of Eratosthenes&quot; /&gt;&lt;br /&gt;
+&lt;em&gt;Illustrated Sieve from &lt;a href=&quot;https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes&quot;&gt;Wikipedia&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;sieving-numbers&quot;&gt;sieving numbers&lt;/h3&gt;
+
+&lt;p&gt;Let’s consider what we want to do to “sieve” all the multiples of a number from the natural numbers. Essentially, we want to count as we go along. If our number is “5,” we count 1, 2, 3, 4, “stroke out!” 1, 2, 3, 4, “stroke out!” We could also choose to count &lt;em&gt;down&lt;/em&gt;, as in 5, 4, 3, 2, “stroke out!” 5, 4, 3, 2, “stroke out!” We’ll go with counting down,although you’re welcome to rewrite it counting up and see that we get the same results.&lt;/p&gt;
+
+&lt;p&gt;Thus, we want to maintain a counter as we iterate through the numbers. But what do we want to return? If the counter is greater than one, we return the number. But if our counter reaches one, we return some special flag indicating we’ve stroked the number our and reset our count to our number.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Obviously, this could be much easier: We can take the modulus of the number directly with a simple &lt;code&gt;map&lt;/code&gt;. But that isn’t the &lt;em&gt;literal&lt;/em&gt; Sieve of Eratosthenes. And gosh-diddley-honest, we are going to implement this algorithm literally.&lt;/p&gt;
+
+  &lt;p&gt;For more on what makes an algorithm a genuine Sieve of Eratosthenes, Melissa O’Neill has written a terrific paper: &lt;a href=&quot;http://www.cs.tufts.edu/%7Enr/comp150fp/archive/melissa-oneill/Sieve-JFP.pdf&quot;&gt;The Genuine Sieve of Eratosthenes&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Here we are. We’ll use &lt;code&gt;false&lt;/code&gt; as our value for numbers being stroked out:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;accumulateWithReturn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;allong.es&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;accumulateWithReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;unfold&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;allong.es&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unfold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SieveMultiplesOf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aPrime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;accumulateWithReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aPrime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aPrime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;numbersFromOne&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unfold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SieveMultiplesOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;numbersFromOne&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 1&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 2&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; false&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 4&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 5&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; false&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Notice that we can sieve an already sieved iteration:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;numbersFromOne&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unfold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sieveThrees&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SieveMultiplesOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;numbersFromOne&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SieveMultiplesOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sieveThrees&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 1&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 2&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; false&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 4&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; false&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; false&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 7&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 8&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; false&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; false&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We’re just about ready!&lt;/p&gt;
+
+&lt;h3 id=&quot;the-final-step&quot;&gt;the final step&lt;/h3&gt;
+
+&lt;p&gt;With an unfold, we start with a seed and transform it with every iteration into the next value to be returned. That, in a nutshell, is what we’re going to do with an iteration over the numbers from two: transform it with every iteration by sieving it.&lt;/p&gt;
+
+&lt;p&gt;So we expect to see something like this in the middle of our code:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;remainingNumbers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SieveMultiplesOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainingNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nextPrimeNumber&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;However, we don’t actually want to return the sieved numbers with each iteration, we want to return each prime. So we need an unfold that separates state from the return value. Hmmm. &lt;code&gt;accumulateWithReturn&lt;/code&gt; is just like &lt;code&gt;accumulate&lt;/code&gt;, only it separates state from return value. Could it be that &lt;code&gt;unfoldWithReturn&lt;/code&gt; is just like unfold but separates state from return value?&lt;/p&gt;
+
+&lt;p&gt;Yes: &lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unfoldWithReturn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;allong.es&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unfoldWithReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;allong.es&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PrimeNumbers&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;numbersFromTwo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unfold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+  
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unfoldWithReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;numbersFromTwo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainingNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nextPrimeNumber&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainingNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;remainingNumbers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SieveMultiplesOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainingNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nextPrimeNumber&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainingNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nextPrimeNumber&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PrimeNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 2&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 3&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 5&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 7&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 11&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Our algorithm takes advantage of the fact that &lt;code&gt;find&lt;/code&gt; from &lt;a href=&quot;http://allong.es&quot; title=&quot;JavaScript Recipes from JavaScript Allongé&quot;&gt;allong.es&lt;/a&gt; calls the iterator until a value matches the predicate function. It will thus skip over all of the &lt;code&gt;false&lt;/code&gt; values representing multiples that have been crossed out.&lt;/p&gt;
+
+&lt;p&gt;The first number not crossed out is always the next prime to return. So, we return the new state consisting of the remaining numbers with multiples of the new prime number crossed out, and the new prime number as our return value.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-complete-solution&quot;&gt;the complete solution&lt;/h3&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;I&lt;/span&gt;                    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;allong.es&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;accumulateWithReturn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;accumulateWithReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;unfold&lt;/span&gt;               &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unfold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;unfoldWithReturn&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unfoldWithReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;                 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;take&lt;/span&gt;                 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;take&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PrimeNumbers&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;numbersFromTwo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unfold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+  
+  &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SieveMultiplesOf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aPrime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;accumulateWithReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aPrime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aPrime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+  
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;unfoldWithReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;numbersFromTwo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainingNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nextPrimeNumber&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainingNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;remainingNumbers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SieveMultiplesOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainingNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nextPrimeNumber&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainingNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nextPrimeNumber&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;prime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;first100primes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;take&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;PrimeNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;first100primes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 2, 3, 5, ..., 7901, 7907, 7919&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The source code for the utility functions we’re using can all be reviewed online in &lt;a href=&quot;https://github.com/raganwald/allong.es/blob/master/lib/iterators.js&quot; title=&quot;iterators.js on github&quot;&gt;iterators.js&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;(&lt;a href=&quot;http://www.reddit.com/r/javascript/comments/196zit/implementing_the_sieve_of_eratosthenes_with/&quot;&gt;discuss&lt;/a&gt;)&lt;/p&gt;
+
+&lt;h3 id=&quot;bonus&quot;&gt;bonus&lt;/h3&gt;
+
+&lt;p&gt;Eratosthenes actually advocated an optimization of this algorithm. I left it out initially because it changes &lt;code&gt;SieveMultiplesOf&lt;/code&gt; in such a way that it isn’t as easy to verify its behaviour separately because it’s coupled to the way numbers are taken off the front of the iterators:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SieveMultiplesOf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aPrime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;accumulateWithReturn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aPrime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aPrime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;aPrime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;post-script&quot;&gt;post script&lt;/h3&gt;
+
+&lt;p&gt;I actually failed that particular interview test when I took it. I can’t tell you why, it was “Just one of those days,” I guess. But I’ve never forgotten the fact that no matter how simple the test, interviews are high-pressure situations where anyone can “choke.” Well, maybe not anyone. But I certainly can.&lt;/p&gt;
+
+</content>
+      </entry>
+    
+  
+    
+      <entry>
+        <id>http://raganwald.com/2013/02/22/breaking-news-programming-school-closed</id>
+        <link type="text/html" rel="alternate" href="http://raganwald.com/2013/02/22/breaking-news-programming-school-closed.html"/>
+        <title>Hilbert's School Closed for Discriminatory Practices</title>
+        <published>2013-02-22T00:00:00-05:00</published>
+        <updated>2013-02-22T00:00:00-05:00</updated>
+        <author>
+          <name>Reginald Braithwaite</name>
+          <uri>http://raganwald.com/</uri>
+        </author>
+        <content type="html">&lt;p&gt;Much has been made of the lack of diversity in the technology field. While there are many causes for it and not all of the factors represent intentional or even systemic discrimination, there are from time to time disturbing incidents that make me despair. One such has just been revealed to me, and I am proud to be the one with the scoop.&lt;/p&gt;
+
+&lt;p&gt;You read here about &lt;a href=&quot;http://raganwald.com/2013/02/21/hilberts-school.html&quot;&gt;Hilbert’s Grand JavaScript School&lt;/a&gt;. After a stunningly successful first week offering its revolutionary &lt;em&gt;Learn javaScript in Five Days&lt;/em&gt; course, authorities in Thailand have closed it for failing to offer seating on a fair and equitable basis.&lt;/p&gt;
+
+&lt;p&gt;Operator Dr. Hilbert “Bertie” David protested that he accepted an infinite number of students and was able to accommodate an additional one million, infinity, infinity times infinity, and infinity cubed students on successive days, so clearly his school was incapable of denying education to anyone.&lt;/p&gt;
+
+&lt;p&gt;Prosecuting Justice the Honourable Georgina “Can’t-Be-Deterred” Orr disputed his claims and allowed reporters to interview what appeared to be an infinite number of women, people of colour, older programmers, and programmers who failed to meet minimal hipster standards who were denied seats using Dr. David’s methods.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-case-for-the-prosecution&quot;&gt;the case for the prosecution&lt;/h3&gt;
+
+&lt;p&gt;“The entire thing is a fraud,” Ms Orr proclaimed, “It is an illusion of equal access masking the same old tired privilege and discrimination. We will show in court that Dr. David pretended to provide access to all but secretly blocked entire classes of applicants by assigning them student IDs that would never be assigned to seats, not even given an infinite amount of time to operate his &lt;a href=&quot;http://raganwald.com/2013/02/21/hilberts-school.html&quot;&gt;algorithms&lt;/a&gt;.”&lt;/p&gt;
+
+&lt;p&gt;“And this was not just some smattering of minorities being denied. We will show that the number of candidates being denied was not only larger than the infinite number of candidates seated in his course, it was larger than can be counted using any method prior to certain techniques developed for this investigation and prosecution.”&lt;/p&gt;
+
+&lt;p&gt;A reporter asked for an example, and Ms Orr was ready with charts and diagrams to explain.&lt;/p&gt;
+
+&lt;p&gt;“Although he covered up his fraudulent behaviour with JavaScript Mumbo-Jumbo, all of his seat assignments boiled down to putting the students he accepted into a one-to-one correspondence with the numbers on his seats. His defence rests on the proposition that given an infinite number of students, there is always a method of putting them into a one-to-one correspondence with the natural numbers, and thus he is accommodating all students regardless of background..”&lt;/p&gt;
+
+&lt;p&gt;“We will prove that to the contrary, his plan did &lt;em&gt;not&lt;/em&gt; accommodate all students, and worse, that only a small minority of students were assigned seats while an extremely large number, much larger than his so-called infinity, were left without access to education.”&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/infinity.png&quot; alt=&quot;Infinity&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;exhibit-one&quot;&gt;exhibit one&lt;/h3&gt;
+
+&lt;p&gt;“Exhibit one in our prosecution are the Bus Mechanics.”&lt;/p&gt;
+
+&lt;p&gt;“As you know, on Day Four, Reddit hired an infinite number of buses, each of which held an infinite number of Redditors. The buses came from Zero To Infinity Bus Lines. This is a union shop, and we spoke with Mike, the Shop Steward. He told us that the Maintenance Workers have negotiated a strict schedule with management. Each worker works on a different bus every day, and no two workers work the buses in the same order. In fact, there’s one worker for every possible schedule of buses, that’s a contractual requirement.”&lt;/p&gt;
+
+&lt;p&gt;“After preparing the buses for the Reddit Trip, the Mike and the Mechanics attempted to attend the JavaScript School and were unable to be seated. Dr. David claims he is able to accommodate everyone, but in fact he only has room for a very small fraction of the people seeking education and he discriminates against disadvantaged groups like Mike and the Mechanics.”&lt;/p&gt;
+
+&lt;h3 id=&quot;the-defence&quot;&gt;the defence&lt;/h3&gt;
+
+&lt;p&gt;“In his defence, he will claim he seated them all somewhere in his auditorium. If that is true, we can number the seats they occupied from zero up, something like this:”&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;M.0 - Some mechanic
+M.1 - Another mechanic
+M.2 - A third mechanic
+M.3 - The fourth mechanic
+
+...
+
+M.infinity
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;“It doesn’t matter how he chose to seat them or where, if they are all in his auditorium occupying seats that have numbers on them, we can order them and assign them numbers of our own from zero. He claims that every mechanic can be seated. We will prove this is impossible.”&lt;/p&gt;
+
+&lt;h3 id=&quot;the-crucial-evidence&quot;&gt;the crucial evidence&lt;/h3&gt;
+
+&lt;p&gt;We will call to the stand a mechanic turned away. We will select this mechanic as follows. Every mechanic has a unique schedule of buses. Here’s one possible arrangement:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;M.0 - Bus 0, Bus 1, Bus 42, Bus 6, Bus 97, ..., 19
+M.1 - Bus 0, Bus 1, Bus 42, Bus 6, Bus 95, ..., 1337
+M.2 - Bus 42, Bus 6, Bus 3, Bus 9, Bus 11, ..., 1000000
+M.3 - Bus 5, Bus 4, Bus 2, Bus 10, Bus 99, ..., 12
+
+...
+
+M.infinity - Bus 2, Bus 3, Bus 5, Bus 7, Bus 11, ..., 42
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We call the number of the seat &lt;em&gt;m&lt;/em&gt;, and B(&lt;em&gt;m&lt;/em&gt;, &lt;em&gt;n&lt;/em&gt;) is the number of the bus that mechanic &lt;em&gt;m&lt;/em&gt; worked on after working on &lt;em&gt;n&lt;/em&gt; previous buses. So B(3, 2) will be 2, B(0, 2) will be 42, and B(2, 4) will be 11.&lt;/p&gt;
+
+&lt;p&gt;We will call to the stand a Mechanic who has not been seated. We can find such a mechanic according to the following rules:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The mechanic must not have worked on Bus 0 first&lt;/li&gt;
+  &lt;li&gt;The mechanic must not have worked on Bus 1 second&lt;/li&gt;
+  &lt;li&gt;The mechanic must not have worked on Bus 3 third&lt;/li&gt;
+  &lt;li&gt;The mechanic must not have worked on Bus 42 last&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Let’s say that Z(&lt;em&gt;n&lt;/em&gt;) is the bus that our witness worked on after &lt;em&gt;n&lt;/em&gt; previous buses. Our rule is that Z(&lt;em&gt;n&lt;/em&gt;) shall not be equal to B(&lt;em&gt;n&lt;/em&gt;, &lt;em&gt;n&lt;/em&gt;). There are, after all, and infinite number of buses that fit the bill. Essentially, we move &lt;em&gt;diagonally&lt;/em&gt; along our mechanics, selecting a bus that doesn’t match. So one such witness might be:&lt;/p&gt;
+
+&lt;p&gt;Z: Bus 1, Bus 2, Bus 4, Bus 3, …, Bus 99&lt;/p&gt;
+
+&lt;p&gt;Where is our witness seated in the auditorium? Not in the first position, nor the second, nor the third, and so on, because in each position we have an infinite number of buses to choose from, and we can always find a bus that doesn’t match that position or any of the buses previously selected for this witness.&lt;/p&gt;
+
+&lt;p&gt;In fact, there are an &lt;em&gt;infinite number of such witnesses!&lt;/em&gt; And furthermore, we assert that the number of mechanics not seated is much, much larger than the number of people in Dr. David’s so-called infinite auditorium.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-prosecution-rests&quot;&gt;the prosecution rests&lt;/h3&gt;
+
+&lt;p&gt;Georgina Orr’s fist crashed on the table. “We will demonstrate all this and much more, proving the Dr. David is a fraud and that he discriminates freely. If he knows what’s good for him, he will recognize that his policies have &lt;em&gt;real consequences&lt;/em&gt; and will sign a consent order promising to refrain from describing his school as having infinite capacity and furthermore will find an equitable method of giving his limited seats to prospective students.”&lt;/p&gt;
+</content>
+      </entry>
+    
+  
+    
+      <entry>
+        <id>http://raganwald.com/2013/02/21/hilberts-school</id>
+        <link type="text/html" rel="alternate" href="http://raganwald.com/2013/02/21/hilberts-school.html"/>
+        <title>Hilbert's Grand JavaScript School</title>
+        <published>2013-02-21T00:00:00-05:00</published>
+        <updated>2013-02-21T00:00:00-05:00</updated>
+        <author>
+          <name>Reginald Braithwaite</name>
+          <uri>http://raganwald.com/</uri>
+        </author>
+        <content type="html">&lt;p&gt;Dr. Hilbert “Bertie” David grows tired of blogging about JavaScript, and decides to cash in on the seemingly inexhaustible supply of impressionable young minds seeking to “Learn JavaScript in Five Days.”&lt;/p&gt;
+
+&lt;p&gt;He opens his &lt;em&gt;Grand JavaScript School&lt;/em&gt; on the shores of the Andaman Sea in Thailand, and with some clever engineering, he is able to install a countably infinite&lt;sup id=&quot;fnref:count&quot;&gt;&lt;a href=&quot;#fn:count&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; number of seats in his lecture hall.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.flickr.com/photos/quinet/6105449498/&quot; title=&quot;Island panorama 3 by quinet, on Flickr&quot;&gt;&lt;img src=&quot;http://farm7.staticflickr.com/6079/6105449498_2bb67e2fd2_z.jpg&quot; width=&quot;640&quot; height=&quot;289&quot; alt=&quot;Island panorama 3&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;day-one&quot;&gt;day one&lt;/h3&gt;
+
+&lt;p&gt;Well, an infinite number of students show up on the first day. “Line up please!” he calls out to them with a bullhorn of his own invention. “Line up! Good. Each of you has a number. The first person in line is zero, the next person is one, and so on. The machine will call out a number. When you hear your number, step forward, pay your fee in bitcoins, take your receipt, then you may enter the lecture hall and find the seat with your number on it. Thank you, the lecture will begin when everyone has been seated.”&lt;/p&gt;
+
+&lt;p&gt;Bertie quickly whips out a JavaScript IDE he has devised, and he writes himself a functional iterator. Instead of iterating over a data structure in memory, it generates seat numbers on demand:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Numbers&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;number&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seats&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;seats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 0, 1, 2, 3, ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;He simply calls out the numbers as they are printed, and the students file into the auditorium in an orderly fashion, filling it completely. Well, the first day is very long indeed. But Bertie has an infinite supply of bitcoins and things go well.&lt;/p&gt;
+
+&lt;p&gt;Avoiding the well-travelled road of explaining “this,” “closures,” or “monads,” he decides to explain functional iterators using the Tortoise and Hare algorithm&lt;sup id=&quot;fnref:tortoise&quot;&gt;&lt;a href=&quot;#fn:tortoise&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; as an example. People are scratching their heads, but on the second day, all of the students from the first day return. So it must have been a decent lecture.&lt;/p&gt;
+
+&lt;h3 id=&quot;day-two&quot;&gt;day two&lt;/h3&gt;
+
+&lt;p&gt;In fact, a few people liked the lecture so much that they recommended it to their friends, and one million additional students are lined up for seats in his class on the morning of the second day. He has an infinite number of seats in the auditorium, but they are all full. What can he do?&lt;/p&gt;
+
+&lt;p&gt;Out comes the IDE and the bullhorn. This time, he uses the &lt;a href=&quot;http://allong.es&quot; title=&quot;Free recipes from JavaScript Allongé&quot;&gt;allong.es&lt;/a&gt; library and writes the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;allong.es&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;oldSeats&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;newSeats&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MoveToSeat&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39; -&amp;gt; &amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MoveToSeat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;oldSeats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;newSeats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 0 -&amp;gt; 1000000&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//-&amp;gt; 1 -&amp;gt; 1000001&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//-&amp;gt; 2 -&amp;gt; 1000002&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 3 -&amp;gt; 1000003&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;He has constructed an iterator with instructions for moving seats. Bertie tells the first person to move from seat zero to seat one million, the second from one to one million and one, and so forth. This means that seats 0 through 999,999 become vacant, so the 1,000,000 new students have a place to sit. Day Two goes well, and he is very pleased with his venture.&lt;/p&gt;
+
+&lt;h3 id=&quot;day-three&quot;&gt;day three&lt;/h3&gt;
+
+&lt;p&gt;His fame spreads, and Jeff Atwood starts a discussion about Bertie’s JavaScript school on his new &lt;a href=&quot;http://www.discourse.org&quot;&gt;Discourse&lt;/a&gt; discussion platform. There’s so much interest, Jeff charters a bus with an infinite number of seats and brings his infinite number of fans to Bertie’s school for Day Three. The bus’s seats have numbers from zero just like the auditorium.&lt;/p&gt;
+
+&lt;p&gt;All of the students from Day Two have returned, so the auditorium is already full. Bertie is perplexed, but after scratching his head for a few moments, whips out his bullhorn and write the following JavaScript:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;EvenNumbers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MoveToSeat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;EvenNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 0 -&amp;gt; 0&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//-&amp;gt; 1 -&amp;gt; 2&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//-&amp;gt; 2 -&amp;gt; 4&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 3 -&amp;gt; 6&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now all the existing students are in the even numbered seats, so he’s ready to seat Jeff’s fans:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;OddNumbers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MoveToSeat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;OddNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 0 -&amp;gt; 1&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//-&amp;gt; 1 -&amp;gt; 3&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//-&amp;gt; 2 -&amp;gt; 5&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 3 -&amp;gt; 7&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Bertie calls out the seat numbers on Jeff’s bus and the number of an odd-numbered (and therefore vacant) seat in the auditorium for them to occupy. Bertie has managed to add an infinite number of students to an infinitely large but full auditorium.&lt;/p&gt;
+
+&lt;p&gt;He’s so pleased, Bertie lets Jeff be the guest lecturer. The audience has loved Bertie’s abstract approach to programming so far, but they’re hungry for practical knowledge and Jeff enthrals them  with a walkthrough of how the Discourse User Experience is implemented.&lt;/p&gt;
+
+&lt;p&gt;As a bonus, Jeff shares his insights into programming productivity.&lt;sup id=&quot;fnref:jeff&quot;&gt;&lt;a href=&quot;#fn:jeff&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; By the end of the day, everyone is typing over 100wpm and has placed an order for multiple wall-sized monitors on eBay.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.flickr.com/photos/raver_mikey/4118859026/&quot; title=&quot;Nice selection of REAL buses! by Gene Hunt, on Flickr&quot;&gt;&lt;img src=&quot;http://farm3.staticflickr.com/2516/4118859026_ee4f8ce254_z.jpg&quot; width=&quot;640&quot; height=&quot;480&quot; alt=&quot;Nice selection of REAL buses!&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;day-four&quot;&gt;day four&lt;/h3&gt;
+
+&lt;p&gt;Day Three went well, so all the students return and the auditorium remains full. Everyone is very pleased and looking forward to Day Four.&lt;/p&gt;
+
+&lt;p&gt;But the excitement has a downside: Reddit hears about what’s going on and an infinite number of subreddits, each of which has an infinite number of redditors, all decide to show up on day four to disrupt his lecture with trolling about how lame JavaScript is as a programming language. Each sends an infinitely large bus, with every seat full. Like Jeff’s bus, each bus numbers its seat from zero and as luck would have it, each bus has has a number and the buses are numbered from zero.&lt;/p&gt;
+
+&lt;p&gt;Bertie has to seat an infinite number of infinite groups of people, in an infinite auditorium that is already full! Now what? Out comes the bullhorn and yesterday’s program, and he quickly moves all of his existing students into the even-numbered seats, leaving an infinite number of odd seats available for newcomers.&lt;/p&gt;
+
+&lt;p&gt;He writes a new program:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Diagonals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+          &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+          &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;He has an Espresso Allongé and contemplates his work so far. &lt;code&gt;Diagonals&lt;/code&gt; is an iterator over an infinite collection of iterators, each of which uniquely identifies a bus and seat on that bus. They look something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you think of the buses and seats forming a square, the diagonals iterator makes a path from one corner and works its way out, enumerating over every possible combination of bus and seat. Thus, given countably infinite time, it will list every one of the countably infinite number of Redditors on each of the countably infinite number of buses.&lt;/p&gt;
+
+&lt;p&gt;To move forward, Bertie needs a &lt;code&gt;concatenate&lt;/code&gt; iterator for iterators:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;concatenate&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iteratorOfIterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;thisIterator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;iteratorOfIterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;thisIterator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;thisIterator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;thisIterator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;iteratorOfIterators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PeopleOnTheBuses&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;concatenate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Dialognals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PeopleOnTheBuses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; { bus: 0, seat: 0 }&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; { bus: 0, seat: 1 }&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; { bus: 1, seat: 0 }&lt;/span&gt;
+  
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Bertie is satisfied, but the natives are restless, so he keeps coding, then reaches for his bullhorn:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;RedditorSeats&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;PeopleOnTheBuses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;bus: &amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bus&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;, seat: &amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;seat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
+    &lt;span class=&quot;p&quot;&gt;}),&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MoveToSeat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;RedditorSeats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;OddNumbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; &amp;#39;bus: 0, seat: 0 -&amp;gt; 1&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; &amp;#39;bus: 0, seat: 1 -&amp;gt; 3&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; &amp;#39;bus: 1, seat: 0 -&amp;gt; 5&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; &amp;#39;bus: 0, seat: 2 -&amp;gt; 7&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; &amp;#39;bus: 1, seat: 1 -&amp;gt; 9&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; &amp;#39;bus: 2, seat: 0 -&amp;gt; 11&amp;#39;&lt;/span&gt;
+  
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Well, this seats an infinite number of Redditors on an infinite number of buses in an infinite auditorium that was already full. He does a code walkthrough with the students, then segues on to talk about other interesting aspects of Georg Cantor&lt;sup id=&quot;fnref:cantor&quot;&gt;&lt;a href=&quot;#fn:cantor&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;’s work and a digression into Hotel Management.&lt;sup id=&quot;fnref:grand&quot;&gt;&lt;a href=&quot;#fn:grand&quot; rel=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt; By the time he finishes with a discussion of the Hypergame&lt;sup id=&quot;fnref:kongregate&quot;&gt;&lt;a href=&quot;#fn:kongregate&quot; rel=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt; proof of the infinite number of infinities, everyone has forgotten that they came to scoff.&lt;/p&gt;
+
+&lt;p&gt;He finishes with a summary of what he learned seating students:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;You can put a countably infinite number of seats into a one-to-one correspondence with the numbers, therefore they have the same &lt;em&gt;cardinality&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;You can add a finite number to an countably infinite number and put your new number into a one-to-one correspondence with the numbers, therefore infinity plus a finite number has the same cardinality as the numbers.&lt;/li&gt;
+  &lt;li&gt;You can add infinity to infinity and put your new number into a one-to-one correspondence with the numbers, therefore infinity plus infinity has the same cardinality as the numbers. By induction, you can add a finite number of infinities together and have the same cardinality as the numbers.&lt;/li&gt;
+  &lt;li&gt;You can add an infinite number of infinities to infinity and put your new number into a one-to-one correspondence with the numbers, therefore an infinity times infinity has the same cardinality as the numbers.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;day-five&quot;&gt;day five&lt;/h3&gt;
+
+&lt;p&gt;On Day Five, everyone is back and he announces that there will be a test: &lt;em&gt;“Outside our doors,”&lt;/em&gt; he announces, &lt;em&gt;“Are an infinite number of aircraft carriers, each of which has an infinitely large flight deck. Parked on each flight deck are an infinite number of buses, each of which contains–you guessed it–an infinite number of sailors and air crew eager to join our school for the next semester.”&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;“Write a JavaScript program to seat them all in our lecture hall. If your program works, you may come up to the front and receive your signed diploma. If you can prove that no program works, you will also receive your diploma. Good luck!”&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;In other words, Bertie wants his students to use JavaScript to figure out whether infinity cubed is countable. Is it?&lt;/p&gt;
+
+&lt;h3 id=&quot;post-scriptum&quot;&gt;post scriptum&lt;/h3&gt;
+
+&lt;p&gt;While the students busy themselves writing the test, he sends a pull request to integrate his &lt;code&gt;concatenate&lt;/code&gt; function into &lt;a href=&quot;http://allong.es&quot; title=&quot;Free recipes from JavaScript Allongé&quot;&gt;allong.es&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;post-post-scriptum&quot;&gt;post-post scriptum&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://raganwald.com/2013/02/22/breaking-news-programming-school-closed.html&quot;&gt;Dr. Hilbert’s School Has Been Closed For Admissions Irregularities&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;end-notes&quot;&gt;end notes&lt;/h3&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:count&quot;&gt;
+      &lt;p&gt;Meaning, he is able to put the seats in a one-to-one correspondence with the natural numbers. He does this by numbering the seats from zero. See &lt;a href=&quot;https://en.wikipedia.org/wiki/Countable_set&quot;&gt;Countable Sets&lt;/a&gt;.&lt;a href=&quot;#fnref:count&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:tortoise&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;http://raganwald.com/2013/02/15/turtles-and-iterators.js.html&quot;&gt;http://raganwald.com/2013/02/15/turtles-and-iterators.js.html&lt;/a&gt;&lt;a href=&quot;#fnref:tortoise&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:jeff&quot;&gt;
+      &lt;p&gt;“As far as I’m concerned, you can never be too rich, too thin, or have too much screen space.”–&lt;a href=&quot;http://www.codinghorror.com/blog/2010/04/three-monitors-for-every-user.html&quot;&gt;Three Monitors For Every User&lt;/a&gt;&lt;a href=&quot;#fnref:jeff&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:cantor&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Georg_Cantor&quot;&gt;https://en.wikipedia.org/wiki/Georg_Cantor&lt;/a&gt;&lt;a href=&quot;#fnref:cantor&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:grand&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Hilbert's_paradox_of_the_Grand_Hotel&quot;&gt;https://en.wikipedia.org/wiki/Hilbert’s_paradox_of_the_Grand_Hotel&lt;/a&gt;&lt;a href=&quot;#fnref:grand&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:kongregate&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;http://www.kongregate.com/forums/9/topics/93615&quot;&gt;http://www.kongregate.com/forums/9/topics/93615&lt;/a&gt;&lt;a href=&quot;#fnref:kongregate&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</content>
+      </entry>
+    
+  
+    
+      <entry>
+        <id>http://raganwald.com/2013/02/20/twenty-thirteen</id>
+        <link type="text/html" rel="alternate" href="http://raganwald.com/2013/02/20/twenty-thirteen.html"/>
+        <title>Twenty Thirteen</title>
+        <published>2013-02-20T00:00:00-05:00</published>
+        <updated>2013-02-20T00:00:00-05:00</updated>
+        <author>
+          <name>Reginald Braithwaite</name>
+          <uri>http://raganwald.com/</uri>
+        </author>
+        <content type="html">&lt;h2 id=&quot;why-ive-moved-back-to-proper-blogging-and-how-im-using-github-pages-to-do-it&quot;&gt;Why I’ve moved back to proper blogging, and how I’m using Github Pages to do it&lt;/h2&gt;
+
+&lt;p&gt;A little more than four years ago, I tried an experiment: On October 27, 2008 I pushed &lt;a href=&quot;https://Github.com/raganwald/homoiconic/blob/master/2008-10-27/unfold.markdown&quot;&gt;some text in markdown format&lt;/a&gt; to Github, and a new kind of bloggy thing called &lt;a href=&quot;https://Github.com/raganwald/homoiconic&quot;&gt;Homoiconic&lt;/a&gt; was born.&lt;/p&gt;
+
+&lt;p&gt;As a blog, it was lame. Markdown is seriously limited as a word processor. Github prevented me from doing anything interesting with layouts. A repo has terrible indexing of old posts. No comments or JavaScript to embed anything useful. I didn’t own my own domain, a serious flaw.&lt;/p&gt;
+
+&lt;p&gt;However.&lt;/p&gt;
+
+&lt;h3 id=&quot;distraction-free&quot;&gt;distraction-free&lt;/h3&gt;
+
+&lt;p&gt;You know how people have embraced this idea of “distraction-free writing?” Github gave me that, in Spades, doubled and redoubled with an overtrick. Markdown is inherently distraction-free, there’s only so much you can do with it, and if you want more you just have to say no to yourself and keep writing.&lt;/p&gt;
+
+&lt;p&gt;The workflow was a little geeky, but no worse than using SFTP or some weird proprietary blog engine web application. And it’s kind of my job to use git, so I can’t really complain about that.&lt;/p&gt;
+
+&lt;p&gt;And my world was changing. Fewer and fewer of my readers were “subscribing” to my blog via RSS. I was getting my “hits” through Reddit and Hacker News and other people’s tweets and so on. It seemed like a win to me, so I gave it a try, especially for anything code-u-macated.&lt;/p&gt;
+
+&lt;h3 id=&quot;posterous&quot;&gt;posterous&lt;/h3&gt;
+
+&lt;p&gt;A while later, Posterous launched. The best thing about Posterous was the workflow: Send an email. The worst thing about Posterous was that once you sent that email, you could format your posts with HTML and fancy styles. I tried it, loved the post-by-email, hated the fact that I would often fiddle with formatting.&lt;/p&gt;
+
+&lt;p&gt;One of the nice things about markdown is that it is what it is. There’s very little need to fiddle with anything except the actual words and ideas. Time passed, and Posterous got bought by Twitter, and now they’re shutting down. Boo hoo.&lt;/p&gt;
+
+&lt;h3 id=&quot;and-now&quot;&gt;and now…&lt;/h3&gt;
+
+&lt;p&gt;In the last twelve months or so, I’ve been embracing &lt;a href=&quot;http://pages.github.com&quot;&gt;Github Pages&lt;/a&gt; for some projects. In exchange for fiddling with a domain registrar, I can host things on my own domains, like:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://allong.es&quot;&gt;http://allong.es&lt;/a&gt;: A free library of &lt;a href=&quot;https://leanpub.com/javascript-allonge&quot;&gt;JavaScript Allongé&lt;/a&gt; recipes.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://recursiveuniver.se&quot;&gt;http://recursiveuniver.se&lt;/a&gt;: An implementation of HashLife, in Literate CoffeeScript.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://oscin.es&quot;&gt;http://oscin.es&lt;/a&gt;: Combinatory Logic in JavaScript.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’m even hosting free versions of some of my books:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://combinators.info&quot;&gt;http://combinators.info&lt;/a&gt;: &lt;a href=&quot;https://leanpub.com/combinators&quot;&gt;Kestrels, Quirky Birds, and Hopeless Egocentricity&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://ristrettolo.gy&quot;&gt;http://ristrettolo.gy&lt;/a&gt;: &lt;a href=&quot;https://leanpub.com/coffeescript-ristretto&quot;&gt;CoffeeScript Ristretto&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And with those under my belt, I took the plunge and moved all of my writing from 2013 over to &lt;a href=&quot;http://raganwald.com&quot;&gt;http://raganwald.com&lt;/a&gt;. I’m now using Jekyll to publish my “bloggy thing” to Github. I get the same lame lack of ability to format my posts, but I can now waste time with layouts.&lt;/p&gt;
+
+&lt;p&gt;And I get my own domain, that’s a win. And the layouts let me do things like pimp my books on every page without doing a global search-and-replace. Or add analytics to the blog. We’ll see if I do much more than just post.&lt;/p&gt;
+
+&lt;h3 id=&quot;my-workflow&quot;&gt;my workflow&lt;/h3&gt;
+
+&lt;p&gt;I do a more complicated thing with Jekyll on my &lt;a href=&quot;http://ristrettolo.gy&quot;&gt;http://ristrettolo.gy&lt;/a&gt; site, where I use an asset pipeline to compile CoffeeScript. It’s a book about CoffeeScript, the interactive behaviour should be written in CoffeeScript!&lt;/p&gt;
+
+&lt;p&gt;But here on &lt;a href=&quot;http://raganwald.com&quot;&gt;http://raganwald.com&lt;/a&gt;, I use the basic (and free) Jekyll behaviour built into Github Pages. That means absolutely no Jekyll plugins. Which suits me fine.&lt;/p&gt;
+
+&lt;p&gt;New posts go into a &lt;code&gt;_posts&lt;/code&gt; folder, with a special name. This one is &lt;code&gt;2013-02-20-twenty-thirteen.md&lt;/code&gt;. The top of each post has some YAML junk:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;yaml&quot;&gt;&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Twenty Thirteen&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;default&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If both of those things are set up correctly, the post is automatically published when I push to Github. It’s poured into the “tactile” layout, and the resulting HTML is available at  &lt;a href=&quot;http://raganwald.com/2013/02/20/twenty-thirteen.html&quot;&gt;http://raganwald.com/2013/02/20/twenty-thirteen.html&lt;/a&gt;. I can preview my work by running &lt;code&gt;jekyll&lt;/code&gt; on the command line, &lt;code&gt;jekyll --auto&lt;/code&gt; if I want it to rebuild the site locally whenever it detects changes, or &lt;code&gt;jekyll --server 3333&lt;/code&gt; if I want to run a preview web server on port 3333.&lt;/p&gt;
+
+&lt;p&gt;But building locally is optional. The site is rebuilt by Github when I push and that’s what’s published to the web.&lt;/p&gt;
+
+&lt;h3 id=&quot;benefits&quot;&gt;benefits&lt;/h3&gt;
+
+&lt;p&gt;Like the old thing, I get the ability to ask for pull requests. That’s huge, I get a lot of good corrections that way.&lt;/p&gt;
+
+&lt;p&gt;I guess I could embed Disqus comments if I wanted to, but I enjoy outsourcing discussion to Hacker News, Reddit, or wherever. Let &lt;em&gt;them&lt;/em&gt; play whack-a-mole with incivility.&lt;/p&gt;
+
+&lt;p&gt;I am not one of these super-bloggers with his own community. There are people who like my writing, and that’s great, but it’s a win for everyone if the comments praising my writing are alongside those pointing out where it could be, um, “even better.” I think there’s more of that when people discuss things elsewhere.&lt;/p&gt;
+
+&lt;p&gt;I get one-click publishing, I just have to click in a Github client rather than on some web abomination.&lt;/p&gt;
+
+&lt;p&gt;I get a complete edit history. It’s git!&lt;/p&gt;
+
+&lt;p&gt;Overall, I think this is going to go well.&lt;/p&gt;
+
+&lt;h3 id=&quot;my-setup&quot;&gt;my setup&lt;/h3&gt;
+
+&lt;p&gt;Following Github’s instructions, I registered my domain and configured the DNS to resolve to Github’s servers at &lt;code&gt;204.232.175.78&lt;/code&gt;. That takes anywhere from a few hours to a few days before a new domain starts 404-ing at Github, showing that the DNS is set up properly.&lt;/p&gt;
+
+&lt;p&gt;For each top-level domain, you have two choices. First, and most complicated, you need a fresh Github account with a special repo. For example, you can set up &lt;code&gt;whizzbang2000&lt;/code&gt; as a Github free account and then create a repo &lt;code&gt;whizzbang200.github.com&lt;/code&gt;. I then give my &lt;code&gt;raganwald&lt;/code&gt; account collaboration privileges and we’re off to the races. For &lt;a href=&quot;http://raganwald.com&quot;&gt;http://raganwald.com&lt;/a&gt;, I’m already the guy, so there’s no need to set up a separate account.&lt;/p&gt;
+
+&lt;p&gt;Second, you can set up an ordinary repo under your own account, but your site must be in the &lt;code&gt;gh-pages&lt;/code&gt; branch. That’s what most people do if they have more than one site to manage.&lt;/p&gt;
+
+&lt;p&gt;I drop a &lt;code&gt;CNAME&lt;/code&gt; file into the repo. For &lt;a href=&quot;http://raganwald.com&quot;&gt;http://raganwald.com&lt;/a&gt;, the file contains the text &lt;code&gt;raganwald.com&lt;/code&gt;. Once you push that, Github starts resolving hits to &lt;code&gt;raganwald.com&lt;/code&gt; to whatever you are publishing. You could drop an index.html file in there, or an index.md with some YAML to tell Github how to build it, or go wild with Liquid Tags, it’s up to you.&lt;/p&gt;
+
+&lt;p&gt;A nice thing about Jekyll is that you can control the Markdown rendering with the &lt;code&gt;_config.yaml&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;pygments&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;lsi&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;false&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;safe&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;false&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;markdown&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;kramdown&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;exclude&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;config.rb, README.md&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As you can see, I’ve turned pygments on to do source highlighting. I also use Kramdown because that’s what Leanpub uses when it renders my books, so I want the maximum possible compatibility between the two. And I like being able to use footnotes.&lt;sup id=&quot;fnref:pg&quot;&gt;&lt;a href=&quot;#fn:pg&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;And that, as they say, is that. This is where I’m going to be doing my “raganwald” tech blogging for the next little while. I’ll guess four years, since that’s about how long it is before the world changes enough to warrant throwing it all out and starting over.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“You know why I don’t play ballads any more? Because I love to play ballads”–Miles Davis&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;(&lt;a href=&quot;http://news.ycombinator.com/item?id=5253592&quot;&gt;discuss&lt;/a&gt;)&lt;/p&gt;
+
+&lt;h3 id=&quot;post-scriptum&quot;&gt;post scriptum&lt;/h3&gt;
+
+&lt;p&gt;Here is some Jekyll Templating embedded in a markdown file, just to show that if you want to do some yak-shaving, you can. This is a list of posts, dynamically generated:&lt;/p&gt;
+
+&lt;div class=&quot;related&quot;&gt;
+  &lt;ul&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;March  7, 2013&lt;/span&gt; &lt;a href=&quot;/2013/03/07/currying-and-partial-application.html&quot;&gt;What's the difference between Currying and Partial Application?&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;February 27, 2013&lt;/span&gt; &lt;a href=&quot;/2013/02/27/literate-coffeescript.litcoffee.html&quot;&gt;Two Brief Points About CoffeeScript 1.5&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;February 23, 2013&lt;/span&gt; &lt;a href=&quot;/2013/02/23/sieve.html&quot;&gt;Implementing the Sieve of Eratosthenes with Functional Programming&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;February 22, 2013&lt;/span&gt; &lt;a href=&quot;/2013/02/22/breaking-news-programming-school-closed.html&quot;&gt;Hilbert's School Closed for Discriminatory Practices&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;February 21, 2013&lt;/span&gt; &lt;a href=&quot;/2013/02/21/hilberts-school.html&quot;&gt;Hilbert's Grand JavaScript School&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;February 20, 2013&lt;/span&gt; &lt;a href=&quot;/2013/02/20/twenty-thirteen.html&quot;&gt;Twenty Thirteen&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;February 19, 2013&lt;/span&gt; &lt;a href=&quot;/2013/02/19/michael-feathers.html&quot;&gt;Better to leave it in the social sphere&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;February 18, 2013&lt;/span&gt; &lt;a href=&quot;/2013/02/18/drunken-walk-solution.html&quot;&gt;Solving the &quot;Drunken Walk&quot; problem with iterators&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;February 17, 2013&lt;/span&gt; &lt;a href=&quot;/2013/02/17/a-drunken-walk.html&quot;&gt;The &quot;Drunken Walk&quot; Programming Problem&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;February 15, 2013&lt;/span&gt; &lt;a href=&quot;/2013/02/15/turtles-and-iterators.js.html&quot;&gt;Tortoises, Teleporting Turtles, and Iterators&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;February 15, 2013&lt;/span&gt; &lt;a href=&quot;/2013/02/15/turtles-and-iterators.html&quot;&gt;Tortoises, Teleporting Turtles, and Iterators&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;February 10, 2013&lt;/span&gt; &lt;a href=&quot;/2013/02/10/prototypes.html&quot;&gt;Classes vs. Prototypes in JavaScript&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;January  5, 2013&lt;/span&gt; &lt;a href=&quot;/2013/01/05/practical-applications-of-partial-application.html&quot;&gt;Practical Applications of Partial Application&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;January  4, 2013&lt;/span&gt; &lt;a href=&quot;/2013/01/04/effective-javascript.html&quot;&gt;Effective JavaScript Reviewed&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;January  3, 2013&lt;/span&gt; &lt;a href=&quot;/2013/01/03/function_and_method_decorators.html&quot;&gt;Function and Method Decorators&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;January  2, 2013&lt;/span&gt; &lt;a href=&quot;/2013/01/02/madness.html&quot;&gt;The Madness of King JavaScript&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;January  1, 2013&lt;/span&gt; &lt;a href=&quot;/2013/01/01/this.html&quot;&gt;More than you ever wanted to know about &quot;this&quot; in JavaScript, Part I&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;December  1, 2012&lt;/span&gt; &lt;a href=&quot;/2012/12/01/more-combinators.html&quot;&gt;More Combinator Recipes in JavaScript: Partial, Bound, Send and Fluent&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;December  1, 2012&lt;/span&gt; &lt;a href=&quot;/2012/12/01/combinators-in-js.html&quot;&gt;Combinator Recipes for Working With Objects in JavaScript&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;September  9, 2011&lt;/span&gt; &lt;a href=&quot;/2011/09/09/softwares-receding-hairline.html&quot;&gt;Software's Receding Hairline&lt;/a&gt;
+    &lt;/li&gt;
+    
+  &lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;end-note&quot;&gt;end note&lt;/h3&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:pg&quot;&gt;
+      &lt;p&gt;Paul Graham has suggested that I can cut down my wordiness by moving a lot of non-core observations into footnotes. He may have something there.&lt;a href=&quot;#fnref:pg&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</content>
+      </entry>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+ 
+</feed>
