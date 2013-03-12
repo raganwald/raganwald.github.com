@@ -28,8 +28,6 @@
         <h2><a href="/">via raganwald.com</a></h2>
       </div><!-- end header -->
 
-
-
         <hr>
 
         <section id="main_content">
@@ -47,11 +45,11 @@
 <pre><code>###
 class Weird
   constructor: -&gt;
-    return "a string"
+    return { exclamation: "That's Strange" }
 ###
 </code></pre>
 
-<p>And when you wrote <code>new Weird()</code>, you’d get <code>"a string"</code>, not an instance of <code>Weird</code>. This is no longer the case. Now when you write the above, you hget an error: <em>CANNOT RETURN A VALUE FROM A CONSTRUCTOR: ““A STRING”” IN CLASS WEIRD</em>. Does this matter? Only in edge cases. in <a href="http://leanpub.com/javascript-allonge">JavaScript Allongé</a>, I borrowed a pattern from <a href="http://effectivejs.com">Effective JavaScript</a>. Here’s the use case. Consider this constructor with a variable number of arguments:</p>
+<p>And when you wrote <code>new Weird()</code>, you’d get a plain object, not an instance of <code>Weird</code>. This is no longer the case. Now when you write the above, you get an error: <em>CANNOT RETURN A VALUE FROM A CONSTRUCTOR: “{ EXCLAMATION: “THAT’S STRANGE” }” IN CLASS WEIRD</em>. Does this matter? Only in edge cases. in <a href="http://leanpub.com/javascript-allonge">JavaScript Allongé</a>, I borrowed a pattern from <a href="http://effectivejs.com">Effective JavaScript</a>. Here’s the use case. Consider this constructor with a variable number of arguments:</p>
 
 <pre><code>class Contact
   constructor: (@name, @emails...) -&gt;
@@ -99,7 +97,9 @@ SingletonRouter = once(Router)
 
 <p>However, we’re not going to be able to do that any more. It’s not a huge deal, there are other ways to work around these infrequent use cases, and overall the benefit of having constructors constrained to always return the instance is likely to far outweigh the lack of flexibility.</p>
 
-<p>Besides, CoffeeScript doesn’t stop you from writing a JavaScript-style class:</p>
+<h3 id="working-around-the-change">working around the change</h3>
+
+<p>You can work around this issue very easily. CoffeeScript doesn’t stop you from writing a JavaScript-style class, so you can simply write your constructor function directly, eschewing the convenience of the <code>class</code> keyword:</p>
 
 <pre><code>Contact = (@name, @emails...) -&gt;
   self = if this instanceof Contact then this else new Contact()
@@ -138,7 +138,7 @@ Contact.apply(null, testArray)
 
 <p>Does it work? It certainly does, and I have a very powerful use case for it. This blog post was written as a literate CoffeeScript document, so I was able to run it by typing <code>coffee 2013-02-27-literate-coffeescript.litcoffee</code> on the command line.</p>
 
-<p>For the moment, Jekyll insists on parsing  <code>.litcoffee</code> files as text, so whenever I want to write about CoffeeScript, I need to add a <code>.md</code> to the suffix before pushing to the server. But that’s still much better than error-prone cutting and pasting of snippets, and in the fullness of time I hope that CoffeeScript will recognize <code>.coffee.md</code> as literate CoffeeScript](https://github.com/jashkenas/coffee-script/issues/2736).</p>
+<p>For the moment, Jekyll insists on parsing  <code>.litcoffee</code> files as text, so whenever I want to write about CoffeeScript, I need to add a <code>.md</code> to the suffix before pushing to the server. But that’s still much better than error-prone cutting and pasting of snippets, and in the fullness of time I hope that CoffeeScript will recognize <code>.coffee.md</code> as <a href="https://github.com/jashkenas/coffee-script/issues/2736">Literate CoffeeScript</a>.</p>
 
 <p>That’s going to be a big time saver.</p>
 

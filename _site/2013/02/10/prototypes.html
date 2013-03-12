@@ -28,8 +28,6 @@
         <h2><a href="/">via raganwald.com</a></h2>
       </div><!-- end header -->
 
-
-
         <hr>
 
         <section id="main_content">
@@ -99,15 +97,15 @@
   
   <span class="k">def</span> <span class="nf">pullHead</span>
     <span class="k">if</span> <span class="o">!</span><span class="vi">@isEmpty</span>
-      <span class="vi">@array</span><span class="o">[</span><span class="vi">@head</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">value</span><span class="o">|</span>
-        <span class="vi">@array</span><span class="o">[</span><span class="vi">@head</span><span class="o">]</span> <span class="o">=</span> <span class="n">null</span>
+      <span class="vi">@array</span><span class="o">[</span><span class="vi">@head</span><span class="o">].</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">value</span><span class="o">|</span>
+        <span class="vi">@array</span><span class="o">[</span><span class="vi">@head</span><span class="o">]</span> <span class="o">=</span> <span class="kp">nil</span>
         <span class="vi">@head</span> <span class="o">+=</span> <span class="mi">1</span>
       <span class="p">}</span>
     <span class="k">end</span>
   <span class="k">end</span>
   
   <span class="k">def</span> <span class="nf">isEmpty</span>
-    <span class="o">!!</span><span class="p">(</span><span class="vi">@tail</span> <span class="o">&lt;</span> <span class="vi">@head</span><span class="p">)</span>
+    <span class="vi">@tail</span> <span class="o">&lt;</span> <span class="vi">@head</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
