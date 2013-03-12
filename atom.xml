@@ -15,18 +15,20 @@ layout: nil
   </author>
 
   {% for post in site.posts %}
-  <entry>
-    <id>http://raganwald.com{{ post.id }}</id>
-    <link type="text/html" rel="alternate" href="http://raganwald.com{{ post.url }}"/>
-    <title>{{ post.title }}</title>
-    <published>{{ post.date | date_to_xmlschema }}</published>
-    <updated>{{ post.date | date_to_xmlschema }}</updated>
-    <author>
-      <name>Reginald Braithwaite</name>
-      <uri>http://raganwald.com/</uri>
-    </author>
-    <content type="html">{{ post.content | xml_escape }}</content>
-  </entry>
+    {% unless post.categories contains "noindex" or post.categories contains "posterous" or post.categories contains "homoiconic" %}
+      <entry>
+        <id>http://raganwald.com{{ post.id }}</id>
+        <link type="text/html" rel="alternate" href="http://raganwald.com{{ post.url }}"/>
+        <title>{{ post.title }}</title>
+        <published>{{ post.date | date_to_xmlschema }}</published>
+        <updated>{{ post.date | date_to_xmlschema }}</updated>
+        <author>
+          <name>Reginald Braithwaite</name>
+          <uri>http://raganwald.com/</uri>
+        </author>
+        <content type="html">{{ post.content | xml_escape }}</content>
+      </entry>
+    {% endunless %}
   {% endfor %}
  
 </feed>
