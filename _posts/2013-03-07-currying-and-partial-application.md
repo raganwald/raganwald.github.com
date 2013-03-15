@@ -264,7 +264,7 @@ As with leftmost and rightmost currying, you want to have both in your toolbox s
 
 Yes. And no. Here are some further directions to explore on your own:
 
-1. We saw how to use currying to implement partial application. Is it possible to implement partial application with currying? Why? Why not?[^tao]
+1. We saw how to use currying to implement partial application. Is it possible to use partial application to implement currying? Why? Why not?[^tao]
 2. All of our examples of partial application have concerned converting binary functions into unary functions by providing one argument. Write more general versions of `applyFirst` and `applyLast` that provide one argument to any polyadic function. For example, if you have a function that takes four arguments, `applyFirst` should return a function taking three arguments.
 3. When you have `applyFirst` and `applyLast` working with all polyadic functions, try implementing `applyLeft` and `applyRight`: `applyLeft` takes a polyadic function and one *or more* arguments and leftmost partially applies them. So if you provide it with a ternary function and two arguments, it should return a unary function. `applyRight` does the same with rightmost application.
 4. Rewrite curry and rightmostCurry to accept any polyadic function. So just as a binary function curries into two nested unary functions, a ternary function should curry into three nested unary functions and so on.
