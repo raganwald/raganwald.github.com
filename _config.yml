@@ -2,4 +2,4 @@ pygments: true
 lsi: false
 safe: false
 markdown: kramdown
-exclude: *.rb, README.md, *.sh
+exclude: config.rb, README.md, specs.sh
