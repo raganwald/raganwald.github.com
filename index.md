@@ -1,7 +1,7 @@
 ---
 title: index.html
 layout: default
-ad: combinators
+ad: b/coffee-kestrels-code
 ---
 
 ### about
