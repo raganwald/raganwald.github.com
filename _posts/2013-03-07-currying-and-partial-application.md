@@ -1,8 +1,7 @@
 ---
 title: What's the difference between Currying and Partial Application?
-categories: coffeestain
 layout: default
-ad: javascript-allonge
+tags: javascript
 ---
  
 I was participating in [wroc_love.rb] last week-end, and [Steve Klabnik](http://steveklabnik.com) put up a slide mentioning [partial application] and [currying]. "The difference between them is not important right now," he said, pressing on. And it wasn't.

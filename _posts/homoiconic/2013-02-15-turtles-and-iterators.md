@@ -1,10 +1,13 @@
 ---
 layout: default
-title: Tortoises, Teleporting Turtles, and Iterators
-preamble: <p>(These code examples are in CoffeeScript. <a href="./turtles-and-iterators.js.html">Click here</a> for code examples in JavaScript.)</p><p>A good long while ago (The First Age of Internet Startups), someone asked me one of those pet algorithm questions. It was, “Write an algorithm to detect a loop in a linked list, in constant space.”</p>
-ad: coffeescript-ristretto
-categories: homoiconic
+title: Tortoises, Teleporting Turtles, and Iterators (CoffeeScript)
+tags : [homoiconic, coffeescript]
 ---
+
+(These code examples are in CoffeeScript. [Click Here](./turtles-and-iterators.js.html) for code examples in JavaScript.)
+
+A good long while ago (The First Age of Internet Startups), someone asked me one of those pet algorithm questions. It was, "Write an algorithm to detect a loop in a linked list, in constant space."
+
 I'm not particularly surprised that I couldn't think up an answer in a few minutes at the time. And to the interviewer's credit, he didn't terminate the interview on the spot, he asked me to describe the kinds of things going through my head.
 
 I think I told him that I was trying to figure out if I could adapt a hashing algorithm such as XORing everything together. This is the "trick answer" to a question about finding a missing integer from a list, so I was trying the old, "Transform this into [a problem you've already solved](http://www-users.cs.york.ac.uk/susan/joke/3.htm#boil)" meta-algorithm. We moved on from there, and he didn't reveal the "solution."

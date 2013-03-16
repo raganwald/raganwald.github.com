@@ -15,7 +15,7 @@ layout: nil
   </author>
 
   {% for post in site.posts %}
-    {% unless post.categories contains "noindex" or post.categories contains "posterous" or post.categories contains "homoiconic" %}
+    {% unless post.tags contains "noindex" or post.tags contains "posterous" or post.tags contains "homoiconic" %}
       <entry>
         <id>http://raganwald.com{{ post.id }}</id>
         <link type="text/html" rel="alternate" href="http://raganwald.com{{ post.url }}"/>

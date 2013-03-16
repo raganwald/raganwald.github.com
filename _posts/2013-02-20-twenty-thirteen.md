@@ -111,7 +111,7 @@ Here is some Jekyll Templating embedded in a markdown file, just to show that if
 
 <div class="related">
   <ul>
-    {% for post in site.posts %}
+    {% for post in site.tags %}
     <li>
 <span>{{ post.date | date: "%B %e, %Y" }}</span> <a href="{{ post.url }}">{{ post.title }}</a>
     </li>

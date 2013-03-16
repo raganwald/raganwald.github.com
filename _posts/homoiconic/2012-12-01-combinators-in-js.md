@@ -1,8 +1,7 @@
 ---
 title: Combinator Recipes for Working With Objects in JavaScript
 layout: default
-ad: javascript-allonge
-categories: homoiconic
+tags : [homoiconic, javascript]
 ---
 
 (This post is Part I of [II][Part II]. The recipes in this post are excerpted the book [JavaScript Allongé](http://leanpub.com/javascript-allonge).)

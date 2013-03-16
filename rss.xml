@@ -13,7 +13,7 @@ layout: nil
     <lastBuildDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</lastBuildDate>
 
     {% for post in site.posts %}
-      {% unless post.categories contains "noindex" or post.categories contains "posterous" or post.categories contains "homoiconic" %}
+      {% unless post.tags contains "noindex" or post.tags contains "posterous" or post.tags contains "homoiconic" %}
         <item>
           <title>{{ post.title }}</title>
           <link>http://raganwald.com{{ post.url }}</link>

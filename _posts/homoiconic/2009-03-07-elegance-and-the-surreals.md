@@ -1,8 +1,7 @@
 ---
 title: Elegance and the Surreals
 layout: default
-categories: homoiconic
-ad: combinators
+tags : [homoiconic, ruby]
 ---
 
 Last Friday I joined Joey DeVilla for [Coffee and Code](http://www.joeydevilla.com/2009/03/06/coffee-and-code-today-in-toronto-and-irvine-california/ "Coffee and Code Today in Toronto and Irvine, California!"). Joey recently went to work for an extremely large, highly competitive organization known for its ruthless business practices. He also recently donated an actual Lisp Machine he owned to [hacklab.to](http://hacklab.to/). Hopefully, the two events are unrelated and his new job has not killed the part of his brain that thinks hacking on a Lisp Machine is interesting.

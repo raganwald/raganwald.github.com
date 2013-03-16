@@ -1,8 +1,7 @@
 ---
 title: Solving the "Drunken Walk" problem with iterators
 layout: default
-ad: javascript-allonge
-categories: homoiconic
+tags : [homoiconic, javascript]
 ---
 
 This is an example solution for [The "Drunken Walk" Programming Problem](http://raganwald.com/2013/02/17/a-drunken-walk.html). It demonstrates how refactoring the "Tortoise and Hare" algorithm to use iterables instead of directly manipulating linked list nodes allows it to be used to find loops in a path as well as loops in a linked list.

@@ -35,10 +35,12 @@
         <section id="main_content">
           
           
+  
+
+
+
   <iframe style="position:relative;float:right;left:180px;top:120px;margin-left:-160px;" width="160" height="400" src="https://leanpub.com/b/coffee-kestrels-code/embed" frameborder="0" allowtransparency="true"></iframe>
 
-          
-          
           
           <p>Over on <a href="http://news.ycombinator.com/item?id=1991949">Hacker News</a>, there was a small discussion about OOP and specifically about inheritance. “lyudmil” pointed out:</p>
 
@@ -76,7 +78,7 @@
 
 <p>As we discover new requirements, we have two parallel tasks. The first is to refactor our testing ontology as appropriate. The second is to update our program to pass the new tests. The two activities are decoupled. This saves us much trouble.</p>
 
-<p>For example, let’s say that our animals all run on four legs. Then we decide we need bats, and bats are animals, so we create a <code>Bat</code> suite of tests and say a <code>Bat</code> is an <code>Animal</code>. Well, that breaks our testing ontology because bats don’t run and a <code>Bat</code> would fail the test for an <code>Animal</code>, so we move the test for running on four legs into <code>Cat</code> (or some new class like <code>Runner</code>). This doesn’t disturb our existing program in the least, and we are free to implement objects that pass the test for a <code>Bat</code> any way we like. It may be that in the program, bats borrow code from birds even though in the testing oncology, <code>Avian</code> is very different from <code>Animal</code>.</p>
+<p>For example, let’s say that our animals all run on four legs. Then we decide we need bats, and bats are animals, so we create a <code>Bat</code> suite of tests and say a <code>Bat</code> is an <code>Animal</code>. Well, that breaks our testing ontology because bats don’t run and a <code>Bat</code> would fail the test for an <code>Animal</code>, so we move the test for running on four legs into <code>Cat</code> (or some new class like <code>Runner</code>). This doesn’t disturb our existing program in the least, and we are free to implement objects that pass the test for a <code>Bat</code> any way we like. It may be that in the program, bats borrow code from birds even though in the testing ontology, <code>Avian</code> is very different from <code>Animal</code>.</p>
 
 <p>In this system, our ontology is observed from nature just like the naturalist’s ontology. And you can start using it today with almost any programming language, you just have to decide that the inheritance provided “out of the box” is best ignored for implementing things, and that you should think of the ontology as defining the behaviours you observe as expressed in tests rather than defining the implementations and definitions that create objects.</p>
 

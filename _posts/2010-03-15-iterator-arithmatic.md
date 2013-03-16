@@ -1,7 +1,7 @@
 ---
 layout: default
 published: no
-ad: javascript-allonge
+tags: javascript
 ---
 
 The function utility belt library [allong.es] contains handy JavaScript functions extracted from the book [JavaScript Allongé][ja]. One technique described in the book and in the articles "[Tortoises, Teleporting Turtles, and Iterators](http://raganwald.com/2013/02/15/turtles-and-iterators.js.html)" and "[The "Drunken Walk" Programming Problem](http://raganwald.com/2013/02/17/a-drunken-walk.html)" is the use of *functional iterators* to separate the concern of traversing a data structure from what you want to do with the data structure.

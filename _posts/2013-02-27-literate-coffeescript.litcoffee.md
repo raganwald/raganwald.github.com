@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Two Brief Points About CoffeeScript 1.5
-ad: coffeescript-ristretto
+tags: coffeescript
 ---
 
 ### first, constructors must return their instance

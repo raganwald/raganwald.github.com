@@ -1,7 +1,6 @@
 ---
 title: index.html
 layout: default
-ad: b/coffee-kestrels-code
 ---
 
 ### about
@@ -13,7 +12,7 @@ Texhnical essays by [Reginald "raganwald" Braithwaite](http://braythwayt.com), a
 <div class="related">
   <ul>
     {% for post in site.posts %}
-      {% unless post.categories contains "noindex" or post.categories contains "posterous" or post.categories contains "homoiconic" %}
+      {% unless post.tags contains "noindex" or post.tags contains "posterous" or post.tags contains "homoiconic" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y-%m-%d" }}</span>)
         </li>
@@ -26,8 +25,8 @@ Texhnical essays by [Reginald "raganwald" Braithwaite](http://braythwayt.com), a
 
 <div class="related">
   <ul>
-    {% for post in site.categories.homoiconic %}
-      {% unless post.categories contains "noindex" %}
+    {% for post in site.tags.homoiconic %}
+      {% unless post.tags contains "noindex" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>)
         </li>
@@ -40,8 +39,8 @@ Texhnical essays by [Reginald "raganwald" Braithwaite](http://braythwayt.com), a
 
 <div class="related">
   <ul>
-    {% for post in site.categories.posterous %}
-      {% unless post.categories contains "noindex" %}
+    {% for post in site.tags.posterous %}
+      {% unless post.tags contains "noindex" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>)
         </li>
