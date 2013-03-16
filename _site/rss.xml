@@ -6,9 +6,126 @@
     <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
-    <pubDate>Sat, 16 Mar 2013 14:56:24 -0400</pubDate>
-    <lastBuildDate>Sat, 16 Mar 2013 14:56:24 -0400</lastBuildDate>
+    <pubDate>Sat, 16 Mar 2013 16:14:39 -0400</pubDate>
+    <lastBuildDate>Sat, 16 Mar 2013 16:14:39 -0400</lastBuildDate>
 
+    
+      
+        <item>
+          <title>Schönfinkel's Forest</title>
+          <link>http://raganwald.com/enchanted-forest/scheinfinkel.html</link>
+          <pubDate>Sat, 16 Mar 2013 00:00:00 -0400</pubDate>
+          <author>reg@braythwayt.com (Reginald Braithwaite)</author>
+          <guid>http://raganwald.com/enchanted-forest/schonfinkel.coffee</guid>
+          <description>&lt;p&gt;&lt;em&gt;…continued from &lt;a href=&quot;/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html&quot;&gt;A long time ago, in a village far, far away&lt;/a&gt;…&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Schönfinkel spoke, preening himself proudly:&lt;/p&gt;
+
+&lt;h3 id=&quot;songbirds&quot;&gt;songbirds&lt;/h3&gt;
+
+&lt;p&gt;“All of us songbirds are descended from common ancestors. We have evolved various differences to suit our micro-habitats and temperaments, but we share a common behaviour. Each of us has a song we like to sing to attract a mate or warn others of our territory or communicate our feelings. We are sensitive to subtle variations in tone and pitch.&lt;/p&gt;
+
+&lt;p&gt;“But each of us has our own unique song. Mine, for example, brings to mind the sparkle of the sun on the water in a babbling brook.”&lt;/p&gt;
+
+&lt;p&gt;And here Moses let out a raucous and intemperate cawing. Maude politely smiled. “Most scintillating!” she said, and Moses continued.&lt;/p&gt;
+
+&lt;p&gt;“Chicks learn the songs of their parents, and as they mature they develop their own song that is a combination of the songs their parents sing. One of the things I am researching is the connection between songs and variations. I conjecture that there are more possible songs than grains of sand on a riverbank.&lt;/p&gt;
+
+&lt;p&gt;“But my main interest is another thing. Each of us, when we hear the song of some bird, will call back the song of another bird. We are mostly great mimics. So if you sing to me the song of a Bluebird, I might sing back the song of a Robin. We all have our own particular habits of responses, and we are always consistent.&lt;/p&gt;
+
+&lt;p&gt;If indeed I do respond to the song of a Bluebird with the song of a Robin, you can trust me to always respond to the song of a Bluebird with the song of a Robin. To a certain extend, my entire personality can be defined once you understand my particular habits of responses to songs. In fact, our entire society is governed by our responses to each other’s songs, and my lifelong study has been the rules of behaviour of songbirds.&lt;/p&gt;
+
+&lt;p&gt;“For I have discovered that there are rules and that the consequences of these rules lead to some deep and fascinating insights into the nature of thought itself.”&lt;/p&gt;
+
+&lt;p&gt;Maude thought Moses was very vain and was doubtful that songbirds in a forest held the key to understanding thought itself, but she didn’t like to interrupt a good story, so she carried on listening politely.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-basis&quot;&gt;the basis&lt;/h3&gt;
+
+&lt;p&gt;“Look!” said Moses suddenly, “Do you see that?”&lt;/p&gt;
+
+&lt;p&gt;Maude saw a bird flying awkwardly through the trees. After several near misses, it ran headlong into a tree and feel to the ground, stunned. It then picked itself up and fluttered off, striking branches as it went.&lt;/p&gt;
+
+&lt;p&gt;Moses shook his head sadly. “That idiot!” he said. “Well, I might as well start with him. I would grow tired if I were to constantly say things like ‘The song of a Cardinal’ or ‘The song of an Idiot,’ so I will abbreviate matters. When I say that the Idiot’s response to the Cardinal is the Cardinal, you will understand me to be speaking of the songs of the birds and that I mean that the Idiot’s response to the song of the Cardinal is to sing the Song of the Cardinal.”&lt;/p&gt;
+
+&lt;p&gt;Maude asked politely: “Is the Idiot’s response to the Cardinal an actual Cardinal?”&lt;/p&gt;
+
+&lt;p&gt;“Yes,” Moses continued, “and in fact, the Idiot’s response to any bird’s song is to sing that bird’s song. He is a most unimaginative vocalist with no long-term memory. Not much more intelligent than a hairy creature.”&lt;/p&gt;
+
+&lt;p&gt;Maude decided she was not going to allow Moses to malign her species at will. “I don’t know where you get these ideas, but we mammals do have a few brains to rub together for warmth,” she said. Moses considered.&lt;/p&gt;
+
+&lt;p&gt;“Okay,” he said, “Here comes the Idiot again. I’d like to hear its own song. What song should I sing to it?”&lt;/p&gt;
+
+&lt;p&gt;Maude thought this a very simple question and answered immediately.&lt;/p&gt;
+
+&lt;h3 id=&quot;maudes-notation&quot;&gt;maude’s notation&lt;/h3&gt;
+
+&lt;p&gt;“Very good!” said Modes, “I admit you are smarter than the Idiot, at least, I never could make him understand his own behaviour. But what is that you are scratching in the dust?”&lt;/p&gt;
+
+&lt;p&gt;“Oh,” Maude explained, “I have a own notation for solving certain types of problems. To being with, I write:”&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe &quot;idiots&quot;, -&amp;gt;
+
+  I = (x) -&amp;gt; x
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;“Meaning, that the Idiot, which I will call I for short, responds to any bird’s song, denoted &lt;code&gt;x&lt;/code&gt;, with hat same bird’s song, again &lt;code&gt;x&lt;/code&gt;. I use &lt;code&gt;x&lt;/code&gt;, &lt;code&gt;y&lt;/code&gt;, &lt;code&gt;z&lt;/code&gt;, &lt;code&gt;w&lt;/code&gt;, and other letters for unknowns.”&lt;/p&gt;
+
+&lt;p&gt;Maude carried on: “I like to make a note of what things mean with some examples, so I write:”&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  it &quot;should respond to any bird with the same bird&quot;, -&amp;gt;
+  
+    expect( I('polly') ).toEqual 'polly'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;“I thought about it for a while and realized that the Idiot’s response to itself must be its own song, so I also wrote:”&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    expect( I(I) ).toEqual I
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;“And indeed, that is the case by your rule.”&lt;/p&gt;
+
+&lt;p&gt;Moses hopped around a bit, staring at her writing for a few moments. “And what do you call this system of writing?”&lt;/p&gt;
+
+&lt;p&gt;“CoffeeScript,” said Maude, “because when it gets complicated, I need to drink a lot of coffee to work it out by hand.”&lt;sup id=&quot;fnref:cs&quot;&gt;&lt;a href=&quot;#fn:cs&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; She laughed, but stopped when she realized that Moses either did not get the joke or was incapable of understanding humour.&lt;/p&gt;
+
+&lt;p&gt;“Actually,” she said, “My uncle Brendan&lt;sup id=&quot;fnref:be&quot;&gt;&lt;a href=&quot;#fn:be&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; devised a notation for solving certain problems to deal with the appearance and behaviour of web spiders. He called it JavaScript, no doubt because of our family’s coffee plantation business. My cousin Jeremy&lt;sup id=&quot;fnref:jeremy&quot;&gt;&lt;a href=&quot;#fn:jeremy&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; liked Brendan’s ideas, but found them awkward for certain classes of problems and streamlined it somewhat. He called his variation CoffeeScript, and he taught it to me.”&lt;/p&gt;
+
+&lt;p&gt;“Interesting,” said Moses, “I wasn’t going to mention it but I have a notation of my own. I would write: &lt;code&gt;Ia.a&lt;/code&gt;, but if you prefer to use all those symbols, go right ahead.”&lt;/p&gt;
+
+&lt;h3 id=&quot;the-kestrel&quot;&gt;the kestrel&lt;/h3&gt;
+
+&lt;p&gt;Suddenly a raptor swooped down and made a strike at the bumbling Idiot. But the Idiot was saved by its own awkwardness, for the raptor made a strike at where the Idiot out to be flying, but just at that moment the befuddled bird’s wingtip was caught in a vine, and the raptor’s strike missed.&lt;/p&gt;
+
+&lt;p&gt;The Idiot fumbled its way into some brambles and the raptor flew off. “What was that?” asked Maude.&lt;/p&gt;
+
+&lt;p&gt;“Ah!” said Moses, “That is a formidable bird, and I tend to refuse invitations to be the guest of honour at its dinner table… That is the Kestrel. It has an interesting behaviour…” As Moses explained, Maude wrote:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe &quot;Kestrels&quot;, -&amp;gt;
+
+  K = (x) -&amp;gt; (y) -&amp;gt; x
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;“You see,” said Moses, “To understand the Kestrel you need to understand &lt;em&gt;fixation&lt;/em&gt;, or what some call &lt;em&gt;constancy&lt;/em&gt;. Some bird seem fixated on”&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;notes:&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:cs&quot;&gt;
+      &lt;p&gt;These stories are written in &lt;a href=&quot;http://daringfireball.net/projects/markdown/&quot;&gt;Markdown&lt;/a&gt; and interpreted in place as &lt;a href=&quot;http://coffeescript.org&quot;&gt;Literate CoffeeScript&lt;/a&gt; files. They are translated to JavaScript and then &lt;a href=&quot;https://github.com/mhevery/jasmine-node&quot;&gt;jasmine-node&lt;/a&gt; is used to evaluate them as specifications.&lt;a href=&quot;#fnref:cs&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:be&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;http://brendaneich.com&quot;&gt;Brendan Eich&lt;/a&gt; is the inventor of JavaScript.&lt;a href=&quot;#fnref:be&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:jeremy&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;http://www.ashkenas.com&quot;&gt;Jeremy Ashkenas&lt;/a&gt; invented CoffeeScript,&lt;a href=&quot;#fnref:jeremy&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        </item>
+      
     
       
         <item>
@@ -17,9 +134,7 @@
           <pubDate>Sat, 16 Mar 2013 00:00:00 -0400</pubDate>
           <author>reg@braythwayt.com (Reginald Braithwaite)</author>
           <guid>http://raganwald.com/enchanted-forest/prelude.coffee</guid>
-          <description>&lt;h3 id=&quot;a-long-time-ago-in-a-village-far-far-away&quot;&gt;a long time ago, in a village far, far away&lt;/h3&gt;
-
-&lt;p&gt;A long time ago, in a village far, far away, there was a young, intelligent woman named Maude.&lt;/p&gt;
+          <description>&lt;p&gt;A long time ago, in a village far, far away, there was a young, intelligent woman named Maude.&lt;sup id=&quot;fnref:maude&quot;&gt;&lt;a href=&quot;#fn:maude&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;Maude lived in a village beside a river that ran through mogotés of arable land, that was rich and ripe for planting tobacco and coffee. A woman of Maude’s resourcefulness could easily live a long and productive life in this village, but she had a taste for adventure and found village life rather dull to be perfectly honest.&lt;/p&gt;
 
@@ -69,7 +184,7 @@
 
 &lt;p&gt;“Well, Moses,” she replied, “You should get out of your forest and see the world. For there are mammals that can fly. Sugar gliders are mammals and they inhabit forests much like yours. And there are bats, they fly very well and have echolocation to boot.”&lt;/p&gt;
 
-&lt;p&gt;Moses (&lt;sup id=&quot;fnref:moses&quot;&gt;&lt;a href=&quot;#fn:moses&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;) hopped for a moment and then spoke again. “Oh? I would be very interested to hear about the things outside of my forest. Tell me more.”&lt;/p&gt;
+&lt;p&gt;Moses&lt;sup id=&quot;fnref:moses&quot;&gt;&lt;a href=&quot;#fn:moses&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; hopped for a moment and then spoke again. “Oh? I would be very interested to hear about the things outside of my forest. Tell me more.”&lt;/p&gt;
 
 &lt;p&gt;Maude was amazed, but also curious. “I’d be delighted to tell you of things outside of your forest. But if we are to be friends, we must be equitable to each other. If I tell you of the world outside your forest, you must tell me about your forest so that we may both learn.”&lt;/p&gt;
 
@@ -85,6 +200,9 @@
 
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
+    &lt;li id=&quot;fn:maude&quot;&gt;
+      &lt;p&gt;In memory of Lois Maude Barzey, my grandmother, who overcame very difficult circumstances and never, ever, abandoned her principles. And in honour of Clara Maude Braithwaite, who is as spunky as stereotypes would suggest for someone with a mop of red, curly hair.&lt;a href=&quot;#fnref:maude&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
     &lt;li id=&quot;fn:moses&quot;&gt;
       &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Moses_Schönfinkel&quot;&gt;Moses Schönfinkel&lt;/a&gt; was a Russian logician and mathematician, known for the invention of combinatory logic.&lt;a href=&quot;#fnref:moses&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;

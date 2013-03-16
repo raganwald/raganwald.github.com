@@ -1,9 +1,11 @@
 #!/bin/sh
 
-cd ./_posts
-coffee --output ../_specs --compile *.coffee.md
+cd ./_posts/enchanted-forest
+coffee --output ../../_specs --compile *.coffee.md
 
-cd ../_specs
+cd ../../_specs
 jasmine-node *.js --matchall
+
+cd ..
 
 
