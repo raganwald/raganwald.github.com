@@ -5,7 +5,9 @@ categories: homoiconic
 ad: combinators
 ---
 
-Last Friday I joined Joey DeVilla for [Coffee and Code](http://www.joeydevilla.com/2009/03/06/coffee-and-code-today-in-toronto-and-irvine-california/ "Coffee and Code Today in Toronto and Irvine, California!"). Joey recently went to work for an extremely large, highly competitive organization known for its ruthless business practices. He also recently donated an actual Lisp Machine he owned to [hacklab.to](http://hacklab.to/). Hopefully, the two events are unrelated and his new job has not killed the part of his brain that thinks hacking on a Lisp Machine is interesting. When he mentioned the Lisp Machine, I immediately thought that somehow, a dedicated Lisp Machine ought to be extraordinarily elegant. Which got me thinking about *elegance*. What is "elegance"? How do you know if something is "elegant"?
+Last Friday I joined Joey DeVilla for [Coffee and Code](http://www.joeydevilla.com/2009/03/06/coffee-and-code-today-in-toronto-and-irvine-california/ "Coffee and Code Today in Toronto and Irvine, California!"). Joey recently went to work for an extremely large, highly competitive organization known for its ruthless business practices. He also recently donated an actual Lisp Machine he owned to [hacklab.to](http://hacklab.to/). Hopefully, the two events are unrelated and his new job has not killed the part of his brain that thinks hacking on a Lisp Machine is interesting.
+
+When he mentioned the Lisp Machine, I immediately thought that somehow, a dedicated Lisp Machine ought to be extraordinarily elegant. Which got me thinking about *elegance*. What is "elegance"? How do you know if something is "elegant"?
 
 [![(c) 2008 el benjamin, some rights reserved](http://farm4.static.flickr.com/3099/2921981507_ec9443db22.jpg?v=0)](http://www.flickr.com/photos/thesubstars/2921981507/ "(c) 2008 el benjamin, some rights reserved") 
 
@@ -13,7 +15,7 @@ The Scheme dialect of Lisp is noted for its elegance. Lisp started as an almost 
 
 In Paul Graham's essay [The Hundred-Year Language](http://www.paulgraham.com/hundred.html "The Hundred-Year Language"), he noted that having separate representations for numbers and lists is unnecessary, an idea dating back to 1960: *The Lisp that McCarthy described in 1960, for example, didn't have numbers. Logically, you don't need to have a separate notion of numbers, because you can represent them as lists: the integer n could be represented as a list of n elements. You can do math this way. It's just unbearably inefficient.*
 
-This "lists of length n" implementation of numbers is based on just two things: The empty list or `[]`, and the operation of adding an element to it, an operation we could call #succ, #next, or ++ depending on your preferred programming language. Since we only have one kind of thing, the thing we can add to an empty list is an empty list. Therefore, the number "six" would be represented as a list of six empty lists:
+This "lists of length n" implementation of numbers is based on just two things: The empty list or `[]`, and the operation of adding an element to it, an operation we could call `#succ`, `#next`, or `++` depending on your preferred programming language. Since we only have one kind of thing, the thing we can add to an empty list is an empty list. Therefore, the number "six" would be represented as a list of six empty lists:
 
 {% highlight ruby %}
 SIX = [ [], [], [], [], [], [] ]
@@ -23,7 +25,9 @@ Is that elegance? I think it does have one component of elegance: It has fewer a
 
 > Entia non sunt multiplicanda praeter necessitatem. --John Ponce of Cork, 1639
 
-But there's another component of elegance that must be considered, the question of *scaling program complexity*. I do not mean scaling in performance or memory, I mean scaling the algorithm or implementation itself. From the perspective of program complexity, "Lists of length n" do not scale very well, if at all. To see why, let's compare "lists of length n" to another representation using lists, [Surreal Numbers](http://en.wikipedia.org/wiki/Surreal_number). Like our "lists of length n" representation of numbers, Surreal Numbers will be built (conceptually) out of just lists and the empty list. Thus, they have as few axiomatic entities as "lists of length n," so they are a good candidate for comparison.
+But there's another component of elegance that must be considered, the question of *scaling program complexity*. I do not mean scaling in performance or memory, I mean scaling the algorithm or implementation itself. From the perspective of program complexity, "Lists of length n" do not scale very well, if at all.
+
+To see why, let's compare "lists of length n" to another representation using lists, [Surreal Numbers](http://en.wikipedia.org/wiki/Surreal_number). Like our "lists of length n" representation of numbers, Surreal Numbers will be built (conceptually) out of just lists and the empty list. Thus, they have as few axiomatic entities as "lists of length n," so they are a good candidate for comparison.
 
 ### Surreal Numbers
 
