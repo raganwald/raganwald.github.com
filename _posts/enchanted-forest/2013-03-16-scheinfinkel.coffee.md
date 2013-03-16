@@ -134,7 +134,7 @@ Maude scribbled with her notes for a few moments and then answered the question.
 
 Maude needed a few more minutes to answer this question.
 
-[^rs]: [Raymond Merrill Smullyan](https://en.wikipedia.org/wiki/Raymond_Smullyan) is an American mathematician, concert pianist, logician, Taoist philosopher, and magician.
+[^rs]: [Raymond Merrill Smullyan](https://en.wikipedia.org/wiki/Raymond_Smullyan) is an American mathematician, concert pianist, logician, Taoist philosopher, and magician. He has his own [Youtube channel](http://www.youtube.com/profile?user=rsmullyan&view=videos).
 
 [^note]: This story is [taken from the Piano Society and other sources](http://mysite.verizon.net/vzeeaya7/raymondsmullyan/).
 
