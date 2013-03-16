@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-11T21:38:32-04:00</updated>
+  <updated>2013-03-16T09:21:11-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -86,7 +86,7 @@
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;squareAll&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mapWrapper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;square&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; [function]&lt;/span&gt;
 
-&lt;span class=&quot;nx&quot;&gt;squareAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;squareAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; [1, 4, 9]&lt;/span&gt;
 &lt;span class=&quot;nx&quot;&gt;squareAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; [25, 49, 25]&lt;/span&gt;
@@ -255,7 +255,7 @@
 &lt;p&gt;Yes. And no. Here are some further directions to explore on your own:&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;We saw how to use currying to implement partial application. Is it possible to implement partial application with currying? Why? Why not?&lt;sup id=&quot;fnref:tao&quot;&gt;&lt;a href=&quot;#fn:tao&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+  &lt;li&gt;We saw how to use currying to implement partial application. Is it possible to use partial application to implement currying? Why? Why not?&lt;sup id=&quot;fnref:tao&quot;&gt;&lt;a href=&quot;#fn:tao&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
   &lt;li&gt;All of our examples of partial application have concerned converting binary functions into unary functions by providing one argument. Write more general versions of &lt;code&gt;applyFirst&lt;/code&gt; and &lt;code&gt;applyLast&lt;/code&gt; that provide one argument to any polyadic function. For example, if you have a function that takes four arguments, &lt;code&gt;applyFirst&lt;/code&gt; should return a function taking three arguments.&lt;/li&gt;
   &lt;li&gt;When you have &lt;code&gt;applyFirst&lt;/code&gt; and &lt;code&gt;applyLast&lt;/code&gt; working with all polyadic functions, try implementing &lt;code&gt;applyLeft&lt;/code&gt; and &lt;code&gt;applyRight&lt;/code&gt;: &lt;code&gt;applyLeft&lt;/code&gt; takes a polyadic function and one &lt;em&gt;or more&lt;/em&gt; arguments and leftmost partially applies them. So if you provide it with a ternary function and two arguments, it should return a unary function. &lt;code&gt;applyRight&lt;/code&gt; does the same with rightmost application.&lt;/li&gt;
   &lt;li&gt;Rewrite curry and rightmostCurry to accept any polyadic function. So just as a binary function curries into two nested unary functions, a ternary function should curry into three nested unary functions and so on.&lt;/li&gt;
@@ -1296,6 +1296,10 @@ M.infinity - Bus 2, Bus 3, Bus 5, Bus 7, Bus 11, ..., 42
 &lt;span&gt;September  9, 2011&lt;/span&gt; &lt;a href=&quot;/2011/09/09/softwares-receding-hairline.html&quot;&gt;Software's Receding Hairline&lt;/a&gt;
     &lt;/li&gt;
     
+    &lt;li&gt;
+&lt;span&gt;December  1, 2010&lt;/span&gt; &lt;a href=&quot;/2010/12/01/oop-practiced-backwards-is-poo.html&quot;&gt;OOP practiced backwards is &quot;POO&quot;&lt;/a&gt;
+    &lt;/li&gt;
+    
   &lt;/ul&gt;
 &lt;/div&gt;
 
@@ -1309,6 +1313,8 @@ M.infinity - Bus 2, Bus 3, Bus 5, Bus 7, Bus 11, ..., 42
 &lt;/div&gt;
 </content>
       </entry>
+    
+  
     
   
     

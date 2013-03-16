@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <LINK REL=StyleSheet HREF="/assets/css/pygments.css" TYPE="text/css" MEDIA=screen>
+    <link href="http://raganwald.com/atom.xml" type="application/atom+xml" rel="alternate" title="raganwald.com">
+    <link rel="alternate" type="application/rss+xml" href="http://raganwald.com/rss.xml" title="raganwald.com">
+    <title>OOP practiced backwards is "POO"</title>
+    </head>
+  <body>
+    <div id="container">
+      <div class="inner">
+        
+              <div id="header">
+        <h1>OOP practiced backwards is "POO"</h1>
+        <h2><a href="/">via raganwald.com</a></h2>
+      </div><!-- end header -->
+
+        <hr>
+
+        <section id="main_content">
+          
+          
+  <iframe style="position:relative;float:right;left:180px;top:120px;margin-left:-160px;" width="160" height="400" src="https://leanpub.com/b/coffee-kestrels-code/embed" frameborder="0" allowtransparency="true"></iframe>
+
+          
+          
+          
+          <p>Over on <a href="http://news.ycombinator.com/item?id=1991949">Hacker News</a>, there was a small discussion about OOP and specifically about inheritance. “lyudmil” pointed out:</p>
+
+<blockquote>
+  <p>The way inheritance is always taught is through the “is-a” rule of thumb and I think that’s so detrimental to the students that they’d be better off if they didn’t know inheritance existed. The phrase “X is-a Y” often appears to make sense because of the real world (e.g. “Cat is-an Animal”), but it makes people forget that it may not make sense in the world they are trying to model. It may be that the relationship between a Cat object and an Animal object is completely different in your system than in the real world.</p>
+</blockquote>
+
+<p>The “Cat and Animal” example is a perfect one to illustrate what is so fundamentally broken about trying to model software systems as an ontology where the definition of each “object” is encoded in its “class.” Consider a Naturalist. He goes into the wild, observes things, and over time creates an ontology starting with animal, vegetable, and mineral at the top and subdivides downwards in a directed acyclic graph. This is not a strict tree, it allows for things like <a href="http://everything2.com/title/Carnifern">carniferns</a>, bats, and penguins.</p>
+
+<p>Let’s talk about Cats being Animals. For starters, there is no such thing as “Cat” and especially no such thing as “Animal.” There is this cat and that cat and this dog and that elephant. “Cat” and “Animal” are abstract concepts we derive from observations of concrete, real instances. I will repeat the two key words: abstract and derived. Leaving creationism out of it, DNA is a program that builds a specimen creature. Certain particular programs produce things we lump into a classification we call “animals,” and a subset of those things we call “cats.” </p>
+
+<p>Now, our understanding of DNA is imperfect. But we seem to be certain that it is not arranged the way we arrange a program using “OOP.” Animals have lots of genes in common with each other, cats more so, jaguars more so, and down until we have the maximum possible commonality between any two instances, a pair of identical twin Jaguars.</p>
+
+<p>The DNA does not have one strand for animals, another for cats, and a third for jaguars. It does not compose these specializations together to produce the final specimen individual. DNA is a chaotic, unstructured mess. Einstein once said that “God does not play dice.” I will say that “God does not use OOP” in the same spirit. The result of mutation and sexual combination and all the other factors driving specialization of life on earth ends up having a form that can be organized into an ontology, but the important thing to remember is that <strong>the abstract ontology is derived from the behaviour of the individual specimens, the ontology does not define the behaviour of the individual specimens</strong>.</p>
+
+<p>OOP gets this backwards. In OOP you define the ontology up front in the form of classes or prototypes. You then derive individual instances or objects from the ontology. The OOP ontology isn’t a way of sketching what we observe, it’s blueprint for building what we observe, nearly the exact opposite of the naturalist’s ontology.</p>
+
+<p>I’ve said that OOP’s ontology is the opposite of the naturalist’s ontology. Is this a problem? Yes, and here is why. The naturalist’s ontology is resilient to new discoveries. If we know nothing of penguins and we discover a bird that cannot fly but pursues its prey by swimming, we can re-arrange our ontology without disturbing any existing birds. The ontology is abstract, so it is decoupled from existing nature.</p>
+
+<p>Not so for the OOP ontology. Changes and re-arrangements break existing code, because all of the specimens, the instances and objects, depend on the various classes, interfaces, and other constructs that define their behaviour. is this a problem? Yes again, because computer programs change constantly. Discovery of new requirements, and new information is the norm, not the exception. OOP programs built as towering hierarchies of classes are like perfect crystals, to be admired by architects everywhere but loathed by the programmers responsible for maintaining them.</p>
+
+<blockquote>
+  <p>In Smalltalk, everything happens somewhere else.—Adele Goldberg</p>
+</blockquote>
+
+<p>An OOP ontology is more than a blueprint for the way a program must function today, it’s a nearly all-in bet on how it will change in the future. The ontology must define the objects, but it must also be factored such that future changes will neatly fit into the ontology as written. If not, everything must be re-arranged and that is absolute hell on earth. Because every change to the ontology to accommodate a new requirement ripples down affecting all of the dependent objects and instances.</p>
+
+<h3 id="another-way-forward">another way forward</h3>
+
+<p>There is another way forward. What if objects exist as encapsulations, and the communicate via messages? What if code re-use has nothing to do with inheritance, but uses composition, delegation, even old-fashioned helper objects or any technique the programmer deems fit? The ontology does not go away, but it is <em>decoupled from the implementation</em>. Here’s how.</p>
+
+<p>These days we have all embraced automated testing. It’s a pragmatic, worse-is-better embracement of Design-by-Contract (also, DBC is protected by various business restrictions so it has nobody but itself to blame for its unpopularity). So in addition to our program that doesn’t use inheritance, we have a massive test suite. Unlike the implementation part of the program, we organize the test suite into an ontology, using inheritance with glee. </p>
+
+<p>Here it makes sense. If we say there is such a thing as an <code>Animal</code> in the testing ontology, we’re saying that anything that passes the following suite of tests is an animal. If we say a <code>Cat</code> is an <code>Animal</code>, we’re saying that the set of tests for a <code>Cat</code> is a superset of the set of tests for an <code>Animal</code>. It’s irrelevant to us how objects in the program are written, just that those we want to use as cats must pass our tests for a Cat.</p>
+
+<p>As we discover new requirements, we have two parallel tasks. The first is to refactor our testing ontology as appropriate. The second is to update our program to pass the new tests. The two activities are decoupled. This saves us much trouble.</p>
+
+<p>For example, let’s say that our animals all run on four legs. Then we decide we need bats, and bats are animals, so we create a <code>Bat</code> suite of tests and say a <code>Bat</code> is an <code>Animal</code>. Well, that breaks our testing ontology because bats don’t run and a <code>Bat</code> would fail the test for an <code>Animal</code>, so we move the test for running on four legs into <code>Cat</code> (or some new class like <code>Runner</code>). This doesn’t disturb our existing program in the least, and we are free to implement objects that pass the test for a <code>Bat</code> any way we like. It may be that in the program, bats borrow code from birds even though in the testing oncology, <code>Avian</code> is very different from <code>Animal</code>.</p>
+
+<p>In this system, our ontology is observed from nature just like the naturalist’s ontology. And you can start using it today with almost any programming language, you just have to decide that the inheritance provided “out of the box” is best ignored for implementing things, and that you should think of the ontology as defining the behaviours you observe as expressed in tests rather than defining the implementations and definitions that create objects.</p>
+
+<p>fin.</p>
+
+<h3 id="interesting-further-reading">interesting further reading</h3>
+
+<ul>
+  <li><a href="http://www.infoq.com/articles/the-joy-of-clojure" title="InfoQ: Book Excerpt and Interview: The Joy of Clojure">InfoQ: Book Excerpt and Interview: The Joy of Clojure</a></li>
+  <li>Loren Segal, <a href="http://gnuu.org/2010/12/13/too-lazy-to-type/" title="Too Lazy to &quot;Type&quot; (gnuu.org)">Too Lazy to “Type”</a></li>
+  <li>Robert Martin’s <a href="http://cleancoder.posterous.com/too-lazy-to-type" title="Too Lazy to &quot;Type&quot;. - Uncle Bob's Blog">Response</a></li>
+</ul>
+
+<p><em>(<a href="http://duckduckgo.com/Alan_Kay">Alan Kay</a> coined the phrase Object-Oriented Programming, but this is not his fault. He has repeatedly said that to him, OOP is about encapsulation and message passing, not inheritance and ontologies of types. But like so many other Cargo Cults in Computer Programming culture, OOP and inheritance are enchained like ancient mariner and albatross.)</em></p>
+
+        </section>
+
+        <footer>
+    This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+    <br/><br/>
+  <a href="https://twitter.com/raganwald" class="twitter-follow-button" data-show-count="false">Follow @raganwald</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="raganwald">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</footer>
+
+      </div>
+    </div>
+  </body>
+</html>

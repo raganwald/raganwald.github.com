@@ -1,20 +1,5 @@
       <div id="header">
-        <nav>
-          <li class="fork"><a 
-            href="https://leanpub.com/javascript-allonge"
-            title="A strong cup of functions, objects, combinators, and decorators"
-            >JavaScript Allongé</a>&nbsp;</li>
-          <li class="fork"><a 
-            href="http://ristrettolo.gy"
-            title="An intense doppio of programming"
-            >CoffeeScript Ristretto</a>&nbsp;</li>
-          <li class="fork"><a 
-            href="http://combinators.info"
-            title="Raganwald's collected adventures in Combinatory Logic and Ruby Meta-Programming"
-            >The “Kestrels” Book</a>&nbsp;</li>
-          <li class="fork"><a
-            href="http://allong.es" 
-            title="All of the JavaScript Allongé receipies in a free library"
-            >allong.es</a>&nbsp;</li>
-        </nav>
+        <h1>{{ page.title }}</h1>
+        <h2><a href="/">via raganwald.com</a></h2>{% if page.categories contains "coffeestain" %}
+        <p><em>Part of the "Coffee Stained Production Code" series.</em></p>{% endif %}
       </div><!-- end header -->
