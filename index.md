@@ -6,16 +6,16 @@ ad: b/coffee-kestrels-code
 
 ### about
 
-This is the new technical weblog for [Reginald "raganwald" Braithwaite](http://braythwayt.com), author of [JavaScript Allongé](http://leanpub.com/javascript-allonge), [CoffeeScript Ristretto](http://ristrettolo.gy), and [Kestrels, Quirky Birds, and Hopeless Egocentricity](http://combinators.info).
+Texhnical essays by [Reginald "raganwald" Braithwaite](http://braythwayt.com), author of [JavaScript Allongé](http://leanpub.com/javascript-allonge), [CoffeeScript Ristretto](http://ristrettolo.gy), and [Kestrels, Quirky Birds, and Hopeless Egocentricity](http://combinators.info).
 
-### writing
+### index
 
 <div class="related">
   <ul>
     {% for post in site.posts %}
       {% unless post.categories contains "noindex" or post.categories contains "posterous" or post.categories contains "homoiconic" %}
         <li>
-    <span>{{ post.date | date: "%B %e, %Y" }}</span> <a href="{{ post.url }}">{{ post.title }}</a>
+          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%B %e, %Y" }}</span>)
         </li>
       {% endunless %}
     {% endfor %}
@@ -29,7 +29,7 @@ This is the new technical weblog for [Reginald "raganwald" Braithwaite](http://b
     {% for post in site.categories.homoiconic %}
       {% unless post.categories contains "noindex" %}
         <li>
-    <span>{{ post.date | date: "%B %e, %Y" }}</span> <a href="{{ post.url }}">{{ post.title }}</a>
+          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>)
         </li>
       {% endunless %}
     {% endfor %}
@@ -43,7 +43,7 @@ This is the new technical weblog for [Reginald "raganwald" Braithwaite](http://b
     {% for post in site.categories.posterous %}
       {% unless post.categories contains "noindex" %}
         <li>
-    <span>{{ post.date | date: "%B %e, %Y" }}</span> <a href="{{ post.url }}">{{ post.title }}</a>
+          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>)
         </li>
       {% endunless %}
     {% endfor %}
