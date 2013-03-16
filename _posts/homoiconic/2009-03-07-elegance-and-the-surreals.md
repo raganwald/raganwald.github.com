@@ -1,4 +1,5 @@
 ---
+title: Elegance and the Surreals
 layout: default
 categories: homoiconic
 ad: combinators
