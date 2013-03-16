@@ -15,7 +15,7 @@ Texhnical essays by [Reginald "raganwald" Braithwaite](http://braythwayt.com), a
     {% for post in site.posts %}
       {% unless post.categories contains "noindex" or post.categories contains "posterous" or post.categories contains "homoiconic" %}
         <li>
-          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%B %e, %Y" }}</span>)
+          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y-%m-%d" }}</span>)
         </li>
       {% endunless %}
     {% endfor %}
