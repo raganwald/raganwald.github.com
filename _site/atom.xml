@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-17T19:08:00-04:00</updated>
+  <updated>2013-03-17T19:08:46-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -219,15 +219,13 @@ describe &quot;equality&quot;, -&amp;gt;
   it &quot;should be true for Mayzie vs Mayzie&quot;, -&amp;gt;
     expect( Mayzie.equals(Mayzie) ).toEqual true
     
-  #it &quot;should be true for OneRight vs OneRight&quot;, -&amp;gt;
-  #  expect( OneRight.equals(OneRight) ).toEqual true
+  it &quot;should be true for OneRight vs OneRight&quot;, -&amp;gt;
+    expect( OneRight.equals(OneRight) ).toEqual true
     
-  #it &quot;should be false for Mayzie vs OneRight&quot;, -&amp;gt;
-  #  expect( Mayzie.equals(OneRight) ).toEqual false
-  #  expect( OneRight.equals(Mayzie) ).toEqual false
+  it &quot;should be false for Mayzie vs OneRight&quot;, -&amp;gt;
+    expect( Mayzie.equals(OneRight) ).toEqual false
+    expect( OneRight.equals(Mayzie) ).toEqual false
 &lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;“Now consider a simple metric: Contempt for Mayzie. Mayzie has no contempt for herself. The bird immediately to her right has one quantum of contempt for Mayzie. The bird to to her right has two quanta of contempt for Mayzie. And so forth.”&lt;/p&gt;
 
 &lt;hr /&gt;
 

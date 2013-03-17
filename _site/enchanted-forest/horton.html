@@ -260,15 +260,13 @@ describe "equality", -&gt;
   it "should be true for Mayzie vs Mayzie", -&gt;
     expect( Mayzie.equals(Mayzie) ).toEqual true
     
-  #it "should be true for OneRight vs OneRight", -&gt;
-  #  expect( OneRight.equals(OneRight) ).toEqual true
+  it "should be true for OneRight vs OneRight", -&gt;
+    expect( OneRight.equals(OneRight) ).toEqual true
     
-  #it "should be false for Mayzie vs OneRight", -&gt;
-  #  expect( Mayzie.equals(OneRight) ).toEqual false
-  #  expect( OneRight.equals(Mayzie) ).toEqual false
+  it "should be false for Mayzie vs OneRight", -&gt;
+    expect( Mayzie.equals(OneRight) ).toEqual false
+    expect( OneRight.equals(Mayzie) ).toEqual false
 </code></pre>
-
-<p>“Now consider a simple metric: Contempt for Mayzie. Mayzie has no contempt for herself. The bird immediately to her right has one quantum of contempt for Mayzie. The bird to to her right has two quanta of contempt for Mayzie. And so forth.”</p>
 
 <hr />
 
