@@ -94,15 +94,15 @@
 
 <p>Maude asked about his expertise.</p>
 
-<p>“Well, he does a lot of work playing with pebbles on vast grids that he lays out. He claims that by following certain rules, his pebbles can answer any question my Starling and Kestrel can answer.”[^life]</p>
-
-<p>[^life] <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway’s Game of Life</a></p>
+<p>“Well, he does a lot of work playing with pebbles on vast grids that he lays out. He claims that by following certain rules, his pebbles can answer any question my Starling and Kestrel can answer.”<sup id="fnref:life"><a href="#fn:life" rel="footnote">3</a></sup></p>
 
 <p>Maude was interested. Pebbles?</p>
 
-<p>“Well,” Moses said, “I didn’t mention this earlier, but we birds come in a few basic varieties. We all have songs, but some of us like to attract a mate with our excellent plumage, some with vigorous and intricate dancing, and a certain lesser class of bird likes to build a <a href="https://en.wikipedia.org/wiki/Bowerbird">bower</a> out of various found objects.”</p>
+<p>“Well,” Moses said, “I didn’t mention this earlier, but we birds come in a few basic varieties.”</p>
 
-<p>For example, I could show you the Stuart’s Tombird. It builds an elaborate bower out of just one material, chips of red crystal. It is intelligent, and claims its bowers can do various tasks like count to one hundred or even write nonsensical words like “fizz” or “buzz.”<sup id="fnref:nothing"><a href="#fn:nothing" rel="footnote">3</a></sup></p>
+<p>“We all have songs, but some of us like to attract a mate with our excellent plumage, some with vigorous and intricate dancing, and a certain lesser class of bird likes to build a <a href="https://en.wikipedia.org/wiki/Bowerbird">bower</a> out of various found objects.”</p>
+
+<p>For example, I could show you the Stuart’s <a href="http://twitter.com/tomstuart">Tombird</a>. It builds an elaborate bower out of just one material, chips of red crystal. It is intelligent, and claims its chips of Ruby can do various tasks like count to one hundred or even write nonsensical words like “fizz” or “buzz.”<sup id="fnref:nothing"><a href="#fn:nothing" rel="footnote">4</a></sup></p>
 
 <p>“In any event,” continued Moses, “We may as well say hello to Horton since we’re here.”</p>
 
@@ -149,7 +149,7 @@ class FlockingBird
 <pre><code>  standsAgainst: (rival) -&gt;
     courtingBird = this
     case1 = any @greater, (gb) -&gt; rival.standsAgaint(gb)
-    case2 = any rival.lesser,(lb) -&gt; lb.standsAgainst(courtingBird)
+    case2 = any rival.lesser, (lb) -&gt; lb.standsAgainst(courtingBird)
     (not case1) and (not case2)
 </code></pre>
 
@@ -165,7 +165,7 @@ class FlockingBird
     case2  = any @lesser, (lb) =&gt;
       any @greater, (gb) -&gt;
         lb.standsAgainst(gb)
-    case1a or case1b or case2
+    !!(case1a or case1b or case2)
 </code></pre>
 
 <p>Moses was preening itself, acting as disinterested as possible, but he fixed his eye on Horton and appeared to be thinking hard when Horton posed a question:</p>
@@ -182,9 +182,86 @@ class FlockingBird
     expect( Mayzie.confused() ).toEqual false
 </code></pre>
 
-<p>After explaining her notation to Horton, he agreed. “Yes, Mayzie isn’t very sociable, but she isn’t confused.”</p>
+<p>After explaining her notation to Horton, he agreed with her assessment. “Yes, Mayzie isn’t very sociable, but she isn’t confused.”</p>
 
-<p><em>…this essay is in progress…</em></p>
+<p>Horton continued with his explanation. “Some flocks have confused birds, some do not. I call a flock that has no confused birds a <em>proper flock</em>. Every proper flock has a simple pecking order. That is, you can arrange all of the birds in a line (as if perched on a branch), and there is always an arrangement such that every bird stands its ground against any bird to its left.”<sup id="fnref:exercise"><a href="#fn:exercise" rel="footnote">5</a></sup></p>
+
+<h3 id="birds-on-a-branch">birds on a branch</h3>
+
+<p>Horton was gathering enthusiasm, and he fairly trumpeted the next explanation. “This idea of a branch where birds can perch in order is interesting. Let’s start with an empty branch. Now, let’s place Mayzie on the branch by herself in the middle:”</p>
+
+<p><a href="http://www.flickr.com/photos/suckamc/3308221895/" title="Don King Bird by Martin Cathrae, on Flickr"><img src="http://farm4.staticflickr.com/3123/3308221895_2863aef68b_b.jpg" width="1024" height="683" alt="Don King Bird" /></a></p>
+
+<p>“Mayzie obviously forms a proper flock as she is not confused. As we have established, Mayzie doesn’t know any birds. But what if a bird alights to her right, a bird that knows her, perhaps from reading a book.<sup id="fnref:seuss"><a href="#fn:seuss" rel="footnote">6</a></sup> This bird knows and outranks Mayzie.”</p>
+
+<p>Maude considered, then wrote:</p>
+
+<pre><code>Mayzie = new FlockingBird();
+OneRight = new FlockingBird([], [Mayzie])
+</code></pre>
+
+<p>Maude asked, “Do these two birds form a proper flock?”</p>
+
+<p>Horton curled his trunk and smiled. “You tell me, do these two birds form a proper flock? And if so, do they obey the rules for ordering on a branch”</p>
+
+<pre><code>describe "a flock with two birds", -&gt;
+
+  it "should not contain confused birds", -&gt;
+    expect( Mayzie.confused() ).toEqual false
+    expect( OneRight.confused() ).toEqual false
+      
+  it "should have a linear pecking order", -&gt;
+    expect( OneRight.standsAgainst(Mayzie) ).toEqual true
+    expect( Mayzie.standsAgainst(OneRight) ).toEqual false
+</code></pre>
+
+<p>“Yes,” agreed Horton, “They form a proper flock. And now let us consider a bird that alights to the right of our bird to the right of Mayzie. It knows the bird to the right of Mayzie and knows that it outranks that bird. Do we have a proper flock?”</p>
+
+<pre><code>TwoRight = new FlockingBird([], [OneRight])
+
+describe "a flock with three birds", -&gt;
+
+  it "should not contain confused birds", -&gt;
+    expect( Mayzie.confused() ).toEqual false
+    expect( OneRight.confused() ).toEqual false
+    expect( TwoRight.confused() ).toEqual false
+
+  it "should have a linear pecking order", -&gt;
+    expect( Mayzie.standsAgainst(OneRight) ).toEqual false
+    expect( Mayzie.standsAgainst(TwoRight) ).toEqual false
+    expect( OneRight.standsAgainst(Mayzie) ).toEqual true
+    expect( OneRight.standsAgainst(TwoRight) ).toEqual false
+    expect( TwoRight.standsAgainst(Mayzie) ).toEqual true
+    expect( TwoRight.standsAgainst(TwoRight) ).toEqual true
+</code></pre>
+
+<p>“Interesting things happen when we consider this flock that is created by birds successively alighting to the right of the previous bird where each bird knows the bird immediately to its left (except for Mayzie).”</p>
+
+<h3 id="contemptuous-birds">contemptuous birds</h3>
+
+<p>“First,” said Horton, “What happens if we are given two birds that are part of a proper flock, but the first does not stand against the second and the second does not stand against the first?”</p>
+
+<p>Maude looked confused.</p>
+
+<p>“Yes,” said Horton, “This is impossible unless they are the same bird. So we say that two birds are equal if neither stands against the other.”</p>
+
+<pre><code>FlockingBird::equals = (otherBird) -&gt;
+  !(@standsAgainst(otherBird) or otherBird.standsAgainst(this))
+
+describe "equality", -&gt;
+
+  it "should be true for Mayzie vs Mayzie", -&gt;
+    expect( Mayzie.equals(Mayzie) ).toEqual true
+    
+  it "should be true for OneRight vs OneRight", -&gt;
+    expect( OneRight.equals(OneRight) ).toEqual true
+    
+  it "should be false for Mayzie vs OneRight", -&gt;
+    expect( Mayzie.equals(OneRight) ).toEqual false
+    expect( OneRight.equals(Mayzie) ).toEqual false
+</code></pre>
+
+<p>“Now consider a simple metric: Contempt for Mayzie. Mayzie has no contempt for herself. The bird immediately to her right has one quantum of contempt for Mayzie. The bird to to her right has two quanta of contempt for Mayzie. And so forth.”</p>
 
 <hr />
 
@@ -197,8 +274,17 @@ class FlockingBird
     <li id="fn:mockingbird">
       <p>See <a href="http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=B00A1P096Y&amp;linkCode=as2&amp;tag=raganwald001-20">To Mock a Mockingbird</a><a href="#fnref:mockingbird" rel="reference">&#8617;</a></p>
     </li>
+    <li id="fn:life">
+      <p><a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway’s Game of Life</a><a href="#fnref:life" rel="reference">&#8617;</a></p>
+    </li>
     <li id="fn:nothing">
       <p><a href="http://codon.com/programming-with-nothing">Programming with Nothing</a><a href="#fnref:nothing" rel="reference">&#8617;</a></p>
+    </li>
+    <li id="fn:exercise">
+      <p>As an exercise, prove this is the case.<a href="#fnref:exercise" rel="reference">&#8617;</a></p>
+    </li>
+    <li id="fn:seuss">
+      <p><a href="https://en.wikipedia.org/wiki/Horton_Hatches_the_Egg">Horton Hatches the Egg</a><a href="#fnref:seuss" rel="reference">&#8617;</a></p>
     </li>
   </ol>
 </div>
