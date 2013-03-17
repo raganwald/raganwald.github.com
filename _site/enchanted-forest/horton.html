@@ -239,26 +239,33 @@ describe "a flock with three birds", -&gt;
 
 <h3 id="contemptuous-birds">contemptuous birds</h3>
 
-<p>“First,” said Horton, “What happens if we are given two birds that are part of a proper flock, but the first does not stand against the second and the second does not stand against the first?”</p>
+<p>“First,” said Horton, “What happens if we are given two birds that are part of a proper flock, but the first stands against the second <em>and</em> the second bird stands against the first?”</p>
 
 <p>Maude looked confused.</p>
 
-<p>“Yes,” said Horton, “This is impossible unless they are the same bird. So we say that two birds are equal if neither stands against the other.”</p>
+<p>“Yes,” said Horton, “This is impossible unless they are the same bird or either of them is confused. A bird does not back down from itself! So we say that two birds are equal if they both stand against each other and neither is confused.”</p>
+
+<blockquote>
+  <p>Two birds are equal if they both stand against each other and neither is confused.</p>
+</blockquote>
 
 <pre><code>FlockingBird::equals = (otherBird) -&gt;
-  !(@standsAgainst(otherBird) or otherBird.standsAgainst(this))
+  case1 = @standsAgainst(otherBird)
+  case2 = otherBird.standsAgainst(this)
+  case3 = not @confused() and not otherBird.confused()
+  case1 and case2 and case3
 
 describe "equality", -&gt;
 
   it "should be true for Mayzie vs Mayzie", -&gt;
     expect( Mayzie.equals(Mayzie) ).toEqual true
     
-  it "should be true for OneRight vs OneRight", -&gt;
-    expect( OneRight.equals(OneRight) ).toEqual true
+  #it "should be true for OneRight vs OneRight", -&gt;
+  #  expect( OneRight.equals(OneRight) ).toEqual true
     
-  it "should be false for Mayzie vs OneRight", -&gt;
-    expect( Mayzie.equals(OneRight) ).toEqual false
-    expect( OneRight.equals(Mayzie) ).toEqual false
+  #it "should be false for Mayzie vs OneRight", -&gt;
+  #  expect( Mayzie.equals(OneRight) ).toEqual false
+  #  expect( OneRight.equals(Mayzie) ).toEqual false
 </code></pre>
 
 <p>“Now consider a simple metric: Contempt for Mayzie. Mayzie has no contempt for herself. The bird immediately to her right has one quantum of contempt for Mayzie. The bird to to her right has two quanta of contempt for Mayzie. And so forth.”</p>

@@ -86,7 +86,11 @@
   });
 
   FlockingBird.prototype.equals = function(otherBird) {
-    return !(this.standsAgainst(otherBird) || otherBird.standsAgainst(this));
+    var case1, case2, case3;
+    case1 = this.standsAgainst(otherBird);
+    case2 = otherBird.standsAgainst(this);
+    case3 = !this.confused() && !otherBird.confused();
+    return case1 && case2 && case3;
   };
 
   describe("equality", function() {
