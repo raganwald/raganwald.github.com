@@ -32,6 +32,8 @@ And here Moses let out a raucous and intemperate cawing. Maude politely smiled. 
 
 Maude thought Moses was very vain and was doubtful that songbirds in a forest held the key to understanding thought itself, but she didn't like to interrupt a good story, so she carried on listening politely.
 
+<a href="http://www.flickr.com/photos/pepemichelle/3642644339/" title="Magnificent Bird of Paradise by mpujals, on Flickr"><img src="http://farm3.staticflickr.com/2435/3642644339_742f2269f8_b.jpg" alt="Magnificent Birds of Paradise"></a>
+
 ### the basis
 
 "Look!" said Moses suddenly, "Do you see that?"
