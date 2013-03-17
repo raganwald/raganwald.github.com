@@ -1,0 +1,70 @@
+<?php
+
+// TMirrorGrinder.php
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+require_once('TAbstractRootPage.php');
+
+class TMirrorGrinder extends TAbstractRootPage
+{
+
+function TMirrorGrinder ()
+{
+}
+
+function getRelativeURL () {
+	return '/';
+}
+
+function getRelativePath () {
+	return '/index.html';
+}
+
+// this should be updated
+function getLabel () {
+	return 'Home';
+}
+
+// Must always declare this as taking a reference
+
+function _decorateContext(&$context)
+{
+	
+}
+
+// Must always declare this as taking a reference
+
+function _doGrind (&$context) {
+	die( 'TAbstractRootPage._doGrind() is an abstract method!' );
+}
+
+function doInnerGrind ()
+{
+	// number one: build context
+	echo ( 'Grinding Mirror!<BR>' );
+	reset( $this->childrenArray );
+	while ( list($key,$eachChild) = each($this->childrenArray) ) {
+		echo( '...including child ' . $eachChild->getLabel() . '<BR>' );
+	}
+}
+
+}
+
+?>

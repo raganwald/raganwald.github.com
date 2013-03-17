@@ -1,0 +1,284 @@
+<?php
+
+// table-schema.php
+// reads a file and sets up a schema
+
+// do not use numbers or special characters for field names (SQL limitation?)
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+class AbstractImageSchema
+{
+
+var $boolean = 'boolean';
+var $distinctvalues = 'distinct values';
+var $manytomany = 'many to many';
+
+function rfieldNameStrings () {
+	return array(
+		"caption",
+		"date"
+	);
+}
+
+function rfieldGrinds () {
+	return array( 'date' => $this->distinctvalues );
+}
+
+function rfieldTypes () {
+	$arrayNames = $this->fieldNameStrings();
+	reset($arrayNames);
+	$arrayTypes = array();
+	while ( list($key,$eachFieldName) = each($arrayNames) ) {
+		$arrayTypes[$eachFieldName] = 'TEXT';
+	}
+	$arrayTypes['caption'] = 'TEXTAREA';
+	return $arrayTypes;
+}
+
+function rfieldSQLTypes () {
+	$arrayNames = $this->fieldNameStrings();
+	reset($arrayNames);
+	$arrayTypes = array();
+	while ( list($key,$eachFieldName) = each($arrayNames) ) {
+		$arrayTypes[$eachFieldName] = 'varchar(255)';
+	}
+	$arrayTypes['date'] = 'DATE';
+	$arrayTypes['caption'] = 'TEXT';
+	return $arrayTypes;
+}
+
+function rfieldSQLSorts () {
+	$arrayNames = $this->fieldNameStrings();
+	reset($arrayNames);
+	$arraySorts = array();
+	while ( list($key,$eachFieldName) = each($arrayNames) ) {
+		$arraySorts[$eachFieldName] = 'ASC';
+	}
+	$arraySorts['date'] = 'DESC';
+	return $arraySorts;
+}
+
+function rfieldLabels () {
+	$arrayNames = $this->fieldNameStrings();
+	$arrayTypes = $this->fieldTypes();
+	reset($arrayNames);
+	$arrayLabels = array();
+	while ( list($key,$eachFieldName) = each($arrayNames) ) {
+		if ( 'HIDDEN' == $arrayTypes[$eachFieldName] ) {
+			$arrayLabels[$eachFieldName] = '';
+		}
+		else $arrayLabels[$eachFieldName] = $eachFieldName;
+	}
+	$arrayLabels['caption'] = 'Caption';
+	$arrayLabels['date'] = 'Date (2000-09-15)';
+	return $arrayLabels;
+}
+
+function rfieldDefaults () {
+	return array();
+}
+
+function rmandatoryFieldWarnings () {
+	return array();
+}
+
+}
+
+class SportsSchema
+extends AbstractImageSchema
+{
+
+function fieldNameStrings () {
+	$array = $this->rfieldNameStrings();
+	$array[] = "cancon";
+	$array[] = "sport";
+	$array[] = "athletes";
+	return $array;
+}
+
+function fieldGrinds () {
+	$array = $this->rfieldGrinds();
+	$array['cancon'] = $this->boolean;
+	$array['sport'] = $this->distinctvalues;
+	$array['athletes'] = $this->manytomany;
+	return $array;
+}
+
+function fieldTypes () {
+	$arrayTypes = $this->rfieldTypes();
+	$arrayTypes['cancon'] = 'CHECKBOX';
+	return $arrayTypes;
+}
+
+function fieldSQLTypes () {
+	$arrayTypes = $this->rfieldSQLTypes();
+	return $arrayTypes;
+}
+
+function fieldSQLSorts () {
+	$arraySorts = $this->rfieldSQLSorts();
+	return $arraySorts;
+}
+
+function fieldLabels () {
+	$arrayLabels = $this->rfieldLabels();
+	$arrayLabels['cancon'] = 'Canadian Content';
+	$arrayLabels['sport'] = 'Sport';
+	$arrayLabels['athletes'] = 'Athletes';
+	return $arrayLabels;
+}
+
+function fieldDefaults () {
+	$array = $this->rfieldDefaults();
+	return $array;
+}
+
+function mandatoryFieldWarnings () {
+	$array = $this->rmandatoryFieldWarnings();
+	$array['sport'] = 'You must indicate the sport played.';
+	return $array;
+}
+
+}
+
+class FilmFestivalSchema
+extends AbstractImageSchema
+{
+
+function fieldNameStrings () {
+	$array = $this->rfieldNameStrings();
+	$array[] = "celebrities";
+	return $array;
+}
+
+function fieldGrinds () {
+	$array = $this->rfieldGrinds();
+	$array['celebrities'] = $this->manytomany;
+	return $array;
+}
+
+function fieldTypes () {
+	$arrayTypes = $this->rfieldTypes();
+	return $arrayTypes;
+}
+
+function fieldSQLTypes () {
+	$arrayTypes = $this->rfieldSQLTypes();
+	return $arrayTypes;
+}
+
+function fieldSQLSorts () {
+	$arraySorts = $this->rfieldSQLSorts();
+	return $arraySorts;
+}
+
+function fieldLabels () {
+	$arrayLabels = $this->rfieldLabels();
+	$arrayLabels['celebrities'] = 'Celebrities';
+	return $arrayLabels;
+}
+
+function fieldDefaults () {
+	$array = $this->rfieldDefaults();
+	return $array;
+}
+
+function mandatoryFieldWarnings () {
+	$array = $this->rmandatoryFieldWarnings();
+	$array['celebrities'] = 'Indicate celebrities visible in the photo.';
+	return $array;
+}
+
+}
+
+class ImageSchema
+{
+
+var $boolean = 'boolean';
+var $distinctvalues = 'distinct values';
+var $manytomany = 'many to many';
+
+var $arr_schema = array();
+var $table_names = array ( 0 => 'sports', 1 => 'filmfest' );
+
+function ImageSchema ()
+{
+	$a = $this->table_names;
+	$this->arr_schema[$a[0]] = new SportsSchema();
+	$this->arr_schema[$a[1]] = new FilmFestivalSchema();
+}
+
+function tableNames () {
+	return $this->table_names;
+}
+
+function fieldNameStrings ($table) {
+	assert ( $table != '' );
+	$schema = $this->arr_schema[$table];
+	return $schema->fieldNameStrings();
+}
+
+function fieldGrinds ($table) {
+	assert ( $table != '' );
+	$schema = $this->arr_schema[$table];
+	return $schema->fieldGrinds();
+}
+
+function fieldTypes ($table) {
+	assert ( $table != '' );
+	$schema = $this->arr_schema[$table];
+	return $schema->fieldTypes();
+}
+
+function fieldSQLTypes ($table) {
+	assert ( $table != '' );
+	$schema = $this->arr_schema[$table];
+	return $schema->fieldSQLTypes();
+}
+
+function fieldSQLSorts ($table) {
+	assert ( $table != '' );
+	$schema = $this->arr_schema[$table];
+	return $schema->fieldSQLSorts();
+}
+
+function fieldLabels ($table) {
+	assert ( $table != '' );
+	$schema = $this->arr_schema[$table];
+	return $schema->fieldLabels();
+}
+
+function fieldDefaults ($table) {
+	assert ( $table != '' );
+	$schema = $this->arr_schema[$table];
+	return $schema->fieldDefaults();
+}
+
+function mandatoryFieldWarnings ($table) {
+	assert ( $table != '' );
+	$schema = $this->arr_schema[$table];
+	return $schema->mandatoryFieldWarnings();
+}
+
+}
+
+$imageSchema = new ImageSchema();
+
+?>

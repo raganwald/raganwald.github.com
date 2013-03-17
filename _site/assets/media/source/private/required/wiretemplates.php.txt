@@ -1,0 +1,47 @@
+<?php
+
+// wiretemplates.php
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+require_once('class.FastTemplate.php');
+
+DEFINE( 'TEMPLATE_PATH', 'c:/program files/apache group/apache/htdocs/private/templates' );
+
+$tpl = new FastTemplate(TEMPLATE_PATH);
+
+$template_dir_handle = opendir(TEMPLATE_PATH);
+
+assert ( $template_dir_handle );
+
+$tpl_associations = array();
+
+while ( $file_name = readdir($template_dir_handle) ) {
+	if ( eregi('^(.*)\.tpl$',$file_name,$arr) ) $tpl_associations[$arr[1]] = $file_name;
+}
+
+closedir( $template_dir_handle );
+
+$tpl->define($tpl_associations);
+
+$tpl->define_dynamic("upload.field","upload");
+
+$tpl->parse('WIRESHOOTER-MENU','menu');
+ 
+?>

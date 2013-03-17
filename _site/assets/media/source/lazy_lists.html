@@ -1,0 +1,1129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>lazy_lists.rb</title>
+	<style type="text/css">
+/* Stylesheet generated from TextMate theme
+ *
+ * Sunburst
+ * (π) Soryu, 2005
+ *
+ */
+
+/* Mostly to improve view within the TextMate HTML viewer */
+body {
+	margin: 0;
+	padding: 0;
+}
+
+pre.textmate-source {
+	margin: 0;
+	padding: 0 0 0 2px;
+	font-family: Monaco, monospace;
+	font-size: 11px;
+	line-height: 1.3em;
+	word-wrap: break-word;
+	white-space: pre;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -o-pre-wrap;
+}
+
+pre.textmate-source.sunburst {
+	color: #F8F8F8;
+	background-color: #000000;
+}
+
+pre.textmate-source .linenum {
+	width: 75px;
+	padding: 0.1em 1em 0.2em 0;
+	color: #888;
+	background-color: #eee;
+}
+pre.textmate-source.sunburst span {
+   padding-top: 0.2em;
+   padding-bottom: 0.1em;
+}
+pre.textmate-source.sunburst ::selection {
+	background-color: rgba(221, 240, 255, 0.20);
+}
+/* Comment */
+pre.textmate-source.sunburst .comment {
+	color: #AEAEAE;
+	font-style: italic;
+}
+
+/* Constant */
+pre.textmate-source.sunburst .constant {
+	color: #3387CC;
+}
+
+/* Entity */
+pre.textmate-source.sunburst .entity {
+	color: #89BDFF;
+}
+
+/* Keyword */
+pre.textmate-source.sunburst .keyword {
+	color: #E28964;
+}
+
+/* Storage */
+pre.textmate-source.sunburst .storage {
+	color: #99CF50;
+}
+
+/* String */
+pre.textmate-source.sunburst .string {
+	color: #65B042;
+}
+
+/* Support */
+pre.textmate-source.sunburst .support {
+	color: #9B859D;
+}
+
+/* Variable */
+pre.textmate-source.sunburst .variable {
+	color: #3E87E3;
+}
+
+/* Invalid – Deprecated */
+pre.textmate-source.sunburst .invalid_deprecated {
+	color: #FD5FF1;
+	font-style: italic;
+	text-decoration: underline;
+}
+
+/* Invalid – Illegal */
+pre.textmate-source.sunburst .invalid_illegal {
+	color: #FD5FF1;
+	background-color: rgba(86, 45, 86, 0.75);
+}
+
+/* ♦ Embedded Source (Bright) */
+pre.textmate-source.sunburst .text .source {
+	background-color: rgba(177, 179, 186, 0.03);
+}
+
+/* ♦ Entity inherited-class */
+pre.textmate-source.sunburst .entity_other_inherited-class {
+	color: #9B5C2E;
+	font-style: italic;
+}
+
+/* ♦ String embedded-source */
+pre.textmate-source.sunburst .string_quoted .source {
+	color: #DAEFA3;
+}
+
+/* ♦ String constant */
+pre.textmate-source.sunburst .string .constant {
+	color: #DDF2A4;
+}
+
+/* ♦ String.regexp */
+pre.textmate-source.sunburst .string_regexp {
+	color: #E9C062;
+}
+
+/* ♦ String.regexp.«special» */
+pre.textmate-source.sunburst .string_regexp .constant_character_escape, pre.textmate-source.sunburst .string_regexp .source_ruby_embedded, pre.textmate-source.sunburst .string_regexp .string_regexp_arbitrary-repitition {
+	color: #CF7D34;
+}
+
+/* ♦ String variable */
+pre.textmate-source.sunburst .string .variable {
+	color: #8A9A95;
+}
+
+/* ♦ Support.function */
+pre.textmate-source.sunburst .support_function {
+	color: #DAD085;
+}
+
+/* ♦ Support.constant */
+pre.textmate-source.sunburst .support_constant {
+	color: #CF6A4C;
+}
+
+/* c C/C++ Preprocessor Line */
+pre.textmate-source.sunburst .meta_preprocessor_c {
+	color: #8996A8;
+}
+
+/* c C/C++ Preprocessor Directive */
+pre.textmate-source.sunburst .meta_preprocessor_c .keyword {
+	color: #AFC4DB;
+}
+
+/* j Entity Name Type */
+pre.textmate-source.sunburst .entity_name_type {
+	text-decoration: underline;
+}
+
+/* j Cast */
+pre.textmate-source.sunburst .meta_cast {
+	color: #676767;
+	font-style: italic;
+}
+
+/* ✘ Doctype/XML Processing */
+pre.textmate-source.sunburst .meta_sgml_html .meta_doctype, pre.textmate-source.sunburst .meta_sgml_html .meta_doctype .entity, pre.textmate-source.sunburst .meta_sgml_html .meta_doctype .string, pre.textmate-source.sunburst .meta_xml-processing, pre.textmate-source.sunburst .meta_xml-processing .entity, pre.textmate-source.sunburst .meta_xml-processing .string {
+	color: #494949;
+}
+
+/* ✘ Meta.tag.«all» */
+pre.textmate-source.sunburst .meta_tag, pre.textmate-source.sunburst .meta_tag .entity {
+	color: #89BDFF;
+}
+
+/* ✘ Meta.tag.inline */
+pre.textmate-source.sunburst .source .entity_name_tag, pre.textmate-source.sunburst .source .entity_other_attribute-name, pre.textmate-source.sunburst .meta_tag_inline, pre.textmate-source.sunburst .meta_tag_inline .entity {
+	color: #E0C589;
+}
+
+/* ✘ Namespaces */
+pre.textmate-source.sunburst .entity_name_tag_namespace, pre.textmate-source.sunburst .entity_other_attribute-name_namespace {
+	color: #E18964;
+}
+
+/* § css tag-name */
+pre.textmate-source.sunburst .meta_selector_css .entity_name_tag {
+	color: #CDA869;
+}
+
+/* § css:pseudo-class */
+pre.textmate-source.sunburst .meta_selector_css .entity_other_attribute-name_tag_pseudo-class {
+	color: #8F9D6A;
+}
+
+/* § css#id */
+pre.textmate-source.sunburst .meta_selector_css .entity_other_attribute-name_id {
+	color: #8B98AB;
+}
+
+/* § css.class */
+pre.textmate-source.sunburst .meta_selector_css .entity_other_attribute-name_class {
+	color: #9B703F;
+}
+
+/* § css property-name: */
+pre.textmate-source.sunburst .support_type_property-name_css {
+	color: #C5AF75;
+}
+
+/* § css property-value; */
+pre.textmate-source.sunburst .meta_property-group .support_constant_property-value_css, pre.textmate-source.sunburst .meta_property-value .support_constant_property-value_css {
+	color: #F9EE98;
+}
+
+/* § css @at-rule */
+pre.textmate-source.sunburst .meta_preprocessor_at-rule .keyword_control_at-rule {
+	color: #8693A5;
+}
+
+/* § css additional-constants */
+pre.textmate-source.sunburst .meta_property-value .support_constant_named-color_css, pre.textmate-source.sunburst .meta_property-value .constant {
+	color: #DD7B3B;
+}
+
+/* § css constructor.argument */
+pre.textmate-source.sunburst .meta_constructor_argument_css {
+	color: #8F9D6A;
+}
+
+/* ⎇ diff.header */
+pre.textmate-source.sunburst .meta_diff, pre.textmate-source.sunburst .meta_diff_header {
+	color: #F8F8F8;
+	font-style: italic;
+	background-color: #0E2231;
+}
+
+/* ⎇ diff.deleted */
+pre.textmate-source.sunburst .markup_deleted {
+	color: #F8F8F8;
+	background-color: #420E09;
+}
+
+/* ⎇ diff.changed */
+pre.textmate-source.sunburst .markup_changed {
+	color: #F8F8F8;
+	background-color: #4A410D;
+}
+
+/* ⎇ diff.inserted */
+pre.textmate-source.sunburst .markup_inserted {
+	color: #F8F8F8;
+	background-color: #253B22;
+}
+
+/* Markup: Italic */
+pre.textmate-source.sunburst .markup_italic {
+	color: #E9C062;
+	font-style: italic;
+}
+
+/* Markup: Bold */
+pre.textmate-source.sunburst .markup_bold {
+	color: #E9C062;
+	font-weight: bold;
+}
+
+/* Markup: Underline */
+pre.textmate-source.sunburst .markup_underline {
+	color: #E18964;
+	text-decoration: underline;
+}
+
+/* Markup: Quote */
+pre.textmate-source.sunburst .markup_quote {
+	color: #E1D4B9;
+	font-style: italic;
+	background-color: rgba(254, 224, 156, 0.07);
+}
+
+/* Markup: Heading */
+pre.textmate-source.sunburst .markup_heading, pre.textmate-source.sunburst .markup_heading .entity {
+	color: #FEDCC5;
+	background-color: #632D04;
+}
+
+/* Markup: List */
+pre.textmate-source.sunburst .markup_list {
+	color: #E1D4B9;
+}
+
+/* Markup: Raw */
+pre.textmate-source.sunburst .markup_raw {
+	color: #578BB3;
+	background-color: rgba(177, 179, 186, 0.03);
+}
+
+/* Markup: Comment */
+pre.textmate-source.sunburst .markup .comment {
+	color: #F67B37;
+	font-style: italic;
+}
+
+/* Markup: Separator */
+pre.textmate-source.sunburst .meta_separator {
+	color: #60A633;
+	background-color: #242424;
+}
+
+/* Log Entry */
+pre.textmate-source.sunburst .meta_line_entry_logfile, pre.textmate-source.sunburst .meta_line_exit_logfile {
+	background-color: rgba(238, 238, 238, 0.16);
+}
+
+/* Log Entry Error */
+pre.textmate-source.sunburst .meta_line_error_logfile {
+	background-color: #751012;
+}
+
+
+
+	</style>
+</head>
+
+<body><pre class="textmate-source sunburst"><span class="source source_ruby"><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>!/usr/bin/env ruby
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  Created by <a href="http://braythwayt.com/">Reginald Braithwaite</a> on 2007-02-21.
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>                    Version 2, December 2004
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Copyright (C) 2004 Sam Hocevar
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  22 rue de Plaisance, 75014 Paris, France
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Everyone is permitted to copy and distribute verbatim or modified
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> copies of this license document, and changing it is allowed as long
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> as the name is changed.
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  0. You just DO WHAT THE FUCK YOU WANT TO.
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> See <a href="http://sam.zoy.org/wtfpl/">http://sam.zoy.org/wtfpl/</a> for full license details
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Requires certain Ruby Facets: <a href="http://facets.rubyforge.org/">http://facets.rubyforge.org/</a>
+</span>
+<span class="meta meta_require meta_require_ruby"><span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">require</span> <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>rubygems<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span></span>
+<span class="meta meta_require meta_require_ruby"><span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">require</span> <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>facets<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span></span>
+<span class="meta meta_require meta_require_ruby"><span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">require</span> <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>array/tail<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span></span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = LazyList
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> A lazy collection that is accessed from the head. It isn't really an enumerable.
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> key methods are first and tail.
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> tail returns an empty list when it reaches the end
+</span>
+<span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">LazyList</span></span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ==================
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = The Lazy Value =
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ==================
+</span>
+<span class="meta meta_class meta_class_ruby">  <span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby"><span class="variable variable_other variable_other_object variable_other_object_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">&lt;&lt;</span> self</span></span></span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> =======================================
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = Delay and force convenience methods =
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> =======================================
+</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">delay</span></span> &amp;block
+      <span class="support support_class support_class_ruby">Lazy</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(block)
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">force</span></span> obj
+      <span class="keyword keyword_control keyword_control_ruby">if</span> obj.nil?
+        <span class="constant constant_language constant_language_ruby">nil</span>
+      <span class="keyword keyword_control keyword_control_ruby">elsif</span> obj.kind_of?(<span class="variable variable_other variable_other_constant variable_other_constant_ruby">Lazy</span>)
+        force obj.value
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        obj
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="meta meta_class meta_class_ruby">  <span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">Lazy</span></span>
+    <span class="variable variable_other variable_other_constant variable_other_constant_ruby">MEMOIZE</span> = <span class="constant constant_language constant_language_ruby">false</span>
+<span class="meta meta_class meta_class_ruby">    <span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby"><span class="variable variable_other variable_other_object variable_other_object_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">&lt;&lt;</span> self</span></span></span>
+      <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">is_memoized?</span></span>
+        <span class="variable variable_other variable_other_constant variable_other_constant_ruby">MEMOIZE</span>
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">initialize</span></span> block
+      <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>block</span> = block
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="meta meta_function meta_function_method meta_function_method_with-arguments meta_function_method_with-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">method_missing</span><span class="punctuation punctuation_definition punctuation_definition_parameters punctuation_definition_parameters_ruby">(</span><span class="variable variable_parameter variable_parameter_function variable_parameter_function_ruby"> *args, &amp;block </span><span class="punctuation punctuation_definition punctuation_definition_parameters punctuation_definition_parameters_ruby">)</span></span> <span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>:nodoc:
+</span>      value.__send__( *args, &amp;block )
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">__value</span></span>
+      v = <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>block</span>.call
+      <span class="keyword keyword_control keyword_control_ruby">if</span> v.kind_of?(<span class="variable variable_other variable_other_constant variable_other_constant_ruby">Lazy</span>)
+        v.value
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        v
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">if</span> <span class="variable variable_other variable_other_constant variable_other_constant_ruby">MEMOIZE</span>
+      <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">value</span></span>
+        <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>value</span> ||= __value
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">else</span>
+      <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">alias</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>value</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>__value</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>  
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ================
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = Constructors =
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ================
+</span>
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> performs a wrapping construction
+</span>  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">initialize</span></span> one = <span class="constant constant_language constant_language_ruby">nil</span>, two = <span class="constant constant_language constant_language_ruby">nil</span>, &amp;block
+    <span class="keyword keyword_control keyword_control_ruby">unless</span> one.nil? &amp;&amp; two.nil?
+      <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">raise</span> <span class="variable variable_other variable_other_constant variable_other_constant_ruby">ArgumentError</span>, <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>deprecated: list car cannot be lazy<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span> <span class="keyword keyword_control keyword_control_ruby">if</span> one.kind_of?(<span class="variable variable_other variable_other_constant variable_other_constant_ruby">Lazy</span>)
+      <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">raise</span> <span class="variable variable_other variable_other_constant variable_other_constant_ruby">ArgumentError</span>, <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>tail must be lazy<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span> <span class="keyword keyword_control keyword_control_ruby">unless</span> two.nil? <span class="keyword keyword_operator keyword_operator_logical keyword_operator_logical_ruby">or</span> two.kind_of?(<span class="variable variable_other variable_other_constant variable_other_constant_ruby">Lazy</span>)
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>first</span> = one
+    <span class="keyword keyword_control keyword_control_ruby">if</span> <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">block_given?</span>
+      <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>tail</span> = <span class="support support_class support_class_ruby">LazyList</span>.delay(&amp;block)
+    <span class="keyword keyword_control keyword_control_ruby">else</span>
+      <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>tail</span> = two
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> The canonical empty list. also signals a list's end
+</span>
+  <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span> = <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(<span class="constant constant_language constant_language_ruby">nil</span>, <span class="constant constant_language constant_language_ruby">nil</span>)
+
+<span class="meta meta_class meta_class_ruby">  <span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby"><span class="variable variable_other variable_other_object variable_other_object_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">&lt;&lt;</span> self</span></span></span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ==========================
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = Infinite list builders =
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ==========================
+</span>
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> builds a list from a seed value and a block
+</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">unfoldr</span></span> seed = <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span>, &amp;block
+      <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(seed) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>unfoldr block.call(seed), &amp;block }
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> builds a list that searches a space, including the seed values
+</span>    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">binary_search</span></span> seed1, seed2, &amp;block
+      bisection_block = block || lambda {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|x, y| (x-y)/<span class="constant constant_numeric constant_numeric_ruby">2</span> + y }
+      <span class="support support_class support_class_ruby">LazyList</span>.cons(
+        seed1,
+        <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(
+          seed2,
+          delay {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block">
+</span>            bisect(seed1, seed2, &amp;bisection_block)
+          }
+        )
+      )
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> infinitely bisects a space, exclusive of the seed values
+</span>    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">bisect</span></span> seed1, seed2, &amp;block
+      <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">return</span> <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span> <span class="keyword keyword_control keyword_control_ruby">if</span> seed1 == seed2
+      half = block.call(seed1, seed2)
+      <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(
+        half,
+        delay {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block">
+</span>          merge(
+            bisect(seed1, half, &amp;block),
+            bisect(half, seed2, &amp;block)
+          )
+        }
+      )
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ==========================
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = Canonical smaple lists =
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ==========================  
+</span>    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">wholes</span></span>
+      unfoldr(<span class="constant constant_numeric constant_numeric_ruby">0</span>) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|n| n + <span class="constant constant_numeric constant_numeric_ruby">1</span> }
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">integers</span></span>
+      cons(
+        <span class="constant constant_numeric constant_numeric_ruby">0</span>,
+        merge(
+          unfoldr(<span class="constant constant_numeric constant_numeric_ruby">1</span>) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|n| n + <span class="constant constant_numeric constant_numeric_ruby">1</span> },
+          unfoldr(-<span class="constant constant_numeric constant_numeric_ruby">1</span>) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|n| n - <span class="constant constant_numeric constant_numeric_ruby">1</span> }
+        )
+      )
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> =============================================
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = Building lists from other data structures =
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> =============================================
+</span>
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> build a list from anything that responds to first and tail, one level deep
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> so [[1, 2], 3] =&gt; ([1, 2] 3)
+</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">from_list</span></span> list
+      <span class="keyword keyword_control keyword_control_ruby">if</span> list.empty?
+        <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span>
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(list.first) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span><span class="support support_class support_class_ruby">LazyList</span>.from_list(list.tail) }
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> build a list from anything that responds to first and tail, recursively
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> so [[1, 2], 3] =&gt; ((1 2) 3)
+</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">from_list_recursive</span></span> list_or_element
+      <span class="keyword keyword_control keyword_control_ruby">if</span> list_or_element.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>first</span>) &amp;&amp; list_or_element.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>tail</span>) &amp;&amp; list_or_element.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>empty?</span>)
+        <span class="keyword keyword_control keyword_control_ruby">if</span> list_or_element.empty?
+          <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span>
+        <span class="keyword keyword_control keyword_control_ruby">else</span>
+          <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(from_list_recursive(list_or_element.first)) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span><span class="support support_class support_class_ruby">LazyList</span>.from_list_recursive(list_or_element.tail) }
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        list_or_element
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Handy notation for from_list_recursive
+</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">[]</span></span> *args
+      from_list_recursive args
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> build a list from anything that responds to succ
+</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">from_range</span></span> range
+      <span class="keyword keyword_control keyword_control_ruby">if</span> range.first == range.last
+        <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(range.first) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span><span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span> }
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(range.first) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span><span class="support support_class support_class_ruby">LazyList</span>.from_range(range.first.succ..range.last) }
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> build a list with just one element in it, synonymous with bulding a list from a list with one element
+</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">from_element</span></span> el
+      <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(el)  {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span><span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span> }
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> generic builder
+</span>    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">from</span></span> whatsis, &amp;block
+      <span class="keyword keyword_control keyword_control_ruby">if</span> <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">block_given?</span>
+        unfoldr(whatsis, &amp;block)
+      <span class="keyword keyword_control keyword_control_ruby">elsif</span> whatsis.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>tail</span>) &amp;&amp; whatsis.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>first</span>)
+        from_list(whatsis)
+      <span class="keyword keyword_control keyword_control_ruby">elsif</span> whatsis.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>first</span>) &amp;&amp; whatsis.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>last</span>) &amp;&amp; whatsis.first.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>succ</span>)
+        from_range(whatsis)
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        from_element(whatsis)
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> =======================
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = Operations on lists =
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> =======================
+</span>
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> "cons" an element onto the front of an existing list
+</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">cons</span></span> el, list
+      <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(el) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>list }
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> merges an arbitrary number of lists together
+</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">merge</span></span> *lists
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">      <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> p lists.map { |l| force(l) }
+</span>      <span class="keyword keyword_control keyword_control_ruby">if</span> lists.empty? <span class="keyword keyword_operator keyword_operator_logical keyword_operator_logical_ruby">or</span> lists.nil?
+        <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span>
+      <span class="keyword keyword_control keyword_control_ruby">elsif</span> lists.size == <span class="constant constant_numeric constant_numeric_ruby">1</span>
+        force lists.first
+      <span class="keyword keyword_control keyword_control_ruby">elsif</span> lists.first.nil?
+        merge(*(lists.tail))
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        head = force(lists.first)
+        <span class="keyword keyword_control keyword_control_ruby">if</span> head.empty?
+          merge(*(lists.tail))
+        <span class="keyword keyword_control keyword_control_ruby">else</span>
+          <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(head.first) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+</span>            <span class="keyword keyword_control keyword_control_ruby">unless</span> head.tail.empty?
+              merge(*(lists.tail.push(delay {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>head.tail })))
+            <span class="keyword keyword_control keyword_control_ruby">else</span>
+              merge(*(lists.tail))
+            <span class="keyword keyword_control keyword_control_ruby">end</span>
+          <span class="keyword keyword_control keyword_control_ruby">end</span>
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Danger, Will Robinson: does not terminate for infinite lists
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> TODO: a flag for known finite lists
+</span>
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">append</span></span> l1, l2
+      l1.empty? &amp;&amp; force(l2) || <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(l1.first, delay {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>append(l1.tail, force(l2)) })
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> the cartesian product of two or more lists. use instead of the product instance method
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> when you want to supply a block that operates on three or more lists
+</span>    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">cartesian_product</span></span> *lists, &amp;block
+      <span class="keyword keyword_control keyword_control_ruby">if</span> lists.empty?
+        <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span>
+      <span class="keyword keyword_control keyword_control_ruby">elsif</span> lists.size == <span class="constant constant_numeric constant_numeric_ruby">1</span> &amp;&amp; <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">block_given?</span>
+        lists.first.map(&amp;block)
+      <span class="keyword keyword_control keyword_control_ruby">elsif</span> lists.size == <span class="constant constant_numeric constant_numeric_ruby">1</span>
+        lists.first
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">        <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> opportunity to clean this up with a single unwrapping
+</span>        product = lists[<span class="constant constant_numeric constant_numeric_ruby">2</span>..-<span class="constant constant_numeric constant_numeric_ruby">1</span>].inject(lists[<span class="constant constant_numeric constant_numeric_ruby">0</span>].product(lists[<span class="constant constant_numeric constant_numeric_ruby">1</span>])) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|intermediate_product, list| 
+          intermediate_product.product(list) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|existing_product, new_element| existing_product + [new_element] }
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+        <span class="keyword keyword_control keyword_control_ruby">if</span> <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">block_given?</span>
+          product.map {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|tuple| block.call(*tuple) }
+        <span class="keyword keyword_control keyword_control_ruby">else</span>
+          product
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+    <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">alias</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>cart</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>cartesian_product</span>
+    
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ===================================================================
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = Cross product is more expensive but gives a better distribution =
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">    <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ===================================================================
+</span>    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">combinations_by_sum</span></span> i, n, *lists
+      <span class="keyword keyword_control keyword_control_ruby">if</span> lists.empty?
+        <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span>
+      <span class="keyword keyword_control keyword_control_ruby">elsif</span> lists.size == <span class="constant constant_numeric constant_numeric_ruby">1</span>
+        <span class="support support_class support_class_ruby">LazyList</span>.from_element([ lists.first[n] ])
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        from(<span class="constant constant_numeric constant_numeric_ruby">0</span>..n).mapr(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>append</span>) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|nn| 
+          combinations_by_sum(i + <span class="constant constant_numeric constant_numeric_ruby">1</span>, n - nn, *(lists.tail) ).map {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|ec| [ lists.first[nn] ] + ec }
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">end</span> 
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">cross_product</span></span> *lists, &amp;block
+      <span class="keyword keyword_control keyword_control_ruby">if</span> <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">block_given?</span>
+        wholes.mapr(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>append</span>) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|n|
+          combinations_by_sum(<span class="constant constant_numeric constant_numeric_ruby">0</span>, n, *lists).map {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|combo| <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">yield</span> combo }
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        wholes.mapr(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>append</span>) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|n|
+          combinations_by_sum(<span class="constant constant_numeric constant_numeric_ruby">0</span>, n, *lists)
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> =============
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = Accessors =
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> =============
+</span>
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">first</span></span>
+    <span class="support support_class support_class_ruby">LazyList</span>.force <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>first</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">tail</span></span>
+    <span class="support support_class support_class_ruby">LazyList</span>.force <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>tail</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> =======================
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = Axiomatic operators =
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> =======================
+</span>
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">empty?</span></span>
+    <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>first</span>.nil? &amp;&amp; <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>tail</span>.nil?
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> may not terminate!
+</span>
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">==</span></span> other_list
+    empty? &amp;&amp; other_list.empty? <span class="keyword keyword_operator keyword_operator_logical keyword_operator_logical_ruby">or</span> first == other_list.first &amp;&amp; tail == other_list.tail
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">inner_foldr</span></span> seed, &amp;block
+    <span class="keyword keyword_control keyword_control_ruby">unless</span> empty?
+      tail.inner_foldr(<span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">yield</span>(seed, first), &amp;block)
+    <span class="keyword keyword_control keyword_control_ruby">else</span>
+      seed
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">foldr</span></span> seed = <span class="constant constant_language constant_language_ruby">nil</span>, &amp;block
+    <span class="keyword keyword_control keyword_control_ruby">unless</span> empty?
+      <span class="keyword keyword_control keyword_control_ruby">if</span> seed.nil?
+        tail.inner_foldr(first, &amp;block)
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        tail.inner_foldr(<span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">yield</span>(seed, first), &amp;block)
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">else</span>
+      <span class="keyword keyword_control keyword_control_ruby">if</span> seed.nil?
+        <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span>
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        seed
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">each</span></span> args = {}, &amp;block
+    while_block = args[<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>while</span>] || lambda {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|element| <span class="constant constant_language constant_language_ruby">true</span> }
+    <span class="keyword keyword_control keyword_control_ruby">unless</span> empty?
+      <span class="keyword keyword_control keyword_control_ruby">if</span> while_block.call(first)
+        <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">yield</span> first
+        tail.each(args, &amp;block)
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+  <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">alias</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>inject</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>foldr</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> may not terminate!
+</span>
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">detect</span></span> &amp;block
+    <span class="keyword keyword_control keyword_control_ruby">if</span> empty?
+      <span class="constant constant_language constant_language_ruby">nil</span>
+    <span class="keyword keyword_control keyword_control_ruby">elsif</span> block.call(first)
+      first
+    <span class="keyword keyword_control keyword_control_ruby">elsif</span> tail.empty?
+      <span class="constant constant_language constant_language_ruby">nil</span>
+    <span class="keyword keyword_control keyword_control_ruby">else</span>
+      tail.detect(&amp;block)
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> maps a list to another list. generalized above and beyond a regular map
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> to support filtering and inflation
+</span>
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">mapr</span></span> operation = <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>cons</span>, &amp;block
+    <span class="keyword keyword_control keyword_control_ruby">if</span> empty?
+      <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span>
+    <span class="keyword keyword_control keyword_control_ruby">else</span>
+      first_result = <span class="keyword keyword_control keyword_control_ruby">if</span> block.arity == <span class="constant constant_numeric constant_numeric_ruby">1</span>
+          block.call(first)
+        <span class="keyword keyword_control keyword_control_ruby">else</span>
+          block.call(first, <span class="variable variable_other variable_other_readwrite variable_other_readwrite_instance variable_other_readwrite_instance_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">@</span>tail</span>)
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      delayed_tail = <span class="support support_class support_class_ruby">LazyList</span>.delay {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block">
+</span>        tail.map(operation, &amp;block)
+      }
+      <span class="keyword keyword_control keyword_control_ruby">if</span> operation.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>call</span>)
+        operation.call(first_result, delayed_tail)
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        <span class="support support_class support_class_ruby">LazyList</span>.method(operation).call(first_result, delayed_tail)
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+  <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">alias</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>collect</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>mapr</span>
+  <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">alias</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>map</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>mapr</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ==========================================
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> = Operators expressed in terms of axioms =
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> ==========================================
+</span>
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> unpacks lists that are made of lists, using merge semantics
+</span>
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">merge_all</span></span>
+    mapr <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>merge</span> <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|element|
+      <span class="keyword keyword_control keyword_control_ruby">if</span> element.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>first</span>)
+        element
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        <span class="support support_class support_class_ruby">LazyList</span>.from_element(element)
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> pairs two lists up
+</span>
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">pairwise</span></span> other_list, &amp;block
+    <span class="keyword keyword_control keyword_control_ruby">unless</span> empty? <span class="keyword keyword_operator keyword_operator_logical keyword_operator_logical_ruby">or</span> other_list.empty?
+      operation = block || lambda {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|*args| args }
+      <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(
+        operation.call(first, other_list.first),
+        <span class="support support_class support_class_ruby">LazyList</span>.delay {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>tail.pairwise(other_list.tail, &amp;block) }
+      )
+    <span class="keyword keyword_control keyword_control_ruby">else</span>
+      <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">half_product</span></span> other_list, &amp;block
+    <span class="keyword keyword_control keyword_control_ruby">if</span> empty? <span class="keyword keyword_operator keyword_operator_logical keyword_operator_logical_ruby">or</span> other_list.empty?
+      <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span>
+    <span class="keyword keyword_control keyword_control_ruby">else</span>
+      <span class="support support_class support_class_ruby">LazyList</span>.merge(
+        <span class="support support_class support_class_ruby">LazyList</span>.delay{<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>pairwise(other_list, &amp;block) },
+        <span class="support support_class support_class_ruby">LazyList</span>.delay{<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>tail.half_product(other_list, &amp;block) }
+      )
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> lazily creates the cartesian product of two lists.
+</span>
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">product</span></span> other_list, &amp;block
+    <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">raise</span> <span class="variable variable_other variable_other_constant variable_other_constant_ruby">ArgumentError</span>, <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>both items must be lists, not nil<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span> <span class="keyword keyword_control keyword_control_ruby">if</span> other_list.nil?
+    <span class="keyword keyword_control keyword_control_ruby">if</span> empty? <span class="keyword keyword_operator keyword_operator_logical keyword_operator_logical_ruby">or</span> other_list.empty?
+      <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span>
+    <span class="keyword keyword_control keyword_control_ruby">else</span>
+      other_block = <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">block_given?</span> &amp;&amp; lambda {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|you, me| block.call(me, you) } || lambda {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|you, me| [me, you] }
+      <span class="support support_class support_class_ruby">LazyList</span>.merge(
+        <span class="support support_class support_class_ruby">LazyList</span>.delay{<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>half_product(other_list, &amp;block) },
+        <span class="support support_class support_class_ruby">LazyList</span>.delay{<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>other_list.tail.half_product(<span class="variable variable_language variable_language_ruby">self</span>, &amp;other_block) }
+      )
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+  <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">alias</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>*</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>product</span>
+  
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> index
+</span>  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">at</span></span> index
+    <span class="keyword keyword_control keyword_control_ruby">if</span> index.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>-</span>)
+      <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">raise</span> <span class="variable variable_other variable_other_constant variable_other_constant_ruby">ArgumentError</span>, <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span><span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>index<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span> must be &gt;= 0<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span> <span class="keyword keyword_control keyword_control_ruby">if</span> index &lt; <span class="constant constant_numeric constant_numeric_ruby">0</span>
+      <span class="keyword keyword_control keyword_control_ruby">if</span> index == <span class="constant constant_numeric constant_numeric_ruby">0</span>
+        <span class="variable variable_language variable_language_ruby">self</span>.first
+      <span class="keyword keyword_control keyword_control_ruby">else</span>
+        <span class="variable variable_language variable_language_ruby">self</span>.tail.at(index - <span class="constant constant_numeric constant_numeric_ruby">1</span>)
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">elsif</span> index.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>first</span>) &amp;&amp; index.respond_to?(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>last</span>)
+      from = index.first
+      to = index.last
+      <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">raise</span> <span class="variable variable_other variable_other_constant variable_other_constant_ruby">ArgumentError</span>, <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span><span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>from<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span> must be &gt;= 0<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span> <span class="keyword keyword_control keyword_control_ruby">if</span> from &lt; <span class="constant constant_numeric constant_numeric_ruby">0</span>
+      <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">raise</span> <span class="variable variable_other variable_other_constant variable_other_constant_ruby">ArgumentError</span>, <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span><span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>to<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span> must be &gt;= 0<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span> <span class="keyword keyword_control keyword_control_ruby">if</span> to &lt; <span class="constant constant_numeric constant_numeric_ruby">0</span>
+      <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">raise</span> <span class="variable variable_other variable_other_constant variable_other_constant_ruby">ArgumentError</span>, <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span><span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>to<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span> must be &gt;= from<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span> <span class="keyword keyword_control keyword_control_ruby">if</span> to &lt; from
+      <span class="keyword keyword_control keyword_control_ruby">if</span> from == to
+        <span class="support support_class support_class_ruby">LazyList</span>.from_element(<span class="variable variable_language variable_language_ruby">self</span>.at(from))
+      <span class="keyword keyword_control keyword_control_ruby">elsif</span> from &gt; <span class="constant constant_numeric constant_numeric_ruby">0</span>
+        <span class="variable variable_language variable_language_ruby">self</span>.tail.at(from - <span class="constant constant_numeric constant_numeric_ruby">1</span>..to - <span class="constant constant_numeric constant_numeric_ruby">1</span>)
+      <span class="keyword keyword_control keyword_control_ruby">elsif</span> to &gt; <span class="constant constant_numeric constant_numeric_ruby">1</span>
+        <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(<span class="variable variable_language variable_language_ruby">self</span>.first) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+</span>          <span class="variable variable_language variable_language_ruby">self</span>.tail.at(<span class="constant constant_numeric constant_numeric_ruby">0</span>..(to - <span class="constant constant_numeric constant_numeric_ruby">1</span>))
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">else</span> <span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 0..1
+</span>        <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(<span class="variable variable_language variable_language_ruby">self</span>.first) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+</span>          <span class="support support_class support_class_ruby">LazyList</span>.cons(<span class="variable variable_language variable_language_ruby">self</span>.tail.first, <span class="variable variable_other variable_other_constant variable_other_constant_ruby">EMPTY</span>)
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">else</span>
+      <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">raise</span> <span class="variable variable_other variable_other_constant variable_other_constant_ruby">ArgumentError</span>, <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>what shall I do with <span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>index.inspect<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span>?<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="keyword keyword_control keyword_control_pseudo-method keyword_control_pseudo-method_ruby">alias</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>[]</span> <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>at</span>
+
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> may not terminate!
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">  <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> TODO: Map implementation
+</span>
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">to_s</span></span>
+    <span class="keyword keyword_control keyword_control_ruby">if</span> empty?
+      <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>()<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>
+    <span class="keyword keyword_control keyword_control_ruby">else</span>
+      <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span><span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>first.to_s<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span> . <span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>tail.to_s<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="meta meta_class meta_class_ruby">  <span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">Demo</span></span>
+<span class="meta meta_class meta_class_ruby">    <span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby"><span class="variable variable_other variable_other_object variable_other_object_ruby"><span class="punctuation punctuation_definition punctuation_definition_variable punctuation_definition_variable_ruby">&lt;&lt;</span> self</span></span></span>
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">      <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> run this and watch Ruby's memory allocation. On my MacBook, it uses about 33MB with memoization turned off.
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">      <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> it grows uncontrollably with memoization on and grinds to a halt after reaching about the 500,000th element
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">      <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> and consuming approximately 1GB of memory.
+</span>      <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">stress_lazy_memoization</span></span>
+        s = ss = <span class="support support_class support_class_ruby">LazyList</span>.from_range(<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">1000000</span>)
+        <span class="keyword keyword_control keyword_control_ruby">until</span> s.empty?
+          n = s.first
+          s = s.tail
+          <span class="keyword keyword_control keyword_control_ruby">if</span> n % <span class="constant constant_numeric constant_numeric_ruby">10000</span> == <span class="constant constant_numeric constant_numeric_ruby">0</span>
+            p n
+            <span class="variable variable_other variable_other_constant variable_other_constant_ruby">GC</span>.start
+          <span class="keyword keyword_control keyword_control_ruby">end</span>
+        <span class="keyword keyword_control keyword_control_ruby">end</span>
+      <span class="keyword keyword_control keyword_control_ruby">end</span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="meta meta_module meta_module_ruby"><span class="keyword keyword_control keyword_control_module keyword_control_module_ruby">module</span> <span class="entity entity_name entity_name_type entity_name_type_module entity_name_type_module_ruby">LazyListTestCase</span></span>
+
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">assert_contains_all</span></span> expected, list, message = <span class="constant constant_language constant_language_ruby">nil</span>
+    expected.each <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|item|
+      assert list.detect {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|el| el == item }, message || <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>expected list to contain <span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>item.to_s<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span>
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+
+<span class="keyword keyword_control keyword_control_ruby">end</span></span></pre>
+
+<hr/>
+
+<pre class="textmate-source sunburst"><span class="source source_ruby"><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>!/usr/bin/env ruby
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  Created by <a href="http://braythwayt.com/">Reginald Braithwaite</a> on 2007-02-21.
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>                    Version 2, December 2004
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Copyright (C) 2004 Sam Hocevar
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  22 rue de Plaisance, 75014 Paris, France
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Everyone is permitted to copy and distribute verbatim or modified
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> copies of this license document, and changing it is allowed as long
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> as the name is changed.
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> 
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>  0. You just DO WHAT THE FUCK YOU WANT TO.
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> See <a href="http://sam.zoy.org/wtfpl/">http://sam.zoy.org/wtfpl/</a> for full license details
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span>
+</span><span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> Requires certain Ruby Facets: <a href="http://facets.rubyforge.org/">http://facets.rubyforge.org/</a>
+</span>
+<span class="meta meta_require meta_require_ruby"><span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">require</span> <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>test/unit<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span></span>
+<span class="meta meta_require meta_require_ruby"><span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">require</span> <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>lazy_lists<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span></span>
+<span class="meta meta_require meta_require_ruby"><span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">require</span> <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>ostruct<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span></span>
+<span class="meta meta_require meta_require_ruby"><span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">require</span> <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>facets/core/enumerable/self/combinations<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span></span>
+
+<span class="meta meta_class meta_class_ruby"><span class="keyword keyword_control keyword_control_class keyword_control_class_ruby">class</span> <span class="entity entity_name entity_name_type entity_name_type_class entity_name_type_class_ruby">LazyListTest<span class="entity entity_other entity_other_inherited-class entity_other_inherited-class_ruby"> <span class="punctuation punctuation_separator punctuation_separator_inheritance punctuation_separator_inheritance_ruby">&lt;</span> Test::Unit::TestCase</span></span></span>
+  
+  <span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">include</span> <span class="variable variable_other variable_other_constant variable_other_constant_ruby">LazyListTestCase</span>
+  
+  <span class="variable variable_other variable_other_constant variable_other_constant_ruby">ONE_TO_TEN</span> = <span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">10</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_basic_stream</span></span>
+    s = <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="variable variable_other variable_other_constant variable_other_constant_ruby">ONE_TO_TEN</span>)
+    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">1</span>, s.first)
+    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">2</span>, s.tail.first)
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_laziness</span></span>
+    a = <span class="variable variable_other variable_other_constant variable_other_constant_ruby">ONE_TO_TEN</span>.map {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|e| e }
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">a.[]</span></span> index
+      assert_equal(<span class="constant constant_numeric constant_numeric_ruby">0</span>, index, <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>should never be indexing anything except the head of an array<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>)
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    s = <span class="support support_class support_class_ruby">LazyList</span>.from(a)
+    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">1</span>, s.first)
+    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">2</span>, s.tail.first)
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_lazy_mapping</span></span>
+    s = <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="variable variable_other variable_other_constant variable_other_constant_ruby">ONE_TO_TEN</span>)
+    s_never_accessed = s.map {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|e| fail(<span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>mapping should be lazy<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>) <span class="keyword keyword_control keyword_control_ruby">if</span> e &gt; <span class="constant constant_numeric constant_numeric_ruby">1</span> }
+    s_accessed = s.map {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|e| e * <span class="constant constant_numeric constant_numeric_ruby">2</span> }
+    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">2</span>, s_accessed.first)
+    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">4</span>, s_accessed.tail.first)
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>, <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>.map {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|e| e })
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_stream_edge_cases</span></span>
+    assert <span class="support support_class support_class_ruby">LazyList</span>.from([]).empty?
+    assert_nil <span class="support support_class support_class_ruby">LazyList</span>.from([]).first
+    assert <span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_numeric constant_numeric_ruby">1</span>]).tail.empty?
+    assert_nil(<span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>.first)
+    assert_nil(<span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>.tail)
+    assert <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>.empty?
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_detect</span></span>
+    s = <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="variable variable_other variable_other_constant variable_other_constant_ruby">ONE_TO_TEN</span>)
+    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">8</span>, s.detect {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|e| e == <span class="constant constant_numeric constant_numeric_ruby">8</span> })
+    assert_nil(s.detect {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|e| <span class="constant constant_language constant_language_ruby">false</span> })
+    assert_nil(<span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>.detect {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|e| <span class="constant constant_language constant_language_ruby">true</span> })
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_equality</span></span>
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_numeric constant_numeric_ruby">2</span>, <span class="constant constant_numeric constant_numeric_ruby">3</span>]), <span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_numeric constant_numeric_ruby">3</span>, <span class="constant constant_numeric constant_numeric_ruby">2</span>, <span class="constant constant_numeric constant_numeric_ruby">1</span>].sort))
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_numeric constant_numeric_ruby">2</span>, <span class="constant constant_numeric constant_numeric_ruby">3</span>]), [<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_numeric constant_numeric_ruby">2</span>, <span class="constant constant_numeric constant_numeric_ruby">3</span>])
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.from([[<span class="constant constant_numeric constant_numeric_ruby">1</span>], [<span class="constant constant_numeric constant_numeric_ruby">2</span>], [<span class="constant constant_numeric constant_numeric_ruby">3</span>]]), [[<span class="constant constant_numeric constant_numeric_ruby">1</span>], [<span class="constant constant_numeric constant_numeric_ruby">2</span>], [<span class="constant constant_numeric constant_numeric_ruby">3</span>]])
+    
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>, <span class="support support_class support_class_ruby">LazyList</span>.from([]))
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.from([]), <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>)
+    
+    assert_not_equal(<span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>, <span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_numeric constant_numeric_ruby">1</span>]))
+    assert_not_equal(<span class="support support_class support_class_ruby">LazyList</span>.from([]), <span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_numeric constant_numeric_ruby">1</span>]))
+    assert_not_equal(<span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_numeric constant_numeric_ruby">1</span>]), <span class="support support_class support_class_ruby">LazyList</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>)
+    assert_not_equal(<span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_numeric constant_numeric_ruby">1</span>]), <span class="support support_class support_class_ruby">LazyList</span>.from([]))
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_range</span></span>
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_numeric constant_numeric_ruby">1</span>]), <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">1</span>))
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.from(<span class="variable variable_other variable_other_constant variable_other_constant_ruby">ONE_TO_TEN</span>), <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">10</span>))
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_cons</span></span>
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_numeric constant_numeric_ruby">2</span>, <span class="constant constant_numeric constant_numeric_ruby">3</span>]), <span class="support support_class support_class_ruby">LazyList</span>.cons(<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_numeric constant_numeric_ruby">2</span>, <span class="constant constant_numeric constant_numeric_ruby">3</span>])))
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_merge_all</span></span>
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.from_element(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span>).merge_all, <span class="support support_class support_class_ruby">LazyList</span>.from_element(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span>), <span class="support support_class support_class_ruby">LazyList</span>.from_element(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span>).merge_all.to_s)
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span>]), <span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span>]).merge_all)
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span>]), <span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span>, [<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span>]]).merge_all)
+    assert_equal(<span class="support support_class support_class_ruby">LazyList</span>.from([<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span>, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span>]), <span class="support support_class support_class_ruby">LazyList</span>.from([[<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span>], [<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span>]]).merge_all)
+    one_to_ten = <span class="support support_class support_class_ruby">LazyList</span>.from([<span class="support support_class support_class_ruby">LazyList</span>.from(<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">3</span>), <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="constant constant_numeric constant_numeric_ruby">4</span>..<span class="constant constant_numeric constant_numeric_ruby">6</span>), <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="constant constant_numeric constant_numeric_ruby">7</span>..<span class="constant constant_numeric constant_numeric_ruby">10</span>)]).merge_all
+    (<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">10</span>).each <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|n|
+      assert one_to_ten.detect {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|x| x == n }
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_foldr</span></span>
+    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">15</span>, <span class="support support_class support_class_ruby">LazyList</span>[<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_numeric constant_numeric_ruby">2</span>, <span class="constant constant_numeric constant_numeric_ruby">3</span>, <span class="constant constant_numeric constant_numeric_ruby">4</span>, <span class="constant constant_numeric constant_numeric_ruby">5</span>].foldr {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|acc, n| acc + n })
+    assert_equal([<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_numeric constant_numeric_ruby">2</span>, <span class="constant constant_numeric constant_numeric_ruby">3</span>, <span class="constant constant_numeric constant_numeric_ruby">4</span>, <span class="constant constant_numeric constant_numeric_ruby">5</span>], <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">5</span>).foldr([]) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|acc, n| acc.push(n) })
+    <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">2</span>).foldr() {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|acc, n| fail <span class="keyword keyword_control keyword_control_ruby">if</span> acc != <span class="constant constant_numeric constant_numeric_ruby">1</span> || n != <span class="constant constant_numeric constant_numeric_ruby">2</span> }
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+  <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_unfoldr</span></span>
+    assert_equal(<span class="constant constant_numeric constant_numeric_ruby">5</span>, <span class="support support_class support_class_ruby">LazyList</span>.unfoldr(<span class="constant constant_numeric constant_numeric_ruby">0</span>) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|last| last + <span class="constant constant_numeric constant_numeric_ruby">1</span> }.tail.tail.tail.tail.tail.first)
+  <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+   <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_product</span></span>
+     numbers = <span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">10</span>
+     letters = <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>a<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>..<span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>j<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>
+     l1 = <span class="support support_class support_class_ruby">LazyList</span>.from(numbers)
+     l2 = <span class="support support_class support_class_ruby">LazyList</span>.from(letters)
+     numbers_and_letters = l1 * l2 <span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> { |n, l| fail if n &gt; 1 }
+</span>     histogram = numbers_and_letters.foldr({}) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|hist, el|
+       hist[el] ||= <span class="constant constant_numeric constant_numeric_ruby">0</span>
+       hist[el] = hist[el] + <span class="constant constant_numeric constant_numeric_ruby">1</span>
+       hist
+     <span class="keyword keyword_control keyword_control_ruby">end</span>
+     assert_nil(histogram.values.detect {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|n| n != <span class="constant constant_numeric constant_numeric_ruby">1</span> }, <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>there should be no repeated values: <span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>histogram.inspect<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span>)
+     assert_equal(numbers.to_a.size * letters.to_a.size, histogram.values.size)
+   <span class="keyword keyword_control keyword_control_ruby">end</span>
+   
+   <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_huge_pairwise</span></span>
+     wholes = <span class="support support_class support_class_ruby">LazyList</span>.unfoldr(<span class="constant constant_numeric constant_numeric_ruby">0</span>) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|n| n + <span class="constant constant_numeric constant_numeric_ruby">1</span> }
+     twins = wholes.pairwise(wholes)
+     assert twins.detect {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|arr| arr == [<span class="constant constant_numeric constant_numeric_ruby">1000</span>, <span class="constant constant_numeric constant_numeric_ruby">1000</span>] }
+   <span class="keyword keyword_control keyword_control_ruby">end</span>
+   
+   <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_cartesian_product_binary</span></span>
+     numbers = <span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">10</span>
+     letters = <span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>a<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>..<span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>j<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>
+     l1 = <span class="support support_class support_class_ruby">LazyList</span>.from(numbers)
+     l2 = <span class="support support_class support_class_ruby">LazyList</span>.from(letters)
+     numbers_and_letters = <span class="support support_class support_class_ruby">LazyList</span>.cartesian_product(l1, l2) <span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby"><span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> { |n, l| fail if n &gt; 1 }
+</span>     histogram = numbers_and_letters.foldr({}) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|hist, el|
+       hist[el] ||= <span class="constant constant_numeric constant_numeric_ruby">0</span>
+       hist[el] = hist[el] + <span class="constant constant_numeric constant_numeric_ruby">1</span>
+       hist
+     <span class="keyword keyword_control keyword_control_ruby">end</span>
+     assert_nil(histogram.values.detect {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|n| n != <span class="constant constant_numeric constant_numeric_ruby">1</span> }, <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span>there should be no repeated values: <span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>histogram.inspect<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span>)
+     assert_equal(numbers.to_a.size * letters.to_a.size, histogram.values.size)
+   <span class="keyword keyword_control keyword_control_ruby">end</span>
+   
+   <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_cartesian_product_ternary</span></span>
+     result = <span class="support support_class support_class_ruby">LazyList</span>.cartesian_product <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>a<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>..<span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>c<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>), <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">3</span>), <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>x<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>..<span class="string string_quoted string_quoted_single string_quoted_single_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">'</span>y<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">'</span></span>)
+     assert_nil(result.detect {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|r| r.size != <span class="constant constant_numeric constant_numeric_ruby">3</span> })
+     assert_nil(result.detect {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|r| !(<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">3</span> === r[<span class="constant constant_numeric constant_numeric_ruby">1</span>]) })
+     wholes = <span class="support support_class support_class_ruby">LazyList</span>.unfoldr(<span class="constant constant_numeric constant_numeric_ruby">0</span>) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|n| n + <span class="constant constant_numeric constant_numeric_ruby">1</span> }
+     result = <span class="support support_class support_class_ruby">LazyList</span>.cartesian_product(wholes, wholes) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|x, y| <span class="support support_class support_class_ruby">OpenStruct</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; x, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span> =&gt; y)}
+     h = {}
+     <span class="constant constant_numeric constant_numeric_ruby">1</span>.upto(<span class="constant constant_numeric constant_numeric_ruby">100</span>) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do
+</span>       element = result.first;
+       result = result.tail;
+       assert_nil(h[element], <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span><span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>element<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span> is not unique<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span>)
+       h[element] = <span class="constant constant_language constant_language_ruby">true</span>
+       assert_not_nil(element.x);
+       assert_not_nil(element.y);
+     <span class="keyword keyword_control keyword_control_ruby">end</span>
+   <span class="keyword keyword_control keyword_control_ruby">end</span>
+   
+   <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_product_maintains_order</span></span>
+     <span class="support support_class support_class_ruby">LazyList</span>.from(<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">3</span>).product(<span class="support support_class support_class_ruby">LazyList</span>.from(<span class="constant constant_numeric constant_numeric_ruby">4</span>..<span class="constant constant_numeric constant_numeric_ruby">6</span>)).foldr {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|acc, arr| assert arr[<span class="constant constant_numeric constant_numeric_ruby">0</span>] &lt; arr[<span class="constant constant_numeric constant_numeric_ruby">1</span>], <span class="string string_quoted string_quoted_double string_quoted_double_ruby"><span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_begin punctuation_definition_string_begin_ruby">"</span><span class="source source_ruby source_ruby_embedded source_ruby_embedded_source"><span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">#{</span>arr.inspect<span class="punctuation punctuation_section punctuation_section_embedded punctuation_section_embedded_ruby">}</span></span> is out of order<span class="punctuation punctuation_definition punctuation_definition_string punctuation_definition_string_end punctuation_definition_string_end_ruby">"</span></span> }
+   <span class="keyword keyword_control keyword_control_ruby">end</span>
+   
+<span class="comment comment_line comment_line_number-sign comment_line_number-sign_ruby">   <span class="punctuation punctuation_definition punctuation_definition_comment punctuation_definition_comment_ruby">#</span> contains_all is very expensive!
+</span>   <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">_____________________test_medium_product</span></span>
+     a = (<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">5</span>).to_a
+     expected = <span class="support support_class support_class_ruby">Enumerable</span>.combinations(a, a, a)
+     prod = <span class="support support_class support_class_ruby">LazyList</span>.cart(<span class="support support_class support_class_ruby">LazyList</span>.from(a), <span class="support support_class support_class_ruby">LazyList</span>.from(a), <span class="support support_class support_class_ruby">LazyList</span>.from(a))
+     assert_contains_all(expected, prod)
+   <span class="keyword keyword_control keyword_control_ruby">end</span>
+  
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_at</span></span>
+      wholes = <span class="support support_class support_class_ruby">LazyList</span>.unfoldr(<span class="constant constant_numeric constant_numeric_ruby">0</span>) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|n| n + <span class="constant constant_numeric constant_numeric_ruby">1</span> }
+      assert_equal(<span class="constant constant_numeric constant_numeric_ruby">6</span>, wholes[<span class="constant constant_numeric constant_numeric_ruby">6</span>])
+      six_to_ten = wholes[<span class="constant constant_numeric constant_numeric_ruby">6</span>..<span class="constant constant_numeric constant_numeric_ruby">10</span>]
+      assert_equal(<span class="constant constant_numeric constant_numeric_ruby">6</span>, six_to_ten.first)
+      assert_equal(<span class="constant constant_numeric constant_numeric_ruby">10</span>, six_to_ten.tail.tail.tail.tail.first)
+      assert six_to_ten.tail.tail.tail.tail.tail.empty?
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_at_edge_cases</span></span>
+      assert_equal(<span class="constant constant_numeric constant_numeric_ruby">6</span>,<span class="support support_class support_class_ruby">LazyList</span>.wholes[<span class="constant constant_numeric constant_numeric_ruby">6</span>])
+      assert_contains_all([<span class="constant constant_numeric constant_numeric_ruby">6</span>],<span class="support support_class support_class_ruby">LazyList</span>.wholes[<span class="constant constant_numeric constant_numeric_ruby">6</span>..<span class="constant constant_numeric constant_numeric_ruby">6</span>])
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_binary_search</span></span>
+      expected = [<span class="constant constant_numeric constant_numeric_ruby">0.0</span>, <span class="constant constant_numeric constant_numeric_ruby">0.0625</span>, <span class="constant constant_numeric constant_numeric_ruby">0.125</span>, <span class="constant constant_numeric constant_numeric_ruby">0.1875</span>, <span class="constant constant_numeric constant_numeric_ruby">0.25</span>, <span class="constant constant_numeric constant_numeric_ruby">0.3125</span>, <span class="constant constant_numeric constant_numeric_ruby">0.375</span>, <span class="constant constant_numeric constant_numeric_ruby">0.4375</span>, <span class="constant constant_numeric constant_numeric_ruby">0.5</span>, <span class="constant constant_numeric constant_numeric_ruby">0.5625</span>, <span class="constant constant_numeric constant_numeric_ruby">0.625</span>, <span class="constant constant_numeric constant_numeric_ruby">0.6875</span>, <span class="constant constant_numeric constant_numeric_ruby">0.75</span>, <span class="constant constant_numeric constant_numeric_ruby">0.8125</span>, <span class="constant constant_numeric constant_numeric_ruby">0.875</span>, <span class="constant constant_numeric constant_numeric_ruby">0.9375</span>, <span class="constant constant_numeric constant_numeric_ruby">1.0</span>]
+      assert_contains_all(expected, <span class="support support_class support_class_ruby">LazyList</span>.binary_search(<span class="constant constant_numeric constant_numeric_ruby">0.0</span>, <span class="constant constant_numeric constant_numeric_ruby">1.0</span>)[<span class="constant constant_numeric constant_numeric_ruby">0</span>..<span class="constant constant_numeric constant_numeric_ruby">16</span>])
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_cross_product</span></span>
+      whole_squared = <span class="support support_class support_class_ruby">LazyList</span>.cross_product(<span class="support support_class support_class_ruby">LazyList</span>.wholes, <span class="support support_class support_class_ruby">LazyList</span>.wholes)
+      assert_equal([<span class="constant constant_numeric constant_numeric_ruby">0</span>, <span class="constant constant_numeric constant_numeric_ruby">0</span>], whole_squared[<span class="constant constant_numeric constant_numeric_ruby">0</span>])
+      assert_contains_all([ [<span class="constant constant_numeric constant_numeric_ruby">0</span>, <span class="constant constant_numeric constant_numeric_ruby">0</span>], [<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_numeric constant_numeric_ruby">0</span>], [<span class="constant constant_numeric constant_numeric_ruby">0</span>, <span class="constant constant_numeric constant_numeric_ruby">1</span>] ], whole_squared[<span class="constant constant_numeric constant_numeric_ruby">0</span>..<span class="constant constant_numeric constant_numeric_ruby">2</span>])
+      assert_contains_all([ [<span class="constant constant_numeric constant_numeric_ruby">0</span>, <span class="constant constant_numeric constant_numeric_ruby">0</span>], [<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_numeric constant_numeric_ruby">0</span>], [<span class="constant constant_numeric constant_numeric_ruby">0</span>, <span class="constant constant_numeric constant_numeric_ruby">1</span>], [<span class="constant constant_numeric constant_numeric_ruby">2</span>, <span class="constant constant_numeric constant_numeric_ruby">0</span>], [<span class="constant constant_numeric constant_numeric_ruby">1</span>, <span class="constant constant_numeric constant_numeric_ruby">1</span>], [<span class="constant constant_numeric constant_numeric_ruby">0</span>, <span class="constant constant_numeric constant_numeric_ruby">2</span>] ], whole_squared[<span class="constant constant_numeric constant_numeric_ruby">0</span>..<span class="constant constant_numeric constant_numeric_ruby">5</span>])
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_cross_product_block</span></span>
+      sums = <span class="support support_class support_class_ruby">LazyList</span>.cross_product(<span class="support support_class support_class_ruby">LazyList</span>.wholes, <span class="support support_class support_class_ruby">LazyList</span>.wholes, <span class="support support_class support_class_ruby">LazyList</span>.wholes) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|a, b, c| a + b + c }
+      sums[<span class="constant constant_numeric constant_numeric_ruby">1</span>..<span class="constant constant_numeric constant_numeric_ruby">3</span>].each {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|sum| assert_equal(<span class="constant constant_numeric constant_numeric_ruby">1</span>, sum) }
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+    <span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">test_while</span></span>
+      arr = []
+      <span class="support support_class support_class_ruby">LazyList</span>.wholes.each(<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>while</span> =&gt; lambda {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|n| n &lt; <span class="constant constant_numeric constant_numeric_ruby">10</span> }) {<span class="meta meta_syntax meta_syntax_ruby meta_syntax_ruby_start-block"> </span>|n| arr &lt;&lt; n }
+      assert_equal((<span class="constant constant_numeric constant_numeric_ruby">0</span>..<span class="constant constant_numeric constant_numeric_ruby">9</span>).to_a, arr)
+    <span class="keyword keyword_control keyword_control_ruby">end</span>
+    
+<span class="keyword keyword_control keyword_control_ruby">end</span></span></pre>
+</body>
+</html>

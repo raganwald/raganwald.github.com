@@ -1,0 +1,24 @@
+<HTML>
+	<!-- template for most www.wireshooter.com pages -->
+<HEAD>
+	<TITLE>WIRESHOOTER-TITLE</TITLE>
+</HEAD>
+<BODY BGCOLOR="black" TEXT="red" alink="yellow" vlink="yellow">
+
+<TABLE WIDTH=760 HEIGHT=420 BORDER=0 CELLSPACING=0>
+<TR>
+	<TD WIDTH=24>&nbsp;</TD>
+	<TD WIDTH=610 ALIGN="LEFT" VALIGN="TOP">
+		<P ALIGN=CENTER>
+		<A HREF="/"><IMG BORDER=0 SRC="/bg/wireshooter-logo-sml.gif" HEIGHT=40 WIDTH=306 ALT="www.wireshooter.com"></A>
+		</p>
+		WIRESHOOTER-CONTENT
+	</TD>
+	<TD WIDTH=126 ALIGN="RIGHT" VALIGN="MIDDLE" BACKGROUND="/bg/strokes.jpg">
+		WIRESHOOTER-MENU
+	</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

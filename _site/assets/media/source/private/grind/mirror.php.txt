@@ -1,0 +1,89 @@
+<!-- 
+	mirror.php
+
+
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+-->
+
+<HTML>
+<HEAD><TITLE>Mirror Build To Production Site</TITLE></HEAD>
+
+<BODY>
+<H1>Upload site to www.wireshooter.com</H1>
+<FORM ACTION="mirror-action.php" METHOD=POST>
+<TABLE>
+<TBODY>
+
+<TR><TD>Host:</TD><TD><INPUT NAME='ftp_host' TYPE=TEXT
+VALUE=
+<?php
+	if ( $ftp_host ) echo ( "'$ftp_host'" );
+	else echo ( "'ftp.proxy.net'" );
+?>
+></TD></TR>
+
+<TR><TD>Dir:</TD><TD><INPUT NAME='ftp_root_dir' TYPE=TEXT
+VALUE=
+<?php
+	if ( $ftp_root_dir ) echo ( "'$ftp_root_dir'" );
+	else echo ( "'/u1/home/shooter/www'" );
+?>
+></TD></TR>
+
+<TR><TD>User:</TD><TD><INPUT NAME='ftp_user' TYPE=TEXT
+VALUE=
+<?php
+	if ( $ftp_user ) echo ( "'$ftp_user'" );
+	else echo ( "'shooter'" );
+?>
+></TD></TR>
+
+<TR><TD>Password:</TD><TD><INPUT NAME='ftp_password' TYPE=PASSWORD
+VALUE=''></TD></TR>
+
+<TR><TD>Mirror HTML Pages:</TD><TD><INPUT NAME='mirror_html' TYPE='CHECKBOX'
+VALUE='TRUE' CHECKED></TD></TR>
+
+<TR><TD>Mirror Thumbs & Comps:</TD><TD><INPUT NAME='mirror_tc' TYPE='CHECKBOX'
+VALUE='TRUE' CHECKED></TD></TR>
+
+<TR><TD>Mirror High Res Images:</TD><TD><INPUT NAME='mirror_images' TYPE='CHECKBOX'
+VALUE='TRUE' CHECKED></TD></TR>
+
+<TR><TD>Upload New Images Only:</TD><TD><INPUT NAME='optimize_images' TYPE='CHECKBOX'
+VALUE='TRUE' CHECKED></TD></TR>
+
+<TR><TD>&nbsp;</TD><TD><INPUT TYPE=SUBMIT
+VALUE='Mirror now!'
+></TD></TR>
+
+</TBODY>
+</TABLE>
+</FORM>
+<HR>
+<?php
+	if ( $message ) {
+		echo ( "<p>Sorry, unable to process this request: <B>$message</B></p><HR>" );
+	}
+?>
+<p>This page is used to copy the site from the build machine to the production site.
+Perform this step AFTER verifying that the site is complete and working. You can surf
+the built site <A HREF='/'>here</A>.</p>
+</BODY>
+</HTML>

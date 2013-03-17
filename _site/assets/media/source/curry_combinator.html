@@ -1,0 +1,129 @@
+<html>
+<head>
+	<title>The Curry Combinator</title>
+</head>
+<body>
+<pre><code>  require 'test/unit'
+
+  # Author: Reginald Braithwaite
+  # <a href="http://raganwald.com/">http://raganwald.com/</a>
+
+  class ExempliGratia &lt; Test::Unit::TestCase
+
+    CURRY = lambda { |f, a| lambda { |*b| f.call(a, *b) } }
+
+    def test_recursive_curry
+      maker = lambda { |func_with_me|
+        CURRY.call(func_with_me, func_with_me)
+      }
+      fact = maker.call(lambda { |me, n| n.zero? &amp;&amp; 1 or n * me.call(me, n-1) })
+      assert_equal(120, fact.call(5))
+    end
+
+    def test_refactor_fact_to_isolate_desired_form
+      maker = lambda { |func_with_me|
+        CURRY.call(func_with_me, func_with_me)
+      }
+      un_fact_ored = lambda { |me, n| n.zero? &amp;&amp; 1 or n * me.call(me, n-1) }
+      assert_equal(120, maker.call(un_fact_ored).call(5))
+
+      re_fact_ored_1 = lambda { |me, n| n.zero? &amp;&amp; 1 or n * CURRY.call(me, me).call(n-1) }
+      assert_equal(120, maker.call(re_fact_ored_1).call(5))
+
+      re_fact_ored_2 = lambda { |me, n| (lambda { |better_me| n.zero? &amp;&amp; 1 or n * better_me.call(n-1) }).call(CURRY.call(me, me)) }
+      assert_equal(120, maker.call(re_fact_ored_2).call(5))
+
+      re_fact_ored_3 = lambda { |me, outer_n|
+        (lambda { |better_me| 
+          (lambda { |inner_n| inner_n.zero? &amp;&amp; 1 or inner_n * better_me.call(inner_n-1) }).call(outer_n) }).call(CURRY.call(me, me)) }
+      assert_equal(120, maker.call(re_fact_ored_3).call(5))
+
+      re_fact_ored_4 = lambda { |me, outer_n|
+        (lambda { |better_me| 
+          (lambda { |inner_n| inner_n.zero? &amp;&amp; 1 or inner_n * better_me.call(inner_n-1) }) }).call(CURRY.call(me, me)).call(outer_n) }
+      assert_equal(120, maker.call(re_fact_ored_4).call(5))
+    end
+
+    def test_refactor_maker_to_parameterize_desired_form
+      maker_1 = lambda { |func_with_me|
+        CURRY.call(func_with_me, func_with_me)
+      }
+      re_fact_ored_4 = lambda { |me, outer_n|
+        (lambda { |better_me| 
+          (lambda { |inner_n| inner_n.zero? &amp;&amp; 1 or inner_n * better_me.call(inner_n-1) }) }).call(CURRY.call(me, me)).call(outer_n) }
+      assert_equal(120, maker_1.call(re_fact_ored_4).call(5))
+
+      re_fact_ored_5 = CURRY.call(lambda { |func, me, outer_n|
+        func.call(CURRY.call(me, me)).call(outer_n) }, (lambda { |better_me| 
+          (lambda { |inner_n| inner_n.zero? &amp;&amp; 1 or inner_n * better_me.call(inner_n-1) }) }))
+      assert_equal(120, maker_1.call(re_fact_ored_5).call(5))
+
+      expanded = (lambda { |func_with_me|
+        CURRY.call(func_with_me, func_with_me)
+      }.call(CURRY.call(lambda { |func, me, outer_n|
+          func.call(CURRY.call(me, me)).call(outer_n) }, (lambda { |better_me| 
+            (lambda { |inner_n| inner_n.zero? &amp;&amp; 1 or inner_n * better_me.call(inner_n-1) }) }))))
+      assert_equal(120, expanded.call(5))
+
+      promoted = (lambda { |outer_func|
+          (lambda { |func_with_me|
+            CURRY.call(func_with_me, func_with_me)
+          }.call(CURRY.call(lambda { |func, me, outer_n|
+              func.call(CURRY.call(me, me)).call(outer_n) }, outer_func)))
+        }).call((lambda { |better_me| 
+              (lambda { |inner_n| inner_n.zero? &amp;&amp; 1 or inner_n * better_me.call(inner_n-1) }) }))
+      assert_equal(120, promoted.call(5))
+
+      #therefore
+
+      maker = (lambda { |outer_func|
+          (lambda { |func_with_me|
+            CURRY.call(func_with_me, func_with_me)
+          }.call(CURRY.call(lambda { |func, me, outer_n|
+              func.call(CURRY.call(me, me)).call(outer_n) }, outer_func)))
+        })
+
+      assert_equal(120, maker.call((lambda { |better_me| 
+              (lambda { |inner_n| inner_n.zero? &amp;&amp; 1 or inner_n * better_me.call(inner_n-1) }) })).call(5))
+
+      extracted_factorial = maker.call((lambda { |better_me| 
+                      (lambda { |inner_n| inner_n.zero? &amp;&amp; 1 or inner_n * better_me.call(inner_n-1) }) }))
+      assert_equal(120, extracted_factorial.call(5))
+
+      renamed_factorial = maker.call((lambda { |f| 
+                      (lambda { |n| n.zero? &amp;&amp; 1 or n * f.call(n-1) }) }))
+
+      assert_equal(120, renamed_factorial.call(5))
+
+    end
+
+    def test_clean_up_loose_ends
+      maker = lambda { |f|
+                 lambda { |func_with_me| CURRY.call(func_with_me, func_with_me) }.call(
+                      CURRY.call(lambda { |inner_func, me, *args|
+                                  inner_func.call(CURRY.call(me, me)).call(*args) }, f)) }
+
+      factorial = maker.call(
+        lambda { |f| lambda { |n| n.zero? &amp;&amp; 1 or n * f.call(n-1) } }
+      )
+      assert_equal(120, factorial.call(5))
+
+      iterative_factorial = maker.call(
+        lambda { |f| lambda { |n, acc| n.zero? &amp;&amp; acc or f.call(n - 1, n * acc) } }
+      )
+      tail_factorial = lambda { |n| iterative_factorial.call(n, 1) }
+      assert_equal(120, tail_factorial.call(5))
+    end
+
+  end
+</code></pre>
+
+<!--Creative Commons License--><a rel="license" href="http://creativecommons.org/licenses/publicdomain/"><img alt="Creative Commons License" style="border-width: 0" src="http://i.creativecommons.org/l/publicdomain/88x31.png"/></a><br/>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/publicdomain/">Creative Commons Public Domain License</a>.<!--/Creative Commons License--><!-- <rdf:RDF xmlns="http://web.resource.org/cc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+        <Work rdf:about="">
+            <license rdf:resource="http://creativecommons.org/licenses/publicdomain/" />
+        <dc:title>curry combinator</dc:title>
+        <dc:rights><Agent><dc:title>Reginald Braithwaite</dc:title></Agent></dc:rights>
+        </Work>
+        <License rdf:about="http://creativecommons.org/licenses/publicdomain/"><permits rdf:resource="http://web.resource.org/cc/Reproduction"/><permits rdf:resource="http://web.resource.org/cc/Distribution"/><rdfs:subClassOf rdf:resource="http://web.resource.org/cc/PublicDomain"/><permits rdf:resource="http://web.resource.org/cc/DerivativeWorks"/></License></rdf:RDF> -->
+</body>
+</html>

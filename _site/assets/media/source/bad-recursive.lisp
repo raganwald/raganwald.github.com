@@ -1,0 +1,1 @@
+(letrec (	(factorial			(lambda (x)				(if (eq? x 0)					0					(if	(eq? x 1)						1						(* x (factorial (- x 1))))))))	(factorial 1001))

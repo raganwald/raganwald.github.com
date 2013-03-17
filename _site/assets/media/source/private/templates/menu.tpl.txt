@@ -1,0 +1,23 @@
+<!-- template for menu text -->
+
+<FONT COLOR="yellow" SIZE=2><b>
+	<A HREF='/contact.html'>CONTACT INFO</a><tt>&nbsp;&nbsp;</tt><BR>
+	<BR>
+	<BR>
+	<BR>
+	<A HREF='/public/html/sports/date/index.html'>SPORTS BY DATE</a><tt>&nbsp;&nbsp;</tt><BR>
+	<BR>
+	<A HREF='/public/html/sports/sport/index.html'>SPORTS</a><tt>&nbsp;&nbsp;</tt><BR>
+	<BR>
+	<A HREF='/public/html/sports/cancon/index.html'>CANADIANS</a><tt>&nbsp;&nbsp;</tt><BR>
+	<A HREF='/public/html/sports/cancon/index.html'>AT THE GAMES</a><tt>&nbsp;&nbsp;</tt><BR>
+	<BR>
+	<A HREF='/public/html/sports/athletes/index.html'>ATHLETES</a><tt>&nbsp;&nbsp;</tt><BR>
+	<BR>
+	<A HREF='/public/html/filmfest/date/index.html'>FILM FESTIVAL</a><tt>&nbsp;&nbsp;</tt><BR>
+	<A HREF='/public/html/filmfest/date/index.html'>BY DATE</a><tt>&nbsp;&nbsp;</tt><BR>
+	<BR>
+	<A HREF='/public/html/filmfest/celebrities/index.html'>CELEBRITIES</a><tt>&nbsp;&nbsp;</tt><BR>
+	<BR>
+	<BR>
+</b></FONT>

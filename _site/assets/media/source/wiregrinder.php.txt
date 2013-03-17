@@ -1,0 +1,512 @@
+<?php
+
+// wiregrinder.php
+//
+// grinds a site out of the blackboard pictures!
+//
+// (c) 2000, Reginald Braithwaite-Lee.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
+require_once('simplify.php');
+require_once('thumbnails.php');
+require_once('wiretemplates.php');
+require_once('image-schema.php');
+require_once('sql.php');
+require_once('wireshooter.php');
+require_once('blackboard.php');
+require_once('admin.php');
+
+
+DEFINE( BOOLEAN_QUERY,'SELECT * FROM %s WHERE %s = 1 ORDER BY DATE DESC, NAME' );
+DEFINE( DISTINCT_VALUES_QUERY,"SELECT DISTINCT %s FROM %s ORDER BY %s %s" );
+DEFINE( EQUALS_QUERY,"SELECT * FROM %s WHERE %s = '%s' ORDER BY DATE DESC, NAME" );
+DEFINE( NOT_NULL_QUERY,"SELECT * FROM %s WHERE %s <> NULL ORDER BY DATE DESC, NAME" );
+
+DEFINE( INDEX_WIDTH, 4 );
+DEFINE( INDEX_HEIGHT, 10 );
+
+function printOneIndex
+(
+	$sql_idx_result,
+	$label,
+	$fielddir,
+	$column_name,
+	$values_query_template
+)
+{
+	assert ( $sql_idx_result );
+	assert ( $label != '' );
+	assert ( $fielddir != '' );
+	assert ( $column_name != '' );
+	assert ( $values_query_template != '' );
+	
+	global $WIRESHOOTER;
+	global $tpl;
+	
+	$dv_array = mysql_fetch_array($sql_idx_result,MYSQL_ASSOC);
+	
+	$value = $dv_array[$column_name];
+	$valuelink = simplifydir($value);
+	$valuedir = "$fielddir/$valuelink";
+	$WIRESHOOTER->ensureDir($valuedir);
+	chdir($valuedir);
+
+	print "<LI>$valuedir/\r";
+	
+	$query = sprintf($values_query_template,addslashes($value));
+	
+	$sql_thumbs_result = mysql_query($query);
+	assert($sql_thumbs_result);
+	
+	$indices = thumbnails(
+		$sql_thumbs_result,
+		$label
+		);
+	reset($indices);
+	
+	print '<UL>';
+	while ( list($idx,$fname) = each($indices) ) {
+		print "<LI>$fname</LI>\r";
+	}
+	print '</UL>';
+	
+	$tpl->assign('INDEX-VALUE-LINK', "$valuelink/$page_name");
+	$tpl->assign('INDEX-VALUE',$value);
+}
+
+function printIndices
+(
+	$label,
+	$fielddir,
+	$column_name,
+	$indices_query,				// sprintf(DISTINCT_VALUES_QUERY,$column_name,$table,$column_name,$column_name);
+								// sprintf(DISTINCT_VALUES_QUERY,$column_name,$manytomanytablename,$column_name);
+	$values_query_template,
+	$raw_page_name = 'index.html',
+	$empty_cell_template = 'index-empty-cell',
+	$cell_template = 'index-cell',
+	$row_template = 'index-row',
+	$content_template = 'index',
+	$none_template = 'index-none'
+	
+)
+{
+	
+	assert ( $label != '' );
+	assert ( $column_name != '' );
+	assert ( $fielddir != '' );
+	assert ($indices_query != '');
+	assert ($values_query_template != '');
+	assert ($raw_page_name != '');
+	assert ($empty_cell_template != '');
+	assert ($cell_template != '');
+	assert ($row_template != '');
+	assert ($content_template != '');
+	
+	global $imageSchema;
+	global $WIRESHOOTER;
+	global $tpl;
+	
+	$INDEX_PAGE = INDEX_WIDTH * INDEX_HEIGHT;
+	
+	if ( !eregi('^(.*)\.(htm|html)$',$raw_page_name,$arr) ) {
+		$base_page_name = $raw_page_name;
+		$page_suffix = 'html';
+	}
+	else {
+		$base_page_name = $arr[1];
+		$page_suffix = $arr[2];
+	}
+	
+	$sql_idx_result = mysql_query($indices_query);
+
+	assert($sql_idx_result);
+
+
+	$num_indices = mysql_num_rows($sql_idx_result);
+	
+	if ( 0 == $num_indices ) {
+		$tpl->parse('WIRESHOOTER-CONTENT',$none_template);
+		$tpl->parse('WIRESHOOTER-PAGE','wireshooter');
+		print "<UL><LI>$raw_page_name (empty)</LI></UL>";
+		if ( !$fp = fopen($raw_page_name,'w') ) {
+			echo("Cannot open $raw_page_name for writing");
+			exit;
+		}
+		if ( !fputs($fp,$tpl->fetch('WIRESHOOTER-PAGE')) ) {
+			echo("Cannot write to $raw_page_name");
+			exit;
+		}
+		fclose($fp);
+	}
+	else {
+	
+		echo("<OL>\r");
+	
+		$cwd = getcwd();
+		
+		$num_pages = floor($num_indices/$INDEX_PAGE)
+			+ ( ($num_indices % $INDEX_PAGE > 0) ? 1 : 0 );
+		$tpl->ASSIGN( 'INDEX-NUMBEROFPAGES', $num_pages );
+	
+		for ( $page = 1; $page <= $num_pages; $page++ ) {
+			$num_full_rows_on_this_page = $page < $num_pages ?
+				INDEX_HEIGHT
+				: (	floor(($num_indices - (($page - 1) * $INDEX_PAGE))/INDEX_WIDTH)
+					);
+			$left_over = $page < $num_pages ?
+				0
+				: $num_indices % INDEX_WIDTH;
+			for ($i = 0; $i < $num_full_rows_on_this_page; $i++ ) {
+				printOneIndex
+				(
+					$sql_idx_result,
+					$label,
+					$fielddir,
+					$column_name,
+					$values_query_template
+				);
+				$tpl->parse('INDEX-CELL-CONTENT',$cell_template);
+				for ($j = 1; $j < INDEX_WIDTH; $j++) {
+					printOneIndex
+					(
+						$sql_idx_result,
+						$label,
+						$fielddir,
+						$column_name,
+						$values_query_template
+					);
+					$tpl->parse('INDEX-CELL-CONTENT',".$cell_template");
+				}
+				if ( 0 == $i ) {
+					$tpl->parse('INDEX-ROW-CONTENT',$row_template);
+				}
+				else $tpl->parse('INDEX-ROW-CONTENT',".$row_template");
+			}
+			if ( $left_over > 0 ) {
+				printOneIndex
+				(
+					$sql_idx_result,
+					$label,
+					$fielddir,
+					$column_name,
+					$values_query_template
+				);
+				$tpl->parse('INDEX-CELL-CONTENT',$cell_template);
+				for ($i = 1; $i < $left_over; $i++) {
+					printOneIndex
+					(
+						$sql_idx_result,
+						$label,
+						$fielddir,
+						$column_name,
+						$values_query_template
+					);
+					$tpl->parse('INDEX-CELL-CONTENT',".$cell_template");
+				}
+				for ($i = $left_over; $i < INDEX_WIDTH; $i++) {
+					$tpl->assign('EMPTY-CELL-COMMENT',"http://www.yell-it-out.com/");
+					$tpl->parse('INDEX-CELL-CONTENT',".$empty_cell_template");
+				}
+				if ( 0 == $num_full_rows_on_this_page ) {
+					$tpl->parse('INDEX-ROW-CONTENT',$row_template);
+				}
+				else $tpl->parse('INDEX-ROW-CONTENT',".$row_template");
+			}
+			
+			if ( 2 == $page ) { // do special case previous
+				$tpl->assign(
+					'INDEX-PREV-PREFIX',
+					"<A HREF='$base_page_name.$page_suffix'>"
+				);
+				$tpl->assign( 'INDEX-PREV-SUFFIX',  '</A>' );
+				$tpl->assign( 'INDEX-PREV-CONTENT', 'prev' );
+			}
+			elseif ( $page > 2 ) { // do previous
+				$tpl->assign(
+					'INDEX-PREV-PREFIX',
+					"<A HREF='$base_page_name"
+					. ($page - 1)
+					. ".$page_suffix'>"
+				);
+				$tpl->assign( 'INDEX-PREV-SUFFIX',  '</A>' );
+				$tpl->assign( 'INDEX-PREV-CONTENT', 'prev' );
+			}
+			else { // no previous
+				$tpl->assign( 'INDEX-PREV-PREFIX',  '' );
+				$tpl->assign( 'INDEX-PREV-SUFFIX',  '' );
+				$tpl->assign( 'INDEX-PREV-CONTENT', '' );
+			}
+			
+			if ( $page < $num_pages ) { // do next
+				$tpl->assign(
+					'INDEX-NEXT-PREFIX',
+					"<A HREF='$base_page_name"
+					. ($page + 1)
+					. ".$page_suffix'>"
+				);
+				$tpl->assign( 'INDEX-NEXT-SUFFIX',  '</A>' );
+				$tpl->assign( 'INDEX-NEXT-CONTENT', 'next' );
+			}
+			else {// no next
+				$tpl->assign( 'INDEX-NEXT-PREFIX',  '' );
+				$tpl->assign( 'INDEX-NEXT-SUFFIX',  '' );
+				$tpl->assign( 'INDEX-NEXT-CONTENT', '' );
+			}
+			
+			$tpl->ASSIGN( 'INDEX-PAGE', $page );
+			
+			$tpl->parse('WIRESHOOTER-CONTENT',$content_template);
+			
+			$tpl->parse('WIRESHOOTER-PAGE','wireshooter');
+			
+			if ( 1 == $page ) {
+				$page_name = "$base_page_name.$page_suffix";
+			}
+			else $page_name = "$base_page_name$page.$page_suffix";
+			
+			//print $page_name;
+			
+			chdir($cwd);
+			
+			if ( !$fp = fopen($page_name,'w') ) {
+				echo("Cannot open $page_name for writing");
+				exit;
+			}
+			if ( !fputs($fp,$tpl->fetch('WIRESHOOTER-PAGE')) ) {
+				echo("Cannot write to $page_name");
+				exit;
+			}
+			fclose($fp);
+		
+			echo("</OL>\r");
+			
+		}
+	}
+
+	flushAll();
+	
+}
+
+function grindAll
+(
+	$db = SQL_DATABASE
+	, $page_name = 'index.html'
+	, $none_template = 'index-none'
+)
+{
+
+	global $imageSchema;
+	global $WIRESHOOTER;
+	global $tpl;
+	global $BLACKBOARD;
+	
+	$WIRESHOOTER->ensureDir($WIRESHOOTER->root);
+	chdir($WIRESHOOTER->root);
+	
+	// parse home page
+	
+	$tpl->assign('WIRESHOOTER-TITLE','www.wireshooter.com');
+	
+	// now to make the page
+	
+	if ( !$fp = fopen('index.html','w') ) {
+		echo('Cannot open index.html for writing');
+		exit;
+	}
+
+	$tpl->parse('WIRESHOOTER-PAGE','home');
+	if ( !fputs($fp,$tpl->fetch('WIRESHOOTER-PAGE')) ) {
+		echo('Cannot write index.html');
+		exit;
+	}
+	fclose($fp);
+	
+	// parse contact.html
+	
+	$tpl->parse('WIRESHOOTER-CONTENT','contact');
+	
+	// now to make the page
+	
+	if ( !$fp = fopen('contact.html','w') ) {
+		echo('Cannot open contact.html for writing');
+		exit;
+	}
+
+	$tpl->parse('WIRESHOOTER-PAGE','wireshooter');
+	if ( !fputs($fp,$tpl->fetch('WIRESHOOTER-PAGE')) ) {
+		echo('Cannot write contact.html');
+		exit;
+	}
+	fclose($fp);
+	
+	$structure_dir = $WIRESHOOTER->root . $WIRESHOOTER->publicstructure;
+	echo("Grinding all pages and folders to : $structure_dir<BR>");
+	
+	print "\r<OL> <!-- All SQL tables begin -->";
+	
+	$exists = mysql_select_db($db);
+	assert($exists);
+	
+	chdir($WIRESHOOTER->root);
+	
+	$table_names = $imageSchema->tableNames();
+	reset($table_names);
+	while ( list($idx,$table) = each($table_names) )
+	{
+		
+		print "\r<LI>SQL table $table:\r<OL> <!-- SQL table $table begins -->";
+		
+		$tabledir = $fielddir = $structure_dir . $table . '/';
+		$WIRESHOOTER->ensureDir($tabledir);
+	
+		$grinds = $imageSchema->fieldGrinds($table); // array of fields to grind!
+		$labels = $imageSchema->fieldLabels($table);
+		$orders = $imageSchema->fieldSQLSorts($table);
+		
+		//print "\rCount: " . count($orders) . "<BR>";
+		//reset($orders);
+		//while ( list($fieldname,$fieldsort) = each($orders) ) {
+		//	print "\rField: $fieldname Order: $fieldsort<BR>";
+		//}
+		
+		reset($grinds);
+		while ( list($fieldname,$fieldgrindtype) = each($grinds) ) {
+		
+			$column_name = strtolower($fieldname);
+		
+			$fielddir = $tabledir .$column_name;
+			$WIRESHOOTER->ensureDir($fielddir);
+			chdir($fielddir);
+			
+			echo("\r<LI>$fielddir/ <!-- $fieldname begins -->\r");
+	
+			$tpl->assign('WIRESHOOTER-TITLE',$fieldname);
+			
+			if ( !$BLACKBOARD->hasTable($table) ) {
+				print "\r<BR>Table $table does not exist";
+				$tpl->parse('WIRESHOOTER-CONTENT',$none_template);
+				$tpl->parse('WIRESHOOTER-PAGE','wireshooter');
+				if ( !$fp = fopen($page_name,'w') ) {
+					echo("Cannot open $page_name for writing");
+					exit;
+				}
+				if ( !fputs($fp,$tpl->fetch('WIRESHOOTER-PAGE')) ) {
+					echo("Cannot write to $page_name");
+					exit;
+				}
+				fclose($fp);
+			}
+			
+			else if ( $fieldgrindtype == $imageSchema->boolean ) {
+				$query = sprintf(BOOLEAN_QUERY,$table,$column_name);
+				$sql_thumbs_result = mysql_query($query);
+				assert($sql_thumbs_result);
+				
+				$indices = thumbnails(
+					$sql_thumbs_result,
+					$labels[$fieldname]
+					);
+				print "\r<OL>";
+				if ( 0 < count($indices) ) {
+					reset($indices);
+					while ( list($idx,$fname) = each($indices) ) {
+						print "\r<LI>$fname</LI>";
+					}
+				}
+				else print "\r<LI>$page_name (empty)</LI>";
+				print "\r</OL>";
+			}
+			
+			else if ( $fieldgrindtype == $imageSchema->manytomany ) {
+			
+				$sqlOrder = $orders[$fieldname];
+				assert ( '' != $sqlOrder );
+				
+				$manytomanytablename = $fieldname . '_' . BLACKBOARD_ID_FIELD_NAME;
+				$indices_query = sprintf(DISTINCT_VALUES_QUERY,$column_name,$manytomanytablename,$column_name,$sqlOrder);
+				
+				$join_query = 
+					"SELECT * FROM $table, $manytomanytablename WHERE ( "
+					. "$table." . BLACKBOARD_ID_FIELD_NAME
+					. " = "
+					. "$manytomanytablename." . BLACKBOARD_ID_FIELD_NAME
+					. " AND "
+					. "$manytomanytablename." . $column_name
+					. " = '%s' ) ORDER BY DATE DESC";
+				
+				// print "<BR>index query: $indices_query<BR>join query: $join_query<BR>";
+				
+				printIndices (
+					$labels[$fieldname],
+					$fielddir,
+					$column_name,
+					$indices_query,
+					$join_query
+				);
+							
+			}
+			
+			else if ( $fieldgrindtype == $imageSchema->distinctvalues ) {
+			
+				$sqlOrder = $orders[$fieldname];
+				assert ( '' != $sqlOrder );
+				
+				printIndices (
+					$labels[$fieldname],
+					$fielddir,
+					$column_name,
+					sprintf(DISTINCT_VALUES_QUERY,$column_name,$table,$column_name,$sqlOrder),
+					"SELECT * FROM $table WHERE $column_name = '%s' ORDER BY DATE DESC, NAME"
+				);
+	
+			}
+			
+			else {
+				echo( "\r<BR>$fieldgrindtype has not been implemented yet!" );
+				$tpl->parse('WIRESHOOTER-CONTENT',$none_template);
+				$tpl->parse('WIRESHOOTER-PAGE','wireshooter');
+				if ( !$fp = fopen($page_name,'w') ) {
+					echo("Cannot open $page_name for writing");
+					exit;
+				}
+				if ( !fputs($fp,$tpl->fetch('WIRESHOOTER-PAGE')) ) {
+					echo("Cannot write to $page_name");
+					exit;
+				}
+				fclose($fp);
+			}
+		
+			// end table
+			echo("\r</LI> <!-- $fieldname ends -->\r");
+			flushAll();
+			
+		}
+		
+		// end table
+		echo("\r</OL></LI> <!-- SQL table $table ends -->");
+		flushAll();
+		
+	}
+		
+	// end tables
+	echo("\r</OL></LI> <!-- All SQL tables end -->");
+	flushAll();
+	
+}
+
+?>
