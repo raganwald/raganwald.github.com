@@ -4,13 +4,166 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-17T15:46:27-04:00</updated>
+  <updated>2013-03-17T15:47:17-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
     <email>reg@braythwayt.com</email>
   </author>
 
+  
+    
+      <entry>
+        <id>http://raganwald.com/enchanted-forest/horton.coffee</id>
+        <link type="text/html" rel="alternate" href="http://raganwald.com/enchanted-forest/horton.html"/>
+        <title>Horton Hatches Surreal Numbers</title>
+        <published>2013-03-17T00:00:00-04:00</published>
+        <updated>2013-03-17T00:00:00-04:00</updated>
+        <author>
+          <name>Reginald Braithwaite</name>
+          <uri>http://raganwald.com/</uri>
+        </author>
+        <content type="html">&lt;p&gt;Previously in &lt;a href=&quot;./scheinfinkel.html&quot;&gt;Schönfinkel’s Forest&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Now it so happens that some birds are such that if you call out their own song to them, they call it right back to you. You saw one such bird, the Idiot. We call these&lt;/em&gt; egocentric &lt;em&gt;birds. Given the Kestrel and the Idiot, is there another egocentric bird in the forest?&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Next, a bird is&lt;/em&gt; hopelessly egocentric &lt;em&gt;if it is the case that no matter what bird you call out to it, it calls back its own song. Given the Kestrel and the Idiot, is there a bird that is fixated on itself in this forest?&lt;/em&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Maude pondered these questions for a few minutes and intuitively decided that the answer must be &lt;strong&gt;no&lt;/strong&gt;. The Kestrel seemed like a promising bird, but trying things like &lt;code&gt;K(K)&lt;/code&gt; and variations on the same seemed to be going in the wrong direction.&lt;/p&gt;
+
+&lt;p&gt;“No,” she said at last, “I do not think so, although proving that it is not the case is a little beyond me right now.”&lt;/p&gt;
+
+&lt;p&gt;Moses clicked his beak and gazed at her. “You are right, the Kestrel and Idiot are not enough. There are a great many birds in the forest. We songbirds are territorial, although not particularly exclusive. Here in my territory, there are a few birds that make a permanent nest. In addition to the Kestrel and Idiot, I also have nesting in my territory a Bluebird, a Cardinal, and a Starling.”&lt;/p&gt;
+
+&lt;p&gt;“They are very interesting. The Kestrel and Starling are good friends, I do believe that between them they are smart enough to solve any problem that can be solved, although for some reason they like to have the Idiot around to do mundane chores.&lt;sup id=&quot;fnref:SKI&quot;&gt;&lt;a href=&quot;#fn:SKI&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;“There &lt;em&gt;is&lt;/em&gt; a hopelessly egocentric bird in the forest, but you will probably learn more about such things if you visit The Magnificent Smullyan Bird’s territory. He has a Mockingbird&lt;sup id=&quot;fnref:mockingbird&quot;&gt;&lt;a href=&quot;#fn:mockingbird&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; there and he will tell you all about this wonderful creature.&lt;/p&gt;
+
+&lt;p&gt;“Let’s head over there now, I’ll introduce you.”&lt;/p&gt;
+
+&lt;p&gt;Moses flew along, showing Maude the way to The Magnificent Smullyan Bird’s Territory. As the were walking along, Maude saw the most curious sight: A small winged elephant perched on a nest.&lt;/p&gt;
+
+&lt;h3 id=&quot;elephants-and-bowerbirds&quot;&gt;elephants and bowerbirds&lt;/h3&gt;
+
+&lt;p&gt;“What is that!?”&lt;/p&gt;
+
+&lt;p&gt;Moses clicked his beak. “I don’t know why everyone is so fascinated with Horton’s appearance. He can barely fly, his beak is all rubbery, and he lacks any plumage of note. Mind you, he is something of an expert on certain subjects and I do consult him from time to time.”&lt;/p&gt;
+
+&lt;p&gt;Maude asked about his expertise.&lt;/p&gt;
+
+&lt;p&gt;“Well, he does a lot of work playing with pebbles on vast grids that he lays out. He claims that by following certain rules, his pebbles can answer any question my Starling and Kestrel can answer.”[^life]&lt;/p&gt;
+
+&lt;p&gt;[^life] &lt;a href=&quot;https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life&quot;&gt;Conway’s Game of Life&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Maude was interested. Pebbles?&lt;/p&gt;
+
+&lt;p&gt;“Well,” Moses said, “I didn’t mention this earlier, but we birds come in a few basic varieties. We all have songs, but some of us like to attract a mate with our excellent plumage, some with vigorous and intricate dancing, and a certain lesser class of bird likes to build a &lt;a href=&quot;https://en.wikipedia.org/wiki/Bowerbird&quot;&gt;bower&lt;/a&gt; out of various found objects.”&lt;/p&gt;
+
+&lt;p&gt;For example, I could show you the Stuart’s Tombird. It builds an elaborate bower out of just one material, chips of red crystal. It is intelligent, and claims its bowers can do various tasks like count to one hundred or even write nonsensical words like “fizz” or “buzz.”&lt;sup id=&quot;fnref:nothing&quot;&gt;&lt;a href=&quot;#fn:nothing&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;“In any event,” continued Moses, “We may as well say hello to Horton since we’re here.”&lt;/p&gt;
+
+&lt;h3 id=&quot;horton&quot;&gt;horton&lt;/h3&gt;
+
+&lt;p&gt;Moses introduced Maude to Horton. After exchanging pleasantries, Maude asked Horton what kind of song he sang.&lt;/p&gt;
+
+&lt;p&gt;“I am not particularly interested in songs,” said Horton, “I am working at the moment on bird sociology, particularly flocking birds. As you may know, some birds, like Schönfinkel’s Bright Bird and myself, are fairly solitary. Others like to live in large flocks.”&lt;/p&gt;
+
+&lt;p&gt;“In most such flocks, there is a strict &lt;em&gt;pecking order&lt;/em&gt;. What interests me is how such flocks behave when each bird is autonomous and there is no centralized control over the order of rank for the birds.”&lt;/p&gt;
+
+&lt;p&gt;“I will show you,” started Horton, scribbling some marks in the dirt with a stick he held in his trunk. Moses hastily intervened.&lt;/p&gt;
+
+&lt;p&gt;“Alas, Horton, we are on our way to see The Magnificent Smullyan Bird so that Maude can learn about hopeless egocentricity and do not have time—”&lt;/p&gt;
+
+&lt;p&gt;Horton would hear nothing of it. “Nonsense! Egocentricity can wait, that is fascinating for gaudy plumage fanciers but serious birds pay attention to sociology. Sit. Pay attention. Listen.”&lt;/p&gt;
+
+&lt;p&gt;Moses squawked but in the end, he and Maude settled down as Horton began to speak.&lt;/p&gt;
+
+&lt;h3 id=&quot;surreal-birds&quot;&gt;surreal birds&lt;/h3&gt;
+
+&lt;p&gt;“I have discovered that each bird in a flock knows some set of birds in its flock. Flocks are large, and in some cases no one bird personally knows every other bird in the flock. Each bird divides the birds it knows into two sets: Those that outrank it in the flock, and those it outranks in the flock. I call them &lt;em&gt;greater known birds&lt;/em&gt; and &lt;em&gt;lesser known birds&lt;/em&gt; respectively.”&lt;/p&gt;
+
+&lt;p&gt;“Of course, a bird may not know any birds it outranks in the flock. That doesn’t mean it doesn’t outrank any birds, it just doesn’t personally know any birds it outranks. The same goes for birds that outrank it: A bird may not personally know any birds it outranks, but that does not mean there aren’t any in the flock.”&lt;/p&gt;
+
+&lt;p&gt;Maude was making notes:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{any} = _ = require('underscore')
+
+class FlockingBird
+  constructor: (@greater = [], @lesser = []) -&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;“Now these birds often compete with each other: For good nesting sites, for mates, for a piece of food, for a good perch on a branch. Each will instinctively show its threat display and try to get the other to back down. As they do so, they screech at each other. When one stands its ground and the other backs off, the one that stands its ground &lt;em&gt;always&lt;/em&gt; outranks the other.&lt;/p&gt;
+
+&lt;p&gt;“I wondered how they sorted it out, so I observed and made extensive notes. I have discovered that they obey both of two simple rules. To simplify the explanation, imagine a bird is displaying on its courtship stage when a rival appears. We have the courting bird and the rival who square off in a challenge.&lt;/p&gt;
+
+&lt;p&gt;The first rule is that in order to stand its ground, the courting bird cannot know any bird ranked greater than the courting bird such that the rival would stand its ground against the greater ranked bird.&lt;/p&gt;
+
+&lt;p&gt;The second rules is that in order to stand its ground, the rival cannot know any bird lesser than the rival that stands its ground against the courting bird.&lt;/p&gt;
+
+&lt;p&gt;Maude gave this some thought, and then wrote:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  standsAgainst: (rival) -&amp;gt;
+    courtingBird = this
+    case1 = any @greater, (gb) -&amp;gt; rival.standsAgaint(gb)
+    case2 = any rival.lesser,(lb) -&amp;gt; lb.standsAgainst(courtingBird)
+    (not case1) and (not case2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;“The first important rule about flocking birds is that they like to have a well-defined place in the flock’s pecking order. Specifically, they become &lt;em&gt;confused&lt;/em&gt; if either of the following cases are true:&lt;/p&gt;
+
+&lt;p&gt;“First, a bird is confused if it knows a confused bird. Second, a bird is confused if any of the birds it knows it outranks would stand against a bird it knows outrank it.”&lt;/p&gt;
+
+&lt;p&gt;Maude quickly wrote:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  confused: -&amp;gt;
+    case1a = any @lesser, (lb) -&amp;gt; lb.confused()
+    case1b = any @greater, (gb) -&amp;gt; gb.confused()
+    case2  = any @lesser, (lb) =&amp;gt;
+      any @greater, (gb) -&amp;gt;
+        lb.standsAgainst(gb)
+    case1a or case1b or case2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Moses was preening itself, acting as disinterested as possible, but he fixed his eye on Horton and appeared to be thinking hard when Horton posed a question:&lt;/p&gt;
+
+&lt;p&gt;“Now that you know the basic rules of sociology, I present to you &lt;em&gt;Mayzie&lt;/em&gt;, a flocking bird that is so self-centered it doesn’t know any other birds. Is Mayzie confused?”&lt;/p&gt;
+
+&lt;p&gt;Maude thought for a moment and then wrote:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe &quot;Lazy Mayzie&quot;, -&amp;gt;
+
+  Mayzie = new FlockingBird()
+  
+  it &quot;should not be confused&quot;, -&amp;gt;
+    expect( Mayzie.confused() ).toEqual false
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After explaining her notation to Horton, he agreed. “Yes, Mayzie isn’t very sociable, but she isn’t confused.”&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;…this essay is in progress…&lt;/em&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;notes:&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:SKI&quot;&gt;
+      &lt;p&gt;See the &lt;a href=&quot;https://en.wikipedia.org/wiki/SKI_combinator_calculus&quot;&gt;SKI Combinator Calculus&lt;/a&gt;&lt;a href=&quot;#fnref:SKI&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:mockingbird&quot;&gt;
+      &lt;p&gt;See &lt;a href=&quot;http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&amp;amp;camp=1789&amp;amp;creative=390957&amp;amp;creativeASIN=B00A1P096Y&amp;amp;linkCode=as2&amp;amp;tag=raganwald001-20&quot;&gt;To Mock a Mockingbird&lt;/a&gt;&lt;a href=&quot;#fnref:mockingbird&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:nothing&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;http://codon.com/programming-with-nothing&quot;&gt;Programming with Nothing&lt;/a&gt;&lt;a href=&quot;#fnref:nothing&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</content>
+      </entry>
+    
   
     
       <entry>
@@ -152,7 +305,7 @@
 
 &lt;hr /&gt;
 
-&lt;p&gt;Next: &lt;a href=&quot;./vireo.html&quot;&gt;The Versatile Vireo&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Next: &lt;a href=&quot;./horton.html&quot;&gt;Horton Hatches Surreal Numbers&lt;/a&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
 
@@ -267,159 +420,6 @@
     &lt;/li&gt;
     &lt;li id=&quot;fn:moses&quot;&gt;
       &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Moses_Schönfinkel&quot;&gt;Moses Schönfinkel&lt;/a&gt; was a Russian logician and mathematician, known for the invention of combinatory logic.&lt;a href=&quot;#fnref:moses&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;
-</content>
-      </entry>
-    
-  
-    
-      <entry>
-        <id>http://raganwald.com/enchanted-forest/horton.coffee</id>
-        <link type="text/html" rel="alternate" href="http://raganwald.com/enchanted-forest/horton.html"/>
-        <title>Horton Hatches Surreal Numbers</title>
-        <published>2013-03-16T00:00:00-04:00</published>
-        <updated>2013-03-16T00:00:00-04:00</updated>
-        <author>
-          <name>Reginald Braithwaite</name>
-          <uri>http://raganwald.com/</uri>
-        </author>
-        <content type="html">&lt;p&gt;Previously in &lt;a href=&quot;./scheinfinkel.html&quot;&gt;Schönfinkel’s Forest&lt;/a&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Now it so happens that some birds are such that if you call out their own song to them, they call it right back to you. You saw one such bird, the Idiot. We call these&lt;/em&gt; egocentric &lt;em&gt;birds. Given the Kestrel and the Idiot, is there another egocentric bird in the forest?&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Next, a bird is&lt;/em&gt; hopelessly egocentric &lt;em&gt;if it is the case that no matter what bird you call out to it, it calls back its own song. Given the Kestrel and the Idiot, is there a bird that is fixated on itself in this forest?&lt;/em&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Maude pondered these questions for a few minutes and intuitively decided that the answer must be &lt;strong&gt;no&lt;/strong&gt;. The Kestrel seemed like a promising bird, but trying things like &lt;code&gt;K(K)&lt;/code&gt; and variations on the same seemed to be going in the wrong direction.&lt;/p&gt;
-
-&lt;p&gt;“No,” she said at last, “I do not think so, although proving that it is not the case is a little beyond me right now.”&lt;/p&gt;
-
-&lt;p&gt;Moses clicked his beak and gazed at her. “You are right, the Kestrel and Idiot are not enough. There are a great many birds in the forest. We songbirds are territorial, although not particularly exclusive. Here in my territory, there are a few birds that make a permanent nest. In addition to the Kestrel and Idiot, I also have nesting in my territory a Bluebird, a Cardinal, and a Starling.”&lt;/p&gt;
-
-&lt;p&gt;“They are very interesting. The Kestrel and Starling are good friends, I do believe that between them they are smart enough to solve any problem that can be solved, although for some reason they like to have the Idiot around to do mundane chores.&lt;sup id=&quot;fnref:SKI&quot;&gt;&lt;a href=&quot;#fn:SKI&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-
-&lt;p&gt;“There &lt;em&gt;is&lt;/em&gt; a hopelessly egocentric bird in the forest, but you will probably learn more about such things if you visit The Magnificent Smullyan Bird’s territory. He has a Mockingbird&lt;sup id=&quot;fnref:mockingbird&quot;&gt;&lt;a href=&quot;#fn:mockingbird&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; there and he will tell you all about this wonderful creature.&lt;/p&gt;
-
-&lt;p&gt;“Let’s head over there now, I’ll introduce you.”&lt;/p&gt;
-
-&lt;p&gt;Moses flew along, showing Maude the way to The Magnificent Smullyan Bird’s Territory. As the were walking along, Maude saw the most curious sight: A small winged elephant perched on a nest.&lt;/p&gt;
-
-&lt;h3 id=&quot;elephants-and-bowerbirds&quot;&gt;elephants and bowerbirds&lt;/h3&gt;
-
-&lt;p&gt;“What is that!?”&lt;/p&gt;
-
-&lt;p&gt;Moses clicked his beak. “I don’t know why everyone is so fascinated with Horton’s appearance. He can barely fly, his beak is all rubbery, and he lacks any plumage of note. Mind you, he is something of an expert on certain subjects and I do consult him from time to time.”&lt;/p&gt;
-
-&lt;p&gt;Maude asked about his expertise.&lt;/p&gt;
-
-&lt;p&gt;“Well, he does a lot of work playing with pebbles on vast grids that he lays out. He claims that by following certain rules, his pebbles can answer any question my Starling and Kestrel can answer.”[^life]&lt;/p&gt;
-
-&lt;p&gt;[^life] &lt;a href=&quot;https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life&quot;&gt;Conway’s Game of Life&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Maude was interested. Pebbles?&lt;/p&gt;
-
-&lt;p&gt;“Well,” Moses said, “I didn’t mention this earlier, but we birds come in a few basic varieties. We all have songs, but some of us like to attract a mate with our excellent plumage, some with vigorous and intricate dancing, and a certain lesser class of bird likes to build a &lt;a href=&quot;https://en.wikipedia.org/wiki/Bowerbird&quot;&gt;bower&lt;/a&gt; out of various found objects.”&lt;/p&gt;
-
-&lt;p&gt;For example, I could show you the Stuart’s Tombird. It builds an elaborate bower out of just one material, chips of red crystal. It is intelligent, and claims its bowers can do various tasks like count to one hundred or even write nonsensical words like “fizz” or “buzz.”&lt;sup id=&quot;fnref:nothing&quot;&gt;&lt;a href=&quot;#fn:nothing&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-
-&lt;p&gt;“In any event,” continued Moses, “We may as well say hello to Horton since we’re here.”&lt;/p&gt;
-
-&lt;h3 id=&quot;horton&quot;&gt;horton&lt;/h3&gt;
-
-&lt;p&gt;Moses introduced Maude to Horton. After exchanging pleasantries, Maude asked Horton what kind of song he sang.&lt;/p&gt;
-
-&lt;p&gt;“I am not particularly interested in songs,” said Horton, “I am working at the moment on bird sociology, particularly flocking birds. As you may know, some birds, like Schönfinkel’s Bright Bird and myself, are fairly solitary. Others like to live in large flocks.”&lt;/p&gt;
-
-&lt;p&gt;“In most such flocks, there is a strict &lt;em&gt;pecking order&lt;/em&gt;. What interests me is how such flocks behave when each bird is autonomous and there is no centralized control over the order of rank for the birds.”&lt;/p&gt;
-
-&lt;p&gt;“I will show you,” started Horton, scribbling some marks in the dirt with a stick he held in his trunk. Moses hastily intervened.&lt;/p&gt;
-
-&lt;p&gt;“Alas, Horton, we are on our way to see The Magnificent Smullyan Bird so that Maude can learn about hopeless egocentricity and do not have time—”&lt;/p&gt;
-
-&lt;p&gt;Horton would hear nothing of it. “Nonsense! Egocentricity can wait, that is fascinating for gaudy plumage fanciers but serious birds pay attention to sociology. Sit. Pay attention. Listen.”&lt;/p&gt;
-
-&lt;p&gt;Moses squawked but in the end, he and Maude settled down as Horton began to speak.&lt;/p&gt;
-
-&lt;h3 id=&quot;surreal-birds&quot;&gt;surreal birds&lt;/h3&gt;
-
-&lt;p&gt;“I have discovered that each bird in a flock knows some set of birds in its flock. Flocks are large, and in some cases no one bird personally knows every other bird in the flock. Each bird divides the birds it knows into two sets: Those that outrank it in the flock, and those it outranks in the flock. I call them &lt;em&gt;greater known birds&lt;/em&gt; and &lt;em&gt;lesser known birds&lt;/em&gt; respectively.”&lt;/p&gt;
-
-&lt;p&gt;“Of course, a bird may not know any birds it outranks in the flock. That doesn’t mean it doesn’t outrank any birds, it just doesn’t personally know any birds it outranks. The same goes for birds that outrank it: A bird may not personally know any birds it outranks, but that does not mean there aren’t any in the flock.”&lt;/p&gt;
-
-&lt;p&gt;Maude was making notes:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{any} = _ = require('underscore')
-
-class FlockingBird
-  constructor: (@greater = [], @lesser = []) -&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;“Now these birds often compete with each other: For good nesting sites, for mates, for a piece of food, for a good perch on a branch. Each will instinctively show its threat display and try to get the other to back down. As they do so, they screech at each other. When one stands its ground and the other backs off, the one that stands its ground &lt;em&gt;always&lt;/em&gt; outranks the other.&lt;/p&gt;
-
-&lt;p&gt;“I wondered how they sorted it out, so I observed and made extensive notes. I have discovered that they obey both of two simple rules. To simplify the explanation, imagine a bird is displaying on its courtship stage when a rival appears. We have the courting bird and the rival who square off in a challenge.&lt;/p&gt;
-
-&lt;p&gt;The first rule is that in order to stand its ground, the courting bird cannot know any bird ranked greater than the courting bird such that the rival would stand its ground against the greater ranked bird.&lt;/p&gt;
-
-&lt;p&gt;The second rules is that in order to stand its ground, the rival cannot know any bird lesser than the rival that stands its ground against the courting bird.&lt;/p&gt;
-
-&lt;p&gt;Maude gave this some thought, and then wrote:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;  standsAgainst: (rival) -&amp;gt;
-    courtingBird = this
-    case1 = any @greater, (gb) -&amp;gt; rival.standsAgaint(gb)
-    case2 = any rival.lesser,(lb) -&amp;gt; lb.standsAgainst(courtingBird)
-    (not case1) and (not case2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;“The first important rule about flocking birds is that they like to have a well-defined place in the flock’s pecking order. Specifically, they become &lt;em&gt;confused&lt;/em&gt; if either of the following cases are true:&lt;/p&gt;
-
-&lt;p&gt;“First, a bird is confused if it knows a confused bird. Second, a bird is confused if any of the birds it knows it outranks would stand against a bird it knows outrank it.”&lt;/p&gt;
-
-&lt;p&gt;Maude quickly wrote:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;  confused: -&amp;gt;
-    case1a = any @lesser, (lb) -&amp;gt; lb.confused()
-    case1b = any @greater, (gb) -&amp;gt; gb.confused()
-    case2  = any @lesser, (lb) =&amp;gt;
-      any @greater, (gb) -&amp;gt;
-        lb.standsAgainst(gb)
-    case1a or case1b or case2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Moses was preening itself, acting as disinterested as possible, but he fixed his eye on Horton and appeared to be thinking hard when Horton posed a question:&lt;/p&gt;
-
-&lt;p&gt;“Now that you know the basic rules of sociology, I present to you &lt;em&gt;Mayzie&lt;/em&gt;, a flocking bird that is so self-centered it doesn’t know any other birds. Is Mayzie confused?”&lt;/p&gt;
-
-&lt;p&gt;Maude thought for a moment and then wrote:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;describe &quot;Lazy Mayzie&quot;, -&amp;gt;
-
-  Mayzie = new FlockingBird()
-  
-  it &quot;should not be confused&quot;, -&amp;gt;
-    expect( Mayzie.confused() ).toEqual false
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;After explaining her notation to Horton, he agreed. “Yes, Mayzie isn’t very sociable, but she isn’t confused.”&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;…this essay is in progress…&lt;/em&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;notes:&lt;/p&gt;
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:SKI&quot;&gt;
-      &lt;p&gt;See the &lt;a href=&quot;https://en.wikipedia.org/wiki/SKI_combinator_calculus&quot;&gt;SKI Combinator Calculus&lt;/a&gt;&lt;a href=&quot;#fnref:SKI&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:mockingbird&quot;&gt;
-      &lt;p&gt;See &lt;a href=&quot;http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&amp;amp;camp=1789&amp;amp;creative=390957&amp;amp;creativeASIN=B00A1P096Y&amp;amp;linkCode=as2&amp;amp;tag=raganwald001-20&quot;&gt;To Mock a Mockingbird&lt;/a&gt;&lt;a href=&quot;#fnref:mockingbird&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:nothing&quot;&gt;
-      &lt;p&gt;&lt;a href=&quot;http://codon.com/programming-with-nothing&quot;&gt;Programming with Nothing&lt;/a&gt;&lt;a href=&quot;#fnref:nothing&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;

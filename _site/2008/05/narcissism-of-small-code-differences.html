@@ -1,0 +1,715 @@
+<html> 
+<head>
+        
+        <title>The Narcissism of Small Code Differences</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Tuesday, May 13, 2008</div>
+			
+
+			<div class="Post"><a name="572919696575923252">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html" title="permanent link">The Narcissism of Small Code Differences</a></span>
+					<div style="clear:both;"></div><pre><code><br />def formatted_zip_code(digits)<br />  case digits.size <br />  when 4 then "0#{digits}" <br />  when 3 then "00#{digits}" <br />  else digits <br />  end<br />end</code></pre><br />This code reads pretty much as the author would have explained how to handle the &ldquo;digits&rdquo; variable: If it only has four digits, pre-pend it with a zero. If it only has three digits, prepend it with two zeros. Simple and to the point and move  on. Save the clever code for something that matters.<br /><br /><div class="book"><hr><em><a name="evtst|a|0672328844" href="http://www.amazon.com/gp/product/0672328844?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0672328844"><img src="http://raganwald.github.com/assets/images/old//the_ruby_way.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0672328844" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br><a name="evtst|a|0672328844" href="http://www.amazon.com/gp/product/0672328844?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0672328844">The Ruby Way</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0672328844" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is the perfect second Ruby book for serious programmers. The Ruby Way contains more than four hundred examples explaining how to do everything from distributing Ruby to functional programming techniques like the Y combinator.</em><hr></div>The author of this code was an <em>Agnostic</em>. He didn&rsquo;t mind using a case statement instead of if-elsif-elsif, he paid attention to the features of his chosen programming language, but he didn&rsquo;t have strong convictions about there being One True Way to express every set of choices.<br /><br />His code &ldquo;Just Worked.&rdquo;<br /><br /><strong>Donning The Hair Shirt</strong><br /><br />The Agnostic&rsquo;s code carried on, quietly working, until one day another programmer chanced upon it. Our second programmer was an <em>Ascetic</em>. Ascetics believe in code that can do powerful things with a small set of core axioms, like recursion and first-class functions.<br /><br />The Ascetic spotted a bug: What if &ldquo;digits&rdquo; only had <em>two</em> digits? The objective of the code was clearly to have at least five digits, with leading zeros. The Ascetic cracked his knuckles and went to work.<br /><br />Given his <a title="Tom Moertel derives the Y combinator in Ruby" href="http://raganwald.github.com/2007/02/guest-blogger-tom-moertel-derives-y.html">favourite library function</a>:<br /><pre><code><br />def y(&f)<br />    lambda { |x| x[x] } [ <br />        lambda { |yf| lambda { |*args| f[yf[yf]][*args] } } ]<br />end</code></pre><br />He rewrote the Agnostic&rsquo;s code as:<br /><pre><code><br />def formatted_zip_code(digits)<br />  y { |rec|<br />    lambda { |str| <br />      str =~ /....(.)+/ && str || rec["0#{str}"] } }[digits]<br />end</code></pre><br />And all was well for a short time.<br /><br /><strong>Toiling in the Stacks</strong><br /><br />The Ascetic checked his code in, where another programmer, a <em>Librarian</em>, reviewed it. She saw immediately that it could and should be re-written:<br /><pre><code><br />def formatted_zip_code(digits)<br />  digits.rjust(5,'0')<br />end</code></pre><br />Librarians believe that there is a library for everything, and good languages have huge libraries providing lots of built-in functionality. Programming is the art of searching the libraries for the one magic incantation that does exactly what you want.<br /><br />And for a short time, all continued to be well.<br /><br /><strong>Purity of Essence</strong><br /><br />One day, management hired a senior programmer with much experience working in the bowels of BigCo. He was brought in to provide &ldquo;Adult Supervision&rdquo; for the programming team. He went right to work, reviewing the code base and compiling a list of sins against his religious convictions. He was an <em>OO Purist</em>.<br /><br /><blockquote>I am told that a cathedral built by Purists is beautiful to behold, constructed lovingly of small bricks, no more than 50 lines per class, no more than 10 classes per package, no more than two instance variables per class, no more than one level of indentation per method, no more than one dot per line, and absolutely no else clauses.</blockquote><br /><br />The Purist considered ifs, cases, and even shortcut booleans to be deficiencies in code, places where the proper approach&mdash;and indeed to only approach&mdash;is to use polymorphism and <a href="http://en.wikipedia.org/wiki/Dependent_type">dependent types</a>.<br /><br />The Purist seized upon the twice-rewritten code as an opportunity to show how such a thing ought to be written:<br /><pre><code><br />def formatted_zip_code(digits)<br />  ZipCodeDigitFactory.new(digits).to_formatted_string<br />end</code></pre><br />Alas, space does not permit me to show you all of the subclasses of Digits he composed, one for each possible length of string. For example:<br /><pre><code><br />class FourZipCodeDigits < BaseZipCodeDigits<br />  def to_formatted_string<br />    "0#{self.to_s}"<br />  end<br />end</code></pre>I have also omitted his ZipCodeFactory that would take a normal string and figure out which particular subclass of BaseZipCodeDigits to construct.<br /><br />(I am told that a cathedral built by Purists is beautiful to behold, constructed lovingly of small bricks, no more than 50 lines per class, no more than 10 classes per package, no more than two instance variables per class, no more than one level of indentation per method, no more than one dot per line, and absolutely no else clauses.)<br /><br />Of course, the Librarian, Ascetic and the Purist hated each other with a passion fueled by the <a href="http://en.wikipedia.org/wiki/Narcissism_of_small_differences">narcissism of small differences</a> into a raging fire of religious cleansing. Much politicking and fighting broke out over the code.<br /><br />Meanwhile, the Agnostic carried on, quietly coding while the others bickered over how to properly rewrite what he would write. One day, he noticed that some unit tests were failing and raised the issue in Campfire.<br /><br /><strong>The Return of the Agnostic</strong><br /><br />&ldquo;Hey,&rdquo; he asked, &ldquo;What happened to that piece of code? It was for zip codes, it was only supposed to pre-pend one or two zeros when importing zip codes from CSV files. Anything with fewer than three digits is supposed to be an invalid code. Empty strings shouldn&rsquo;t be converted to five zeros, as far as I know.&rdquo;<br /><br />&ldquo;What&rsquo;s up with that?&rdquo;<br /><br />The Librarian, Ascetic, and Purist were silent for a moment, and then immediately resumed arguing, this time over whether #rjust should have another parameter, whether the regular expression in a recursive routine should be changed, or whether the simplest thing was to simply change the method for the EmptyDigits, OneDigit, and TwoDigits classes.<br /><br />The Agnostic listened for a moment, tried to interject a few times, then sighed and reached for his text editor.<br /><br /><hr/><em>Update:</em> Reviewing the comments made elsewhere, I see that this post fell into the Fizzbuzz Trap: By quoting a programming problem&mdash;no matter how banal and contrived&mdash;the article was bound to provoke a huge amount of dicussion around the correct way to solve the problem, while ignoring the point of the post. This is my fault, I should have known better than to post a snippet of code. As many of you have noted, the post is not about the Agnostic or his code, it&rsquo;s about the dynamic of programmers eager to rewrite code in their own image, and the hypothesis that our (I am equally guilty of this behaviour) motivation for doing so is to emphasize the small differences between ourselves and others.<br /><br />For no matter how good or bad the Agnostic&rsquo;s code is, why did the Librarian rewrite the Ascetic&rsquo;s code? Why did the Purist rewrite it again? When they discovered that the Agnostic&rsquo;s code actually met some requirement, why weren&rsquo;t <em>they</em> talking about documentation, or the process around tests? Why were they all&mdash;including the agnostic&mdash;eager to rewrite it one more time?<br /><br />Seriously, the post is not about whether the Agnostic should have documented his code, or where the zip code validation should live. However, I should have known that the moment I included a piece of code to provide local colour, the resulting debate over its fitness was inevitable.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html" title="permanent link">11:31 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>The Narcissism of Small Code Differences</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="8800847215931604887"></a> 				Hmm... the Agnostic appears to have forgotten to pull that code out into a meaningful context, either extracting a method, making a ZipCode class or, as a last resort, commenting the why of the code.<BR/><BR/>Faults on all sides I think.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210702740000#c8800847215931604887" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09681803905544703714" rel="nofollow">pdcawley</a> : 2:19 PM</div>
+
+								<span class="item-control blog-admin pid-1891813156"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8800847215931604887" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9159204677963078180"></a> 				I'm definitely int he "agnostic" camp but I agree he should have dropped a simple comment in there to avoid having the purpose of the method redefined.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210702860000#c9159204677963078180" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07161835401958202911" rel="nofollow">Bill</a> : 2:21 PM</div>
+
+								<span class="item-control blog-admin pid-1618343138"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9159204677963078180" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4677272887150019378"></a> 				<span class="deleted-comment">This post has been removed by the author.</span><br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210703520000#c4677272887150019378" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02343644564882650807" rel="nofollow">Jim F</a> : 2:32 PM</div>
+
+								<span class="item-control blog-admin "><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4677272887150019378" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4929828663264155404"></a> 				To be perfectly fair, this is allegorical. But yes, all of the programmers knew that the digits belonged to a zip code. However, they were not necessarily aware of the subtlety of the &ldquo;business rule&rdquo; that zip codes less than 00200 are invalid.<BR/><BR/>That being said, there <I>were</I> unit tests for the appropriate cases, and the programmers suggesting/making changes did not review all of the possible test before blindly making assumptions about what was going on.<BR/><BR/>In other words, they assumed that there was a bug rather than assuming that the desired behaviour was somewhat irregular.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210704000000#c4929828663264155404" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:40 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4929828663264155404" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1838718532719983668"></a> 				Nice post. I like allegories.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210704180000#c1838718532719983668" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06532323694848751057" rel="nofollow">Stevi Deter</a> : 2:43 PM</div>
+
+								<span class="item-control blog-admin pid-595662159"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1838718532719983668" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="188992948180808229"></a> 				The journey would have been far different if 'digits' was named 'zipcode' instead?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210704300000#c188992948180808229" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05980200268553911430" rel="nofollow">Bil</a> : 2:45 PM</div>
+
+								<span class="item-control blog-admin pid-581696300"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=188992948180808229" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5471620356104696549"></a> 				Great post. That's exactly it. I started way back in the ascetic camp, then moved to purist view briefly before staying on the librarian side for a long time. I didn't become agnostic until I was the poor fool who had to stay up all night to find and fix the bugs. <BR/><BR/>It turns out that when you are really really sleepy your favorite pieces of code are always the most 'obvious' ones. Thinking is not fun in the middle of the night, and it shouldn't be necessary all of the time.<BR/><BR/>Not surprisingly, elegance comes from taking something 'hard' and finding the simplest, most obvious answer, thus making it look 'easy'.<BR/><BR/>Paul.<BR/><A HREF="http://theprogrammersparadox.blogspot.com" REL="nofollow">http://theprogrammersparadox.blogspot.com</A><br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210704420000#c5471620356104696549" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 2:47 PM</div>
+
+								<span class="item-control blog-admin pid-1233049894"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5471620356104696549" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7897431007684169577"></a> 				Brilliant!<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210705920000#c7897431007684169577" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08194575062473933042" rel="nofollow">Norman</a> : 3:12 PM</div>
+
+								<span class="item-control blog-admin pid-2139180109"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7897431007684169577" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8527698163529098211"></a> 				So Agnostics are supposed to be allowed to enter code that's undocumented and subject to future breakage?<BR/><BR/>You mention the "business rule" that zip codes less than 00200 are invalid.  While that's currently true, it's not complete: there are a number of other unassigned 3-digit prefixes.  There's also nothing preventing the USPS from assigning those numbers.  <BR/><BR/>Just because there are unit tests for a specific behavior don't mean that specific behavior is <B>right</B>.  Unit tests are code, and can have bugs.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210706400000#c8527698163529098211" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16670019002606009302" rel="nofollow">Alan</a> : 3:20 PM</div>
+
+								<span class="item-control blog-admin pid-479183582"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8527698163529098211" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8206193626300836899"></a> 				Joel Spolsky:<BR/><BR/><I>The idea that new code is better than old is patently absurd. Old code has been used. It has been tested. Lots of bugs have been found, and they've been fixed. There's nothing wrong with it. It doesn't acquire bugs just by sitting around on your hard drive. Au contraire, baby! Is software supposed to be like an old Dodge Dart, that rusts just sitting in the garage? Is software like a teddy bear that's kind of gross if it's not made out of all new material?<BR/><BR/>Back to that two page function. Yes, I know, it's just a simple function to display a window, but it has grown little hairs and stuff on it and nobody knows why. Well, I'll tell you why: those are bug fixes. One of them fixes that bug that Nancy had when she tried to install the thing on a computer that didn't have Internet Explorer. Another one fixes that bug that occurs in low memory conditions. Another one fixes that bug that occurred when the file is on a floppy disk and the user yanks out the disk in the middle. That LoadLibrary call is ugly but it makes the code work on old versions of Windows 95.<BR/><BR/>Each of these bugs took weeks of real-world usage before they were found. The programmer might have spent a couple of days reproducing the bug in the lab and fixing it. If it's like a lot of bugs, the fix might be one line of code, or it might even be a couple of characters, but a lot of work and time went into those two characters.<BR/><BR/>When you throw away code and start from scratch, you are throwing away all that knowledge. All those collected bug fixes. Years of programming work.</I><BR/><BR/><A HREF="http://www.joelonsoftware.com/articles/fog0000000069.html" REL="nofollow">Things You Should Never Do, Part I</A><BR/><BR/>I think we can debate what Agnostic should have/could have done, but the real point of the story is that refactoring other people&rsquo;s code to suit your own religious convictions is difficult.<BR/><BR/>I am not going to say it cannot or should not be done, just pointing out how easy it is to break something in the zeal to make it &ldquo;better.&rdquo;<BR/><BR/>Joel continues:<BR/><BR/><I>problems can be solved, one at a time, by carefully moving code, refactoring, changing interfaces. They can be done by one programmer working carefully and checking in his changes all at once, so that nobody else is disrupted. Even fairly major architectural changes can be done without throwing away the code. On the Juno project we spent several months rearchitecting at one point: just moving things around, cleaning them up, creating base classes that made sense, and creating sharp interfaces between the modules. But we did it carefully, with our existing code base, and we didn't introduce new bugs or throw away working code.</I><BR/><BR/>I am not trying to give a black-and-white prescription here. Just pointing out how much the Ascetic, Librarian, and Purist have in common despite the fact that each of them thinks the other two are complete Bozos.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210707480000#c8206193626300836899" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:38 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8206193626300836899" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8557754010519832306"></a> 				Alan, are you suggesting it's possible to write code that's NOT subject to future breakage?  Business rules change and code changes with them.<BR/><BR/>As for documenting the code, this is precisely why the Rails community has taken to calling unit tests 'specs.'<BR/><BR/>The argument for using specs in place of comments is that your build tool or cruise control will find violations, while future programmers who must bother to read your comments won't.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210708320000#c8557754010519832306" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13435514890492313898" rel="nofollow">Benjamin</a> : 3:52 PM</div>
+
+								<span class="item-control blog-admin pid-215142982"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8557754010519832306" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="217131350132931858"></a> 				To those of you saying the function should have been commented to state its purpose -- what would you like that comment to say?  "Formats a ZIP code"?  The function name says that already.  "Formats a ZIP code by prepending one or two zeros to it if needed"?  That's exactly what the code says; there's no need to be redundant.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210713180000#c217131350132931858" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://brooksmoses.livejournal.com/" rel="nofollow">brooksmoses</a> : 5:13 PM</div>
+
+								<span class="item-control blog-admin pid-2137377147"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=217131350132931858" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3493870417012813052"></a> 				Great stuff. It reminds me once again to choose first the simplest thing that could possibly work.<BR/><BR/>On the other hand, I have to wonder why this code was needed. Looks like someone is treating ZIP codes as integers somewhere, which I'd call a bug.<BR/><BR/>///ark<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210713540000#c3493870417012813052" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05146696869172974104" rel="nofollow">Mark Wilden</a> : 5:19 PM</div>
+
+								<span class="item-control blog-admin pid-169528663"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3493870417012813052" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1112308188539198543"></a> 				<I>Looks like someone is treating ZIP codes as integers somewhere, which I'd call a bug.</I><BR/><BR/>The case I have seen <I>repeatedly</I> is that someone uses a tool like Excel to export a CSV of some kind. Excel helpfully treats values consisting exclusively of digits as integers unless you go out of your way to insist that it leave them alone.<BR/><BR/>So... CSV files you import often have artefacts like this that need to be handled.<BR/><BR/>"Be liberal in what you accept"<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210713840000#c1112308188539198543" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:24 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1112308188539198543" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="253469032671854309"></a> 				I think you misrepresent the Purist. An OO approach would be to have used a strongly-typed ZipCode class that encapsulates both the validation logic and formatting rules for zip codes. I'd rather maintain that than any of the other solutions you give. I'm calling Strawman! ;)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210716840000#c253469032671854309" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02020072230899910249" rel="nofollow">Nick</a> : 6:14 PM</div>
+
+								<span class="item-control blog-admin pid-1366846447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=253469032671854309" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8147119159899161675"></a> 				<I>An OO approach would be to have used a strongly-typed ZipCode class that encapsulates both the validation logic and formatting rules for zip codes.</I><BR/><BR/>That is the view from the rest of the system, but how does the Purist implement the validation and formatting <I>within</I> the ZipCode class? The Purist eschews the bloated heavyweight classes that are &ldquo;Procedural programs in OO Clothing.&rdquo; For example, a class that is not polymorphic in practice is a sure tip-off that an OO language has been used to provide encapsulation but is no more OO than a similar program written in a modular language like Modula or Ada.<BR/><BR/>Thus, the Purist implements the classes you see above <I>inside</I> a ZipCode class or package rtaher tahn building a class and hiding if-then-else logic inside it.<BR/><BR/><STRONG>It&rsquo;s objects all the ways down!</STRONG><br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210719720000#c8147119159899161675" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:02 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8147119159899161675" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8843230249030753821"></a> 				<I>To those of you saying the function should have been commented to state its purpose -- what would you like that comment to say?</I><BR/><BR/>How about, "Pre-pends one or two zeroes to a zip code. Codes less than 3 characters are invalid."<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210720440000#c8843230249030753821" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09920667142791376856" rel="nofollow">AzMoo</a> : 7:14 PM</div>
+
+								<span class="item-control blog-admin pid-314344315"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8843230249030753821" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6543512942484057835"></a> 				Good points. I hate to see proceduralism in OO clothing.<BR/><BR/>In most popular languages however, formatting within a string <I>is</I> an example where ZipCode would exhibit polymorphic behaviour, e.g.<BR/><BR/>myZip = ZipCode.new('1234')<BR/>puts myZip.to_s<BR/><BR/>(My Ruby is rusty!) The to_s method is implemented polymorphically on ZipCode, Integer, Employee, etc., etc., and this polymorphism can be leveraged in general presentation and formatting routines.<BR/><BR/>Parsing from a string format is a similar case, so the validation example will be exercised polymorphically in many popular languages, too.<BR/><BR/>Enjoyed the article, by the way.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210720440001#c6543512942484057835" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02020072230899910249" rel="nofollow">Nick</a> : 7:14 PM</div>
+
+								<span class="item-control blog-admin pid-1366846447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6543512942484057835" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1459353870223065188"></a> 				An utter waste of bandwidth summarized as follows: developers should communicate with one another<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210721520000#c1459353870223065188" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02165511158780330987" rel="nofollow">George Jempty</a> : 7:32 PM</div>
+
+								<span class="item-control blog-admin pid-1577455060"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1459353870223065188" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7921824420274166926"></a> 				George:<BR/><BR/><I>developers should communicate with one another</I><BR/><BR/>This is one of those trite sound bites that gets you elected without actually saying anything.<BR/><BR/>What should developers communicate with each other? Requirements? How? In a telephone-book specification? Inline comments? Commenting check-ins? Unit tests? RSpecs? Preconditions and postcondistions? Asserts? Checked Exceptions? Code reviews? Daily scrums? Emails? Expressive type systems? Expressive programming languages? DSLs? Wrapping primitives in classes?<BR/><BR/>Now as to the post: your summary does not match my own, which has something to do with the importance or lack of importance people place on there being One True Way to express a certain algorithm relative to the result it generates.<BR/><BR/>My summary, which you can obtain by reading the title, is that people fasten upon unimportant distinctions in order to generate a sense of self.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210722360000#c7921824420274166926" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:46 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7921824420274166926" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7833460516868026199"></a> 				<B>"The \"Real WTF?\" Here"</B> is how any of these people got to be professional programmers without learning to properly comment their code! (Kudos to FP for catching onto that quickly too) ;) Agnostic could have saved everyone the ensuing b!tchfest with:<BR/> <B># pad 3&4 digits w/ 0 only.</B><BR/><BR/>If you see that, you're going to go ask someone who was involved in the original coding or at least search for dependencies in your code-base before changing that behavior...<BR/><BR/>The guy who religiously puts in little comments like that though would also be part of a new category, (<B>"Know it All"</B>, maybe?) and would likely know the appropriate "one-liner" to spit out upon the merest mention of the problem domain. Something like (forgive my lack of ruby cred if i've mistyped something):<BR/><BR/>&nbsp;&nbsp;<B>def formatted_zip_code(digits)<BR/>&nbsp;&nbsp;&nbsp;&nbsp;# pad 3&4 digits w/ 0 only. -dp<BR/>&nbsp;&nbsp;&nbsp;&nbsp;(digits.size > 2) && "00#{digits}"[-5] || digits<BR/>&nbsp;&nbsp;end</B><BR/><BR/>It simplifies everything (<I>if you don't count readability</I>), employs superior programming kungfu (<I>fancy binary operators and negative slicing!? oh my!</I>), justifies its own existence and maintains job security (<I>vaguely commented and author-tagged</I>), and MOST IMPORTANTLY: is 100% compatible with the old function. (<I>yay!</I>)<BR/><BR/>The "ultimate comment",in my narcssistic opinion, would be:<BR/> <B># pad 3&4 digts only, or else you'll have to change a bunch of unit tests! -dp</B><BR/><BR/>... but who has time to write all that, honestly? ;)<BR/><BR/>Happy Hacking!<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210723080000#c7833460516868026199" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00584117862111716802" rel="nofollow">[ dut ]</a> : 7:58 PM</div>
+
+								<span class="item-control blog-admin pid-898455465"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7833460516868026199" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3310454041034179306"></a> 				or maybe that's just what you'd get if your local <B>Ascetic</B> came from a perl background rather than something like lisp. ;) <BR/><BR/>either way, great article, by the way. <BR/><BR/> - [dut]<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210723440000#c3310454041034179306" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00584117862111716802" rel="nofollow">[ dut ]</a> : 8:04 PM</div>
+
+								<span class="item-control blog-admin pid-898455465"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3310454041034179306" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3111142048600167341"></a> 				<I>Agnostic could have saved everyone the ensuing b!tchfest with:<BR/># pad 3&4 digits w/ 0 only.</I><BR/><BR/>Well, he might have saved this hypothetical bitchfest, but something tells me that Librarians, Ascetics, and Purists will find something else to bitch about no matter what :-)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210723980000#c3111142048600167341" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:13 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3111142048600167341" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="76053117538772024"></a> 				The problem with using unit tests as your specification is that you're splitting your specification from the code in a major way.  If there had been something, anything in the code that had pointed out that this is not only formating a number as a zip code, but performing incomplete validation on the number, this whole argument wouldn't have happened.  Instead, the answer is "You needed to read another file, in a different directory structure, to understand what this is really supposed to do."<BR/><BR/>The real problem is we shouldn't even be discussing the details of the problem, but rather whatever point ragenwald was trying to make.  Unfortunately, allegories are a tempting but useless communication vehicle, that deliberately obscures a point in hopes that it'll be more interesting (or harder to discuss).<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210724040000#c76053117538772024" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16670019002606009302" rel="nofollow">Alan</a> : 8:14 PM</div>
+
+								<span class="item-control blog-admin pid-479183582"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=76053117538772024" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6192772694876402454"></a> 				Since nobody after the agnostic remembered to run specs, it's their fault.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210725600000#c6192772694876402454" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14532411921822480176" rel="nofollow">Casey</a> : 8:40 PM</div>
+
+								<span class="item-control blog-admin pid-1775983572"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6192772694876402454" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6893684437127992622"></a> 				Automated Specification-based Tests to the rescue.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210730940000#c6893684437127992622" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17206456907461293947" rel="nofollow">dibblego</a> : 10:09 PM</div>
+
+								<span class="item-control blog-admin pid-1179432721"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6893684437127992622" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1735286348002390293"></a> 				It's vital to comment code that's doesn't use meaningful identifiers or is otherwise unclear.<BR/><BR/>It's also vital to initial such comments when you don't have a good source control system.<BR/><BR/>///ark<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210735920000#c1735286348002390293" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05146696869172974104" rel="nofollow">Mark Wilden</a> : 11:32 PM</div>
+
+								<span class="item-control blog-admin pid-169528663"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1735286348002390293" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3617349523247203632"></a> 				Keep it simple, and self-contained where possible.  Spend more time on new code.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210737900000#c3617349523247203632" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02415622450354918934" rel="nofollow">drawk</a> : 12:05 AM</div>
+
+								<span class="item-control blog-admin pid-1557582267"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3617349523247203632" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9221437889646444171"></a> 				So look at the jackass who took this piece of perfectly working code and replaced it with, mostly, a library call: <BR/><BR/>http://watchdog.net/code/?p=dev.git;a=commitdiff;h=98206928ef13b62bd6ee8dcdaf376a45dcc8ff20<BR/><BR/>Which made it considerably slower, really.  What did he think he was doing, messing with perfectly working code for no good reason?  Just putting his stamp on it?<BR/><BR/>Oh, wait.  Who wrote that part of the code in the first place?  Looks like it was the same jackass.  Maybe there's sometimes a good reason to pave over perfectly working code, say, in the quest for simpler code?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210746840000#c9221437889646444171" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://kragen.livejournal.com/" rel="nofollow">kragen</a> : 2:34 AM</div>
+
+								<span class="item-control blog-admin pid-758432209"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9221437889646444171" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="34383601075800365"></a> 				Hang on, I don't want kudos for suggesting adding a comment here. I'm definitely in the "Comments are code smells" camp here. <BR/><BR/>However, I like to kid myself that, if the tests were passing, I wouldn't have touched that code. While I'm kidding myself, I like to think that, if I had touched the code inanely, the tests would have told me about it pretty bloody sharpish and I'd've rolled back my changes and either gone to investigate, or moved onto something  productive.<BR/><BR/>As Reg says, we're in Allegoryland here, so spending any serious time on this particular code is silly, but I still say that we programmers should strive to write code so that, when we return to it a week later with our Ascetic/Librarian/Purist hats on, we're going to resist the urge to tamper because we've written code that attempts to express the why as well as the what.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210747320000#c34383601075800365" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09681803905544703714" rel="nofollow">pdcawley</a> : 2:42 AM</div>
+
+								<span class="item-control blog-admin pid-1891813156"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=34383601075800365" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2129364377335838683"></a> 				The Agnostic is to blame 100%: he coded it, but didn't put a comment to the boundaries of his implementation. Had the comment he made during the argument being clearly written, the other goofs wouldn't have modified the little utility.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210786140000#c2129364377335838683" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05068401426078300303" rel="nofollow">Jose Sandoval</a> : 1:29 PM</div>
+
+								<span class="item-control blog-admin pid-2034281503"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2129364377335838683" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3576768519268664831"></a> 				José:<BR/><BR/><I>The Agnostic is to blame 100%: he coded it, but didn't put a comment to the boundaries of his implementation.</I><BR/><BR/>So&hellip; Do I understand you to say that if a piece of code does X but you don&rsquo;t see a comment explaining that it is supposed to do X, any programmer ought to be free to &ldquo;fix&rdquo; it to do Y because there&rsqsuo;s no comment saying that it is not supposed to do Y?<BR/><BR/>And that said programmers have no responsibility to research whether such changes break any unit tests? Or to talk to that programmer? Or to look at the context of the code to figure out what it does?<BR/><BR/>And furthermore that programmers are free to do this whenever they like, without reifying the change from X to Y as a bug or feature where the team can discuss it and prioritize it against other work?<BR/><BR/>Putting it in that light, do you not think that the other three programmers have some &rsquo;splaining to do?<BR/><BR/>I think that responsibility does not neatly add up to 100% in team contexts. While we can construct a course of action for any one person that might have avoided this allegorical problem, there is a much deeper dynamic at work that needs to be addressed.<BR/><BR/>Using comments or cruise control or reviewing every check-in to prevent programmers from rewriting code in their own image is ultimately a losing game of cops and robbers.<BR/><BR/>The way forward from my perspective is to address the dynamic that motivated the rewrites in the first  place.<BR/><BR/>The Ascetic, for example. We look at his code first, but even his thought that the code had to be wrong because it wasn&rsquo;t mathematically regular: Isn&rsquo;t that a strong reflection on his aesthetic desire rather than any objective fault in the Agnostic&rsquo;s code?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210792380000#c3576768519268664831" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:13 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3576768519268664831" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6443328861248206889"></a> 				Check out a <A HREF="http://www.postmodernprogramming.org/stories/fixed_point_madness" REL="nofollow">similar</A> anecdote by (your relative) Keith Braithwaite refactoring a gnarly business logic loop into a clean mathematical abstraction (one I believe raganwald will apreciate) and how his team reacted.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210811580000#c6443328861248206889" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03350776762967743057" rel="nofollow">Rafael de F. Ferreira</a> : 8:33 PM</div>
+
+								<span class="item-control blog-admin pid-1024725660"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6443328861248206889" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4268257019267343627"></a> 				The unspoken point is that there is absolutely nothing you can do to prevent someone from taking your code and screwing it up for you.<BR/><BR/>Lack of comments isn't the problem. You could add a dissertation on why the code does what it does and people will still argue that you're wrong, or invent some far-fetched edge case that you didn't handle properly.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210814220000#c4268257019267343627" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 9:17 PM</div>
+
+								<span class="item-control blog-admin pid-2050274566"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4268257019267343627" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="682195616009018117"></a> 				I think you missed one important level of the allegory.<BR/><BR/>The whole reason for the existence of that function is because a Zipcode, which is a series of characters (i.e a "string") was, at one point, stored as an integer (because it "looked like one").  <BR/><BR/>Hence, every example posed here is merely treating a symptom, instead of addressing the real problem.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210859820000#c682195616009018117" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03689643776077649326" rel="nofollow">James Curran</a> : 9:57 AM</div>
+
+								<span class="item-control blog-admin pid-115626533"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=682195616009018117" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4411075588337636206"></a> 				Rafael, it's nice that you remember the pomopro stuff. <BR/><BR/>To my knowledge, Reg and I are related in no way other than the nominative.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210881660000#c4411075588337636206" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14314542307822401015" rel="nofollow">keithb</a> : 4:01 PM</div>
+
+								<span class="item-control blog-admin pid-2048541893"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4411075588337636206" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6881351376884251875"></a> 				This is the weirdest use of the title agnostic I've ever seen.  If anything you can maybe call the first guy a pragmatist.  If the library exist and he knew about it you're telling me the guy wouldn't use it?  On purpose?<BR/><BR/>What is he proclaiming to be beyond attainable knowledge?  And in what way does it so affect his programming that he earns that title?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210885080000#c6881351376884251875" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00149740226118103789" rel="nofollow">Igor</a> : 4:58 PM</div>
+
+								<span class="item-control blog-admin pid-1495307369"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6881351376884251875" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6664137300464845637"></a> 				Igor:<BR/><BR/>Agnosticism is the philosophical view that the truth value of certain claims — particularly metaphysical claims regarding theology, afterlife or the existence of God, gods, deities, or even ultimate reality — is unknown or, depending on the form of agnosticism, inherently unknowable.<BR/><BR/>The agnostic doesn't know if there's a better way, and believes that we may not be able to know. A pragmatist believes that what he is doing is the best way.<BR/><BR/>There is a marked difference between the two, and I deliberately chose to label him an agnostic to hint that he doesn't necessarily believe the ascetic, librarian, and purist are wrong.<BR/><BR/>Where a self-identified pragmatist would argue with them that his code was better because it was pragmatic, the agnostic acknowledges that there are times when his approach is not the best way.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210885440000#c6664137300464845637" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:04 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6664137300464845637" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5782343882392501721"></a> 				What's interesting to me is that every time an anecdote is given, and the author gives out titles like 'pragmatist', or 'purist', then there is automatically a bias in peoples minds drawing from the connotations of the word used.  As a result, no commentor would ever label themselves a purist, for example.<BR/><BR/>But in actual fact we're all of these at different times and, I've found, we may be a purist to one person and a pragmatist to another.  <BR/><BR/>End of the day, we are paid to write code and provide value to business, and business don't care either way.<BR/><BR/>But I will say there's been very few pieces of code I've looked at that hasn't made my fingers itch.... perhaps it has less to do with trying to empahsis differences and more to do with placing our mark of craftmanship on what we've worked on?<BR/><BR/>Great article.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210937880000#c5782343882392501721" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06805952352689153397" rel="nofollow">Stu</a> : 7:38 AM</div>
+
+								<span class="item-control blog-admin pid-1551979865"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5782343882392501721" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6659608276256898660"></a> 				Why would a pragmatist believe that what he's doing is the best way?  <BR/>http://dictionary.reference.com/browse/pragmatist<BR/>http://www.merriam-webster.com/dictionary/pragmatist<BR/><BR/>An "agnostic" who believes "It just works" and that's all he's concerned about is a pragmatist.  That's the definition of the word.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210949160000#c6659608276256898660" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00149740226118103789" rel="nofollow">Igor</a> : 10:46 AM</div>
+
+								<span class="item-control blog-admin pid-1495307369"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6659608276256898660" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1747839052415924781"></a> 				Igor:<BR/><BR/>Who said just working was all he was concerned about? All I said in the post was that he didn't have strong convictions about there being One True Way to express every set of choices.<BR/><BR/>Igor, here's what we're going to do: each of us will speak and write English. You will use the words you like to express your ideas, and I will use the words I like to express my ideas.<BR/><BR/>If you want to believe this guy is a pragmatist, have fun. That isn&rsquo;s what I wrote or what I meant, but who am I to tell you what to believe?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210949640000#c1747839052415924781" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:54 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1747839052415924781" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3361216911210052955"></a> 				Le mieux est l'ennemi du bien.<BR/><BR/>Or, perfect is the enemy of good enough.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1210954560000#c3361216911210052955" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00223166261079657554" rel="nofollow">ivylane</a> : 12:16 PM</div>
+
+								<span class="item-control blog-admin pid-859311752"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3361216911210052955" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1110275551981245015"></a> 				When I'm not being a FP evangelist on the web, I moonlight as a Christian.  One of the things that always astounds me in the Christian church is how the closer two people are in theological understanding, the more likely they are to consider the other a complete idiot.  As a corollary, the incidence of "One True Way"-style talk is inversely related to the diversity of the group.<BR/><BR/>I have no idea why this is true, but I suspect it relates to the incredible annoyance of a musical instrument being a half step out of tune.<BR/><BR/>This weird behavior happens in development environments, too: people who all appreciate the same goal in development (writing productive code) can really get hung up over some silly stuff.<BR/><BR/>(BTW, clearly the first programmer needed to define a type of "ZipDigits" which prevented the wrong number of digits from compiling in the first place.)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1211116800000#c1110275551981245015" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15576124960718643532" rel="nofollow">Robert Fischer</a> : 9:20 AM</div>
+
+								<span class="item-control blog-admin pid-1999105704"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1110275551981245015" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6169213119856947745"></a> 				Oh, wow: I just saw that @nick said with all seriousness what I said tongue-in-cheek.<BR/><BR/>Stunning.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1211116980000#c6169213119856947745" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15576124960718643532" rel="nofollow">Robert Fischer</a> : 9:23 AM</div>
+
+								<span class="item-control blog-admin pid-1999105704"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6169213119856947745" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="815345164814097055"></a> 				Robert:<BR/><BR/><I>clearly the first programmer needed to define a type of "ZipDigits" which prevented the wrong number of digits from compiling in the first place</I><BR/><BR/>That&rsquo;s exactly what the Purist did, with a subclass for each possible length of digit. Simple, and encapsulates everything!<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1211119200000#c815345164814097055" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:00 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=815345164814097055" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8259143425990157333"></a> 				@Raganwald<BR/><BR/>Brilliant!<BR/><BR/>Although, really, does he want to force a storage medium?  That's pretty cruel, particularly if another storage medium would be more efficient.  So he doesn't just need OneDigitZipCode, TwoDigitZipCode, et al., he also needs CharOneDigitZipCode, ShortOneDigitZipCode, StringOneDigitZipCode, etc., etc.<BR/><BR/>Oh, and that's really tough to remember all those class names, so he'd want to make sure to create a ZipCodeImplFactory.  And, if he wants to use that through Spring, he'll want a ZipCodeImplFactoryInterface...<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1211304060000#c8259143425990157333" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15576124960718643532" rel="nofollow">Robert Fischer</a> : 1:21 PM</div>
+
+								<span class="item-control blog-admin pid-1999105704"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8259143425990157333" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4292936245500986093"></a> 				<I>Although, really, does he want to force a storage medium? That's pretty cruel, particularly if another storage medium would be more efficient. So he doesn't just need OneDigitZipCode, TwoDigitZipCode, et al., he also needs CharOneDigitZipCode, ShortOneDigitZipCode, StringOneDigitZipCode, etc., etc.</I><BR/><BR/>That is FAR to simple. Let&rsquo;s use Generics! If they are missing (as they are from Ruby), we can still use paramaterized types with some eval meta_magic :-)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1211307600000#c4292936245500986093" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:20 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4292936245500986093" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8359856384665621393"></a> 				Oh, good point -- we need to be using Ruby, so we can do ZipCode.createTwoDigitCharZipCode() or ZipCode.createFiveDigitStringZipCode() and have it work out.<BR/><BR/>Because, y'know, we just had too many classes before, and that was silly.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1211313660000#c8359856384665621393" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15576124960718643532" rel="nofollow">Robert Fischer</a> : 4:01 PM</div>
+
+								<span class="item-control blog-admin pid-1999105704"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8359856384665621393" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7367702606143563699"></a> 				<I>too many classes</I><BR/><BR/>//reg scratches his head in confusion.<BR/><BR/>I know what each of those words means by itself, but put them together and it doesn&rsquo;t scan.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1211313840000#c7367702606143563699" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:04 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7367702606143563699" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2243224704602070958"></a> 				<span class="deleted-comment">This post has been removed by the author.</span><br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1211584620000#c2243224704602070958" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00584117862111716802" rel="nofollow">[ dut ]</a> : 7:17 PM</div>
+
+								<span class="item-control blog-admin "><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2243224704602070958" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7669164745370776329"></a> 				@james --<BR/><BR/>actually, treating "int"-iness does appear to be the only valid use of such a constraint, but as a programmer it's not always in your power to reformat every instance of old data you're required to pull in. so this is a perfectly normal function to find in use on the data layer. it correctly handles everything from "999"-"99999-9999", including foreign post codes. my "one-liner" earlier was mistaken, as it mangles zip+4's and foreign postal codes, despite being called "digits"... my function shouldda been more like:<BR/><BR/>(2 < digits.size < 5) && "00#{digits}"[-5] || digits<BR/><BR/>that's exactly the same functionally (assuming it's valid ruby or w/e), but still gives you a reason to argue points for style.<BR/><BR/>i think that's the intent of the original article. ignore the possible repercussions of changing the function result a bit.<BR/><BR/>"However, I should have known that the moment I included a piece of code to provide local colour, the resulting debate over its fitness was inevitable."<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1211584680000#c7669164745370776329" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00584117862111716802" rel="nofollow">[ dut ]</a> : 7:18 PM</div>
+
+								<span class="item-control blog-admin pid-898455465"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7669164745370776329" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8367200995912056746"></a> 				Dear God. Purists shouldn't exist.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1214235060000#c8367200995912056746" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13196088462616982635" rel="nofollow">leoboiko</a> : 11:31 AM</div>
+
+								<span class="item-control blog-admin pid-1287231334"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8367200995912056746" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6440460232555766206"></a> 				I found your post a very interesting read.  I posted an article about purism vs. pragmatism at the following link: <a href="http://www.softwarepurist.com/blog/index.php/purism-vs-pragmatism/" rel="nofollow">http://www.softwarepurist.com/blog/index.php/purism-vs-pragmatism/</a>.  Overall, your post is sort of humorous and it is amusing how that thing can happen.  Good read.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html?showComment=1260302547763#c6440460232555766206" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16144979280575717079" rel="nofollow">lspector</a> : 3:02 PM</div>
+
+								<span class="item-control blog-admin pid-1913500900"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6440460232555766206" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

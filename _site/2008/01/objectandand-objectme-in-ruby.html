@@ -1,0 +1,526 @@
+<html> 
+<head>
+        
+        <title>Object#andand & Object#me in Ruby</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Thursday, January 24, 2008</div>
+			
+
+			<div class="Post"><a name="1086915798486609063">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html" title="permanent link">Object#andand & Object#me in Ruby</a></span>
+					<div style="clear:both;"></div>At <a href="http://www.mcommons.com/jobs.html" title="Mobile Commons - Jobs">Mobile Commons</a>, we have to write a lot of code under time constraints. We also work on a fairly distributed basis, which means that writing readable code is not a luxury, it&#8217;s a necessity. We can&#8217;t afford to be clever for clever&#8217;s sake, but if a new idiom helps make our code easier for our colleagues to grasp in a hurry, we embrace it. Here&#8217;re some idioms we&#8217;ve recently created:<br /><br /><strong>Object#andand</strong><br /><br />Ruby programmers are familiar with the two <em>guarded assignment</em> operators <code>&amp;&amp;=</code> and <code>||=</code>. The typical use for them is when you have a variable that might be nil. For example:<br /><pre><code><br />@first_name &amp;&amp;= @first_name.trim<br />@phone ||= '612-777-9311'</code></pre><br />You are trimming the first name provided it isn&#8217;t nil, and you are assigning &#8216;612-777-9311&#8217; to the phone if it <em>is</em> nil (or false, but that isn&#8217;t important right now). The other day we were discussing the guards and we agreed that we wished there was a <em>guarded method invocation</em> operator. Here&#8217;s an example of when you would use it:<br /><pre><code><br />@phone = Location.find(:first, ...elided... )&amp;&amp;.phone</code></pre><br />Meaning, search the location table for the first record matching some criteria, and if you find a location, get its phone. If you don&#8217;t, get nil. (Groovy provides this exact functionality, although Groovy uses <code>?.</code> instead of <code>&amp;&amp;.</code>) However, <code>&amp;&amp;.</code> won&#8217;t work because <code>&amp;&amp;.</code> is not a real Ruby operator. So what do we write instead?<br /><blockquote>A feature is &ldquo;powerful&rdquo; when at least one of the following holds:<br /><ol><li> It can be used to implement something trivial in an pointlessly complicated way.</li><li>It can cause a lot of damage.</li></ol>Seriously, it seems like 85% percents of the contexts where something is called &ldquo;powerful,&rdquo; it really means &ldquo;useless and dangerous.&rdquo;</blockquote><div>&mdash;Yossi Kreinin, <a href="http://www.yosefk.com/blog/?p=16">Fun at the Turing Tar Pit</a></div><br />How about:<br /><pre><code><br />@phone = (loc = Location.find(:first, ...elided... )) &amp;&amp; loc.phone</code></pre><br />Note that we need a local variable to make it work without extending the Object class. Note further that although we only need the local variable for one line of code, it is in method scope and we must be careful that we don&#8217;t clobber an existing <code>loc</code> variable. And when reading this code, we now have to look and see whether <code>loc</code> is used again to understand what this line does.<br /><br />This is a scoping problem. if you are going to use variables, you want to restrict their scope as much as possible. It feels like half of what we do when programming is manage side effects like overwriting a variable you are using elsewhere, and the more you can restrict those side effects, the easier programming becomes. Java supports block scoping natively, and languages like Scheme solve this by providing a block scope macro, <code>let</code>. And you can roll your own in languages like <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html" title="Block-Structured Javascript">Javascript</a> that provide anonymous functions. But this seems to get <a href="http://raganwald.github.com/2008/01/no-detail-too-small.html" title="No Detail Too Small">the natural left-to-right order</a> wrong:<br /><pre><code><br />@phone = lambda { |loc| loc &amp;&amp; loc.phone }.call(Location.find(:first, ...elided... ))</code></pre><br />Well, we are tinkerers and toolsmiths. So let&#8217;s roll our own. We can&#8217;t use <code>&amp;&amp;.</code> without rewriting the Ruby parser, and that seems drastic. So let&#8217;s use &#8220;andand&#8221; in the hope that our non-English-speaking colleagues will forgive us. We want to write:<br /><pre><code><br />@phone = Location.find(:first, ...elided... ).andand.phone</code></pre><br />And get the same effect as <code>@phone = -&gt;(loc){ loc &amp;&amp; loc.phone }.call(Location.find(:first, ...elided... ))</code>. This would be bloody trivial if we have a macro facility, but &#8220;If wishes were horses then beggars would ride.&#8221; Instead, we need to write a method that does some conditional evaluation for us. If the receiver (in this case the result of <code>Location.find(:first, ...elided... )</code>) is truthy, like an ActiveRecord model, we want <code>andand</code> to return it so we can use it. But if it is falsy, we want <code>andand</code> to somehow return something that takes any message you send it and returns itself without doing anything. In other words, we want a mock object of sorts. So that&#8217;s what we&#8217;ll do:<br /><pre><code><br />class Object<br />    def andand (p = nil)<br />      self or MockReturningMe.new(self)<br />    end<br />end<br /><br />class MockReturningMe<br />  instance_methods.reject { |m| m =~ /^__/ }.each { |m| undef_method m }<br />  def initialize(me)<br />    @me = me<br />  end<br />  def method_missing(*args)<br />    @me<br />  end<br />end</code></pre><br /><em><font size="-1">Actually, there is more to it than this, for example the MockReturningMe class is enclosed in a module to minimize namespace pollution. Consult the source and RSpec (links below) for the latest particulars</font></em>.<br /><br />Note that because you accept any method using Ruby&rsquo;s method invocation syntax, you can accept methods with parameters and/or blocks:<br /><pre><code><br />list_of_lists.detect { ...elided... }.andand.inject(42) { ...elided ... }</code></pre><br />Some of the other solutions to this problem that use <code>send</code> change Ruby&rsquo;s syntax. This solution emphasizes syntactic regularity: the goal was to make an &ldquo;&&.&rdquo; operation that worked like &&=. &&= looks just like normal assignment, you can use any expression on the RHS, only the semantics are different. The andand method also works just like a normal method invocation, only the semantics are modified.<br /><br /><strong>Enhanced Object#tap</strong><br /><br />(Formerly called Object#me)<br /><br />Ruby 1.9 includes <a href="http://blog.moertel.com/articles/2007/02/07/ruby-1-9-gets-handy-new-method-object-tap">Object#tap</a>:<br /><pre><code><br />Location.find(:first, ...elided... ) do |location|<br />    puts location.inspect<br />end<br />   =&gt; location</code></pre><br />Ruby On Rails includes a similar feature, the <em>returning</em> idiom:<br /><pre><code><br />returning(Location.find(:first, ...elided... )) do |location|<br />    ...elided...<br />end<br />   =&gt; location</code></pre><br />Both return the location, not whatever happens inside the block. This is very useful, especially when chaining methods in a pipeline. Sometimes you want to do something for side effects, but continue on with the chain. For example:<br /><pre><code><br />returning([1, 2, 3, 4, 5]) do |arr|<br />    arr.pop<br />end.map { |n| n * 2 }<br />    =&gt; [2, 4, 6, 8]</code></pre><br />There are going to be times that using a method instead of a function makes the code more consistent. So let&#8217;s imagine what that would look like:<br /><pre><code><br />Location.find(:first, ...elided... ).tap do |location|<br />    ...elided...<br />end&hellip;</code></pre><br />This is much nicer when you are &ldquo;injecting&rdquo; some extra code into the middle of an expression, such as when adding some poor-man&rsquo;s-debugging puts statements.<br /><br />Would we ever want to go beyond a block and write <code>Location.find(:first, ...elided... ).tap.some_method</code> instead of <code>Location.find(:first, ...elided... ).tap do ...elided... end</code>? Of course we would! Quite often, we want to send several methods to the same receiver. In Smalltalk, the semicolon does this explicitly. In Ruby, we have to be very careful to make sure our methods return <em>self</em> to enable chaining. For example:<br /><pre><code><br />[1, 2, 3] &lt;&lt; 4 &lt;&lt; 5<br />    =&gt; [1, 2, 3, 4, 5]</code></pre><br />But if a method doesn&#8217;t return the receiver, chaining doesn&#8217;t work. That&#8217;s why we had to use &#8220;returning&#8221; in the array example above:<br /><pre><code><br />[1, 2, 3, 4, 5].pop.map { |n| n * 2 }<br />    =&gt; NoMethodError: undefined method `map' for 5:Fixnum</code></pre><br />That&#8217;s because <code>[1, 2, 3, 4, 5].pop =&gt; 5</code>, not <code>[1, 2, 3, 4]</code>. So instead, we write:<br /><pre><code><br />[1, 2, 3, 4, 5].tap.pop.map { |n| n * 2 }<br />    =&gt; [2, 4, 6, 8]     # or we write...<br />[1, 2, 3, 4, 5].tap { |arr| arr.pop }.map { |n| n * 2 }<br />    =&gt; [2, 4, 6, 8]     # both work</code></pre><br />When you examine the source, you&#8217;ll see that <em>tap</em> looks a lot like <em>andand</em>. No surprise, we are doing similar things with slightly different semantics.<br /><br />This implementation of Object#tap has two advantages over the implementation in Ruby 1.9: first, it works in Ruby 1.8. Second, it adds the ability to call another method (like <code>pop</code>) and not have to include a block.<br /><br /><strong>Summary: andand &amp; enhanced tap</strong><br /><br /><em>andand</em> and <em>tap</em> both provide the same two benefits: First, they either eliminate (in the case of a method call) or limit in scope (in the case of a block) a local variable. Second, they let you maintain a natural left-to-right order when writing pipelined expressions. They are simple and obvious enough that I feel any unfamiliarity for the reader will be more than outweighed by the cleaner, easier-to-digest code that results from their liberal use.<br /><br />My suggestion is that these two benefits make it worth your while to add these methods to the Object class and use them regularly in your code.<br /><br /><strong>Installation</strong><br /><br /><code>sudo gem install andand</code>. For the source and more information, <a href="http://andand.rubyforge.org">http://andand.rubyforge.org</a>.<br /><br /><hr/><font size="-1">Similar solutions:<br /><ol><li><a href="http://facets.rubyforge.org/quick/rdoc/core/classes/Kernel.html#M000357">Kernel#ergo</a> in <a href="http://facets.rubyforge.org/">Ruby Facets</a></li><li><a href="http://rhnh.net/2007/10/2/object-send_with_default">send_with_default</a></li><li><a href="http://weavejester.com/node/10">maybe</a></li><li><a href="http://hobocentral.net/blog/2007/08/25/quiz/">_?</a></li><li><a href="http://recursive.ca/hutch/2007/11/22/a-little-unnecessary-smalltalk-envy/">if_not_nil</a> (via <a href="http://blog.teksol.info/2007/11/23/a-little-smalltalk-in-ruby-if_nil-and-if_not_nil">François Beausoleil</a>)</li><li>Groovy&rsquo;s <a href="http://groovy.codehaus.org/Operators#Operators-ElvisOperator(%3F%3A\)">Safe Navigation Operators</a> via <a href="http://jfkbits.blogspot.com/2008/02/call-by-name-yo-elvis.html">Call by Name: "Yo Elvis"</a></li><li><a href="http://ozmm.org/posts/try.html">try()</a> and <a href="http://ruby.tie-rack.org/53/a-better-try-chaining-methods-and-nil/">A better try</a></li></ol></font><br /><hr/><br /><em>postscript: Inline Rescues</em><br /><br />I have now seen two people asking about using an inline rescue instead of andand:<br /><pre><code><br />Location.find( &hellip;elided&hellip; ).phone rescue nil</code></pre><br />Also, one of the alternate solutions seems to use this technique. Obviously, it works for many of the cases you want to try, and you don&rsquo;t need to add a new method to Object. However, it is&mdash;to paraphrase <a href="http://chalain.livejournal.com/39332.html">Chalain</a>&mdash;&ldquo;Sneaking up on the Interpreter.&rdquo;<br /><br />It achieves what we want almost by accident, namely that it rescues <code>NoMethodError</code>, which by co&iuml;ncidence gives us the result we want. However, it does not communicate our intent. It says that we want to transmute all exceptions into a value of <code>nil</code>. When someone glances at the code, will they think of <code>NoMethodError</code>? Or will they assume that we are trying to handle exceptions that the <code>.phone</code> method might throw?<br />  <br />And what if <code>.phone</code> actually throws something serious? In Rails, what happens if a migration is screwed up and there is no phone column? I think we actually want a <code>NoMethodError</code> in that case. The rescue clause will accidentally swallow the exceptions we are trying to catch.<br /><br />I think if you are absolutely certain that you do not care about other exceptions and also if your team uses this idiom extensively so that it does not miscommunicate its intent, you can live a long and happy life using it. However, I would be hesitant to recommend it as a general-purpose solution. <em>andand</em> and some of the other solutions obviously require the code reader to learn a new method name, but after that they offer the exact functionality we need and clearly communicate their intent.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/archives/labels/ruby.html">ruby</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html" title="permanent link">9:09 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Object#andand & Object#me in Ruby</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="6077152057546825010"></a> 				We use <A HREF="http://rhnh.net/2007/10/2/object-send_with_default" REL="nofollow">Object#send_with_default</A> to do a similar thing.<BR/><BR/>Location.find(:first).send_with_default(:phone, nil)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201396500000#c6077152057546825010" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://rhnh.net/" rel="nofollow">xavier</a> : 8:15 PM</div>
+
+								<span class="item-control blog-admin pid-1053400269"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6077152057546825010" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1153918128869537921"></a> 				I came up with a <A HREF="http://weavejester.com/node/10" REL="nofollow">similar solution</A> a week or so ago:<BR/><BR/>Location.find(:first).maybe(:phone)<BR/><BR/>The advantage of this approach is that it's relatively simpler to implement:<BR/><BR/>class NilClass<BR/>  def maybe(*a); self; end<BR/>end<BR/><BR/>class Object<BR/>  alias :maybe :send<BR/>end<BR/><BR/>This approach also works with blocks, so it can be used with the new Object.tap method in Ruby 1.9:<BR/><BR/>Location.find(:first).maybe(:tap) do |location|<BR/>  ...elided...<BR/>end<BR/><BR/>Object.tap is equivalent to the returning method in ActiveSupport, and your Object.me method.<BR/><BR/>I guess it's mostly personal preference which syntax you prefer, of course:<BR/><BR/>Location.find(:first).andand.phone<BR/>Location.find(:first).maybe(:phone)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201405500000#c1153918128869537921" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15518934201255364120" rel="nofollow">Weavejester</a> : 10:45 PM</div>
+
+								<span class="item-control blog-admin pid-1710403837"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1153918128869537921" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8266284147632967036"></a> 				<A HREF="http://kevin.scaldeferri.com/blog/2008/01/26/RaganwaldReinventsMonads.html" REL="nofollow">Maybe crops up again</A>.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201407240000#c8266284147632967036" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:14 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8266284147632967036" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5875696053323066419"></a> 				Unless I severely misunderstand the goal behind Object#andand, I was able to produce the desired effect simply with the following code:<BR/><BR/>class Object<BR/>  def andand(p)<BR/>    return self.send(p) if self.respond_to? p<BR/>    self<BR/>  end<BR/>end<BR/><BR/>It's very simple, in my opinion, and does not require creating a new proxy class.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201465380000#c5875696053323066419" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07039353188629245694" rel="nofollow">M. Todd</a> : 3:23 PM</div>
+
+								<span class="item-control blog-admin pid-1739517406"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5875696053323066419" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1193112057735128191"></a> 				<I>I was able to produce the desired effect simply with the following code...</I><BR/><BR/>Are you able to write (expression...).andand.phone?<BR/><BR/>Are you able to write (expression).detect {...}.andand.inject(42) {...}?<BR/><BR/>There are a lot of very simple things you can do if your needs are limited to sending a message that has neither parameters nor a block.  If you wish to be able to use andand anywhere you would use a normal method invocation, with as little deviation from the normal syntax as possible, you may want to consider andand.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201465620000#c1193112057735128191" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:27 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1193112057735128191" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="317812321545812510"></a> 				andand reminds me of _? <BR/><BR/>http://hobocentral.net/blog/2007/08/25/quiz/<BR/><BR/>It was an attempt to get the .? operator from Groovy. <BR/><BR/>You can't quit get the a.?b syntax, but you can get a._?.b which is pretty close<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201467420000#c317812321545812510" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09722254519553047982" rel="nofollow">Tom</a> : 3:57 PM</div>
+
+								<span class="item-control blog-admin pid-258254864"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=317812321545812510" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="529649343295795784"></a> 				Tom:<BR/><BR/>_? is similar to andand, thanks. I think the SafeNil class needs to be "BlankSlated" to avoid certain corner case problems.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201467840000#c529649343295795784" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:04 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=529649343295795784" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1273495864160958511"></a> 				This is a great idea for making Ruby better!  However, this is merely a special case of a <A HREF="http://kevin.scaldeferri.com/blog/2008/01/26/RaganwaldReinventsMonads.html" REL="nofollow">monad</A>, which can be used for many more powerful applications, especially in purely functional languages.  It would probably be better to implement a true monad system in Ruby rather than something with only a few uses.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201469160000#c1273495864160958511" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01386093143586175768" rel="nofollow">Justin Wick</a> : 4:26 PM</div>
+
+								<span class="item-control blog-admin pid-444564445"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1273495864160958511" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="903297150582867276"></a> 				Justin:<BR/><BR/>Ruby is a multi-paradigm language, borrowing ideas from Perl, Lisp, and Smalltalk. By all means write a general-purpose Monad feature for Ruby, it can go alongside of things like unfold and lazy evaluation.<BR/><BR/>However, I would stop a good ways short of saying that a full Monad implementation would be <EM>better</EM>. Language features embody trade-offs, and implementing Monads (with andand being the Maybe monad) involve a different set of trade-offs.<BR/><BR/>One of the things andand achieves is conformity with an existing mechanism for guarded assignment, &&=. If you implement Monads, shouldn't &&= also be implemented as a Monad?<BR/><BR/>Which leads to implementing = as a Monad as well. There is nothing wrong with going down that road, however by making different trade-offs you will be creating something that appeals to a different audience.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201469700000#c903297150582867276" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:35 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=903297150582867276" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="72837681342429731"></a> 				sorry, but what is the advantage of #andand over an inline rescue?<BR/>@phone = Person.find(foo).phone rescue nil<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201470300000#c72837681342429731" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06976042188820120409" rel="nofollow">riffraff</a> : 4:45 PM</div>
+
+								<span class="item-control blog-admin pid-231769075"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=72837681342429731" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5344153501915669326"></a> 				Riffraff:<BR/><BR/>Good to see you... After the Rocky Horror Picture Show, work was pretty thin for you... until Dark City. But I digress:<BR/><BR/>I personally would never use an inline rescue like this, it is kind of "sneaking up on the interpreter." It achieves what we want almost by accident, namely that it rescues NoMethodError, which by co&iuml;ncidence gives us the result we want.<BR/><BR/>However, it does not communicate our intent. It says that we want to transmute all exceptions into a value of nil. When someone glances at the code, will they think of NoMethodError? Or will they assume that you are trying to handle exceptions that the .phone method might throw?<BR/><BR/>Worse, what if .phone actually throws something serious? In Rails, what happens if a migration is screwed up and there is no phone column? I think we actually want a NoMethodError in that case.<BR/><BR/>FWIW, one of the other solutions I linked used a similar scheme, so I may be the only one who rejected this approach.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201472760000#c5344153501915669326" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:26 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5344153501915669326" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4710163279290434096"></a> 				nah, still, got a biw of work, between that ac/dc thingy and ken loach movie on me..<BR/><BR/>Anyway, yeah I would not use inline rescue for the general case, but since it's a kind of guarantee that phone is juts ana accessor method, I don't expect it to throw an exception.<BR/>As for handling serious errors: it's not catching Exception, but StandardError, so a missing migration would not be caught. <BR/><BR/>Yet, you're right, it doesn't communicate the intent strongly enough, thanks for taking time to answer.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201526340000#c4710163279290434096" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06976042188820120409" rel="nofollow">riffraff</a> : 8:19 AM</div>
+
+								<span class="item-control blog-admin pid-231769075"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4710163279290434096" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3497562945178661519"></a> 				Hi, why not use if_nil or if_not_nil ?  I implemented this a while back for <A HREF="http://xlsuite.org/" REL="nofollow">XLsuite.org</A>:  <A HREF="http://blog.teksol.info/2007/11/23/a-little-smalltalk-in-ruby-if_nil-and-if_not_nil" REL="nofollow">A little Smalltalk in Ruby: #if_nil and #if_not_nil</A><BR/><BR/>Your first example then becomes:<BR/><BR/>@phone = Location.find(:first, ...).if_not_nil {|l| l.phone}<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201528740000#c3497562945178661519" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://technorati.com/people/technorati/fbos" rel="nofollow">fbos</a> : 8:59 AM</div>
+
+								<span class="item-control blog-admin pid-1887742530"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3497562945178661519" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5605635860913660853"></a> 				<I>why not use if_nil or if_not_nil ?</I><BR/><BR/>I like <I>if_not_nil?</I>, and if you look at the source you will see that <I>andand</I> implements that functionality as well, so if want to do several things with the value, you can do that:<BR/><BR/>BlahBlah.if_not_nil do |blah| ... end<BR/><BR/>or<BR/><BR/>BlahBlah.andand do |blah| ... end<BR/><BR/>However, for sending a single message we were trying to make something that resembles guarded assignment, so you could say BlahBlah.andand.do_domething without a block.<BR/><BR/>But I also like if_not_nil.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201533060000#c5605635860913660853" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:11 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5605635860913660853" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2205739265464832603"></a> 				Fran&ccedil;ois:<BR/><BR/>So, the longer answer in my mind is that if_not_nil sounds like an if expression, so I would view it as an if expression that happens to perform a binding in the bargain.<BR/><BR/>That is very useful. But it still looks a lot like an "if," it emphasizes the conditional.<BR/><BR/>Should I be writing some code where the nil case is really important, I might use if_not_nil as you suggest. However, if I wanted to invoke a single message and I wanted to emphasize the message and not the conditional nature, I would prefer andand. I think these two statements say slightly different things even though the both produce the same result:<BR/><BR/>Location.find(:first, ...).if_not_nil { |loc| loc.phone }<BR/><BR/>Location.find(:first, ...).andand.phone<BR/><BR/>The "if_not_nil," the block, and the block parameter all add weight to the condition, suggesting we ought to think about it more than we think about getting the phone.<BR/><BR/>Whereas the andand expression de-emphaiszes the condition, emphasizing the phone method.<BR/><BR/>I would happily use both in one code base, but I would try to use them to <A HREF="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html" REL="nofollow">communicate what is important about that particular expression</A>.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201534020000#c2205739265464832603" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:27 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2205739265464832603" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5787233851584374532"></a> 				This reminds me of the dwim idiom in elisp, which stands for "do what I mean". It's used when a function should usually, but not always, do what it says it does. For example, rejustify always rejustifies your buffer but dwim-rejustify would fail silently if you ran it on a binary file.<BR/><BR/>I think "andand" as a term is a little bit opaque, but I can't think of anything less opaque that isn't significantly more bulky. I would have been tempted to call it Object#just_work_dammit or Object#with_your_shield_or_on_it or perhaps Object#pleaseohplease, neither of which has that same zippy and quite pronounceable feel.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201544040000#c5787233851584374532" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08437073136758086679" rel="nofollow">Chalain</a> : 1:14 PM</div>
+
+								<span class="item-control blog-admin pid-954195632"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5787233851584374532" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4101748684143221035"></a> 				My first thought was to recommend <A HREF="http://jicksta.com/articles/2007/08/29/superators-add-new-operators-to-ruby" REL="nofollow">Superators</A>, but alas they do not work with logical operators.  However, you could maybe craft up some interesting operator like "~~", but Superators may be bordering on write only.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1201802460000#c4101748684143221035" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14647609048389725132" rel="nofollow">Paul</a> : 1:01 PM</div>
+
+								<span class="item-control blog-admin pid-661380669"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4101748684143221035" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3815760138024797612"></a> 				Do put me right if this is an incredibly stupid thing to do, but what about...<BR/><BR/>class NilClass<BR/>  def method_missing(method, *args)<BR/>    nil<BR/>  end<BR/>end<BR/><BR/>You're already extending the Object class so I'm assuming core classes in general is fair game here.<BR/><BR/>There is one problem that I can see, which is that Location.find(:first).phone will throw a NoMethodError if a Location is found, but will return nil if no location is found (for the case where Location#phone is not defined). Still, I've found it useful for some things.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1202922000000#c3815760138024797612" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07406487120678251976" rel="nofollow">jcoglan</a> : 12:00 PM</div>
+
+								<span class="item-control blog-admin pid-607634464"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3815760138024797612" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7478355024505611999"></a> 				Someone on ruby-talk posted this a while ago and it's part of facets, the ergo() method:<BR/><BR/>http://facets.rubyforge.org/quick/rdoc/core/classes/Kernel.html#M000357<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1202955360000#c7478355024505611999" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00615977188591485785" rel="nofollow">es@d</a> : 9:16 PM</div>
+
+								<span class="item-control blog-admin pid-211666481"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7478355024505611999" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7581870709067423229"></a> 				<span class="deleted-comment">This post has been removed by the author.</span><br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1204975860000#c7581870709067423229" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15412258048017521995" rel="nofollow">Paul Prescod</a> : 6:31 AM</div>
+
+								<span class="item-control blog-admin "><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7581870709067423229" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7899946754707507731"></a> 				I came up with something like if_not_nil independently, but I just call it "if":<BR/><BR/>find(...).if {|x| x.bugle()}<BR/><BR/>I find that to be much shorter and clearer than using an "if" statement.  Plus, it keeps x scoped, instead of exposing it to the whole method.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1208201100000#c7899946754707507731" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://metageek.livejournal.com/" rel="nofollow">metageek</a> : 3:25 PM</div>
+
+								<span class="item-control blog-admin pid-840901883"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7899946754707507731" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6756326482550405971"></a> 				return Location.find(:first).nil_or.phone<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1209167700000#c6756326482550405971" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09809073068192773946" rel="nofollow">JeanHuguesRobert</a> : 7:55 PM</div>
+
+								<span class="item-control blog-admin pid-2002941090"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6756326482550405971" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4213768446285983402"></a> 				twould be nice to alias andand with _? for ease of use :)<BR/>-R<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1215642360000#c4213768446285983402" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01578246846716577925" rel="nofollow">Roger Pack</a> : 6:26 PM</div>
+
+								<span class="item-control blog-admin pid-967549379"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4213768446285983402" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1678976572052100599"></a> 				Roger:<BR/><BR/>Help yourself, simply open the Object class and alias andand for _?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1215698640000#c1678976572052100599" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:04 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1678976572052100599" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4827438106170923864"></a> 				now if we could somehow use it thus:<BR/> old_cost = dad_variation.old_cost if dad_variation.andand.old_cost.is_text?<BR/><BR/>old_cost = dad_variation.andand.old_cost.only_assign_if_is_text_then_I_wouldnt_have_to_type_dad_variation_twice<BR/><BR/>Oh well :)<BR/>Oh wait maybe I could just rewrite the AST to yield to my bidding :P<BR/><BR/>If only it worked in 1.9...<BR/><BR/>-R<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1216926060000#c4827438106170923864" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01578246846716577925" rel="nofollow">Roger Pack</a> : 3:01 PM</div>
+
+								<span class="item-control blog-admin pid-967549379"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4827438106170923864" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2439440000821966499"></a> 				So in andand.rb:<br /><br />def andand <br />  ... <br />end<br /><br />alias _? andand<br /><br />should create the alias method _+ for andand I guess ;)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/objectandand-objectme-in-ruby.html?showComment=1246987100599#c2439440000821966499" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03246864324115874260" rel="nofollow">Mainster</a> : 1:18 PM</div>
+
+								<span class="item-control blog-admin pid-722365927"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2439440000821966499" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		<script>if (typeof(window.attachCsiOnload) != 'undefined' && window.attachCsiOnload != null) { window.attachCsiOnload('ext_blogspot'); }</script>
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

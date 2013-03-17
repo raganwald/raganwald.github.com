@@ -1,0 +1,834 @@
+<html> 
+<head>
+        
+        <title>The 128-bit programming challenge</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Wednesday, May 02, 2007</div>
+			
+
+			<div class="Post"><a name="558731359685563688">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html" title="permanent link">The 128-bit programming challenge</a></span>
+					<div style="clear:both;"></div><blockquote>Information wants to be free</blockquote><br /><div style="text-align: right;">&mdash;One of the lessons from <a href="http://www.amazon.com/gp/product/0140097015?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0140097015">The Media Lab: Inventing the Future at M. I. T.</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0140097015" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> by Stuart Brand</div><br /><br />Here&#8217;s a programming challenge:<br /><br /><strong>Write a program that produces 128 specific bits of output. In the simplest case, output those 128 bits in a standard numeric form such as sixteen pairs of hexadecimal digits. Your program may <em>not</em> contain the 128 bits in literal form, it must manufacture them in some way.</strong><br /><br /><div class="book"><hr/><a href="http://www.amazon.com/gp/product/0198250800?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0198250800"><img border="0" src="/assets/images/old//essential_turing.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0198250800" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br /><em>Why settle for third- and fourth- hand explanations and retelling of the most important work ever conducted in Computer Science and Cryptography? <a href="http://www.amazon.com/gp/product/0198250800?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0198250800">The Essential Turing</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0198250800" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> presents Alan Turing&rsquo;s original writings, lectures, and correspondence on the subjects of Computability, Logic, Philosophy, Artificial Intelligence, and Artificial Life (his last work), in an easily readable form.</em><hr/><br /><br /></div>Furthermore:<br /><ul><li>Novelty counts. Try to think of a really unique way to generate the bits.<br /><br />Imagine you are determined to <a href="http://en.wikipedia.org/wiki/Free_software_movement" title="Free Software Movement">protect our freedom to program</a>. Once the Monopolistic Overloards detect that a particular program produces <a href="http://raganwald.github.com/2007/04/if-you-reside-in-usa-please-dont-read.html">illegal codes</a>, they will send cease-and-desist letters to anyone distributing that program. Therefore, the greater good is served by collecting many different ways to generate the 128 bits of information.<br /><br />Or if you prefer a less weighty objective, imagine this is a job interview question. If the interviewers have seen your solution before, you won&#8217;t stand out from the crowd.</li><br /><li>You may express the 128 bits of output in any other form you like, however more complex or obscure formulations&#8212;such as <a href="http://en.wikipedia.org/wiki/Steganography" title="Steganography">steganographic</a> images&#8212;should be accompanied by a method or program to recover the output into numeric form.</li><br /><li>Oh yes, the bits. Your program must produce <code>00001001</code> <code>11111001</code> <code>00010001</code> <code>00000010</code> <code>10011101</code> <code>01110100</code> <code>11100011</code> <code>01011011</code> <code>11011000</code> <code>01000001</code> <code>01010110</code> <code>11000101</code> <code>01100011</code> <code>01010110</code> <code>10001000</code> <code>11000000</code>, or any equivalent representation such as <code>09 F9 11 02</code> <code>9D 74 E3 5B</code> <code>D8 41 56 C5</code> <code>63 56 88 C0</code>, as its output.</li></ul><br />Come on folks, we&#8217;re <em>programmers</em>. We probably blew millions of person-hours writing programs that <a href="http://raganwald.github.com/2007/01/dont-overthink-fizzbuzz.html" title="Don't Overthink FizzBuzz">counted from one to one hundred</a>. Let&#8217;s stand up and prove that when the chips are down, we can invest a few minutes and write something that&#8217;s both interesting to code <em>and</em> meaningful.<br /><br />What&rsquo;s the smallest program that produces the 128 bits? Can it be done in pure lambda calculus? Is there a self-modifying program that turns itself into the 128 bits? Can it be done with an Enterprisey Servive-Oriented Architecture? Haskell? C#? Let&rsquo;s really do this right!!<br /><br /><em>Follow-up:</em> <a href="http://raganwald.github.com/2007/05/quality.html">Quality</a>.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html" title="permanent link">9:40 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>The 128-bit programming challenge</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="5105199518023616909"></a> 				PHP:<BR/><BR/>foreach(array(9,6,10,8,0,15,2,7,4,10,13,10,5,2,6,2,11,12,13,4,1,6,9,1,13,2,1,2,0,4,4,0) as $y) {<BR/> print(dechex($x %= 16));<BR/> $x += $y;<BR/>}<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178122800000#c5105199518023616909" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15391805793443736957" rel="nofollow">herminator</a> : 12:20 PM</div>
+
+								<span class="item-control blog-admin pid-301097253"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5105199518023616909" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4505645811207449300"></a> 				My submission:<BR/><A HREF="http://pastie.textmate.org/58276" REL="nofollow">http://pastie.textmate.org/58276</A><BR/><BR/>It's in the spirit, if not the letter of what you describe.  The first time you run it, it encrypts a string, given a password.  Thereafter it's simply a program for decrypting whatever it originally encrypted.<BR/><BR/>(regrettably it needs the crypt gem to run, so it isn't as self-contained as I'd like)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178122920000#c4505645811207449300" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03799579139256306118" rel="nofollow">Peter</a> : 12:22 PM</div>
+
+								<span class="item-control blog-admin pid-1035025294"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4505645811207449300" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9188991771775496883"></a> 				/* replace ? with angle brackets */ <BR/>#include ?stdio.h?  <BR/><BR/>int main<BR/>(<BR/>    void <BR/>)<BR/>{<BR/>    int returnStatus = 0;<BR/><BR/>    int data[] = {+9, +240, -232, -15, +155, -41, +111, -136, +125, -151, +21, +111, -98, -13, +50, +56 };<BR/><BR/>    int sum = 0;<BR/><BR/>    int z;<BR/>    for (z = 0; z < sizeof(data) / sizeof(int); z++)<BR/>    {<BR/>        sum += data[z];<BR/><BR/>        printf("%02X ", sum);<BR/>    }<BR/><BR/>    printf("\n");<BR/><BR/>    return returnStatus;<BR/>}<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178124480000#c9188991771775496883" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00180992519686274118" rel="nofollow">EvilTeach</a> : 12:48 PM</div>
+
+								<span class="item-control blog-admin pid-138328145"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9188991771775496883" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2985032907740347622"></a> 				Cool stuff folks, keep 'em coming!<BR/><BR/>FWIW, I'm currently daydreaming about a byte-code interpreter where the supplied string is a Quine.<BR/><BR/>Of course, we can't supply the program as is, but we can compile a program in a higher-level language down to the Quine.<BR/><BR/>When you see that I need an interpreter AND a compiler, we understand why I fear to start this program :-)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178124720000#c2985032907740347622" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 12:52 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2985032907740347622" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8908226567685980970"></a> 				messing with python and primes<BR/><BR/>hex(int(str(2*2*3*11046899)+str(2*2*2*2*3*3*3*3*11*11*31*181)+str(5*10203773)+str(2*2*2*7*911*17669)+str(2*2*2*2*2*2*2*5)))<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178124960000#c8908226567685980970" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://blog.odonnell.nu" rel="nofollow">Sean O&#39;Donnell</a> : 12:56 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8908226567685980970" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2190070422968187797"></a> 				I wrote a flex program that takes written text, adds up the value of the letters in each word, discarding the words past the 16th, xors those values against a mask, and then prints out the resulting text in hexadecimal format.<BR/><BR/>A certain very important paragraph of text is nicely translated into the 128 bits you desire.  <BR/><BR/>Application here:  http://www.undefined.com/Hexr.swf<BR/><BR/>Source code:<BR/>http://www.undefined.com/Hexr.mxml<BR/><BR/><BR/>Sample text might be found at: http://www.law.cornell.edu/constitution/constitution.billofrights.html<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178124960001#c2190070422968187797" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05729378883810714043" rel="nofollow">John</a> : 12:56 PM</div>
+
+								<span class="item-control blog-admin pid-383579960"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2190070422968187797" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7986023984424159185"></a> 				Sorry, it ate my sample text url:<BR/><A HREF="http://www.law.cornell.edu/constitution/constitution.billofrights.html" REL="nofollow">http://www.law.cornell.edu/constitution/constitution.billofrights.html</A><br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178125020000#c7986023984424159185" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05729378883810714043" rel="nofollow">John</a> : 12:57 PM</div>
+
+								<span class="item-control blog-admin pid-383579960"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7986023984424159185" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5715580430856368562"></a> 				hmm formatting on this blog is a touch narrow, will try again.<BR/><BR/>hex(int(str(2*2*3*11046899)+<BR/>str(2*2*2*2*3*3*3*3*11*11*31*181)+<BR/>str(5*10203773)+<BR/>str(2*2*2*7*911*17669)+<BR/>str(2*2*2*2*2*2*2*5)))<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178125020001#c5715580430856368562" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://blog.odonnell.nu" rel="nofollow">Sean O&#39;Donnell</a> : 12:57 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5715580430856368562" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2046067648574463161"></a> 				Someone write a program that uses 68 74 74 70 3a 2f 2f 72 69 61 61 2e 63 6f 6d 2f as a master key and then deliver some cease-and-desist letters.<BR/><BR/>And find out what strings give the incriminated sequence as md5 checksum. 'DRM sucks' doesn't. :-(<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178126580000#c2046067648574463161" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18011171943440483489" rel="nofollow">Andreas Krey</a> : 1:23 PM</div>
+
+								<span class="item-control blog-admin pid-2056248028"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2046067648574463161" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4559582218961521674"></a> 				http://pastie.textmate.org/58306<BR/>but output is dependent on compiler/platform<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178126640000#c4559582218961521674" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00429185400787287195" rel="nofollow">speps</a> : 1:24 PM</div>
+
+								<span class="item-control blog-admin pid-1730877415"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4559582218961521674" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5668930448264115636"></a> 				#!/usr/bin/bfi<BR/>++++++++++<BR/>[>++++++++++>+++++>+++>+<<<<-]<BR/>>>--.<BR/>+++++++++.<BR/>>++.<BR/><<++.<BR/>>.<BR/>>.<BR/><--------.<BR/>.<BR/>>.<BR/><-.<BR/>++.<BR/>>.<BR/><+++++++.<BR/><--.<BR/>>>.<BR/><--.<BR/>---.<BR/>>.<BR/><<+.<BR/>>-.<BR/>>.<BR/><++.<BR/><---.<BR/>>>.<BR/><<++.<BR/>>+++.<BR/>>.<BR/><----.<BR/>---.<BR/>>.<BR/><++++.<BR/>+.<BR/>>.<BR/><<-.<BR/>>-.<BR/>>.<BR/><+.<BR/>---.<BR/>>.<BR/><++.<BR/>+.<BR/>>.<BR/><++.<BR/>.<BR/>>.<BR/><<.<BR/>>--------.<BR/><BR/>That should do it. <A HREF="http://esoteric.sange.fi/brainfuck/impl/interp/BFI.c" REL="nofollow">Interpreter</A>.<BR/><BR/>Alex<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178127720000#c5668930448264115636" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Alex</span> : 1:42 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5668930448264115636" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1469605983547967052"></a> 				Here's a Perl version <A HREF="http://www.urth.org/~autarch/hex" REL="nofollow">http://www.urth.org/~autarch/hex</A>.<BR/><BR/>I'd post it here but the formatting would be horked.<BR/><BR/>It's not exactly safe. Have fun.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178127960000#c1469605983547967052" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01627227614124925959" rel="nofollow">Dave</a> : 1:46 PM</div>
+
+								<span class="item-control blog-admin pid-376754499"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1469605983547967052" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="881430259270537541"></a> 				Here's my contribution in Python (it does need the latest version: 2.5).  I even managed to avoid using any indentation so it will show up correctly as a comment (not an easy feat in Python!).<BR/><BR/><BR/>import re<BR/><BR/>primality_regex = re.compile(r"^1?$|^(11+?)\1+$")<BR/>is_prime = (lambda n: primality_regex.match(n * '1') == None)<BR/><BR/>(primes, i) = ([], [])<BR/>while len(primes) < 256: i.append((primes.append(len(i)) if is_prime(len(i)) else None))<BR/><BR/>innocent_data = [29, 1583, 61, 5, 929, 643, 1439, 479, 1327, 317, 449, 1213, 541, 449, 773, 1171]<BR/>for d in innocent_data: print hex(primes.index(d)),<BR/><BR/><BR/><BR/>The innocent data is a list of prime numbers.  The program looks at the prime number given, determines which prime it is (0th, 1st, 2nd, etc) and outputs that number in hex.  For example, 29 is the 9th prime number (if you consider 2 to be the 0th) and so the program outputs a hex 9.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178129460000#c881430259270537541" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10223237051742702878" rel="nofollow">Steve</a> : 2:11 PM</div>
+
+								<span class="item-control blog-admin pid-519919821"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=881430259270537541" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6356998804132588246"></a> 				print(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF * rand());<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178130360000#c6356998804132588246" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 2:26 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6356998804132588246" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4309611255183027475"></a> 				<I>print(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF * rand());</I><BR/><BR/>I'm sure that works for a suitable implementation of <B>rand</B>.<BR/><BR/>Another possibility is that it eventually works, much like the million monkeys and million typewriters!<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178130540000#c4309611255183027475" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:29 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4309611255183027475" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9094588443993782914"></a> 				void code()<BR/>{<BR/>        __asm__(<BR/>                "stc\n"<BR/>                "stc\n"<BR/>                "adc %eax,(%edx)\n"<BR/>                "popf\n"<BR/>                "test %bl,%ah\n"<BR/>                "pop %ebx\n"<BR/>                "fadd -90(%ecx)\n"<BR/>                "lds 86(%ebx),%esp\n"<BR/>                "mov %dh,(%eax)"<BR/>        );<BR/>}<BR/><BR/>int main()<BR/>{<BR/>        int i;<BR/>        unsigned char *c=(unsigned char *)code+3;<BR/>        for (i=0;i<16;i++,c++)<BR/>                printf("%02x%c",(i%5)?*c:(*c^0xf0),(i-15)?' ':'\n');<BR/>}<BR/><BR/>Of course, it only works on x86.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178131260000#c9094588443993782914" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 2:41 PM</div>
+
+								<span class="item-control blog-admin pid-2050274566"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9094588443993782914" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7147772751021534029"></a> 				s = true<BR/>b = [4,1,2,6,2,1,3,1,3,1,6,1,1,1,2,3,1,1,1,3,1,1,2,3,3,2,1,1,1,2,1,4,1,2,4,1,<BR/>     5,1,1,1,1,1,1,2,1,2,3,1,1,1,1,2,3,2,1,1,1,1,1,2,1,1,3,1,3,2,6]<BR/><BR/>i = b.inject("") { |r, c|  s = !s; s ? r + "1" * c : r + "0" * c }<BR/>(0..(i.length/8)-1).each { |x| print i[(x * 8)..((x * 8) + 7)].to_i(2).to_s(16).rjust(2, "0") + " "}<BR/>puts<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178131380000#c7147772751021534029" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.stifflog.com/" rel="nofollow">stiff</a> : 2:43 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7147772751021534029" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7805588781010033683"></a> 				public class Generator {<BR/> /*<BR/>  * Start with zero for steps[0] bits, <BR/>   * then 1 for steps[1] bits etc. If the number<BR/>  * is negative, switch bits for abs(number) steps.<BR/>  */<BR/> public static void main(String[] args) {<BR/>  boolean key[] = new boolean[128];<BR/>  <BR/>  int[] steps = <BR/>    {4, -1, 2, 6, 2, -1, 3, -1, 3, -1, 6, -3, 2, <BR/>        3, -3, 3,-2, 2, 3, 3, 2, -3, 2, -1, 4,<BR/>        -1, 2, 4, -1, 5, -6, 2, -1, 2, 3, -4, 2,<BR/>        3, 2, -5, 2, -2, 3, -1, 3, 2};<BR/>  <BR/>  int counter = 0;<BR/>  boolean current = false;<BR/>  for (int i = 0; i < steps.length; i++) {<BR/>   int repeats = steps[i];<BR/>   if (repeats > 0 && current == true) {<BR/>    for (int j = 0; j < repeats; j++) {<BR/>     key[counter++] = current;<BR/>    }<BR/>    current = false;<BR/>   } else if (repeats > 0) {<BR/>    counter += repeats;<BR/>    current = true;<BR/>   } else {<BR/>    while (repeats++ < 0) {<BR/>     key[counter++] = current;<BR/>     current = !current;<BR/>    }<BR/>   }<BR/>    <BR/>  }<BR/><BR/>  //output<BR/>  String out = new String();<BR/>  for (int i = 0; i < key.length; i++) {<BR/>   out += key[i] ? '1' : '0'; <BR/><BR/>   //easier on the eyes<BR/>   if ((i+1) % 8 == 0) {<BR/>    out += ' ';<BR/>   }<BR/>   if ((i+1) % 64 == 0) {<BR/>    out += "\n";<BR/>   }<BR/>  }<BR/>  System.out.println(out);<BR/> }<BR/><BR/>}<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178131500000#c7805588781010033683" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00258760670089542893" rel="nofollow">Tomas</a> : 2:45 PM</div>
+
+								<span class="item-control blog-admin pid-968504293"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7805588781010033683" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="487667189639660172"></a> 				Obscurity counts!  Here's a Haskell version that encodes the sequence as the coefficients of a polynomial that gives special values on inputs -1, 0, 1, 2:<BR/><BR/>import Text.Printf<BR/><BR/>polynomial :: [Integer] -> Integer -> Integer<BR/>polynomial coeffs x = sum . zipWith (*) coeffs . map (x^) $ [0..]<BR/><BR/>cs  = [15850099746,11842663369,-4463664333,-1460134528]<BR/>f   = flip div 6 . polynomial cs<BR/>hex = [-1..2] >>= printf "%08x" . f<BR/><BR/>main = putStrLn hex<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178131860000#c487667189639660172" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 2:51 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=487667189639660172" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9218716613265115380"></a> 				(format&nbsp;t&nbsp;"~2,'0x"<BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce&nbsp;#'(lambda&nbsp;(m&nbsp;n)<BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(format&nbsp;t&nbsp;"~2,'0x&nbsp;"&nbsp;m)<BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;m&nbsp;n))<BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'(#x09&nbsp;&nbsp;#xF0&nbsp;&nbsp;#x-E8&nbsp;#x-0F<BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#x9B&nbsp;&nbsp;#x-29&nbsp;#x6F&nbsp;&nbsp;#x-88<BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#x7D&nbsp;&nbsp;#x-97&nbsp;#x15&nbsp;&nbsp;#x6F<BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#x-62&nbsp;#x-0D&nbsp;#x32&nbsp;&nbsp;#x38)))<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178132220000#c9218716613265115380" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12939800713570723702" rel="nofollow">Justin</a> : 2:57 PM</div>
+
+								<span class="item-control blog-admin pid-1079147059"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9218716613265115380" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3592429119907360513"></a> 				I've got a good one, it takes input to produce the correct output, so the data isn't actually in the program itself. However, the input is common knowledge:<BR/>first, split the 128 bit string into 2 chunks.<BR/><BR/>09F911029D74E35B and D84156C5635688C0<BR/><BR/>Then derive questions from it, like a text adventure. Like so:<BR/><BR/>718624318471595000's factors are 2 2 2 5 5 5 5 101 3373 421885103<BR/>15582831591453800000's factors are 2 2 2 2 2 2 5 5 5 5 5 163 3229 148033747<BR/><BR/>Maybe the big numbers can be embedded in the program, but the smaller numbers can be a series of questions like "number of eyes a human has", "number of digits a human has", "numeric value of the first class to be tought in university". <BR/><BR/> Really, it's just a form of steganorgraphy.<BR/><BR/> In any case, I find it not interesting enough to write up such a program.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178132220001#c3592429119907360513" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 2:57 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3592429119907360513" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4655277636586146823"></a> 				rot13:<BR/><BR/>09 S9 11 02 9Q 74 R3 5O Q8 41 56 P5 63 56 88 P0<BR/><BR/>I win.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178133480000#c4655277636586146823" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16376230923556264634" rel="nofollow">Dossy</a> : 3:18 PM</div>
+
+								<span class="item-control blog-admin pid-1845731701"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4655277636586146823" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1855869866851607085"></a> 				I'm certain there's a better way to do this in Scheme, but here's my 15 minute attempt:<BR/><BR/>(define bits 6231311211111232111132121111115142141211123321131113211161313126214)<BR/><BR/>(define (decode-bits bits)<BR/>  (define (decode-bits-onoff bits on)<BR/>    (cond<BR/>      ((= bits 0))<BR/>      ((= (modulo bits 10) 0) (decode-bits-onoff (/ bits 10) (abs (- on 1))))<BR/>      (else<BR/>       (print on)<BR/>       (decode-bits-onoff (- bits 1) on))))<BR/>  (decode-bits-onoff bits 0))<BR/><BR/>(decode-bits bits)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178134140000#c1855869866851607085" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Academician</span> : 3:29 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1855869866851607085" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7020225141640126136"></a> 				Oooo, I really like the run-length encoding idea.  A rough equivalent, in Haskell:<BR/><BR/>runs = [4,1,2,6,2,1,3,1,3,1,6,1,1,1,2,3,1,1,1,3,1,1,2,3,3,2,1,1,1,2,1,4,1,2,4,1,5,1,1,1,1,1,1,2,1,2,3,1,1,1,1,2,3,2,1,1,1,1,1,2,1,1,3,1,3,2,6]<BR/>bits = concat . zipWith replicate runs . cycle $ [0,1]<BR/>main = putStrLn (bits >>= show)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178134740000#c7020225141640126136" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 3:39 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7020225141640126136" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4588345055895451093"></a> 				Someone already used assembly for this, but here's my shot with pure asm. Have fun figuring out, why this works ;)<BR/><BR/>;; print128.asm<BR/>;; <BR/>;; compile with:<BR/>;; yasm -f elf -m amd64 print128.asm -o print128.o<BR/>;; ld print128.o --omagic -o print128<BR/>;;<BR/>;; Public domain. No warranty given. Works for me...<BR/>;; Platform: Linux on amd64<BR/><BR/>BITS 64<BR/>global _start<BR/>section .text<BR/><BR/>_start:<BR/> mov ecx, 16<BR/> mov rdx, London<BR/>.pants movzx eax, byte [rdx]<BR/> shr eax, 4<BR/> and eax, 0x0f<BR/> cmp ecx, 5<BR/> je .briefs<BR/>.undies call on_me<BR/> movzx eax, byte [rdx]<BR/> and eax, 0x0f<BR/> call on_me<BR/> mov eax, 0x20<BR/> call suzie<BR/> inc rdx<BR/> dec ecx<BR/> jnz .pants<BR/> mov eax, 10<BR/>.please call suzie<BR/> mov eax, 60<BR/> xor edi,edi<BR/> syscall<BR/>.briefs times 2 dec eax<BR/> jmp .undies<BR/> <BR/>some times 22 db 0x90<BR/> <BR/>London or ecx,edi<BR/> adc [rdx],eax<BR/> popf<BR/> jz some<BR/> pop rbx<BR/> fadd dword [rcx+0x56]<BR/> in eax, 0x63<BR/> push rsi<BR/>.al_al mov al,al<BR/><BR/>on_me mov ebx, 7<BR/> xor edi, edi<BR/> cmp eax, 10<BR/> cmovge edi, ebx<BR/> add eax, edi<BR/> add eax, 0x30 <BR/>suzie push rcx<BR/> push rdx<BR/> mov [some], ax<BR/> xor eax, eax<BR/> inc eax<BR/> mov edi, eax<BR/> mov rsi, some<BR/> mov edx, eax<BR/> syscall<BR/> pop rdx<BR/> pop rcx<BR/> ret<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178135040000#c4588345055895451093" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 3:44 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4588345055895451093" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9001925626997303780"></a> 				Okay, this isn't very clever, but it makes up for it in simplicity:<BR/><BR/>"0C 88 65 36 5C 65 14 8D B5 3E 47 D9 20 11 9F 90".reverse()<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178136720000#c9001925626997303780" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.peerbox.com:8668/space/start" rel="nofollow">Kevin Greer</a> : 4:12 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9001925626997303780" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1957064000937101126"></a> 				damn, Anonymous already beat me to it, here's my fully assembly version:<BR/><BR/>section .text<BR/>global _start<BR/>_start:<BR/>mov ecx,10h<BR/>mov ebp,hex<BR/>mov edx,buffer<BR/>mov ebx,h<BR/>lp: movzx eax,byte [ebp]<BR/>mov ah,al<BR/>and al,0fh<BR/>xlat<BR/>mov [edx+1],al<BR/>shr ax,12<BR/>xlat<BR/>mov [edx],al<BR/>mov [edx+2],byte 20h<BR/>add edx,3<BR/>inc ebp<BR/>loop lp<BR/>mov [edx],byte 0ah<BR/>mov ecx,buffer<BR/>mov eax,4<BR/>lp2: xor ebx,ebx<BR/>inc ebx<BR/>mov edx,16*3+1<BR/>int 80h<BR/>mov eax,1<BR/>mov ebx,0<BR/>int 80h<BR/>hex: or ecx,edi<BR/>adc [edx],eax<BR/>popfd<BR/>jz lp2<BR/>pop ebx<BR/>fadd dword [ecx+56h]<BR/>lds esp,[ebx+56h]<BR/>mov al,al<BR/>h db '0123456789abcdef'<BR/>section .bss<BR/>buffer resb 16*3+1<BR/><BR/><BR/><BR/>Under 32bit linux:<BR/>$ nasm -f elf hex.asm<BR/>$ ld hex.o<BR/><BR/>the resulting stripped program is exactly 512 bytes<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178136900000#c1957064000937101126" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 4:15 PM</div>
+
+								<span class="item-control blog-admin pid-2050274566"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1957064000937101126" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9080413498387770676"></a> 				Poetry is better than programming...<BR/><BR/>http://thunderfist-podium.blogspot.com/2007/05/ode-to-drm.html<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178137800000#c9080413498387770676" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 4:30 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9080413498387770676" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8085019895773192491"></a> 				;; Print a list of numbers which are *close to* the ilicit bits. This<BR/>;; is an approximate method, and will never guarantee precise values<BR/>;; for all the bits. However, if you round the numbers (code not<BR/>;; given, please don't sue me), you will almost certainly get the<BR/>;; right values.<BR/>;; <BR/>;; This is based on the traditional method of getting around a<BR/>;; competing patent or copyright: tweak what you're copying just<BR/>;; enough that it does not infringe on the intellectual property in<BR/>;; question. If this were to suddenly become invalid, it would be a<BR/>;; huge change in precedent.<BR/>;; <BR/>;; I'm not going to lie to you: this program could be<BR/>;; reverse-engineered by someone properly determined and<BR/>;; intelligent. However, the AACSLA's approval of AACS decoding<BR/>;; devices which can be reverse-engineered is widely known. I fail to<BR/>;; see how this is much different. ;-)<BR/><BR/>(defun random-double-float-between (lower-bound upper-bound)<BR/>  "Given a LOWER-BOUND and an UPPER-BOUND, both of which are<BR/>   double-floats, return a random double-float between those<BR/>   bounds."<BR/>  (declare (double-float lower-bound upper-bound)<BR/>    (optimize (speed 3) (safety 0) (debug 1)))<BR/>  (+ lower-bound (random upper-bound)))<BR/><BR/>(defun monte-carlo-integrate (contained-in-region-p &key min-x min-y max-x max-y (iterations 1000))<BR/>  "Perform Monte Carlo integration on a region contained in the<BR/>  rectangle defined by MIN-X, MIN-Y, MAX-X, and MAX-Y. The<BR/>  function CONTAINED-IN-REGION-P should take x and y coordinates<BR/>  and return true iff the point given lies in the region. This is<BR/>  an approximate procedure and will run ITERATIONS times."<BR/>  (declare (double-float min-x min-y max-x max-y)<BR/>    (function contained-in-region-p)<BR/>    (type (integer 0) iterations)<BR/>    (optimize (speed 3) (safety 0) (debug 1)))<BR/>  (let ((hits 0d0)<BR/> (misses 0d0))<BR/>    (loop repeat iterations<BR/>       do (let ((x (random-double-float-between min-x max-x))<BR/>  (y (random-double-float-between min-y max-y)))<BR/>     (if (funcall contained-in-region-p x y)<BR/>  (incf hits 1d0)<BR/>  (incf misses 1d0))))<BR/>    ;; At this point, we know roughly how much of the rectangle's area<BR/>    ;; lies inside the region. Let's compute the region's area:<BR/>    (* (* (- max-x min-x)<BR/>   (- max-y min-y))<BR/>       (/ hits (+ hits misses)))))<BR/><BR/>(defun make-triangle-region (a)<BR/>  "A triangle defined by x > 0, y > 0, y < a*x, where a is a<BR/>   convenient constant. The first two conditions can be assumed,<BR/>   since the driver code will confine itself to a reasonable<BR/>   region."<BR/>  #'(lambda (x y)<BR/>      (< y (* a x))))<BR/><BR/>(defun approximate-key (&optional (iterations 3000000))<BR/>  "Return an approximation of some illicit bits, as a list of double-floats."<BR/>  (let ((region-defining-slopes '(1.0204081632653062d-4 0.0028231292517006804d0 1.927437641723356d-4<BR/>      2.2675736961451248d-5 0.001780045351473923d0 0.0013151927437641724d0<BR/>      0.0025736961451247164d0 0.0010317460317460319d0 0.0024489795918367346d0<BR/>      7.369614512471656d-4 9.750566893424037d-4 0.0022335600907029476d0<BR/>      0.0011224489795918367d0 9.750566893424037d-4 0.0015419501133786847d0<BR/>      0.0021768707482993197d0)))<BR/>    (mapcar #'(lambda (slope)<BR/>  (monte-carlo-integrate (make-triangle-region slope) <BR/>           :min-x 0d0<BR/>           :min-y 0d0<BR/>           :max-x 420d0<BR/>           :max-y 1.2d0<BR/>           :iterations iterations))<BR/>     region-defining-slopes)))<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178139120000#c8085019895773192491" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13332386909041593894" rel="nofollow">Peter Scott</a> : 4:52 PM</div>
+
+								<span class="item-control blog-admin pid-1098747167"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8085019895773192491" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3357825530261754461"></a> 				from md5 import md5<BR/><BR/>words = """<BR/>greedy censoring maniacs deceivers cretins hypocritical maniacal<BR/>senseless unwanted meaningless lucrative barbarians shady lucrative<BR/>corrupted psychopathic<BR/>""".split()<BR/><BR/>print " ".join([md5(word).hexdigest()[:2] for word in words]).upper()<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178139540000#c3357825530261754461" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/09971184007434521720" rel="nofollow">Alex</a> : 4:59 PM</div>
+
+								<span class="item-control blog-admin pid-487351616"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3357825530261754461" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="377412048890958200"></a> 				The same rle compression, but different seed and in scheme to obscure.<BR/><BR/><B><BR/>(define (generate)<BR/>  (define init '(11 -2 240 -232 -15 155 -41 111 -136 125 -151 21 111 -98 -13 50 56))<BR/>  (define (iter list prev)<BR/>    (if (eq? list '())<BR/>        '()<BR/>        (let ((x (+ (car list) prev)))<BR/>          (append (cons x '()) (iter (cdr list) x)))))<BR/>  (iter (cdr init) (car init)))<BR/><BR/>(generate)<BR/></B><br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178139960000#c377412048890958200" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02675326729525947648" rel="nofollow">Luis</a> : 5:06 PM</div>
+
+								<span class="item-control blog-admin pid-1452824693"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=377412048890958200" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1553991042801437842"></a> 				# in Io, http://www.iolanguage.com/<BR/><BR/>s1 := Sequence clone<BR/>list(93,145,116,34,172,70,219,118,186,40,34,229,19,36,231,167) foreach(n, s1 append(n))<BR/>s1 bitwiseXor("The 128-bit programming challenge") foreach(n, write(n, ","))<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178140140000#c1553991042801437842" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:09 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1553991042801437842" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8205307241863080557"></a> 				We can do it with two numbers. <BR/><BR/>One is an integer, I.<BR/><BR/>One is a transcendental number, T.<BR/><BR/>Take any transcendental number (pi, e, ln(any rational number not 1), etc) and define T, the full expansion of its binary digits.<BR/><BR/>Then find I, the place in the expansion where the 128-bit number in question first occurs.<BR/><BR/>program then becomes, in Haskell:<BR/><BR/>take 128 (drop I T)<BR/><BR/>...I think...<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178140500000#c8205307241863080557" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00875553014772436047" rel="nofollow">Ira Joseph</a> : 5:15 PM</div>
+
+								<span class="item-control blog-admin pid-383749929"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8205307241863080557" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8719138693492242171"></a> 				I cut my assembly version down even further, eliminating the hex table.  It's <A HREF="http://codeplusplus.blogspot.com/2007/05/128-bit-programming-challenge.html" REL="nofollow">here</A><BR/><BR/>It's formatted better there too.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178140680000#c8719138693492242171" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 5:18 PM</div>
+
+								<span class="item-control blog-admin pid-2050274566"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8719138693492242171" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7317435316859474172"></a> 				So here is a C program I wrote which prints the parity of the count of the non-whitespace characters on each line of a text file.<BR/><BR/>http://malsyned.net/lineparity.c.txt<BR/><BR/>The real fun comes when you run it on its own source code.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178141340000#c7317435316859474172" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11637407865564921260" rel="nofollow">Dennis</a> : 5:29 PM</div>
+
+								<span class="item-control blog-admin pid-388843239"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7317435316859474172" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5447642081431287549"></a> 				doesn't count as the bits are there:<BR/><BR/>map(lambda x: int((13256278887989457651018865901401704640 & (0xFF << x)) >> x), range(120,-1,-8))<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178142720000#c5447642081431287549" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:52 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5447642081431287549" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2650744106275610445"></a> 				Shame on you guys! No Bash script solution so far. Here is one that use rot13 ;)<BR/><BR/>#!/bin/bash<BR/><BR/>wget http://www.rot13.com/index.php?text=09%20S9%2011%2002%209Q%2074%20R3%205O%20Q8%2041%2056%20P5%2063%2056%2088%20P0<BR/>cat index.php\@text\=09\ S9\ 11\ 02\ 9Q\ 74\ R3\ 5O\ Q8\ 41\ 56\ P5\ 63\ 56\ 88\ P0  | grep textarea | sed s/\<[^\<]*\>//g<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178143800000#c2650744106275610445" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.obneq.com" rel="nofollow">TH</a> : 6:10 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2650744106275610445" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1497570674802993340"></a> 				wget -O- http://raganwald.github.com/2007/05/128-bit-programming-challenge.html |grep "such as" | sed "s/.*such as //g" | sed "s/, as.*//g" | sed "s/&lt;code&gt;//g" | sed "s/&lt;\/code&gt;//g"<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178143920000#c1497570674802993340" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://warmcat.com" rel="nofollow">Andy Green</a> : 6:12 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1497570674802993340" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9164316534362397458"></a> 				This python script modifies itself every time it's run, it'll start printing the right answer after it's run 6 times<BR/><BR/>import sys, re<BR/>l = [64,5,19,12043,216493,836256503069278983442067L, 0]<BR/>print '0'+hex(sum(l))[2:-1]<BR/>t=open(sys.argv[0]).read()<BR/>open(sys.argv[0],'w').write(re.sub(r'\[.*7L, 0\]',str([l[0]*l[1]]+l[2:]),t))<BR/><BR/>http://pastebin.ca/468181<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178147400000#c9164316534362397458" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06139256691290554110" rel="nofollow">Yaroslav</a> : 7:10 PM</div>
+
+								<span class="item-control blog-admin pid-533882779"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9164316534362397458" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="66389115536061452"></a> 				that brainfuck submission just rocks.<BR/><BR/>"you patented ------?  drat!"<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178148240000#c66389115536061452" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03381475657715288786" rel="nofollow">rektide</a> : 7:24 PM</div>
+
+								<span class="item-control blog-admin pid-1586284545"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=66389115536061452" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5739048804859078698"></a> 				All these people writing all this code... that know how that code works.<BR/><BR/>Wouldn't the true form for this project be and endless supply of programs that print the number you want, but nobody has any idea how?<BR/><BR/>I'm thinking some form of genetically-evolved bytecode with fitness based on 1. Closeness to the right output (major weighting) 2. Cyclomatic complexity 3. Source code DOESN'T contain fragments of the output.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178148840000#c5739048804859078698" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 7:34 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5739048804859078698" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2796825443000081891"></a> 				New idea:<BR/><BR/>A program to generate programs which output the 128 bits. Each generated program would be different from all previous ones.<BR/><BR/>Take any number of random 128 bit numbers, and xor all of them with the original. Store all of them and the result, just don't store the original. The original will be the result of xoring these together.<BR/><BR/>The 128 bits will be in the original program-generating program, but the random strings can be generated without repetition, therefore each generated program will be completely original.<BR/><BR/>This way we can have as many programs that generate the answer as we like. Everyone can have a different one!<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178150220000#c2796825443000081891" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00875553014772436047" rel="nofollow">Ira Joseph</a> : 7:57 PM</div>
+
+								<span class="item-control blog-admin pid-383749929"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2796825443000081891" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3666807026733170054"></a> 				<A HREF="http://www.geekfu.org/128bit.html" REL="nofollow">Here</A> is my submission. Sort of obfuscated Javascript; it could be said to paint the bits on. Bonus: although it contains a block of data (not the verboten bits, a different set of floats) it would work equally well with an infinitely large set of other blocks, so it's Google-proof.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178152200000#c3666807026733170054" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00653599022394367975" rel="nofollow">Ross</a> : 8:30 PM</div>
+
+								<span class="item-control blog-admin pid-1738113118"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3666807026733170054" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3775795344291304436"></a> 				<span class="deleted-comment">This post has been removed by the author.</span><br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178152860000#c3775795344291304436" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02510452633774838697" rel="nofollow">Joseph</a> : 8:41 PM</div>
+
+								<span class="item-control blog-admin "><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3775795344291304436" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="111874434163715755"></a> 				My Ruby one-liner:<BR/><BR/><A HREF="http://pastie.caboo.se/58465" REL="nofollow">http://pastie.caboo.se/58465</A><br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178152920000#c111874434163715755" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02510452633774838697" rel="nofollow">Joseph</a> : 8:42 PM</div>
+
+								<span class="item-control blog-admin pid-2134523707"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=111874434163715755" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4321448490430826305"></a> 				I think it's better to just <A HREF="http://slightlynew.blogspot.com/2007/05/microsoft-knows-drm.html" REL="nofollow">ask Microsoft</A> on the matter.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178154360000#c4321448490430826305" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16737006640455843661" rel="nofollow">lee</a> : 9:06 PM</div>
+
+								<span class="item-control blog-admin pid-1967704739"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4321448490430826305" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2728602293008831461"></a> 				Here's my TCL version. Sorry for the long line length! You'd better write down the result after the first run of the proc, you never know what might happen to code once it's in memory ;)<BR/><BR/>package require rc4<BR/>proc innocent {} {<BR/>  set ct "467EBE2B5E8383662D8D6BFB6E48A6F1E05B6B389DC4F5BF8CF7C0278C38D9BCD31EF2D1B42B8C7F160B3C6F8399FEF3A0A56C1CD21EBEF50BC0BCF7055906C114DD6B1E29F422DE1D10F5"<BR/>  set keytext [lrange [split [info body innocent] \xa] 2 end]<BR/>  eval [rc4::rc4 -key $keytext [binary format H* $ct]]<BR/>}<BR/>innocent<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178161260000#c2728602293008831461" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:01 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2728602293008831461" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7026331699841072684"></a> 				A certain polynomial has interesting values for x=0,1...15.<BR/><BR/>Yeah, I know it's wasteful to call pow() so many times. Eat me.<BR/><BR/>#include ?math.h?<BR/>#include ?stdio.h?<BR/><BR/>int main(void)<BR/>{<BR/> double a[16] = {9.00000000000000000000,<BR/> -228661.18157025575055740774, <BR/> 724683.57943269179668277502, <BR/> -968118.22122667043004184961, <BR/> 735913.64518094679806381464, <BR/> -360093.45301621430553495884, <BR/> 121087.63338343235955107957, <BR/> -29059.62251475052835303359, <BR/> 5084.38570988967330777086, <BR/> -654.67652075689773027989, <BR/> 61.96920291867959917909, <BR/> -4.25825901474738177654, <BR/> 0.20654766581869227204, <BR/> -0.00670111913070791255, <BR/> 0.00013043366442119572, <BR/> -0.00000115128173188207 };<BR/><BR/> int x;<BR/> for (x = 0; x < 16; x++)<BR/> {<BR/>  double sum = 0.0;<BR/>  int i;<BR/>  for (i = 0; i < 16; i++)<BR/>  {<BR/>   sum += a[i] * pow(x, i);<BR/>  }<BR/>  printf("%02x ", (int)round(sum));<BR/> }<BR/> return 0;<BR/>}<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178162220000#c7026331699841072684" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11846533071533338593" rel="nofollow">Shub</a> : 11:17 PM</div>
+
+								<span class="item-control blog-admin pid-15133218"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7026331699841072684" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8537846577599818929"></a> 				x=' ';j=q='';b=0;<BR/>z = ' ;for(i=0; i+2&lt;z.split(x). length-1; i )  {; document; j=j+j+z.split (x)[i++ +0]; j=00+j.length+ 1-1 ;j=j. toString(16 -x.length+1); document ;b+= ( (((z. split( x+q+q)[(i++) -00]. length ))) );b=b ;b=(b. toString (16))+x; 11+document.  write (j+b); j="";b=0;}';<BR/>eval(z);<BR/><BR/>It's a little bit messy but it works, printing the code in formatted hex. To make it work outside the context of a webpage, you would need to declare a dummy object document with a write() function.<BR/><BR/>(replce ampersand-lt-semicolon above with less-than sign)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178162280000#c8537846577599818929" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11963716974666842075" rel="nofollow">Steve</a> : 11:18 PM</div>
+
+								<span class="item-control blog-admin pid-1990271687"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8537846577599818929" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6091853819924865876"></a> 				Here is, in Haskell, the LaGrange interpolation polynomial.<BR/><BR/>module Main (main) where<BR/><BR/>import Text.Printf<BR/>import Data.Ratio<BR/><BR/>type NType = Ratio Integer<BR/><BR/>eval :: [NType] -> NType -> NType<BR/>eval cs x = sum $ zipWith (\ c e -> c * x ^^ e) cs [0 ..]<BR/><BR/>code =<BR/> [ (9%1)<BR/> , ((-82400361437)%360360)<BR/> , (281235315869%388080)<BR/> , ((-2930518882811389)%3027024000)<BR/> , (293753425355%399168)<BR/> , ((-64682072698547)%179625600)<BR/> , (1318210170059%10886400)<BR/> , ((-5423231598623)%186624000)<BR/> , (309964247987%60963840)<BR/> , ((-598675176131)%914457600)<BR/> , (299832497%4838400)<BR/> , ((-15297886481)%3592512000)<BR/> , (19787389%95800320)<BR/> , ((-125184413)%18681062400)<BR/> , (437347%3353011200)<BR/> , ((-1505507)%1307674368000)<BR/> ]<BR/><BR/>main :: IO ()<BR/>main =<BR/> mapM_ putStr $ fmap (\ i -> (printf "%02x"  ((round (eval code i)) :: Int)) ++ " ") (take 16 [0 ..])<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178166120000#c6091853819924865876" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:22 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6091853819924865876" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4980504814908499592"></a> 				A simple, stupid way to generate the number in question.<BR/><BR/>Save the instructions in a file (say number.bc)<BR/>$ bc number.bc<BR/><BR/>obase=16<BR/>ibase=16<BR/>3^2<BR/>.+F0<BR/>.-E8<BR/>.-F<BR/>.+9B<BR/>.-29<BR/>.+6F<BR/>.-88<BR/>.+7D<BR/>.-97<BR/>.+15<BR/>.+6F<BR/>.-62<BR/>.-D<BR/>.+32<BR/>.+38<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178169660000#c4980504814908499592" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:21 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4980504814908499592" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5597222912699292631"></a> 				I'd suspect the shortest program would be much, much slower than the ones submitted here.<BR/><BR/>I was thinking of something like this:<BR/><BR/>i = 0<BR/>while (!property(i)) ++i;<BR/><BR/>For a well chosen property of those 128 bits...<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178172660000#c5597222912699292631" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11864475440689588613" rel="nofollow">Habichuela</a> : 2:11 AM</div>
+
+								<span class="item-control blog-admin pid-1475747972"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5597222912699292631" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4480854433102631606"></a> 				This reminds me of some of Gregory Chaitins work on Omega. http://en.wikipedia.org/wiki/Gregory_Chaitin<BR/><BR/>One way to really get this down to a small amount of code is to think of scripting languages that can do lookups and retrieve data over the Internet, to munge into the needed bits.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178193420000#c4480854433102631606" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 7:57 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4480854433102631606" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7283618090628271119"></a> 				Here's my attempt:<BR/>#include &lt;stdio.h&gt;<BR/><BR/>char msg[] = "information wants to be free";<BR/>char key[] = "PMiM]mN62nB\\^PCiDLSidZ";<BR/><BR/>int main() {<BR/>    int i, n = 0, bits = 0;<BR/>    for (i = 0; i < 22; ++i) {<BR/>        bits |= (key[i] - 48) << n;<BR/>        if ((n += 6) >= 8)<BR/>            printf("%02x ", msg[i*6/8] ^ (bits & 255)),<BR/>            bits >>= 8, n -= 8;<BR/>    }<BR/>    putchar('\n');<BR/>    return 0;<BR/>}<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178193540000#c7283618090628271119" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17965455817025401747" rel="nofollow">Neil</a> : 7:59 AM</div>
+
+								<span class="item-control blog-admin pid-809438642"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7283618090628271119" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8330561431958009894"></a> 				a='';for(var i=0;i<16;i++){a+=$$('.Post ul li code')[i].innerHTML}<BR/><BR/>Javascript: 62 cars<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178204640000#c8330561431958009894" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08127230988607092411" rel="nofollow">macournoyer</a> : 11:04 AM</div>
+
+								<span class="item-control blog-admin pid-866114942"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8330561431958009894" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1704902788148874407"></a> 				import Numeric;import List;main=putStrLn.('0':).(`showHex`"").sum.map(2^).scanl(-)123.map(length).filter(/=" ").group$"aaa a a a a a aaa aaaa aaaa aaaaaaa aa aaa a a aa aa a a aa aaa a a aaaa a aa aa a aa a a a aa a aaaaa aaaaaa aa aa aa a aa a aaaa aa aa a aaaa a aa aa aa a aa aaaa aaaa a"<BR/><BR/><BR/>Yes, yes. Stupid entry. But you get a <A HREF="http://img233.imageshack.us/img233/6461/thekeyqc1.png" REL="nofollow">bonus flag</A> with it for free :)<BR/>(Hint: rgb colors)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178205540000#c1704902788148874407" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:19 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1704902788148874407" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="958917817119928407"></a> 				A perl one:<BR/>#!/usr/bin/perl<BR/>for ($o=$i=0 ; $i&lt;16 ; $i++)<BR/>{<BR/>   printf("%2.2X ", $o = ($o+hex(substr("09F018F19BD76F787D69156F9EF33238", 2*$i, 2))) % 256) ;<BR/>}<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178212020000#c958917817119928407" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01185657538212769876" rel="nofollow">Michel</a> : 1:07 PM</div>
+
+								<span class="item-control blog-admin pid-184390329"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=958917817119928407" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7974805264585238861"></a> 				<A HREF="http://www.marcusalanen.com/projects/128bits/" REL="nofollow">Two simple programs in C</A> that perform some calculations on the comments inside the code.<BR/><BR/>I (now) see that somebody else beat me to it with a parity counter.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178220120000#c7974805264585238861" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Marcus</span> : 3:22 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7974805264585238861" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5739262000715714581"></a> 				<span class="deleted-comment">This post has been removed by the author.</span><br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178230860000#c5739262000715714581" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06139256691290554110" rel="nofollow">Yaroslav</a> : 6:21 PM</div>
+
+								<span class="item-control blog-admin "><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5739262000715714581" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3945770141446577126"></a> 				> One way to really get this down to > a small amount of code is to think > of scripting languages that can<BR/><BR/>How about this one<BR/>import urllib, re<BR/>print  re.findall('representation such as (.*?),',urllib.urlopen('http://raganwald.github.com/2007/05/128-bit-programming-challenge.html').read())<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178230920000#c3945770141446577126" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06139256691290554110" rel="nofollow">Yaroslav</a> : 6:22 PM</div>
+
+								<span class="item-control blog-admin pid-533882779"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3945770141446577126" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1034025433962761718"></a> 				Since the hex representation of the number has become the iconic representation, I hacked on my previous solution a little bit and now have it outputting in hex.<BR/><BR/><A HREF="http://malsyned.net/lineparit2.c.txt" REL="nofollow">lineparit2.c</A><BR/><BR/>Once again, to get it to output the requested number, simply run the program on its own source code.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178238180000#c1034025433962761718" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11637407865564921260" rel="nofollow">Dennis</a> : 8:23 PM</div>
+
+								<span class="item-control blog-admin pid-388843239"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1034025433962761718" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7019821604526127458"></a> 				Here:<BR/>0#**+!fzaa!bx!#*z=!=-z+zoaxmoxd!mabx=!xaboab*#<BR/><BR/>Of course, this is rather useless without the interpreter here:<BR/>http://pastebin.ca/470831<BR/><BR/>Neither of the parts contains anything traceable back to the original number without the other part. The interpreter can output any hexadecimal number, not necessarily even 128 bits wide. The code above is just gibberish without the knowledge about interpreter commands.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178291460000#c7019821604526127458" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:11 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7019821604526127458" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8425122914760287274"></a> 				Haskell:<BR/><BR/>scanl1 (+) [9,240,-232,-15,155,-41,111,-136,125,-151,21,111,-98,-13,50,56]<BR/><BR/>More with less :)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178306400000#c8425122914760287274" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02675326729525947648" rel="nofollow">Luis</a> : 3:20 PM</div>
+
+								<span class="item-control blog-admin pid-1452824693"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8425122914760287274" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8756629215989224580"></a> 				This batch files doesn't exactly outputs the bits, but you can see them in your head anyway. =)<BR/><BR/>@echo off<BR/>:a<BR/>echo 0000_00_______00__000_000__000000_0__00___0__0___0_00____000___0_0__0_____0__000_0_00000__0_0_0__0___000_0__0__000___0_0_0__0__000_000___000000<BR/>echo ____1__1_11111__1____1___1_______1__1__111_1__111_1___111___11__1_11_11_11_11_____1_____1__1_1_11__11___1_1__11___11__1_1_11__1___1____11______<BR/>goto a<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178321940000#c8756629215989224580" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03560738222428779114" rel="nofollow">alexandroid</a> : 7:39 PM</div>
+
+								<span class="item-control blog-admin pid-895998171"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8756629215989224580" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3015545284350312001"></a> 				Lotus Notes solution <A HREF="http://www.rhs.com/web/blog/poweroftheschwartz.nsf/d6plinks/RSCZ-72W3NJ" REL="nofollow">here</A>.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178328660000#c3015545284350312001" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.rhs.com/poweroftheschwartz" rel="nofollow">Richard Schwartz</a> : 9:31 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3015545284350312001" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5954888725240659919"></a> 				My php version outputs random numbers.<BR/><BR/>$offsets=array(<BR/>        0x679e,0x1b31,0xcb6,0x7a57,<BR/>        0xace9,0x5b08,0x255e,0x5f33<BR/>);<BR/>srand(0x27);<BR/>for ($i=0;$i<8;$i++)<BR/>{<BR/>        while ($offsets[$i]--) rand();<BR/>        $k=rand(0,0x10000);<BR/>        printf("%02x %02x ",$k&0xff,$k>>8);<BR/>}<BR/>printf("\n");<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178329740000#c5954888725240659919" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 9:49 PM</div>
+
+								<span class="item-control blog-admin pid-2050274566"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5954888725240659919" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1380758116895539285"></a> 				#!/usr/bin/python<BR/><BR/>def f1(x):<BR/>        return 114.83333*x**3-925*x**2+2211.1667*x-1391.9<BR/>def f2(x):<BR/>        return -66.5*x**3+1273*x**2-7992.5*x+16607<BR/><BR/>def f3(x):<BR/>        return -13.666667*x**3+496*x**2-5871.3333*x+22845.1<BR/>def f4(x):<BR/>        return -9.5*x**3+430.5*x**2-6440*x+31936<BR/><BR/>def tohex(x):<BR/>        return '%02X'%x<BR/><BR/>key = map(f1, range(1,5)) + map(f2, range(5,9)) + map(f3, range(9,13)) + map(f4, range(13,17))<BR/><BR/>print map(tohex,map(int,key))<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178337780000#c1380758116895539285" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">MV</span> : 12:03 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1380758116895539285" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="649251663485003759"></a> 				Here's my way; I think it's pretty clever =)<BR/>http://me22.fuphyl.org/magic.cpp<BR/><BR/>Here's the internal representation:<BR/>{0,25,1,2,38,1,1,4,31,2,2,1,1,2,40,2,1,3,7,2,<BR/>237,124,1,5,2,1,1,2,1,1,1,5,1,2,4,1,2,20,1,4,<BR/>9,1,1,1,3,4,1,8,1,18,1,2,3,1,2,1,12,1,1,1,<BR/>2,2,1,1,1,3,8,2,1,1,1,1,23,2};<BR/><BR/>( If you recognized from all those ones that it's a continued fraction, give yourself a pat on the back )<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178421600000#c649251663485003759" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Scott McMurray</span> : 11:20 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=649251663485003759" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4099495923153069905"></a> 				And here's a version modifies to use (64-bit mantissa) long doubles, so you can run it without gmpxx:<BR/>#include &lt;math.h&gt;<BR/>#include &lt;stdio.h&gt;<BR/><BR/>long double eval_cf(int *b, int const * const e) {<BR/>    long double ret = *b++;<BR/>    if ( b == e ) return ret;<BR/>    return ret + 1 / eval_cf(b, e);<BR/>}<BR/><BR/>int main() {<BR/><BR/>    int a[] = {0,25,1,2,38,1,1,4,31,2,2,1,1,2,40,3,4,3,17,1,<BR/>               7,3,1,1,1,12,3,2,3,11,2,1,1,13};<BR/>    int b[] = {0,18,1,15,1,4,1,7,1,1,4,1,2,6,2,2,3,2,5,1,<BR/>               4,6,1,9,3,5,1,928,1,1,2,3,1,1,1,6,2};<BR/><BR/>    unsigned long long am = eval_cf(a,a+sizeof(a)/sizeof(*a)) * pow(2.,64);<BR/>    unsigned long long bm = eval_cf(b,b+sizeof(b)/sizeof(*b)) * pow(2.,64);<BR/>    printf( "%016llX%016llX\n", am, bm&lt;&lt;4 );<BR/>    return 0;<BR/>}<BR/>( or get it from http://me22.fuphyl.org/magic.c )<BR/><BR/>Here's a relevant article on the whole "provenance matters" issue in copyright:<BR/>http://ansuz.sooke.bc.ca/lawpoli/colour/2004061001.php<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178424480000#c4099495923153069905" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Scott McMurray</span> : 12:08 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4099495923153069905" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3370167603267373786"></a> 				Someone mentioned genetic programming, here it is:<BR/><BR/>http://www.kontextfrei.de/~arnie/evolve.html<BR/><BR/>Done in perl.<BR/>Well documented, so it is really readable despite being written in perl ;-)<BR/><BR/>For the uninitiated:<BR/>Genetic programming works roughly like this:<BR/>You have a grammar that generates legal programs, in this case programs that are just expressions returning an integer. Random legal programs are generated by starting at the starting symbol (;-), and choosing rules at random. There is a maximum program size to ensure termination.<BR/>Then the program is evaluated, and assigned a fitness corresponding to how near it got to the value we want. This is done with a population of a few hundred to thousand programs. Then the programs are mutated and combined (crossover), simulating natural reproduction (with possible dna damage). Unfit programs produce less offspring, fit programs more.<BR/>After some thousand generations, the programs converge to returning the right number.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/05/128-bit-programming-challenge.html?showComment=1178732700000#c3370167603267373786" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.kontextfrei.de/~arnie/" rel="nofollow">arnie</a> : 1:45 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3370167603267373786" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

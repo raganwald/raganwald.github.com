@@ -1,0 +1,358 @@
+<html> 
+<head>
+        
+        <title>Hypergame and Infinity</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Monday, June 14, 2004</div>
+			
+
+			<div class="Post"><a name="4709636982056719190">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2007/04/repost-hypergame-and-infinity.html" title="permanent link">Hypergame and Infinity</a></span>
+					<div style="clear:both;"></div>The following account is drawn from Raymond Smullyan’s <a href="http://www.amazon.com/gp/product/0192861611?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0192861611">Satan, Cantor, and Infinity and Other Mind-boggling Puzzles</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0192861611" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, a highly readable book of puzzles touching on truth, belief systems, self reference, provability, and incompleteness theory. Why am I bothering to put it on a web page? First, because it is aesthetically beautiful, and the act of recounting it pleases me. This is much the same as an artist drawing a landscape. Second, because doing so forces me to think more clearly about the problems, much as drawing the landscape forces the artist to look at it more closely.<br /><br /><strong>Hypergame</strong><br /><br />Presume the existence of a class of games. The characteristics of these games are that the have alternating moves between two players, that the moves consist of a choice to be made by each player, and that for the purpose of this account it is of no consequence how quickly or slowly either player makes the choice of which move to choose.<br /><br />The proposition is that by virtue of their rules, such games fall into two sets: those games which necessarily must end after a finite number of moves, and those games which need not necessarily end. For example, by virtue of its rules Naughts and Crosses must end after a finite number of moves (at most nine). Backgammon need not end after a finite number of moves, as there are legal sequences of moves whereby the players constantly hit and recirculate their chequers.<br /><br />Hypergame is a two player game with alternating moves. The first player&#8217;s first move consists of naming a two player game with alternating moves which necessarily ends. The second player&#8217;s first move is to take the first move of that game, and the players alternate moves of that game until it ends.<br /><br />For example, the first player may call &#8220;Naughts and Crosses.&#8221; The second player would then take the first move, marking a cross in one of the nine available squares. The first player would mark a naught in one of the eight remaining squares, and the two players would continue with naughts and crosses until the game ends. The first player could also call out &#8220;Chess,&#8221; in which case the second player would make the first move of a game of chess with one of the white pawns or knights, and the two players would carry on playing a game of chess to its eventual end.<br /><br />Is this clear? Good. I will ask you this, then:<br /><br /><strong>Is Hypergame a two player game with alternating rules which necessarily must end?</strong><br /><br />One argument is that it clearly ends. The first player picks a game which necessarily ends, say in no more than n moves. Therefore, that iteration of Hypergame will end in no more than n+1 moves, including the first player&#8217;s move of choosing Hypergame. Since every game the first player chooses must end, all possible games of Hypergame must necessarily end.<br /><br />Another argument is that Hypergame does not necessarily end. We can prove this with <em>reductio ad absurdum</em>. Take the first argument that it necessarily ends. The first player is entitled to choose any two player alternating move game which necessarily ends. You can see where this is leading. The first player thus may choose &#8220;Hypergame.&#8221; Now the second player makes the first move of a game of Hypergame. And that is to choose a game which necessarily ends. So the second player may choose Hypergame as well. This sequence may be repeated indefinitely, which establishes that Hypergame need not necessarily end. Since assuming that Hypergame necessarily ends leads to a contradiction, one may argue that Hypergame need not necessarily end.<br /><br />A third argument runs along the same lines in the reverse direction. Take the assumption, established in the previous paragraph, that Hypergame does not necessarily end. Well, this rules Hypergame out as a choice the first player may make, since the first player is required to choose a game which necessarily ends. If the first player cannot choose Hypergame, the previous proof collapses, and Hypergame is established as a game which necessarily ends.<br /><br /><strong>Smullyan’s explanation, and my own feelings</strong><br /><br />Raymond Smullyan explains that the notion of a game is not well defined, which is why a paradox is possible. This is true, however I find that there is only a paradox when you subject the game to rigourous examination. When I consider the matter from a naive point of view, the paradox goes away.<br /><br />Clearly, Hypergame ends in a finite number of moves if and only if neither player recursively chooses Hypergame. So where is the paradox? Well, there are some games which require that neither player choose a move which deliberately leaves either player no legal move. For example, Rail Baron is a train game wherein no player may use the same piece of track twice in the same journey. The rules prohibit a move which forces a player to do so. Likewise, there is a rarely used rule in Chess which ends the game should a player not be in check but have no legal move which does not place that player&#8217;s King in check.<br /><br />The paradox rests on the self referential idea that Hypergame necessarily ends if and only if it does not necessarily end. As a practical matter, Hypergame ends unless either player chooses Hypergame, which causes Hypergame to not necessarily end. Therefore, the act of choosing Hypergame causes Hypergame to become unchoosable. Therefore, I am comfortable with the idea that Hypergame necessarily ends, however neither player may choose Hypergame.<br /><br />Now, this is in direct conflict with the description of the game, which does not concern itself with games which &#8216;always&#8217; end, or games which &#8216;have ended in every attempt since the dawn of man&#8217;, or what have you. The definition strictly concerns itself with whether a game must necessarily end, which is a question of logic.<br /><br />So I accept Smullyan&#8217;s explanation, however I feel emotionally that Hypergame necessarily ends nevertheless.<br /><br /><strong>Cantor’s Theorem</strong><br /><br />Cantor&#8217;s theorem is that the cardinality of an infinite set is less than the cardinality of the power set of that set. The basis for his proof is proof by contradiction, where he shows that for any scheme for putting the elements of the infinite set into a 1:1 correspondence with the elements of the power set is incomplete by constructing a member of the power set which cannot possibly correspond to a member of the infinite set.<br /><br />Cantor&#8217;s proof used a particular construction for the member of the power set which is roughly analogous to Russell&#8217;s Barber paradox. For example, to prove that the set of all sets of integers is of a higher cardinality than the set of integers, presume that there is some scheme over of the set of all sets of integers which places the members in a 1:1 correspondence with a (possibly infinite) set of integers. If that is possible, then the set of all sets of integers is of no higher cardinality than the set of integers.<br /><br />However, if that is impossible, then the set of all sets of integers is of a higher cardinality than the set of integers. To demonstrate the impossibility, we will now construct a set of integers which must necessarily not be in a 1:1 correspondence with any integer, no matter what correspondence is chosen. Obviously, if the set of all sets of integers is in a 1:1 correspondence with the set of integers, there is a unique integer associated with every set of integers. Cantor&#8217;s set was the set of all integers which are not members of the set they correspond to.<br /><br />Call Cantor&#8217;s set S<em>x</em>. For example, say there is an integer, <em>n</em>. There is a set, S<em>n</em>, which corresponds to <em>n</em>. If <em>n</em> is a member of S<em>n</em>, then <em>n</em> is not a member of S<em>x</em>. But if <em>n</em> is not a member of S<em>n</em>, then n is a member of S<em>x</em>. The question is, what integer corresponds to S<em>x</em>? Call that integer <em>x</em>. If <em>x</em> is a member of S<em>x</em>, then S<em>x</em> is no longer the set of all integers which are not members of the set they correspond to, since it contains a member <em>x</em> which is a member of the set it corresponds to <em>x</em>. Conversely, if <em>x</em> is not a member of S<em>x</em>, then there is an integer, <em>x</em>, which is not a member of the set it corresponds to yet is not in S<em>x</em>, which again is a contradiction.<br /><br />Therefore, since any attempt to put the integers in a 1:1 correspondence with the set of all sets of integers fails, the set of all sets of integers is necessarily of a higher cardinality than the set of all integers.<br /><br /><strong>William Zwicker’s Proof of Cantor’s Theorem</strong><br /><br />Zwicker’s proof uses a <em>completely different</em> set to show that the set of all sets of integers cannot be put in a 1:1 correspondence with the set of all integers. As above, presume such a correspondence. Now we define a path as being a non-empty ordered set of integers formed as follows:<br /><br /><ol><li>Take an integer as the first element of the path.</li><br /><li>Locate the set corresponding to that element.</li><br /><li>If it is empty, the path ends. Stop.</li><br /><li>If it is not empty, select an element from the set.</li><br /><li>Make that the next element.</li><br /><li>Go to step two.</li></ol><br /><br />Obviously, paths from any integer form a directed graph. Some such graphs have cycles, some are acyclic. And some graphs are finite, some infinite. For any integer, it may be possible to construct an infinite path, either because there is a path with a cycle from that integer, or because there is an infinitely long path leading from that integer. Conversely, it may not be possible to construct an infinite path from a particular integer. For a trivial example, if an integer, e, corresponds to the empty set, there are no infinite paths from the integer e. Another trivial example is a set which contains the integer which corresponds to that set. For example, if S<em>n</em> contains <em>n</em>, then there is at least one path (<em>n, n, n</em>&#8230;) which is of infinite length leading from the integer <em>n</em>.<br /><br />Now construct the set of all integers which do not lead to infinite paths. That set corresponds to an integer, <em>x</em>. Is <em>x</em> a member of that set? If it is, then there is an infinite set leading from <em>x</em>, which contradicts the claim that the set contains only the integers which do not lead to infinite paths. Conversely, if <em>x</em> is not a member of that set, then every path leading from <em>x</em> is finite which means that S<em>x</em> does not contain an integer which does not lead to an infinite path. Therefore, there is a set of integers which cannot possibly correspond to any integer.<br /><br />As Raymond Smullyan pointed out, this proof uses a completely different method for constructing a set which cannot be put into a 1:1 correspondence with any set.<br /><br />As an exercise, think of values for x which lead to a contradiction without using the direct (<em>x, x, x</em>&#8230;) argument.<br /><hr><br /><em>This is a repost of material that originally appeared on my old web site. If you found this amusing, you may also find <a href="http://raganwald.github.com/2007/04/hypergame-ii.html">Hypergame II</a> interesting. And as Scott K. points out below, <a id="lnx0" name="evtst|a|1568811276" href="http://www.amazon.com/gp/product/1568811276?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=1568811276">On Numbers and Games</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=1568811276" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is an absolute must-read if you are interested in Number Theory and games.</em><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2007/04/repost-hypergame-and-infinity.html" title="permanent link">7:01 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Hypergame and Infinity</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="6060352439630566845"></a> 				Fascinating post.  I'm intrigued by the mention of chess as a game that would qualify for Hypergame; are you sure that that's been established?  I think that chess only ends if at least one player is determined that it do so.  I can think of the following end states:<BR/>Checkmate (resignation assumes that checkmate will occur)<BR/>Draw, which occurs under in a number of ways:<BR/> - stalemate, in which one player cannot move except into check, which is probably the most common draw,<BR/> - perpetual check, in which one player demonstrates that s/he can not be stopped from checking the other indefinitely, but cannot muster mate,<BR/> - repetition, in which the same three-move sequence is repeated<BR/> - insufficient force, where one player enjoys an advantage that cannot force mate (a king and a knight against a king, for instance), which probably resolves to repetition, I suppose<BR/>If the game resolves to an easy mate (king & queen vs king), but the player in the advantage chooses not to pursue mate, and avoids repeating his moves within a three move sequence, I don't see that chess inevitably terminates in the same way that tic-tac-toe or Sprouts must.<BR/>Am I missing something?<BR/>Of course, this doesn't affect the larger thrust of your argument, unless it influences your opinion of your subjective impression of game termination.<BR/>You must have read Conway's _Numbers and Games_; I was thinking of it (particularly in connection with rigor and games) while reading your post.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/repost-hypergame-and-infinity.html?showComment=1175694660000#c6060352439630566845" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15472560605615936406" rel="nofollow">skottk</a> : 9:51 AM</div>
+
+								<span class="item-control blog-admin pid-891208327"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6060352439630566845" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4734094412005473527"></a> 				Actually, chess games are limited simply because the state space is limited, and thus, so is the space of possible three-move sequences, so that rule always applies sooner or later.<BR/><BR/>Chess doesn't usually count for hypergame, though, because there also is a time limit.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/04/repost-hypergame-and-infinity.html?showComment=1175711460000#c4734094412005473527" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18011171943440483489" rel="nofollow">Andreas Krey</a> : 2:31 PM</div>
+
+								<span class="item-control blog-admin pid-2056248028"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4734094412005473527" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,484 @@
+<html> 
+<head>
+        
+        <title>So, you think you know Regex-fu?</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Tuesday, February 26, 2008</div>
+			
+
+			<div class="Post"><a name="1092378412938982035">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html" title="permanent link">So, you think you know Regex-fu?</a></span>
+					<div style="clear:both;"></div>As I&rsquo;ve mentioned:<pre><code><br />  /^1?$|^(11+?)\1+$/<br /></code></pre>Is a regular expression that matches a <em>non-prime</em> number of ones (which means it can be used to recognize a prime number of ones, obviously). It&rsquo;s obfuscated and golf-like at the same time. But here&rsquo;s a challenge that takes Regular Expressions to the next level (possible the next lower level of Hell, but these are the risks we adventurers must face):<br /><br /><blockquote>If you can provide a regular expression such that it actually matches the string representation of only prime (or only non-prime) integers, that would be pretty sweet. A proof that such a thing could not be created would be equally impressive.</blockquote><div>&mdash;Sam, <a href="http://l33tminion.livejournal.com/190270.html">Overthinking and Stupid Programmer Tricks</a></div><br />Yes, it would be sweet indeed. Anyone up for the challenge? How hot is your Regex-fu?<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html" title="permanent link">11:23 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>So, you think you know Regex-fu?</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="8966015277640230902"></a> 				<A HREF="http://pages.cs.wisc.edu/~psilord/blog/9.html" REL="nofollow">this page</A> claims, and I'm inclined to agree but not excited enough to remember how to use the pumping lemma, that the language of "strings of 1s of prime length" is not a regular language.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204088460000#c8966015277640230902" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 12:01 AM</div>
+
+								<span class="item-control blog-admin pid-831715508"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8966015277640230902" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3607410131932874486"></a> 				This is impossible because of the pumping lemma, I believe: http://en.wikipedia.org/wiki/Pumping_lemma_for_regular_languages<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204088520000#c3607410131932874486" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08417018510924590536" rel="nofollow">bobwhoops</a> : 12:02 AM</div>
+
+								<span class="item-control blog-admin pid-392170810"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3607410131932874486" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="424196624135486320"></a> 				s/language of "strings of 1s of prime length"/language recognized by this regular expression/<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204088580000#c424196624135486320" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 12:03 AM</div>
+
+								<span class="item-control blog-admin pid-831715508"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=424196624135486320" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="598026384516087035"></a> 				The pumping lemma says the language is not regular. Regular expressions these days can match any context -free language through the use of sub-expressions (basically recursion). See <A HREF="http://comox.textdrive.com/pipermail/textmate/2007-September/022055.html" REL="nofollow">this post</A> for an example of a regexp that matches balanced braces.<BR/>So even though the language of all prime numbers might not be regular, it might still be possible to build a regexp that matches it (assuming it's context free).<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204091040000#c598026384516087035" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14612545365214391754" rel="nofollow">Oscar Bonilla</a> : 12:44 AM</div>
+
+								<span class="item-control blog-admin pid-49381377"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=598026384516087035" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="174601203716563287"></a> 				Since several people have already beat me to the obvious (that regular expressions can't do that), I'll be half-way constructive and ask, then, what system is this "Regex-fu" challenge concerned with? Ruby's "regexes"? POSIX's? Any arbitrary esoteric parser at all?<BR/><BR/>If it's the last one, transforming a Parsec-based Haskell parser for primes into a pointfree form a la Lambdabot's @pl would be contested only by Perl.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204091940000#c174601203716563287" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14070765709653635739" rel="nofollow">Tac-Tics</a> : 12:59 AM</div>
+
+								<span class="item-control blog-admin pid-905919295"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=174601203716563287" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3790906227834629304"></a> 				Whoops, you're right.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204092240000#c3790906227834629304" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08417018510924590536" rel="nofollow">bobwhoops</a> : 1:04 AM</div>
+
+								<span class="item-control blog-admin pid-392170810"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3790906227834629304" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2519711120949678035"></a> 				Um, looking at that regular expression, it doesn't match strings of ones of prime length, it matches strings of ones of non prime length. Breaking it down, it matches:<BR/><BR/>^1$ - 1 one. 1 is not prime<BR/>^(11+)\1+$ - n * m strings of ones. Not prime either.<BR/><BR/>It's not all that obfuscated as regexes go, just surprising.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204092480000#c2519711120949678035" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://www.bofh.org.uk/" rel="nofollow">bofh.org.uk</a> : 1:08 AM</div>
+
+								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2519711120949678035" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8889378446099922335"></a> 				You say that the regex matches a prime number of 1s.  It actually matches a non-prime number of 1s.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204092600000#c8889378446099922335" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03644954202247903932" rel="nofollow">Joel Hockey</a> : 1:10 AM</div>
+
+								<span class="item-control blog-admin pid-1099577730"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8889378446099922335" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2547213186184786420"></a> 				@bobwhoops: The pumping lemma applies to basic regular expressions and regular languages.  Using extended features like backreferences, you can accept languages that go beyond regular languages.  For example, you can match strings of properly matched nested parenthesis, which is not a regular language.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204117020000#c2547213186184786420" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00886115706333717349" rel="nofollow">Brad</a> : 7:57 AM</div>
+
+								<span class="item-control blog-admin pid-1277585761"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2547213186184786420" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4860819099063898413"></a> 				It's been proven than Perl pattern matching is NP-hard - (<A HREF="http://perl.plover.com/NPC/" REL="nofollow">http://perl.plover.com/NPC/</A>) . The AKS primality test is in P, which is at least a subset of NP.<BR/><BR/>So yes, it is possible to provide a regex to match only primes, provided the correct reduction.<BR/><BR/>Ps. Technically patterns with backreferences are not "regular" expressions - Perl is careful to call them "regex"es.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204117680000#c4860819099063898413" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14076358386230143943" rel="nofollow">Chris</a> : 8:08 AM</div>
+
+								<span class="item-control blog-admin pid-1086267026"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4860819099063898413" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7908961597532676052"></a> 				To be clear, we're being asked to find (or prove the non-existence of) a regex that would match things like "7" and "13" right?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204127400000#c7908961597532676052" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00528348159110680766" rel="nofollow">Sammy Larbi</a> : 10:50 AM</div>
+
+								<span class="item-control blog-admin pid-1145461079"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7908961597532676052" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5188336781333431860"></a> 				Sammy:<BR/><BR/>Absolutely! If you can write a RegEx that also recognizes that <B>2**32582657-1</B> is a prime number, please come to the front of the class to accept your prize.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204127580000#c5188336781333431860" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:53 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5188336781333431860" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6093642326952833476"></a> 				What a strange request.  Might as well have asked for a regular expression that can match blue objects.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204141680000#c6093642326952833476" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 2:48 PM</div>
+
+								<span class="item-control blog-admin pid-2050274566"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6093642326952833476" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6081957432167521488"></a> 				How about a two liner for Linux:<BR/><BR/>#!/bin/sh<BR/>factor $1 | awk '/^[0-9]*: [0-9]*$/ { print "true"; next } /.*/ { print "false" }'<BR/><BR/>It contains regular expressions (and a few other things) that match prime numbers (coming out of factor :-). What's wrong with a minor amount of cheating to get around some irritating theory issues...<BR/><BR/>Next Week: The Halting Problem.<BR/><BR/><BR/>Paul.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204150260000#c6081957432167521488" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 5:11 PM</div>
+
+								<span class="item-control blog-admin pid-1233049894"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6081957432167521488" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4897225618449887577"></a> 				Trivial:<BR/><BR/>/^1?$|^(11+?)\1+$/<BR/><BR/>Oh. You want it in a base other than 1?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204182660000#c4897225618449887577" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04138754365274984853" rel="nofollow">The Quux</a> : 2:11 AM</div>
+
+								<span class="item-control blog-admin pid-1685556581"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4897225618449887577" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="249142639398241191"></a> 				Using Oniguruma (Ruby 1.9's regex engine)'s recursion abilities, here's a regular expression that matches all fizzbuzz-able non-negative integers in a given string: http://www.pastie.org/158799<BR/><BR/>Now, do you know if the fizzbuzz gem accepts Ruby 1.9 entries? :)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204216200000#c249142639398241191" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14294388654620215152" rel="nofollow">mernen</a> : 11:30 AM</div>
+
+								<span class="item-control blog-admin pid-1852084484"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=249142639398241191" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5002224205481752759"></a> 				<I>Now, do you know if the fizzbuzz gem accepts Ruby 1.9 entries? :)</I><BR/><BR/>It does! I need to get the project set up so people can contribute more freely. If you will e-mail your name to me (David Brady) I'll add it to the credits. (My e-mail address is in my profile at rubyforge.)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204257180000#c5002224205481752759" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08437073136758086679" rel="nofollow">Chalain</a> : 10:53 PM</div>
+
+								<span class="item-control blog-admin pid-954195632"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5002224205481752759" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5130495037518258118"></a> 				As Sean mentioned, this is a silly request. You could create a "regex" engine capable of some type of math, then use that to solve this problem, but current, popular regular expression flavors cannot do it. However, you might be able to cheat using embedded Perl code or PCRE callouts.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204691100000#c5130495037518258118" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18374441096323901069" rel="nofollow">Steve</a> : 11:25 PM</div>
+
+								<span class="item-control blog-admin pid-231202473"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5130495037518258118" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3255925080268384692"></a> 				But Steve, the interesting part is, the question "can you prove it can't be done?"<BR/><BR/>Just because we aren't able to come up with an expression to do it doesn't mean that one doesn't exist.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1204718760000#c3255925080268384692" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00528348159110680766" rel="nofollow">Sammy Larbi</a> : 7:06 AM</div>
+
+								<span class="item-control blog-admin pid-1145461079"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3255925080268384692" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="67253338557068448"></a> 				As lots of people have noted, the request is a malformed specification. It is clear that a regular expression cannot match it, so then the request is about a regexp, but what features a regexp supports is not well defined either.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/02/so-you-think-you-know-regex-fu.html?showComment=1206621300000#c67253338557068448" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15793488672952593953" rel="nofollow">Ola Bini</a> : 8:35 AM</div>
+
+								<span class="item-control blog-admin pid-1679955528"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=67253338557068448" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

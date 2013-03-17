@@ -1,0 +1,428 @@
+<html> 
+<head>
+        
+        <title>Pouring water back into the flask</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Saturday, December 22, 2007</div>
+			
+
+			<div class="Post"><a name="45409711461217309">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html" title="permanent link">Pouring water back into the flask</a></span>
+					<div style="clear:both;"></div><blockquote>The University of Flatland uses a novel two-part practical test to determine whether Comp. Sci. undergraduates should be steered into practical programming or abstract theory streams. In the first part, the students are given a beaker, a bunsen burner, a stand, and a flask of water. They are told to boil water. Naturally, they fill the beaker, place it on the stand, light the burner, and are queued up to perform the second test.<br />  <br />  In the second part of the test, they are presented with a beaker of water sitting on a stand over a Bunsen burner, and an empty flask. Most of the students light the burner and are led away to begin their studies in programming. But a precious few disassemble the apparatus and pour the water back into the flask, <u>reducing it to a problem they have already solved</u>. They are led away to begin the long road to their Ph.D. in Lisp, Recursion, and Category Theory.</blockquote><br />Like most the jokes I retell, this is not particularly funny. But let&#8217;s talk about &ldquo;Design Patterns&rdquo; and then come back to it. Design patterns allow developers communicate their intentions to each other with a common vocabulary.<br /><br />This makes sense. If I create a Flyweight and I want to describe it to another developer, having a word for it, along with a common understanding of what problem a flyweight solves, streamlines our communication. Design patterns in that light are jargon, a sub-language used by specialists to discuss their speciality.<br /><br />If it stopped right there, you would have the design patterns invented by Christopher Alexander and articulated in the incredible book <a href="http://www.amazon.com/gp/redirect.html?ie=UTF8&amp;location=http%3A%2F%2Fwww.amazon.com%2FPattern-Language-Buildings-Construction-Environmental%2Fdp%2F0195019199&amp;tag=raganwald001-20&amp;linkCode=ur2&amp;camp=1789&amp;creative=9325">A Pattern Language</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=ur2&amp;o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />.<br /><br />But it doesn&#8217;t stop there. In certain programming cultures, people consider Design Patterns to be a core set of practices that must be used to build software. It isn&#8217;t a case of <em>when</em> you need to solve a problem  <em>best addressed</em> by a design pattern, <em>then</em> use the pattern and refer to it by name. It&#8217;s a case of <em>always</em> use design patterns. If your solution doesn&#8217;t naturally conform to patterns, refactor it to patterns.<br /><br />Is this madness? Yes&#8230; And no&#8230;<br /><br />Consider <a href="http://en.wikipedia.org/wiki/Scheme_%28programming_language%29" title="Scheme (programming language) - Wikipedia, the free encyclopedia">Scheme</a>. Everything in Scheme is built out of just <em>five</em> primitive &#8220;special forms.&#8221; It is positively <a href="http://raganwald.github.com/2007/10/until-you-understand-how-forth-is.html" title="Until you understand how FORTH is written, you’ll have only a very superficial understanding of how to use it.">Forth-like</a> in its economy of power. So it is clearly possible to build very powerful programs out of five primitives. So why not build programs out of thirty-five patterns?<br /><br />While we digest that, back to the joke. Scheme programmers are clearly the impractical theoreticians, aren&#8217;t they? Reducing everything to their five special forms that they have already solved and what-not. While the practical programmers look for the simple, direct way to boil water.<br /><br /><blockquote>When you take a problem with a straightforward solution and make it more complex by re-expressing it as a combination of patterns, you are pouring the water back into the flask.</blockquote><br />So what do we make of the &#8220;everything should be one of these thirty-five standard design patterns&#8221; argument? I make of it the same thing that I make of the joke. It is clearly possible. But when you take a problem with a straightforward solution outside of the core patterns in one book and make it more complex by re-expressing it as a combination of patterns, you are pouring the water back into the flask.<br /><br />The argument that &#8220;everything should be one of these thirty-five standard design patterns&#8221; is an argument that fits the theoretician, not the pragmatist. It is motivated by a desire for building very complicated things out of very simple parts. That is possible. But it is a fallacy to believe that simplifying the constituent parts simplifies the software. Like boiling water, you can make it <em>more complex</em> when you place the pattern ahead of the solution.<br /><br />Of course there are arguments ad nauseam about standardization and readability. But I have this strong suspicion that at the core of it, the motivation is a belief that the world should be reduced to a simple set of easy-to-understand things that can be combined and recombined into complex solutions.<br /><br />And Scheme programmers? You may have noticed that although Scheme programs are built out of the five special forms, Scheme programmers do not write everything in the five forms: they use abstractions like continuations, macros, and functions to write expressive and powerful programs.<br /><br />If you re-wrote a complex Scheme program in the five primitives, would it really be easier to understand because one programmer could describe it to another using just five words in their common vocabulary?<br /><br /><hr/><br />This is a follow-up to <a href="http://raganwald.github.com/2007/12/newly-discovered-design-pattern-code.html">Newly Discovered Design Pattern: &ldquo;Code Well.&rdquo;</a><br /><br /><strong>addendum</strong><br /><br />Scheme&#8217;s five special forms: The ones I was thinking of are <code>define</code>, <code>lambda</code>, <code>if</code>, <code>quote</code>, and <code>set!</code>. And I&#8217;m not convinced you need <code>define</code>. This is from memory, and furthermore just because you <em>can</em> build everything from a few primitives doesn&rsquo;t mean that that&rsquo;s how the implementation works. Smalltalk took this aggressive approach to building Smalltalk in Smalltalk, but I am not immersed in Scheme, I do not know what current implementations actually do.<br /><br />If you do a little Googling, you will find that people often refer to constructs like <code>let</code> as special forms, because they are not function calls. However, they are not <em>primitive</em> special forms because you can build <code>let</code> out of <code>lambda</code> and function calls.<br /><br />Given the primitive special forms, you also need a library with functions like <code>equals</code>, <code>car</code>, and <code>cdr</code> defined. Between the primitive forms and the primitive library, you can define <code>eval</code> <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html" title="The significance of the meta-circular interpreter">metacircularly</a> and <code>define-syntax</code> for all of the other special forms. From there, you can build a modern Scheme in Scheme.<br /><br />(There may be some other good choices for building &ldquo;a Scheme.&rdquo; You may want to consider <code>call/cc</code> a primitive special form. If you don&#8217;t, you have to rewrite function calls (probably using CPS), and this means you are no longer running your Scheme programs in your primitive Scheme, but rather in your evaluator.)<br /><br /><strong>And furthermore&hellip;</strong><br /><br />Keith Braithwaite&rsquo;s <a href="http://peripateticaxiom.blogspot.com/2008/01/problem-with-problems-with-patterns.html" title="The problem with Problems with Patterns">critique</a>.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html" title="permanent link">10:37 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Pouring water back into the flask</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="2924685346116856689"></a> 				There's another big difference between them: the scheme forms are orthogonal to each other, while the design patterns aren't. It's much easier to compose orthogonal abstractions than to constantly decide which form of object creation is better.<BR/><BR/>The lack of formalism in design patterns is, most of the times, a serious downside. People are constantly inventing new design patterns that are trivial combinations of parts of existing ones. As it's more common in OOPLs than in FPLs I reckon it's because OO lacks a core formalism like the lambda calculus and algebras. The most similar thing in the FPL camp are algebraic and categorical concepts (e.g. monads, arrows, morphisms) but as those are formally defined it's possible to see the relations between them, so there's the distinction between core and derived concepts.<BR/><BR/>OTOH pouring the water back into the flask is great in pure languages because we don't need to boil the water twice, we just share the earlier result ;)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html?showComment=1198341600000#c2924685346116856689" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12528969103424062002" rel="nofollow">Daniel Yokomizo</a> : 11:40 AM</div>
+
+								<span class="item-control blog-admin pid-575011157"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2924685346116856689" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2411607136012218697"></a> 				Daniel:<BR/><BR/>Your comment is exactly what I hope for when I write: someone to come along and take things to the next level.<BR/><BR/>Thank you.<BR/><BR/><I>There's another big difference between them: the scheme forms are orthogonal to each other, while the design patterns aren't. It's much easier to compose orthogonal abstractions than to constantly decide which form of object creation is better.</I><BR/><BR/>There's something else, although this may not apply to Scheme. Certain core concepts allow us to perform reasoning about the behaviour of the program.<BR/><BR/>Three obvious examples: 1. If you ban pointers and stack variables, you can supply automatic garbage collection. 2. If you ban mutability, you can perform lazy evaluation, automatic vectorization, and other optimizations. 3. If you ban certain forms of dynamic programming, you can perform static type checking.<BR/><BR/>The ad-hoc nature of the design patterns do not provide any benefits like this. You cannot say, "If a program is strictly limited to the use of this set of patterns for these situations, we can prove this and this and this about it, we can guarantee this about it."<BR/><BR/>All we have are subjective opinions about its readability.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html?showComment=1198346940000#c2411607136012218697" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:09 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2411607136012218697" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6079415758772485454"></a> 				Yay, brownie points for me ;)<BR/><BR/>As for the actual discussion, there's a direct relationship between restricting a set of constructs and how productive we are using them. It's just a matter of finding the correct subset, but I saw it over and over again, in Smalltalk, Forth, Scheme, Haskell98 (+multiparameter type classes, the extra stuff is sometimes too much to reason), Ruby on Rails (not Ruby in itself though), relational/pi/join/lambda calculus, regexes...<BR/><BR/><I>Certain core concepts allow us to perform reasoning about the behaviour of the program.</I><BR/><BR/>The extra reasoning always applies, even with the incorrect set of constructs, but some forms of reasoning are better than others. In a sense we (as a profession) still don't know if it's better to be implicit (e.g. GC) or explicit (e.g. monadic regions for memory management). AFAICS initially there's a incorrect explicit usage, followed by (usually much later) implicit usage, followed by correct explicit usage. The bad thing is that in most  cases we still don't know the correct explicit usage.<BR/><BR/><I>The ad-hoc nature of the design patterns do not provide any benefits like this.</I><BR/><BR/>Design patterns are good to start intuitions, but awful to build theorems. I follow both the patterns people and the FPL community and it's very interesting to see how they are similar in their intuitions but different in their methods. Recently there was a discussion on the Haskell Cafe about how to structure the hierarchy of monads, arrows and such. Many of the arguments where drawn from intuition about a sense of beauty, but they where always ended up with solid theory behind them. Unfortunately we are still in the dark ages of software and the difference between science and superstition is still truly unknown. I find amusing and depressing that both "Patterns of Enterprise Application Architecture" and "Basic Category Theory for Computer Scientists" helped in my last project in roughly equal parts.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html?showComment=1198350960000#c6079415758772485454" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12528969103424062002" rel="nofollow">Daniel Yokomizo</a> : 2:16 PM</div>
+
+								<span class="item-control blog-admin pid-575011157"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6079415758772485454" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4875852250416078961"></a> 				Great piece, Reg. Great comments, Daniel. And Daniel, I really think we are still in the dark ages of software. All the people I know or read that really seem to understand where we are with software are inveterate intellectual wanderers. I've begun to distrust anyone who isn't. So, I would think using both those books makes more sense than either alone.<BR/><BR/>We have no subtlety in our practice. We approach many software engineering problems head-on and find they are undecidable. We are rarely clear on where we can actually go , where we can't go now, and where we can't go at all.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html?showComment=1198353660000#c4875852250416078961" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15658818137348192500" rel="nofollow">Jim Law</a> : 3:01 PM</div>
+
+								<span class="item-control blog-admin pid-1441853684"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4875852250416078961" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="646235046602572113"></a> 				Christopher Alexander wrote about design patterns in the late 1970s as you know.  What you don't know is that he has been busily working on the problem of what constitutes good design ever since.  In his lengthy (four part book) the Nature of Order, he describes his current views on the problem of design.  What's interesting here is that Alexander has moved on from considering the surface-level patterns to start looking at the underlying principles.  He also discusses what he calls 'generative processes' which he claims that when used properly will always guarantee good design results.  (His generative process has a lot in common with the notions of step-wise refinement, top down design, and iterative development.)<BR/><BR/>Why is any of this relevant?  Well, unfortunately, the computer programming profession borrowed design patterns and has been applying them without really understanding where this tool came from or why.  Instead of searching for the underlying principles that render design patterns irrelevant, the field remains fixated on seeking out new or imagined patterns and slavishly copying them.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html?showComment=1198366140000#c646235046602572113" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">JS</span> : 6:29 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=646235046602572113" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="722410722289664138"></a> 				"Reduce everything to patterns" works fine if you catalog <I>all</I> of your patterns instead of just the complicated ones.  Here are a few of my favorite patterns:  <BR/><BR/>NV  Named variable<BR/>PF  Parameterized function<BR/>CB  Conditional block<BR/><BR/>Also I might add that the original task shows a legitimate distinction between theory and practice.  Describing a solution and executing a solution have different costs, so different standards of elegance apply.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html?showComment=1198367820000#c722410722289664138" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 6:57 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=722410722289664138" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4684705446061440238"></a> 				<I>Most people consider Design Patterns to be a core set of practices that must be used to build software.</I><BR/><BR/>Most? Really <I>most</I>? That's a pretty bold claim. I've been a professional programmer for more than a decade, in the UK, USA and Singapore, in corporate IT departments, ISV and professional service companies and I've not seen this. <BR/><BR/>And I'm a "patterns" guy. I'm in that world: I've still got (and still use) my first edition GoF, I was a Portland Pattern Repository regular before (just before) all that XP stuff started on Wards wiki, I've even been to EuroPLoP and published patterns discovered in my own work, and I really haven't come across this. Where is it going on?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html?showComment=1198368540000#c4684705446061440238" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14314542307822401015" rel="nofollow">keithb</a> : 7:09 PM</div>
+
+								<span class="item-control blog-admin pid-2048541893"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4684705446061440238" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7225150915610955322"></a> 				I'm going to dive into some HTTP, which has 6 verbs to do everything, offloading everything else to URI patterns and POST/PUT body. Do you have any opinion on the HTTP verbs?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html?showComment=1198372380000#c7225150915610955322" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10560123435782819140" rel="nofollow">hdh</a> : 8:13 PM</div>
+
+								<span class="item-control blog-admin pid-1128778455"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7225150915610955322" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2625990281799476609"></a> 				Patterns and OO are similar in this regard: inexperienced (or just slow) programmers can't grasp the necessary theoretical concepts to manage abstraction or good design in the general case, but they can rote-learn a set of specific blunt tools that are sufficient for most small problems.<BR/><BR/>You get the side-benefit that the constrained language gives them less scope for inventing new ways of getting things wrong, but the drawback that initial success often convinces them they're ready to take on more complex challenges without the general understanding, leading to some serious train-wrecks.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html?showComment=1198390860000#c2625990281799476609" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Greg M</span> : 1:21 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2625990281799476609" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6236580538065405736"></a> 				I love forth! *ahem* anyways...<BR/><BR/>What are the 5 special forms you mentioned? I thought that there were a lot more...<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html?showComment=1198401480000#c6236580538065405736" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/00503880733616691233" rel="nofollow">Casey</a> : 4:18 AM</div>
+
+								<span class="item-control blog-admin pid-893046105"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6236580538065405736" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5721036668360276976"></a> 				I found that Design Patterns (of the Gamma et al variety) were valuable in that they helped codify and solidify ideas that I had seen many times but didn't have a name for.  Having a name helps provide a hook on which you can hang new knowledge and experience.<BR/><BR/>That said, I think a lot of the official Gang-of-Four design patterns are making up for lacks in the languages. Some of them are not needed, or pretty trivial, in Lisp (and probably also Smalltalk and Ruby and so on).  Not all, though.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html?showComment=1198423440000#c5721036668360276976" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="dlweinreb.wordpress.com" rel="nofollow">dlweinreb</a> : 10:24 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5721036668360276976" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4943030603664276442"></a> 				Keith Braithwaite:<BR/><BR/>We could argue whether this applies to most, or most Java, or most BigCo, or most overall but not most who are Agile, or most who have heard the phrase "Design Patterns" but have never read the book, or most who have read the book but cannot name any pattern not included in the bok, or...<BR/><BR/>But it seems off topic. So I have modified the phrase to be neutral.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/pouring-water-back-into-flask.html?showComment=1198425360000#c4943030603664276442" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:56 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4943030603664276442" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,477 @@
+<html> 
+<head>
+        
+        <title>Amortized Costs, DOS, and Magicicadas</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Friday, December 07, 2007</div>
+			
+
+			<div class="Post"><a name="7171925907865206482">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html" title="permanent link">Amortized Costs, DOS, and Magicicadas</a></span>
+					<div style="clear:both;"></div>Jeff Atwood has just posted an interesting article, <a href="http://www.codinghorror.com/blog/archives/001014.html">Hashtables, Pigeonholes, and Birthdays</a>. Hash Tables are a very interesting subject, you can take almost any aspect of them and follow it down interesting trails.<br /><br />For example:<br /><br /><em>Performance</em>: Quantifying the performance of a data structure like a Hash Table is interesting. There are measures like <em>Amortized Cost</em> as well as <em>Worst Case Cost</em>. This subject is one of the core themes of the book <a id="lnx1" name="evtst|a|0521663504" href="http://www.amazon.com/gp/product/0521663504?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521663504">Purely Functional Data Structures</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0521663504" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1">. (You can also <a href="http://www.cs.cmu.edu/~rwh/theses/okasaki.pdf" title="PDF of Purely Functional Data Structures, PhD thesis">download the author&#8217;s thesis on the same subject</a>) I recommend it whether you have an interest in &#8220;purely functional&#8221; programming or not: &#8220;purely functional&#8221; data structures provide all of the imperative and side-effect oriented operations you know and love&#8212;like insertions and removals&#8212;while also providing the foundations for highly concurrent environments like threads with shared memory.<br /><br /><em>Security</em>: One-way functions are strongly related to hash functions. They are the foundation for many of today&#8217;s security and secrecy protocols. For example, fingerprinting is used to allow mirror sites to host downloads while giving the public comfort that the downloads have not been compromised with Malware. However, if the one-way functions underlying them can be cracked&#8212;as MD5 was recently&#8212;miscreants can <a href="http://www.cits.rub.de/MD5Collisions/">substitute bad files for good</a> at will.<br /><br />Even when security does not appear to be a factor, compromising a hash function can have a security impact. As one person mentioned in one of Jeff&#8217;s comments, if the hash function for a programming language is public, attackers can deliberately engineer worst-case performance to create a Denial Of Service attack. Here&#8217;s a deliberately trivialized example:<br /><br />Consider a public-facing site with free user registration. When you log in, the site performs a look up on the user name. Now obviously there&#8217;s a database somewhere. But perhaps the programmers put a cache in front of it. You could imagine such a cache being useful if cookies are used to keep someone logged in. If the cache uses a hash table, a vandal can create lots and lots of user names that hash into the same bucket. Anyone with a user name in the same bucket will face a long wait as the system performs a serial look up within the bucket.<br /><br /><em>Whimsey</em>: One of the comments mentioned that the number of buckets is usually a prime number. Did you know that <a href="http://en.wikipedia.org/wiki/Magicicada" title="Magicicada - Wikipedia, the free encyclopedia">insects</a> figured this strategy out on their own?<br /><br /><hr/><br />Editorial/Love Fest:<br /><br />And now for what I really wanted to say.<br /><br />People have pointed out that Jeff often seems to be summarizing well-known computer science principles. A Reader&#8217;s Digest for programmers, as it were. The suggestion seems to be that this is not useful, since anybody with a degree or even a passing interest in programming ought to know these things. My own feeling is that Jeff&#8217;s blog is far more useful than my own.<br /><br /><a href="http://www.codinghorror.com/blog/">Coding Horror</a> is published out in the real world. It is written for real people.<br /><br />This weblog operates firmly in <a href="http://en.wikipedia.org/wiki/Lake_Wobegon_effect" title="Lake Wobegon effect - Wikipedia, the free encyclopedia">Lake Wobegon</a>. It&#8217;s true! The very fact that you are reading about programming means that you are exceptional for reading it and I am exceptional for writing it. I am not going to start a flame war and say you and I are <em>better programmers</em>. Who really knows? But I am very confident when I say that we are not <em>representative</em> of the typical programmer.<br /><br />The typical programmer does not know what a closure is and does not care. If they are added to Java he or she will not use them any ways. The typical programmer may have obtained their degree, but they were far more interested in memorizing whatever was needed to get a B on the examination then they were in the subject matter.<br /><br />They may have a certification, but they do not own and have not read books outside of their immediate requirements, so Knuth is foreign to them. While they may talk of refactoring, they have never heard of <a href="http://www.amazon.com/gp/product/0201485672?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0201485672">Martin Fowler</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0201485672" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> or <a href="http://www.amazon.com/gp/product/0321213351?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0321213351">Joshua Kerievsky</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0321213351" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />.<br /><br />When Jeff writes a Digg-able post about multiple monitors, or how to optimize memory on a Windows PC, he get readers that would never subscribe to a blog if they were told it was about programming. And I am talking about programmers. Try to wrap your head around the idea of programmers who do not find programming blogs interesting (in fact, they don&#8217;t find programming interesting at the moment).<br /><br />If they are then exposed to something insightful and interesting about hash tables&#8230; Many will read it and forget it, but a few will be interested enough to delve deeper into the whys behind the whats.<br /><br />I am all for that. It is remarkably easy to turn and preach to the choir. Evangelizing to the bored and uninterested&#8230; This is a frustrating and difficult job. I wish I had the zeal to reach out across the divide and bring people over to where programming is deeply fulfilling and fascinating. I&#8217;m glad Jeff is doing the job he&#8217;s doing and wish his blog every success.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html" title="permanent link">10:36 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Amortized Costs, DOS, and Magicicadas</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="4673994927803305029"></a> 				I was thinking along similar lines when I read his post. I don't think there was anything new for me in that particular article (other than the numbers for the birthday effect.. I knew of it but couldn't remember any percentages) but even if something isn't new it's good to be reminded.<BR/><BR/>While the post itself didn't teach me anything new, discussion of it surely will. Already I've learned something from its discussion. I'd never considered using hash collisions for a DDoS and because that was mentioned I'm going to be more careful when using hashes anywhere a random user can be faced with it.<BR/><BR/>Oh and Jeff is coming to Montreal for CUSEC in January. Looking at the speaker list it seems CUSEC is going to be amazing once again.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197090960000#c4673994927803305029" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12032866222358866812" rel="nofollow">Guillaume</a> : 12:16 AM</div>
+
+								<span class="item-control blog-admin pid-493582080"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4673994927803305029" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8528433136745318168"></a> 				Reg, just out of curiosity, where do you get your notions about what the "typical" programmer is like?<BR/><BR/>I keep seeing these statements from bloggers to the effect of: "The very fact that you're reading a programming blog means that you're exceptional."<BR/><BR/>Can you make statements like this because you've personally met what you believe is a representational cross section of programmers, and you know that 90% of them did not read blogs related to programming?<BR/><BR/>How would you back up your claims about what a "typical" or "average" programmer is like?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197097860000#c8528433136745318168" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06115180196173160813" rel="nofollow">Matt</a> : 2:11 AM</div>
+
+								<span class="item-control blog-admin pid-1158092527"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8528433136745318168" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6282391506958756937"></a> 				Matt:<BR/><BR/>What do <B>you</B> think?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197123720000#c6282391506958756937" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:22 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6282391506958756937" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5601184228797811778"></a> 				Not trying to turn an anecdote into a statistic, but Coding Horror was the first programming blog I got hooked on (about two years ago), after several years as a programmer-sans-clue. Because of how approachable and interesting it usually is, I now read a handful (including this one, obviously), and often delve deeper into topics unfamiliar to me. Actually, I just looked up closures and lambdas yesterday - it bugs me not to have any idea what everyone is talking about. Coding Horror is a great gateway drug for programmers aspiring to broaden their horizons.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197138180000#c5601184228797811778" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11625271615100771847" rel="nofollow">CP</a> : 1:23 PM</div>
+
+								<span class="item-control blog-admin pid-1968595819"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5601184228797811778" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1332738832581551278"></a> 				I find coding horror to be very interesting and useful.  I'm a young programmer just out of school (I graduated about 6 months ago).  Usually I read it and yes, I know these things - but they reside in the back of my mind.  It's easy to say you know something when you read it again, but do you remember that same information when you're writing code and the blog post isn't in front of you?  That's why I find coding horror helpful - it repeats the knowledge I should know, so that I internalize it and remember it when I could really use it.  I think everyone could use a reminder from time to time, it certainly doesn't hurt.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197151080000#c1332738832581551278" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01464777979853455227" rel="nofollow">Mark</a> : 4:58 PM</div>
+
+								<span class="item-control blog-admin pid-1914111030"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1332738832581551278" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6067588273743363711"></a> 				I think a simple thought experiment should show that what CodingHorror does is not easy and valuable. <BR/><BR/>If it were so easy and not of value, every technical blogger interested in having a large audience would have as many subscribers as he does.<BR/><BR/>He's obviously doing something others are not. :)<BR/><BR/>As for the notion of the "typical programmer", I've observed the same thing you have. I have tons of anecdotal evidence from working in the field.<BR/><BR/>What we need are software sociologists to start generating stats on this stuff. A real study would be very illuminating.<BR/><BR/>So I believe and agree with this notion based on my experience, but I don't have hard stats.<BR/><BR/>But at the same time, nobody has hard stats to say it is false.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197155220000#c6067588273743363711" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Haacked</span> : 6:07 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6067588273743363711" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5686336013669428517"></a> 				Totally true, I'm a designer hooked on coding horror, I don't even program but Jeff has the elusive talent to make subjects as "dry" as hash tables seem interesting anybody.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197160200000#c5686336013669428517" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10088131890624765409" rel="nofollow">Mark MacKay</a> : 7:30 PM</div>
+
+								<span class="item-control blog-admin pid-1240435889"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5686336013669428517" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2858560634718290971"></a> 				I know this isn't conclusive or even scientific, but my own experiences verify the "typical"/"non-typical" programmer divide. I'm a consultant and whenever I go to work at a new customer site I ask the people I work with (both colleagues and customer staff) two questions;<BR/><BR/>1. Which IT, programming or management books have you read in the last twelve months?<BR/>2. Which, if any, technology related blogs to you regularly read?<BR/><BR/>Adding up the number of people who have answered yes to either I get the same 20/80 split that is mentioned here and at coding horror.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197166260000#c2858560634718290971" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17074886322982140235" rel="nofollow">Andy</a> : 9:11 PM</div>
+
+								<span class="item-control blog-admin pid-1468304050"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2858560634718290971" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3547507259212306204"></a> 				I will just say this, what's more impressive than the fact that the cicadas emerge in 'prime number' yearly cycles is the fact that they figured out and numbered themselves in Roman numerals!<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197178140000#c3547507259212306204" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:29 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3547507259212306204" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8521814030267119340"></a> 				CodingHorror, Spolsky, Ragenwald, Broooks, even McConnel's books.  There all a manifestation of something unusual, that really ought to bring out the sociologists:<BR/><BR/>Programmers write more about programming than writers write about writing.   And more than mathemeticians write about doing math.<BR/><BR/>Programmers, coders, developers, computer scientists, and hackers write more about their own professional mental and behavioral work processes than any other profession, probably including psychology and psychiatry.<BR/><BR/>What is it about us or our algorithms or data structures that makes us wax logorrhoeac?<BR/><BR/>There is good news, according to our oracle, <A HREF="http://en.wikipedia.org/wiki/Logorrhoea" REL="nofollow">Wikipedia</A>: "Several of the possible causes of logorrhoea respond well to medication".<BR/><BR/>Is our wordiness caused by the unusual semantic requirements of our work?  Does the essayist community naturally drift into coding?  Or is it merely an increased access to keyboards?<BR/><BR/>Whatever your answer, please be as brief as possible, but no briefer!<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197188400000#c8521814030267119340" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17440467058108985654" rel="nofollow">InternetFred</a> : 3:20 AM</div>
+
+								<span class="item-control blog-admin pid-399548678"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8521814030267119340" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5081134828748555104"></a> 				I agree!<BR/><BR/>One of CodingHorror's strengths is that it's so easily approachable.<BR/><BR/>It deals with many everyday things, but offers a lot of insight on them.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197221640000#c5081134828748555104" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 12:34 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5081134828748555104" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="11054156910438883"></a> 				All in all, it takes at least 10 years for anyone to master their field, and this includes Mozart, Einstein, Bobby Fisher, etc.<BR/><BR/>Reaching back to the roots of your training is the best to solidify neural pathways and build out new relationships to concepts.  What CodingHorror is the same as what chess master and TaiChi master Josh Waitzkin does to acquire new talent and abilities.  My post has a links to an article from Scientific American that discusses the learning processes of chess grandmasters.  It is very uncanny how that process is similar to what has been discussed here.  Enjoy.<BR/><BR/><A HREF="http://activeengine.wordpress.com/2007/11/19/the-art-of-learning/" REL="nofollow">The Art of Learning</A><br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197244440000#c11054156910438883" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11073997361352096226" rel="nofollow">David</a> : 6:54 PM</div>
+
+								<span class="item-control blog-admin pid-1849636971"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=11054156910438883" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="480358418444304920"></a> 				Reg,<BR/><BR/>To be honest, I've only been out of college for about 2.5 years.  So I really don't feel like I could speak intelligently about what the average programmer is like.<BR/><BR/>Even if I had more experience in the field, isn't there likely some sort of sampling bias present here?<BR/><BR/>Wouldn't "exceptional" programmers, like those who read blogs, naturally tend to find their way to companies that have a higher than normal density of exceptional programmers?  How could you really find "clean" data in that case?<BR/><BR/>One other thing of interest: I just took my first job as a consultant a few months ago.  As one of the other commenters here noted, this might afford me some interesting opportunities to see what programmers are like out there in many different real world environments, and might make for some nice data-gathering opportunities.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197254520000#c480358418444304920" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06115180196173160813" rel="nofollow">Matt</a> : 9:42 PM</div>
+
+								<span class="item-control blog-admin pid-1158092527"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=480358418444304920" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7940740158071200402"></a> 				"What is it about us or our algorithms or data structures that makes us wax logorrhoeac?"<BR/><BR/>Programming is at the same time complex and done by very many people, and we don't even really understand what we are doing.<BR/>Trying to understand produce words.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197281400000#c7940740158071200402" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/18011171943440483489" rel="nofollow">Andreas Krey</a> : 5:10 AM</div>
+
+								<span class="item-control blog-admin pid-2056248028"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7940740158071200402" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3656511582817294976"></a> 				>> Try to wrap your head around the idea of programmers who do not find programming blogs interesting (in fact, they don’t find programming interesting at the moment).<BR/><BR/>The idea that people might be involved in this insane, frustrating, and misunderstood craft *without actually being interested in it* fills me with a deep depression.<BR/><BR/>I can imagine that people go into 'the professions' (say law or medicine) for the money, without any actual vocation. But surely no one would do that with programming? Please?<BR/><BR/>(Actually, I know this is true - I have encountered people in the past for whom this is 'just a job'. I'm just trying to convince myself that in fact I imagined them...)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197290220000#c3656511582817294976" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Larry Lard</span> : 7:37 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3656511582817294976" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7904099556679033752"></a> 				Larry:<BR/>I wish that you just imagined them. The sad truth is that there are many people who do get into our field purely for money. The sad thing is that they're allowed to. There are not enough sufficiently hard courses that weed out the less dedicated ones available on the university/college level. Same could be said of the HR people who are not able to distinguish wheat from chaff, unless the wheat is a class of its own.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197309960000#c7904099556679033752" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02176281216135653811" rel="nofollow">Srdjan</a> : 1:06 PM</div>
+
+								<span class="item-control blog-admin pid-579143928"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7904099556679033752" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5290457009622041529"></a> 				re: Srdjan<BR/><BR/>I don't see why that's necessarily a sad thing. You don't see plumbers spending their entire weekend and evenings reading up on PVC tubing.<BR/><BR/>The fact is that the majority of programming tasks aren't actually that difficult. They don't require a superstar in order to get done and, in a lot of cases, a superstar wouldn't do them anyway. A professional programmer who takes his work seriously but considers it a job and nothing more is exactly what you need most cases.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197314040000#c5290457009622041529" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12032866222358866812" rel="nofollow">Guillaume</a> : 2:14 PM</div>
+
+								<span class="item-control blog-admin pid-493582080"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5290457009622041529" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6292382920791456064"></a> 				Guillaume,<BR/><BR/>Yes, but I assume that by saying "professional programmer", you assume that person to be a competent one as well. The problem is that most people in our industry who got here for money and not love often tend to find the shortest way to a "working" solution. Not necessarily the best way, not even something that's acceptable by someone who loves the field of programming.<BR/><BR/>I'm pretty sure you already know of  it but, in case you don't, go to <A HREF="http://worsethanfailure.com" REL="nofollow">The Daily WTF</A>. Sometimes, there are wonderful stories of shortcuts taken and the mess that results.<BR/><BR/>I guess, my point is that people like that need to be systematically weeded out, whether through education or through better interviewing skills. <A HREF="http://steve.yegge.googlepages.com/five-essential-phone-screen-questions" REL="nofollow">Steve Yegge</A> has written about it extensively.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197406680000#c6292382920791456064" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02176281216135653811" rel="nofollow">Srdjan</a> : 3:58 PM</div>
+
+								<span class="item-control blog-admin pid-579143928"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6292382920791456064" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9184886291533507296"></a> 				Yes you're right. I should have defined professional before using it.<BR/><BR/>Professional to me means a competent worker who can define proper goals, has the means to achieve them and puts the achievement of those goals above inconsequential nonsense like language religion wars and such.<BR/><BR/>People who look for the shortest solution (usually a copy & paste solution) to something that sort of seems like it works I don't call professionals, I call them hacks.<BR/><BR/>And Hacker != Hack. <BR/><BR/>To me, a hacker is someone who loves to understand how things work and loves to create. Definitely not a hack.<BR/><BR/>I really should have clarified all this from the start, sorry.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/amortized-costs-dos-and-magicicadas.html?showComment=1197557820000#c9184886291533507296" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12032866222358866812" rel="nofollow">Guillaume</a> : 9:57 AM</div>
+
+								<span class="item-control blog-admin pid-493582080"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9184886291533507296" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

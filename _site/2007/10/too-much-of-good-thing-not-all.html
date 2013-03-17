@@ -1,0 +1,498 @@
+<html> 
+<head>
+        
+        <title>Too much of a good thing: not all functions should be object methods</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Thursday, October 25, 2007</div>
+			
+
+			<div class="Post"><a name="5039489814009701313">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html" title="permanent link">Too much of a good thing: not all functions should be object methods</a></span>
+					<div style="clear:both;"></div>OOP is several different ideas put together, the most important of which is <em>Fine-Grained Information Hiding</em>.<br /><br /><blockquote>One can think of information hiding as being the principle and encapsulation being the technique. A software module hides information by encapsulating the information into a module or other construct which presents an interface.<br /></blockquote><div style="text-align: right;">&mdash;<a href="http://en.wikipedia.org/wiki/Information_hiding" title="Information hiding - Wikipedia, the free encyclopedia">Information Hiding</a> on Wikipedia</div><br /><br />The basic principle of all OO languages is that relatively small things&#8212;such as individual accounts in a business program&#8212;each encapsulate both their data (in the form of members) and their algorithms (in the form of methods). Our notions of members and polymorphism both work to this goal of hiding information. There&#8217;s a lot more to most OO languages, such as whether they include a notion of types and what mechanisms they use for sharing common behaviour. But let&#8217;s look at this one principle: <em>objects are responsible for their data and for their algorithms</em>.<br /><br /><strong>should objects be responsible for all of their own behaviour?</strong><br /><br />There&#8217;s a general idea that in a well-constructed program, each object &#8220;knows&#8221; how it ought to behave. That&#8217;s what its methods are for. Quite obviously, objects cannot be responsible for <em>everything</em> involving them in a program. If each object completely encapsulated all of the things it could do or be involved in, you would never pass one object as a parameter in a message to another object.<br /><br /><blockquote>For every complex problem, there is a solution that is simple, neat, and wrong.<br /></blockquote><div style="text-align: right;">&mdash;H. L. Mencken</div><br /><br />For example, you would never have collections. If every object &#8220;knew&#8221; how to organize itself into collections, you wouldn&#8217;t need an Array or Hash, would you? In practice, each object in a system can be involved in many different actions. It has to be responsible for some of them, and it has to play a secondary, passive role in others. Most OO programs do not have every object implement its own collections methods. They may include some form of specialization so you can have an array of accounts, but an array of accounts is still not an account.<br /><br /><strong>subject.verb(object)</strong><br /><br />In the English language, we have the idea of a <em>Subject</em> and an <em>Object</em> in a sentence. For example, when we say &#8220;Jack loves Jill,&#8221; Jack is a subject and Jill is an object. Jack loves. Jill is loved. It&#8217;s the same in OO programs. Sometimes objects are actively doing things through their methods. Sometimes other object&#8217;s methods are doing things with them.<br /><br /><blockquote>Verbing Weirds Language<br /></blockquote><div style="text-align: right;">&mdash;Bill Watterson, <a href="http://en.wikipedia.org/wiki/Calvin_and_Hobbes" title="Calvin and Hobbes - Wikipedia, the free encyclopedia">Calvin and Hobbes</a></div><br /><br />Good OO design is, in part, doing a good job of choosing the right bifurcations: given a list of nouns and verbs, making the right decisions about which nouns ought to be the active nouns, the subjects, the ones that &#8220;own&#8221; the verb in the form of a method. And thus consciously making decisions about which objects ought to be the passive nouns, the objects of the verbs, the ones that <em>don&#8217;t</em> implement the methods.<br /><br />Unfortunately, there are lots of places where we can err on the side of giving too much responsibility to individual objects. It&#8217;s understandable, given that OO is theoretically all about objects being responsible for themselves. But as in many other things, in practice good OO is about objects being responsible for a little as possible (but no less!), not as much as possible.<br /><br /><strong>the kingdom of nouns</strong><br /><br />One common symptom of this problem is <a href="http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html" title="Stevey's Blog Rants: Execution in the Kingdom of Nouns">a system that has objects for all of the obvious nouns or entities, but not for the verbs</a>. OO began with languages like <a href="http://en.wikipedia.org/wiki/Simula" title="Simula - Wikipedia, the free encyclopedia">Simula</a>, where the paradigm was trying to represent real-world entities such as automobiles on a highway. From that time forward, the emphasis has been on having objects for each noun in the problem domain. In such traditionally-organized OO programs, the &#8220;verbs&#8221; or actions are all attached to objects as methods. <br /><br /><div class="book"><hr/><em><a id="lnx0" name="evtst|a|0201379430" href="http://www.amazon.com/gp/product/0201379430?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0201379430"><img src="http://raganwald.github.com/assets/images/old//object_design-719894.jpg" border="0" height="160" width="128"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201379430" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br><a name="evtst|a|0201379430" href="http://www.amazon.com/gp/product/0201379430?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0201379430">Object Design: Roles, Responsibilities, and Collaborations</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201379430" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> focuses on the practice of designing objects as integral members of a community where each object has specific roles and responsibilities. The authors present the latest practices and techniques of Responsibility-Driven Design and show how you can apply them as you develop modern object-based applications.  <br><br></em><hr/></div>Not all &#8220;verbs&#8221; have a clear separation between a single entity that is the subject or active entity that ought to own the verb&#8217;s definition and the secondary, passive subject entities that should not own the verb&#8217;s definition. The easiest examples of this are operations that are intended to be <a href="http://en.wikipedia.org/wiki/Commutativity" title="Commutativity - Wikipedia, the free encyclopedia">commutative</a>.<br /><br />For example, many languages define addition as a method belonging to numbers or magnitudes. In Smalltalk, the expression <code>1 + 2</code> actually means &#8220;<em>send the message</em> <code>+ 2</code> <em>to the object</em> <code>1</code>.&#8221; At first glance, this seems elegant: the number <code>1</code> handles the message <code>+ 2</code> as integer addition, while <code>1.0</code> would handle the same message with floating point arithmetic. What more could you want?<br /><br />Well, there is a huge problem with this arrangement: <em>Addition is commutative</em>. <code>1.0 + 2</code> must give the same result as <code>2 + 1.0</code>. Using a simple message to implement addition means that you must be excruciatingly careful to handle all of the possible cases so that you do not accidentally violate this property. Now of course, the designers of system classes like <code>Integer</code> and <code>Float</code> went to this trouble. But if you want to add another magnitude class&#8212;say <code>CurrencytwoPlaceDecimal</code>&#8212;you have to open up all of the system classes and modify them so that <code>1 + ThirtyCents</code> gives the same result as <code>ThirtyCents + 1</code>.<br /><br /><strong>beware of breaking symmetry</strong><br /><br />Of course, you may not need to implement a new magnitude class. Fine. But what about <a href="http://en.wikipedia.org/wiki/Symmetric_relation" title="Symmetric relation - Wikipedia, the free encyclopedia">symmetric relations</a> like <em>comparison</em>? This is a major pitfall for OO developers: in many cases you need to write a test of equivalence or equality (operations like <code>==</code>, <code>equal?</code>, <code>eql?</code>, <code>eqv?</code> and all of the other variations on the same theme). In every one of these cases, horrible things will happen if your operation is not symmetric. For every case, <code>x.eql?(y)</code> if-and-only-if <code>y.eql?(x)</code>.<br /><br />This is obviously easy when <code>x</code> and <code>y</code> are both the same kind of object. <a href="http://raganwald.github.com/2007/04/what-does-barbara-liskov-have-to-say.html" title="What does Barbara Liskov have to say about Equality in Java?">What happens when they&#8217;re different, but still logically equivalent?</a> It turns out that implementing commutative operations and symmetric relations as methods doesn&#8217;t work very well. It forces you to smear duplicate logic over many different classes (or prototypes, if your language swings that way).<br /><br />Here&#8217;s a practical example. Let&#8217;s say you want to implement a form of equivalence for collections. For ordered collections like lists, what you want is that if two ordered collections have the same members, in the same order, they are equivalent. It&#8217;s easy to imagine writing such a method as a <a href="http://en.wikipedia.org/wiki/Mixin" title="Mixin - Wikipedia, the free encyclopedia">mixin</a> for all of your ordered collections. It obviously knows about iterating over ordered collections (recursively, if you grew up with <a href="http://www.amazon.com/gp/product/0465026567?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0465026567" title="Amazon.com: Godel, Escher, Bach: An Eternal Golden Braid by Douglas R. Hofstadter">Godel, Escher, Bach</a> on your night stand). Note that you may not have an indexed collection: you might have a <code>list</code> where you simply retrieve values in order.<br /><br />And likewise, you can write a collection equivalence method for dictionaries like hash tables: if two objects have the same values at the same keys, they are equivalent. Again, a simple mixin will handle things for dictionaries.<br /><br />Now comes the wrinkle: you decide that an ordered collection ought to be equivalent to a dictionary where the keys are the integers ascending from zero. In other words, <code>('foo' 'bar' 'blitz')</code> ought to be equivalent to <code>{ 0 =&gt; 'foo', 1 =&gt; 'bar', 2 =&gt; 'blitz' }</code>. How are you going to code this? Well, the dictionary mixin could obviously handle equivalence to an ordered list. But we need symmetry, so we have to &#8220;open up&#8221; the ordered collection mixin and add code for equivalence to dictionaries.<br /><br /><blockquote>Actually I made up the term object-oriented and I can tell you I did not have C++ in mind. The important thing here is that I have many of the same feelings about Smalltalk.<br /></blockquote><div style="text-align: right;">&mdash;Alan Kay</div><br /><br />I&#8217;m holding my nose, we have not one but two different code smells: 1) Why is one piece of logic in two different places? 2) Why do ordered collections know anything at all about dictionaries, and why do dictionaries know anything at all about ordered collections? The latter is especially disturbing: the whole point of OO is information hiding. How does having ordered collections and dictionaries knowing about each other help us to hide information?<br /><br />The obvious answer to me is that the knowledge of how to compare an ordered collection to a dictionary does not belong in ordered collections or in dictionaries. The requirement that relations like equivalence be symmetrical across heterogeneous types implies that the types themselves cannot be responsible for implementing equivalence for themselves.<br /><br />There are similar problems of code duplication and information leakage apply to modelling relations (why do we declare <code>has_one</code> and <code>belongs_to</code> in Rails) and implementing the <code>&lt;=&gt;</code> operator in Ruby. It looks like having verbs &#8220;belong to&#8221; the subject noun is often a good idea, but not always a good idea.<br /><br /><strong>commuting the sentence of execution</strong><br /><br />Maybe some verbs belong to objects, but some are best on their own? Maybe <code>+</code> and <code>&lt;=&gt;</code> and <code>equivalent?</code> really ought to be emancipated from their subservience to objects and ought to have their own definitions.<br /><br /><blockquote>There are two real approaches to object-orientation. The first is known as message-passing. You send an object a message and ask it to deal with it. (This would not work with many people in this newsgroup.) The meaning of the message is local to the object, which inherits it from the class of which it is an instance, which may inherit it from superclasses of that class&#8230;<br />  <br />  The second approach is generic functions. A generic function has one definition of its semantics, its argument list, and is only specialized on particular types of arguments. <br /></blockquote><div style="text-align: right;">&mdash;<a href="http://groups.google.com/group/comp.lang.lisp/msg/60f4c36a707db3fe">Erik Naggum discussing CLOS on comp.lang.lisp</a></div><br /><br />What we ought to do is take some of the verbs and give them their own place in our programs, instead of hanging them off nouns. This isn&#8217;t such a revolutionary idea: Common Lisp&#8217;s <a href="http://www.amazon.com/gp/product/0262610744?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262610744" title="Amazon.com: The Art of the Metaobject Protocol by Gregor Kiczales">Metaobject Protocol</a> does this exact thing, providing <a href="http://en.wikipedia.org/wiki/Generic_function" title="Generic function - Wikipedia, the free encyclopedia">generic functions</a>. A generic function is, in effect, a verb raised to the same level of abstraction as a noun.<br /><br />This isn&#8217;t some revolutionary idea limited to &#8220;powerful&#8221; languages either: the Java collections framework uses a <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Comparable.html" title="Comparable (Java 2 Platform SE v1.4.2)"><code>Comparable</code></a> interface for ordering collections. The <code>compareTo(...)</code> method belongs to an object. By way of&#8212;ahem&#8212;comparison, the <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/Comparator.html" title="Comparator (Java 2 Platform SE v1.4.2)"><code>Comparator</code></a> interface extracts comparison out of the subject object and puts it in a separate function object. You can perform sorts in Java either way.<br /><br />If we aren&#8217;t using Common Lisp, can we build the verbs we want out of the tools at our disposal? In other words, can we <a href="http://en.wikipedia.org/wiki/Greenspun%27s_Tenth_Rule" title="Greenspun's Tenth Rule - Wikipedia, the free encyclopedia">Greenspun</a> generic functions in languages like Java and Ruby?<br /><br /><strong>generic functions in java, plus a detailed look at method dispatching</strong><br /><br />Let&#8217;s start by thinking about generic functions in a Java-like language.<br /><br />Returning to our example of writing <code>equivalent?</code>, we might make an <code>Equivalent</code> class with a single method, perhaps we can call it <code>eval</code>. So we end up with something like <code>Eqivalent.eval(foo, bar)</code>. Java-like languages allow us to write different versions of the <code>eval</code> method with different type signatures, so we can write:<br /><pre><code><br />public static boolean eval (List foo, List bar) { ... }<br />public static boolean eval (List foo, Map bar) { ... }<br />public static boolean eval (Map foo, List bar) { return eval(bar, foo); }<br />public static boolean eval (Map foo, Map bar) { ... }</code></pre><br />And so forth. Are we done?<br /><br />No, our code is broken. What happens when we decide that the &#8220;default&#8221; equivalence is the <code>==</code> relationship. We can&#8217;t write:<br /><pre><code><br />public static boolean eval (Object foo, Object bar) { return foo == bar; }</code></pre><br />This is hideously broken in languages like Java. You&#8217;re almost all nodding in agreement, but please be patient while I explain it anyway: you probably want to pass this along to someone who really needs to be told why it is broken, so why don&#8217;t I go ahead and explain it for <em>them</em>?<br /><br />What you want is that if two objects are of the more specific types&#8212;<code>List</code> and <code>Map</code>&#8212;we will call the more specific version of the <code>eval</code> methods. But if we can&#8217;t &#8220;match&#8221; one of the more specific <code>eval</code> methods, we want to use <code>eval (Object foo, Object bar)</code>. Too bad, that&#8217;s not how Java works. <em>Java uses two completely different ways to figure out which method to call when you overload methods!</em><br /><br />Way number one is is for figuring out that when you call <code>noun.verb(...)</code>, where do we find the definition for <code>verb</code>? This lookup is effectively done at run time, so that even if your code looks like this:<br /><pre><code><br />public static void printSomething(Object foo) {<br />    System.out.println(foo.toString());<br />}</code></pre><br />Java will look up the method <code>toString</code> based on <code>foo</code>&#8217;s actual type when the method is called, even though you declared it to be an <code>Object</code>. That&#8217;s polymorphism at work, and it&#8217;s the information hiding working for us. Each object can do it&#8217;s own thing where <code>toString</code> is concerned, and we don&#8217;t have to worry about it. This is called <a href="http://en.wikipedia.org/wiki/Single_dispatch" title="Dynamic dispatch - Wikipedia, the free encyclopedia">single dispatch</a>, because it figures out which method to call based on just one of the nouns, the subject noun a/k/a the receiver of the method invocation.<br /><br />But that&#8217;s not what happens when we write this:<br /><pre><code><br />public static void printSomethingElse (Object foo, Object bar) {<br />    if (Equivalent.eval(foo, bar))<br />        System.out.println("2 x " + foo);<br />    else System.out.println(foo.toString() + ", " + bar.toString());<br />}</code></pre><br />It will <em>always</em> call <code>eval (Object foo, Object bar)</code>. It will <strong>not</strong> call <code>eval (List foo, List bar)</code> if you pass it two lists. That&#8217;s because although each of our methods have the same name&#8212;<code>eval</code>&#8212;Java treats them as different methods, and it figures out which one to call based on the declared types of the parameters at compile time, not on the actual types of the parameters&#8217; values at run time.<br /><br /><div class="book"><hr/><em><a id="lnx0" name="evtst|a|0262561158" href="http://www.amazon.com/gp/product/0262561158?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262561158"><img src="http://raganwald.github.com/assets/images/old//a_little_java-777624.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262561158" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><em><br><br>Free your mind with <a name="evtst|a|0262561158" href="http://www.amazon.com/gp/product/0262561158?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262561158">A Little Java, a Few Patterns</a>: The authors of <a name="evtst|a|0262560992" href="http://www.amazon.com/gp/product/0262560992?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262560992">The Little Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262560992" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> and <a name="evtst|a|026256114X" href="http://www.amazon.com/gp/product/026256114X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256114X">The Little MLer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256114X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> bring deep and important insights to the Java language. Every serious Java programmer should own a copy.</em><br><br></em><hr/></div>Besides writing a Lisp interpreter in Java, your next best bet for building a generic function the way we want it is to find a way to turn Java&#8217;s single dispatch into a multi-dispatch, to dispatch on two nouns, <code>foo</code> and <code>bar</code>.<br /><br />The good news is this: dispatching at run time on two different types is a well-known problem, and the solution is called <a href="http://en.wikipedia.org/wiki/Double_dispatch" title="Double dispatch - Wikipedia, the free encyclopedia">double dispatch</a>. The problem with double dispatch is that it moves our equivalence code back into our nouns, and we don&#8217;t want that.<br /><br />The <a href="http://en.wikipedia.org/wiki/Visitor_pattern" title="Visitor pattern - Wikipedia, the free encyclopedia">Visitor</a> pattern might be handy: it&#8217;s a way to add methods to an object at run time in a language like Java that supposedly doesn&#8217;t do that. If we decide that everything to be compared using <code>Equivalent.eval</code>implements an interface called <code>Visitable</code>, we can build a double dispatch system that doesn&#8217;t require putting an <code>equivalent?</code> method in the entities being compared:<br /><pre><code><br />interface Visitable {<br />    Object accept(final Visitor visitor);<br />}<br /><br />interface Visitor {<br />    Object visit(final Object obj);<br />    Object visit(final List list);<br />    Object visit(final Map map);<br />}<br /><br />public class Equivalent {<br /><br />    static boolean list_list (List foo, List bar) { ... }<br />    static boolean list_map (List foo, Map bar) { ... }<br />    static boolean map_map (Map foo, Map bar) { ... }<br />    static boolean object_object (Object foo, Object bar) { ... }<br /><br />    public static boolean eval (final Visitable foo, final Visitable bar) {<br />        return foo.accept(<br />            bar.accept(<br />                new Visitor () {<br />                    public Object visit(final Object bar) {<br />                        return new Visitor () {<br />                            public Object visit(final Object foo) {<br />                                return object_object(foo, bar);<br />                            }<br />                            public Object visit(final List foo) {<br />                                return object_object(foo, bar);<br />                            }<br />                            public Object visit(final Map foo) {<br />                                return object_object(foo, bar);<br />                            }<br />                        }<br />                    }<br />                    public Object visit(final List bar) {<br />                        return new Visitor () {<br />                            public Object visit(final Object foo) {<br />                                return object_object(foo, bar);<br />                            }<br />                            public Object visit(final List foo) {<br />                                return list_list(foo, bar);<br />                            }<br />                            public Object visit(final Map foo) {<br />                                return list_map(bar, foo);<br />                            }<br />                        }<br />                    }<br />                    public Object visit(final Map bar) {<br />                        return new Visitor () {<br />                            public Object visit(final Object foo) {<br />                                return object_object(foo, bar);<br />                            }<br />                            public Object visit(final List foo) {<br />                                return list_map(foo, bar);<br />                            }<br />                            public Object visit(final Map foo) {<br />                                return map_map(foo, bar);<br />                            }<br />                        }<br />                    }<br />                }<br />            )<br />        )<br />    }<br />}</code></pre><br />If that looks like a lot of work to you, I agree. You&#8217;re basically replicating Java&#8217;s run time dispatching on two types, so you need a bit of a matrix. Is it worth the effort? Let&#8217;s consider what this wins you:<br /><br /><ul><li>Your entities or objects no longer need to know all about other types of entities;</li><br /><li>It&#8217;s easier to make sure that commutation and symmetry are preserved when the code for a relationship is in its own class and not smeared over multiple entities.</li></ul><br />And best of all, you have a nice place for your verbs, and they are no longer second-class citizens behind the nouns.<br /><hr/><br />Update: A few people have suggested alternate approaches to implementing multiple dispatch in Java. I think there are various trade-offs to be made, and several different implementations ought to be considered before you write production code.<br /><br />However, the point of the article is to suggest that not all functions should be implemented as methods of subject objects. I think it makes that point regardless of what you think of using a Visitor and a double dispatch.<br /><br />Here&rsquo;s an alternate approach from <a href="http://programming.reddit.com/user/LaurieCheers/">Laurie Cheers</a>:<br /><pre><code>interface Classifiable<br />{<br />    int classify();<br />}<br /><br />// I know this isn't valid Java, but it makes the example much clearer. The alternative is to tiresomely spell out every combination.<br />#define PAIR(a,b) (a|(b&lt;&lt;4))<br /><br />abstract class DoubleDispatchable<br />{<br />    abstract Object list_list(List a, List b);<br />    abstract Object list_map(List a, Map b);<br />    abstract Object map_map(Map a, Map b);<br />    abstract Object object_object(Object a, Object b);<br /><br />    const int OBJECT = 0;<br />    const int LIST = 1;<br />    const int MAP = 2;<br /><br />    Object dispatch(Classifiable a, Classifiable b)<br />    {<br />        switch(PAIR(a.classify(), b.classify))<br />        {<br />            case PAIR(LIST, MAP): return list_map(a,b);<br />            case PAIR(MAP, LIST): return list_map(b,a);<br />            case PAIR(LIST, LIST): return list_list(a,b);<br />            case PAIR(MAP, MAP): return map_map(a,b);<br />            default: return object_object(a,b);<br />        }<br />    }<br />}<br /><br />class Equivalent extends DoubleDispatchable<br />{<br />    Object list_list(List a, List b) {...}<br />    Object list_map(List a, Map b) {...}<br />    Object map_map(Map a, Map b) {...}<br />    Object object_object(Object a, Object b) {...}<br /><br />    bool eval(Classifiable a, Classifiable b) { return dispatch(a,b) != false; }<br />}<br /></code></pre><br />What trade-offs, you ask? The Visitor pattern given gets the compiler to guarantee that you write each of the nine cases, whereas hand-written tests and logic simplifies the code.<br /><br />I specifically chose the Visitor pattern because it seemed more in keeping with the spirit of the Java language and culture, trading verbosity for compiler safety.<br /><br />I'm extremely comfortable with the other trade-off, emphasizing readability and simplicity. Although, if you go far enough down that road, you might as well look at other languages ;-)<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/archives/labels/java.html">java</a>, <a rel='tag' href="http://raganwald.github.com/archives/labels/lispy.html">lispy</a>, <a rel='tag' href="http://raganwald.github.com/archives/labels/popular.html">popular</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html" title="permanent link">11:24 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Too much of a good thing: not all functions should be object methods</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="7698690122980558907"></a> 				Herb Sutter has a good Guru of the Week on this:<BR/><BR/>http://www.gotw.ca/gotw/084.htm<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193385600000#c7698690122980558907" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 4:00 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7698690122980558907" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5620052833947569278"></a> 				A question I'm left with after reading this (excellent) post:<BR/><BR/>What's more convenient to have in general? Strict namespacing or strict noun/verb/noun structure?<BR/><BR/>In other words, do I type "Equivalence.test(listA, mapB)" or do I type "listA.equals(mapB)" with the understanding that somewhere along the line, either the compiler or the runtime end up calling Equivalence.test anyway. You can't currently pull that last stunt in java at all as far as I know, but you could in more dynamic languages like python, simply by adding onto a list class.<BR/><BR/>The flipside is that in java you always 'know' what a certain type does and doesn't have and where those definitions are located (leading to IDE conveniences like being able to command+click your way to the definition of just about anything you see in your code, something which is halting-problem impossible when you rewrite class definitions at runtime).<BR/><BR/>Which one is more important? I honestly don't know. There are good cases for either.<BR/><BR/>In theory we can have our cake and eat it too. This would require a stripped down (non turing complete) 'programming language' of sorts, more a definition language really, which (probably on a per project or per 'package' basis) lets you explain exactly which verbs should be imported into which nouns. In other words, some file where I can write:<BR/><BR/>List t.sort() := Collections.sort(t);<BR/>List t.sort(Comparator c) := Collections.sort(t, c);<BR/>List t.equals(Object o) := Equivalence.test(t, o);<BR/><BR/>The rule here is that this list is immutable; it can not be modified at runtime. From the perspective of the runtime, it always was, is, and always will be. That way the tooling knows that if I cmd+click on the 'sort' identifier in the following hypothetical java code snippet: "someList.sort();", to jump straight to Collections.sort(List).<BR/><BR/>NB: Collections.sort is an actual method in the core java libraries, and in order to sort lists in java, you can not write list.sort(), you have to write Collections.sort(list). So far I've always found this a blight, because sorting clearly is something a list ought to know how to do, unlike equivalence testing, which Reg has already established doesn't really belong to lists at all. I find it a happy coincidence that you can also basically have mixins for free when you 'fix' the ability to externalize methods for abstraction purposes.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193393820000#c5620052833947569278" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02743449554705742364" rel="nofollow">Reinier Zwitserloot</a> : 6:17 AM</div>
+
+								<span class="item-control blog-admin pid-1152489488"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5620052833947569278" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1650623850383194250"></a> 				Relevant Java-like languages to look at are Scala and Nice. In Nice, all functions are generic and don't live on objects. (There's a "Let's pretend we're object oriented syntax" though allowing you to write foo(bar, baz) as bar.foo(baz)). The semantics aren't actually all that Java-like, but the syntax is close enough that it conveys the right idea.<BR/><BR/>Scala on the other hand doesn't have generic functions. All functions live on objects... but in the same way that all functions in ML or Haskell live in modules. The language is structured so that objects behave much more like dynamically composable modules.<BR/><BR/>And, you know, both are lacking. In Nice I really want the first class module system from Scala, in Scala I really want multiple dispatch. All methods really should live on objects, because all namespaces should be first class objects and all methods should live in namespaces, but this shouldn't be the be all and end all of what they can do.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193394120000#c1650623850383194250" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17522579015536144620" rel="nofollow">David R. MacIver</a> : 6:22 AM</div>
+
+								<span class="item-control blog-admin pid-188006248"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1650623850383194250" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4508798226736349497"></a> 				Is the implementation missing a few return statements?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193398260000#c4508798226736349497" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06824568293804321386" rel="nofollow">sam</a> : 7:31 AM</div>
+
+								<span class="item-control blog-admin pid-423729509"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4508798226736349497" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7638019940947770526"></a> 				"If every object “knew” how to organize itself into collections, you wouldn’t need an Array or Hash, would you?"<BR/><BR/>Maybe I miss the point here.  Let's step back to the classic example of class Animal with subclasses of say Lion and Zebra.  How a lion reacts has more to do with how they react with each other or more likely how they react with their group (array / hash) which is called a Pride.  A collection of things is a different entity because it is a different entity.  How a Pride (of lions) reacts is different than how a herd (of zebras) react.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193404020000#c7638019940947770526" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">matt</span> : 9:07 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7638019940947770526" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2945078790208950147"></a> 				Matt:<BR/><BR/>I don't think you miss the point, you embrace the idea that some objects have a one to one mapping with physical entities in the real world, and some map to more abstract ideas.<BR/><BR/>A pride of lions may seem like a real-world entity, however researchers have shown that herd behaviour can often be modeled by autonomous entities following their own internal rules. The behaviour of the "herd" emerges from the aggregate behaviour of the animals within it.<BR/><BR/>Sorry, getting off topic. My point is that you <I>could</I> code for individual lions and not for prides, but it is cleaner and simpler for us to code for a pride.<BR/><BR/>Which leads us back to verbs... you <I>can</I> stick them all in nouns, but my uggestion is that it is cleaner and simpler in some cases to keep them separate.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193404380000#c2945078790208950147" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:13 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2945078790208950147" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2732422253933119110"></a> 				Wow, I really like the commutativity example. I ran into a problem a while ago in a shopping-type application: how do you compute the tax? Different stuff can have different tax rates, and sometimes a category of stuff is tax-free below a certain purchase amount. (Not only "can", but "did", and "could have again".) And all that is for just one state; the tax depends on what state the recipient is in, as defined by their shipping address, which you typically collect /after/ the screen that shows their shopping cart and total price.<BR/><BR/>Trying to build a sane OO design around that was a small nightmare. And although it is a real problem, it isn't nearly as small as commutativity.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193406960000#c2732422253933119110" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.sapphirepaw.org/" rel="nofollow">sapphirecat</a> : 9:56 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2732422253933119110" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3092185829691644402"></a> 				I've got some posts over at EnfranchisedMind where I got bit by #equals: given two objects, A and B, sometimes they would both get into a set, sometimes they wouldn't.  It depended on whether the set implementation called A.equals(B) or B.equals(A).<BR/><BR/>Which lead to this series of posts:<BR/>http://enfranchisedmind.com/blog/archive/2005/10/28/36<BR/>http://enfranchisedmind.com/blog/archive/2005/10/31/37<BR/>http://enfranchisedmind.com/blog/archive/2006/01/30/62<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193412180000#c3092185829691644402" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17844778275497805797" rel="nofollow">Robert</a> : 11:23 AM</div>
+
+								<span class="item-control blog-admin pid-83827799"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3092185829691644402" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6309718745164510854"></a> 				"It forces you to smear duplicate logic over many different classes (or prototypes, if your language swings that way)."<BR/><BR/>I think that in Ruby, this problem is really not that bad, because you can put all of these(logic over many different classes) inside a single module. After all, I think the biggest problem is keeping things that are logically together in the same place, and things that are logically different apart.<BR/><BR/>In the equivalence example, you could have a mixin for collection and another for maps, but put these two in the same module, same file too! In Java or Smalltalk, you are screwed though.<BR/><BR/>Btw, thanks for your great posts and links.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193416920000#c6309718745164510854" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://futuretoby.dyndns.org/wiki/toby" rel="nofollow">Toby Ho</a> : 12:42 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6309718745164510854" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7444258703232552271"></a> 				my personal term for this:<BR/><BR/>object chauvinism<BR/><BR/><BR/>-crucial felix<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193417160000#c7444258703232552271" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15041844941242052470" rel="nofollow">felix</a> : 12:46 PM</div>
+
+								<span class="item-control blog-admin pid-1614832123"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7444258703232552271" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4704485368933249368"></a> 				<I>Your entities or objects no longer need to know all about other types of entities.</I><BR/><BR/>But they never really needed to -- they just needed to know about which types they can be equal to.  But your Evaluator now needs to know about all classes which potentially might be equivalent.  It seems a small gain for a decent price.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193419980000#c4704485368933249368" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:33 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4704485368933249368" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5061804221221573354"></a> 				Anonymous:<BR/><BR/>Equal if a very difficult relationship to define in OO systems. But as for equivalence, remember that we have a matrix of types to consider.<BR/><BR/>So if you have types (A, B, C), perhaps you can handle the complexity of making sure that A has an equivalnce method that recoginizes B and C. But you only need one of them to be broken to ruin the whole thing, because it breaks symmetry. For example, if you add type D and update A and B for it, but not C, you have a situation where c.equivalent?(d) != d.equivalent?(c).<BR/><BR/>Or worse, if you add subtypes and don't get the logic right across all of the relevant classes, you get really weird things happening because equivalence "defaults" to being handled by their superclass some of the time but not the rest of the time.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193420280000#c5061804221221573354" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 1:38 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5061804221221573354" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7741805410145079968"></a> 				One of the reasons that this is especially more difficult in Java than in more dynamic OO languages like Python and Ruby, and especialy functional languages like Haskell where this is really a non-issue, is that functions and methods are not objects, first class or otherwise so there really is not separation of any given verb from at least some noun's context, i.e. you can not the notion of "addability" separately from how to add some specific type.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193425620000#c7741805410145079968" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08004339418967276939" rel="nofollow">Erik</a> : 3:07 PM</div>
+
+								<span class="item-control blog-admin pid-1157324840"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7741805410145079968" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7501400564143202502"></a> 				Just a quick note. Squeak Smalltalk does use double dispatching for commutative operations on numbers. So your CurrencytwoPlaceDecimal would implement a method like addToSmallint:i and Smallint + implementation would be something like:<BR/><BR/>+:n<BR/>   ^ n addToSmallint: self<BR/><BR/><BR/>[It's been a while since I've done any smalltalk, so my syntax and method names are probably wrong, but I think the idea is right]<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193455680000#c7501400564143202502" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03350776762967743057" rel="nofollow">Rafael de F. Ferreira</a> : 11:28 PM</div>
+
+								<span class="item-control blog-admin pid-1024725660"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7501400564143202502" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9020211554974632999"></a> 				Nice to see <B>all</B> of that Alan Kay quote for a change :-)<BR/><BR/>You're example gets a little strange with generic collections in a multiple dispatch language - <BR/><BR/>&lt;V&gt; boolean equiv(Collection&lt;V&gt; a, Collection&lt;V&gt; b) = a == b;<BR/>&lt;K,V&gt; boolean equiv(Map&lt;K,V&gt; a, Map&lt;K,V> b) = a == b;<BR/><BR/>&lt;int,V&gt; boolean equiv(List&lt;V&gt; a, Map&lt;int,V&gt; b) = equiv(b,a);<BR/>&lt;int,V&gt; boolean equiv(Map&lt;int,V&gt; a, List&lt;V&gt; b){ /* ... */ return false; }<BR/><BR/>void main(String[] args){<BR/>   let oc = new ArrayList(["abc","def","ghi"]);<BR/>   let d = new HashMap(); var k = 0; for(v:oc) d[k++] = v;<BR/><BR/>   println(equiv(oc,oc));<BR/>   println(equiv(d,d));<BR/>   println(equiv(oc,d));<BR/>}<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193459760000#c9020211554974632999" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02902123247585964087" rel="nofollow">Isaac Gouy</a> : 12:36 AM</div>
+
+								<span class="item-control blog-admin pid-1563044148"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9020211554974632999" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="773304737773690112"></a> 				Probably makes more sense to show a funky List = Set comparison, let's make equiv always true<BR/><BR/><BR/>&lt;T&gt; boolean equiv(Collection&lt;T&gt; a, Collection&lt;T&gt; b);<BR/>equiv(a,b) = a == b;<BR/><BR/>equiv(List a, Set b) = equiv(b,a);<BR/>equiv(Set a, List b){ /* ... */ return true; }<BR/><BR/>void main(String[] args){<BR/>   let oc = new ArrayList(["abc","def","ghi"]);<BR/>   let s = new HashSet(oc);<BR/><BR/>   println(equiv(oc,oc));<BR/>   println(equiv(s,s));<BR/><BR/>   println(oc == s);<BR/>   indirect(oc,s);<BR/>}<BR/><BR/>&lt;T&gt; void indirect(Collection&lt;T&gt; a, Collection&lt;T&gt; b){<BR/>   println(equiv(a,b));<BR/>}<BR/><BR/><BR/>$ java -jar equiv.jar<BR/>true<BR/>true<BR/>false<BR/>true<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193461200000#c773304737773690112" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02902123247585964087" rel="nofollow">Isaac Gouy</a> : 1:00 AM</div>
+
+								<span class="item-control blog-admin pid-1563044148"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=773304737773690112" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6823983126143366523"></a> 				http://useless-factor.blogspot.com/2007/03/double-dispatch-in-24-lines.html<BR/><BR/>Double dispatch abstraction in Factor a language that only supports single dispatch. The best system for dispatch is lisp/Dylan multi methods/generic functions.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193522580000#c6823983126143366523" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16719790120157897782" rel="nofollow">george</a> : 6:03 PM</div>
+
+								<span class="item-control blog-admin pid-1998939235"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6823983126143366523" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4245299679390409383"></a> 				I've always thought of the C++ STL as a nice example of why not all verbs should "hang" off objects.  In the STL the algorithms stand on their own and can be used on any type that supports the required functionality.  In a lot of languages the difficulty is how a type indicates the functionality it supports.  Often in OO languages the answer is to implement interfaces, which is explicit but can be cumbersome.  Duck-typing removes the encumberance at the expense of requiring another why to communicate the requirements (which is often less precise).  C++ templates fall somewhere between: telling you at compile time but not necessarily in a friendly way.<BR/><BR/>The single-dispatch topic is another interesting limitation of "pure OO" languages.  I've always seen visitor as an ugly pattern, a best effort to try and patch a language deficiency.  These languages have blinkered us to view polymorphism as only acting on one type, when polymorphism over multiple types is an elegant way to solve many problems.  A better answer is for the dispatch mechanism to be capable of dispatching on as many types as you like with syntactic sugar for the common case (i.e. single-dispatch).<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193544180000#c4245299679390409383" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15395954585528114826" rel="nofollow">jason</a> : 12:03 AM</div>
+
+								<span class="item-control blog-admin pid-809758077"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4245299679390409383" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6095130437502243872"></a> 				Every time I read one of your posts I think "oh, this really reminds me of that Steve Yegge post".  I think that's because you basically copy his stuff, minus the wit.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193597700000#c6095130437502243872" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Duncan</span> : 2:55 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6095130437502243872" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="532206669312121963"></a> 				Duncan, let's agree that I don't have Steve Yegge's wit.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193609340000#c532206669312121963" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:09 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=532206669312121963" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7172662503201162721"></a> 				I wrote something of a follow up about one aspect of the comparison you're discussing <A HREF="http://www.kirit.com/Blog:/2007-10-27/Identity%20and%20equivalence" REL="nofollow">on my web site</A> which focuses on the value vs. object semantics of the comparison.<BR/><BR/>What I didn't talk about, but was thinking of as well, was the requirement for the double dispatch - do you really need or want it for value comparison?<BR/><BR/>I think that the normal Java overloading rules would be sufficient if you could define sensible overloaded free standing functions to handle it <I>and</I> if you left off essentially un-informative types like Object from the overloading - i.e. you only overloaded concrete types and not abstract ones.<BR/><BR/>The question becomes one of whether or not the dynamic types of the values matter. I'm not certain that they do for most use cases. In this case the static type overloading normal functions is all that is required. I haven't been able to think of a good counter argument that wasn't also a flawed design in some other way. (I don't know if Java can overload static members or not, so maybe this only applies to a language like C++ where you can have free functions which can be overloaded.)<BR/><BR/>I think that somewhere where a more complex test was needed it would be better served implemented locally to the use of the test as something odd was already going on there.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1193754360000#c7172662503201162721" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02188707816239176630" rel="nofollow">Kirit Sælensminde</a> : 10:26 AM</div>
+
+								<span class="item-control blog-admin pid-1683405536"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7172662503201162721" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5312440789498702997"></a> 				I don't like to be a chauvinist about anything, but there is one thing about object methods that makes them incredibly more beneficial than free functions: the fact that you can easily mock them for testing.  <BR/><BR/>There's nothing worse than walking into a pile of C or C++ and discovering that you don't have a seam to fake out things that you don't want to have happen in a test.  Often I introduce some rudimentary object orientation, just to get past the problem.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html?showComment=1198199160000#c5312440789498702997" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Michael Feathers</span> : 8:06 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5312440789498702997" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

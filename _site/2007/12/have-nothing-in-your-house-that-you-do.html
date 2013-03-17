@@ -1,0 +1,449 @@
+<html> 
+<head>
+        
+        <title>Have nothing in your house that you do not know to be useful, or believe to be beautiful</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Wednesday, December 12, 2007</div>
+			
+
+			<div class="Post"><a name="3199936548635835116">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html" title="permanent link">Have nothing in your house that you do not know to be useful, or believe to be beautiful</a></span>
+					<div style="clear:both;"></div>The title is a quote by William Morris, a man with a deep interest in design and its relationship to our place in society. I think it applies to ideas as well as artefacts, and I must warn you that the following ideas fall under &#8220;beautiful&#8221; :-)<br /><br /><strong>The Halting Problem</strong><br /><br /><blockquote>The halting problem is a decision problem about properties of computer programs on a fixed Turing-complete model of computation. The question is, given a program and an input to the program, whether the program will eventually halt when run with that input. In this abstract framework, there are no resource limitations of memory or time on the program&#8217;s execution; it can take arbitrarily long, and use arbitrarily much storage space, before halting. <em>The question is simply whether the given program will ever halt on a particular input</em>.<br />  <br />  The reason the halting problem is famous is because it is undecidable, which means there is no computable function that correctly determines which programs halt and which ones do not.</blockquote><div>&#8212;<a href="http://en.wikipedia.org/wiki/Halting_Problem" title="Halting problem - Wikipedia, the free encyclopedia">Wikipedia</a></div><br />(There seems to be some confusion about what this says. It says that we cannot construct <em>one</em> machine or function or program that can examine any combination of machine or program and input and then correctly decide whether the program halts or does not halt.)<br /><br /><strong>1 + 1 = Cool</strong><br /><br /><div class="book"><hr/><em><a href="http://www.amazon.com/gp/product/0812921178?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0812921178"><img border="0" src="http://raganwald.github.com/assets/images/old//lady_or_tiger.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0812921178" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br /><a href="http://www.amazon.com/gp/product/0812921178?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0812921178">Lady or the Tiger? And Other Logic Puzzles Including a Mathematical Novel That Features G&ouml;del&rsquo;s Great Discovery</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0812921178" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />: &#8220;Another scintillating collection of brilliant problems and paradoxes by the most entertaining logician and set theorist who ever lived. As in all of Professor Smullyan&#8217;s fantastic puzzle books, you end up exploring that strange subterranean region below mathematics, where G&ouml;delian corridors lead in all directions to beautiful theorems about truth and provability.&#8221;&#8212; Martin Gardner</em><hr/></div>We absolutely <em>know</em> that the Halting Problem is true (meaning there is no function that correctly answers whether every program halts or does not halt). However, the math seems a bit gnarly if you were sleeping through your computability courses. And furthermore, just because we know that there must exist programs for which we do not know whether they will halt for at least one input, it&#8217;s always a lot more convincing to actually look at such a program.<br /><br />The Wikipedia article provides a couple of examples based on unsolved problems in mathematics, the search of an odd <a href="http://en.wikipedia.org/wiki/Perfect_number" title="Perfect number - Wikipedia, the free encyclopedia">perfect number</a> and the search for the largest pair of <a href="http://en.wikipedia.org/wiki/Twin_prime_conjecture" title="Twin prime conjecture - Wikipedia, the free encyclopedia">twin primes</a>. The idea is this: if you can write a program that uses brute force to search for a counter-example to an unsolved problem in mathematics, you have one of three things:<br /><br /><ol><li>You run your program, it finds a counter-example, and you win a Nobel Prize in Mathematics (<a href="http://www.nobelprizes.com/nobel/why_no_math.html">not really!</a>) for disproving the unsolved problem, or:</li><br /><li>You run your program, it goes on running forever, and you can&#8217;t prove that it will ever stop. But it might. If you could prove it would stop than you can also disprove the unsolved problem, so again you win a Nobel Prize in Mathematics.</li><br /><li>You don&#8217;t need to run your program, you know darn well it will never stop, and you can prove it will never stop. Now you have proved the unsolved problem, so again you win a Nobel Prize in Mathematics.</li></ol><br />Of course, alternative four is to accept the idea that there are very simple programs that might run forever but we have no way of knowing if they ever stop.<br /><br />If you go through any of the proofs of the Halting Problem, you already know this. But sometimes, an example is worth a thousand words.<br /><br /><strong>Goldbach&#8217;s Conjecture</strong><br /><br /><blockquote>Goldbach&#8217;s conjecture is one of the oldest unsolved problems in number theory and in all of mathematics. It states: <em>Every even integer greater than 2 can be written as the sum of two primes</em>. In other words, the Goldbach conjecture states that every even number greater than or equal to four is a Goldbach number, a number that can be expressed as the sum of two primes.</blockquote><div>&#8212;<a href="http://en.wikipedia.org/wiki/Goldbach's_conjecture" title="Goldbach's conjecture - Wikipedia, the free encyclopedia">Wikipedia</a></div><br /><br />To review, by <em>unsolved problem</em>, we mean that we haven&#8217;t proved it is true and we also haven&#8217;t proved it is false. So here&#8217;s what we do: Let&#8217;s write a program that checks every even integer from 4 up. If it is the sum of two primes, we try the next higher even number. If it is <strong>not</strong> the sum of two primes, we stop and output the number.<br /><pre><code><br />require 'mathn'<br /><br />@prime_generator = Prime.new<br />@primes = [@prime_generator.succ] # start with [2]<br /><br /># given a number, answer a list with at least all <br /># of the primes &lt;= that number. may include<br /># larger primes.<br />#<br /># primes_at_least_up_to(12) -&gt; [2,3,5,7,11,13] <br /># and possibly more primes<br /># <br />def primes_at_least_up_to(n)<br />  while @primes[-1] &lt; n do <br />    @primes &lt;&lt; @prime_generator.succ<br />  end<br />  @primes<br />end<br /><br />def sum_of_two_primes?(n)<br />  !!(primes_at_least_up_to(n).detect { |p1| <br />      primes_at_least_up_to(n).include?(n-p1) <br />    })<br />end<br /><br />n = 4<br /><br />while sum_of_two_primes?(n)<br />  n +=2<br />end<br /><br />puts n</code></pre><br />Does this program halt? If you can answer this question, you solve a huge problem in Number Theory. Now again, this does <em>not</em> prove the Halting Problem. For one thing, we might solve the Goldbach Conjecture by proving or disproving it, and then we could tell you whether this program halts.<br /><br />Another possibility is that we will prove that the Goldbach Conjecture is undecidable. In that case, we will have a proof that we cannot prove whether this program halts. This has been done with other conjectures. For example, we have proven that we can neither prove nor disprove Cantor&rsquo;s Continuum Hypothesis: it appears that within Number Theory, there is no way to know whether there exist infinities that are both larger than <a href="http://en.wikipedia.org/wiki/Aleph_number">&#1488;-null</a> and smaller than &#1488;-one.<br /><br />This program <em>does</em> demonstrate that at a deep level, programs are math. You can draw an equivalence between certain programs and certain statements in mathematics. We can say that certain properties of Program P (like whether it halts) are equivalent to certain properties of Mathematical Statement S (like whether every even number is the sum of two primes).<br /><br />That connection leads us to Incompleteness. If we know that there must be mathematical statements that are undecidable (like statements that are true but cannot be proved), we know that there are undecidable properties of computer programs. And if we know that there are undecidable properties of computer programs (like whether they halt), we know that there are undecidable statements in mathematics.<br /><br />I find that deeply, deeply interesting.<br /><br /><hr><br />This was provoked by an example from the <a href="http://www.lambdassociates.org/webbook/chap3.htm">Qi language</a> manual. It came at a good time: after writing about various aspects of our industry and its limitations, I needed to be reminded how how much I enjoy thinking about programs.<br /><br />Which brings me back around to the title. Computer Science is a big field. Programming is a big field. Working for a living developing software is a big field. I believe you have to pick and choose, you can&rsquo;t learn everything, you can&rsquo;t try to pick up every new thing that comes along.<br /><br />But I believe that if you follow Morris&rsquo; dictum, you will be effective and also deeply engaged. Do not settle for mediocre ideas. Accept only those things that are useful, beautiful, or both. Do not settle for just beautiful or just useful. It is surprising how often useful things help you build beauty, and likewise how often beautiful things turn out to be useful in a different context.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html" title="permanent link">2:43 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Have nothing in your house that you do not know to be useful, or believe to be beautiful</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="950283047149554376"></a> 				Tyops, both on the same sentence: <BR/><BR/>"For example, we have proven that w can neither prove nor disprove Cantor’s Continuum Hypothesis: it appears that within Number Theory, there is now way to know whether there exist infinities larger than Aleph Zero and smaller than Aleph One."<BR/><BR/>s,w,we,<BR/>s,now way,no way,<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197493140000#c950283047149554376" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07278591668686368670" rel="nofollow">jsled</a> : 3:59 PM</div>
+
+								<span class="item-control blog-admin pid-1024900875"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=950283047149554376" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8099767704052075483"></a> 				Thanks!!!<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197493920000#c8099767704052075483" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:12 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8099767704052075483" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3948714340244360471"></a> 				Hi Reg,<BR/><BR/>unfortunately nobody will ever be able to win a Nobel Prize in Mathematics:<BR/><BR/><A HREF="http://www.nobelprizes.com/nobel/why_no_math.html" REL="nofollow">Why is there no Nobel Prize in Mathematics?</A><BR/><BR/>:-)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197495480000#c3948714340244360471" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11358691221684335160" rel="nofollow">gcorriga</a> : 4:38 PM</div>
+
+								<span class="item-control blog-admin pid-1354599716"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3948714340244360471" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8572883028316469702"></a> 				<I>Unfortunately nobody will ever be able to win a Nobel Prize in Mathematics</I><BR/><BR/>Too bad, thanks for the link.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197495720000#c8572883028316469702" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:42 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8572883028316469702" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2370481403290030117"></a> 				I think you're missing a point - the halting problem talks about "any machine" and "any input".<BR/><BR/>There can be a machine that decides for a particular machine and a particular input (there can be two such machines/outputs - one that says "true" and one that says "false". One of them is the correct answer)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197495900000#c2370481403290030117" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">GG</span> : 4:45 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2370481403290030117" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4061159631559118331"></a> 				gg:<BR/><BR/>I don't understand what you're saying. Trivially, you can build two machines, one of which always says "halts" and the other of which always says "does not halt."<BR/><BR/>But if we don't know which machine is right, we have an undecidable problem.<BR/><BR/>How does that conflict with what I've written here? Can you expand on your point a bit??<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197496260000#c4061159631559118331" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:51 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4061159631559118331" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3809876165991964930"></a> 				exactly - you have two machines and the halting problem is about whether a machine "exists". So for the simple case of a particular machine and a particular input it is obvious (as you wrote) that there *exists* a Turing machine that "returns" the correct answer.<BR/><BR/>The same is with the twin primes problem - since we don't know whether the theorem is right or wrong, we don't know if the Turing machine that tries to find a counterexample will stop or not. But we *do know* that it will be one of these options.<BR/><BR/>So for the twin primes problem, there *exists* a turing machine that outputs the correct answer ("halts"/"does not halt"). It is our problem that we don't know which one of them is correct.<BR/><BR/>The halting problem is about existence and not about correctness . So whether a given problem is unsolved in mathematics does not mean that there is no Turing machine that can decide it.<BR/><BR/>Of course (as the halting problem states) there is no Turing machine that can output a correct answers for *all* possible problem/input pairs.<BR/><BR/>(sorry for the bad English...)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197498480000#c3809876165991964930" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">GG</span> : 5:28 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3809876165991964930" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="684633567337416197"></a> 				GG:<BR/><BR/>I think there may be a communication gap. I think we both agree that there is no machine that answers whether <I>any</I> machine with <I>any</I>input halts.<BR/><BR/>I quoted Wikipedia saying: "there is no computable function that correctly determines which programs halt and which ones do not."<BR/><BR/>This talks about <I>one function</I> that can correctly answer whether <I>every</I> machine halts for <I>every</I> input.<BR/><BR/>So the existance of trivial machines or machines that correctly decide the halting behaviour of sets of machines does not invalidate the Halting Problem.<BR/><BR/>If even <I>one</I> machine exists and we cannot decide whether it halts or not, this proves the Halting Problem.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197498840000#c684633567337416197" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:34 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=684633567337416197" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="675485819954854995"></a> 				Take this xkcd comic:<BR/><BR/>http://xkcd.com/167/<BR/><BR/>and replace the first bubble with "The tech industry sucks" and the last bubble with "Hey! I found String#to_proc!"<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197499680000#c675485819954854995" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11167295487172421470" rel="nofollow">p. squiddy</a> : 5:48 PM</div>
+
+								<span class="item-control blog-admin pid-1201814687"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=675485819954854995" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4882913391134336050"></a> 				Maybe there was some misunderstanding (that's the problem with having English as a third language). My point was that giving the "twin primes" (or any other particular problem) as an example is not a supporting argument or explanation to the validity of the halting problem.<BR/><BR/>Anyway - we apparently agree on the facts :)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197500640000#c4882913391134336050" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">GG</span> : 6:04 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4882913391134336050" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8743592341030112149"></a> 				Ah, thank you so much for finding Qi! It looks like a possible gem.<BR/>I'm a bit tired of CL's all-encompassing design, Qi is much clearer. <BR/>Spent all night reading his book.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197513480000#c8743592341030112149" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06117763824030544555" rel="nofollow">jartur</a> : 9:38 PM</div>
+
+								<span class="item-control blog-admin pid-1346477463"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8743592341030112149" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5089217546587987758"></a> 				I believe the conjecture requires the terms "all programs" and "all inputs".<BR/><BR/>For example, if a program has no inputs, we can sometimes determine if it will indeed run forever.  That is, if its machine state at any given instance is identical to a previously seen state.. then it will run forever.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197520560000#c5089217546587987758" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 11:36 PM</div>
+
+								<span class="item-control blog-admin pid-2050274566"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5089217546587987758" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1629806415788783614"></a> 				Reg - you may have already read this but for anyone else in the comments looking to learn more...<BR/><BR/>A great and beautiful book which explores these topics is GEB (Godel, Escher, Bach).<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197570300000#c1629806415788783614" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">archibaldtort</span> : 1:25 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1629806415788783614" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4971137934918443463"></a> 				Heh. Proof by nonexistent award:<BR/><BR/>"The Halting Problem is unsolvable. Proof: If you could solve it, you'd win the Nobel Prize in Mathematics. But there is no Nobel Prize in Mathematics; Q.E.D." ;)<BR/><BR/>(Yes, the HP is indeed undecidable. I was just amused by your discussion technique.)<BR/><BR/>Besides GEB, most of Raymond Smullyan's books also deal with the Halting Problem at some point, although Smullyan is much more taken with Godel's Incompleteness Theorem.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197585000000#c4971137934918443463" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 5:30 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4971137934918443463" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2689955889670653910"></a> 				<I>Proof by nonexistent award</I><BR/><BR/>Hilarious! That isn&rsquo;t even <I>close</I> to what I meant, but it is easily the funniest comment I&rsquo;ve read today, thank you.<BR/><BR/>As you can tell, I&rsquo;m a big Smullyan fan. I don not think it&rsquo;s a co&iuml;ncidence that he has written about Incompleteness and HP, for the reason I give above: they are deeply related.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/have-nothing-in-your-house-that-you-do.html?showComment=1197585240000#c2689955889670653910" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:34 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2689955889670653910" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

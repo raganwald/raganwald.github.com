@@ -1,0 +1,414 @@
+<html> 
+<head>
+        
+        <title>Spaghetti-Western Coding</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Sunday, March 16, 2008</div>
+			
+
+			<div class="Post"><a name="4205897263373332667">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html" title="permanent link">Spaghetti-Western Coding</a></span>
+					<div style="clear:both;"></div><div align="center"><code><br />ATGAGAAAGAGGATGCGAGACACCCCGAACCGCGATCGCCCGCGCGAGAG<br />ACTGGCAGCACGAGGACCGGAGGCTCTCACCGATGCCGAACTGCTCGCCC<br />TTCTCCTCGGGCGCGGCACGAAGGGGCGGGACGTCTGGCAGGTCGCGGGC<br />GACGTCGAACGCTGCCTGAAACGTGCCGAAGGTTGCCCTTCTTATGACGA<br />TCTCCTCGGAATAGACGGGGTCGGGTCGGCGAAAGCCTGCGAGATCATGG<br />CCTGCTTCGAACTCGGCCGGAGATACTTCGGGGACGACGGGGTCTCCGGG<br />CACCGGATCGCCCGCCCCGAGGACGTGCTCCCCCTGGTCACGGAATGGCG<br />GGACAAGAAGCAGGAGTACTTCTTCTGCATCACCTTAAACGGTGCCGGCG<br />CTGTGATCGAGCGGCGGATCGTCACCGTCGGAATCCTGAACCAGAGCCTC<br />GTCCACCCCCGGGAGGTCTTTTCCGATGCGATCACCGACCGTGCGGCCTC<br />GGTCATCCTGGTCCATAACCATCCTTCGGGCACGCTCGAGCCGTCCGCCC<br />AGGATCTCGCCATCACCCGGCAGCTCGTCGAGGCCGGATCGATCCTCGGC<br />ATCCGGGTGCTCGACCACATCATCGTCACGAAGAACGGCTGCGCGAGCTT<br />AAAAGAACTCGGGCACCTGTAA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code></div><br />In case you didn&rsquo;t recognise it at a glance, this is a metaprogramming gene: it <a href="http://imgweb.jgi-psf.org/cgi-bin/w/main.cgi?exportGenes=1&amp;exportType=nucleic&amp;gene_oid=640114732&amp;up_stream=0&amp;down_stream=0" title="Gene Export">repairs DNA</a> in <a href="http://genome.jgi-psf.org/finished_microbes/metma/metma.home.html" title="JGI Methanoculleus marisnigri JR1 Home">Methanoculleus Marisnigri</a>, an anaerobic organism found in decaying sediment at the bottom of the Black Sea. Metaprogramming genes&#8253 Yes indeed, the <a href="http://en.wikipedia.org/wiki/genetic_code" title="Genetic code - Wikipedia, the free encyclopedia">Genetic code</a> embraces metaprogramming with enthusiasm: DNA splices itself, moves code around, and rewrites code. Sections of code are turned on and off. Genes manufacture proteins that express or suppress other genes. And I am grossly oversimplifying things!<br /><br />The frustrating thing about genetic code is that it is really, really easy to understand what it does in the small. <strike>Amino</strike> Nucleic acids come in triplets called codons. In the gene above, the first codon and last codon are beginning and end markers, like curly braces in Algol-derived programming languages. The other codons code for amino acids. The entire template manufactures a small piece of RNA. This mechanism is very well understood at this scale of behaviour. However, when you build from the DNA up to the whole organism, the overall behaviour is a mystery, just as <abbr title="Genius is an African who dreams of snow--Nabokov">the behaviour of snow is very difficult to predict from the molecular properties of water and air</abbr>.<br /><br />Software programs exhibit the same frustrating property: although we can easily determine what individual expressions do, the behaviour of programs in the aggregate resists simple analysis. Consider:<br /><pre><code><br />p[++i] = 0;</code></pre><br />What does this do? Well, in C++ anything is possible, but a simple interpretation&#8212;incrementing an integer and then using the result to assign zero to an element of an indexed collection&#8212;is well understood and the probable meaning of this program in many languages.<br /><br />The program that includes such a line has state, and this line of code makes a very small alteration to that state. What effect does this line of code have on a program&#8217;s behaviour? Well, now we have a conundrum. You often find this code inside of a loop. But if we make some error in our loop boundary checking, we can start overwriting some other thing&#8212;like our program&#8217;s code&#8212;with zeroes.<br /><br />This is the basic problem with state machines: a small change of state can have unpredictable consequences on the behaviour of our machine.<br /><br /><blockquote>We have a blueprint for a state machine that writes a blueprint for another state machine. So we are looking at a blueprint of a state machine that makes blueprints and we are trying to predict the behaviour of the state machines it builds.<br /><br />This is roughly like looking at Bach&#8217;s DNA and hearing the Little Fugue in your head.</blockquote><br />There is a much more familiar expression we use to describe programming machines with mutable state: We call it &#8220;Imperative Programming.&#8221; And we have discovered that it matches the way our brains think about many algorithms really well, that&#8217;s why we (statistically speaking) resist purely functional approaches. However, we have known for a very long time that imperative programs have this awful property: a small change of code can result in unpredictable changes to the behaviour of the running program.<br /><br />So here is my analogy: an imperative program is a blueprint for a state machine. We put the blueprint inside of another machine we understand really well, and it manufactures the state machine for us, then starts the state machine. Our problem is that we are supposed to understand the behaviour of the constructed machine as it changes state just by looking at the blueprint.<br /><br /><strong>And if you think that is hard&#8230;</strong><br /><br />Wait! Let&#8217;s make the problem <em>harder</em>. What if we have a blueprint for a state machine. What does our state machine do? It <em>writes a blueprint for a state machine and feeds that to a machine-making machine, which then gives us back another state machine</em>. So we are looking at a blueprint of a state machine that makes blueprints and we are trying to predict not only its behaviour but the behaviour of the state machines it builds.<br /><br />This is roughly like looking at Bach&#8217;s DNA and hearing the Little Fugue in your head.<br /><br />Does that sound easy? No? Well what do you think we are doing when we write code what writes code? Here is a standard Ruby template for writing modules:<br /><pre><code><br />module Example<br />  module ClassMethods<br />    #...<br />  end<br /><br />  module InstanceMethods<br />    #...<br />  end<br /><br />  def self.included(receiver)<br />    receiver.extend         ClassMethods<br />    receiver.send :include, InstanceMethods<br />  end<br />end</code></pre><br />You are looking at a program that write programs, a blueprint for a machine that makes blueprints. Metaprogramming is imperatively programming an imperative program.<sup><font size="1"><a name="from_1" href="#to_1">1</a></font></sup> Now, a program is a kind of amplifier: a short program produces a big result. So when we write a program that writes programs, we are amplifying the amplification.<br /><br /><strong>The spark of a match. A long, lingering draw on a cheroot. And a narrowing of eyes.</strong><br /><br />Consequently, metaprogramming amplifies the <a href="http://api.rubyonrails.com/classes/ActiveRecord/Associations/ClassMethods.html" title="Module: ActiveRecord::Associations::ClassMethods">good</a>, the <a href="http://thedailywtf.com/Articles/SQL-Sentences.aspx" title="SQL Sentences - The Daily WTF">bad</a>, and the <a href="http://raganwald.github.com/2008/02/mouse-trap.html" title="The Mouse Trap">ugly</a> of imperative programming.<br /><br />In and of itself, metaprogramming is &lsquo;just&rsquo; an amplifier. If you have issues with imperative programming, you are going to have issues with metaprogramming, only magnified. I don&#8217;t know about you, but <em>I</em> certainly have issues with imperative programming. And I am not alone: the history of programming languages has been dominated by attempts to tame the basic complexity of mutable state in programs.<br /><br />Structured programming attempted to tame the arbitrarily complicated program flows&mdash;known to this day as &ldquo;spaghetti code&rdquo;&mdash;resulting from the indiscriminate use of <em>if</em> and <em>goto</em> statements. Object-oriented programming attempted to tame the arbitrarily complicated data states resulting from the indiscriminate combination of procedures and data structures. Procedure calls, continuations, methods, &#8230; the idioms and language mechanisms we&#8217;ve devised are all attempts to make simpler machines that are easier to understand.<br /><br /><div class="book"><hr/><em><a id="lnx0" name="evtst|a|0262610744" href="http://www.amazon.com/gp/product/0262610744?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262610744"><img src="http://raganwald.github.com/assets/images/old//art_of_mop.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262610744" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br><a id="lnx1" name="evtst|a|0262610744" href="http://www.amazon.com/gp/product/0262610744?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262610744">The Art of the Metaobject Protocol</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262610744" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is one of the most important books ever written on the subject of building abstractions with objects. The <a href="http://en.wikipedia.org/wiki/Metaobject">Metaobject Protocol</a> is a system for defining your own object semantics, and you can implement the parts you choose in Ruby or any other reasonably expressive language. And while you&rsquo;re learning how to make your programs better in your language, you just might pick up a little Common Lisp. Highly recommended.</em><hr/></div>Of course, there is no simple answer. Banning metaprogramming makes exactly as much sense as banning abstractions in imperative programming, and for exactly the same reasons. If you ban abstractions from imperative programs, you assert that longer programs made out of simpler pieces are more tractable than short programs made out of abstractions. Sometimes they are, sometimes the abstractions are gratuitous, and <a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html" title="Golf is a good program spoiled">sometimes the mechanisms used to make a program short are incidental to its purpose</a>, almost as if you compressed the source code and insisted that it must be easier to read because it has fewer redundant bits.<br /><br />I&#8217;m personally optimistic that we will find reasonable idioms and mechanisms for managing the complexity of metaprogramming. Some of the idioms we&#8217;ve already found are promising, and as long as we don&#8217;t succumb to Blub and decide that there is no further improvement possible, we can only get better.<br /><br />We seem to be doing a decent job with the style where we place our metaprogramming in a separate place from our program&#8217;s core &#8220;business logic.&#8221; Rails accomplishes this with plug-ins: not only can you use lots of other people&#8217;s plug-ins, you can deliberately place your own metaprogramming code in a plug-in to keep it separate from the application code that calls it. You call <em>acts_as_versioned</em> in your class, and the plug-in does the rest. Although you are <em>using</em> metaprogramming, your program fakes a declarative style quite effectively.<br /><br /><strong>Blueprint Transformers</strong><br /><br />When I said that <a href="http://raganwald.github.com/2008/03/is-is-has.html" title="IS-A IS-A HAS-A">IS-A IS-A HAS-A</a>, a few people pointed out that IS-A isn&#8217;t HAS-A: In actuality, ISA-A <abbr title="is implemented with">WAS-A</abbr> HAS-A. Isn&rsquo;t that the point of true <a title="Abbreviation, Accidental Complexity, and Abstraction" href="http://raganwald.github.com/2007/07/abbreviation-accidental-complexity-and.html">abstractions</a>? To provide the illusion of a new set of semantics implemented using existing semantics?<br /><pre><code><br />proof("Proof of Relationship").where {<br />  document("Affidavit of Same-Gender Domestic Partnership").where {<br />    Both_names = item("Participant's Name") &amp;<br />                 item("Partner's Name")<br />  }<br />}<br /><br />proof("Proof of Joint Ownership").where {<br /><br />  document("Property Statement").of_kinds(<br />      "Rental/Lease Agreement",<br />      "Deed",<br />      "Property Tax Statement"<br />  )<br /><br />  document("Financial Statements").of_kinds(<br />      "Mortgage Statement",<br />      "Credit Card Statements",<br />      "Bank Statements",<br />      "Utility Bill Statements"<br />  )<br />}</code></pre><br />Syntactically this is Ruby code, but semantically it is something else altogether (If it matters to you, it is a small snippet of a system for defining a decision tree used to determine loan eligibility). This is possible with metaprogramming by its very nature: You are working with a machine that takes a blueprint as its input and produces a blueprint as its output. In effect, you are working with a blueprint transformer. Mediating between different semantics is an obvious application for this technique.<br /><br />This is great, and I am a big booster of the power of metaprogramming. But just as we are loathe to &#8220;throw out the baby with the bath water&#8221; by banning techniques just because they can be misused, we should likewise be loathe to embrace techniques as golden hammers just because they have some extremely beneficial applications.<br /><br />For all of its wonderful utility, metaprogramming is, at its heart, the act of writing programs that write programs. Which means that understanding our programs requires predicting what a program will do given a blueprint for a machine that will write a blueprint for our program.<br /><br />This is not a trivial exercise. And yes, you can shoot yourself in the foot if you aren&rsquo;t careful. But in the end, there&rsquo;s two kinds of programmers in the world: those with dangerous techniques and those who dig.<br /><br /><hr/><br /><font size="-1"><em>This post was conceived during the Q&amp;A after <a href="http://openwetware.org/wiki/Andrew_Hessel">Andrew Hessel</a>&rsquo;s talk at <a href="http://www.scibarcamp.org/">SciBarCamp</a>.</em><br /><br /><a name="to_1"></a>1. (A few people missed this post script, so I have made it an end note):<br /><br />Yes, I realize that &ldquo;metaprogramming&rdquo; is a vague term with may possible interpretations right down to the weak assertion that writing named procedures is metaprogramming. And I also realize that <u>there is much, much more to programming than imperative programming</u>.<br /><br />But please don&rsquo;t allow the presence of this disclaimer to discourage you from comments about other forms of metaprogramming that do not fit into the neat box of state machines building blueprints for state machines. I am especially interested in hearing from functional programmers: what is the functional equivalent of the metaprogramming described here and how does it differ in character?<br /><br />[<a href="#from_1">back</a>]<br /></font><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html" title="permanent link">11:30 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Spaghetti-Western Coding</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="5853546389404156957"></a> 				This was way too long to read, but I just had to say, that's got to be the best blog post title I've ever seen.<BR/><BR/>Also, I think I know why DNA's so incomprehensible. Write some code to power particle systems in Flash or Processing, or to direct Lego Mindstorms robots (you could use my Rubotz gem to do it in Ruby, hint hint). Self-promotion aside, the minute your software touches hardware, or any external system, it becomes very hard to understand without direct reference to the external system.<BR/><BR/>Mindstorms code is hard to understand unless you plug it into an actual robot - even when written in Ruby with my spectacular gem - and the problem with coding for Mindstorms is that you can drop code into version control a thousand times but you can't drop the physical construction of a robot into version control. So it's very easy to end up with Mindstorms code that might do anything for all you know, even though you're the one who wrote it.<BR/><BR/>So that's what it's like maintaining Lego robots with Ruby. Meanwhile you've got this language which is like a cross between Lisp and Brainfuck being used in the context of organic chemistry, and the organic chemistry is sophisticated enough that you have entire ecologies in every human body - every human body consists of more microbe cells than human cells, which is to say, every human being is more ecosystem than organism.<BR/><BR/>DNA is powerful, but you can't really understand computers til you understand the hardware they run on.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html?showComment=1205739960000#c5853546389404156957" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 3:46 AM</div>
+
+								<span class="item-control blog-admin pid-855033878"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5853546389404156957" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5823877634937658564"></a> 				Giles:<BR/><BR/><I>DNA is powerful, but you can't really understand computers til you understand the hardware they run on.</I><BR/><BR/>Ummm... DNA doesn't run on hardware, DNA describes how to build the hardware plus how it runs.<BR/><BR/>And yes, multi-cellular organisims have another layer of organization. As do programs: looking at a class, do you understand what it does without looking at all of the classes for the program.<BR/><BR/>Which is really my point about programs where the pieces interact with each other and complexity.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html?showComment=1205755260000#c5823877634937658564" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:01 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5823877634937658564" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6128124698109434480"></a> 				Wow, I just had an epiphany.  Code <I>is</I> data.  Data <I>is</I> code.  We're all just running a dialect of Lisp!<BR/><BR/>What's more, it's all running on a straight-up Turing Machine.  Ever seen rRNA process mRNA?  It's the closest thing that actually exists to a real world Turing Machine.<BR/><BR/>On another note, wouldn't returning a lambda (another function) in functional programming be a form of metaprogramming?  In that case you have a function that's writing more code.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html?showComment=1205756640000#c6128124698109434480" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05577722747266320930" rel="nofollow">Me</a> : 8:24 AM</div>
+
+								<span class="item-control blog-admin pid-2019082379"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6128124698109434480" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2574473069449557625"></a> 				<span class="deleted-comment">This post has been removed by the author.</span><br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html?showComment=1205768880000#c2574473069449557625" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01541692139806137936" rel="nofollow">Adam C.</a> : 11:48 AM</div>
+
+								<span class="item-control blog-admin "><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2574473069449557625" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6632487844333918828"></a> 				Interesting read.<BR/><BR/>Emergent properties do arise from connecting up so many simple building blocks like protein sequences forming DNA.  It reminds me of the <I>procedural programming</I> game, Spore.<BR/><BR/>Regarding the DNA comments as hardware or software (or both), it seems while we're attempting to understand what a system does at an abstract level, you can ultimately achieve a deeper understanding about the original components you started with.<BR/><BR/>I think this process is a continuous cycle. You start with creating very basic code snippets and move on to layering higher-level abstractions to build bigger, more complex systems.  Discovering how the entire system works when merged with live data definitely causes eureka moments for myself and ultimately leads to revisiting the code down to the basic building blocks until this <I>software ecosystem</I> achieves equilibrium.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html?showComment=1205770440000#c6632487844333918828" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13458786796079847097" rel="nofollow">Tom Woz</a> : 12:14 PM</div>
+
+								<span class="item-control blog-admin pid-2044174509"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6632487844333918828" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="9170028964063668088"></a> 				A small correction from a pedant: nucleic acids (not amino acids) come in triplets called codons.  Each codon represents the code for an amino acid.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html?showComment=1205796420000#c9170028964063668088" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16265521505591719302" rel="nofollow">Andrew</a> : 7:27 PM</div>
+
+								<span class="item-control blog-admin pid-1816023492"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=9170028964063668088" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="207783964794744545"></a> 				Hmmm, stretching this analogy a bit thinner. One thing to keep in mind is that bugs in DNA can lead to very unexpected results and in the worst case cancer (talk about undefined behaviorof the worst sort).  The other thing to keep in mind is that it takes a bunch of very smart people a long time to figure out what gene is related to what trait and then how that gene actually works.  Neither of these situations is very desirable in a computer program.  I agree though that we shouldn't toss out the technique, just be aware of the trade-offs when using it since we don't have whole biological system working to fix our programming mistakes like your body has to minimize the damage that bad DNA can cause.  Plus, the universe doesn't care when a human crashes (other humans might, but the universe could care less) but users care when a program crashes.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html?showComment=1205817540000#c207783964794744545" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01838925956817921960" rel="nofollow">brett</a> : 1:19 AM</div>
+
+								<span class="item-control blog-admin pid-153799757"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=207783964794744545" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6627392056777327042"></a> 				I blogged my response at <A HREF="http://www.grauw.nl/blog/entry/462" REL="nofollow">Grauw.nl: Spaghetti-Western DNA</A> :).<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html?showComment=1205867700000#c6627392056777327042" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://www.grauw.nl/id/grauw" rel="nofollow">Grauw</a> : 3:15 PM</div>
+
+								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6627392056777327042" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8951967150866613776"></a> 				I think the problem here is imperative coding.  Just stop it.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html?showComment=1206032580000#c8951967150866613776" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15576124960718643532" rel="nofollow">Robert Fischer</a> : 1:03 PM</div>
+
+								<span class="item-control blog-admin pid-1999105704"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8951967150866613776" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7726966335260271637"></a> 				Thank you, Robert. Your remark is <A HREF="http://raganwald.github.com/2008/03/what-to-do-about-imperative-programming.html" REL="nofollow">worthy of a post</A>.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html?showComment=1206048780000#c7726966335260271637" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 5:33 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7726966335260271637" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

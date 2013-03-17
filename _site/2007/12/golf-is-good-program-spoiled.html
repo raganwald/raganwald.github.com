@@ -1,0 +1,463 @@
+<html> 
+<head>
+        
+        <title>Golf is a good program spoiled</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Thursday, December 20, 2007</div>
+			
+
+			<div class="Post"><a name="7164239232782092678">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html" title="permanent link">Golf is a good program spoiled</a></span>
+					<div style="clear:both;"></div>A reader mentioned that &ldquo;It&#8217;s not about lines of code.&rdquo; And he was right: Brevity alone is an unreliable way to judge a program. The problem is&mdash;quite simply&mdash;the existence of <a href="http://en.wikipedia.org/wiki/Perl#Perl_golf" title="Perl - Wikipedia, the free encyclopedia">Golf</a>. In any Turing Equivalent language, it is possible to construct programs that are very small and very difficult to understand.<br /><br />Brevity is not our goal, but it <em>is</em> a side-effect of what happens when we write software well. These are my thoughts about the relationship between program size and readability. It&rsquo;s my take on how you can look at one short program and dismiss it as Golf, and look at another and praise it as being succinct and expressive.<br /><br /><strong> what really matters</strong><br /><br />So what really matters? What is it about well-written software that makes it succinct and elegant? Let&#8217;s look at an absurdly trivial snippet of code and talk about five different ways we could express its intent:<pre><code><br />a = b + c * 2<br />d = e + f * 2<br />g = h + j * 2<br />k = m + n * 2<br />p = q + r * 2</code></pre><br />Hmm. Thirty-five symbols. What about this:<pre><code><br />def addtimestwo(x,y)<br />    x + y * 2<br />end<br /># ...<br />a = addtimestwo(b,c)<br />d = addtimestwo(e,f)<br />g = addtimestwo(e,f)<br />k = addtimestwo(m,n)<br />p = addtimestwo(q,r)</code></pre><br />Twenty-eight symbols. Hey, we can also do this:<pre><code><br />def addtimestwo(x,y)<br />    x + y * 2<br />end<br /># ...<br />a, d, g, k, p = addtimestwo(b,c), addtimestwo(e,f), addtimestwo(e,f), addtimestwo(m,n), addtimestwo(q,r)</code></pre><br />The same twenty-eight symbols. That leads us to:<pre><code><br />a, d, g, k, p =  *[[b,c],[e,f],[h,j],[m,n],[q,r]].map { |x,y| x + y * 2 }</code></pre><br />Twenty-five symbols. Which reminds me:<pre><code><br />a, d, g, k, p =  *[[b,e,h,m,q],[c,f,j,n,r]].zip.map { |x,y| x + y * 2 }</code></pre><br />Twenty-six symbols, but fewer arrays. Comparing them, is the last one less readable than the first? Less &#8220;intuitive&#8221;?<br /><br />Let&#8217;s get that word out of the way immediately. &#8220;Intuitive&#8221; is not some wonderful principle that guides us to creating great software. It means no more and no less than &#8220;familiar.&#8221; <a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html" title="Programming conventions as signals">There&#8217;s value in doing the same things the same ways</a>, but only when it&#8217;s the right thing to do in the first place. Learn your tools.<br /><br /><!--<div class="book"><hr/><strong>An absurd example</strong><br /><br /><em>Take any large program you consider readable, compress it, and express the compressed result as a string using Base64. Now write a wrapper that decompresses the string to a file, compiles that file to an executable, and runs the result (or calls an interpreter on the file). For a non-trivial program, this will be substantially smaller. And entirely incomprehensible. So we have an two programs, each producing the same result, and the one that is smaller is impossible to understand. Note well that this example is independent of language choice: it is possible to make unreadable programs in any language.</em><hr/></div>-->So which of these trivial examples is better? And what does that tell us about program size? Let&#8217;s look at the examples and what they tell us. The first example tells us that there is no relationship between the various expressions, none. The second, where we have &#8216;abstracted out&#8217; the <code>addtimestwo</code> method, tells us that it is no co&iuml;ncidence that the five expressions used the same formula: they are the same thing.<pre><code><br />def addtimestwo(x,y)<br />    x + y * 2<br />end<br />a = addtimestwo(b,c)<br />d = addtimestwo(e,f)<br /># ...</code></pre><br />If that calculation was a piece of business logic, we might want to ensure that if you change one, the others all change as well. In the second example, they are on separate lines, suggesting that although the calculation is shared, the individual assignments are still decoupled from one another. It suggests to me that you might want to remove one, or move it elsewhere.<br /><br />In the third example, we have moved them all onto the same line.<pre><code><br />a, d, g, k, p = addtimestwo(b,c), addtimestwo(e,f), addtimestwo(e,f), addtimestwo(m,n), addtimestwo(q,r)</code></pre><br />In some languages, we might have moved all of the assignments into their own block. By grouping them, we have indicated very strongly that the five assignments belong together. In an imperative language like Ruby, this <a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html" title="Programming conventions as signals">signals</a> that there is something &#8216;atomic&#8217; about this, and that you don&#8217;t want anything else to happen until all five assignments have been mode.<pre><code><br />a, d, g, k, p =  *[[b,c],[e,f],[h,j],[m,n],[q,r]].map { |x,y| x + y * 2 }<br />a, d, g, k, p =  *[[b,e,h,m,q],[c,f,j,n,r]].zip.map { |x,y| x + y * 2 }</code></pre><br />The fourth and fifth examples are special. The fourth example says that the inputs to these calculations is already arranged in a particular structure. The fifth example says that they are arranged in a different structure, but we will use a particular <a href="http://raganwald.github.com/2007/11/really-useful-anamorphisms-in-ruby.html" title="Really useful anamorphisms in Ruby">unfold</a>&mdash;zip&mdash;to get them into the form we want to do the calculating.<br /><br /><strong>detour ahead</strong><br /><br />This is exactly where expressive languages shine, and simultaneously it is exactly where you can go badly wrong in a quest to achieve size for size&#8217;s sake. This is a trivial example, but please extrapolate the principle upwards to lambdas, methods, objects, hierarchies, modules, frameworks, and applications.<br /><br /><div class="book"><hr><em><a id="lnx0" name="evtst|a|026256100X" href="http://www.amazon.com/gp/product/026256100X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256100X"><img src="http://raganwald.github.com/assets/images/old//seasoned_schemer.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256100X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br><a name="evtst|a|026256100X" href="http://www.amazon.com/gp/product/026256100X?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=026256100X">The Seasoned Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=026256100X" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is the sequel to the phenomenal book <a id="lnx2" name="evtst|a|0262560992" href="http://www.amazon.com/gp/product/0262560992?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0262560992">The Little Schemer</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0262560992" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1">, a book that teaches recursion and first-class functions. The Seasoned Schemer dives into first-class functions and teaches you how to express relationships by composing and combining functions. It&rsquo;s a powerful abstraction that every programmer should have in their toolbox.</em><hr></div>The fourth and fifth examples are shorter than the first and second, but they are much worse if what they imply&mdash;a relationship between the inputs to the calculations&mdash;is contrived solely to shorten the code.<br /><br />On the other hand, if that relationship actually does exist, then they are far, far superior to the other examples. If there <em>is</em> a relationship there, the most important thing, the clearest thing, is to express the relationship, <em>to make the code we write clearly communicate the semantics of the data it manipulates</em>.<br /><br /><strong>no free lunch</strong><br /><br />Let&#8217;s look at example two again:<pre><code><br />def addtimestwo(x,y)<br />    x + y * 2<br />end<br />a = addtimestwo(b,c)<br />d = addtimestwo(e,f)<br /># ...</code></pre><br />Many people feel that regardless of the expressive power of their language, if it supports procedure calls, they&#8217;re good to go: they can abstract things into procedures, and bundle procedures into libraries, and with good design and decoupling and muttering yaddda yadda yadda while waving their hands just right, the result will be manageable, readable, abstracted code.<br /><br />Ok, I&#8217;m pulling their legs. It isn&#8217;t wrong, it&#8217;s absolutely correct that you can get an enormous win out of abstracting procedures, just like example two. But although that is good, having other ways to organize code is <em>better</em>. Example two adds some overhead: you have to read <code>addtimestwo</code> and control-click the label to jump to the implementation (alert to IDE lovers: I do this kind of thing in Ruby as well, please don&#8217;t assume that the rest of us are scrabbling with Notepad.exe).<br /><br />This abstraction adds overhead. &#8220;Abstracting&#8221; the common operation has made it more difficult to read, not less difficult to read. People for who consider meta-programming some sort of Black Magic often make this exact point: The mechanism for removing duplication adds complexity itself. One view is that the overall effect is only a win if the complexity added is small compared to the duplication removed.<br /><br />Another view, the one I am promoting here, is that it isn&#8217;t about removing symbols, it&#8217;s about communicating something about the underlying relationships. Even if your language is so crufty that example two is longer than example one, it&#8217;s the right thing to do if the calculations are the same for a deep reason, if you are trying to communicate that they will always be the same.<br /><br />That being said, my experience is that when a relationship exists, the code that clearly expresses it usually winds up being shorter than code that does not express it.<br /><br /><strong>relevance in the age of blub</strong><br /><br /><blockquote>Programming languages teach you not to want what they cannot provide.</blockquote><div>&#8212;Paul Graham, <a href="http://lib.store.yahoo.net/lib/paulgraham/acl1.txt">ANSI Common Lisp</a></div><br />I said usually. And here is the pitch for more expressive languages. Languages make expressing certain things easier than others. Each language has its strengths and weaknesses in these areas. Have you noticed how many blog posts have been written explaining <a href="http://osteele.com/archives/2007/12/overloading-semicolon" title="Overloading Semicolon, or, monads from 10,000 Feet">Monads</a>? <br /><br />The problem with languages is that if you are diligent, you will carefully organize your code to express all of the relationships <em>that your language supports</em>. So in Pascal, you factor out all of the common functions and procedures. And when you are done, you have maximally &#8220;compressed&#8221; your code. Not in the sense of creating an unreadable mess, but you have made your code as small and as elegant as you think is possible and prudent.<br /><br />But there are two problems. Pick one:<br /><ul><li>You <em>do</em> know other languages, and you recognize the other relationships that Pascal does not express well. So you Greenspun OO into your code base, and you&#8217;re hacking away at first-class functions. Now you can express these other relationships, but your code base is extremely idiosyncratic, and in many cases the code is longer and more convoluted because you have to do weird backflips to make the language try to pretend to be Java or Factor.</li><br /><li>You <em>don&#8217;t</em> know any other languages, so you think that you have done your best. You have no idea why other programmers are mumbling about Objects, or <a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html" title="Closures and Higher-Order Functions">First-Class Functions</a>, these weird things merely make the code an unreadable mess. You don&#8217;t see the underlying relationships those techniques express because you are a Pascal programmer.</li></ul><br />Either way, Pascal places limits on how well you can express the underlying relationships between things in your programs. The difference between the two situations is the difference between blissfully moving dirt because &#8220;that&#8217;s what we do, we move dirt,&#8221; and swearing under your breath all day as you fight a losing battle against dirt taking over your construction site.<br /><br /><blockquote>An &#8220;X programmer&#8221;, for any value of X, is a weak player. You have to cross-train to be a decent athlete these days. Programmers need to be fluent in multiple languages with fundamentally different &#8220;character&#8221; before they can make truly informed design decisions.</blockquote><div>&mdash;Steve Yegge, <a href="http://steve-yegge.blogspot.com/2007/12/codes-worst-enemy.html">Code&rsquo;s Worst Enemy</a></div><br />Let&#8217;s look at an <a href="http://www.codinghorror.com/blog/archives/001020.html" title="On The Meaning of 'Coding Horror'">oft-quoted</a> example from a fictional language. We&#8217;ll call the language <a href="http://raganwald.github.com/2006/10/are-we-blub-programmers.html" title="Are we Blub programmers?">Blub</a>:<pre><code><br />float frubbish = 0.0;<br />for (int i = 0; i &lt; foo.length; ++i) {<br />    for (int j = 0; j &lt; bar.length; ++j) {<br />        for (int k = 0; k &lt; bash.length; ++k) {<br />            frubbish += some_function(foo[i], bar[k], bash[j]); # updated<br />        }<br />    }<br />}</code></pre>This is so wrong in so many ways, but let&#8217;s start with the obvious bug. If are a Junior Blub Programmer, you believe that this algorithm expresses the underlying relationship properly, so you just fix the bug. If you are a Senior Blub Programmer, you don&#8217;t just fix the bug, but you add meaningful variable names so that <a href="http://www.joelonsoftware.com/articles/Wrong.html" title="Making Wrong Code Look Wrong - Joel on Software">wrong code looks wrong</a>:<pre><code><br />float frubbish = 0.0;<br />for (int index_foo = 0; index_foo &lt; foo.length; ++index_foo) {<br />    for (int index_bar = 0; index_bar &lt; bar.length; ++index_bar) {<br />        for (int index_bash = 0; index_bash &lt; bash.length; ++index_bash) {<br />            frubbish += some_function(foo[index_foo], bar[index_bar], bash[index_bash]);<br />        }<br />    }<br />}</code></pre>Ah, but if you are a Blub <em>Architect</em>, you realize that asking programmers to use meaningful variable names to keep out of trouble won&#8217;t work. Why, if that&#8217;s all it took, we could use dynamically typed languages like Javascript! No, we must put the compiler to work so that it is impossible to make this mistake. In fact, that&#8217;s exactly how Ada works: There is a special type for &#8220;the index of a foo,&#8221; and it is different from the type for &#8220;the index of a bar,&#8221; so the buggy code wouldn&#8217;t even have compiled. You can do this with C++ as well, and let&#8217;s pretend you can do it with Blub:<pre><code><br />float frubbish = 0.0;<br />for (IndexFoo index_foo = new IndexFoo(0); index_foo &lt; foo.length; ++index_foo) {<br />    for (IndexBar index_bar = new IndexBar(0); index_bar &lt; bar.length; ++index_bar) {<br />        for (IndexBash index_bash = new IndexBash(0); index_bash &lt; bash.length; ++index_bash) {<br />            frubbish += some_function(foo[index_foo], bar[index_bar], bash[index_bash]);<br />        }<br />    }<br />}</code></pre>The Junior, the Senior, and the Architect are all thinking within the limitations of Blub. They still want to write the same program, they don&#8217;t see that the index variable, the test for the end of the loop, the nesting of loops, and incrementing an index have nothing to do with the basic relationship you are trying to express.<br /><br />Instead of asking themselves <em>why</em> they have index variables, (or better still, why they have nested loops), the Blub programmers are asking themselves how to minimize the problems index variables create.<br /><br /><blockquote>People tend to view code bases much the way construction workers view dirt: they want great big machines that can move the dirt this way and that. There&#8217;s conservation of dirt at work: you can&#8217;t compress dirt, not much, so their solution set consists of various ways of shoveling the dirt around&#8230;</blockquote><div>&mdash;Steve Yegge, <a href="http://steve-yegge.blogspot.com/2007/12/codes-worst-enemy.html">Code&rsquo;s Worst Enemy</a></div><br />Index variables are dirt, and being a better Blub programmer is an exercise in learning more sophisticated ways to handle dirt. The Java Programmer has been liberated from this kind of thinking. She writes:<pre><code><br />float frubbish = 0.0;<br />for (float each_foo: foo) {<br />    for (float each_bar: bar) {<br />        for (float each_bash: bash) {<br />            frubbish += some_function(each_foo, each_bar, each_bash);<br />        }<br />    }<br />}</code></pre><div class="book"><hr><em><a id="lnx0" name="evtst|a|0596510047" href="http://www.amazon.com/gp/product/0596510047?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0596510047"><img src="http://raganwald.github.com/assets/images/old//beautiful_code.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0596510047" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br>In <a name="evtst|a|0596510047" href="http://www.amazon.com/gp/product/0596510047?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0596510047">Beautiful Code</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0596510047" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1">, great programmers reveal how they found unusual, carefully designed, and beautiful solutions to high-profile projects like regular expression engines, distributed computation, software transactional memory, hygienic macro processing, and twenty-one others.<br /><br />The authors of Beautiful Code share their thinking and problem solving process with us. And that&rsquo;s why this book transcends so many other books about programming: thinking and problem solving approaches are universal. This isn&rsquo;t a book about programs, it&rsquo;s a book about programming, and with every chapter you read you will become a better programmer.<br /></em><hr></div>She is not concerned with ways to prevent mistakes with index variables, because Java gives her a tool to make them go away. While the Blub programmers are arguing about how to manage dirt, she is writing code that expresses the relationship she wishes to communicate.<br /><br />Her code is shorter, yes. And much better. And the reason it is much better, the desirable property of her code, is that it communicates the actual thing going on and does not communicate a bunch of other things that are irrelevant.<br /><br />Those extra moving parts, the <a href="http://raganwald.github.com/2006/12/economizing-can-be-penny-wise-and.html" title="Economizing can be penny-wise and pound foolish">yellow code</a>, the accidental complexity makes the code harder to read. It adds opportunities for errors. It makes it harder to maintain. And all because it contains dirt, it contains things that do not express some fundamental relationship in the data.<br /><br />Shorter code is more readable when it is shorter by dint of expressing the underlying relationship, without irrelevant details.<br /><br />Alas, while everyone agrees with this statement, the tyranny of programming in Blub is that the Blub programmer does not know that his code contain irrelevant details: he thinks his code does express all of the necessary ideas in his algorithm, he considers shorter code &ldquo;cryptic.&rdquo;<br /><br /><strong>thank god, his typewriter ribbon is running dry</strong><br /><br />Now we can see that although each language provides abstraction mechanisms, and lets you build new abstractions with the mechanism, new <em>kinds</em> of abstractions give us new ways to express relationships. These things can be abused, of course, but nothing can save you from this: If you don&rsquo;t let your Architect play with Domain-Specific Languages, what is to stop them from <abbr title="Also known as, 'The cure is worse than the disease'">configuring everything in your application with XML</abbr>?<br /><br />The goal is readable code that expresses the underlying relationships. When we are programming in our personal Blub, the only relationships we see are the ones our language affords. Thus, we are always tempted to think that are programs already are as readable as the underlying problem domain allows, and that efforts to make them shorter are circus tricks that make the code less readable.<br /><br />And the only way to break out of Blub is to cross-train, to really <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html" title="The challenge of teaching yourself a programming language">learn new languages</a>. Otherwise, how will you know if your code could be shorter in a good way?<br /><br />Shorter code <em>is</em> better if it expresses underlying relationships, if it is shorter because it does not contain irrelevant cruft, if it does not contain workarounds and hacks to deal with limitations in the programming language. Of course, shorter code is not <em>always</em> better. If it is &#8220;shorter by co&iuml;ncidence,&#8221; by exploiting language tricks that do not reflect underlying relationships in your programs, that is bad.<br /><br />Golf is a good program spoiled.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html" title="permanent link">12:31 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Golf is a good program spoiled</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="6188006719598934841"></a> 				Both of your C/C++ examples will crash (++i instead of i++) or memory leak (new instead of declaring an object) in obvious ways, too...<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198178880000#c6188006719598934841" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08718306051556214906" rel="nofollow">Alexander Strange</a> : 2:28 PM</div>
+
+								<span class="item-control blog-admin pid-200613351"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6188006719598934841" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="828537258624121950"></a> 				I'm sorry, what C++ examples? Those were written in Blub.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198179000000#c828537258624121950" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:30 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=828537258624121950" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1479305554665686687"></a> 				> For once, examples [...] could be useful!<BR/><BR/>Haskell:<BR/><BR/>frubbish = sum [foo * bar * bash | foo <- foos, bar <- bars, bash <- bashes]<BR/><BR/>:)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198183680000#c1479305554665686687" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02727258157936734796" rel="nofollow">Porges</a> : 3:48 PM</div>
+
+								<span class="item-control blog-admin pid-1262720777"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1479305554665686687" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2849716393948596978"></a> 				The spoiling occurred when you decided to frame the problem in terms of 10-15 scalars rather than a 2x5 matrix. The solution requires 2 primitive operations; no 13 commas, no 8 braces, no auxiliary functions, no seperate line.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198186140000#c2849716393948596978" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 4:29 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2849716393948596978" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5046466509018820126"></a> 				<I>The spoiling occurred when you decided to frame the problem in terms of 10-15 scalars rather than a 2x5 matrix. The solution requires 2 primitive operations; no 13 commas, no 8 braces, no auxiliary functions, no seperate line</I><BR/><BR/>This is a terrific sixth example showing a different relationship yet again.<BR/><BR/>And trust me, there are seventh, eighth, and many more. My point is that the right form is driven by the right underlying relationship. Treating these as a matrix only makes sense if there is a semantic relationship that is also modeled as a matrix.<BR/><BR/>If there is, that's the way to go. If there isn't, then using a matrix increases the semantic distance between code and model.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198186680000#c5046466509018820126" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 4:38 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5046466509018820126" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3279314419353458949"></a> 				Even if they were in C++ instead of Blub, what on earth is wrong with ++i? That's not only perfectly good C++ code, it's BETTER C++ code. If you get in the habit of using i++ when a perfectly good ++i will do, you're also in the habit of making needless temporary value copies that just get thrown away half the time. It doesn't matter much with ints and so forth, but it tends to get uglier with complex types!<BR/><BR/>The only time that the post-increment i++ is "better" is when you really did need the previous value:<BR/><BR/>x = i++; // Post condition x == (i-1)<BR/><BR/>But most of the time, you're just fine with the pre-increment.<BR/><BR/>x = ++i; // Post condition x == i<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198196460000#c3279314419353458949" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 7:21 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3279314419353458949" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2108481225975231374"></a> 				Code length is an important metric; the fallacy is that shorter is better.<BR/><BR/>I use the following two rules of thumb, in order:<BR/>1. Write code that takes the LEAST amount of energy to understand<BR/>2. Don't Repeat Yourself<BR/><BR/>Short code is great if it makes things easy to understand.  Verbose code is great if it makes things easier to understand.<BR/><BR/>Consider some examples in psuedo-code:<BR/><BR/>Example 1a:<BR/>column_2  = new Column( 2  )<BR/>column_4  = new Column( 4  )<BR/>column_6  = new Column( 6  )<BR/>column_8  = new Column( 8  )<BR/>column_10 = new Column( 10 )<BR/><BR/>Example 1b:<BR/>(1..5).each do |index|<BR/>  column_#{2 * index} = new Column( 2 * index)<BR/>end<BR/><BR/>Example 1c:<BR/>for( index = 2 ; index <=10 ; ++index ) {<BR/>  "column_"+index = new Column( index )<BR/>}<BR/><BR/>I posit that the first example makes for the best code.  Why?  It takes, BY FAR, the least amount of energy to read it and understand it.  Is it concise, elegant, and DRY?  No.  Is it short?  No. But since we all know code is read far more often than it is written, I much prefer the path of least resistance.<BR/><BR/>Let's look at another example where I would prefer verbosity: <BR/><BR/>Example 2a:<BR/>if ( current_user.admin == true || valid_company_user(current_user) || is_magic_flag_global_set() ) {<BR/> foo();<BR/>}<BR/><BR/>Example 2b:<BR/>boolean authorized = current_user.admin == true || valid_company(current_user) || is_magic_global_flag_set();<BR/>if ( authorized ) {<BR/> foo();<BR/>}<BR/><BR/>Purists would argue that we're creating an unnecessary variable on the stack in the second example AND increasing the code's length.  I would argue very strongly that adding the extra (properly named) variable doesn't change the functionality, but reduces the energy needed to understand this code tremendously.<BR/><BR/>This isn't necessarily a language argument, but I would like to mention that Perl, C, and Ruby programmers tend to have an insatiable desire to reduce code length and increase "elegance."  When wielded improperly, this REDUCES understandability (often under the guise of "expressiveness").<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198196520000#c2108481225975231374" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13435514890492313898" rel="nofollow">Benjamin</a> : 7:22 PM</div>
+
+								<span class="item-control blog-admin pid-215142982"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2108481225975231374" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7281276424083872049"></a> 				I wonder about this.  When you say: <BR/><BR/>"The fourth and fifth examples are shorter, but they are much worse if what they imply—a relationship between the inputs to the calculations—is contrived solely to shorten the code.  On the other hand, if that relationship actually does exist, then they are far, far superior to the other examples. If there is a relationship there, the most important thing, the clearest thing, is to express the relationship, to make the code we write clearly communicate the semantics of the data it manipulates."<BR/><BR/>..what the criteria for the existence of a relationship?<BR/><BR/>To me, the relationship does exist.. you put it in code.  The question is really whether it is a relationship that is convenient in the sense that it makes it easy to tell a story about how you get to a solution.<BR/><BR/>I guess it's a bit of a philosophical point, but to me the best small programs are ones which help you see a simple path to a solution.  I agree that's close to but not quite the same as size.<BR/><BR/>Maybe it's closer to operator count than symbol count?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198198800000#c7281276424083872049" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Michael Feathers</span> : 8:00 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7281276424083872049" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1716552758421761840"></a> 				Ben:<BR/><BR/>The examples you give are interesting. The point I was trying to make is that the best form is the one that most closely matches the underlying relationships or structure of the code.<BR/><BR/>So I really couldn't say anything about which form is best in the absence of understanding the story behind the code.<BR/><BR/>Which is really the point I was trying to make with the five examples: in five different circumstances, one is better than the other.<BR/><BR/>That is the point of being "expressive": you have to have something you are trying to express.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198198980000#c1716552758421761840" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 8:03 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1716552758421761840" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2356409071893816867"></a> 				In most calculus textbooks, there are proofs for the included theorems. For many of these proofs there are shorter ways of expressing them, but the version used in the textbooks is generally known to be the easiest version to understand. Obviously there are longer versions as well.<BR/><BR/>If your looking for examples of simplicity and elegance, these proofs are a great place to start. They are 'code', they're rigorous, and they're neither the longest nor shortest version. They are elegance personified. A rare find, that is commonly available :-)<BR/><BR/><BR/>Paul.<BR/><A HREF="http://theprogrammersparadox.blogspot.com" REL="nofollow">http://theprogrammersparadox.blogspot.com</A><br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198210320000#c2356409071893816867" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/02349253120538728302" rel="nofollow">Paul W. Homer</a> : 11:12 PM</div>
+
+								<span class="item-control blog-admin pid-1233049894"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2356409071893816867" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3194753758946046993"></a> 				I don't remember where I read it, but here it is: <BR/>"You can solve any problem by adding a new layer of abstraction. Except one--Too many layers of abstraction"<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198221960000#c3194753758946046993" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06117763824030544555" rel="nofollow">jartur</a> : 2:26 AM</div>
+
+								<span class="item-control blog-admin pid-1346477463"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3194753758946046993" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3045682214634815940"></a> 				I know it's missing the point of the example(s), but I cannot resist: You're calculating the sum of the products of <BR/>each element of a vector with each of the others. Using distributivity, that's the same as calculating the sum of the elements for each vector, and then multiplying those three values. In Haskell:<BR/><BR/>frubbish = sum foos * sum bars * sum bashes<BR/><BR/>This version is linear in the maximum length of the vectors. The original version is cubic in the maximum length of the vectors.<BR/><BR/>Moral: It doesn't really matter (within reason) which language, which variable names, or which loop-style one uses. It matters much more that you understand the algorithm on a higher abstraction level, and are able to think of better alternatives at that level. Of course, a terse but still readable notation can help with that, but in the end, translating that algorithm to whatever feature the language you use offers isn't that hard.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198234080000#c3045682214634815940" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Dirk Thierbach</span> : 5:48 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3045682214634815940" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2080220686290095372"></a> 				Just wanted to say thanks for all your splendid essays -- lest you wonder, they really are wonderful gifts to the world. This one and Yegge's pretty well made my week.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198242240000#c2080220686290095372" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Adam in Austin</span> : 8:04 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2080220686290095372" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8522512410303252231"></a> 				Benjamin,<BR/><BR/>actually I would argue that for your first example the following one would be the most readable for me:<BR/><BR/>Example 1d:<BR/>(2, 4, 6, 8, 10).each do |index|<BR/>  column_#{index} = new Column(index)<BR/>end<BR/><BR/>And in the second case, it's easier for me to read the first one, where no unneeded abstractions are introduced, than the "boolean authorized" version. Of course, depending on the context, the second version might be better - if e.g. "authorized" is actually a valid abstraction, conceptually or de facto (used more than once).<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198246080000#c8522512410303252231" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://hotgiraffe.livejournal.com/" rel="nofollow">hotgiraffe</a> : 9:08 AM</div>
+
+								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8522512410303252231" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2480590266148176163"></a> 				<EM>At my local climbing gym, they put up a 5.11 that traversed to the right, went up, and traversed back to the left.<BR/><BR/>Being tall, I found a way to dead point straight up, avoiding the traverses. The route setter saw me doing this, and got out the ladder. Fifteen minutes later, he had adjusted the holds so that the short cut was nearly impossible&#8230;</EM><BR/><BR/>The original version of the Blub vs. Java example had the expression frubbish += foo[i] * bar[k] * bash[j]; in the loops. Thanks to an obvious property of arithmetic, the entire algorithm can be optimized so that its run time is O<EM>3n</EM> instead of O<EM>n cubed</EM>.<BR/><BR/>Alas, that optimization renders the bugginess discussion moot. It still has extra moving parts in Blub that are not present in Java, and it is still far more elegant in languages like Python, but I think the argument is far more compelling with nested loops.<BR/><BR/>Thus, I have changed the example code so that we cannot take advantage of the special relationship between multiplication and summation.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198251900000#c2480590266148176163" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:45 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2480590266148176163" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8437840320485580725"></a> 				"Thus, I have changed the example code so that we cannot take advantage of the special relationship between multiplication and summation."<BR/><BR/>Could you put in a quick edit notice in the article, this had me confused all the way through the comments.  Nice article by the way.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198307280000#c8437840320485580725" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01928204348391154833" rel="nofollow">Jason</a> : 2:08 AM</div>
+
+								<span class="item-control blog-admin pid-1353700572"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8437840320485580725" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3464167793271419226"></a> 				Wow, I didn't know that difference in C++ between i++ and ++i, sadly it just increases my feeling that C++ has become so convoluted that it is nearly unusable.<BR/><BR/>Even without the haskell solution (by far the prettiest one), in most languages you could generate (using yield style iteration in those that support it, using object style iteration in others) an iterator that would generate all the triples of elements needed, then call the function on that :<BR/><BR/>for (x,y,z) in triples(foos, bars, bashes) :<BR/>    frubbish += function(x,y,z)<BR/><BR/>which is likely to be useful in other places as well.   It has the further advantage that you can change the order of generation of the triples - something that can help debugging if the result should be independent of the order but changing the order changes the result.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html?showComment=1198356420000#c3464167793271419226" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 3:47 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3464167793271419226" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

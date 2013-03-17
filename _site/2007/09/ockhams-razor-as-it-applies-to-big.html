@@ -1,0 +1,463 @@
+<html> 
+<head>
+        
+        <title>Ockham's razor as it applies to the big rewrite</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Monday, September 24, 2007</div>
+			
+
+			<div class="Post"><a name="8797395338120862990">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html" title="permanent link">Ockham's razor as it applies to the big rewrite</a></span>
+					<div style="clear:both;"></div>Oh dear, the latest <a href="http://www.phrases.org.uk/meanings/nine-days-wonder.html" title="Nine days' wonder">nine days wonder</a> seems shocking on the face of it. To quote the protagonist in the tale:<br /><br /><blockquote>Back in January 2005, I announced on the O’Reilly blog that I was going to completely scrap over 100,000 lines of messy PHP code in my existing CD Baby (cdbaby.com) website, and rewrite the entire thing in Rails, from scratch. I hired one of the best Rails programmers in the world (Jeremy Kemper aka bitsweat), and we set off on this huge task with intensity&#8230;<br />  <br />  Two years (!) later, after various setbacks, we were less than halfway done&#8230; I said fuckit, and we abandoned the Rails rewrite&#8230; Then in a mere TWO MONTHS, by myself, not even telling anyone I was doing this, using nothing but vi, and no frameworks, I rewrote CD Baby from scratch in PHP. Done! Launched! And it works amazingly well. <br /></blockquote><div style="text-align: right;">&#8212;<a href="http://www.oreillynet.com/ruby/blog/2007/09/7_reasons_i_switched_back_to_p_1.html" title="7 reasons I switched back to PHP after 2 years on Rails">Derek Sivers</a></div><br />There has been a running flamestorm over this, mostly centered on whether Rails is or isn&rsquo;t the perfect framework for web applications. In other words, there is a prevailing sentiment that this rewrite failed for technical reasons.<br /><br />I have <a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html" title="raganwald: What I've learned from failure">my own experience</a> with project failure, and I can&#8217;t blame any of it for technical problems. This is because, in my experience, the technical problems in projects are not root causes, they are <em>symptoms</em> of people and management problems.<br /><br />Amazingly, Chad Fowler identified <a href="http://chadfowler.com/2006/12/27/the-big-rewrite" title="The Big Rewrite">six reasons that big rewrites of production systems fail</a>. Given that opinions are like noses (everybody has one), what&#8217;s so amazing about Chad&#8217;s list? What&#8217;s amazing is that Chad wrote his list a year ago, and yet he thoroughly nailed Derek&#8217;s experience.<br /><br /><div class="book"><hr><em><br><a name="evtst|a|0201835959" href="http://www.amazon.com/gp/product/0201835959?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0201835959"><img src="http://raganwald.github.com/assets/images/old//mythical_man_month.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201835959" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br /><br />Expecting a plug for a book about the latest miracle cure for project failure blues? Nope, sometimes the technical whizzies blind us to basic, fundamental wisdom that is as true today as it was twenty or even forty years ago. Don&#8217;t believe the hype.<br /><br />For a solid grounding on how to successfully develop software, start with <a name="evtst|a|0201835959" href="http://www.amazon.com/gp/product/0201835959?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0201835959">The Mythical Man-Month: Essays on Software Engineering</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201835959" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1">. It is one of the most important books ever written about developing software, from the small to the large. Read the book that spawned the expression, &#8220;There is no silver bullet.&#8221;<br></em><hr></div>I&#8217;ll bring up his first reason, <a href="http://chadfowler.com/index.cgi/Computing/Programming/TheBigRewrite/TheSpec.rdoc,v">Software as Spec</a>. Re-read the condensed story above. Note, with horror, that a Rails expert took two years to fail what Derek accomplished in just two months. Well, if Jeremy couldn&#8217;t do it, obviously Rails is seriously broken, a complete toy. But this is like a sleight-of-hand trick. The paragraphs tell two stories, and we are so focused on one, &#8220;Two years for Rails, two months for PHP,&#8221; that we ignore the prestidigitator&#8217;s other story:<br /><br />Two years for Jeremy, two months for Derek.<br /><br />This is a complex, production system. When writing any complex, production system, what is the number one biggest risk? No, not technical risk. <em>Requirements risk</em>. Jeremy tried to create a copy of an existing, messy production system. Sure, he had Derek pulling the strings and calling the shots. But this is no guarantee of success, especially in an environment with heavy integration with other messy, chaotic systems.<br /><br />Communicating requirements is hard enough in a green field situation. It&#8217;s nearly impossible when dealing with a real, production piece of code. Jeremy had almost no chance if his goal was to duplicate the original system&#8217;s functionality based on Derek&#8217;s direction and even assistance.<br /><br />Derek, on the other hand, wrote the original system. He knows it intimately. If there is some weird, bogus code in one corner, Derek remembers why it&#8217;s there, what obscure bug it fixes, or perhaps what bug in some other piece of software&#8217;s code it mediates. If something doesn&#8217;t need to be there any more, Derek knows it can be dropped and he knows why it ought to go.<br /><br /><em>Of course Derek succeeded where Jeremy failed</em>. Having Jeremy performing the rewrite with Derek&#8217;s assistance created an insurmountable barrier for understanding. Even with Derek trying to assist, the very fact that they were rewriting in Rails created a double whammy: Derek knew the system but had to try to explain its subtleties to Jeremy. Jeremy knew Rails but had to try to explain its subtleties to Derek.<br /><br />Derek&#8217;s two-month rewrite with the hindsight of implementing the system in the first place and then living through the first rewrite failure is easy to understand: one person knew both the system and the implementation technology intimately. No communication barrier. No requirements risk.<br /><br /><blockquote>If there is one lesson to draw here it is that &ldquo;There is always more than one way to look at any issue.&rdquo;</blockquote><div style="text-align: right;">&mdash;<a href="http://del.icio.us/sikko">sikko</a></div><br /><br /><strong>simplicity</strong><br /><br />So, was the problem choosing Rails? Or choosing to bring in an outsider to implement a technology the insider didn&rsquo;t know intimately? This is a <em>false dichotomy</em>, of course. Failed projects may have many problems.<br /><br />But when trying to simplify the situation and derive useful conclusions, my heuristic is to look for the simplest explanation, the one with the fewest moving parts. The technology explanation is very specific and with many dangling caveats. It only applies to projects involving rewrites from  PHP to Rails, and even then only those projects that are messy and have legacy data models that aren&rsquo;t particularly CRUD-dy.<br /><br />The people explanation is much simpler. It explains what we observed here as well as what we observed in many other projects, and it does so with very few caveats and conditions.<br /><br />My personal heuristic is to go with the simpler explanation that applies to the widest possible set of observations in the wild.<br /><br />As several people have pointed out here and <a href="http://programming.reddit.com/info/2tblm/comments">elsewhere</a>, we are working with anecdotal evidence. And the plural of anecdote is <em>not</em> data. But we must soldier on in our industry. If we waited until we could rigorously &ldquo;prove&rdquo; anything about software development before forming conclusions, we wouldn&rsquo;t have budged from toggling switches on front panels.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html" title="permanent link">9:13 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Ockham's razor as it applies to the big rewrite</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="1512305463470935081"></a> 				See Reddit for a counterexample where completely rewriting a system in another language for technical reasons can turn out to be a net win and ends up getting you rich.<BR/><BR/>Maybe they should write an article or blog post about it and let other people advocate the "intelligence" of their decision through anectodal evidence and appeal to authority. Everyone's an expert.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190688300000#c1512305463470935081" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 10:45 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1512305463470935081" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6302712994819017167"></a> 				If you mean the rewrite of reddit in Python instead of Lisp, I found the differences between the two scenarios interesting:<BR/><BR/>First, my understanding is that the original authors performd the reddit rewrite. They didn't bring in a "Snake Charmer."<BR/><BR/>Second, my understanding is that reddit was quite a bit smaller than CD baby at the time. Half of CD baby's challenge was the 100,000+ LOC. The other half is all of the systems integrated with it.<BR/><BR/>Reddit had a much smaller set of hard requirements at that stage of its maturity.<BR/><BR/>Third, the original system was badly broken for whatever reason (it could be that they were actually quite inexperienced with Lisp when they wrote version one of Reddit). They had a lot less to lose than Derek, who admits his system worked.<BR/><BR/>Like you say, everyone is an expert. Thanks to blogs, people like me can stop writing on bathroom walls.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190689140000#c6302712994819017167" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:59 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6302712994819017167" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8793012489970464802"></a> 				I'd say that rails requiring you to  restructure your entire database to fit its object model is a serious issue for all legacy apps, no matter who is doing the rewrite.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190694540000#c8793012489970464802" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 12:29 AM</div>
+
+								<span class="item-control blog-admin pid-2050274566"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8793012489970464802" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5088353934655347631"></a> 				sean's right.  For good or ill, Rails's opinion is that the right way to integrate a Rails app with other systems is through REST, not a shared database.  If existing applications all interact with the same database, migrating one application to Rails means either working around the assumptions of ActiveRecord or updating all of the other applications to use the RESTful interface.<BR/><BR/>I don't envy people facing either one.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190705700000#c5088353934655347631" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://wgz.org/chromatic/" rel="nofollow">chromatic</a> : 3:35 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5088353934655347631" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="197959640377918263"></a> 				First, my understanding is that the original authors performd the reddit rewrite. They didn't bring in a "Snake Charmer."<BR/><BR/>Reddit did bring in a "snake charmer" named Aaron Swartz:<BR/><BR/>http://www.aaronsw.com/weblog/rewritingreddit<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190743320000#c197959640377918263" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://spez.name/" rel="nofollow">spez</a> : 2:02 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=197959640377918263" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3788342246340885903"></a> 				Cool, thanks, Spez!<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190743620000#c3788342246340885903" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 2:07 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3788342246340885903" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1097430624479522394"></a> 				Notice that the Reddit case is not a complete counterexample either. They first tried to use Django (it's like Python's version of Rails) and it did not work for them. They ended up using a different framework (webpy) that fit their needs better. Personally I think after people factors, the frameworks and libraries would make a bigger impact than the language. If it had been a rewrite from Fortran or C it would have been worth considering, but it is not like PHP, Python and Ruby are really that much different from each other.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190748780000#c1097430624479522394" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">nes</span> : 3:33 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1097430624479522394" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6401866124380760837"></a> 				<I>Opinions are like noses -- everyone has one.</I>  And they all smell.<BR/><BR/>(Although I had always heard it about excuses: Excuses are like a******s -- everyone has one, and they all stink.)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190819640000#c6401866124380760837" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 11:14 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6401866124380760837" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2260987022876819869"></a> 				The plural of anecdote <I>is</I> data, as long as you don't forget to include a confidence interval.<BR/><BR/>Similarly, data without a confidence interval are anecdotes.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190826060000#c2260987022876819869" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">Anonymous</span> : 1:01 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2260987022876819869" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3356986245414062350"></a> 				Reg, the changes to your post have also changed the tone (from my perspective), such that my original critique is no longer relevant or useful.  I've updated my post to reflect that reality.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190827200000#c3356986245414062350" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.jroller.com/MasterMark/entry/reg_gets_a_little_too" rel="nofollow">Mark Masterson</a> : 1:20 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3356986245414062350" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2234976327467013827"></a> 				It's Occam, not Ockham. Glad somebody else noticed this too, by the way. This whole hubbub hasn't got anything to do with languages in the first place.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190835780000#c2234976327467013827" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 3:43 PM</div>
+
+								<span class="item-control blog-admin pid-855033878"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2234976327467013827" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1139375421306297358"></a> 				It certainly is Occam. But perhaps it is also Ockham?<BR/><BR/><A HREF="http://en.wikipedia.org/wiki/William_of_Ockham" REL="nofollow">William of Ockham</A> (c. 1288 - c. 1348) was an English Franciscan friar and scholastic philosopher, from Ockham, a small village in Surrey, near East Horsley.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190835960000#c1139375421306297358" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 3:46 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1139375421306297358" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3220748747356534352"></a> 				"Occam" is a latinate transliteration -- the "k" of the English original would not have flown.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190839560000#c3220748747356534352" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13819463953609361042" rel="nofollow">Stan Rogers</a> : 4:46 PM</div>
+
+								<span class="item-control blog-admin pid-982497370"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3220748747356534352" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="788495983409721758"></a> 				"This whole hubbub hasn't got anything to do with languages in the first place."<BR/><BR/>Well, but that's been Reg's point all along, hasn't it?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190845440000#c788495983409721758" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://www.jroller.com/MasterMark/" rel="nofollow">Mark Masterson</a> : 6:24 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=788495983409721758" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4555240616357281630"></a> 				Yes, Mark. I was agreeing with him.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190872320000#c4555240616357281630" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 1:52 AM</div>
+
+								<span class="item-control blog-admin pid-855033878"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4555240616357281630" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2129027525617795343"></a> 				doh. <A HREF="http://en.wikipedia.org/wiki/Occam's_razor" REL="nofollow">my bad about the spelling</A>.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190872440000#c2129027525617795343" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 1:54 AM</div>
+
+								<span class="item-control blog-admin pid-855033878"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2129027525617795343" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2570118740939088775"></a> 				Re Joel's 2000 posting: Netscape/mozilla did survive the rewrite, and now we are all grateful for a Firefox that seems pretty responsive to moving requirements e.g. HTML 5.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/09/ockhams-razor-as-it-applies-to-big.html?showComment=1190930400000#c2570118740939088775" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04766131116514643236" rel="nofollow">hughw</a> : 6:00 PM</div>
+
+								<span class="item-control blog-admin pid-522968278"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2570118740939088775" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

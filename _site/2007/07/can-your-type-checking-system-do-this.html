@@ -1,0 +1,463 @@
+<html> 
+<head>
+        
+        <title>Can your type checking system do this?</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Monday, July 09, 2007</div>
+			
+
+			<div class="Post"><a name="2481552639802454233">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html" title="permanent link">Can your type checking system do this?</a></span>
+					<div style="clear:both;"></div>I tend to work with dynamic languages. This is a personal preference at the moment. I have liked statically typed languages with powerful type checking systems in the past, and my mind is wide open to using them again in the future. Unfortunately, when you mention &#8220;static typing,&#8221; most people think you&#8217;re talking about Java. There is more to static typing than Java, a lot more. For example, Brian over at Enfranchised Mind <a href="http://enfranchisedmind.com/blog/archive/2007/07/04/276" title="Enfranchised Mind &raquo; Certification?  Please, no.">pointed out</a> that languages like OCaml have a static type checking system powerful enough to enforce constraints like:<br /><br /><ul><li>All possible variants of a type must be dealt with&#8212;for example, that a list has no elements or at least one element must both be handled.</li><br /><li>The read_async function only takes file handles opened with the async flag set, while the close function can take file handles with the async flag set or not set.</li><br /><li>The buffer returned from read_async can not be accessed until the asynchronous read is completed.</li><br /><li>A Postgresql cursor can only be created and accessed with a transaction.</li></ul><br />He&#8217;s absolutely right. Serious programming languages can do all of that.<br /><br />Joel Spolsky once explained why he likes using Apps Hungarian naming conventions: <a href="http://www.joelonsoftware.com/articles/Wrong.html" title="Making Wrong Code Look Wrong - Joel on Software">it helps avoid problems with various SQL and Javascript injection vulnerabilities</a>. The idea is that you want to make it obvious when you&#8217;re violating certain constraints on the use of string values in your application. And Tom Moertel responded by showing <a href="http://blog.moertel.com/articles/2006/10/18/a-type-based-solution-to-the-strings-problem" title="A type-based solution to the strings problem: a fitting end to XSS and SQL-injection holes?">how Haskell&#8217;s static type checking can completely eliminate the problem</a>. Once again, a powerful type checking system can be used to enforce an important constraint.<br /><br />My own pet peeve problem is the dreaded <code>NullPointerException</code>. Why, I whinge, must the compiler demand that I type boilerplate like:<br /><br /><pre><code>final Map&lt;String, String&gt; dictionary = new HashMap&lt;String, String&gt; () {{<br />  // ...<br />}}<br /></code></pre><br />But it will not do a simple little thing for me in return like check all of my code paths to ensure that I never pass a parameter that <em>might be null</em> to a method that assumes the parameter <em>can never be null</em>? Wouldn&rsquo;t it be <a href="http://nice.sourceforge.net/" title="The Nice Programming Language">nice</a> if the compiler would deign to help me with these things?<br /><br />What do all of these things have in common? They are <em>semantic constraints</em>. Constraints on the meaning of a program. The kind of type checking you find in popular programming languages that is based on interfaces, on the physical type of your values and variables, that kind of type checking is a step up from syntax, but not much further. I would call it grammar checking, checking that your &#8220;sentences&#8221; have the right parts of speech in the right places. There is no attempt to check that your sentences are meaningful.<br /><br /><strong>the value of semantic validation</strong><br /><br />Powerful type systems (type systems like those found in Ocaml and Haskell are often called &ldquo;expressive&rdquo; type systems), can be put to work enforcing a degree of semantic correctness. (There are other ways to do it: there are static code analysis tools, for example you can buy tools that check C/C++ code for memory leaks and buffer overflow vulnerabilities. And if you use a language with <a href="http://en.wikipedia.org/wiki/Design_by_contract" title="Design by contract - Wikipedia, the free encyclopedia">Design by Contract</a> features, you have another tool in your toolbox.)<br /><br /><div class="book"><hr/><em><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.amazon.com/gp/redirect.html?ie=UTF8&amp;location=http%3A%2F%2Fwww.amazon.com%2FLittle-MLer-Matthias-Felleisen%2Fdp%2F026256114X%2Fsr%3D1-1%2Fqid%3D1165759722%3Fie%3DUTF8%26s%3Dbooks&amp;amp;amp;amp;tag=raganwald001-20&amp;linkCode=ur2&amp;camp=1789&amp;creative=9325"><img style="cursor: pointer;" src="http://raganwald.github.com/assets/images/old//little_mler-705423.jpg" alt="" border="0" height="180" width="180"></a><br /><br />The Little MLer introduces ML (and Ocaml) through a series of entertaining and straightforward exercises leading up to the construction of the Y Combinator.<br><br>ML and OCaml introduce powerful strong typing and type inference. Both are great languages to learn: you will stretch your understanding of defining types and writing correct programs.<br></em><hr/></div>There is an argument that testing can replace type checking. Quite honestly, I believe that extensive automated testing almost completely replaces the need for &#8220;grammar checking&#8221; in the software I write.<br /><br />Why? Because checking that you don&#8217;t send the wrong message to an object, or call a function with the wrong number of arguments is something that seems to get found when my test suite reaches a certain tiiping point in code path coverage. So far I have always found these things very quickly.<br /><br />That being said, <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html" title="raganwald: Which theory fits the evidence?">Theory P</a> warns me that there are some I haven&#8217;t found, of course, but I have some faith that the result of such an error will not be catastrophic. With strongly typed languages like Lisp, this kind of failure is gracefully handled. We aren&#8217;t talking about a buffer overflow that can turn exploited into a privilege escalation.<br /><br />The nice thing about grammar errors is that you don&#8217;t have to try very hard to catch them. If you have reasonable code coverage, you&#8217;ll find them. So you concentrate on your test cases, and while you are testing your logic you will validate your grammar.<br /><br />So that&rsquo;s why dynamic languages in conjunction with automated test suites are working <em>for me</em>. YMMV, so let&#8217;s not argue about whether it would work for you or not, because I want to move ahead and say that I don&#8217;t believe that extensive automated testing has quite the same value for semantic checking.<br /><br /><blockquote>I believe the hard part of building software to be the specification, design, and testing of this conceptual construct, not the labor of representing it and testing the fidelity of the representation. We still make syntax errors, to be sure; but they are fuzz compared with the conceptual errors in most systems.</blockquote><div style="text-align: right;">&mdash;<a href="http://virtualschool.edu/mon/SoftwareEngineering/BrooksNoSilverBullet.html" title="No Silver Bullet: Essence and Accidents of Software Engine">Frederick P. Brooks, Jr.</a></div><br /><br />Semantic errors, you see, are not covered &#8220;for free&#8221; while you exercise your program logic. If you want to rely on testing to find them, you must become very good at thinking up edge cases where things can go wrong. You must try situations where things fail and you get <code>nulls</code>. You must try to create race conditions in concurrent code. You must try really bad data, like setting up cases where an employee&#8217;s hire date is after their termination date, or there is a cycle in the graph of reports and managers, or someone has <a href="http://www.amazon.com/gp/product/B000AP04L0?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=B000AP04L0">eight bosses</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=B000AP04L0" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />.<br /><br />You have to try empty lists, lists with one item, all of the cases. Grammar checkers only check that you are passing a list, you need semantic checking to ensure you have coded for every case.<br /><br /><strong>what to do</strong><br /><br />Now, you do not get semantic checking for free if you start writing code in Ocaml or Haskell. Why? Because you will be a Real Programmer, someone who can write Fortran in any language.<br /><br /><blockquote>A language that doesn&#8217;t affect the way you think about programming, is not worth knowing.</blockquote><br /><div style="text-align: right;">&#8212;Alan Perlis, <a href="http://www.cs.yale.edu/quotes.html" title="Perlisisms - &quot;Epigrams in Programming&quot; by Alan J. Perlis">Epigrams in Programming</a></div><br /><br />To take advantage of a language like Ocaml, you must actually think through the semantics of your program and think of ways to make the type system work for you. You must &#8220;think in types&#8221; instead of thinking in values. This is a valuable exercise, because it fundamentally changes the way you view programming an application.<br /><br /><div class="book"><em><hr/><br><a name="evtst|a|0521644089" href="http://www.amazon.com/gp/product/0521644089?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521644089"><img src="http://raganwald.github.com/assets/images/old//haskell_school_of_expression.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;amp;amp;o=1&amp;a=0521644089" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br>I’m not a regular Haskell user (yet), but <a name="evtst|a|0521644089" href="http://www.amazon.com/gp/product/0521644089?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521644089">The Haskell School of Expression: Learning Functional Programming through Multimedia</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;amp;amp;o=1&amp;a=0521644089" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> has received rave reviews and comes with solid recommendations. It’s no longer on my <a href="http://www.amazon.com/gp/registry/wishlist/3A2XEHODQK2WP/ref=wl_web/">wish list</a>: I picked it up and it has been enjoyable and educational.<br><br><hr/></em></div>In my experience, this thinking through the semantic constraints of your application may be the most valuable result of the exercise. You see this when people write a very database-centric application. They think about the entities and the relationships. They write constraints and triggers. There&#8217;s a great value in arguing all these cases out, in drawing the arrows on the white board and marking them with little question marks, plus signs, asterixes, and ones. It makes you think things through.<br /><br />I was once asked in an interview to name a feature from C++ I wanted to use in Java. I didn&#8217;t name Templates (this was before generics), or Multiple Inheritance. I named the <code>const</code> keyword. I am a huge fan of <em>const correctness</em>, of using the C++ compiler to enforce this one little <em>semantic</em> constraint. It&#8217;s an enormous burden, because you literally have to go through your entire program, usage by usage, to make sure you are fully const correct and have correctly declared everything. It would be far easier if C++ had const inference.<br /><br />But const correctness is valuable precisely because it forces you to think very hard about a <em>semantic</em> constraint: when should something change, and when should it be considered immutable? The act of bringing a code base into const correctness forces you to think about what the code <em>does to its data</em>, not just whether it has &#8220;spelling errors.&#8221;<br /><br />I can see the same value in using a language like Ocaml or Haskell to enforce semantic constraints. Sure, the compiler will catch errors for you. But the act of designing your application&#8217;s types to enforce your application&#8217;s constraints will be a powerful force driving you to deeper understanding of your domain.<br /><br /><a href="http://www.joelonsoftware.com/items/2006/08/01.html" title="Can Your Programming Language Do This? - Joel on Software">If your current programming language can&#8217;t do this</a>, I encourage you to study ML, Ocaml, Haskell, or one of the other fine languages with powerful typing systems.<br /><br /><em>Update (April, 2008): <a href="http://enfranchisedmind.com/blog/2008/04/14/useful-things-about-static-typing/">7 Actually Useful Things You Didn’t Know Static Typing Could Do: An Introduction for the Dynamic Language Enthusiast</a></em><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html" title="permanent link">11:30 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Can your type checking system do this?</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="968011169535564375"></a> 				Joel's example is atrocious. If all the code did was echo out "Hello, $name" to the user that submitted $name (and to no one else) then there is no reason to prevent the user from inputing javascript.<BR/><BR/>Secondly, why would he design the app in such a way that he has to juggle unsafe and safe data?  That's over-complicated and will lead to mistakes.  Anyone who has used Hungarian Notation knows that it's only a matter of time before it will lie to you.<BR/><BR/>A far better solution is to sanitize user input immediately.  No contrived naming conventions required.  No juggling of unsafe and safe data.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184046600000#c968011169535564375" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06911558688467600710" rel="nofollow">Sean</a> : 1:50 AM</div>
+
+								<span class="item-control blog-admin pid-2050274566"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=968011169535564375" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4895468480605494188"></a> 				Would you call it "graceful" to shut down Arianne 5's inertial reference system?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184048280000#c4895468480605494188" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/08491317087691022866" rel="nofollow">Chung-chieh Shan</a> : 2:18 AM</div>
+
+								<span class="item-control blog-admin pid-265157124"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4895468480605494188" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3367525422497578788"></a> 				> Would you call it "graceful" to shut down Arianne 5's inertial reference system?<BR/><BR/>Except Flight 501 crash happened because the Ada interrupt handler had been disabled for performance reasons (and only there in the whole code, which is even more stupid). The Ada runtime would have found it at runtime and could've handled it more gracefully (the check was fully disabled at compile time since they knew they were coercing a 64bits FP value to a 16 bits signed integer), it's not really the kind of stuff a type system could've catched afaik<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184052000000#c3367525422497578788" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10261896483118253882" rel="nofollow">Masklinn</a> : 3:20 AM</div>
+
+								<span class="item-control blog-admin pid-2144531356"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3367525422497578788" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6763697532490393643"></a> 				> <I>A far better solution is to sanitize user input immediately. No contrived naming conventions required. No juggling of unsafe and safe data.</I><BR/><BR/>Sean, there's a problem with the sanitize-immediately approach: until you use a string, you don't know whether it is safe or unsafe <I>for that particular use</I>, nor do you know how to sanitize it properly.  That is, "safeness" is a not a property of a string but rather a relationship between a string and a context in which it is used.  Thus you can't determine safeness until you how and where a string will be used.<BR/><BR/>A string representing user input, for example, might be considered safe for writing to a file (where no string interpretation takes place) but unsafe for inserting into an HTML or URL template (where parts of the string could be misinterpreted as HTML or URL markup).  Note that you need to use different sanitization methods for HTML and URL markup, so it would be difficult to pre-sanitize a string that might be used in either context.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184054100000#c6763697532490393643" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://blog.moertel.com/" rel="nofollow">Tom Moertel</a> : 3:55 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6763697532490393643" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="423025106373943062"></a> 				Of course you should sanitize strings, but not when they are input and instead when they are used. Like this:<BR/><BR/>public interface StringSanitizer {<BR/> public String sanitize(String str);<BR/>}<BR/><BR/>and in the code:<BR/><BR/>String toUse = context.getStringSanitizer().sanitize(input);<BR/><BR/>it's as simple as that.<BR/><BR/>Of course there is the problem of determining whether that particular String was untrusted, or not. I recommend wrapping the input String into an UntrustedString object and passing that around, and modifying Sanitizer interface to deal with UntrustedStrings.<BR/><BR/>Or, if you use AspectJ, you can just taint Strings when they are input and force sanitization when it's needed. I don't like that kind of magic though<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184057040000#c423025106373943062" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">albert bulawa</span> : 4:44 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=423025106373943062" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4271872817603007955"></a> 				To everyone writing to say:<BR/><BR/><I>There is no need for static typing to solve problem X, you should simply _____ whenever you want to _____</I>.<BR/><BR/>The point is not that static typing will magically do this for you, but rather that static typing will catch you should you forget to follow your discipline.<BR/><BR/>I suspect we're back to <A HREF="http://raganwald.github.com/2007/06/which-theory-first-evidence.html" REL="nofollow">Theory D vs Theory P</A>: Theory D says we simply make a plan (sanitize strings when we read them, for  example), and follow it, without exception.<BR/><BR/>Theory P says we will forget, or we will not understand what we were thinking, or... or... and we need a process for correcting our transgressions.<BR/><BR/>The point of my post is that for a certain class of such issues, the ones I'm calling "grammar" issues, like what methods we call on an object, I am (at the moment) very comfortable making a plan, following it, and using automated test suites to check my grammar.<BR/><BR/>For another class of issues, semantic issues, I have found the static type checking provided by powerful type systems to be very useful.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184064120000#c4271872817603007955" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:42 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4271872817603007955" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6516303870748605416"></a> 				<I>Joel's example is atrocious. If all the code did was echo out "Hello, $name" to the user that submitted $name (and to no one else) then there is no reason to prevent the user from inputing javascript.</I><BR/><BR/>I think you have accidentally introduced a Strawman.<BR/><BR/>Joel's company makes FogBugz, a program with several features that involve user X submitting data that user Y sees, like bug reports and the discussion forums.<BR/><BR/>So I think he has definite need for this kind of safety.<BR/><BR/>And of course, the XSS example extends to XML injection vulnerabilities. What if you are writing a banking application that transfers money uing XML as a data interchange? an XML injection vulnerability could be very serious.<BR/><BR/>And don;t get me started on SQL injection vulnerabilities...<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184064420000#c6516303870748605416" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 6:47 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6516303870748605416" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8062278267895032048"></a> 				<I>String toUse = context.getStringSanitizer().sanitize(input);<BR/><BR/>it's as simple as that.</I><BR/><BR/>Until you forget to do it once, and lo and behold, SQL Injection/XSS vulnerability until you have a security audit or someone actually takes advantage of your hole.<BR/><BR/><I><B>Which is why raganwald posted this in the first place: when your type system can tell you that you're using strings in an unsafe manner, even if you forget you'll be reminded because your project can't compile</B></I>.<BR/><BR/>The point is that tools such as a good type system or a string tainting framework is a safety net (and I guess it could even lead to automatic sanitizing of strings on output)...<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184066220000#c8062278267895032048" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10261896483118253882" rel="nofollow">Masklinn</a> : 7:17 AM</div>
+
+								<span class="item-control blog-admin pid-2144531356"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8062278267895032048" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6214345807017174029"></a> 				Masklinn: So you can wrap your input Strings in UntrustedString container and pass _that_ to the Sanitizer. Then, by correct design of class relations, you won't either be able to "forget" because UntrustedString is NOT a String. Maybe you even cannot unwrap it without sanitizing because you forced yourself to code like this:<BR/><BR/>.... [input is UntrustedString]<BR/><BR/>String toUse = input.sanitize(context.getStringSanitizer())<BR/><BR/>or, use AspectJ to taint Strings at input and an advice to sanitize when it's needed.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184067660000#c6214345807017174029" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">albert bulawa</span> : 7:41 AM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6214345807017174029" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5714680919574742845"></a> 				I think you have a typo:<BR/><BR/>> I was once asked in an interview <BR/>> to name a feature from C++ I <BR/>> wanted to use in Java... It <BR/>> would be far easier if C++ <BR/>> had const inference.<BR/><BR/>That should be "if Java had const inference", right?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184072280000#c5714680919574742845" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/10065077215311205545" rel="nofollow">Bill Mill</a> : 8:58 AM</div>
+
+								<span class="item-control blog-admin pid-831715508"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5714680919574742845" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="229960190274714955"></a> 				I totally agree on the "thinking experience". I am playing nowadays with Scala and really feel that in order to get most benefits of the language, you have to "think in it".<BR/><BR/>I am also wondering how much the type constraints are actually saving on the assertions I would have to do in my test cases. I would like to see a complete study comparing 2 programs, one with dynamic typing and the other with static typing, with respect to the amount of necessary unit testing. For instance, David Pollak, the author of the lift web framework in Scala claims a <A HREF="http://blog.circleshare.com/index.php?/archives/63-Announcing-lift-0.2.0.html" REL="nofollow">reduction of 25% of the loc for unit testing</A>, compared to equivalent testing for a rails application.<BR/><BR/>As far as I am concerned, I found that complementing "classical" unit tests with a tool such as ScalaCheck (inspired from Haskell's QuickCheck - thanks to Tom Moertel for writing about it!) was also very effective to convey the intention of some "semantic" tests and produce test hundreds of relevant cases at once [If you're a Ruby fan, you can check out <A HREF="http://rushcheck.rubyforge.org/" REL="nofollow">RushCheck</A>, the Ruby variant].<BR/><BR/>Once again, it's a nice thought experiment, to think about your code in terms of "properties" (and then you get tests -almost- for free!).<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184072280001#c229960190274714955" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16484514586929815703" rel="nofollow">Eric</a> : 8:58 AM</div>
+
+								<span class="item-control blog-admin pid-868989312"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=229960190274714955" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3224947687900530161"></a> 				I actually meant I would have liked C++ to have const inference. I guess I mean I would have liked some sort of system where I didn't have to type the keyword "const" everywhere, but the compiler would look for inconsistencies just as ML finds type inconsistencies without needing manifest type declarations everywhere.<BR/><BR/>The flip side of that argument is that if the compiler did the checking without declarations, I wouldn't have been forced to wade through the code, thinking about it carefully. It's a good exercise... once...<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184072640000#c3224947687900530161" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:04 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3224947687900530161" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5539381249355465375"></a> 				Masklinn: That's why you use a good templating library.  Almost all of them will let you set a default output filter that's applied to every placeholder on the page, and let you change that filter on a per-page/per-placeholder basis to accomodate different outputs (HTML, XML, e-mail, URL-in-HTML, SQL file, etc).  As long as you *only* exchange data with the outside world through templates, the escaping is handled for you.<BR/><BR/>Strong static typing has its place, but it's much easier and more reliable to set some policy about where escaping occurs and do it reliably at interface boundaries.  Static typing is more useful if you need to computationally manipulate data of different formats and keep track of which data is in what format.  For example, manipulating financial instruments in different currencies.  Much programming is just putting the damn data on the damn screen, though, and you don't need any fancy type systems for that.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184081940000#c5539381249355465375" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06932672178552206935" rel="nofollow">Jonathan Tang</a> : 11:39 AM</div>
+
+								<span class="item-control blog-admin pid-259656569"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5539381249355465375" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6339585207487138529"></a> 				Johnathan:<BR/><BR/><I>Strong static typing has its place, but it's much easier and more reliable to set some policy about where escaping occurs and do it reliably at interface boundaries.</I><BR/><BR/>If that's easier for you, sure. I don't think it's easy, but for me there is a trade-off between various language features, and at the moment it works like this:<BR/><BR/>Clients insist on Java for some kinds of work. Easy trade off: money vs. code security. They pay for the extra time I take to write the code, so that's their call to make.<BR/><BR/>For my own projects, dynamically typed languages have offered other benefits that--to me--outweighed the benefits of static typing for catching string semantic errors.<BR/><BR/>But for me, there is a benefit to the kind of type checking that can prevent string semantics errors, it's just a question of priorities. If I was using a language that offered checking I would use checking.<BR/><BR/><I>Static typing is more useful if you need to computationally manipulate data of different formats and keep track of which data is in what format. For example, manipulating financial instruments in different currencies.</I><BR/><BR/>Speaking of "office space"...<BR/><BR/>Umm... I'm going to have to, uh, go ahead and <I>disagree</I> with you there.<BR/><BR/>I think you're describing "grammar checking" again. I can do that in Java today. Instead of using a String for SSNs, for example, I can create an SSN class. It's a pain to deal with multiplying hectares by acres, but I can prevent simple errors.<BR/><BR/>The "semantic checking" I'm talking about is not mixing up gallons with litres. the simplest case I can think of is finding fencepost errors.<BR/><BR/>If I write a routine that manipulates lists, can the compiler detect that I haven't dealt with the case of the empty list? This is trivial in an expressive type system, it's maybe the first page of "The Little MLer," but try twisting Java into checking that for you.<BR/><BR/>Just kidding about Office Space, but please take a moment to think about the difference between grammar and semantics... maybe I am not doing a good job of explaining the difference.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184082780000#c6339585207487138529" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:53 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6339585207487138529" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="441621519112077244"></a> 				Nice post -- I haven't really started sorting out this sort of advantage yet, but I'm really liking some other aspects of F#, which I've started to use in production code. <BR/><BR/>I've started thinking in types to some degree -- and wondering how I've lived this long without discriminated unions /  algebraic data types. They're simply brilliant for writing structural DSLs for use in your code.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184085840000#c441621519112077244" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06677044848062651141" rel="nofollow">AN</a> : 12:44 PM</div>
+
+								<span class="item-control blog-admin pid-34300415"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=441621519112077244" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8245137030505281656"></a> 				In one of those happy coincidences, two days ago I started The Little MLer and today I read your article.<BR/><BR/>I've just experienced first-hand a little taste of the power of these type systems in catching errors. In the Little MLer, an excercise is to add Steak to a another dish. So, there's this datatype:<BR/><BR/>datatype meza =<BR/>  Shrimp<BR/>       | Calamari<BR/>       | Escargot<BR/>       | Hummus<BR/><BR/>and the steak meal:<BR/><BR/>datatype main =<BR/>  Steak <BR/>       | Ravioli<BR/>       | Chicken <BR/>       | Eggplant<BR/><BR/>Bothe of these when evaluated give:<BR/><BR/>- [opening /tmp/sml241HY8]<BR/>datatype meza = Calamari | Escargot | Hummus | Shrimp<BR/>val it = () : unit<BR/>- [opening /tmp/sml241X5e]<BR/>datatype main = Chicken | Eggplant | Ravioli | Steak<BR/>val it = () : unit<BR/><BR/>and the add_steak function:<BR/><BR/>fun add_a_steak (Shrimp)<BR/>  = (Shrimp,Steak)<BR/>  | add_a_steak(Calamari)<BR/>    = (Calamari, Steak)<BR/>  | add_a_steak(Escargots)<BR/>    = (Escargots, Steak)<BR/>  | add_a_steak(Hummus)<BR/>    = (Hummus, Steak)<BR/><BR/>and now, the SML compiler borks (and, by the way, this is a REPL, like in Lisp or Python, when I say "compiler"):<BR/><BR/>- [opening /tmp/sml241kDl]<BR/>/tmp/sml241kDl:1.5-8.22 Error: match redundant<BR/>          Shrimp => ...<BR/>          Calamari => ...<BR/>          Escargots => ...<BR/>    -->   Hummus => ...<BR/>  <BR/><BR/>uncaught exception Error<BR/>  raised at: ../compiler/TopLevel/interact/evalloop.sml:63.48-63.56<BR/>             ../compiler/TopLevel/interact/evalloop.sml:44.55<BR/>             ../compiler/TopLevel/interact/evalloop.sml:291.17-291.20<BR/><BR/>Now, I don't know what the error is but, upon inspection, I noticed I type "Escargot" in the the datatype, instead of "Escargots". I correct that and re-evaluate the datatype and the function:<BR/><BR/>- [opening /tmp/sml241xNr]<BR/>datatype meza = Calamari | Escargots | Hummus | Shrimp<BR/>val it = () : unit<BR/><BR/>- [Opening /tmp/sml241-Xx]<BR/>val add_a_steak = fn : meza -> meza * main<BR/>val it = () : unit<BR/><BR/>And there you have it: add_a_steak is correct now.<BR/><BR/>I just got syntax-checking *for free*!<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184090520000#c8245137030505281656" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<span class="anon-comment-author">jt</span> : 2:02 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8245137030505281656" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2975743185865223546"></a> 				"But it will not do a simple little thing for me in return like check all of my code paths to ensure that I never pass a parameter that might be null to a method that assumes the parameter can never be null?"<BR/><BR/>I would be interested to see, how the compiler can do this with reflection or dependency injection or across frameworks.<BR/><BR/>Null warnings in IDEs could be better though.<BR/><BR/>Peace<BR/>-stephan<BR/>-- <BR/>Stephan Schmidt :: stephan@reposita.org<BR/>Reposita Open Source - Monitor your software development<BR/>http://www.reposita.org <BR/>Blog at http://stephan.reposita.org - No signal. No noise.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/07/can-your-type-checking-system-do-this.html?showComment=1184164500000#c2975743185865223546" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03845125686370893937" rel="nofollow">Stephan</a> : 10:35 AM</div>
+
+								<span class="item-control blog-admin pid-1978863752"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2975743185865223546" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

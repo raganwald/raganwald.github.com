@@ -1,0 +1,372 @@
+<html> 
+<head>
+        
+        <title>SOA for Dummies</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Friday, August 31, 2007</div>
+			
+
+			<div class="Post"><a name="4362245543435396903">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2007/08/soa-for-dummies.html" title="permanent link">SOA for Dummies</a></span>
+					<div style="clear:both;"></div><blockquote>Suppose you are a programmer and you have to build a large, complicated application. You have to break up the code into pieces so you can keep everything straight and not get lost. For years, programmers have divided code into interconnected hierarchies of objects, a practice called object-oriented programming. Service Oriented Architecture is an alternative code organization, based on services. For example, you might have a weather service that returns weather conditions, given a city. A service is a chunk of code that has several properties:<br />  <ol><li>A service can take requests</li><br />  <li>Given a well-formed request, a service will send a response</li><br />  <li>A service can use other services</li></ol><br />  Service Oriented Architecture has become a major buzzword in the software design community, and everyone and his code monkey is claiming to use it. So if it doesn’t do what’s promised, a lot of people are going to lose a lot of money.<br /></blockquote><div style="text-align: right;">&#8212;The War on Bullshit, <a href="http://thewaronbullshit.com/2007/08/30/soa/">Service Oriented Architecture is your Ticket to Hell</a></div><br /><br />Many people have noted my interest in software architecture and steered me in the direction of the big new thing, Service Oriented Architecture. I am always bemused by SOA, not least of which is that I can&#8217;t help but think that the acronym is unfinished and really needs a &#8220;B&#8221; on the end.<br /><br />I am pleased to tell you that SOA really does work, and has been proven to work in the field, under rigourous conditions, by real programmers and not just consultants touting books or neophyte programmers trying to inflate their resum&eacute;s.<br /><br />Those of you born after 1980 will be surprised to hear that SOA was first invented in the 1960s. They called in <em>Procedural Programming</em> in those days, and it featured this nifty abstraction where:<br /><ol><li>A procedure can take requests called &#8220;Procedure Calls&#8221;</li><br /><li>Given a well-formed request, a procedure will provide a response</li><br /><li>A procedure can use other procedures</li></ol><br />It worked remarkably well, so well that in 1976 or thereabouts, somebody got the bright idea that you should be able to call procedures on <em>other systems</em>, so that a program talking to the user on a system in their office might invoke a procedure on a different computer running a database.<br /><br />This was called a <em>remote</em> procedure call, a remarkably simple name: you take the name of the thing you already understand and merely explain how it is slightly different.<br /><br />The industry sliced and diced this idea, reinventing it many times. For example, one company was not satisfied with calling things procedures and remote procedure calls, so it invented the new acronyms COM and DCOM.<br /><br />I am told that academics have proven that a computer program which prints all of the variations of this idea cannot be proven to halt, possibly because we invent new ones faster than we can list the old ones. But I am quite sure that SOA is nothing more or less than that old idea, wearing new clothes worthy of an emperor.<br /><br />And when I see criticism of SOA, I am quite sure that it is fully congruent to valid criticism of Procedural Programming. For example, when told that SOA can cause Strange Loops, I think of John Lakos&#8217;excellent book <a href="http://www.amazon.com/gp/product/0201633620?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0201633620">Large-Scale C++ Software Design</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0201633620" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, where he spends 896 pages explaining how to eliminate the loops from large C++ programs for speed of compilation and testability.<br /><br />Or when told that SOA hides the implementation of services, so that clients cannot be sure when the behaviour of services change, I am reminded of a very old debate about <a href="http://www.joelonsoftware.com/articles/LeakyAbstractions.html" title="The Law of Leaky Abstractions - Joel on Software">Leaky Abstractions</a>. I do not expect this debate to go away any time soon, even if we discard SOA in favour of the next shiny consulting toy.<br /><br />Of course, Procedural Programming was supplanted in the mainstream &#8220;Blub&#8221; community by Object-Oriented Programming. I am not surprised to see that the main opponents of SOA advocate something called &#8220;REST.&#8221; REST&#8217;s chief feature seems to be that it favours decomposing large architectures into a taxonomy of entities with well-defined interfaces (PUT, GET, DELETE, and so forth).<br /><br />Alphonse Karr said it best:<br /><blockquote>Plus &ccedil;a change, plus c&rsquo;est la m&ecirc;me chose.<br /></blockquote><div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2007/08/soa-for-dummies.html" title="permanent link">3:22 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>SOA for Dummies</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="5077574273861596331"></a> 				Ok - so that last bit has SOA as procedural programming and REST style as OOP. I think there are people who take that tack - but the strong preponderance of the REST/SOA (and really it's more of a REST/SOAP or REST/WS-* or REST/XML-RPC)  argument is that web based protocols might as well take advantage of the way the web works.<BR/><BR/>Using SOAP or XML-RPC for instance: the network stuff is abstracted away and the goal is to make it just a function call as though it were a native function in the language of choice. And I can see why this seems a tempting and worthy goal. <BR/><BR/>With REST api's we basically make stuff work like the web. <BR/><BR/>So instead of calling a function with arguments like XMLRPC.foo(id,arg1) we do a GET on a url like /myservice/foo/id?arg1=x and it returns data - maybe xml, maybe json, maybe even html or plain text.  The point is - the URI's are the interesting things and we can do the things to them on the client side that we do with the rest of the web - bookmark  , hand edit (look at /myservice/ to see what other urls are available), etc.<BR/><BR/>And on the server side we have a lot of expertise and implementations of things built into the HTTP protocol (caching, content negotiation, and so on) that otherwise get re-implemented or exposed at the API or even application level.<BR/><BR/>I'm not a REST guru. I have found reading people like Ryan Tomayko useful on the whole REST idea though...<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/soa-for-dummies.html?showComment=1188596220000#c5077574273861596331" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/11729350517271714995" rel="nofollow">metapundit.net</a> : 5:37 PM</div>
+
+								<span class="item-control blog-admin pid-1644285574"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5077574273861596331" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5582863760759667929"></a> 				SOA is fundamentally different from procedure calls.  When I execute a procedure call within a program, I have an implicit assumption that the procedure call will at least get a chance to execute.  The message to the procedure won't get lost before it's executed, or the procedure won't simply cease to exist.<BR/><BR/>The elephant in the room with SOAs is the fragility of the system.  As long as everything is up and running, life is good: but I've seen SOA systems which just assume the service call will always work.<BR/><BR/>As Mike Nygard* puts it: "Every system your program interacts with will, at some point, try to kill your program."  Each service in the SOA is a system.<BR/><BR/>This all said, I think that SOA is the best enterprise architecture solution I've ever seen, simply because it maximizes reusability of produced functionality.<BR/><BR/>* http://www.nofluffjuststuff.com/speaker_view.jsp?speakerId=5145<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/soa-for-dummies.html?showComment=1188612960000#c5582863760759667929" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17844778275497805797" rel="nofollow">Robert</a> : 10:16 PM</div>
+
+								<span class="item-control blog-admin pid-83827799"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5582863760759667929" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6161312157457574035"></a> 				<I>I think that SOA is the best enterprise architecture solution I've ever seen</I><BR/><BR/>As long as we don't confuse enterprise architecture <I>solutions</I> with enterprise <I>architectures</I>, that is fine with me.<BR/><BR/>Because SOA is not an architecture any more than J2EE is an architecture or client-server is an architecture. These things are <I>technology stacks</I>.<BR/><BR/>But then again, I'm a <A HREF="http://raganwald.github.com/2007/05/not-so-big-software-application.html" REL="nofollow">Not So Big</A> guy, not an Enterprisey Buzzword-Enabled guy.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/soa-for-dummies.html?showComment=1188613200000#c6161312157457574035" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:20 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6161312157457574035" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="429677157426694994"></a> 				I suppose the first point to make is that SOA is meaningless, you have to use other words to explain what you really mean. See Fowler's post on <A HREF="http://www.martinfowler.com/bliki/ServiceOrientedAmbiguity.html" REL="nofollow">Service Oriented Ambiguity</A>.<BR/><BR/>I think the second point to make is that it is really as robert points out: SOA is about reusing a running instance system, as opposed to reusing a program.  This tends to lead to a dependency nightmare, which I have called "Service Oriented Gridlock."<BR/><BR/>My third point is that there is something good about SOA- it tends to encourage applications to think about what sort of APIs they could provide.<BR/><BR/>The final point to note is that CIO's and other tech execs have been unusually successful pitching SOA projects at companies whose core business is not technology.  I think it has something to do with term service, and that the core business wants IT to "serve" them.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/soa-for-dummies.html?showComment=1188618600000#c429677157426694994" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16098483018096096360" rel="nofollow">Matt M</a> : 11:50 PM</div>
+
+								<span class="item-control blog-admin pid-525906948"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=429677157426694994" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

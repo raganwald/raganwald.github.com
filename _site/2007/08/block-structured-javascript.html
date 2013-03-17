@@ -1,0 +1,400 @@
+<html> 
+<head>
+        
+        <title>Block-Structured Javascript</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Monday, August 20, 2007</div>
+			
+
+			<div class="Post"><a name="8261916568550175558">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2007/08/block-structured-javascript.html" title="permanent link">Block-Structured Javascript</a></span>
+					<div style="clear:both;"></div>Javascript provides <em>closures with first-class access to variables declared in the enclosing environment</em>. Besides being a handy piece of trivia if you are ever playing Programming Jeopardy, what use is this to the actual working programmer?<br /><br />There are a lot of ways to take advantage of Javascript&#8217;s closures, I am going to describe just one, replicating Algol&#8217;s block structure (or Lisp&#8217;s <code>let</code> and <code>begin</code> macros, if you prefer). When we&#8217;re all done you&#8217;ll have a handy tool for making your code more readable, separating its concerns, and generally making life easier for programmers who have to read what you&#8217;ve written.<br /><br /><strong>From Bricks to Blocks</strong><br /><br />A block is a chunk of code inside a function. Blocks have well-defined entry and exit points. Blocks have their own local variables and functions, and they also have first-class access to variables and functions defined around them. Blocks may nest.<br /><br />Structuring code into blocks makes large functions more readable and easier to refactor. All of the variables and logic needed for one thing are encapsulated together in the blocks where they are needed, not scattered about in functions everywhere.<br /><br /><blockquote>when a better design&mdash;if unfamiliar&mdash;is shown to developers or experienced users, they tend to reject it. Often, it takes careful explanation and having them gain experience with it before the improvement is understood.<br /></blockquote><div style="text-align: right;">&mdash;Jef Raskin</div><br /><br />While the idiom may be slightly unfamiliar to some, I think you&#8217;ll agree that it is highly accessible and not some sort of &uuml;ber-contruct of interest only to the self-professed hacker. And when a programmer encounters it in your code, she will have no trouble figuring out what it does and how it does it.<br /><br /><strong>block structured code</strong><br /><br />I think everyone can agree that structured programming is a good thing. Functions should be composed of blocks, with the blocks linked together by constructs such as <code>if</code> statements:<br /><pre><code><br />if (some_condition) {<br />    // a block<br />}<br />else {<br />    // another block<br />}<br /></code></pre><br />Back before structured programming was introduced, there were <code>gotos</code> everywhere. Looking at a piece of code with labels, it was hard to know what the flow of control might be at run time. In short, you never had the confidence that everything you needed to know about that code was right there next to that code.<br /><br />Like almost all modern languages, Javascript&#8217;s blocks do structure the flow of control so that you have nice clean entries and exits from each block. And also like most other modern languages, Javascript does nothing to structure access to variables inside blocks. For example:<br /><pre><code><br />var j = 0;<br />if (some_condition) {<br />    // a block with some code elided<br />}<br />alert(j);<br /></code></pre><br />What will be shown? You can&#8217;t guarantee that zero will pop up, because the blocks might modify <code>j</code>, like this:<br /><pre><code><br />var j = 0;<br />if (true) {<br />    var j = 42;<br />}<br />alert(j);<br /></code></pre><br />This looks like a programmer error. After all, the <code>var</code> keyword should be used to declare a new variable. The code between the braces isn&#8217;t really a new block of code with its own variables. This is hardly a problem with trivial examples. But if you start building some larger functions, the possibility of accidentally overwriting some code looms larger. Especially once you start refactoring and moving blocks of code around.<br /><br />What can we do? How about this: the &#8220;block&#8221; idiom (you can also call it  <code>let</code> or <code>begin</code> if you want to sound like a Schemer). Here&#8217;s the code:<br /><pre><code><br />var j = 0;<br />if (true) <br />    (function () {<br />        var j = 42;<br />    })();<br />alert(j);<br /></code></pre><br />There&#8217;s a lot of syntactic noise, what does it mean? In short, we said: &#8220;Create a new function. In the body of the new function define a variable called <code>j</code> and assign 42 to it. Then call that function without any parameters.&#8221; Because our new instance of <code>j</code> is inside a function, it is not the same variable as the <code>j</code> outside of the function. That can be handy.<br /><br />Are there any other benefits of this idiom? Yes indeed. Sometimes you have an assignment and you need some logic on the right hand side. How do you write:<br /><pre><code><br />var proven = {<br />    var n = Math.round(100*Math.random());<br />    var total = 0;<br />    for (var i = 0; i &lt;= n; ++i) {<br />        total = total + (2*i) + 1<br />    }<br />    return total == ((n + 1) * (n+1));<br />};<br />alert(proven);<br /></code></pre><br />You can&#8217;t, of course. There are two problems with trying to use braces in this case. First, Javascript only allows braces to form code blocks in conjunction with specific keywords like <code>if</code> and <code>function</code>. Second, Javascript code blocks are not <em>expressions</em>&mdash;they do not produce values. This is why languages like Javascript need an if statement <em>and</em> a ternary operator: if blocks produced values, you would only need if expressions. <br /><br />So in traditional Javascript style, you have to define a function somewhere else and call it&#8230; You&#8217;ll notice our block idiom includes defining and calling a function. What if our function returns a value? In that case, we can use a block anywhere we want a value, for example:<br /><pre><code><br />var proven = (function () {<br />    var n = Math.round(100*Math.random());<br />    var total = 0;<br />    for (var i = 0; i &lt;= n; ++i) {<br />        total = total + (2*i) + 1<br />    }<br />    return total == ((n + 1) * (n+1));<br />})();<br />alert(proven);<br /></code></pre><br />This new idiom allows us to make first-class blocks anywhere we like. Our blocks are <em>expressions</em>, and we can use them anywhere we need a value. And as above, Our variables are fully encapsulated, they do not overwrite variables defined elsewhere.<br /><br /><strong>blocks vs. named functions</strong><br /><br />You may be wondering, "Why can&rsquo;t we use a named function?" This is the style in languages like Python, where the Benevolent Dictator does not permit constructions like this. Here is the above code using a named function:<br /><pre><code><br />var proven_helper = function () {<br />    var n = Math.round(100*Math.random());<br />    var n_plus_1_squared = function (n) {<br />        return (n + 1) * (n+1); <br />    };<br />    var sum = function (n) {<br />        var total = 0;<br />        for (var i = 0; i &lt;= n; ++i) {<br />            total = total + (2*i) + 1<br />        }<br />        return total;<br />    };<br />    return sum(n) == n_plus_1_squared(n);<br />};<br />var proven = proven_helper();<br />alert(proven);<br /></code></pre><br /><br />I find this almost as good as the block. Since you only use it in one place, it is defined where you use it. That is good. And the name might be helpful documentation, just like a one or two-word comment. Balanced against this is the fact that you have added a new function to the outer scope. Reading it later, you might have to scan the rest of the code to see if it is used elsewhere.<br /><br />There's also a very small advantage of the block over the named function: since you need two statements (one to name a function, another to use it), you can only use a named function in normal code blocks. You cannot use a named function when you need an expression, unless you resign yourself to naming the function in one place and using it somewhere else.<br /><br />For example, when constructing array or hash literals, you can use expressions. A block is an expression, while two statements (one to create a named function and one to call it) are not an expression. So a named function would need to be defined outside of an array or hash literal, while a block can be used inside it, placing the code closer to where it is used.<br /><br /><strong>block structure and cleaner code</strong><br /><br /><div class="book"><em></em><hr><em><a href="http://www.amazon.com/gp/product/0596101996?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0596101996"><img border="0" src="/assets/images/old//javascript.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0596101996" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br /><a href="http://www.amazon.com/gp/product/0596101996?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0596101996">JavaScript: The Definitive Guide</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0596101996" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> takes the time to actually discuss the language, to explain what Javascript can do and how to do it. And of course, the book also provides an in-depth reference of every function and object you are likely to encounter in most implementations. Recommended.<br /></em><hr></div>Structuring code into blocks makes large functions more readable and easier to refactor. All of the variables and logic needed for one thing are encapsulated together in the blocks where they are needed, not scattered about in functions everywhere. If you see a variable declared inside a block, you know it is only used inside the block. If you see a variable with the same name outside the block&#8212;a regrettable occurrence&#8212;you know that moving or changing the block will not affect the code working with variables outside of the block.<br /><br />You probably know that you can put a function inside of a function in Javascript:<br /><pre><code><br />var factorial = function (n) {<br />    var factorial_acc = function (acc, n) {<br />        if (0 == n) {<br />            return acc;<br />        } else {<br />            return factorial_acc(n * acc, n - 1);<br />        }<br />    };<br />    return factorial_acc(1, n);<br />}<br />alert(factorial(6));<br /></code></pre><br />And this is a good thing, it keeps the function <code>factorial_acc</code> inside of <code>factorial</code>. Since that&#8217;s the only place you need it, why declare it anywhere else? The fact that you can put a function inside of a function implies that you can put a function inside of a block as well:<br /><pre><code><br />var proven = (function () {<br />    var n = Math.round(100*Math.random());<br />    var n_plus_1_squared = function (n) {<br />        return (n + 1) * (n+1); <br />    };<br />    var sum = function (n) {<br />        var total = 0;<br />        for (var i = 0; i &lt;= n; ++i) {<br />            total = total + (2*i) + 1<br />        }<br />        return total;<br />    };<br />    return sum(n) == n_plus_1_squared(n);<br />})();<br />alert(proven);<br /></code></pre><br />If you only need the functions <code>n_plus_1_squared</code> and <code>sum</code> to do this one job, in this one place, why should they be defined at top level cluttering up your code? Why force other programmers to search through your code figuring out where they are used before making changes?<br /><br />Block structure may seem <i>unfamilar</i> at first, but give blocks a try and see whether you start finding the code even easier to read and refactor with blocks. Like me, you will find that structuring your code with blocks puts the things you use right where you use them.<br /><br /><strong>update</strong>: <a href="http://raganwald.github.com/2007/08/ruminations-about-performance-of.html">Ruminations about the performance of anonymous functions in naive Javascript implementations</a>.<div style="clear:both; padding-bottom:0.25em"></div><p class="blogger-labels">Labels: <a rel='tag' href="http://raganwald.github.com/archives/labels/lispy.html">lispy</a>, <a rel='tag' href="http://raganwald.github.com/archives/labels/popular.html">popular</a></p>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html" title="permanent link">10:08 PM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Block-Structured Javascript</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="8346083450338568864"></a> 				Why not move the code into a named function instead of putting it into an anonymous one? Apart from making it still easier to read and refactor, the function name would act as a kind of documentation.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/block-structured-javascript.html?showComment=1187667300000#c8346083450338568864" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://siddhi.blogspot.com" rel="nofollow">Siddharta</a> : 11:35 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8346083450338568864" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3032892568106546280"></a> 				Siddharta:<BR/><BR/>I shall add an example using a named function, you can compare and contrast for yourself.<BR/><BR/>As you can tell, I place a very high value on putting code and variables that I only use once as close as possible to where I use them.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/block-structured-javascript.html?showComment=1187694240000#c3032892568106546280" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 7:04 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3032892568106546280" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3416454755158440836"></a> 				You ask some rhetorical questions about why one would define functions outside of where they are used. Sometimes, at least, the answer is to avoid creating garbage. Each time the code that defines a function gets executed it creates an object (of type Function). Each time it goes out of scope, it becomes garbage that has to be collected.<BR/><BR/>In the context of the browser, this is rarely a problem, though a periodic timer or a mouse move event handler could run many times in a short period of time. In the context of other environments running JS code (e.g. Rhino on the JVM, ActionScript in Flash), the chance that you'll wind up doing something like that in a tight loop accidentally goes up.<BR/><BR/>Granted, I'm talking about an optimization, and we all know that premature optimization is nothing but trouble. That said, it's important to be aware of the performance pitfall inherent in the idiom.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/block-structured-javascript.html?showComment=1187702520000#c3416454755158440836" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/01377458805247260071" rel="nofollow">Gregory</a> : 9:22 AM</div>
+
+								<span class="item-control blog-admin pid-2026709481"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3416454755158440836" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5135639279847874807"></a> 				Gregory:<BR/><BR/>Obviously, good comment. And to be honest, if someone proudly demonstrated this code to me in an interview I would ask if they understood the costs.<BR/><BR/>That being said...<BR/><BR/>This is easily one of the oldest debates in programming. My experience to date has been this: If an unperformant idiom becomes popular, compilers will adjust to optimize it.<BR/><BR/>You saw this with OOP... are you old enough to remember people complaining about the overhead of virtual functions in C++? You saw this with garbage collection (and it is now <I>faster</I> than manual memory management in most cases). <BR/><BR/>So, good code that is unperformant will get faster, but bad code is forever. So... I generally ignore performance until I find my own teeth gnashing as I wait for the computer :-)<BR/><BR/>p.s. Of course, unperformant bad code is really bad. I may be guilty of same.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/block-structured-javascript.html?showComment=1187702880000#c5135639279847874807" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:28 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5135639279847874807" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7849383153792888230"></a> 				Two thoughts: the first is that <A HREF="http://peter.michaux.ca/article/3556" REL="nofollow">this page is relevant</A>; the second is that it's probably pretty straightforward to graft block syntax onto JavaScript using Prototype. Since these things can be patterned as vars holding functions, it's probably pretty straightforward to encapsulate that behavior. Also, that reminds me, <A HREF="http://osteele.com/archives/2007/07/functional-javascript" REL="nofollow">this page is relevant too</A>.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/block-structured-javascript.html?showComment=1187721360000#c7849383153792888230" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06462574543661010181" rel="nofollow">Giles Bowkett</a> : 2:36 PM</div>
+
+								<span class="item-control blog-admin pid-855033878"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7849383153792888230" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1822890415806316788"></a> 				The point about the code being near the place where it is used is a good one. <BR/><BR/>From a documentation and readability point of view I find that the named function is easier because its possible to read the block by the function name without having to read the implementation.<BR/><BR/>I would agree that when the block is small or straightforward then it makes good sense to use an anonymous function.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/block-structured-javascript.html?showComment=1187725200000#c1822890415806316788" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://siddhi.blogspot.com" rel="nofollow">Siddharta</a> : 3:40 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1822890415806316788" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8072714151646984047"></a> 				If you use 'function' to define your inner functions (instead of 'var'), you can use an "inverted pyramid" style of writing, where the abstract or executive summary goes first, followed by the details. <BR/><BR/>var proven = function() {<BR/>&nbsp;// high-level view:<BR/>&nbsp;var n = ...;<BR/>&nbsp;var n_plus_1_squared = ...;<BR/>&nbsp;return sum(n) == n_plus_1_squared(n);<BR/>&nbsp;// details:<BR/>&nbsp;function sum(n) {...}<BR/>}<BR/><BR/>This works because ECMAScript specifies that function bodies are processed for function definitions first (ECMA-262 pp. 39-40 and pp. 71-72).  I wouldn't know it if I hadn't had to work around some nasty scoping issues while implementing an <A HREF="http://openlaszlo.org" REL="nofollow">ECMAScript compiler</A>, but now that I get to <EM>write</EM> ECMAScript instead of <EM>compile</EM> it, I can to use that hard-won knowledge... :-)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/block-structured-javascript.html?showComment=1187741580000#c8072714151646984047" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon anon-comment-icon"><img src="http://www.blogger.com/img/anon16-rounded.gif" alt="Anonymous" style="display:inline;" /></span>&nbsp;<a href="http://osteele.com" rel="nofollow">Oliver Steele</a> : 8:13 PM</div>
+
+								<span class="item-control blog-admin pid-1482585217"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8072714151646984047" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5532656692058249914"></a> 				This was the motivation for 'let' in JavaScript 1.7. See <A HREF="http://developer.mozilla.org/en/docs/New_in_JavaScript_1.7#Block_scope_with_let" REL="nofollow">this document</A> for more information. The idea was to provide syntactic sugar for the (function(){})() idiom (but you can return from the middle of a block with 'let' in it).<br />
+								<div class="byline"><a href="http://raganwald.github.com/2007/08/block-structured-javascript.html?showComment=1187904660000#c5532656692058249914" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/06161105130539705600" rel="nofollow">Blake</a> : 5:31 PM</div>
+
+								<span class="item-control blog-admin pid-857095372"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5532656692058249914" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

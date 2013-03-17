@@ -1,0 +1,414 @@
+<html> 
+<head>
+        
+        <title>Another problem with problems with design patterns</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Sunday, January 06, 2008</div>
+			
+
+			<div class="Post"><a name="566214297207917147">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2008/01/problem-with-problem-with-design.html" title="permanent link">Another problem with problems with design patterns</a></span>
+					<div style="clear:both;"></div><blockquote>The documentation for a design pattern describes the context in which the pattern is used, the forces within the context that the pattern seeks to resolve, and the suggested solution. [For example:] The visitor design pattern is a way of separating an algorithm from an object structure. A practical result of this separation is the ability to add new operations to existing object structures without modifying those structures.</blockquote><br />I have read the view that design patterns represent deficiencies in a programming language. This argument stems from the observation that the specific code examples for half or more of the patterns in the GoF Book are "superfluous" in languages that provide abstractions above and beyond basic OO. The Visitor pattern can be said (depending on which Golden Hammer you are holding) to represent a way to brew your own multiple dispatch, open classes, or pattern matching.<br /><br /><blockquote>Fools ignore complexity. Pragmatists suffer it. Some can avoid it. Geniuses remove it.</blockquote><br />Does this mean that given a sufficiently expressive language there will be no design patterns? Certainly not. Each design pattern organizes a problem and <em>one</em> suggested solution in a structured way, giving the solution a name so that programmers may enjoy a common vocabulary. The pattern would only go away if the problem goes away.<br /><br />But why would a more expressive language have this better feature, if not to solve the problem? Clearly the problem doesn&#8217;t go away, it is just that instead of writing our own incomplete and buggy mechanisms for multiple dispatch we can now use the language&#8217;s complete, tested, and &#8220;free&#8221; multiple dispatch feature to solve the problem.<br /><br />If you consider the problem to be &#8220;How do I implement my own multiple dispatch,&#8221; then the Visitor pattern is obsolete if you are using a language like Common Lisp. However, if you consider the problem to be &#8220;How do I separate algorithms from data structures,&#8221; then the only thing obsolete in the originally publicized pattern are the language-specific details. The high-level approach can still be relevant.<br /><br /><blockquote>A programming language is low level when its programs require attention to the irrelevant.</blockquote><br />Some programming languages accomplish the same task with a declaration or a singe line of code. From this, some draw the conclusion that design patterns exist because popular programming languages lack certain abstractions or they lack the meta-abstractions permitting you to build your own abstractions cleanly. The underlying assumption here is that the purpose of the pattern is to explain specifically how to write the code.<br /><br />This is clearly not the case. The Ruby language implements the Singleton pattern with a single abstraction, the Singleton module. <code>include Singleton</code> is all you need to implement the pattern. Yet, would we say that in Ruby there are no Singletons? No, we would say that Ruby makes them easy.<br /><br /><blockquote>I always felt the beauty of Java was that there is only one &#8216;standard&#8217; way of handling most problems. I know it might not be &#8216;fun&#8217;, &#8216;smart&#8217; or &#8216;elegant&#8217; in most people&#8217;s views, but most software factories don&#8217;t want people to write elegant code. They want standardized maintainable stuff that people can understand ten years from now because it&#8217;s written in the same fashion [as] everything else out there&#8230;<br />  <br />I really think that great code is easy to understand and follows patterns that people are used to and comfortable with&#8230; I read someone&#8217;s code I just want to be able to understand it as quickly as possible, find the spot where the changes go and be able to figure out how said changes should fit in the general design.</blockquote><div>&#8212;inopia <a href="http://programming.reddit.com/info/63nkp/comments/c02q9d2">commenting</a> on <a href="http://raganwald.github.com/2007/12/newly-discovered-design-pattern-code.html">Newly Discovered Design Pattern: &#8220;Code Well.&#8221;</a> Reposted with permission.</div><br />One argument is that implementing code a certain way is what makes it easy to read, what makes it <em>familiar</em>. This line of thinking is grounded in the idea that the valuable part of the patterns is the suggested solution at a detailed level, because that is what will enable people to read the code and say to themselves, &#8220;I know what that does.&#8221;<br /><br />The counter-argument is that designing architecture a certain way with familiar names is what makes it easy to understand. This line of thinking is grounded in the idea that the valuable part of the patterns is the identification of the context, forces, and resolution, because that is what will enable people to read the code and say to themselves, &#8220;I know what that <em>means</em>.&#8221;<br /><br /><div class="book"><em><hr/><br /><a href="http://www.amazon.com/gp/product/0195019199?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0195019199"><img border="0" src="http://raganwald.github.com/assets/images/old//a_pattern_language.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0195019199" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br /><br /><a href="http://www.amazon.com/gp/product/0195019199?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0195019199">A Pattern Language: Towns, Buildings, Construction</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0195019199" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /> is one of the most loved books on my shelf. Anyone who has an interest in making their house or apartment a deeply satisfying, functional home needs to read this book once in their lives. If you don&rsquo;t have the budget to buy it today, I urge you to borrow it from a friend or from your library.<br /><br />And of course, you can learn a great deal about software design from it. In many ways, you can learn much more about how to think about design than from software patterns books. One thing that stands out is that this is a <a href="http://www.amazon.com/gp/product/0195024028?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0195024028">Timeless Way of Building</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=0195024028" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />. When you see how these patterns transcend specific construction materials and methods, you the common forces in software design that transcend tools.<hr/></em></div>Even if the exact implementation of a pattern is abbreviated or even trivial in another language, patterns still provide the identification of the context, forces, and resolution with a common name everyone can understand.<br /><br />A programming language <em>can</em> make some patterns go away. But not by providing features and abstractions that eliminate the repetitive boilerplate. Such languages make the patterns succinct, elegant, and remarkably easy to read&hellip; but not superfluous.<br /><br />Instead, a language can make the patterns go away by introducing entirely different contexts for designing programs. To stretch the building metaphor, patterns of home design go away if you are designing a commune instead of separate family dwellings. It is not a question of how one builds homes, we do away with homes altogether.<br /><br />Radically different paradigms for programming can eliminate the patterns we know. For example, if you are building a Common Lisp program with objects and use multiple dispatch, you are still thinking in objects and thus you wrestle with the same forces upon them.<br /><br />But if you build a Common Lisp program in a functional way, you may be able to get by without any objects at all, not even objects you have faked using closures. In that case, you don&rsquo;t need the OO patterns because you aren&rsquo;t in an OO context.<br /><br />But that being said, there are <em>other</em> patterns you need that suit a functional programming context like <span style="font-style:italic;">Iterator</span> and <span style="font-style:italic;">Idiomatic Traversal</span>. It is not a case of Common Lisp being so powerful that no patterns are needed, it is a case of Common Lisp providing the power to make certain patterns elegant and simple should you choose to program in a manner that can make use of them.<br /><br />So languages can make patterns go away by introducing entirely new paradigms. And those paradigms will have their own patterns appropriate for resolving their forces.<br /><br />In summary, I dispute that design patterns represent language flaws. I claim that while the specific suggested implementations may work around language flaws, the context, forces, and resolution are relevant and valuable as long as you are working within the same paradigm.<br /><br /><blockquote>Get into a rut early: Do the same process the same way. Accumulate idioms. Standardize. The only difference(!) between Shakespeare and you was the size of his idiom list&thinsp;&mdash;&thinsp;not the size of his vocabulary.</blockquote><br /><br /><hr/><br />All quotes from Wikipedia or from Alan J. Perlis&rsquo; <a href="http://www.cs.yale.edu/quotes.html">Epigrams in Programming</a> unless otherwise attributed.<br /><br /><em>post scriptum</em>:<br /><br />I notice that the first couple of comments that appeared on a popular link aggregation site disagreed with my perspective that design patterns are much more than the language-specific implementation. To them, a Singleton in Ruby is a library call, not a pattern.<br /><br />Patterns have four elements. The argument seems to be that three of the four elements&mdash;name, context, forces to be resolved&mdash;belong to a &ldquo;Concept,&rdquo; and only the fourth&mdash;the one we don&rsquo;t like&mdash;is a pattern.<br /><br />Upon reflection, what I find most interesting about this perspective is how much it has in common with the pattern abuse that I have criticized in the past: an obsession with the surface form. I wrote about that above:<br /><br /><blockquote>This line of thinking is grounded in the idea that the valuable part of the patterns is the suggested solution at a detailed level.</blockquote><br />This criticism of patterns is rooted in exactly the same view of patterns: that he most important thing is the exact suggested solution, not the name, not the approach, not the context, not the forces to resolve. One person holds that up as a pattern&rsquo;s value, another criticizes it, but they are much more similar than different in their views.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2008/01/problem-with-problem-with-design.html" title="permanent link">9:43 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Another problem with problems with design patterns</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="7619717696189732444"></a> 				Java's design is that of force minimalism, keeping the available abstractions to the minimum, and demanding that any pattern be expressed fully in code.  Repeatedly.  Ad nauseam.<BR/><BR/>Ruby, Lisp and any language that favors meta-programming takes a different approach.  Identify a repeating pattern and create a suitable abstraction.<BR/><BR/>Take singleton for example.  Using a singleton is a design decision.  In Ruby, it's a feature offered by the language that you can add to any given class by including Singleton.<BR/><BR/>In Java it's a pattern of statements that you have to write in a particular order to implement that feature.<BR/><BR/>Defining a static method with a particular name (say getInstance) that synchronizes before accessing an instance variable to get/set the only instance, created using a private constructor is a pattern.  It's repeating and you always do it the exact same way.<BR/><BR/>"including Singleton" is adding a feature to a class.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/problem-with-problem-with-design.html?showComment=1199679660000#c7619717696189732444" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://assaf.labnotes.org/" rel="nofollow">Assaf</a> : 11:21 PM</div>
+
+								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7619717696189732444" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7325914233779746951"></a> 				Assaf:<BR/><BR/>What you say is certainly a popular perspective. And interestingly, many peopel feel that what you said is a <I>strength</I> of Java, not a weakness.<BR/><BR/>You said "using a singleton is a design decision." I agree, and I am saying that Singleton the pattern is more than the boilerplate. Whether you use boilerplate, add a feature to a class, or use another technique involving an object and its eigenclass... it's still a useful concept.<BR/><BR/>I'm not sure whether we are in agreement or whether you are claiming that the pattern is the repeated code, not the Singleton concept.<BR/><BR/>If you are claiming the latter, we do not agree: I emphasize the architectural content of patterns, not the implementation suggested for one particular language by one particular author (or four). What Java makes you do is hardly the most important part of any design pattern.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/problem-with-problem-with-design.html?showComment=1199680200000#c7325914233779746951" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:30 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7325914233779746951" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="5150197442681075725"></a> 				Part of the problem is that, for a fair number of the patterns in GoF, there's no good abstraction for the implementation other than boilerplate code in Java and C++.  The pattern language may still be interesting, but in trying to get out of the academic ghetto, the authors chose poorly expressive languages for those concepts.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/problem-with-problem-with-design.html?showComment=1199690820000#c5150197442681075725" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/16445595800382061121" rel="nofollow">chromatic</a> : 2:27 AM</div>
+
+								<span class="item-control blog-admin pid-1129955258"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=5150197442681075725" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2516600549529370866"></a> 				Chromatic: why do you say that the Design Patterns authors were trying to escape the "academic ghetto"? Only one of them was (is) an purebred academic, one an academic/industrial researcher, and the other two industry practitioners. <BR/><BR/>C++ was the hottest new language in industry, designed and implemented by an industry practitioner, working in industry, at the time.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/problem-with-problem-with-design.html?showComment=1199695560000#c2516600549529370866" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14314542307822401015" rel="nofollow">keithb</a> : 3:46 AM</div>
+
+								<span class="item-control blog-admin pid-2048541893"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2516600549529370866" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3385041585268060916"></a> 				Reg: I think that you're heading in the right direction with this.<BR/><BR/>There are two ways to use patterns—learn them, and learn from them. <BR/><BR/>Let's consider learning them. Singleton is a nice example. It's become perhaps the most vilified of the GoF patterns (perhaps even more so than Visitor) because it is understood to be a global variable in disguise. And we "all know" that global variables are bad, bad, bad.<BR/><BR/>But that's not quite what the Intent of the pattern says, it says <EM>"Ensure a class only has one instance, and provide a global point of access to it"</EM>. The Motivation section looks pretty ropy these days—why on Earth  should there only be one print spooler?—and the Consequences section is very weak, because it only lists benefits.<BR/><BR/>It's interesting that the Known Uses section talks about Smalltalk metaclasses, and that's a clue: it wouldn't <EM>make any sense</EM> for there to be many metaclasses for a given class. So maybe we should really be using Singleton to model situations where we have a concept that only sensibly admits a single example (rather than just choosing to implement one that way).<BR/><BR/>Ah, but what if there <EM>were</EM> multiple instances? Ok, well what if there were but we couldn't tell? That would mean that those instances were value objects, and that would save us from one of the downside of Singleton that the Consequences (wrongly) don't mention: a global "variable" is a fairly harmless thing if it doesn't vary. This is an example of learning <EM>from</EM> patterns, and it's what people who "use" patterns don't do enough of.<BR/><BR/>What's been lost is that a pattern isn't by itself a solution to anything: there is a solution inside the pattern, but the whole pattern is a mapping between a less agreeable context and a more agreeable one. <BR/><BR/>I'm reminded of the difference between openings in chess and joseki in Go. Joseki are explicitly there to be learned from, not learned. Although, if you aren't familiar with a joseki that an opponent begins you will come off the worse for it—but you won't lose the game (well, not in the slap-to-the-face way that not knowing a chess opening can lead to, anyway). Joseki is that they don't lead to a definite win/lose scenario, they lead to a balanced outcome (say, white robs black of the corner but lives very small, and black gains great influence into the center but has to make life). What using a joseki does is <EM>get the corner out of the way</EM> so that the game can proceed to more interesting things.<BR/><BR/>And now I get to to my actual point: why is what I've said up there not in GoF? It's because the book is more than ten years old and in the 36th printing of it's first edition, as I write this. The subsequent thirteen years of discussion and development of patterns is missing from it. That's textbook territory, in all the most negative senses of the word. There's a desperate need for a second edition, and the surviving authors know it.<BR/><BR/>A friend of mine who's in the education business got into trouble a while ago while speaking at a college of education and said to them—re the latest teacher training methods—"there's nothing like thirty-year-old theory backed up by twenty-five-year-old practice. <BR/><BR/>The practice described in GoF is well on the way to being twenty years old. That'd doesn't mean that it can't be learned from, it emphatically can, but perhaps shouldn't be learned.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/problem-with-problem-with-design.html?showComment=1199697840000#c3385041585268060916" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/14314542307822401015" rel="nofollow">keithb</a> : 4:24 AM</div>
+
+								<span class="item-control blog-admin pid-2048541893"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3385041585268060916" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="3966585093982541005"></a> 				So, would you consider <A HREF="http://blog.plover.com/2006/09/11/" REL="nofollow">object-oriented class</A> to be a pattern? How about "subroutine", referened later in that article?<BR/><BR/>Dominus quotes <A HREF="http://www.norvig.com/design-patterns/" REL="nofollow">Norvig</A> as mentioning three types of patterns - informal, formal and invisible. Perhaps most people think of the informal patterns when they think of design patterns - and it is those that represent deficiencies in a programming language. Certainly, the lack of a formal "object-oriented class" pattern in C could be thought of as a deficiency (albeit one that serves the higher purpose of keeping the language small), and the lack of a formal (or invisible) subroutine pattern is definitely a deficiency in any procedural language (so don't throw Haskell at me as a counterexample).<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/problem-with-problem-with-design.html?showComment=1199699460000#c3966585093982541005" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://roie-m.livejournal.com/" rel="nofollow">roie-m</a> : 4:51 AM</div>
+
+								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=3966585093982541005" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7054923359976437572"></a> 				Perhaps if they'd called the book "Design Clichés", people might have seen it for what it was...<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/problem-with-problem-with-design.html?showComment=1199714340000#c7054923359976437572" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/03775254923855147509" rel="nofollow">Gwenhwyfaer</a> : 8:59 AM</div>
+
+								<span class="item-control blog-admin pid-23579630"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7054923359976437572" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="6220508484740890792"></a> 				I agree with Reg's point, and I've already expressed my view on the issue <A HREF="http://gabrielsw.blogspot.com/2007/07/yes-design-patterns-are.html" REL="nofollow"> Yes, design patterns are</A><BR/>Patterns are "common solutions to recurring design problems". The GoF book covers common OO design solutions. One expect that other paradigms (like functional) had other design patterns (if they have design at all). Maybe one can venture that a paradigm without patterns probably doesn't have a community mature enough to identify  common solutions to recurring problems.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/problem-with-problem-with-design.html?showComment=1199726340000#c6220508484740890792" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17525961934302794120" rel="nofollow">Gabriel C.</a> : 12:19 PM</div>
+
+								<span class="item-control blog-admin pid-1188428457"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=6220508484740890792" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="519933877540829055"></a> 				"And interestingly, many peopel feel that what you said is a strength of Java, not a weakness."<BR/><BR/>Count me in that category.  That's one of the first things I loved about Java, and I still think an important part of the language.  My post about C2EE was tongue-in-cheek, but the main point is: I'm in favor of sticking to Java's design choices, not looking back, not trying to change them.  Some people view them as a weakness, but enough people view them as a strength, and I do think Java needs to play to its strengths.<BR/><BR/><BR/>"I'm not sure whether we are in agreement or whether you are claiming that the pattern is the repeated code, not the Singleton concept."<BR/><BR/>Forget that design patterns ever existed, forget that you ever knew Java or C, and try to write a book about all the same use cases, imagining everyone is programming in Ruby.  Start with a blank slate, what would that book look like?<BR/><BR/>Would it have a section talking about object singletons, or will it talk about lazy-evaluated global variables?  Would it talk about observers, or have a section covering list comprehension?  Would it show an example for observers, or for including and extending Enumerable?  Would it talk about listeners or passing lambdas?<BR/><BR/>If you go through this mental exercise, it will become more apparent that some of these design patterns are deeply rooted in Java/C and are not global software idioms.  They would never have existed, or taken this particular form, if it wasn't for the popularity of Java/C.  Starting from a different language, most would be delegated to features.  New patterns would certainly emerge, at higher level of abstractions, to deal with shortcomings of the existing language.  I can think of a few meta-programming patterns for Ruby that work around the lack of macros.  But obviously those would only come around to cover restrictions imposed by the language.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/problem-with-problem-with-design.html?showComment=1199733780000#c519933877540829055" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon openid-comment-icon"><img src="http://www.blogger.com/img/openid16-rounded.gif" alt="OpenID" style="display:inline;" /></span>&nbsp;<a href="http://assaf.labnotes.org/" rel="nofollow">Assaf</a> : 2:23 PM</div>
+
+								<span class="item-control blog-admin pid-1967910208"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=519933877540829055" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2869247875623865138"></a> 				Saying that a pattern is a pathology tied to the language/methodology it spawned from is true because it rapidly approaches a tautology.  Any language you use is going to have its benefits and limitations - what's easy in C may be difficult in LISP and vice-versa.  By swapping one language for another you're trading one (or more) class of accidental difficulties for one (or more) class of accidental difficulties, but the essential difficulty of software development will remain.<BR/>Design patterns work inasmuch as they're shorthand for gaining some insight and sharing vocabulary for problems that will repeat themselves in the language/methodology of your choice.  They don't work when they're treated as canon that must be hammered in or you must be doing it wrong.<BR/>When you think about the reasons why design patterns work, you'll hopefully walk away with at least a little more isnight as to why your methodology works (and where it doesn't).  I suspect we're vehemently agreeing on this, mind you.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/01/problem-with-problem-with-design.html?showComment=1199914500000#c2869247875623865138" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/05774470881611185492" rel="nofollow">Dave Solomon</a> : 4:35 PM</div>
+
+								<span class="item-control blog-admin pid-1264726869"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2869247875623865138" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>

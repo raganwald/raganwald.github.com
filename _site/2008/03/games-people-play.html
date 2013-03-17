@@ -1,0 +1,414 @@
+<html> 
+<head>
+        
+        <title>Games People Play</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/css/weblog.old.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/sunburst.css" />
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+	<div id="leftcontent">
+			<a href="http://raganwald.github.com/"><img src="http://i.minus.com/ioSY4FTZKVCwz.png"
+			width="350" height="150" border="0" alt="raganwald" title="raganwald 2008" align="middle"/></a><br/>
+			
+				<div class="DateHeader">Wednesday, March 05, 2008</div>
+			
+
+			<div class="Post"><a name="2656024613448187101">&nbsp;</a>
+				<span class="PostTitle">
+
+					<a href="http://raganwald.github.com/2008/03/games-people-play.html" title="permanent link">Games People Play</a></span>
+					<div style="clear:both;"></div>My thesis when I wrote The <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html" title="The Naive Approach to Hiring People">Na&iuml;ve Approach to Hiring People</a> was that we can learn thing about hiring people from the things we know about document classification. In that post, I talked a little about Na&iuml;ve Bayesian Filters and what they teach us about selecting people to interview.<br /><br />I wasn&#8217;t actually suggesting we stop using humans to select r&eacute;sum&eacute;s or decide whom to interview based on their answers to phone screen questions, I was asking us to think about what we can transfer from our knowledge about document classification to the problem of&#8212;let&#8217;s be frank&#8212;people classification.<br /><br />A few people wrote to say, &#8220;No, that won&#8217;t work, here&#8217;s why.&#8221; That&#8217;s really interesting! <a href="http://londonmiddleware.org/chaff/" title="London Middleware Automatic CV Classification Tool">A completely na&iuml;ve filter</a> certainly wouldn&#8217;t work. But thinking about <em>why</em> it wouldn&#8217;t work teaches us more about how to do a great job of hiring the right people.<br /><br /><strong>Games People Play</strong><br /><br />One of the reasons you can&#8217;t build a na&iuml;ve document classifier to select candidates is that people game the system.<br /><br />When people perceive that they have an enormous incentive to obtain jobs as programmers,  they are motivated to subvert the process and get the job for themselves regardless of what the employer is attempting to accomplish with the interview process.<sup><font size="1"><a name="from_1"></a><a href="#to_1">1</a></font></sup><br /><br /><blockquote>Candidates are trying to guess what you want to read or hear and will happily parrot it to you. You may think that this is a waste of their time, because lying to get the interview will only get them thrown out of interviews, but the incentives in looking for a job are to reward anything that gets them any reasonable job offer, no matter how many times they are thrown out of interviews.</blockquote><br />For that reason, they are constantly monitoring the behaviour of employers and attempting to adjust their behaviour to manipulate employers into giving them interviews and ultimately, giving them a job. Roughly, there is the most difficult part of hiring people regardless of how you do it: Candidates are trying to guess what you want to read or hear and will happily parrot it to you.<br /><br />You may think that this is a waste of their time, because lying to get the interview will only get them thrown out of interviews, but the incentives in looking for a job are to reward anything that gets them any reasonable job offer, no matter how many times they are thrown out of interviews.<br /><br />Let&#8217;s state the problem with filtering a little more explicitly: filtering works by analyzing features (years of experience, technologies, education, past employers) and looking for the features that have the highest correlation with positive outcomes. For example, if our task is to select people to interview based on asking them no more than five questions over the telephone, we could use the following protocol:<br /><ol><li>Collect a list of questions to ask from sources like Steve Yegge&#8217;s <a href="http://steve.yegge.googlepages.com/five-essential-phone-screen-questions" title="Stevey&#39;s Home Page - The Five Essential Phone-Screen Questions ">The Five Essential Phone Screen Questions</a> and Joel Spolsky&#8217;s [The Phone Screen].</li><br /><li>When we call a candidate, select some questions to ask from our list.</li><br /><li>Make a note of which questions the candidate answered satisfactorily and which unsatisfactorily.</li><br /><li>If we call the candidate in for an interview, make a note of whether they were a decent interview. Not necessarily a &#8220;HIRE,&#8221; but whether we felt interviewing them was a waste of time or not.</li></ol><br />After following this protocol for a while, we have collected an imperfect but still useful corpus: we can do some easy analysis to determine which questions have the highest correlation between satisfactory answers and worthwhile interviews. I can&#8217;t predict what your answers might be if you follow the protocol, but here&#8217;s something important to note: we are looking for the questions with the <em>highest</em> correlation. <br /><br /><div class="book"><hr><em><a name="evtst|a|0596529325" href="http://www.amazon.com/gp/product/0596529325?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0596529325"><img src="http://raganwald.github.com/assets/images/old//programming_collective_intelligence.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0596529325" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br><a name="evtst|a|0596529325" href="http://www.amazon.com/gp/product/0596529325?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0596529325">Programming Collective Intelligence</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0596529325" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> provides practical examples for building systems that reason based on learning from data and behaviour, such as Na&iuml;ve Bayesian Filters, collaborative filters, and recommendation engines.</em><hr></div>Armed with our &#8220;training,&#8221; we would know the five best questions to ask on the telephone. Great! We would start using them exclusively, and we would only interview people who get all five right. We wouldn&#8217;t grant that many interviews, but let&#8217;s assume that we would be happy with this trade-off. (We&#8217;ll address the nature of that trade-off in another post.)<br /><br />At first, things would probably go really well. Every person we bring in for an interview would be worth the trouble, and we would making offers to many of them. We would boast that our five questions are amazing! But then things start would start to slip, we would start getting one or two duds a week, and then every other interviewee would be a dud, and before you know it almost everyone we call would give us great answers but would be a festering pile of mediocrity when they showed up for the interview.<br /><br />What in Hades could have gone wrong? Of course, we know what went wrong: the job hunters would cotton onto our questions. The word would have gone around about the questions we asked. Maybe we would have been arrogant enough to discuss them on our blogs, maybe interviewees would network, <a href="http://www.caffeinatedcoder.com/an-open-letter-to-google-recruiters/" title="An Open Letter to Google Recruiters">maybe they would publish your questions on their own blogs</a>. I can tell you that tech recruiters are constantly interrogating people for interview questions and then preparing their candidates by telling them what to study in advance. So if we ever hire through recruiters, we might just as well publish our interview questions on our web site.<br /><br />So now anybody sending us their r&eacute;sum&eacute; would have memorized our five questions and would even know the right way to answer each question to get an interview. We would have been gamed.<br /><br />So what can we do about it?<br /><br /><strong>Game On</strong><br /><br />Before we try to work out a coping strategy from first principles, we can look around and see whether this problem has already been solved. Indeed it has; as mentioned, the cat-and-mouse game between spammers and spam filters is a very close analogue to the cat-and-mouse battle between employers and candidates.<br /><br /><blockquote>The point of this post is to suggest that we can learn from a similar problem, not to pretend I know the exact answers. You have to do your own thinking!</blockquote><br />The point of this post is to suggest that we can learn from a similar problem, not to pretend I know the exact answers. You have to do your own thinking! But here are a few ideas that have worked for me as an interviewer in the past. It is easy to see their analogue to battling spammers.<br /><br />First, you need an <em>iterative strategy</em>. You cannot think of &#8220;The five best questions&#8221; as some sort of fixed list. The correlation between a question and the likelihood of a positive outcome for you changes over time as candidates discover what you are seeking and pretend to supply it. This is exactly like spammers writing emails: they are constantly trying to reverse-engineer filters and write letters that score well as non-spam, and the filters are constantly being updated in a <a href="http://en.wikipedia.org/wiki/Red_Queen's_race" title="Red Queen's race - Wikipedia, the free encyclopedia">Red Queen&#8217;s Race</a>.<br /><br />In 2004, <a href="http://raganwald.github.com/2004/09/hiring-senior-programmer-software.html" title="Hiring a Senior Programmer / Software Developer in Toronto">I was granting interviews to anyone with Python, Ruby, Spring, or Hibernate experience</a>. At the time, these were remarkably rare and had very strong positive correlation for the type of team I was building. Today, while I still respect those technologies, I doubt they have as strong a correlation. I would definitely need a strong phone screen before granting an interview.<br /><br />This isn&#8217;t just about niche tools. I&#8217;m sure my more conservative colleagues will tell you that there was a time when a Microsoft programming certification meant far more than it does today. In general, as the word goes out that employers want something, the correlation between that thing and positive outcomes goes down, and employers have to search for other &#8220;features&#8221; providing higher correlation.<br /><br />If you followed the link, you know what I valued in 2004. What about today? The second thing is that <em>I&#8217;m not going to tell you</em> (Although I still ask &#8220;What&#8217;s the best work you&#8217;ve ever done, and why are you proud of it?&#8221;). Spammers use computer programs called &#8220;bots&#8221; (you knew that, of course) to sign up for free email accounts and send spam. One of the ways email services try to foil them is with CAPTCHAs.<br /><br /><div class="book"><hr/><em><a name="evtst|a|0671671642" href="http://www.amazon.com/gp/product/0671671642?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0671671642"><img src="http://raganwald.github.com/assets/images/old//growing_a_business.jpg" border="0"></a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0671671642" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"><br><br>In my twenty years of business experience, <a name="evtst|a|0671671642" href="http://www.amazon.com/gp/product/0671671642?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;camp=211189&amp;creative=373489&amp;creativeASIN=0671671642">Growing a Business</a><img src="http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=0671671642" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"> is absolutely the best book on founding and running a business organically that I have ever read. And I read a lot of books! “Growing a Business” is not about scoring business coups or raising money. It is not about sales tactics or innovation. It is about growing a business step by step, customer by customer, employee by employee.</em><hr/></div>The economics of CAPTCHAs and other means of foiling bots are simple: there is an upfront cost to the spammer to reverse-engineer whatever obstacles you put into place and write a bot that can negotiate them. Thereafter, the bot earns money for the spammer every time it encounters your obstacle. Therefore, <a href="http://www.codinghorror.com/blog/archives/001067.html">the spammers program their bots for the obstacles that offer them the largest opportunity to profit</a>.<br /><br />According to Windows apologists, this is why Windows machines are infested with <a href="http://en.wikipedia.org/wiki/Plural_of_virus" title="Plural of virus - Wikipedia, the free encyclopedia">virii</a> and Macs are not: writing a virus for OS X is just as much trouble as for Windows, but the Windows virus can infect thirty times as many machines as the OS X virus, so nobody bothers with OS X virii. Maybe true, maybe not true.<br /><br />So back to hiring and questions. Training your filters as described above and retraining them from time to time is fine if the marketplace takes a while to respond to your questions. It took four years before &#8220;Ruby&#8221; went from being a must-interview-no-questions-asked to a looks-good-but-better-have-something-else-as-well. But if things are moving very quickly, the useful time of a question may fall below the amount of time needed to train questions. In that case, you can&#8217;t gather reliable statistics.<br /><br />What makes the &#8220;market&#8221; move quickly? Perceived desirability. If you&#8217;re Google and your stock is on fire, people devote themselves to deciphering and gaming your hiring strategy. Or if there are a very large number of people that hire the exact same way you hire, you get the same overall effect. Going back to CAPTCHAs, if you are running Google Mail, people will spend a lot of time breaking your CAPTCHA. Or if your CAPTCHA is part of a popular package that a lot of sites use, people will take the time to break it. <br /><br />The easiest&#8212;and most effective&#8212;way to secure a web site is to use an obscure CAPTCHA. Sure, it ought to be as robust as possible. But if very few people use it, the incentive for breaking it will be low. In 2004, languages like Python and Ruby were obscure by job seeker standards. Sure, if someone wanted a job with me and only me she could claim to know them and get thrown out of the interview after the first question. But who would bother faking Ruby to get an interview with me when they could fake J2EE+Struts and get a few dozen interviews with BigCos?<br /><br />Today, I have a different set of hot buttons. Sure, they are different in part because I have iterated over the years and there are new items that correlate strongly with positive outcomes. the new things are not necessarily hot things. I mentioned Python and Ruby in 2004, but I also mentioned <a href="http://en.wikipedia.org/wiki/J_programming_language" title="J (programming language) - Wikipedia, the free encyclopedia">J</a>. J wasn&#8217;t hot then and it didn&#8217;t look like it was going to become hot, but I have had very good experiences working with APL and J people.<br /><br />The main thing about my hot buttons is that I try to make sure they aren&#8217;t popular. Now you might snap your fingers and say, &#8220;Aha! The Python Paradox <a href="http://raganwald.github.com/2008/03/python-paradox-redux.html" title="The &quot;Python Paradox,&quot; Redux">again</a>!&#8221; But that isn&#8217;t it. The Python Paradox is that using certain unpopular languages that have Tweak &#8220;Cred&#8221; increases an employer&#8217;s attractiveness to strong candidates. That&#8217;s reversing things and figuring out how to game the good candidates! This is different: it&#8217;s choosing candidates based on things that are <em>unpopular amongst other employers</em> specifically to avoid having candidates fake them to get a job with you.<br /><br /><strong>Winning</strong><br /><br />The battle to secure the best employees is a game, and while there are no sure things in life, there are strategies that maximize the possibility of a positive outcome for employers. Selecting candidates is certainly not a simple problem amenable to  na&iuml;ve filtering, but thinking about document classification helps us do a better job.<br /><br />Likewise, responding to candidates attempting to subvert your interview process is not as simple as iteratively training your &#8220;filter questions&#8221; and choosing obscure questions, but thinking about the battle between spammers and web sites helps us do a better job when hiring programmers.<br /><br /><hr><br /><ol><li><a name="to_1"></a>There are many reasons for this. I am going to skip right past all discussions of chicanery and posit something for consideration; if the industry does a terrible job of selecting good people, we should not be surprised that candidates do not trust us to take complete control of the interview process. If a candidate has heard that some of the people working at XYZCorp are complete bozos, what is wrong with stretching the truth in the interview to get the job? If the industry constantly trumpets how tools and architecture are more important than hiring good people, why shouldn't a less-than-stellar candidate lie their way into a job? Won't Eclipse and static typing and design patterns and BDUF ensure that he can do a serviceable job?<br />[<a href="#from_1">back</a>]</li></ol><br /><em>post scripum</em>: The fact is, almost every idea has holes in it. Finding them is important, but it&rsquo;s just the first step. Bayesian filters are not going to be able to outperform a human for selecting candidates. True. But the next step is to figure out why they fall short and what we can do about it. There is a very lucrative business opportunity for someone to apply machine learning techniques to hiring people.<br /><br /><a href="http://www.paulgraham.com/bronze.html">Where there&rsquo;s muck there&rsquo;s brass</a>.<div style="clear:both; padding-bottom:0.25em"></div>&nbsp;
+					<span class="PostFooter">
+
+						&para; <a href="http://raganwald.github.com/2008/03/games-people-play.html" title="permanent link">6:00 AM</a>
+
+					 
+				</span> 
+
+
+                                        <p id="postfeeds"></p>
+
+			</div>
+
+			
+			    <div class="blogComments">
+                                
+                                <a name="comments"></a><strong>Comments on &ldquo;<em>Games People Play</em>&rdquo;</strong>:<br/>
+						
+							<div class="blogComment">
+								<a name="8278804395036578277"></a> 				Gosh darn it, "virii" is not an English word, and certainly not the plural of virus.  If it were Latin, it'd be the plural of "virius", not "virus", any way.  In any case, "virus" doesn't have a recorded Latin plural -- it appears to be  a mass noun.  Reconstructions of what the plural should be range from only modifying the pronunciation ("virus" with a long "u") to "virora".  None of them really work.  Fortunately, there is a perfectly good English plural -- "viruses".<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/games-people-play.html?showComment=1204731780000#c8278804395036578277" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/15613957348593645695" rel="nofollow">Aaron Denney</a> : 10:43 AM</div>
+
+								<span class="item-control blog-admin pid-314449329"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8278804395036578277" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1650411377552947660"></a> 				Aaron:<BR/><BR/>I always thought that the plural of biological virus is biological viruses and the plural of computer virus is virii.<BR/><BR/>It turns out that things are <A HREF="http://en.wikipedia.org/wiki/Plural_of_virus" REL="nofollow">a little more complex than that</A>. Virii is definitely wrong. Except when person A uses it and person B understands it.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/games-people-play.html?showComment=1204732320000#c1650411377552947660" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 10:52 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1650411377552947660" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8773234455429423047"></a> 				It is very difficult to study Bayesian Analysis topic. Not many good reference textbooks to study Markov chain.<BR/><BR/>I use <A HREF="http://www.cocomartini.com/rainyland/product_info.php?products_id=771" REL="nofollow"><STRONG>Statistical Decision Theory and Bayesian Analysis, 2nd Edition</STRONG></A> to study. This is good reference textbook.<BR/><BR/>Do you have any other good Bayesian Analysis related textbooks recommend?<BR/><BR/>Regards,<BR/><BR/>Andy ^_^<BR/><A HREF="http://www.cocomartini.com/" REL="nofollow"><STRONG>Cocomartini Discount Online Bookstore</STRONG></A><br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/games-people-play.html?showComment=1204734960000#c8773234455429423047" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/07272707229063569713" rel="nofollow">must</a> : 11:36 AM</div>
+
+								<span class="item-control blog-admin pid-641724274"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8773234455429423047" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8274902901391064990"></a> 				I think another problem with your bayesian approach is that the message you're looking for is the message trying to be sent. While definitely a leap forward in terms of hiring efficiency, that's probably why it would never work to automate the process entirely like a spam filter can do.<BR/><BR/>Also, on the topic of captchas, the security through obscurity (or rather, unexpectedness) is an extremely good point. My own blog at http://smokinn.com/blog has an extremely simple captcha that I don't expect any bots to be breaking anytime soon. Also, since I implemented it myself, I'm the only one using it and that makes it completely undesirable to write an automation script to spam just my blog. I hate the scrambled word style captchas to I did something completely different.<BR/><BR/>If adoption of my blog code ever picks up (I doubt it ever will), there are many changes I can make that will make it very hard to automate the breaking but for now it's very basic. Currently, it makes you pick 2 out of 6 photos because I like the layout of that but even just making it 3 of 9 makes it a lot harder to game randomly. Also, the captcha requires clicking on the images (and doesn't use checkboxes) so that makes it harder to automate too. There isn't even any form on the page. I'm pretty happy with it and I can't wait to see if a spam bot ever gets through.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/games-people-play.html?showComment=1204736160000#c8274902901391064990" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12032866222358866812" rel="nofollow">Guillaume Theoret</a> : 11:56 AM</div>
+
+								<span class="item-control blog-admin pid-493582080"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8274902901391064990" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="8915016409301892775"></a> 				<I>I think another problem with your bayesian approach is that the message you're looking for is the message trying to be sent. While definitely a leap forward in terms of hiring efficiency, that's probably why it would never work to automate the process entirely like a spam filter can do.</I><BR/><BR/>Can you please elaborate/clarify this?<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/games-people-play.html?showComment=1204736340000#c8915016409301892775" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 11:59 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=8915016409301892775" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="4861931545424029400"></a> 				Here's a good example of what you're talking about for your anecdote collection.<BR/><BR/>I once had a hiring manager who used a single question to filter out employees -- it was a question built on very simple visualization, and the kind of thing which had a pretty straightforward answer.  The technical recruiter for the position not only prompted me with the question, she told me that my answer didn't include a few key phrases which he is looking to hear when he's asking the question.<BR/><BR/>Without prompting, that question is a good one, because it would have demonstrated and exercised an ability to abstract and visualize a very simple system in your head.  That consulting agency I worked for, though, managed to get in a couple of other people who didn't actually have that capability...but the prompting got them past the filter.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/games-people-play.html?showComment=1204741560000#c4861931545424029400" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/17844778275497805797" rel="nofollow">Robert Fischer</a> : 1:26 PM</div>
+
+								<span class="item-control blog-admin pid-83827799"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=4861931545424029400" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="7310436772932026209"></a> 				Well, it's pretty much as you say in this post. People will try and game the filter. The achilles heel of spam is that they're trying to give you a message you don't want. If you can identify the message (what the classification essentially aims for) then you can put some messages on one side and some other messages on the other side.<BR/><BR/>For hiring on the other hand, the message you're looking for is "I'm worth hiring". The message the candidate is looking to send is "I'm worth hiring". Once you've defined what kind of messages are worth hiring, the candidates can adjust to send that kind of message.<BR/><BR/>Spam on the other hand doesn't want to send email about my weekend, or what to do tonight or what covers are supposed to go on the tps reports. They want to fraud you, sell you pills and other less savory products. So you can classify. They can't adjust to the messages you want to receive because that's not the message they're looking to send. It's therefore possible to reach a fairly stable state (although the line can be *extremely* thin).<BR/><BR/>If you ever reach a stable state in the hiring algorithm you're screwed. Like robert said just above, just one consultancy will be able to game it trivially and get a bunch of bad candidates in.<BR/><BR/>Instead, it would be interesting to combine the naive classification with a kind of genetic algorithm, introducing random mutation in periodically to make sure your hiring process never reaches a stable state that's easy to game. You have to keep introducing new questions into your question pool and these new inputs will form into new combinations and your hiring process will be able to remain in flux while staying much more efficient than any ad-hoc approach.<BR/><BR/>This is getting really interesting. =)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/games-people-play.html?showComment=1204761000000#c7310436772932026209" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/12032866222358866812" rel="nofollow">Guillaume Theoret</a> : 6:50 PM</div>
+
+								<span class="item-control blog-admin pid-493582080"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=7310436772932026209" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="598316589617890466"></a> 				Guillaume:<BR/><BR/><I>If you ever reach a stable state in the hiring algorithm you're screwed. Like robert said just above, just one consultancy will be able to game it trivially and get a bunch of bad candidates in.<BR/><BR/>Instead, it would be interesting to combine the naive classification with a kind of genetic algorithm, introducing random mutation in periodically to make sure your hiring process never reaches a stable state that's easy to game. You have to keep introducing new questions into your question pool and these new inputs will form into new combinations and your hiring process will be able to remain in flux while staying much more efficient than any ad-hoc approach.</I><BR/><BR/>Exactly, although you are simplifying somewhat and assuming the "spammer" cares about gaming you. As I note above, the economics of hiring mean that your two defenses are changing your filter (as you note) and also avoiding popular filter characteristics to make it uneconomical to target you.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/games-people-play.html?showComment=1204772220000#c598316589617890466" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:57 PM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=598316589617890466" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="1196198998852244280"></a> 				I've actually come up with a name for these (somewhat obscure) kinds of programming languages and technologies that I mention on my resume.<BR/>I refer to them as my 'Dog Whistle'.<BR/><BR/>I'm sure most recruiters probably miss them completely, but for employers and tech recruiters that are "in-the-know", it actually communicates quite a bit I believe.<BR/>It also says something about the type of company you're applying for if they pick up on it.<BR/><BR/>I guess that's just one of the ways I play the game. :)<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/games-people-play.html?showComment=1204809900000#c1196198998852244280" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/04307730657621828218" rel="nofollow">Dennis Hotson</a> : 8:25 AM</div>
+
+								<span class="item-control blog-admin pid-564917974"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=1196198998852244280" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+							<div class="blogComment">
+								<a name="2680871371929298896"></a> 				Dennis:<BR/><BR/>+1!<BR/><BR/>This leads onto another subject: the games companies play to attract good candidates. This post and its predecessor both imply that there is a fixed pile of candidates, such as when you search monster.com.<BR/><BR/>But of course, if you advertise everything is different. Where you advertise and what you say in your advertisements strongly influences the types of candidates you will attract.<BR/><BR/>I've used AdWords for recruiting, and the choice of ads makes a huge difference.<br />
+								<div class="byline"><a href="http://raganwald.github.com/2008/03/games-people-play.html?showComment=1204813740000#c2680871371929298896" title="permanent link">#</a> posted by <span style="line-height:16px" class="comment-icon blogger-comment-icon"><img src="http://www.blogger.com/img/b16-rounded.gif" alt="Blogger" style="display:inline;" /></span>&nbsp;<a href="http://www.blogger.com/profile/13132345822387028437" rel="nofollow">Reginald Braithwaite</a> : 9:29 AM</div>
+
+								<span class="item-control blog-admin pid-697692447"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7618424&postID=2680871371929298896" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span>
+							</div>
+						
+						
+					  
+					<br /> <p id="postfeeds"></p> <br />
+					
+
+					<br /> <br />
+					<a href="http://raganwald.github.com/index.html">&lt;&lt; Home</a>
+				</div>
+
+			
+
+		
+
+
+	</div>
+
+
+
+
+
+
+
+	<div id="rightcontent">
+
+		<div class="SideBarTitle"><a href="http://braythwayt.com">Reg Braithwaite</a></div>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Recent Writing</div>
+
+                <a href="http://homoiconic.com">Homoiconic</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Share</div>
+
+                <a href="http://github.com/raganwald/rewrite_rails">rewrite_rails</a> /
+
+                <a href="http://github.com/raganwald/andand">andand</a> /
+
+                <a href="http://raganwald.com/assets/media/source/unfold.rb.html">unfold.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/string_to_proc.rb.html">string_to_proc.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/dsl_and_let.html">dsl_and_let.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/comprehensions.html">comprehension.rb</a> /
+
+                <a href="http://raganwald.com/assets/media/source/lazy_lists.html">lazy_lists.rb</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Beauty</div> <!-- idioms -->
+
+		<a href="http://raganwald.github.com/2008/04/is-strictly-equivalent-to.html">IS-STRICTLY-EQUIVALENT-TO-A</a> /
+
+		<a href="http://raganwald.github.com/2008/03/spaghetti-western-coding.html">Spaghetti-Western Coding</a> /
+
+		<a href="http://raganwald.github.com/2007/12/golf-is-good-program-spoiled.html">Golf is a good program spoiled</a> /
+
+		<a href="http://raganwald.github.com/2007/11/programming-conventions-as-signals.html">Programming conventions as signals</a> /
+
+                <a href="http://raganwald.github.com/2007/10/too-much-of-good-thing-not-all.html">Not all functions should be object methods</a>
+
+<br/><br/>
+
+                <a href="http://raganwald.github.com/2007/05/not-so-big-software-application.html">The Not So Big Software Design</a> /
+
+		<a href="http://raganwald.github.com/2007/04/writing-programs-for-people-to-read.html">Writing programs for people to read</a> /
+                
+		<a href="http://raganwald.github.com/2007/03/why-why-functional-programming-matters.html">Why Why Functional Programming Matters Matters</a> /
+
+		<a href="http://raganwald.github.com/2007/02/but-y-would-i-want-to-do-thing-like.html">But Y would I want to do a thing like this?</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Work</div>
+
+                <a href="http://raganwald.github.com/2008/04/single-most-important-thing-you-must-do.html">The single most important thing you must do to improve your programming career</a> /
+
+                <a href="http://raganwald.github.com/2008/02/naive-approach-to-hiring-people.html">The Na&iuml;ve Approach to Hiring People</a> /
+
+                <a href="http://raganwald.github.com/2008/01/no-disrespect.html">No Disrespect</a> /
+
+		<a href="http://raganwald.github.com/2006/11/take-control-of-your-interview.html">Take control of your interview</a> /
+
+		<a href="http://raganwald.github.com/2006/08/three-tips-for-getting-job-through.html">Three tips for getting a job through a recruiter</a> /
+
+		<a href="http://raganwald.github.com/2006/06/my-favourite-interview-question.html">My favourite interview question</a>
+
+                <br/>
+
+                <br/>
+
+
+
+		<div class="SideBarTitle">Management</div>
+
+		<a href="http://raganwald.github.com/2008/02/exception-handling-in-software.html">Exception Handling in Software Development</a> /
+
+		<a href="http://raganwald.github.com/2007/11/what-if-powerful-languages-and-idioms.html">What if powerful languages and idioms only work for small teams?</a> /
+
+                <a href="http://raganwald.github.com/2007/08/bricks.html">Bricks</a> /
+
+                <a href="http://raganwald.github.com/2007/06/which-theory-first-evidence.html">Which theory fits the evidence?</a> /
+
+                <a href="http://raganwald.github.com/2007/06/still-failing-still-learning.html">Still failing, still learning</a> /
+
+		<a href="http://raganwald.github.com/2005/01/what-ive-learned-from-failure.html">What I&rsquo;ve learned from failure</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Notation</div> <!-- languages -->
+
+		<a href="http://raganwald.github.com/2008/06/what-does-do-when-used-as-unary.html">The unary ampersand in Ruby</a> /
+
+		<a href="http://raganwald.github.com/2008/02/1100inject.html">(1..100).inject(&amp;:+)</a> /
+
+                <a href="http://raganwald.github.com/2007/10/challenge-of-teaching-yourself.html">The challenge of teaching yourself a programming language</a> /
+
+                <a href="http://raganwald.github.com/2006/11/significance-of-meta-circular_22.html">The significance of the meta-circular interpreter</a> /
+                
+                <a href="http://raganwald.github.com/2007/08/block-structured-javascript.html">Block-Structured Javascript</a> /
+
+                <a href="http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html">Haskell, Ruby and Infinity</a> /
+
+		<a href="http://raganwald.github.com/2007/01/closures-and-higher-order-functions.html">Closures and Higher-Order Functions</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">Opinion</div>
+
+		<a href="http://raganwald.github.com/2008/05/why-apple-is-more-expensive-than-amazon.html">Why Apple is more expensive than Amazon</a> /
+
+		<a href="http://raganwald.github.com/2008/04/why-we-are-biggest-obstacle-to-our-own.html">Why we are the biggest obstacles to our own growth</a> /
+
+		<a href="http://raganwald.github.com/2008/03/process-is-to-software-as-software-is.html">Is software the documentation of business process mistakes?</a> /
+
+		<a href="http://raganwald.github.com/2007/09/we-have-lost-control-of-apparatus.html">We have lost control of the apparatus</a> /
+
+		<a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html">What I&rsquo;ve Learned From Sales</a>
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-i.html" title="What I've Learned From Sales, Part I: Don't Feed the Trolls">I</a>, 
+                <a href="http://raganwald.github.com/2007/01/what-ive-learned-from-sales-part-ii.html" title="What I've Learned from Sales, Part II: Wanna Bet?">II</a>, 
+                <a href="http://raganwald.github.com/2007/10/how-to-use-blunt-instrument-to-sharpen.html" title="What I've Learned from Sales, Part III: How to use a blunt instrument to sharpen your saw">III</a>
+
+		<br/>
+
+		<br/>
+
+		<div class="SideBarTitle">Whimsey</div>
+
+                <a href="http://raganwald.github.com/2008/05/narcissism-of-small-code-differences.html">The Narcissism of Small Code Differences</a> /
+
+		<a href="http://raganwald.github.com/2008/01/billy-martins-technique-for-managing.html">Billy Martin&rsquo;s Technique for Managing his Manager</a> /
+
+		<a href="http://raganwald.github.com/2007/10/three-stories-about-tao.html">Three stories about The Tao</a> /
+
+		<a href="http://raganwald.github.com/2007/02/programming-language-stories.html">Programming Language Stories</a> /
+
+		<a href="http://raganwald.github.com/2005/07/why-you-need-degree-to-work-for-bigco.html">Why You Need a Degree to Work For BigCo</a>
+
+		<br />
+
+		<br />
+
+		<div class="SideBarTitle">History</div>
+
+		
+			<a href="http://raganwald.github.com/archives/2004_06_01_archive.html">06/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_07_01_archive.html">07/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_08_01_archive.html">08/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_09_01_archive.html">09/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_10_01_archive.html">10/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_11_01_archive.html">11/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2004_12_01_archive.html">12/04</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_01_01_archive.html">01/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_02_01_archive.html">02/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_03_01_archive.html">03/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_04_01_archive.html">04/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_06_01_archive.html">06/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_07_01_archive.html">07/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_08_01_archive.html">08/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_09_01_archive.html">09/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_10_01_archive.html">10/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2005_11_01_archive.html">11/05</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_01_01_archive.html">01/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_02_01_archive.html">02/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_03_01_archive.html">03/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_04_01_archive.html">04/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_05_01_archive.html">05/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_06_01_archive.html">06/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_07_01_archive.html">07/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_08_01_archive.html">08/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_09_01_archive.html">09/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_10_01_archive.html">10/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_11_01_archive.html">11/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2006_12_01_archive.html">12/06</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_01_01_archive.html">01/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_02_01_archive.html">02/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_03_01_archive.html">03/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_04_01_archive.html">04/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_05_01_archive.html">05/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_06_01_archive.html">06/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_07_01_archive.html">07/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_08_01_archive.html">08/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_09_01_archive.html">09/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_10_01_archive.html">10/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_11_01_archive.html">11/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2007_12_01_archive.html">12/07</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_01_01_archive.html">01/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_02_01_archive.html">02/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_03_01_archive.html">03/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_04_01_archive.html">04/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_05_01_archive.html">05/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_06_01_archive.html">06/08</a> /
+		
+			<a href="http://raganwald.github.com/archives/2008_07_01_archive.html">07/08</a> /
+		
+		
+		<br/></p>
+		<br/>
+
+		
+
+	</div>
+
+
+
+
+
+	<div style="visibility: hidden">
+		
+		
+		<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=raganwald001-20">
+		</script>
+		<noscript>
+			<img src="http://www.assoc-amazon.com/s/noscript?tag=raganwald001-20" alt="" />
+		</noscript>
+	</div>
+
+</body>
+</html>
