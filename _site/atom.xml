@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-17T19:08:46-04:00</updated>
+  <updated>2013-03-17T19:11:42-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -89,7 +89,7 @@
 
 &lt;p&gt;Maude was making notes:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;{any} = _ = require('underscore')
+&lt;pre&gt;&lt;code&gt;{any} = require('underscore')
 
 class FlockingBird
   constructor: (@greater = [], @lesser = []) -&amp;gt;
@@ -149,7 +149,7 @@ class FlockingBird
 
 &lt;p&gt;Horton was gathering enthusiasm, and he fairly trumpeted the next explanation. “This idea of a branch where birds can perch in order is interesting. Let’s start with an empty branch. Now, let’s place Mayzie on the branch by herself in the middle:”&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://www.flickr.com/photos/suckamc/3308221895/&quot; title=&quot;Don King Bird by Martin Cathrae, on Flickr&quot;&gt;&lt;img src=&quot;http://farm4.staticflickr.com/3123/3308221895_2863aef68b_b.jpg&quot; width=&quot;1024&quot; height=&quot;683&quot; alt=&quot;Don King Bird&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.flickr.com/photos/suckamc/3308221895/&quot; title=&quot;Don King Bird by Martin Cathrae, on Flickr&quot;&gt;&lt;img src=&quot;http://farm4.staticflickr.com/3123/3308221895_2863aef68b_b.jpg&quot; alt=&quot;Don King Bird&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;“Mayzie obviously forms a proper flock as she is not confused. As we have established, Mayzie doesn’t know any birds. But what if a bird alights to her right, a bird that knows her, perhaps from reading a book.&lt;sup id=&quot;fnref:seuss&quot;&gt;&lt;a href=&quot;#fn:seuss&quot; rel=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt; This bird knows and outranks Mayzie.”&lt;/p&gt;
 
@@ -196,7 +196,7 @@ describe &quot;a flock with three birds&quot;, -&amp;gt;
 
 &lt;p&gt;“Interesting things happen when we consider this flock that is created by birds successively alighting to the right of the previous bird where each bird knows the bird immediately to its left (except for Mayzie).”&lt;/p&gt;
 
-&lt;h3 id=&quot;contemptuous-birds&quot;&gt;contemptuous birds&lt;/h3&gt;
+&lt;h3 id=&quot;libert-galit-et-fraternit&quot;&gt;liberté, égalité, et fraternité&lt;/h3&gt;
 
 &lt;p&gt;“First,” said Horton, “What happens if we are given two birds that are part of a proper flock, but the first stands against the second &lt;em&gt;and&lt;/em&gt; the second bird stands against the first?”&lt;/p&gt;
 
