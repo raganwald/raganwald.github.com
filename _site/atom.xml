@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-17T19:11:42-04:00</updated>
+  <updated>2013-03-17T19:14:33-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -198,14 +198,14 @@ describe &quot;a flock with three birds&quot;, -&amp;gt;
 
 &lt;h3 id=&quot;libert-galit-et-fraternit&quot;&gt;liberté, égalité, et fraternité&lt;/h3&gt;
 
-&lt;p&gt;“First,” said Horton, “What happens if we are given two birds that are part of a proper flock, but the first stands against the second &lt;em&gt;and&lt;/em&gt; the second bird stands against the first?”&lt;/p&gt;
+&lt;p&gt;“First,” said Horton, “What happens if we are given two birds that are part of a proper flock, but the first stands fast against the second &lt;em&gt;and&lt;/em&gt; the second bird stands fast against the first?”&lt;/p&gt;
 
 &lt;p&gt;Maude looked confused.&lt;/p&gt;
 
 &lt;p&gt;“Yes,” said Horton, “This is impossible unless they are the same bird or either of them is confused. A bird does not back down from itself! So we say that two birds are equal if they both stand against each other and neither is confused.”&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Two birds are equal if they both stand against each other and neither is confused.&lt;/p&gt;
+  &lt;p&gt;Two birds are equal if they both stand fast against each other and neither is confused.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;pre&gt;&lt;code&gt;FlockingBird::equals = (otherBird) -&amp;gt;
