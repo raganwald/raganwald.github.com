@@ -1,15 +1,31 @@
-{% if page.tags contains "javascript" %}
-  {% assign path = '/javascript-allonge' %}
-{% elsif page.tags contains "coffeescript" %}
-  {% assign path = '/coffeescript-ristretto' %}
-{% elsif page.tags contains "ruby" %}
-  {% assign path = '/combinators' %}
-{% elsif page.tags contains "management" %}
-  {% assign path = '/shippingsoftware' %}
-{% else %}
-  {% assign path = '/b/coffee-kestrels-code' %}
-{% endif %}
+{% assign top = 0 %}
 
-{% if path %}
-  <iframe style="position:relative;float:right;left:180px;top:120px;margin-left:-160px;" width="160" height="400" src="https://leanpub.com{{ path }}/embed" frameborder="0" allowtransparency="true"></iframe>
-{% endif %}
+{% for tag in page.tags %}
+  {% assign leanpub = '' %}
+  {% assign amazon = '' %}
+
+  {% if tag == "combinators" %}
+    {% assign amazon = 'B00A1P096Y' %}
+  {% elsif tag == "computation" %}
+    {% assign amazon = '1449329276' %}
+  {% elsif tag == "javascript" %}
+    {% assign leanpub = '/javascript-allonge' %}
+  {% elsif tag == "coffeescript" %}
+    {% assign leanpub = '/coffeescript-ristretto' %}
+  {% elsif tag == "ruby" %}
+    {% assign leanpub = '/combinators' %}
+  {% elsif tag == "management" %}
+    {% assign leanpub = '/shippingsoftware' %}
+  {% elsif tag == "programming" %}
+    {% assign leanpub = '/b/coffee-kestrels-code' %}
+  {% endif %}
+
+  {% if leanpub != '' %}
+    <iframe style="position:relative;float:right;left:180px;top:{{ top }}px;margin-left:-160px;" width="160" height="400" src="https://leanpub.com{{ leanpub }}/embed" frameborder="0" allowtransparency="true"></iframe>
+    {% capture top %}{{ top | plus:420 }}{% endcapture %}
+  {% elsif amazon != '' %}
+    <iframe src="http://rcm.amazon.com/e/cm?lt1=_blank&bc1=000000&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=raganwald001-20&o=1&p=8&l=as4&m=amazon&f=ifr&ref=ss_til&asins={{ amazon }}" style="position:relative;float:right;left:180px;top:{{ top }}px;margin-left:-160px;width:120px;height:240px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+    {% capture top %}{{ top | plus:260 }}{% endcapture %}
+  {% endif %}
+  
+{% endfor %}

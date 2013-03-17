@@ -35,16 +35,40 @@
         <section id="main_content">
           
           
+
+
+  
   
 
+  
+    
+  
 
+  
+    <iframe style="position:relative;float:right;left:180px;top:0px;margin-left:-160px;" width="160" height="400" src="https://leanpub.com/coffeescript-ristretto/embed" frameborder="0" allowtransparency="true"></iframe>
+    
+  
+  
 
-  <iframe style="position:relative;float:right;left:180px;top:120px;margin-left:-160px;" width="160" height="400" src="https://leanpub.com/coffeescript-ristretto/embed" frameborder="0" allowtransparency="true"></iframe>
+  
+  
+
+  
+    
+  
+
+  
+    <iframe src="http://rcm.amazon.com/e/cm?lt1=_blank&bc1=000000&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=raganwald001-20&o=1&p=8&l=as4&m=amazon&f=ifr&ref=ss_til&asins=B00A1P096Y" style="position:relative;float:right;left:180px;top:420px;margin-left:-160px;width:120px;height:240px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+    
+  
+  
 
           
-          <p><em>…continued from <a href="/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html">A long time ago, in a village far, far away</a>…</em></p>
+          <p>Previous: <a href="/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html">A long time ago, in a village far, far away</a></p>
 
-<p>Schönfinkel spoke, preening himself proudly:</p>
+<hr />
+
+<p>Moses spoke, preening himself proudly:</p>
 
 <h3 id="songbirds">songbirds</h3>
 
@@ -58,7 +82,9 @@
 
 <p>“But my main interest is another thing. Each of us, when we hear the song of some bird, will call back the song of another bird. We are mostly great mimics. So if you sing to me the song of a Bluebird, I might sing back the song of a Robin. We all have our own particular habits of responses, and we are always consistent.</p>
 
-<p>If indeed I do respond to the song of a Bluebird with the song of a Robin, you can trust me to always respond to the song of a Bluebird with the song of a Robin. To a certain extend, my entire personality can be defined once you understand my particular habits of responses to songs. In fact, our entire society is governed by our responses to each other’s songs, and my lifelong study has been the rules of behaviour of songbirds.</p>
+<p>“If indeed I do respond to the song of a Bluebird with the song of a Robin, you can trust me to always respond to the song of a Bluebird with the song of a Robin. Now we are very aware of the birds in this forest, so I can tell you that if a you call out to a bird and it responds with a song, it is responding with the song of a bird that actually exists in the forest. And furthermore, every bird responds to every song of another bird.</p>
+
+<p>“To a certain extend, a bird’s  personality can be defined once you understand its particular habit of responses to songs. In fact, our entire society is governed by our responses to each other’s songs, and my lifelong study has been the rules of behaviour of songbirds.</p>
 
 <p>“For I have discovered that there are rules and that the consequences of these rules lead to some deep and fascinating insights into the nature of thought itself.”</p>
 
@@ -123,14 +149,51 @@
 
 <p>The Idiot fumbled its way into some brambles and the raptor flew off. “What was that?” asked Maude.</p>
 
-<p>“Ah!” said Moses, “That is a formidable bird, and I tend to refuse invitations to be the guest of honour at its dinner table… That is the Kestrel. It has an interesting behaviour…” As Moses explained, Maude wrote:</p>
+<p>“Ah!” said Moses, “That is a formidable bird, and I tend to refuse invitations to be the guest of honour at its dinner table… That is the Kestrel. It has an interesting behaviour…”</p>
+
+<p>“You see,” said Moses, “To understand the Kestrel you need to understand <em>fixation</em>, or what some call <em>constancy</em>. Some birds are such that they only ever respond with the song of a single bird. For example, a certain bird might only ever respond with the song of the Idiot. So if you call out a Bluebird to it, it will respond ‘Idiot.’ Then you call out ‘Cardinal,’ and it responds ‘Idiot’ again.”</p>
+
+<p>Maude nodded. “So what,” she asked, “Is the significance of the kestrel?” Moses seemed annoyed. “Have some patience, land-crawler!” he snapped, “I was just about to get to that! The significance of the Kestrel is that he knows the song of every fixated bird in the forest!”</p>
+
+<p>Maude must have been staring blankly, for Moses continued: “Meaning, if you call out the Cardinal to the Kestrel, he responds by singing the song of a bird that is fixated on the Cardinal.”</p>
+
+<p>Maude held up her hand to ask for time and scratched in the dirt for a bit. After writing and erasing her work for a while, she wrote:</p>
 
 <pre><code>describe "Kestrels", -&gt;
 
   K = (x) -&gt; (y) -&gt; x
 </code></pre>
 
-<p>“You see,” said Moses, “To understand the Kestrel you need to understand <em>fixation</em>, or what some call <em>constancy</em>. Some bird seem fixated on”</p>
+<p>Then she continued with Moses’s example:</p>
+
+<pre><code>  it "responds to the Cardinal with a bird fixated on the Cardinal", -&gt;
+    
+    C = 'Cardinal'
+    R = 'Robin'
+    B = 'Bluebird'
+    FC = K(C)
+    
+    expect( FC(C) ).toEqual C
+    expect( FC(R) ).toEqual C
+    expect( FC(B) ).toEqual C
+    expect( FC(FC) ).toEqual C
+</code></pre>
+
+<h3 id="hopeless-egocentricity">hopeless egocentricity</h3>
+
+<p>Maude still didn’t see the significance of the Kestrel, so Moses decided to test her intelligence. “Look,” he said, “I will share with you something that I learned from the Magnificent Smullyan Bird.<sup id="fnref:rs"><a href="#fn:rs" rel="footnote">4</a></sup> Even as a chick the Smullyan Bird was magnificent, you could sing a note to him and he would sing back the exact note in perfect pitch.<sup id="fnref:note"><a href="#fn:note" rel="footnote">5</a></sup> We expected great things of him and were not disappointed.</p>
+
+<p>“Now it so happens that some birds are such that if you call out their own song to them, they call it right back to you. You saw one such bird, the Idiot. The Smullyan Bird calls such birds <em>egocentric</em>. Given the Kestrel and the Idiot, is there another egocentric bird in the forest?”</p>
+
+<p>Maude scribbled with her notes for a few moments and then answered the question. Moses continued:</p>
+
+<p>“The Smullyan Bird would call a bird <em>hopelessly egocentric</em> if it was the case that no matter what bird you called out to it, it would call back its own song. In other words, is there a bird that is <em>fixated on itself</em> in this forest?”</p>
+
+<p>Maude needed a few more minutes to answer this question.</p>
+
+<hr />
+
+<p>Next: <a href="./vireo.html">The Versatile Vireo</a></p>
 
 <hr />
 
@@ -146,6 +209,12 @@
     <li id="fn:jeremy">
       <p><a href="http://www.ashkenas.com">Jeremy Ashkenas</a> invented CoffeeScript,<a href="#fnref:jeremy" rel="reference">&#8617;</a></p>
     </li>
+    <li id="fn:rs">
+      <p><a href="https://en.wikipedia.org/wiki/Raymond_Smullyan">Raymond Merrill Smullyan</a> is an American mathematician, concert pianist, logician, Taoist philosopher, and magician. He has his own <a href="http://www.youtube.com/profile?user=rsmullyan&amp;view=videos">Youtube channel</a>.<a href="#fnref:rs" rel="reference">&#8617;</a></p>
+    </li>
+    <li id="fn:note">
+      <p>This story is <a href="http://mysite.verizon.net/vzeeaya7/raymondsmullyan/">taken from the Piano Society and other sources</a>.<a href="#fnref:note" rel="reference">&#8617;</a></p>
+    </li>
   </ol>
 </div>
 
@@ -160,5 +229,19 @@
 
       </div>
     </div>
+
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38371925-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
   </body>
 </html>

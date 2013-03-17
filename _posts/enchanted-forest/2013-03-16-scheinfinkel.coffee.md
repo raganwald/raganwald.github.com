@@ -1,6 +1,6 @@
 ---
 layout: default
-tags: coffeescript
+tags: [coffeescript, combinators]
 title: Schönfinkel's Forest
 categories: enchanted-forest
 permalink: /enchanted-forest/scheinfinkel.html
@@ -10,7 +10,7 @@ Previous: [A long time ago, in a village far, far away](/enchanted-forest/a-long
 
 ---
 
-Schönfinkel spoke, preening himself proudly:
+Moses spoke, preening himself proudly:
 
 ### songbirds
 
@@ -94,7 +94,7 @@ Suddenly a raptor swooped down and made a strike at the bumbling Idiot. But the 
 
 The Idiot fumbled its way into some brambles and the raptor flew off. "What was that?" asked Maude.
 
-"Ah!" said Moses, "That is a formidable bird, and I tend to refuse invitations to be the guest of honour at its dinner table... That is the Kestrel. It has an interesting behaviour...
+"Ah!" said Moses, "That is a formidable bird, and I tend to refuse invitations to be the guest of honour at its dinner table... That is the Kestrel. It has an interesting behaviour..."
       
 "You see," said Moses, "To understand the Kestrel you need to understand *fixation*, or what some call *constancy*. Some birds are such that they only ever respond with the song of a single bird. For example, a certain bird might only ever respond with the song of the Idiot. So if you call out a Bluebird to it, it will respond 'Idiot.' Then you call out 'Cardinal,' and it responds 'Idiot' again."
 
@@ -140,7 +140,7 @@ Maude needed a few more minutes to answer this question.
 
 ---
 
-*...to be continued...*
+Next: [Horton Hatches Surreal Numbers](./horton.html)
 
 ---
 

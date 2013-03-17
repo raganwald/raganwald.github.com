@@ -1,1 +1,0 @@
-(letrec (	(factorial (lambda (x)		(if (< x 2)			1			(* x (factorial (- x 1)))))))	(factorial 25))
