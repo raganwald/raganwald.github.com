@@ -62,7 +62,7 @@ Maude thought this a very simple question and answered immediately.
 
       I = (x) -> x
     
-"Meaning, that the Idiot, which I will call I for short, responds to any bird's song, denoted `x`, with hat same bird's song, again `x`. I use `x`, `y`, `z`, `w`, and other letters for unknowns."
+"Meaning, that the Idiot, which I will call I for short, responds to any bird's song, denoted `x`, with that same bird's song, again `x`. I use `x`, `y`, `z`, `w`, and other letters for unknowns."
 
 Maude carried on: "I like to make a note of what things mean with some examples, so I write:"
     
