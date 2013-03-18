@@ -6,8 +6,8 @@
     <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
-    <pubDate>Sun, 17 Mar 2013 20:20:50 -0400</pubDate>
-    <lastBuildDate>Sun, 17 Mar 2013 20:20:50 -0400</lastBuildDate>
+    <pubDate>Sun, 17 Mar 2013 20:21:47 -0400</pubDate>
+    <lastBuildDate>Sun, 17 Mar 2013 20:21:47 -0400</lastBuildDate>
 
     
       
@@ -221,22 +221,7 @@ describe &quot;equality&quot;, -&amp;gt;
     expect( OneRight.isOfEqualRankTo(Mayzie) ).toEqual false
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&quot;branch-if-not-equal&quot;&gt;branch if not equal&lt;/h3&gt;
-
-&lt;p&gt;“One interesting property of birds belonging to proper flocks is that they will sometimes pair up and work together to defend a nest or bit of food. Sometimes two unattached birds will pair up to chase away a higher-ranked bird from attracting a mate and so on.&lt;/p&gt;
-
-&lt;p&gt;“We have defined the ranking for birds against each other. It turns out that the birds have an equally rigorous way of ranking pairs of birds. Given two birds in a pair we will call &lt;code&gt;p1&lt;/code&gt; and &lt;code&gt;p2&lt;/code&gt;, they have a rank equal to that of some other bird &lt;code&gt;P&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;What rank is &lt;code&gt;P&lt;/code&gt;? From my observations, the following rules apply:”&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;If &lt;code&gt;p1&lt;/code&gt; knows some lesser bird &lt;code&gt;&amp;lt;p1&lt;/code&gt;, then &lt;code&gt;P&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;If some number &lt;code&gt;&amp;lt;p1&lt;/code&gt; is to the left of p1, then &lt;code&gt;&amp;lt;p1&lt;/code&gt; + p2 is to the left of &lt;code&gt;P&lt;/code&gt;;
-If some number p2_left is to the left of p2, then p2_left + p1 is to the left of &lt;code&gt;P&lt;/code&gt;;
-If some number p1_right is to the right of p1, then p1_right + p2 is to the right of &lt;code&gt;P&lt;/code&gt;;
-If some number p2_right is to the right of p2, then p2_right + p1 is to the right of &lt;code&gt;P&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;(&lt;em&gt;…to be continued…&lt;/em&gt;)&lt;/p&gt;
 
 &lt;hr /&gt;
 
