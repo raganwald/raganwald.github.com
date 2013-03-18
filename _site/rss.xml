@@ -6,8 +6,8 @@
     <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
-    <pubDate>Mon, 18 Mar 2013 10:35:53 -0400</pubDate>
-    <lastBuildDate>Mon, 18 Mar 2013 10:35:53 -0400</lastBuildDate>
+    <pubDate>Mon, 18 Mar 2013 10:58:16 -0400</pubDate>
+    <lastBuildDate>Mon, 18 Mar 2013 10:58:16 -0400</lastBuildDate>
 
     
       
@@ -21,7 +21,7 @@
 
 &lt;hr /&gt;
 
-&lt;p&gt;Moses flew along, showing Maude the way to The Magnificent Smullyan Bird’s nest. As they walked along, Maude saw the most curious sight: A small winged elephant perched on a nest.&lt;/p&gt;
+&lt;p&gt;Moses flew along, showing the way to The Magnificent Smullyan Bird’s nest. As they walked along, Maude saw the most curious sight: A small winged elephant perched on a nest.&lt;sup id=&quot;fnref:names&quot;&gt;&lt;a href=&quot;#fn:names&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;“What is that!?”&lt;/p&gt;
 
@@ -29,13 +29,13 @@
 
 &lt;p&gt;Maude asked about his expertise.&lt;/p&gt;
 
-&lt;p&gt;“Well, he does a lot of work playing with pebbles on vast grids that he lays out.”&lt;sup id=&quot;fnref:life&quot;&gt;&lt;a href=&quot;#fn:life&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;“Well, he does a lot of work playing with pebbles on vast grids that he lays out.”&lt;sup id=&quot;fnref:life&quot;&gt;&lt;a href=&quot;#fn:life&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;“Speaking of egocentricity, Horton actually claims that by following certain rules, his pebbles can answer any question that songbirds like the Starling and Kestrel can answer. I think it’s interesting, but outside of fanciful flying creations like gliders and heavyweight spaceships, I don’t see the point.”&lt;/p&gt;
 
 &lt;p&gt;Maude was interested. Pebbles? “Well,” Moses said, “I alluded to this earlier. A certain lesser class of bird likes to build a &lt;a href=&quot;https://en.wikipedia.org/wiki/Bowerbird&quot;&gt;bower&lt;/a&gt; out of various found objects.”&lt;/p&gt;
 
-&lt;p&gt;For example, I could show you the Stuart’s &lt;a href=&quot;http://twitter.com/tomstuart&quot;&gt;Tombird&lt;/a&gt;. It builds an elaborate bower out of just one material, chips of red crystal. It is intelligent, and claims its chips of Ruby can do various tasks like count to one hundred or even write nonsensical words like “fizz” or “buzz.”&lt;sup id=&quot;fnref:nothing&quot;&gt;&lt;a href=&quot;#fn:nothing&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;For example, I could show you the Stuart’s &lt;a href=&quot;http://twitter.com/tomstuart&quot;&gt;Tombird&lt;/a&gt;. It builds an elaborate bower out of just one material, chips of red crystal. It is intelligent, and claims its chips of Ruby can do various tasks like count to one hundred or even write nonsensical words like “fizz” or “buzz.”&lt;sup id=&quot;fnref:nothing&quot;&gt;&lt;a href=&quot;#fn:nothing&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;“In any event,” continued Moses, “We may as well say hello to Horton since we’re here.”&lt;/p&gt;
 
@@ -123,13 +123,13 @@ class FlockingBird
 
 &lt;p&gt;Here Horton stopped and stared at Maude’s writing. “And what do you call this system of notation you have?”&lt;/p&gt;
 
-&lt;p&gt;“CoffeeScript,” said Maude, “because when it gets complicated, I need to drink a lot of coffee to work it out by hand.”&lt;sup id=&quot;fnref:cs&quot;&gt;&lt;a href=&quot;#fn:cs&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;“CoffeeScript,” said Maude, “because when it gets complicated, I need to drink a lot of coffee to work it out by hand.”&lt;sup id=&quot;fnref:cs&quot;&gt;&lt;a href=&quot;#fn:cs&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
-&lt;p&gt;“Actually,” she said, “My uncle Brendan&lt;sup id=&quot;fnref:be&quot;&gt;&lt;a href=&quot;#fn:be&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt; devised a notation for solving certain problems to deal with the appearance and behaviour of web spiders. He called it JavaScript, no doubt because of our family’s coffee plantation business. My cousin Jeremy&lt;sup id=&quot;fnref:jeremy&quot;&gt;&lt;a href=&quot;#fn:jeremy&quot; rel=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt; liked Brendan’s ideas, but found them awkward for certain classes of problems and streamlined it somewhat. Jeremy called his variation CoffeeScript, and he taught it to me.”&lt;/p&gt;
+&lt;p&gt;“Actually,” she said, “My uncle Brendan&lt;sup id=&quot;fnref:be&quot;&gt;&lt;a href=&quot;#fn:be&quot; rel=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt; devised a notation for solving certain problems to deal with the appearance and behaviour of web spiders. He called it JavaScript, no doubt because of our family’s coffee plantation business. My cousin Jeremy&lt;sup id=&quot;fnref:jeremy&quot;&gt;&lt;a href=&quot;#fn:jeremy&quot; rel=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt; liked Brendan’s ideas, but found them awkward for certain classes of problems and streamlined it somewhat. Jeremy called his variation CoffeeScript, and he taught it to me.”&lt;/p&gt;
 
 &lt;p&gt;After explaining the details of her notation to Horton, he agreed with her assessment. “Yes, Mayzie isn’t very sociable, but she isn’t confused.”&lt;/p&gt;
 
-&lt;p&gt;Horton continued with his explanation. “Some flocks have confused birds, some do not. I call a flock that has no confused birds a &lt;em&gt;proper flock&lt;/em&gt;. Every proper flock has a simple pecking order. That is, you can arrange all of the birds in a line (as if perched on a branch), and there is always an arrangement such that every bird stands fast against any bird to its left.”&lt;sup id=&quot;fnref:exercise&quot;&gt;&lt;a href=&quot;#fn:exercise&quot; rel=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Horton continued with his explanation. “Some flocks have confused birds, some do not. I call a flock that has no confused birds a &lt;em&gt;proper flock&lt;/em&gt;. Every proper flock has a simple pecking order. That is, you can arrange all of the birds in a line (as if perched on a branch), and there is always an arrangement such that every bird stands fast against any bird to its left.”&lt;sup id=&quot;fnref:exercise&quot;&gt;&lt;a href=&quot;#fn:exercise&quot; rel=&quot;footnote&quot;&gt;7&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://www.flickr.com/photos/suckamc/3308221895/&quot; title=&quot;Don King Bird by Martin Cathrae, on Flickr&quot;&gt;&lt;img src=&quot;http://farm4.staticflickr.com/3123/3308221895_2863aef68b_b.jpg&quot; alt=&quot;Don King Bird&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
@@ -137,7 +137,7 @@ class FlockingBird
 
 &lt;p&gt;Horton was gathering enthusiasm, and he fairly trumpeted the next explanation. “This idea of a branch where birds can perch in order is interesting. Let’s start with an empty branch. Now, let’s place Mayzie on the branch by herself in the middle:”&lt;/p&gt;
 
-&lt;p&gt;“Mayzie obviously forms a proper flock as she is not confused. As we have established, Mayzie doesn’t know any birds. But what if a bird alights to her right, a bird that knows her, perhaps from reading a book.&lt;sup id=&quot;fnref:seuss&quot;&gt;&lt;a href=&quot;#fn:seuss&quot; rel=&quot;footnote&quot;&gt;7&lt;/a&gt;&lt;/sup&gt; This bird knows and outranks Mayzie.”&lt;/p&gt;
+&lt;p&gt;“Mayzie obviously forms a proper flock as she is not confused. As we have established, Mayzie doesn’t know any birds. But what if a bird alights to her right, a bird that knows her, perhaps from reading a book.&lt;sup id=&quot;fnref:seuss&quot;&gt;&lt;a href=&quot;#fn:seuss&quot; rel=&quot;footnote&quot;&gt;8&lt;/a&gt;&lt;/sup&gt; This bird knows and outranks Mayzie.”&lt;/p&gt;
 
 &lt;p&gt;Maude considered, then wrote:&lt;/p&gt;
 
@@ -302,6 +302,9 @@ describe &quot;pairing OneRight with itself&quot;, -&amp;gt;
 &lt;p&gt;notes:&lt;/p&gt;
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
+    &lt;li id=&quot;fn:names&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Moses_Schönfinkel&quot;&gt;Moses Schönfinkel&lt;/a&gt; was a Russian logician and mathematician, known for the invention of combinatory logic. Lois Maude Barzey was my grandmother, who overcame very difficult circumstances and never, ever, abandoned her principles. My daughter Clara Maude Braithwaite is as spunky as stereotypes would suggest for someone with a mop of red, curly hair.&lt;a href=&quot;#fnref:names&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
     &lt;li id=&quot;fn:life&quot;&gt;
       &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life&quot;&gt;Conway’s Game of Life&lt;/a&gt;&lt;a href=&quot;#fnref:life&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
