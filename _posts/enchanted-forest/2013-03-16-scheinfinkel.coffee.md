@@ -54,7 +54,7 @@ Maude thought this a very simple question and answered immediately.
 
 ### maude's notation
 
-"Very good!" said Modes, "I admit you are smarter than the Idiot, at least, I never could make him understand his own behaviour. But what is that you are scratching in the dust?"
+"Very good!" said Moses, "I admit you are smarter than the Idiot, at least, I never could make him understand his own behaviour. But what is that you are scratching in the dust?"
 
 "Oh," Maude explained, "I have a own notation for solving certain types of problems. To being with, I write:"
 
