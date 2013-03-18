@@ -118,9 +118,9 @@
 
 <p>“I will show you,” started Horton, scribbling some marks in the dirt with a stick he held in his trunk. Moses hastily intervened.</p>
 
-<p>“Alas, Horton, we are on our way to see The Magnificent Smullyan Bird so that Maude can learn about hopeless egocentricity and do not have time—”</p>
+<p>“Alas, Horton, we are on our way to see The Magnificent Smullyan Bird so that Maude can learn about hopeless egocentricity and do not have time—” Horton would hear nothing of it. “Nonsense! Egocentricity can wait, that is fascinating for gaudy plumage fanciers but serious birds pay attention to sociology.”</p>
 
-<p>Horton would hear nothing of it. “Nonsense! Egocentricity can wait, that is fascinating for gaudy plumage fanciers but serious birds pay attention to sociology. Sit. Pay attention. Listen.”</p>
+<p>“Sit. Pay attention. Listen.”</p>
 
 <p>Moses squawked but in the end, he and Maude settled down as Horton began to speak.</p>
 
@@ -138,7 +138,7 @@ class FlockingBird
   constructor: (@greater = [], @lesser = []) -&gt;
 </code></pre>
 
-<p>“Now these birds often compete with each other: For good nesting sites, for mates, for a piece of food, for a good perch on a branch. Each will instinctively show its threat display and try to get the other to back down. As they do so, they screech at each other. When one stands its ground and the other backs off, the one that stands its ground <em>always</em> outranks the other.</p>
+<p>“Now these birds often compete with each other: For good nesting sites, for mates, for a piece of food, for a good perch on a branch. Each will instinctively show its threat display and try to get the other to back down. As they do so, they screech at each other. When one stands its ground and the other not stand its ground, the one that stands its ground <em>always</em> outranks the other.</p>
 
 <p>“I wondered how they sorted it out, so I observed and made extensive notes. I have discovered that they obey both of two simple rules. To simplify the explanation, imagine a bird is displaying on its courtship stage when a rival appears. We have the courting bird and the rival who square off in a challenge.</p>
 
@@ -157,7 +157,7 @@ class FlockingBird
 
 <p>“The first important rule about flocking birds is that they like to have a well-defined place in the flock’s pecking order. Specifically, they become <em>confused</em> if either of the following cases are true:</p>
 
-<p>“First, a bird is confused if it knows a confused bird. Second, a bird is confused if any of the birds it knows it outranks would stand against a bird it knows outrank it.”</p>
+<p>“First, a bird is confused if it knows a confused bird. Second, a bird is confused if any of the birds it knows it outranks would stand fast against a bird it knows outrank it.”</p>
 
 <p>Maude quickly wrote:</p>
 
@@ -188,11 +188,11 @@ class FlockingBird
 
 <p>Horton continued with his explanation. “Some flocks have confused birds, some do not. I call a flock that has no confused birds a <em>proper flock</em>. Every proper flock has a simple pecking order. That is, you can arrange all of the birds in a line (as if perched on a branch), and there is always an arrangement such that every bird stands its ground against any bird to its left.”<sup id="fnref:exercise"><a href="#fn:exercise" rel="footnote">5</a></sup></p>
 
+<p><a href="http://www.flickr.com/photos/suckamc/3308221895/" title="Don King Bird by Martin Cathrae, on Flickr"><img src="http://farm4.staticflickr.com/3123/3308221895_2863aef68b_b.jpg" alt="Don King Bird" /></a></p>
+
 <h3 id="birds-on-a-branch">birds on a branch</h3>
 
 <p>Horton was gathering enthusiasm, and he fairly trumpeted the next explanation. “This idea of a branch where birds can perch in order is interesting. Let’s start with an empty branch. Now, let’s place Mayzie on the branch by herself in the middle:”</p>
-
-<p><a href="http://www.flickr.com/photos/suckamc/3308221895/" title="Don King Bird by Martin Cathrae, on Flickr"><img src="http://farm4.staticflickr.com/3123/3308221895_2863aef68b_b.jpg" alt="Don King Bird" /></a></p>
 
 <p>“Mayzie obviously forms a proper flock as she is not confused. As we have established, Mayzie doesn’t know any birds. But what if a bird alights to her right, a bird that knows her, perhaps from reading a book.<sup id="fnref:seuss"><a href="#fn:seuss" rel="footnote">6</a></sup> This bird knows and outranks Mayzie.”</p>
 
@@ -241,17 +241,15 @@ describe "a flock with three birds", -&gt;
 
 <h3 id="libert-galit-et-fraternit">liberté, égalité, et fraternité</h3>
 
-<p>“First,” said Horton, “What happens if we are given two birds that are part of a proper flock, but the first stands fast against the second <em>and</em> the second bird stands fast against the first?”</p>
+<p>“First,” said Horton, “What happens if we are given two birds where the first stands fast against the second <em>and</em> the second bird stands fast against the first? Do they form a proper flock?”</p>
 
 <p>Maude looked confused.</p>
 
-<p>“Yes,” said Horton, “This is impossible unless they are the same bird or either of them is confused. A bird does not back down from itself! So we say that two birds are equal if they both stand against each other and neither is confused.”</p>
+<p>“No,” said Horton, “Do not become confused yourself. We said earlier that a proper flock can be arranged along a branch such that every bird stands fast against the bird to its left. This implies that the bird to its right stands fast against it. But we said <em>nothing</em> about whether a bird stands fast against a bird to its right.”</p>
 
-<blockquote>
-  <p>Two birds are equal if they both stand fast against each other and neither is confused.</p>
-</blockquote>
+<p>“If two birds stand fast against each other, they have <em>equal rank</em> and form a proper flock.”</p>
 
-<pre><code>FlockingBird::equals = (otherBird) -&gt;
+<pre><code>FlockingBird::isOfEqualRankTo = (otherBird) -&gt;
   case1 = @standsAgainst(otherBird)
   case2 = otherBird.standsAgainst(this)
   case3 = not @confused() and not otherBird.confused()
@@ -260,17 +258,32 @@ describe "a flock with three birds", -&gt;
 describe "equality", -&gt;
 
   it "should be true for Mayzie vs Mayzie", -&gt;
-    expect( Mayzie.equals(Mayzie) ).toEqual true
+    expect( Mayzie.isOfEqualRankTo(Mayzie) ).toEqual true
     
   it "should be true for OneRight vs OneRight", -&gt;
-    expect( OneRight.equals(OneRight) ).toEqual true
+    expect( OneRight.isOfEqualRankTo(OneRight) ).toEqual true
     
   it "should be false for Mayzie vs OneRight", -&gt;
-    expect( Mayzie.equals(OneRight) ).toEqual false
-    expect( OneRight.equals(Mayzie) ).toEqual false
+    expect( Mayzie.isOfEqualRankTo(OneRight) ).toEqual false
+    expect( OneRight.isOfEqualRankTo(Mayzie) ).toEqual false
 </code></pre>
 
-<p>(<em>…to be continued…</em>)</p>
+<h3 id="branch-if-not-equal">branch if not equal</h3>
+
+<p>“One interesting property of birds belonging to proper flocks is that they will sometimes pair up and work together to defend a nest or bit of food. Sometimes two unattached birds will pair up to chase away a higher-ranked bird from attracting a mate and so on.</p>
+
+<p>“We have defined the ranking for birds against each other. It turns out that the birds have an equally rigorous way of ranking pairs of birds. Given two birds in a pair we will call <code>p1</code> and <code>p2</code>, they have a rank equal to that of some other bird <code>P</code>.</p>
+
+<p>What rank is <code>P</code>? From my observations, the following rules apply:”</p>
+
+<ol>
+  <li>If <code>p1</code> knows some lesser bird <code>&lt;p1</code>, then <code>P</code></li>
+</ol>
+
+<p>If some number <code>&lt;p1</code> is to the left of p1, then <code>&lt;p1</code> + p2 is to the left of <code>P</code>;
+If some number p2_left is to the left of p2, then p2_left + p1 is to the left of <code>P</code>;
+If some number p1_right is to the right of p1, then p1_right + p2 is to the right of <code>P</code>;
+If some number p2_right is to the right of p2, then p2_right + p1 is to the right of <code>P</code>.</p>
 
 <hr />
 
