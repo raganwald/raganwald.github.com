@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-18T11:13:40-04:00</updated>
+  <updated>2013-03-18T11:15:08-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -301,7 +301,7 @@ describe &quot;pairing OneRight with itself&quot;, -&amp;gt;
 
 &lt;hr /&gt;
 
-&lt;p&gt;(Discuss on &lt;a href=&quot;http://raganwald.com/enchanted-forest/horton.html&quot;&gt;hacker news&lt;/a&gt; and &lt;a href=&quot;http://www.reddit.com/r/programming/comments/1aiwsv/a_surreal_encounter_with_a_winged_elephant/&quot;&gt;reddit&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;(Discuss on &lt;a href=&quot;https://news.ycombinator.com/item?id=5394376&quot;&gt;hacker news&lt;/a&gt; and &lt;a href=&quot;http://www.reddit.com/r/programming/comments/1aiwsv/a_surreal_encounter_with_a_winged_elephant/&quot;&gt;reddit&lt;/a&gt;)&lt;/p&gt;
 
 &lt;hr /&gt;
 

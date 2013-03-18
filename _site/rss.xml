@@ -6,8 +6,8 @@
     <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
-    <pubDate>Mon, 18 Mar 2013 11:13:40 -0400</pubDate>
-    <lastBuildDate>Mon, 18 Mar 2013 11:13:40 -0400</lastBuildDate>
+    <pubDate>Mon, 18 Mar 2013 11:15:08 -0400</pubDate>
+    <lastBuildDate>Mon, 18 Mar 2013 11:15:08 -0400</lastBuildDate>
 
     
       
@@ -295,7 +295,7 @@ describe &quot;pairing OneRight with itself&quot;, -&amp;gt;
 
 &lt;hr /&gt;
 
-&lt;p&gt;(Discuss on &lt;a href=&quot;http://raganwald.com/enchanted-forest/horton.html&quot;&gt;hacker news&lt;/a&gt; and &lt;a href=&quot;http://www.reddit.com/r/programming/comments/1aiwsv/a_surreal_encounter_with_a_winged_elephant/&quot;&gt;reddit&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;(Discuss on &lt;a href=&quot;https://news.ycombinator.com/item?id=5394376&quot;&gt;hacker news&lt;/a&gt; and &lt;a href=&quot;http://www.reddit.com/r/programming/comments/1aiwsv/a_surreal_encounter_with_a_winged_elephant/&quot;&gt;reddit&lt;/a&gt;)&lt;/p&gt;
 
 &lt;hr /&gt;
 
