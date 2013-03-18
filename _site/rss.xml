@@ -6,42 +6,22 @@
     <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
-    <pubDate>Mon, 18 Mar 2013 10:07:52 -0400</pubDate>
-    <lastBuildDate>Mon, 18 Mar 2013 10:07:52 -0400</lastBuildDate>
+    <pubDate>Mon, 18 Mar 2013 10:16:31 -0400</pubDate>
+    <lastBuildDate>Mon, 18 Mar 2013 10:16:31 -0400</lastBuildDate>
 
     
       
         <item>
-          <title>Horton Hatches Surreal Birds</title>
+          <title>A Surreal Encounter with a Winged Elephant</title>
           <link>http://raganwald.com/enchanted-forest/horton.html</link>
           <pubDate>Sun, 17 Mar 2013 00:00:00 -0400</pubDate>
           <author>reg@braythwayt.com (Reginald Braithwaite)</author>
           <guid>http://raganwald.com/enchanted-forest/horton.coffee</guid>
-          <description>&lt;p&gt;Previously in &lt;a href=&quot;./scheinfinkel.html&quot;&gt;Schönfinkel’s Forest&lt;/a&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Now it so happens that some birds are such that if you call out their own song to them, they call it right back to you. You saw one such bird, the Idiot. We call these&lt;/em&gt; egocentric &lt;em&gt;birds. Given the Kestrel and the Idiot, is there another egocentric bird in the forest?&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Next, a bird is&lt;/em&gt; hopelessly egocentric &lt;em&gt;if it is the case that no matter what bird you call out to it, it calls back its own song. Given the Kestrel and the Idiot, is there a bird that is fixated on itself in this forest?&lt;/em&gt;&lt;/p&gt;
+          <description>&lt;p&gt;Previous: &lt;a href=&quot;./a-long-time-ago-in-a-village-far-far-away.html&quot;&gt;A long time ago, in a village far, far away&lt;/a&gt;:&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;p&gt;Maude pondered these questions for a few minutes and intuitively decided that the answer must be &lt;strong&gt;no&lt;/strong&gt;. The Kestrel seemed like a promising bird, but trying things like &lt;code&gt;K(K)&lt;/code&gt; and variations on the same seemed to be going in the wrong direction.&lt;/p&gt;
-
-&lt;p&gt;“No,” she said at last, “I do not think so, although proving that it is not the case is a little beyond me right now.”&lt;/p&gt;
-
-&lt;p&gt;Moses clicked his beak and gazed at her. “You are right, the Kestrel and Idiot are not enough. There are a great many birds in the forest. We songbirds are territorial, although not particularly exclusive. Here in my territory, there are a few birds that make a permanent nest. In addition to the Kestrel and Idiot, I also have nesting in my territory a Bluebird, a Cardinal, and a Starling.”&lt;/p&gt;
-
-&lt;p&gt;“They are very interesting. The Kestrel and Starling are good friends, I do believe that between them they are smart enough to solve any problem that can be solved, although for some reason they like to have the Idiot around to do mundane chores.&lt;sup id=&quot;fnref:SKI&quot;&gt;&lt;a href=&quot;#fn:SKI&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-
-&lt;p&gt;“There &lt;em&gt;is&lt;/em&gt; a hopelessly egocentric bird in the forest, but you will probably learn more about such things if you visit The Magnificent Smullyan Bird’s territory. He has a Mockingbird&lt;sup id=&quot;fnref:mockingbird&quot;&gt;&lt;a href=&quot;#fn:mockingbird&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; there and he will tell you all about this wonderful creature.&lt;/p&gt;
-
-&lt;p&gt;“Let’s head over there now, I’ll introduce you.”&lt;/p&gt;
-
-&lt;p&gt;Moses flew along, showing Maude the way to The Magnificent Smullyan Bird’s Territory. As the were walking along, Maude saw the most curious sight: A small winged elephant perched on a nest.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/hortonjr.jpg&quot; alt=&quot;Horton Jr.&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;elephants-and-bowerbirds&quot;&gt;elephants and bowerbirds&lt;/h3&gt;
+&lt;p&gt;Moses flew along, showing Maude the way to The Magnificent Smullyan Bird’s nest. As they walked along, Maude saw the most curious sight: A small winged elephant perched on a nest.&lt;/p&gt;
 
 &lt;p&gt;“What is that!?”&lt;/p&gt;
 
@@ -49,19 +29,19 @@
 
 &lt;p&gt;Maude asked about his expertise.&lt;/p&gt;
 
-&lt;p&gt;“Well, he does a lot of work playing with pebbles on vast grids that he lays out. He claims that by following certain rules, his pebbles can answer any question my Starling and Kestrel can answer.”&lt;sup id=&quot;fnref:life&quot;&gt;&lt;a href=&quot;#fn:life&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;“Well, he does a lot of work playing with pebbles on vast grids that he lays out.”&lt;sup id=&quot;fnref:life&quot;&gt;&lt;a href=&quot;#fn:life&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
-&lt;p&gt;Maude was interested. Pebbles?&lt;/p&gt;
+&lt;p&gt;“Speaking of egocentricity, Horton actually claims that by following certain rules, his pebbles can answer any question that songbirds like the Starling and Kestrel can answer. I think it’s interesting, but outside of fanciful flying creations like gliders and heavyweight spaceships, I don’t see the point.”&lt;/p&gt;
 
-&lt;p&gt;“Well,” Moses said, “I didn’t mention this earlier, but we birds come in a few basic varieties.”&lt;/p&gt;
+&lt;p&gt;Maude was interested. Pebbles? “Well,” Moses said, “I alluded to this earlier. A certain lesser class of bird likes to build a &lt;a href=&quot;https://en.wikipedia.org/wiki/Bowerbird&quot;&gt;bower&lt;/a&gt; out of various found objects.”&lt;/p&gt;
 
-&lt;p&gt;“We all have songs, but some of us like to attract a mate with our excellent plumage, some with vigorous and intricate dancing, and a certain lesser class of bird likes to build a &lt;a href=&quot;https://en.wikipedia.org/wiki/Bowerbird&quot;&gt;bower&lt;/a&gt; out of various found objects.”&lt;/p&gt;
-
-&lt;p&gt;For example, I could show you the Stuart’s &lt;a href=&quot;http://twitter.com/tomstuart&quot;&gt;Tombird&lt;/a&gt;. It builds an elaborate bower out of just one material, chips of red crystal. It is intelligent, and claims its chips of Ruby can do various tasks like count to one hundred or even write nonsensical words like “fizz” or “buzz.”&lt;sup id=&quot;fnref:nothing&quot;&gt;&lt;a href=&quot;#fn:nothing&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;For example, I could show you the Stuart’s &lt;a href=&quot;http://twitter.com/tomstuart&quot;&gt;Tombird&lt;/a&gt;. It builds an elaborate bower out of just one material, chips of red crystal. It is intelligent, and claims its chips of Ruby can do various tasks like count to one hundred or even write nonsensical words like “fizz” or “buzz.”&lt;sup id=&quot;fnref:nothing&quot;&gt;&lt;a href=&quot;#fn:nothing&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;“In any event,” continued Moses, “We may as well say hello to Horton since we’re here.”&lt;/p&gt;
 
-&lt;h3 id=&quot;horton-jr&quot;&gt;horton jr.&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/hortonjr.jpg&quot; alt=&quot;Horton Jr.&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;horton&quot;&gt;horton&lt;/h3&gt;
 
 &lt;p&gt;Moses introduced Maude to Horton. After exchanging pleasantries, Maude asked Horton what kind of song he sang.&lt;/p&gt;
 
@@ -93,13 +73,13 @@ class FlockingBird
     @knownToOutrank   or= []
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;“Now these birds often compete with each other: For good nesting sites, for mates, for a piece of food, for a good perch on a branch. Each will instinctively show its threat display and try to get the other to back down. As they do so, they screech at each other. When one stands its ground and the other not stand its ground, the one that stands its ground &lt;em&gt;always&lt;/em&gt; outranks the other.&lt;/p&gt;
+&lt;p&gt;“Now these birds often compete with each other: For good nesting sites, for mates, for a piece of food, for a good perch on a branch. Each will instinctively show its threat display and try to get the other to back down. As they do so, they screech at each other. When one stands fast and the other not stand its ground, the one that stands fast &lt;em&gt;always&lt;/em&gt; outranks the other.&lt;/p&gt;
 
 &lt;p&gt;“I wondered how they sorted it out, so I observed and made extensive notes. I have discovered that they obey both of two simple rules. To simplify the explanation, imagine a bird is displaying on its courtship stage when a rival appears. We have the courting bird and the rival who square off in a challenge.&lt;/p&gt;
 
 &lt;p&gt;The first rule is that in order to stand its ground, the courting bird cannot know any bird ranked greater than the courting bird such that the rival would stand its ground against the greater ranked bird.&lt;/p&gt;
 
-&lt;p&gt;The second rules is that in order to stand its ground, the rival cannot know any bird lesser than the rival that stands its ground against the courting bird.&lt;/p&gt;
+&lt;p&gt;The second rules is that in order to stand its ground, the rival cannot know any bird lesser than the rival that stands fast against the courting bird.&lt;/p&gt;
 
 &lt;p&gt;Maude gave this some thought, and then wrote:&lt;/p&gt;
 
@@ -139,9 +119,17 @@ class FlockingBird
     expect( Mayzie.confused() ).toEqual false
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;After explaining her notation to Horton, he agreed with her assessment. “Yes, Mayzie isn’t very sociable, but she isn’t confused.”&lt;/p&gt;
+&lt;h3 id=&quot;notation&quot;&gt;notation&lt;/h3&gt;
 
-&lt;p&gt;Horton continued with his explanation. “Some flocks have confused birds, some do not. I call a flock that has no confused birds a &lt;em&gt;proper flock&lt;/em&gt;. Every proper flock has a simple pecking order. That is, you can arrange all of the birds in a line (as if perched on a branch), and there is always an arrangement such that every bird stands its ground against any bird to its left.”&lt;sup id=&quot;fnref:exercise&quot;&gt;&lt;a href=&quot;#fn:exercise&quot; rel=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Here Horton stopped and stared at Maude’s writing. “And what do you call this system of notation you have?”&lt;/p&gt;
+
+&lt;p&gt;“CoffeeScript,” said Maude, “because when it gets complicated, I need to drink a lot of coffee to work it out by hand.”&lt;sup id=&quot;fnref:cs&quot;&gt;&lt;a href=&quot;#fn:cs&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;“Actually,” she said, “My uncle Brendan&lt;sup id=&quot;fnref:be&quot;&gt;&lt;a href=&quot;#fn:be&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt; devised a notation for solving certain problems to deal with the appearance and behaviour of web spiders. He called it JavaScript, no doubt because of our family’s coffee plantation business. My cousin Jeremy&lt;sup id=&quot;fnref:jeremy&quot;&gt;&lt;a href=&quot;#fn:jeremy&quot; rel=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt; liked Brendan’s ideas, but found them awkward for certain classes of problems and streamlined it somewhat. Jeremy called his variation CoffeeScript, and he taught it to me.”&lt;/p&gt;
+
+&lt;p&gt;After explaining the details of her notation to Horton, he agreed with her assessment. “Yes, Mayzie isn’t very sociable, but she isn’t confused.”&lt;/p&gt;
+
+&lt;p&gt;Horton continued with his explanation. “Some flocks have confused birds, some do not. I call a flock that has no confused birds a &lt;em&gt;proper flock&lt;/em&gt;. Every proper flock has a simple pecking order. That is, you can arrange all of the birds in a line (as if perched on a branch), and there is always an arrangement such that every bird stands fast against any bird to its left.”&lt;sup id=&quot;fnref:exercise&quot;&gt;&lt;a href=&quot;#fn:exercise&quot; rel=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://www.flickr.com/photos/suckamc/3308221895/&quot; title=&quot;Don King Bird by Martin Cathrae, on Flickr&quot;&gt;&lt;img src=&quot;http://farm4.staticflickr.com/3123/3308221895_2863aef68b_b.jpg&quot; alt=&quot;Don King Bird&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
@@ -149,7 +137,7 @@ class FlockingBird
 
 &lt;p&gt;Horton was gathering enthusiasm, and he fairly trumpeted the next explanation. “This idea of a branch where birds can perch in order is interesting. Let’s start with an empty branch. Now, let’s place Mayzie on the branch by herself in the middle:”&lt;/p&gt;
 
-&lt;p&gt;“Mayzie obviously forms a proper flock as she is not confused. As we have established, Mayzie doesn’t know any birds. But what if a bird alights to her right, a bird that knows her, perhaps from reading a book.&lt;sup id=&quot;fnref:seuss&quot;&gt;&lt;a href=&quot;#fn:seuss&quot; rel=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt; This bird knows and outranks Mayzie.”&lt;/p&gt;
+&lt;p&gt;“Mayzie obviously forms a proper flock as she is not confused. As we have established, Mayzie doesn’t know any birds. But what if a bird alights to her right, a bird that knows her, perhaps from reading a book.&lt;sup id=&quot;fnref:seuss&quot;&gt;&lt;a href=&quot;#fn:seuss&quot; rel=&quot;footnote&quot;&gt;7&lt;/a&gt;&lt;/sup&gt; This bird knows and outranks Mayzie.”&lt;/p&gt;
 
 &lt;p&gt;Maude considered, then wrote:&lt;/p&gt;
 
@@ -160,7 +148,9 @@ OneRight = new FlockingBird
 
 &lt;p&gt;Maude asked, “Do these two birds form a proper flock?”&lt;/p&gt;
 
-&lt;p&gt;Horton curled his trunk and smiled. “You tell me, do these two birds form a proper flock? And if so, do they obey the rules for ordering on a branch”&lt;/p&gt;
+&lt;p&gt;Horton curled his trunk and smiled. “You tell me! Do these two birds form a proper flock? And if so, do they obey the rules for ordering on a branch?”&lt;/p&gt;
+
+&lt;p&gt;Maude worked things out in her mind for a few moments, writing:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;describe &quot;a flock with two birds&quot;, -&amp;gt;
 
@@ -297,7 +287,7 @@ describe &quot;pairing OneRight with itself&quot;, -&amp;gt;
     expect( P(OneRight, OneRight).isOfEqualRankTo(TwoRight) ).toEqual true
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;She showed her work to Horton. “Wait,” she said suddenly, “I should use a more descriptive name. I’ll just change &lt;code&gt;P&lt;/code&gt; to &lt;code&gt;Pair&lt;/code&gt;.” Horton demurred. “Actually,” he said, “The correct word isn’t ‘pair,’ it’s &lt;em&gt;plus&lt;/em&gt;.”&lt;/p&gt;
+&lt;p&gt;She showed her work to Horton. “Wait,” she said suddenly, “I should use a more descriptive name. I’ll just change &lt;code&gt;P&lt;/code&gt; to &lt;code&gt;Pair&lt;/code&gt;.” Horton demurred. “Actually,” he said, “The correct word isn’t ‘pair,’ it’s &lt;strong&gt;plus&lt;/strong&gt;.”&lt;/p&gt;
 
 &lt;p&gt;It took a few moments for the revelation to sink in, then Maude laughed in delight.&lt;/p&gt;
 
@@ -308,17 +298,20 @@ describe &quot;pairing OneRight with itself&quot;, -&amp;gt;
 &lt;p&gt;notes:&lt;/p&gt;
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
-    &lt;li id=&quot;fn:SKI&quot;&gt;
-      &lt;p&gt;See the &lt;a href=&quot;https://en.wikipedia.org/wiki/SKI_combinator_calculus&quot;&gt;SKI Combinator Calculus&lt;/a&gt;&lt;a href=&quot;#fnref:SKI&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:mockingbird&quot;&gt;
-      &lt;p&gt;See &lt;a href=&quot;http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&amp;amp;camp=1789&amp;amp;creative=390957&amp;amp;creativeASIN=B00A1P096Y&amp;amp;linkCode=as2&amp;amp;tag=raganwald001-20&quot;&gt;To Mock a Mockingbird&lt;/a&gt;&lt;a href=&quot;#fnref:mockingbird&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
     &lt;li id=&quot;fn:life&quot;&gt;
       &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life&quot;&gt;Conway’s Game of Life&lt;/a&gt;&lt;a href=&quot;#fnref:life&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
     &lt;li id=&quot;fn:nothing&quot;&gt;
       &lt;p&gt;&lt;a href=&quot;http://codon.com/programming-with-nothing&quot;&gt;Programming with Nothing&lt;/a&gt;&lt;a href=&quot;#fnref:nothing&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:cs&quot;&gt;
+      &lt;p&gt;These stories are written in &lt;a href=&quot;http://daringfireball.net/projects/markdown/&quot;&gt;Markdown&lt;/a&gt; and interpreted in place as &lt;a href=&quot;http://coffeescript.org&quot;&gt;Literate CoffeeScript&lt;/a&gt; files. They are translated to JavaScript and then &lt;a href=&quot;https://github.com/mhevery/jasmine-node&quot;&gt;jasmine-node&lt;/a&gt; is used to evaluate them as specifications.&lt;a href=&quot;#fnref:cs&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:be&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;http://brendaneich.com&quot;&gt;Brendan Eich&lt;/a&gt; is the inventor of JavaScript.&lt;a href=&quot;#fnref:be&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:jeremy&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;http://www.ashkenas.com&quot;&gt;Jeremy Ashkenas&lt;/a&gt; invented CoffeeScript&lt;a href=&quot;#fnref:jeremy&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
     &lt;li id=&quot;fn:exercise&quot;&gt;
       &lt;p&gt;As an exercise, prove this is the case.&lt;a href=&quot;#fnref:exercise&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
@@ -415,7 +408,7 @@ describe &quot;pairing OneRight with itself&quot;, -&amp;gt;
 
 &lt;h3 id=&quot;egocentricity&quot;&gt;egocentricity&lt;/h3&gt;
 
-&lt;p&gt;Many people would have been taken aback by such a forthright remark, but of course Moses was not a person. In fact, he was so assured of his own place as a start in the intellectual firmament that he seemed incapable of viewing a remark about himself as being critical.&lt;/p&gt;
+&lt;p&gt;Many people would have been taken aback by such a forthright remark, but of course Moses was not a person. In fact, he was so assured of his own place as a star in the intellectual firmament that he seemed incapable of viewing a remark about himself as being critical.&lt;/p&gt;
 
 &lt;p&gt;“Ah! Egocentricity is a very interesting subject touching upon fixation and the elusive family of Sage Birds. While I am, of course, conversant in these matters, the real expert in this area is The Magnificent Smullyan Bird.&lt;sup id=&quot;fnref:rs&quot;&gt;&lt;a href=&quot;#fn:rs&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt; While his grey feathers are rather dowdy, his song brings to mind great piano performances.&lt;sup id=&quot;fnref:note&quot;&gt;&lt;a href=&quot;#fn:note&quot; rel=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
