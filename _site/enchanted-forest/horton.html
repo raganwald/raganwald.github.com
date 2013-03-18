@@ -329,16 +329,18 @@ P = (B1, B2) -&gt;
 
 <p>Horton was busy eating some ground nuts, so she showed her progress to Moses. “How,” she wondered, “Do I check my work?” Moses provided some hints:</p>
 
-<pre><code>describe "paired birds", -&gt;
+<pre><code>describe "pairing Mayzie with a bird", -&gt;
 
-  it "should be the case that Mayzie paired with any bird is the same rank as that bird", -&gt;
+  it "should be the same rank as that bird", -&gt;
     expect( P(Mayzie, Mayzie).isOfEqualRankTo(Mayzie) ).toEqual true
     expect( P(Mayzie, OneRight).isOfEqualRankTo(OneRight) ).toEqual true
     expect( P(OneRight, Mayzie).isOfEqualRankTo(OneRight) ).toEqual true
     expect( P(Mayzie, TwoRight).isOfEqualRankTo(TwoRight) ).toEqual true
     expect( P(TwoRight, Mayzie).isOfEqualRankTo(TwoRight) ).toEqual true
+
+describe "pairing OneRight with itself", -&gt;
     
-  it "should be the case that OneRight paired with itself is teh same rank as TwoRight", -&gt;
+  it "should be the same rank as TwoRight", -&gt;
     expect( P(OneRight, OneRight).isOfEqualRankTo(TwoRight) ).toEqual true
 </code></pre>
 
