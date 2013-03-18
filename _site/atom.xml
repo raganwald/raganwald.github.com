@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-18T10:16:31-04:00</updated>
+  <updated>2013-03-18T10:24:44-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -449,7 +449,7 @@ describe &quot;pairing OneRight with itself&quot;, -&amp;gt;
       &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Raymond_Smullyan&quot;&gt;Raymond Merrill Smullyan&lt;/a&gt; is an American mathematician, concert pianist, logician, Taoist philosopher, and magician. He has his own &lt;a href=&quot;http://www.youtube.com/profile?user=rsmullyan&amp;amp;view=videos&quot;&gt;Youtube channel&lt;/a&gt;.&lt;a href=&quot;#fnref:rs&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
     &lt;li id=&quot;fn:note&quot;&gt;
-      &lt;p&gt;This story is &lt;a href=&quot;http://mysite.verizon.net/vzeeaya7/raymondsmullyan/&quot;&gt;taken from the Piano Society and other sources&lt;/a&gt;.&lt;a href=&quot;#fnref:note&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;More about Raymond Smullyan &lt;a href=&quot;http://mysite.verizon.net/vzeeaya7/raymondsmullyan/&quot;&gt;taken from the Piano Society and other sources&lt;/a&gt;.&lt;a href=&quot;#fnref:note&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
@@ -1660,6 +1660,14 @@ M.infinity - Bus 2, Bus 3, Bus 5, Bus 7, Bus 11, ..., 42
 
 &lt;div class=&quot;related&quot;&gt;
   &lt;ul&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;&lt;/span&gt; &lt;a href=&quot;&quot;&gt;&lt;/a&gt;
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;&lt;/span&gt; &lt;a href=&quot;&quot;&gt;&lt;/a&gt;
+    &lt;/li&gt;
     
     &lt;li&gt;
 &lt;span&gt;&lt;/span&gt; &lt;a href=&quot;&quot;&gt;&lt;/a&gt;

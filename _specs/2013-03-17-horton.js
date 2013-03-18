@@ -155,15 +155,18 @@
     });
   };
 
-  describe("paired birds", function() {
-    it("should be the case that Mayzie paired with any bird is the same rank as that bird", function() {
+  describe("pairing Mayzie with a bird", function() {
+    return it("should be the same rank as that bird", function() {
       expect(P(Mayzie, Mayzie).isOfEqualRankTo(Mayzie)).toEqual(true);
       expect(P(Mayzie, OneRight).isOfEqualRankTo(OneRight)).toEqual(true);
       expect(P(OneRight, Mayzie).isOfEqualRankTo(OneRight)).toEqual(true);
       expect(P(Mayzie, TwoRight).isOfEqualRankTo(TwoRight)).toEqual(true);
       return expect(P(TwoRight, Mayzie).isOfEqualRankTo(TwoRight)).toEqual(true);
     });
-    return it("should be the case that OneRight paired with itself is teh same rank as TwoRight", function() {
+  });
+
+  describe("pairing OneRight with itself", function() {
+    return it("should be the same rank as TwoRight", function() {
       return expect(P(OneRight, OneRight).isOfEqualRankTo(TwoRight)).toEqual(true);
     });
   });

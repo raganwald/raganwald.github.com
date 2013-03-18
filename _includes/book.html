@@ -1,23 +1,34 @@
 {% assign top = 0 %}
 
 {% for tag in page.tags %}
+
   {% assign leanpub = '' %}
   {% assign amazon = '' %}
 
   {% if tag == "combinators" %}
     {% assign amazon = 'B00A1P096Y' %}
+    {% assign leanpub = '/combinators' %}
   {% elsif tag == "computation" %}
     {% assign amazon = '1449329276' %}
+  {% elsif tag == "gameoflife" %}
+    {% assign amazon = '048649098X' %}
+  {% elsif tag == "surrealnumbers" %}
+    {% assign amazon = '0201038129' %}
+  
   {% elsif tag == "javascript" %}
     {% assign leanpub = '/javascript-allonge' %}
+    {% assign amazon = '0321812182' %}
   {% elsif tag == "coffeescript" %}
     {% assign leanpub = '/coffeescript-ristretto' %}
+    {% assign amazon = '1449321054' %}
   {% elsif tag == "ruby" %}
-    {% assign leanpub = '/combinators' %}
+    {% comment %}need a ruby book{% endcomment %}
+    
   {% elsif tag == "management" %}
     {% assign leanpub = '/shippingsoftware' %}
   {% elsif tag == "programming" %}
     {% assign leanpub = '/b/coffee-kestrels-code' %}
+    
   {% endif %}
 
   {% if leanpub != '' %}
