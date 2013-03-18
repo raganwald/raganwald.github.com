@@ -5,7 +5,7 @@
     </head>
   <body>
     <div id="container">
-      <div class="inner">
+      <div class="inner {% if page.tags contains 'hide-code' %}hide-code{% endif %}">
         
         {% include header_div.html %}
 

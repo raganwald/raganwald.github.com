@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-18T11:15:08-04:00</updated>
+  <updated>2013-03-18T12:31:44-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -23,7 +23,7 @@
           <name>Reginald Braithwaite</name>
           <uri>http://raganwald.com/</uri>
         </author>
-        <content type="html">&lt;p&gt;Previous: &lt;a href=&quot;./a-long-time-ago-in-a-village-far-far-away.html&quot;&gt;A long time ago, in a village far, far away&lt;/a&gt;:&lt;/p&gt;
+        <content type="html">&lt;p&gt;Previous: &lt;a href=&quot;./a-long-time-ago-in-a-village-far-far-away.html&quot;&gt;A long time ago, in a village far, far away&lt;/a&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
 
@@ -1667,6 +1667,10 @@ M.infinity - Bus 2, Bus 3, Bus 5, Bus 7, Bus 11, ..., 42
 
 &lt;div class=&quot;related&quot;&gt;
   &lt;ul&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;&lt;/span&gt; &lt;a href=&quot;&quot;&gt;&lt;/a&gt;
+    &lt;/li&gt;
     
     &lt;li&gt;
 &lt;span&gt;&lt;/span&gt; &lt;a href=&quot;&quot;&gt;&lt;/a&gt;
