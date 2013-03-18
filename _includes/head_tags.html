@@ -9,7 +9,9 @@
     <![endif]-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="/assets/js/respond.js"></script>
-    <script src="/assets/js/raganwald.js"></script>
+    
+    {% if page.tags contains 'hide-code' %}<script src="/assets/js/hide-code.js"></script>{% endif %}
+    
     <!--[if lt IE 8]>
     <link rel="stylesheet" href="/assets/css/ie.css">
     <![endif]-->

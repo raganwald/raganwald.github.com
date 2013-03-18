@@ -1,6 +1,6 @@
 jQuery(function () {
   
-  var hiddenCodeEls = $('.hide-code pre');
+  var hiddenCodeEls = $('pre');
   
   jQuery.each(hiddenCodeEls, function (index, element) {
     var hider = $('<p></p>')
