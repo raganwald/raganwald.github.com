@@ -268,6 +268,29 @@ describe "equality", -&gt;
     expect( OneRight.isOfEqualRankTo(Mayzie) ).toEqual false
 </code></pre>
 
+<p>“Now,” continued Horton, “We can define the relationship you were thinking of when we consider a strict ordering of birds in a flock. A bird <em>outranks</em> another bird if it stands fast against that bird and it is not of equal rank to that bird.”</p>
+
+<p>Maude hastily updated her notes:</p>
+
+<pre><code>FlockingBird::outranks = (otherBird) -&gt;
+  case1 = @standsAgainst(otherBird)
+  case2 = not @isOfEqualRankTo(otherBird)
+  case1 and case2
+  
+describe "outranking", -&gt;
+
+  it "should work for Mayzie vs. Mayzie", -&gt;
+    expect( Mayzie.outranks(Mayzie) ).toEqual false
+    
+  it "should work for Mayzie vs. OneRight", -&gt;
+    expect( Mayzie.outranks(OneRight) ).toEqual false
+    expect( OneRight.outranks(Mayzie) ).toEqual true
+    
+  it "should work for Mayzie vs. TwoRight", -&gt;
+    expect( Mayzie.outranks(TwoRight) ).toEqual false
+    expect( TwoRight.outranks(Mayzie) ).toEqual true
+</code></pre>
+
 <p>(<em>…to be continued…</em>)</p>
 
 <hr />
