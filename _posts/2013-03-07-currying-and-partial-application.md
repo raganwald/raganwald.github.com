@@ -156,7 +156,7 @@ function curry (binaryFn) {
 };
 
 var curriedMap = curry(map),
-    double = function (n) { n + n; };
+    double = function (n) { return n + n; };
 
 var oneToThreeEach = curriedMap([1, 2, 3]);
 
