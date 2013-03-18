@@ -142,7 +142,7 @@ Maude needed a few more minutes to answer this question.
 
 ---
 
-Next: [Horton Hatches Surreal Numbers](./horton.html)
+Next: [Horton Hatches Surreal Birds](./horton.html)
 
 ---
 

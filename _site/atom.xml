@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-17T20:34:19-04:00</updated>
+  <updated>2013-03-17T21:28:29-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -94,7 +94,9 @@
 &lt;pre&gt;&lt;code&gt;{any} = require('underscore')
 
 class FlockingBird
-  constructor: (@greater = [], @lesser = []) -&amp;gt;
+  constructor: ({@knownOutrankedBy, @knownToOutrank} = {}) -&amp;gt;
+    @knownOutrankedBy or= []
+    @knownToOutrank   or= []
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;“Now these birds often compete with each other: For good nesting sites, for mates, for a piece of food, for a good perch on a branch. Each will instinctively show its threat display and try to get the other to back down. As they do so, they screech at each other. When one stands its ground and the other not stand its ground, the one that stands its ground &lt;em&gt;always&lt;/em&gt; outranks the other.&lt;/p&gt;
@@ -109,8 +111,8 @@ class FlockingBird
 
 &lt;pre&gt;&lt;code&gt;  standsAgainst: (rival) -&amp;gt;
     courtingBird = this
-    case1 = any @greater, (gb) -&amp;gt; rival.standsAgaint(gb)
-    case2 = any rival.lesser, (lb) -&amp;gt; lb.standsAgainst(courtingBird)
+    case1 = any @knownOutrankedBy, (gb) -&amp;gt; rival.standsAgainst(gb)
+    case2 = any rival.knownToOutrank, (lb) -&amp;gt; lb.standsAgainst(courtingBird)
     (not case1) and (not case2)
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -121,10 +123,10 @@ class FlockingBird
 &lt;p&gt;Maude quickly wrote:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;  confused: -&amp;gt;
-    case1a = any @lesser, (lb) -&amp;gt; lb.confused()
-    case1b = any @greater, (gb) -&amp;gt; gb.confused()
-    case2  = any @lesser, (lb) =&amp;gt;
-      any @greater, (gb) -&amp;gt;
+    case1a = any @knownToOutrank, (lb) -&amp;gt; lb.confused()
+    case1b = any @knownOutrankedBy, (gb) -&amp;gt; gb.confused()
+    case2  = any @knownToOutrank, (lb) =&amp;gt;
+      any @knownOutrankedBy, (gb) -&amp;gt;
         lb.standsAgainst(gb)
     !!(case1a or case1b or case2)
 &lt;/code&gt;&lt;/pre&gt;
@@ -158,7 +160,8 @@ class FlockingBird
 &lt;p&gt;Maude considered, then wrote:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;Mayzie = new FlockingBird();
-OneRight = new FlockingBird([], [Mayzie])
+OneRight = new FlockingBird
+  knownToOutrank: [Mayzie]
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Maude asked, “Do these two birds form a proper flock?”&lt;/p&gt;
@@ -178,7 +181,8 @@ OneRight = new FlockingBird([], [Mayzie])
 
 &lt;p&gt;“Yes,” agreed Horton, “They form a proper flock. And now let us consider a bird that alights to the right of our bird to the right of Mayzie. It knows the bird to the right of Mayzie and knows that it outranks that bird. Do we have a proper flock?”&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;TwoRight = new FlockingBird([], [OneRight])
+&lt;pre&gt;&lt;code&gt;TwoRight = new FlockingBird
+  knownToOutrank: [OneRight]
 
 describe &quot;a flock with three birds&quot;, -&amp;gt;
 
@@ -247,8 +251,59 @@ describe &quot;outranking&quot;, -&amp;gt;
     
   it &quot;should work for Mayzie vs. TwoRight&quot;, -&amp;gt;
     expect( Mayzie.outranks(TwoRight) ).toEqual false
-    expect( TwoRight.outranks(Mayzie) ).toEqual true
+    expect( TwoRight.outranks(Mayzie) ).toEqual true  
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;“One interesting property of birds belonging to proper flocks is that they will sometimes pair up and work together to defend a nest or bit of food. Sometimes two unattached birds will pair up to chase away a higher-ranked bird from attracting a mate and so on.&lt;/p&gt;
+
+&lt;p&gt;“We have defined the ranking for birds against each other. It turns out that the birds have an equally rigorous way of ranking pairs of birds. Given any two birds &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt;, their pairing has rank equal to some third bird we shall call &lt;code&gt;P(x, y)&lt;/code&gt;. How do we find this rank? Let’s take two birds &lt;code&gt;B1&lt;/code&gt; and &lt;code&gt;B2&lt;/code&gt;. From my observations, four rules apply. The first two identify birds that the pair must outrank:”&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;If &lt;code&gt;B1&lt;/code&gt; outranks some bird &lt;code&gt;L1&lt;/code&gt;, then &lt;code&gt;P(B1, B2)&lt;/code&gt; must outrank &lt;code&gt;P(L1, B2)&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;If &lt;code&gt;B2&lt;/code&gt; outranks some bird &lt;code&gt;L2&lt;/code&gt;, then &lt;code&gt;P(B1, B2)&lt;/code&gt; must outrank &lt;code&gt;P(L2, B1)&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;“The next two rules identify birds that must outrank the pair:”&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;If some bird &lt;code&gt;G1&lt;/code&gt; outranks &lt;code&gt;B1&lt;/code&gt;, then &lt;code&gt;P(G1, B2)&lt;/code&gt; must outrank &lt;code&gt;P(B1, B2)&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;If some bird &lt;code&gt;G2&lt;/code&gt; outranks &lt;code&gt;B2&lt;/code&gt;, then &lt;code&gt;P(G2, B1)&lt;/code&gt; must outrank &lt;code&gt;P(B1, B2)&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Maude pursed her lips. “That’s all very well, but how do we &lt;em&gt;find&lt;/em&gt; such a bird? How do we know what birds a bird &lt;code&gt;B1&lt;/code&gt; or &lt;code&gt;B2&lt;/code&gt; might outrank?” Horton’s replied with deep simplicity: “Ask them!”&lt;/p&gt;
+
+&lt;p&gt;Maude considered, then decided to try things out and see if they worked:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{map} = require('underscore')
+
+P = (B1, B2) -&amp;gt;
+  PL1B2s = map B1.knownToOutrank,  (L1) -&amp;gt; P(L1, B2)
+  PL2B1s = map B2.knownToOutrank,  (L2) -&amp;gt; P(L2, B1)
+  PG1B2s = map B1.knownOutrankedBy, (G1) -&amp;gt; P(G1, B2)
+  PG2B1s = map B2.knownOutrankedBy, (G2) -&amp;gt; P(G2, B1)
+  new FlockingBird
+    knownToOutrank:   PL1B2s.concat(PL2B1s)
+    knownOutrankedBy: PG1B2s.concat(PG2B1s)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Horton was busy eating some ground nuts, so she showed her progress to Moses. “How,” she wondered, “Do I check my work?” Moses provided some hints:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe &quot;paired birds&quot;, -&amp;gt;
+
+  it &quot;should be the case that Mayzie paired with any bird is the same rank as that bird&quot;, -&amp;gt;
+    expect( P(Mayzie, Mayzie).isOfEqualRankTo(Mayzie) ).toEqual true
+    expect( P(Mayzie, OneRight).isOfEqualRankTo(OneRight) ).toEqual true
+    expect( P(OneRight, Mayzie).isOfEqualRankTo(OneRight) ).toEqual true
+    expect( P(Mayzie, TwoRight).isOfEqualRankTo(TwoRight) ).toEqual true
+    expect( P(TwoRight, Mayzie).isOfEqualRankTo(TwoRight) ).toEqual true
+    
+  it &quot;should be the case that OneRight paired with itself is teh same rank as TwoRight&quot;, -&amp;gt;
+    expect( P(OneRight, OneRight).isOfEqualRankTo(TwoRight) ).toEqual true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;She showed her work to Horton. “Wait,” she said suddenly, “I should use a more descriptive name. I’ll just change &lt;code&gt;P&lt;/code&gt; to &lt;code&gt;Pair&lt;/code&gt;.” Horton demurred. “Actually,” he said, “The correct word isn’t ‘pair,’ it’s &lt;em&gt;plus&lt;/em&gt;.”&lt;/p&gt;
+
+&lt;p&gt;It took a few moments for the revelation to sink in, then Maude laughed in delight.&lt;/p&gt;
 
 &lt;p&gt;(&lt;em&gt;…to be continued…&lt;/em&gt;)&lt;/p&gt;
 
@@ -349,7 +404,7 @@ describe &quot;outranking&quot;, -&amp;gt;
   I = (x) -&amp;gt; x
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;“Meaning, that the Idiot, which I will call I for short, responds to any bird’s song, denoted &lt;code&gt;x&lt;/code&gt;, with hat same bird’s song, again &lt;code&gt;x&lt;/code&gt;. I use &lt;code&gt;x&lt;/code&gt;, &lt;code&gt;y&lt;/code&gt;, &lt;code&gt;z&lt;/code&gt;, &lt;code&gt;w&lt;/code&gt;, and other letters for unknowns.”&lt;/p&gt;
+&lt;p&gt;“Meaning, that the Idiot, which I will call I for short, responds to any bird’s song, denoted &lt;code&gt;x&lt;/code&gt;, with that same bird’s song, again &lt;code&gt;x&lt;/code&gt;. I use &lt;code&gt;x&lt;/code&gt;, &lt;code&gt;y&lt;/code&gt;, &lt;code&gt;z&lt;/code&gt;, &lt;code&gt;w&lt;/code&gt;, and other letters for unknowns.”&lt;/p&gt;
 
 &lt;p&gt;Maude carried on: “I like to make a note of what things mean with some examples, so I write:”&lt;/p&gt;
 

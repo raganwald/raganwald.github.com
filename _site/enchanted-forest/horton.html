@@ -135,7 +135,9 @@
 <pre><code>{any} = require('underscore')
 
 class FlockingBird
-  constructor: (@greater = [], @lesser = []) -&gt;
+  constructor: ({@knownOutrankedBy, @knownToOutrank} = {}) -&gt;
+    @knownOutrankedBy or= []
+    @knownToOutrank   or= []
 </code></pre>
 
 <p>“Now these birds often compete with each other: For good nesting sites, for mates, for a piece of food, for a good perch on a branch. Each will instinctively show its threat display and try to get the other to back down. As they do so, they screech at each other. When one stands its ground and the other not stand its ground, the one that stands its ground <em>always</em> outranks the other.</p>
@@ -150,8 +152,8 @@ class FlockingBird
 
 <pre><code>  standsAgainst: (rival) -&gt;
     courtingBird = this
-    case1 = any @greater, (gb) -&gt; rival.standsAgaint(gb)
-    case2 = any rival.lesser, (lb) -&gt; lb.standsAgainst(courtingBird)
+    case1 = any @knownOutrankedBy, (gb) -&gt; rival.standsAgainst(gb)
+    case2 = any rival.knownToOutrank, (lb) -&gt; lb.standsAgainst(courtingBird)
     (not case1) and (not case2)
 </code></pre>
 
@@ -162,10 +164,10 @@ class FlockingBird
 <p>Maude quickly wrote:</p>
 
 <pre><code>  confused: -&gt;
-    case1a = any @lesser, (lb) -&gt; lb.confused()
-    case1b = any @greater, (gb) -&gt; gb.confused()
-    case2  = any @lesser, (lb) =&gt;
-      any @greater, (gb) -&gt;
+    case1a = any @knownToOutrank, (lb) -&gt; lb.confused()
+    case1b = any @knownOutrankedBy, (gb) -&gt; gb.confused()
+    case2  = any @knownToOutrank, (lb) =&gt;
+      any @knownOutrankedBy, (gb) -&gt;
         lb.standsAgainst(gb)
     !!(case1a or case1b or case2)
 </code></pre>
@@ -199,7 +201,8 @@ class FlockingBird
 <p>Maude considered, then wrote:</p>
 
 <pre><code>Mayzie = new FlockingBird();
-OneRight = new FlockingBird([], [Mayzie])
+OneRight = new FlockingBird
+  knownToOutrank: [Mayzie]
 </code></pre>
 
 <p>Maude asked, “Do these two birds form a proper flock?”</p>
@@ -219,7 +222,8 @@ OneRight = new FlockingBird([], [Mayzie])
 
 <p>“Yes,” agreed Horton, “They form a proper flock. And now let us consider a bird that alights to the right of our bird to the right of Mayzie. It knows the bird to the right of Mayzie and knows that it outranks that bird. Do we have a proper flock?”</p>
 
-<pre><code>TwoRight = new FlockingBird([], [OneRight])
+<pre><code>TwoRight = new FlockingBird
+  knownToOutrank: [OneRight]
 
 describe "a flock with three birds", -&gt;
 
@@ -288,8 +292,59 @@ describe "outranking", -&gt;
     
   it "should work for Mayzie vs. TwoRight", -&gt;
     expect( Mayzie.outranks(TwoRight) ).toEqual false
-    expect( TwoRight.outranks(Mayzie) ).toEqual true
+    expect( TwoRight.outranks(Mayzie) ).toEqual true  
 </code></pre>
+
+<p>“One interesting property of birds belonging to proper flocks is that they will sometimes pair up and work together to defend a nest or bit of food. Sometimes two unattached birds will pair up to chase away a higher-ranked bird from attracting a mate and so on.</p>
+
+<p>“We have defined the ranking for birds against each other. It turns out that the birds have an equally rigorous way of ranking pairs of birds. Given any two birds <code>x</code> and <code>y</code>, their pairing has rank equal to some third bird we shall call <code>P(x, y)</code>. How do we find this rank? Let’s take two birds <code>B1</code> and <code>B2</code>. From my observations, four rules apply. The first two identify birds that the pair must outrank:”</p>
+
+<ol>
+  <li>If <code>B1</code> outranks some bird <code>L1</code>, then <code>P(B1, B2)</code> must outrank <code>P(L1, B2)</code>.</li>
+  <li>If <code>B2</code> outranks some bird <code>L2</code>, then <code>P(B1, B2)</code> must outrank <code>P(L2, B1)</code>.</li>
+</ol>
+
+<p>“The next two rules identify birds that must outrank the pair:”</p>
+
+<ol>
+  <li>If some bird <code>G1</code> outranks <code>B1</code>, then <code>P(G1, B2)</code> must outrank <code>P(B1, B2)</code>.</li>
+  <li>If some bird <code>G2</code> outranks <code>B2</code>, then <code>P(G2, B1)</code> must outrank <code>P(B1, B2)</code>.</li>
+</ol>
+
+<p>Maude pursed her lips. “That’s all very well, but how do we <em>find</em> such a bird? How do we know what birds a bird <code>B1</code> or <code>B2</code> might outrank?” Horton’s replied with deep simplicity: “Ask them!”</p>
+
+<p>Maude considered, then decided to try things out and see if they worked:</p>
+
+<pre><code>{map} = require('underscore')
+
+P = (B1, B2) -&gt;
+  PL1B2s = map B1.knownToOutrank,  (L1) -&gt; P(L1, B2)
+  PL2B1s = map B2.knownToOutrank,  (L2) -&gt; P(L2, B1)
+  PG1B2s = map B1.knownOutrankedBy, (G1) -&gt; P(G1, B2)
+  PG2B1s = map B2.knownOutrankedBy, (G2) -&gt; P(G2, B1)
+  new FlockingBird
+    knownToOutrank:   PL1B2s.concat(PL2B1s)
+    knownOutrankedBy: PG1B2s.concat(PG2B1s)
+</code></pre>
+
+<p>Horton was busy eating some ground nuts, so she showed her progress to Moses. “How,” she wondered, “Do I check my work?” Moses provided some hints:</p>
+
+<pre><code>describe "paired birds", -&gt;
+
+  it "should be the case that Mayzie paired with any bird is the same rank as that bird", -&gt;
+    expect( P(Mayzie, Mayzie).isOfEqualRankTo(Mayzie) ).toEqual true
+    expect( P(Mayzie, OneRight).isOfEqualRankTo(OneRight) ).toEqual true
+    expect( P(OneRight, Mayzie).isOfEqualRankTo(OneRight) ).toEqual true
+    expect( P(Mayzie, TwoRight).isOfEqualRankTo(TwoRight) ).toEqual true
+    expect( P(TwoRight, Mayzie).isOfEqualRankTo(TwoRight) ).toEqual true
+    
+  it "should be the case that OneRight paired with itself is teh same rank as TwoRight", -&gt;
+    expect( P(OneRight, OneRight).isOfEqualRankTo(TwoRight) ).toEqual true
+</code></pre>
+
+<p>She showed her work to Horton. “Wait,” she said suddenly, “I should use a more descriptive name. I’ll just change <code>P</code> to <code>Pair</code>.” Horton demurred. “Actually,” he said, “The correct word isn’t ‘pair,’ it’s <em>plus</em>.”</p>
+
+<p>It took a few moments for the revelation to sink in, then Maude laughed in delight.</p>
 
 <p>(<em>…to be continued…</em>)</p>
 
