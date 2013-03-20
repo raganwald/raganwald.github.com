@@ -92,3 +92,7 @@ And if that new idea happens to be the proven-over-time and widely adopted techn
 ---
 
 ([discuss](https://news.ycombinator.com/item?id=5409626))
+
+---
+
+notes:
