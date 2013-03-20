@@ -1,5 +1,5 @@
 ---
-tags: [funjs, allonge, effectivejs]
+tags: [allonge, funjs, effectivejs]
 layout: default
 ---
 
