@@ -50,7 +50,7 @@ People can learn an unfamiliar technique. And once it is learned, they benefit f
 
 [^blog]: Or a hit and miss blog like [this](http://raganwald.com)
 
-Familiarity can easily be acquired, provided the technique is unfamiliar but has been used extensively enough that there is an "information infrastructure" of books, blog posts, StackOverflow questions, sample codebases on Github, libraries, and so on.
+Familiarity can easily be acquired, provided the technique is unfamiliar to the team, but has been used extensively enough that there is an "information infrastructure" of books, blog posts, StackOverflow questions, sample codebases on Github, libraries, and so on.
 
 This may or may not be the case for some bone-headed attempt to write a client-side JavaScript application using Operational Transforms to mediate concurrent editing. [^guilty] But it is obviously the case for writing programs in a functional style.
 
