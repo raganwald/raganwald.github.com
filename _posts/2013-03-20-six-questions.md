@@ -9,7 +9,7 @@ Today, Michael Fogus announced that O'Reilly will be publishing his new book, [F
 [joy]: http://www.amazon.com/gp/product/1935182641/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=1935182641&linkCode=as2&tag=raganwald001-20
 [Lemonad]: https://github.com/fogus/lemonad
 
-On Hacker News, contributor "ghotifish" asked a very reasonable question:
+On Hacker News, contributor "GhotiFish" asked a very reasonable question:
 
 > I find these topics to be fun, and I want to use them. However, I can't help but feel that if I use these design patterns, they might unintentionally obfuscate my intentions to my peers.
 
@@ -17,11 +17,11 @@ On Hacker News, contributor "ghotifish" asked a very reasonable question:
 
 > Am I wrong? Is this book just for entertainment?
 
-This is a great question to ponder, and it comes up in many different forms and strikes at the very heart of the craft and profession of software development (as distinct from "programming" or "computer science"). Software Development is a team activity conducted over a medium to long time frame where success is measured by return on investment.
+This is a great question to ponder. It comes up in many different forms and strikes at the very heart of the craft and profession of software development (as distinct from "programming" or "computer science"). Software Development is a team activity conducted over a medium to long time frame where success is measured by return on investment.
 
 One should always be asking whether a new tool, a new language, a new technique, or even a new word or phrase in the documentation is providing a net positive return over the lifetime of the project. The answer can and will change from project to project and especially from time to time within the same project.
 
-Here's the tijme-honoured recipe for analyzing the situation: Ask yourself *who, what, where, when, why,* and *how*:
+Here's the time-honoured recipe for analyzing the situation: Ask yourself *who*, *what*, *where*, *when*, and *why*. Once you are satisfied with the answers to the first six questions, investigate **how**.
 
 ### who
 
@@ -41,9 +41,14 @@ So by "Old Dog," don't necessarily mean in Earth years. Just in attitude. Consid
 
 There is a difference between techniques that are novel and those that are merely unfamiliar.
 
-I read the word "compose" in a codebase and don't know what it means, I can google `function compose` and find out just as if I was looking at a SQL query and needed to be reminded of the semantics of `RIGHT OUTER JOIN`. The same goes for things like [partial application](http://raganwald.com/2013/01/05/practical-applications-of-partial-application.html) or [trampoline](https://en.wikipedia.org/wiki/Trampoline_(computing)#High_Level_Programming).
+I read the word "compose" in a codebase and don't know what it means, I can google `function compose` and find out just as if I was looking at a SQL query and needed to be reminded of the semantics of `RIGHT OUTER JOIN`. The same goes for things like partial application[^pa] or trampolining.[^trampoline]
 
-People can learn an unfamiliar technique and once it is learned, they benefit from it forever. It is straightforward to learn something using Google and/or StackOverflow and/or [an excellent programming blog](http://raganwald.com). Hundreds of books are written about things like functional programming, including the subject of the comment.
+[^pa]: [Practical Applications of Partial APplication](http://raganwald.com/2013/01/05/practical-applications-of-partial-application.html)
+[^trampoline]: [Trampoline (Computing) on Wikipedia](https://en.wikipedia.org/wiki/Trampoline_(computing)#High_Level_Programming)
+
+People can learn an unfamiliar technique and once it is learned, they benefit from it forever. It is straightforward to learn something using Google and/or StackOverflow and/or an excellent programming blog.[^blog] Hundreds of books are written about things like functional programming, including the subject of the comment.
+
+[^blog]: Or a hit and miss blog like [this](http://raganwald.com)
 
 Familiarity can easily be acquired.
 
@@ -71,7 +76,10 @@ There are exceptions, such as refactorings that make legacy code more testable, 
 
 ### why
 
-Entertainment is no reason to try a new technique. Neither is learning on someone else's dime. Everyone can be entertained ad infinitum reading about [enchanted forests](http://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html) or [How to run a school teaching JavaScript programming](http://raganwald.com/2013/02/21/hilberts-school.html). In this day and age, you have plenty of opportunity to learn on your own. Everyone reading this blog has access to personal development environments. There's zero need to fool around on a project that has a mission to deliver change in the world outside of your head.
+Entertainment is no reason to try a new technique. Neither is learning on someone else's dime. Everyone can be entertained ad infinitum reading about enchanted forests[^ef] or How to run a school teaching JavaScript programming.[^hilbert] In this day and age, you have plenty of opportunity to learn on your own. Everyone reading this blog has access to personal development environments. There's zero need to fool around on a project that has a mission to deliver change in the world outside of your head.
+
+[^ef]: [A long time ago, in a village far, far away](http://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html)
+[^hilbert] [Hilbert's Grand JavaScript School](http://raganwald.com/2013/02/21/hilberts-school.html)
 
 You can and should look for practical reasons that a new technique will untangle conflated concerns, or collect scattered responsibilities into a single concern, or clarify the underlying domain logic and intent of code.
 
