@@ -91,7 +91,7 @@ And if that new idea happens to be the proven-over-time and widely adopted techn
 
 ---
 
-([discuss](https://news.ycombinator.com/item?id=5409626))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=5409626) and [reddit](http://www.reddit.com/r/programming/comments/1aom0q/six_questions/))
 
 ---
 
