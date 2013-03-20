@@ -9,13 +9,9 @@ Today, Michael Fogus announced that O'Reilly will be publishing his new book, [F
 [joy]: http://www.amazon.com/gp/product/1935182641/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=1935182641&linkCode=as2&tag=raganwald001-20
 [Lemonad]: https://github.com/fogus/lemonad
 
-On Hacker News, contributor "GhotiFish" asked a very reasonable question:
+On Hacker News, contributor "GhotiFish" raised a very reasonable concern:
 
 > I find these topics to be fun, and I want to use them. However, I can't help but feel that if I use these design patterns, they might unintentionally obfuscate my intentions to my peers.
-
-> I have a code base, and I think my priority should be to remains as consistent with that code base as possible.
-
-> Am I wrong? Is this book just for entertainment?
 
 This is a great question to ponder. It comes up in many different forms and strikes at the very heart of the craft and profession of software development (as distinct from "programming" or "computer science"). Software Development is a team activity conducted over a medium to long time frame where success is measured by return on investment.
 
