@@ -20,7 +20,7 @@ This is a great question to ponder, and it comes up in many different forms and 
 
 One should always be asking whether a new tool, a new language, a new technique, or even a new word or phrase in the documentation is providing a net positive return over the lifetime of the project. The answer can and will change from project to project and especially from time to time within the same project.
 
-here's the tijme-honoured recipe for analyzing the situation: Ask yourself *who, what, where, when, why,* and *how*:
+Here's the tijme-honoured recipe for analyzing the situation: Ask yourself *who, what, where, when, why,* and *how*:
 
 ### who
 
@@ -70,10 +70,12 @@ There are exceptions, such as refactorings that make legacy code more testable, 
 
 ### why
 
-Entertainment is a ridiculous reason to try a new technique. Neither is learning on someone else's dime. In this day and age, you have plenty of opportunity to learn on your own. Everyone reading this blog has access to personal development environments. Everyone can be entertained ad infinitum reading about [enchanted forests](http://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html) or [How to run a school teaching JavaScript programming](http://raganwald.com/2013/02/21/hilberts-school.html).
+Entertainment is no reason to try a new technique. Neither is learning on someone else's dime. Everyone can be entertained ad infinitum reading about [enchanted forests](http://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html) or [How to run a school teaching JavaScript programming](http://raganwald.com/2013/02/21/hilberts-school.html). In this day and age, you have plenty of opportunity to learn on your own. Everyone reading this blog has access to personal development environments. There's zero need to fool around on a project that has a mission to deliver change in the world outside of your head.
 
 You can and should look for practical reasons that a new technique will untangle conflated concerns, or collect scattered responsibilities into a single concern, or clarify the underlying domain logic and intent of code.
 
-When such reasons exist, you have excellent motive to ask whether the technique aslo passes the who, what, where, and when questions. And if the answer to all of these is affirmative, books like [Functional JavaScript][fj] will answer the sixth question:
+When such reasons exist, you have excellent motive to ask whether the technique also passes the *who*, *what*, *where*, and *when* questions. And if the answer to all of these is affirmative, Then press ahead with your new technique or idea or tool or even language.
+
+And if that new idea happens to be the proven-over-time and widely adopted techniques of functional programming as expressed in the JavaScript language, books like [Functional JavaScript][fj] will answer the sixth question:
 
 **How**.
