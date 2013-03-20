@@ -52,7 +52,7 @@ Familiarity can easily be acquired, provided the technique is unfamiliar to the 
 
 This may or may not be the case for some bone-headed attempt to write a client-side JavaScript application using Operational Transforms to mediate concurrent editing. [^guilty] But it is obviously the case for writing programs in a functional style.
 
-[^guilty]: As the author if this post knows all too well.
+[^guilty]: As the author knows all too well!
 
 ### where
 
