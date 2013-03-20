@@ -1,5 +1,4 @@
 ---
-title: Six Questions
 tags: funjs, allonge
 layout: default
 ---
@@ -13,8 +12,10 @@ Today, Michael Fogus announced that O'Reilly will be publishing his new book, [F
 On Hacker News, contributor "ghotifish" asked a very reasonable question:
 
 > I find these topics to be fun, and I want to use them. However, I can't help but feel that if I use these design patterns, they might unintentionally obfuscate my intentions to my peers.
+
 > I have a code base, and I think my priority should be to remains as consistent with that code base as possible.
-> Am I wrong? Is this book just for entertainment? There's nothing wrong with that of course.
+
+> Am I wrong? Is this book just for entertainment?
 
 This is a great question to ponder, and it comes up in many different forms and strikes at the very heart of the craft and profession of software development (as distinct from "programming" or "computer science"). Software Development is a team activity conducted over a medium to long time frame where success is measured by return on investment.
 
@@ -79,3 +80,7 @@ When such reasons exist, you have excellent motive to ask whether the technique 
 And if that new idea happens to be the proven-over-time and widely adopted techniques of functional programming as expressed in the JavaScript language, books like [Functional JavaScript][fj] will answer the sixth question:
 
 **How**.
+
+---
+
+([discuss](https://news.ycombinator.com/item?id=5409626))
