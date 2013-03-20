@@ -25,7 +25,9 @@ Here's the time-honoured recipe for analyzing the situation: Ask yourself *who*,
 
 ### who
 
-I have a theory about Old Dogs. As is usual for blog posts, it is extrapolated from an extensive statistical study where `n=1`. My theory is that the reason young adults find it easier to learn things than old adults has to do with their emotional attachments to their sense of self-definition.
+I have a theory about Old Dogs.[^old] As is usual for blog posts, it is extrapolated from an extensive statistical study where `n=1`. My theory is that the reason young adults find it easier to learn things than old adults has to do with their emotional attachments to their sense of self-definition.
+
+[^old]: There is a saying that age is an attitude, not an amplitude. This goes double for the expression "Old Dogs." Please don't make ageist assumptions strictly because someone has a few battle scars and some grey hair. Likewise, don't get your hopes up high just because someone is more worried about acne than wrinkles.
 
 When you're nineteen, you are still looking for your place in the world. If you're currently programming in Python, you think it's a cool language, but if I ask you what you'll be doing in five years, you have no idea. To you, the world is changing at a breakneck pace and everything changes, therefore learning the new new thing is a part of life.
 
@@ -33,9 +35,9 @@ Whereas, at fifty, I am often tempted to think that few things change. Once upon
 
 To a cynic, some things don't change very much. I still shave by scraping hair off my chin with a razor. Maybe there are three or four blades instead of the one that was common when my voice first broke, but whoop-de-fucking-do.
 
-Old Dogs tend to see how much things are the same, and the perpetuate (or perpetrate!) this state of affairs by resisting change. They have a sense of identity ("I'm a Rails Programmer!"), and they fiercely defend it ("We don't need no stinking node.js 'round here"). That leads them to obstruct new ideas.
+Old Dogs tend to see how much things are the same, and they perpetuate (or perpetrate!) this state of affairs by resisting change. They have a sense of identity ("I'm a Rails Programmer!"), and they fiercely defend it ("We don't need no stinking node.js 'round here"). That leads them to obstruct new ideas.
 
-So by "Old Dog," don't necessarily mean in Earth years. Just in attitude. Consider the age and conservatism of your team. If it's overrun with frisky pups, go for it, they may need help figuring things out, but they'll wag their tails and fight over the chance to play, learn, and grow.
+You may find that although the benefits of a new idea in theory are terrific, in practice you will be derailed if your team is overloaded with Old Dogs. Whereas if your team has a critical mass of frisky pups, go for it! The pups may need help figuring things out, but they'll wag their tails and fight over the chance to play, learn, and grow.
 
 ### what
 
