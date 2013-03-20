@@ -54,7 +54,7 @@ Familiarity can easily be acquired.
 
 ### where
 
-I don't mean what kind of company or team you have. When I ask, "where," I mean, *where in the code would you use this?*. In any non-trivial code base, some pieces work fine, are rarely updated, and nobody looks that them. Others a re a big ball of mud but are so mission critical that nobody wants to touch them for fear of breaking everything.
+I don't mean what kind of company or team you have. When I ask, "where," I mean, *where in the code would you use this?* In any non-trivial code base, some pieces work fine, are rarely updated, and nobody looks that them. Others a re a big ball of mud but are so mission critical that nobody wants to touch them for fear of breaking everything.
 
 New techniques do not necessarily "obfuscate" such code. If you replace a loop with a map, well, that's not much of an improvement or an obfuscation. But if you can introduce some method decorators and dry up a ton of code while making the central responsibility of each method clearer, that might be a small investment in unfamiliarity that will pay a big dividend in understanding the underlying domain logic being expressed.
 
@@ -76,7 +76,7 @@ There are exceptions, such as refactorings that make legacy code more testable, 
 
 ### why
 
-Entertainment is no reason to try a new technique. Neither is learning on someone else's dime. Everyone can be entertained ad infinitum reading about enchanted forests[^ef] or How to run a school teaching JavaScript programming.[^hilbert] In this day and age, you have plenty of opportunity to learn on your own. Everyone reading this blog has access to personal development environments. There's zero need to fool around on a project that has a mission to deliver change in the world outside of your head.
+Entertainment is no reason to try a new technique. Neither is learning on someone else's dime. Everyone can be entertained ad infinitum reading about enchanted forests[^ef] or schools teaching JavaScript programming.[^hilbert] In this day and age, you have plenty of opportunity to learn on your own. Everyone reading this blog has access to personal development environments. There's zero need to fool around on a project that has a mission to deliver change in the world outside of your head.
 
 [^ef]: [A long time ago, in a village far, far away](http://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html)
 [^hilbert]: [Hilbert's Grand JavaScript School](http://raganwald.com/2013/02/21/hilberts-school.html)
