@@ -3,6 +3,7 @@ layout: default
 tags: [coffeescript, surrealnumbers, hide-code]
 categories: enchanted-forest
 permalink: /enchanted-forest/counting-crows.html
+published: false
 ---
 
 Previous: [A Surreal Encounter with a Winged Elephant](./horton.html)
