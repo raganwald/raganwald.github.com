@@ -1,5 +1,5 @@
 ---
-title: Six Questions To Ask About Functional JavaScript
+title: Six Questions
 tags: funjs, allonge
 layout: default
 ---
