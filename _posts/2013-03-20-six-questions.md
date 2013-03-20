@@ -19,7 +19,7 @@ On Hacker News, contributor "GhotiFish" asked a very reasonable question:
 
 This is a great question to ponder. It comes up in many different forms and strikes at the very heart of the craft and profession of software development (as distinct from "programming" or "computer science"). Software Development is a team activity conducted over a medium to long time frame where success is measured by return on investment.
 
-One should always be asking whether a new tool, a new language, a new technique, or even a new word or phrase in the documentation is providing a net positive return over the lifetime of the project. The answer can and will change from project to project and especially from time to time within the same project.
+**We must always ask whether a new tool, a new language, a new technique, or even a new way to talk about an existing idea is a net positive return over the lifetime of the project.** The answer can and will change from project to project and especially from time to time within the same project.
 
 Here's the time-honoured recipe for analyzing the situation: Ask yourself *who*, *what*, *where*, *when*, and *why*. Once you are satisfied with the answers to the first six questions, investigate **how**.
 
@@ -61,6 +61,8 @@ New techniques do not necessarily "obfuscate" such code. If you replace a loop w
 An easy way to sort this out for yourself is to pretend that you're in a meeting with an external analyst hired by the board of directors. "Go ahead and use that technique," she says, "I'll review it in a year. If it's a net loss, you're fired."
 
 Obviously you want to pick the one place in the code where it is a clear net win, and avoid at all costs places where it has uncertain benefit. Where is that? Where isn't that?
+
+> Software Development is a team activity conducted over a medium to long time frame where success is measured by return on investment. We must always ask whether a new tool, a new language, a new technique, or even a new way to talk about an existing idea is a net positive return over the lifetime of the project.
 
 ### when
 
