@@ -43,7 +43,7 @@ There is a difference between techniques that are novel and those that are merel
 
 If I read the word "compose" in a codebase and don't know what it means, I can google `function compose` and find out just as if I was looking at a SQL query and needed to be reminded of the semantics of `RIGHT OUTER JOIN`. The same goes for things like partial application,[^pa] or trampolining.[^trampoline]
 
-[^pa]: [Practical Applications of Partial APplication](http://raganwald.com/2013/01/05/practical-applications-of-partial-application.html)
+[^pa]: [Practical Applications of Partial Application](http://raganwald.com/2013/01/05/practical-applications-of-partial-application.html)
 [^trampoline]: [Trampoline (Computing) on Wikipedia](https://en.wikipedia.org/wiki/Trampoline_(computing)#High_Level_Programming)
 
 People can learn an unfamiliar technique. And once it is learned, they benefit from it forever. It is straightforward to learn something using Google and/or StackOverflow and/or an excellent programming blog.[^blog] Hundreds of books are written about things like functional programming, including the subject of the comment.
