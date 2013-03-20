@@ -60,7 +60,7 @@ This may or may not be the case for some bone-headed attempt to write a client-s
 
 ### where
 
-I don't mean what kind of company or team you have. When I ask, "where," I mean, *where in the code would you use this?* In any non-trivial code base, some pieces work fine, are rarely updated, and nobody looks that them. Others a re a big ball of mud but are so mission critical that nobody wants to touch them for fear of breaking everything.
+I don't mean what kind of company or team you have. When I ask, "where," I mean, *Where in the code would you use this?* In any non-trivial code base, some pieces work fine, are rarely updated, and nobody looks that them. Others a re a big ball of mud but are so mission critical that nobody wants to touch them for fear of breaking everything.
 
 New techniques do not necessarily "obfuscate" such code. If you replace a loop with a map, well, that's not much of an improvement or an obfuscation. But if you can introduce some method decorators and dry up a ton of code while making the central responsibility of each method clearer, that might be a small investment in unfamiliarity that will pay a big dividend in understanding the underlying domain logic being expressed.
 
@@ -96,10 +96,6 @@ When such reasons exist, you have excellent motive to ask whether the technique 
 And if that new idea happens to be the proven-over-time and widely adopted techniques of functional programming as expressed in the JavaScript language, books like [Functional JavaScript][fj] will answer the sixth question:
 
 **How**.
-
----
-
-(discuss on [hacker news](https://news.ycombinator.com/item?id=5409626) and [reddit](http://www.reddit.com/r/programming/comments/1aom0q/six_questions/))
 
 ---
 
