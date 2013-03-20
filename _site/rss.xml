@@ -6,9 +6,65 @@
     <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
-    <pubDate>Mon, 18 Mar 2013 18:17:24 -0400</pubDate>
-    <lastBuildDate>Mon, 18 Mar 2013 18:17:24 -0400</lastBuildDate>
+    <pubDate>Mon, 18 Mar 2013 19:41:34 -0400</pubDate>
+    <lastBuildDate>Mon, 18 Mar 2013 19:41:34 -0400</lastBuildDate>
 
+    
+      
+        <item>
+          <title>Counting Crows.coffee</title>
+          <link>http://raganwald.com/enchanted-forest/counting-crows.html</link>
+          <pubDate>Tue, 19 Mar 2013 00:00:00 -0400</pubDate>
+          <author>reg@braythwayt.com (Reginald Braithwaite)</author>
+          <guid>http://raganwald.com/enchanted-forest/counting-crows.coffee</guid>
+          <description>&lt;p&gt;Previous: &lt;a href=&quot;./horton.html&quot;&gt;A Surreal Encounter with a Winged Elephant&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Maude had suddenly realized that a proper flock of birds could model the whole numbers, including the plus or “addition” function. She recapitulated what she knew:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Each bird on the branch represented a number&lt;/li&gt;
+  &lt;li&gt;Presuming they were added in the manner Horton proscribed, each bird represented a number one larger than the number represented by the bird to its left.&lt;/li&gt;
+  &lt;li&gt;The &lt;code&gt;P&lt;/code&gt; or &lt;code&gt;Plus&lt;/code&gt; operation modelled addition.&lt;/li&gt;
+  &lt;li&gt;Since any bird plus Mayzie was equal to itself, Mayzie must represent zero.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;She wrote:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Zero = new FlockingBird()
+One = new FlockingBird
+  knownToOutrank: [Zero]
+Two = new FlockingBird
+  knownToOutrank: [One]
+Three = new FlockingBird
+  knownToOutrank: [Two]
+# ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But she had a question. “Horton,” she asked, “You said that Mayzie is sitting in the middle of the branch. Presuming that Mayzie is zero, what birds would sit to her left?”&lt;/p&gt;
+
+&lt;p&gt;Horton bounced the question back to Maude: “What numbers are less than zero?”&lt;/p&gt;
+
+&lt;p&gt;Maude quickly answered, “Negative numbers,” and then pursed her lips in thought. Up to that moment, all new “numbers” had been constructed by adding a new bird that knew it outranked the bird to its left. Which meant that:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Every bird knew the bird to its left.&lt;/li&gt;
+  &lt;li&gt;No bird knew the bird to its right.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;There was no way to add a bird to the left of Mayzie using this scheme, since she didn’t know any birds she outranked. What to do? Maude realized that if she changed the scheme and altered Mayzie to accommodate a new bird to Mayzie’s left, she would just be changing Mayzie from a “zero” to a “one.” She had to leave Mayzie unaltered.&lt;/p&gt;
+
+&lt;p&gt;So what could she do with the new bird to Mayzie’s left? It couldn’t know a bird to its left, she would have to construct an infinite chain of birds to make that work. Th enew bird to Mayzie’s left could only know a bird to its &lt;em&gt;right&lt;/em&gt;, i.e. Mayzie.&lt;/p&gt;
+
+&lt;p&gt;Maude decided to try this. There was some logic to this, it would be symmetrical to the positive numbers. Now the number to Mayzie’s left would be outranked by Mayzie, only Mayzie wouldn’t know it. So Maude wrote:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;NegativeOne = new FlockingBird:
+&lt;/code&gt;&lt;/pre&gt;
+
+</description>
+        </item>
+      
     
       
         <item>
@@ -141,7 +197,7 @@ class FlockingBird
 
 &lt;p&gt;Maude considered, then wrote:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;Mayzie = new FlockingBird();
+&lt;pre&gt;&lt;code&gt;Mayzie = new FlockingBird()
 OneRight = new FlockingBird
   knownToOutrank: [Mayzie]
 &lt;/code&gt;&lt;/pre&gt;
