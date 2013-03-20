@@ -1,5 +1,5 @@
 ---
-tags: funjs, allonge
+tags: funjs, allonge, effectivejs
 layout: default
 ---
 
@@ -41,16 +41,20 @@ So by "Old Dog," don't necessarily mean in Earth years. Just in attitude. Consid
 
 There is a difference between techniques that are novel and those that are merely unfamiliar.
 
-I read the word "compose" in a codebase and don't know what it means, I can google `function compose` and find out just as if I was looking at a SQL query and needed to be reminded of the semantics of `RIGHT OUTER JOIN`. The same goes for things like partial application,[^pa] or trampolining.[^trampoline]
+If I read the word "compose" in a codebase and don't know what it means, I can google `function compose` and find out just as if I was looking at a SQL query and needed to be reminded of the semantics of `RIGHT OUTER JOIN`. The same goes for things like partial application,[^pa] or trampolining.[^trampoline]
 
 [^pa]: [Practical Applications of Partial APplication](http://raganwald.com/2013/01/05/practical-applications-of-partial-application.html)
 [^trampoline]: [Trampoline (Computing) on Wikipedia](https://en.wikipedia.org/wiki/Trampoline_(computing)#High_Level_Programming)
 
-People can learn an unfamiliar technique and once it is learned, they benefit from it forever. It is straightforward to learn something using Google and/or StackOverflow and/or an excellent programming blog.[^blog] Hundreds of books are written about things like functional programming, including the subject of the comment.
+People can learn an unfamiliar technique. And once it is learned, they benefit from it forever. It is straightforward to learn something using Google and/or StackOverflow and/or an excellent programming blog.[^blog] Hundreds of books are written about things like functional programming, including the subject of the comment.
 
 [^blog]: Or a hit and miss blog like [this](http://raganwald.com)
 
-Familiarity can easily be acquired.
+Familiarity can easily be acquired, provided the technique is unfamiliar but has been used extensively enough that there is an "information infrastructure" of books, blog posts, StackOverflow questions, sample codebases on Github, libraries, and so on.
+
+This may or may not be the case for some bone-headed attempt to write a client-side JavaScript application using Operational Transforms to mediate concurrent editing. [^guilty] But it is obviously the case for writing programs in a functional style.
+
+[^guilty]: As the author if this post knows all too well.
 
 ### where
 
