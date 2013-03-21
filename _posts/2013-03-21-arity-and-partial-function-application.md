@@ -93,7 +93,7 @@ curried('ted')('carol');
 
 But no:
 
-{% highlight %}
+{% highlight javascript %}
 TypeError: string is not a function
 {% endhighlight %}
 
