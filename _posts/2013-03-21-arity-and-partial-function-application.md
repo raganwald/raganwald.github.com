@@ -7,7 +7,7 @@ This morning I was perusing [/r/javascript](http://reddit.com/r/javascript), whe
 
 [Craft]: http://craftjs.org/
 
-Unlike other libraries, Craft is not afraid to extend the prototypes for built-in "classes" such as `Function`. For example, Craft provides `Function.prototype.attach`, which provides the same functionality as `Function.prototype.bind`. I presume its for backward compatibility in browsers that don't support `.bind`.
+Unlike other libraries, Craft is not afraid to extend the prototypes for built-in "classes" such as `Function`. For example, Craft provides `Function.prototype.attach`, which provides the same functionality as `Function.prototype.bind`. I presume it's for backward compatibility in browsers that don't support `.bind`.
 
 Now, some libraries would shim `.bind` if it isn't present, and others would provide a function that calls `.bind` if its present. There are trade-offs between the three approaches, and personally I think that it's a win to have libraries that take different approaches to this issue so that programmers can select the approach that fits their personal needs.
 
