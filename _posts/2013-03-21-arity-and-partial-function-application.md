@@ -1,4 +1,5 @@
 ---
+title: Arity and Partial Function Application
 layout: default
 tags: allonge
 ---
