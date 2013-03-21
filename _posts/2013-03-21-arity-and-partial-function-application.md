@@ -24,7 +24,7 @@ var polite = greet.bind({ greeting: "hello" });
 
 polite("bind");
   //=> 'hello bind'
-{% endcomment %}
+{% endhighlight %}
 
 And `Function.prototype.attach`:
 
@@ -33,7 +33,7 @@ var casual = greet.attach({ greeting: "howdy" });
 
 casual("attach");
   //=> 'howdy attach'
-{% endcomment %}
+{% endhighlight %}
 
 What's the difference? Let's check the function arity:
 
