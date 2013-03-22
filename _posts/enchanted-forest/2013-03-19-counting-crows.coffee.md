@@ -6,7 +6,7 @@ categories: enchanted-forest
 permalink: /enchanted-forest/counting-crows.html
 ---
 
-Previous: [A Surreal Encounter with a Winged Elephant](./horton.html)
+*Previously in* [A Surreal Encounter with a Winged Elephant](./horton.html), *Maude learned about proper flocks of birds that could be ordered into "ranks" based on the birds they personally knew in the flock. She learned that such flocks could be used to model the natural numbers and that one could perform addition with such flocks just by working directly with the birds.*
 
 ---
 
