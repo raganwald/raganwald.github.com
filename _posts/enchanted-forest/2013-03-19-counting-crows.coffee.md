@@ -3,7 +3,6 @@ layout: default
 tags: [coffeescript, surrealnumbers, hide-code]
 categories: enchanted-forest
 permalink: /enchanted-forest/counting-crows.html
-published: false
 ---
 
 Previous: [A Surreal Encounter with a Winged Elephant](./horton.html)
@@ -187,8 +186,8 @@ Made had no difficulty working out the implications given what she already knew 
 
 Maude started to think in her mind how one might repeatedly sum the ranks of the birds to arrive at the proper result, but Horton was furiously drawing strange characters in the sand.
 
-    # xy = { (XLy + xYL - XLYL) ∪ (XRy + xYR - XRYR) | (XLy + xYR - XLYR) ∪ (XRy + xYL - XRYL) }
-    
+After some exposition on his part, checking, and correction on Maude's part, she transcribed his methods into her own notes:
+
     multiply = (x, y) ->
       [XLYL, XLYR, XRYL, XRYR] = [[], [], [], []]
     
@@ -259,3 +258,23 @@ Maude started to think in her mind how one might repeatedly sum the ranks of the
         expect( multiply(Two, Two).isOfEqualRankTo(Four) ).toEqual true
         expect( multiply(Two, Three).isOfEqualRankTo(Six) ).toEqual true
         expect( multiply(Three, Two).isOfEqualRankTo(Six) ).toEqual true
+
+"Well," Maude said, "This is all very interesting. But what does it mean? Is this a kind of ornithological circus trick? Or does it have some deep significance?"
+
+Horton looked at her blankly. His trunk quivered, and tears began to well up in his eyes. Moses hurriedly consoled him. "There, there, she didn't mean it, she knows nothing of your family history. She's just interested in your work, that's all."
+
+Horton calmed down, but not before his trunk tooted plaintively a few times. Then he sighed and turned away. "I must get back to my work," he said quietly.
+
+### onwards
+
+"Yes, of course, and most important work it is." Said Moses. "And we really MUST be on our way. Thank you so much, good-bye, good-bye!" Maude said her good-byes as well and they walked away.
+
+"I'm so sorry!" sad Maude, "I have no idea what I did to offend him..."
+
+Moses fluttered awkwardly. "Well, it's a very short story, but we are in a hurry to catch The Magnificent Smullyan Bird, so perhaps I will tell you about it another time. In the mean time, if you'll just follow me..."
+
+And together, Moses the Schönfinkel's Bright Bird and Maude the Curious Person travelled further into the Enchanted Forest.
+
+---
+
+*This post in "in progress," more to come...
