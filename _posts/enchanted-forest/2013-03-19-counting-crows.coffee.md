@@ -1,5 +1,6 @@
 ---
 layout: default
+title: Counting Crows
 tags: [coffeescript, surrealnumbers, hide-code]
 categories: enchanted-forest
 permalink: /enchanted-forest/counting-crows.html
@@ -277,4 +278,4 @@ And together, Moses the Schönfinkel's Bright Bird and Maude the Curious Person 
 
 ---
 
-*This post in "in progress," more to come...
+*This post in "in progress," more to come...*
