@@ -276,6 +276,22 @@ Moses fluttered awkwardly. "Well, it's a very short story, but we are in a hurry
 
 And together, Moses the Schönfinkel's Bright Bird and Maude the Curious Person travelled further into the Enchanted Forest.
 
+### but
+
+After walking on a bit, Moses stopped and asked Maude, "What is troubling you?"
+
+Maude said that nothing was troubling her, but Moses cawed and squawked at her until she admitted that she was still troubled by what she had learned from Horton.
+
+"I hate it when I learn something like this and leave it at that. It feels like there is more to the story, something very important to understand about the relationship between proper flocks and numbers." 
+
+"It can't just be a silly game, can it?"
+
+Moses said nothing for a moment, then he seemed to shrink in defeat.
+
+"I really want you to meet Smullyan, but I can't allow you to carry this problem unresolved in your head. Come, we are going to talk to Zee Hackenbush Bird. Like the Tom's Stuartbird, he is a bowerbird, he lacks the refinement of proper plumage."
+
+"But I have heard him talk of Horton's work and I know he can explain its significance to you."
+
 ---
 
-*This post in "in progress," more to come...*
+Coming Soon: Zee Hackenbush Bird
