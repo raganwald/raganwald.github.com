@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-21T12:53:08-04:00</updated>
+  <updated>2013-03-23T18:53:51-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -16,7 +16,7 @@
       <entry>
         <id>http://raganwald.com/2013/03/21/arity-and-partial-function-application</id>
         <link type="text/html" rel="alternate" href="http://raganwald.com/2013/03/21/arity-and-partial-function-application.html"/>
-        <title>Arity And Partial Function Application</title>
+        <title>Arity and Partial Function Application</title>
         <published>2013-03-21T00:00:00-04:00</published>
         <updated>2013-03-21T00:00:00-04:00</updated>
         <author>
@@ -25,7 +25,7 @@
         </author>
         <content type="html">&lt;p&gt;This morning I was perusing &lt;a href=&quot;http://reddit.com/r/javascript&quot;&gt;/r/javascript&lt;/a&gt;, where I saw an announcement for version 2.0.0 of the &lt;a href=&quot;http://craftjs.org/&quot;&gt;Craft&lt;/a&gt; JavaScript utility belt library.&lt;/p&gt;
 
-&lt;p&gt;Unlike other libraries, Craft is not afraid to extend the prototypes for built-in “classes” such as &lt;code&gt;Function&lt;/code&gt;. For example, Craft provides &lt;code&gt;Function.prototype.attach&lt;/code&gt;, which provides the same functionality as &lt;code&gt;Function.prototype.bind&lt;/code&gt;. I presume its for backward compatibility in browsers that don’t support &lt;code&gt;.bind&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Unlike other libraries, Craft is not afraid to extend the prototypes for built-in “classes” such as &lt;code&gt;Function&lt;/code&gt;. For example, Craft provides &lt;code&gt;Function.prototype.attach&lt;/code&gt;, which provides the same functionality as &lt;code&gt;Function.prototype.bind&lt;/code&gt;. I presume it’s for backward compatibility in browsers that don’t support &lt;code&gt;.bind&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Now, some libraries would shim &lt;code&gt;.bind&lt;/code&gt; if it isn’t present, and others would provide a function that calls &lt;code&gt;.bind&lt;/code&gt; if its present. There are trade-offs between the three approaches, and personally I think that it’s a win to have libraries that take different approaches to this issue so that programmers can select the approach that fits their personal needs.&lt;/p&gt;
 
@@ -244,6 +244,290 @@
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
+</content>
+      </entry>
+    
+  
+    
+      <entry>
+        <id>http://raganwald.com/enchanted-forest/counting-crows.coffee</id>
+        <link type="text/html" rel="alternate" href="http://raganwald.com/enchanted-forest/counting-crows.html"/>
+        <title>Counting Crows</title>
+        <published>2013-03-19T00:00:00-04:00</published>
+        <updated>2013-03-19T00:00:00-04:00</updated>
+        <author>
+          <name>Reginald Braithwaite</name>
+          <uri>http://raganwald.com/</uri>
+        </author>
+        <content type="html">&lt;p&gt;&lt;em&gt;Previously in&lt;/em&gt; &lt;a href=&quot;./horton.html&quot;&gt;A Surreal Encounter with a Winged Elephant&lt;/a&gt;, &lt;em&gt;Maude learned about proper flocks of birds that could be ordered into “ranks” based on the birds they personally knew in the flock. She learned that such flocks could be used to model the natural numbers and that one could perform addition with such flocks just by working directly with the birds.&lt;/em&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;natural-numbers&quot;&gt;natural numbers&lt;/h3&gt;
+
+&lt;p&gt;Maude had suddenly realized that a proper flock of birds could model the whole numbers, including the plus or “addition” function. She recapitulated what she knew:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Each bird on the branch represented a number&lt;/li&gt;
+  &lt;li&gt;Presuming they were added in the manner Horton proscribed, each bird represented a number one larger than the number represented by the bird to its left.&lt;/li&gt;
+  &lt;li&gt;The &lt;code&gt;P&lt;/code&gt; or &lt;code&gt;Plus&lt;/code&gt; operation modelled addition.&lt;/li&gt;
+  &lt;li&gt;Since any bird plus Mayzie was equal to itself, Mayzie must represent zero.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;She collected her notes and added some new numbers:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{any, map} = require('underscore')
+
+class FlockingBird
+
+  constructor: ({@knownOutrankedBy, @knownToOutrank} = {}) -&amp;gt;
+    @knownOutrankedBy or= []
+    @knownToOutrank   or= []
+    
+  standsAgainst: (rival) -&amp;gt;
+    courtingBird = this
+    case1 = any @knownOutrankedBy, (gb) -&amp;gt; rival.standsAgainst(gb)
+    case2 = any rival.knownToOutrank, (lb) -&amp;gt; lb.standsAgainst(courtingBird)
+    (not case1) and (not case2)
+
+  confused: -&amp;gt;
+    case1a = any @knownToOutrank, (lb) -&amp;gt; lb.confused()
+    case1b = any @knownOutrankedBy, (gb) -&amp;gt; gb.confused()
+    case2  = any @knownToOutrank, (lb) =&amp;gt;
+      any @knownOutrankedBy, (gb) -&amp;gt;
+        lb.standsAgainst(gb)
+    !!(case1a or case1b or case2)
+    
+  isOfEqualRankTo: (otherBird) -&amp;gt;
+    case1 = @standsAgainst(otherBird)
+    case2 = otherBird.standsAgainst(this)
+    case3 = not @confused() and not otherBird.confused()
+    case1 and case2 and case3
+
+  outranks: (otherBird) -&amp;gt;
+    case1 = @standsAgainst(otherBird)
+    case2 = not @isOfEqualRankTo(otherBird)
+    case1 and case2
+
+plus = (B1, B2) -&amp;gt;
+  PL1B2s = map B1.knownToOutrank,  (L1) -&amp;gt; plus(L1, B2)
+  PL2B1s = map B2.knownToOutrank,  (L2) -&amp;gt; plus(L2, B1)
+  PG1B2s = map B1.knownOutrankedBy, (G1) -&amp;gt; plus(G1, B2)
+  PG2B1s = map B2.knownOutrankedBy, (G2) -&amp;gt; plus(G2, B1)
+  new FlockingBird
+    knownToOutrank:   PL1B2s.concat(PL2B1s)
+    knownOutrankedBy: PG1B2s.concat(PG2B1s)
+
+Zero = new FlockingBird()
+One = new FlockingBird
+  knownToOutrank: [Zero]
+Two = new FlockingBird
+  knownToOutrank: [One]
+Three = new FlockingBird
+  knownToOutrank: [Two]
+Four = new FlockingBird
+  knownToOutrank: [Three]
+Five = new FlockingBird
+  knownToOutrank: [Four]
+Six = new FlockingBird
+  knownToOutrank: [Five]
+# ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But she had a question. “Horton,” she asked, “You said that Mayzie is sitting in the middle of the branch. Presuming that Mayzie is zero, what birds would sit to her left?”&lt;/p&gt;
+
+&lt;p&gt;Horton bounced the question back to Maude: “What numbers are less than zero?”&lt;/p&gt;
+
+&lt;h3 id=&quot;negative-numbers&quot;&gt;negative numbers&lt;/h3&gt;
+
+&lt;p&gt;Maude quickly answered, “Negative numbers,” and then pursed her lips in thought. Up to that moment, all new “numbers” had been constructed by adding a new bird that knew it outranked the bird to its left. Which meant that:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Every bird knew the bird to its left.&lt;/li&gt;
+  &lt;li&gt;No bird knew the bird to its right.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;There was no way to add a bird to the left of Mayzie using this scheme, since she didn’t know any birds she outranked. What to do? Maude realized that if she changed the scheme and altered Mayzie to accommodate a new bird to Mayzie’s left, she would just be changing Mayzie from a “zero” to a “one.” She had to leave Mayzie unaltered.&lt;/p&gt;
+
+&lt;p&gt;So what could she do with the new bird to Mayzie’s left? It couldn’t know a bird to its left, she would have to construct an infinite chain of birds to make that work. Th enew bird to Mayzie’s left could only know a bird to its &lt;em&gt;right&lt;/em&gt;, i.e. Mayzie.&lt;/p&gt;
+
+&lt;p&gt;Maude decided to try this. There was some logic to this, it would be symmetrical to the positive numbers. Now the number to Mayzie’s left would be outranked by Mayzie, only Mayzie wouldn’t know it. So Maude wrote:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;NegativeOne = new FlockingBird
+  knownOutrankedBy: [Zero]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And if this held, by extension:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;NegativeTwo = new FlockingBird
+  knownOutrankedBy: [NegativeOne]
+NegativeThree = new FlockingBird
+  knownOutrankedBy: [NegativeTwo]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And so forth. She then decided to check her work:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe &quot;negative one plus zero&quot;, -&amp;gt;
+  
+  it &quot;should equal negative one&quot;, -&amp;gt;
+  
+    expect( plus(NegativeOne, Zero).isOfEqualRankTo NegativeOne ).toEqual true
+    expect( plus(Zero, NegativeOne).isOfEqualRankTo NegativeOne ).toEqual true
+
+describe &quot;negative one plus negative one&quot;, -&amp;gt;
+  
+  it &quot;should equal negative one&quot;, -&amp;gt;
+  
+    expect( plus(NegativeOne, NegativeOne).isOfEqualRankTo NegativeTwo ).toEqual true
+
+describe &quot;negative one plus positive one&quot;, -&amp;gt;
+  
+  it &quot;should equal negative one&quot;, -&amp;gt;
+  
+    expect( plus(NegativeOne, One).isOfEqualRankTo Zero ).toEqual true
+    expect( plus(One, NegativeOne).isOfEqualRankTo Zero ).toEqual true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;dpplegangers&quot;&gt;döpplegangers&lt;/h3&gt;
+
+&lt;p&gt;“Hmmm,” Maude mused, “Given a bird, how do we find the bird representing its negative?”&lt;/p&gt;
+
+&lt;p&gt;Horton looked at her. “Well, I do know a way to find what I call the döppleganger of any bird in a flock. For example, the döppleganger of the bird immediately to Mayzie’s left is the bird immediately to Mayzie’s right, and so forth.”&lt;/p&gt;
+
+&lt;p&gt;After some discussion that we will omit, Maude understood that given some bird &lt;code&gt;B&lt;/code&gt;, its  döppleganger could be identified as being the bird that:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Is outranked by the döpplegangers of every bird &lt;code&gt;B&lt;/code&gt; is known to outrank.&lt;/li&gt;
+  &lt;li&gt;Outranks the döpplegangers of every bird known to outrank &lt;code&gt;B&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;She made the following notes:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FlockingBird::doppleganger = -&amp;gt; new FlockingBird
+  knownOutrankedBy: map @knownToOutrank, (its) -&amp;gt; its.doppleganger()
+  knownToOutrank: map @knownOutrankedBy, (its) -&amp;gt; its.doppleganger()
+  
+describe &quot;One's döppleganger&quot;, -&amp;gt;
+
+  it &quot;should be of equal rank as NegativeOne&quot;, -&amp;gt;
+    
+    expect( One.doppleganger().isOfEqualRankTo(NegativeOne) ).toEqual true
+  
+describe &quot;NegativeOne's döppleganger&quot;, -&amp;gt;
+
+  it &quot;should be of equal rank as One&quot;, -&amp;gt;
+    
+    expect( NegativeOne.doppleganger().isOfEqualRankTo(One) ).toEqual true
+  
+describe &quot;Three's döppleganger&quot;, -&amp;gt;
+
+  it &quot;should be of equal rank as NegativeThree&quot;, -&amp;gt;
+    
+    expect( Three.doppleganger().isOfEqualRankTo(NegativeThree) ).toEqual true
+  
+describe &quot;NegativeThree's döppleganger&quot;, -&amp;gt;
+
+  it &quot;should be of equal rank as Three&quot;, -&amp;gt;
+    
+    expect( NegativeThree.doppleganger().isOfEqualRankTo(Three) ).toEqual true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;squabbling-birds&quot;&gt;squabbling birds&lt;/h3&gt;
+
+&lt;p&gt;Maude wasn’t surprised to hear that sometimes, instead of pairing up to work together, one bird would squabble with another another, following it around and undermining its rank. Unlike a pair, the effective rank of the two birds was equivalent to the rank of the squabbling bird subtracted from the bird it was harassing.&lt;/p&gt;
+
+&lt;p&gt;Made had no difficulty working out the implications given what she already knew about pairings and döpplegangers:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;subtract = (bird, squabbler) -&amp;gt; plus(bird, squabbler.doppleganger())
+
+expect( subtract(Three, One).isOfEqualRankTo(Two) ).toEqual true
+
+expect( subtract(Zero, NegativeOne).isOfEqualRankTo(One) ).toEqual true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;nesting-birds&quot;&gt;nesting birds&lt;/h3&gt;
+
+&lt;p&gt;“Speaking of pairs,” Horton said, “I have discovered something interesting. When two birds mate and nest, they select and defend a territory. You might think that the size of their territory would be commensurate with the rank of the two birds as a pair, but this is not so. So strong is their instinct to protect their nest that when eggs or chicks are in the nest, their rank is equivalent to the &lt;em&gt;product&lt;/em&gt; of their ranks, not the sum.”&lt;/p&gt;
+
+&lt;p&gt;Maude started to think in her mind how one might repeatedly sum the ranks of the birds to arrive at the proper result, but Horton was furiously drawing strange characters in the sand.&lt;/p&gt;
+
+&lt;p&gt;After some exposition on his part, checking, and correction on Maude’s part, she transcribed his methods into her own notes:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;multiply = (x, y) -&amp;gt;
+  [XLYL, XLYR, XRYL, XRYR] = [[], [], [], []]
+
+  for XL in x.knownToOutrank
+    do -&amp;gt;
+      XLy = multiply(XL, y)
+      for YL in y.knownToOutrank
+        do -&amp;gt;
+          xYL = multiply(x, YL)
+          XLYL.push plus(plus(XLy, xYL), multiply(XL, YL).doppleganger())
+      for YR in y.knownOutrankedBy
+        do -&amp;gt;
+          xYR = multiply(x, YR)
+          XLYR.push plus(plus(XLy, xYR), multiply(XL, YR).doppleganger())
+    
+  for XR in x.knownOutrankedBy
+    do -&amp;gt;
+      XRy = multiply(XR, y)
+      for YL in y.knownToOutrank
+        do -&amp;gt;
+          xYL = multiply(x, YL)
+          XRYL.push plus(plus(XRy, xYL), multiply(XR, YL).doppleganger())
+      for YR in y.knownOutrankedBy
+        do -&amp;gt;
+          xYR = multiply(x, YR)
+          XRYR.push plus(plus(XRy, xYR), multiply(XR, YR).doppleganger())
+          
+
+
+  new FlockingBird 
+    knownToOutrank: XLYL.concat(XRYR)
+    knownOutrankedBy: XLYR.concat(XRYL)
+  
+  
+describe &quot;multiplication by zero&quot;, -&amp;gt;
+
+  it &quot;should turn any number into zero&quot;, -&amp;gt;
+    expect( multiply(Zero, Zero).isOfEqualRankTo(Zero) ).toEqual true
+    expect( multiply(Zero, One).isOfEqualRankTo(Zero) ).toEqual true
+    expect( multiply(One, Zero).isOfEqualRankTo(Zero) ).toEqual true
+    expect( multiply(Zero, Two).isOfEqualRankTo(Zero) ).toEqual true
+    expect( multiply(Two, Zero).isOfEqualRankTo(Zero) ).toEqual true
+    
+    expect( multiply(Zero, Zero).isOfEqualRankTo(One) ).toEqual false
+    expect( multiply(Zero, One).isOfEqualRankTo(Two) ).toEqual false
+    expect( multiply(One, Zero).isOfEqualRankTo(Three) ).toEqual false
+    expect( multiply(Zero, Two).isOfEqualRankTo(Two) ).toEqual false
+    expect( multiply(Two, Zero).isOfEqualRankTo(One) ).toEqual false
+  
+describe &quot;multiplication by one&quot;, -&amp;gt;
+
+  it &quot;should turn any number into itself&quot;, -&amp;gt;
+    expect( multiply(Zero, One).isOfEqualRankTo(Zero) ).toEqual true
+    expect( multiply(One, Zero).isOfEqualRankTo(Zero) ).toEqual true
+    expect( multiply(One, One).isOfEqualRankTo(One) ).toEqual true
+    expect( multiply(One, Two).isOfEqualRankTo(Two) ).toEqual true
+    expect( multiply(Two, One).isOfEqualRankTo(Two) ).toEqual true
+    
+    expect( multiply(Zero, One).isOfEqualRankTo(One) ).toEqual false
+    expect( multiply(One, Zero).isOfEqualRankTo(Two) ).toEqual false
+    expect( multiply(One, One).isOfEqualRankTo(Zero) ).toEqual false
+    expect( multiply(One, Two).isOfEqualRankTo(Three) ).toEqual false
+    expect( multiply(Two, One).isOfEqualRankTo(One) ).toEqual false
+  
+describe &quot;multiplication by two&quot;, -&amp;gt;
+
+  it &quot;should double any number&quot;, -&amp;gt;
+    expect( multiply(Two, Two).isOfEqualRankTo(Four) ).toEqual true
+    expect( multiply(Two, Three).isOfEqualRankTo(Six) ).toEqual true
+    expect( multiply(Three, Two).isOfEqualRankTo(Six) ).toEqual true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Continue “&lt;a href=&quot;./horton.html#what-does-it-mean&quot;&gt;A Surreal Encounter With a Winged Elephant&lt;/a&gt;”&lt;/p&gt;
 </content>
       </entry>
     
@@ -531,13 +815,45 @@ describe &quot;pairing OneRight with itself&quot;, -&amp;gt;
 
 &lt;p&gt;She showed her work to Horton. “Wait,” she said suddenly, “I should use a more descriptive name. I’ll just change &lt;code&gt;P&lt;/code&gt; to &lt;code&gt;Pair&lt;/code&gt;.” Horton demurred. “Actually,” he said, “The correct word isn’t ‘pair,’ it’s &lt;strong&gt;plus&lt;/strong&gt;.”&lt;/p&gt;
 
-&lt;p&gt;It took a few moments for the revelation to sink in, then Maude laughed in delight.&lt;/p&gt;
+&lt;p&gt;It took a few moments for the revelation to sink in, then Maude laughed in delight. &lt;a href=&quot;./counting-crows.html&quot; title=&quot;Counting Crows&quot;&gt;They explored the relationship between proper flocks and numbers further&lt;/a&gt;, then Maude spoke up.&lt;/p&gt;
 
-&lt;p&gt;(&lt;em&gt;…to be continued…&lt;/em&gt;)&lt;/p&gt;
+&lt;h3 id=&quot;what-does-it-mean&quot;&gt;what does it mean?&lt;/h3&gt;
+
+&lt;p&gt;“Well,” Maude said, “This is all very interesting. But what does it mean? Is this a kind of ornithological circus trick? Or does it have some deep significance?”&lt;/p&gt;
+
+&lt;p&gt;Horton looked at her blankly. His trunk quivered, and tears began to well up in his eyes. Moses hurriedly consoled him. “There, there, she didn’t mean it, she knows nothing of your family history. She’s just interested in your work, that’s all.”&lt;/p&gt;
+
+&lt;p&gt;Horton calmed down, but not before his trunk tooted plaintively a few times. Then he sighed and turned away. “I must get back to my work,” he said quietly.&lt;/p&gt;
+
+&lt;h3 id=&quot;onwards&quot;&gt;onwards&lt;/h3&gt;
+
+&lt;p&gt;“Yes, of course, and most important work it is.” Said Moses. “And we really MUST be on our way. Thank you so much, good-bye, good-bye!” Maude said her good-byes as well and they walked away.&lt;/p&gt;
+
+&lt;p&gt;“I’m so sorry!” sad Maude, “I have no idea what I did to offend him…”&lt;/p&gt;
+
+&lt;p&gt;Moses fluttered awkwardly. “Well, it’s a very short story, but we are in a hurry to catch The Magnificent Smullyan Bird, so perhaps I will tell you about it another time. In the mean time, if you’ll just follow me…”&lt;/p&gt;
+
+&lt;p&gt;And together, Moses the Schönfinkel’s Bright Bird and Maude the Curious Person travelled further into the Enchanted Forest.&lt;/p&gt;
+
+&lt;h3 id=&quot;but&quot;&gt;but&lt;/h3&gt;
+
+&lt;p&gt;After walking on a bit, Moses stopped and asked Maude, “What is troubling you?”&lt;/p&gt;
+
+&lt;p&gt;Maude said that nothing was troubling her, but Moses cawed and squawked at her until she admitted that she was still troubled by what she had learned from Horton.&lt;/p&gt;
+
+&lt;p&gt;“I hate it when I learn something like this and leave it at that. It feels like there is more to the story, something very important to understand about the relationship between proper flocks and numbers.” &lt;/p&gt;
+
+&lt;p&gt;“It can’t just be a silly game, can it?”&lt;/p&gt;
+
+&lt;p&gt;Moses said nothing for a moment, then he seemed to shrink in defeat.&lt;/p&gt;
+
+&lt;p&gt;“I really want you to meet Smullyan, but I can’t allow you to carry this problem unresolved in your head. Come, we are going to talk to Zee Hackenbush Bird. Like Stuart’s Tombird, he is a bowerbird, he lacks the refinement of proper plumage.”&lt;/p&gt;
+
+&lt;p&gt;“But I have heard him talk of Horton’s work and I know he can explain its significance to you.”&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;p&gt;(Discuss on &lt;a href=&quot;https://news.ycombinator.com/item?id=5394376&quot;&gt;hacker news&lt;/a&gt; and &lt;a href=&quot;http://www.reddit.com/r/programming/comments/1aiwsv/a_surreal_encounter_with_a_winged_elephant/&quot;&gt;reddit&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Coming Soon: &lt;em&gt;Zee Hackenbush Bird&lt;/em&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
 

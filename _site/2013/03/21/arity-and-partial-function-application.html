@@ -22,14 +22,14 @@
     <LINK REL=StyleSheet HREF="/assets/css/pygments.css" TYPE="text/css" MEDIA=screen>
     <link href="http://raganwald.com/atom.xml" type="application/atom+xml" rel="alternate" title="raganwald.com">
     <link rel="alternate" type="application/rss+xml" href="http://raganwald.com/rss.xml" title="raganwald.com">
-    <title>Arity And Partial Function Application</title>
+    <title>Arity and Partial Function Application</title>
     </head>
   <body>
     <div id="container">
       <div class="inner">
         
               <div id="header">
-        <h1>Arity And Partial Function Application</h1>
+        <h1>Arity and Partial Function Application</h1>
         <h2><a href="/">via raganwald.com</a></h2>
       </div><!-- end header -->
 
@@ -57,7 +57,7 @@
           
           <p>This morning I was perusing <a href="http://reddit.com/r/javascript">/r/javascript</a>, where I saw an announcement for version 2.0.0 of the <a href="http://craftjs.org/">Craft</a> JavaScript utility belt library.</p>
 
-<p>Unlike other libraries, Craft is not afraid to extend the prototypes for built-in “classes” such as <code>Function</code>. For example, Craft provides <code>Function.prototype.attach</code>, which provides the same functionality as <code>Function.prototype.bind</code>. I presume its for backward compatibility in browsers that don’t support <code>.bind</code>.</p>
+<p>Unlike other libraries, Craft is not afraid to extend the prototypes for built-in “classes” such as <code>Function</code>. For example, Craft provides <code>Function.prototype.attach</code>, which provides the same functionality as <code>Function.prototype.bind</code>. I presume it’s for backward compatibility in browsers that don’t support <code>.bind</code>.</p>
 
 <p>Now, some libraries would shim <code>.bind</code> if it isn’t present, and others would provide a function that calls <code>.bind</code> if its present. There are trade-offs between the three approaches, and personally I think that it’s a win to have libraries that take different approaches to this issue so that programmers can select the approach that fits their personal needs.</p>
 

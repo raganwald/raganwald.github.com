@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Counting Crows
+title: A Diversion: Counting Crows
 tags: [coffeescript, surrealnumbers, hide-code]
 categories: enchanted-forest
 permalink: /enchanted-forest/counting-crows.html
@@ -260,38 +260,6 @@ After some exposition on his part, checking, and correction on Maude's part, she
         expect( multiply(Two, Three).isOfEqualRankTo(Six) ).toEqual true
         expect( multiply(Three, Two).isOfEqualRankTo(Six) ).toEqual true
 
-"Well," Maude said, "This is all very interesting. But what does it mean? Is this a kind of ornithological circus trick? Or does it have some deep significance?"
-
-Horton looked at her blankly. His trunk quivered, and tears began to well up in his eyes. Moses hurriedly consoled him. "There, there, she didn't mean it, she knows nothing of your family history. She's just interested in your work, that's all."
-
-Horton calmed down, but not before his trunk tooted plaintively a few times. Then he sighed and turned away. "I must get back to my work," he said quietly.
-
-### onwards
-
-"Yes, of course, and most important work it is." Said Moses. "And we really MUST be on our way. Thank you so much, good-bye, good-bye!" Maude said her good-byes as well and they walked away.
-
-"I'm so sorry!" sad Maude, "I have no idea what I did to offend him..."
-
-Moses fluttered awkwardly. "Well, it's a very short story, but we are in a hurry to catch The Magnificent Smullyan Bird, so perhaps I will tell you about it another time. In the mean time, if you'll just follow me..."
-
-And together, Moses the Schönfinkel's Bright Bird and Maude the Curious Person travelled further into the Enchanted Forest.
-
-### but
-
-After walking on a bit, Moses stopped and asked Maude, "What is troubling you?"
-
-Maude said that nothing was troubling her, but Moses cawed and squawked at her until she admitted that she was still troubled by what she had learned from Horton.
-
-"I hate it when I learn something like this and leave it at that. It feels like there is more to the story, something very important to understand about the relationship between proper flocks and numbers." 
-
-"It can't just be a silly game, can it?"
-
-Moses said nothing for a moment, then he seemed to shrink in defeat.
-
-"I really want you to meet Smullyan, but I can't allow you to carry this problem unresolved in your head. Come, we are going to talk to Zee Hackenbush Bird. Like the Tom's Stuartbird, he is a bowerbird, he lacks the refinement of proper plumage."
-
-"But I have heard him talk of Horton's work and I know he can explain its significance to you."
-
 ---
 
-Coming Soon: Zee Hackenbush Bird
+Continue "[A Surreal Encounter With a Winged Elephant](./horton.html#what-does-it-mean)"
