@@ -1,6 +1,6 @@
 ---
 layout: default
-title: A Diversion: Counting Crows
+title: Counting Crows (diversion)
 tags: [coffeescript, surrealnumbers, hide-code]
 categories: enchanted-forest
 permalink: /enchanted-forest/counting-crows.html
