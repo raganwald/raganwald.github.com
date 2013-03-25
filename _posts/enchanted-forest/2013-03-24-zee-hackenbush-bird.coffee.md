@@ -46,29 +46,31 @@ Maude considered. "You said that I’d learn something about the significance of
 
 Moses cawed loudly. "No, no, despite the resemblance, Horton’s work with grids is not a game in this sense at all. Let us walk a little further down the beach to talk to my friend Zee Hackenbush Bird. He is one of the oldest and most respected of the game birds."
 
-"In fact, his bower is so advanced that it is no longer a game. He has a bower that models other games, and his interest is in analyzing games rather than playing them. Here we are!"
-
-### zee hackenbush bird
+"In fact, his bower is so advanced that it is no longer a game. He has a bower that models other games, and his interest is in analyzing games rather than playing them."
 
 Moses led Maude down the riverbank to a shaded area where a single bird was stepping back and forth between twelve or thirteen bowers arranged in a semicircle. At each bower, a cluster of young birds were chattering and discussing what was laid out before them.
 
 "That," whispered Moses reverentially, "is Zee Hackenbush Bird."
 
-What Maude saw was an awkward bird with broad, black tail and breast feathers that looked a little like an old-fashioned man's frock coat. It's head was balding and a bushy fringe of feathers adorned the top of its beak. One long, brown, stiff wattle protruded like a cigar protrudes from a smoker's mouth. It's gait was low and long, as if it stooped rather than stepped.
+### zee hackenbush bird
+
+What Maude saw was an awkward bird with broad, black tail and breast feathers that looked a little like an old-fashioned man's frock coat. Its head was balding and a bushy fringe of feathers adorned the top of its beak. One long, brown, stiff wattle protruded like a cigar protrudes from a smoker's mouth. Its gait was low and long, as if it stooped rather than stepped.
 
 Moses drew Maude forward and introduced her to him. Surprisingly, Zee Hackenbush Bird was friendly and given to joking. "Call me Hugo," he said, and batted his eyes at her rogueishly. She found him funny and charming.
 
 "Hugo," she asked, "Moses tells me that you can explain the significance of Horton's flocks. They seem like an idle circus distraction, a complicated way to do things that are otherwise very simple, like arithmetic."
 
-Zee Hackenbush Bird waggled his eyebrows. "Of course," he said, "Horton and I work on the exact same underlying principles, but he has a way of describing the implications that is novel, but unpersuasve."
+Zee Hackenbush Bird waggled his eyebrows. "Of course," he said, "Horton and I work on the exact same underlying principles, but he has a way of describing the implications that is novel, but unpersuasive."
 
 "I find that the important thing is to focus on what new ideas a discovery makes easy, rather than what old ideas a discovery replicates. You said you are familiar with Horton’s flocking birds?"
 
 Maude nodded, and Zee Hackenbush bird led them over to one of his bowers.
 
-"This," and here he waved his wing over several rows of black and white pebbles, "is a game I have modestly named Hackenstrings. It is a good introduction for someone as intelligent and curious as you are."
+"This," and here he waved his wing over several rows of black and white pebbles, "Is a game I have modestly named *Hackenstrings*. It is a good introduction for someone as intelligent and curious as you are."
 
-Zee Hackenbush Bird opened his beak and delivered what must have been a very familiar lecture, for he sang it in a squeaky voice while strutting and dancing back and forth.
+Zee Hackenbush Bird opened his beak and delivered what must have been a very familiar lecture, for he sang it in a squeaky voice while strutting and dancing back and forth.[^walker]
+
+[^walker]: See [Hackenstrings, and the 0.999... ?= 1 FAQ](http://web.archive.org/web/20070120052054/http://www.maths.nott.ac.uk/personal/anw/Research/Hack/) by A.N. Walker, School of Mathematical Sciences, University of Nottingham
 
 ## Hackenstrings
 
@@ -85,14 +87,30 @@ A "move" consists of choosing any stone of the player’s colour, and removing t
 
 If it was White’s turn, White could choose to remove the third white stone on the fourth row, which also removes the fourth, producing:
 
-&#9679;&#9679; 
+&#9679;&#9679;  
 &#9675;&#9675;&#9675;  
 
-Black would then be able to select any of the three stones on the second row. The game ends when one player has no legal move. That player loses.
+Black would then be able to select any of the three stones on the second row. The game ends when one player has no legal move on their turn. That player loses.
 
-This very simple game is subject to easy analysis. You can probably work it out intuitively, but just to be thorough, let's consider all of the possibilities.
+This very simple game is subject to easy analysis. You can probably work it out intuitively: White can always win simply by taking a single stone from the right of the first row. We can make it slightly more complex:
 
-* White has four possible moves on the first turn.
-* Black always has three possible moves on the second turn.
+&#9679;  
+&#9675;&#9675;&#9675;  
+&#9679;&#9679;&#9679;  
 
-There are, therefore, twelve possible situations after White and Blck have taken their firs
+Or even:
+
+&#9679;&#9679;&#9679;&#9679;  
+&#9675;&#9675;&#9675;  
+&#9675;&#9675;  
+&#9679;&#9679;&#9679;  
+
+White still has a winning strategy: Take a single stone from the right of any row. It turns out that provided the game consists of one or more rows, where each row consist only of pebbles of the same colour, if one player has more pebbles than the other, that player always has a winning strategy.
+
+---
+
+**WARNING: THIS ESSAY IS A WORK IN PROGRESS**
+
+---
+
+notes:
