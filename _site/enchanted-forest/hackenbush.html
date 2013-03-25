@@ -174,13 +174,34 @@
 ○○<br />
 ●●●  </p>
 
-<p>White still has a winning strategy: Take a single stone from the right of any row. It turns out that provided the game consists of one or more rows, where each row consist only of pebbles of the same colour, if one player has more pebbles than the other, that player always has a winning strategy.</p>
+<p>White still has a winning strategy: Take a single stone from the right of any row.</p>
+
+<p>Provided the game consists of one or more rows, where each row consist only of pebbles of the same colour, if one player has more pebbles than the other, that player always has a winning strategy.</p>
+
+<h3 id="maudes-simple-evaluator">maude’s simple evaluator</h3>
+
+<p>Maude started with the following notes:</p>
+
+<pre><code>{isArray, any} = require 'underscore'
+
+white = {}
+black = {}
+
+class HackenstringGame
+  validRow = (row) -&gt;
+    isArray(row) and every(row, (stone) -&gt; stone is white or stone is black)
+  constructor: (@rows) -&gt;
+    throw 'invalid' unless every(@rows, validRow)
+    
+describe "HackenstringGame", -&gt;
+
+  it "shouldn't throw an error for no rows", -&gt;
+    expect( -&gt; new HackenStringGame([]) ).not.toThrow new Error('invalid')
+</code></pre>
 
 <hr />
 
 <p><strong>WARNING: THIS ESSAY IS A WORK IN PROGRESS</strong></p>
-
-<hr />
 
 <p>notes:</p>
 <div class="footnotes">

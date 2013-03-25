@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-24T20:04:54-04:00</updated>
+  <updated>2013-03-24T22:13:18-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -118,13 +118,34 @@
 ○○&lt;br /&gt;
 ●●●  &lt;/p&gt;
 
-&lt;p&gt;White still has a winning strategy: Take a single stone from the right of any row. It turns out that provided the game consists of one or more rows, where each row consist only of pebbles of the same colour, if one player has more pebbles than the other, that player always has a winning strategy.&lt;/p&gt;
+&lt;p&gt;White still has a winning strategy: Take a single stone from the right of any row.&lt;/p&gt;
+
+&lt;p&gt;Provided the game consists of one or more rows, where each row consist only of pebbles of the same colour, if one player has more pebbles than the other, that player always has a winning strategy.&lt;/p&gt;
+
+&lt;h3 id=&quot;maudes-simple-evaluator&quot;&gt;maude’s simple evaluator&lt;/h3&gt;
+
+&lt;p&gt;Maude started with the following notes:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{isArray, any} = require 'underscore'
+
+white = {}
+black = {}
+
+class HackenstringGame
+  validRow = (row) -&amp;gt;
+    isArray(row) and every(row, (stone) -&amp;gt; stone is white or stone is black)
+  constructor: (@rows) -&amp;gt;
+    throw 'invalid' unless every(@rows, validRow)
+    
+describe &quot;HackenstringGame&quot;, -&amp;gt;
+
+  it &quot;shouldn't throw an error for no rows&quot;, -&amp;gt;
+    expect( -&amp;gt; new HackenStringGame([]) ).not.toThrow new Error('invalid')
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;hr /&gt;
 
 &lt;p&gt;&lt;strong&gt;WARNING: THIS ESSAY IS A WORK IN PROGRESS&lt;/strong&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
 
 &lt;p&gt;notes:&lt;/p&gt;
 &lt;div class=&quot;footnotes&quot;&gt;

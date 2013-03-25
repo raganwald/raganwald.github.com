@@ -105,12 +105,40 @@ Or even:
 &#9675;&#9675;  
 &#9679;&#9679;&#9679;  
 
-White still has a winning strategy: Take a single stone from the right of any row. It turns out that provided the game consists of one or more rows, where each row consist only of pebbles of the same colour, if one player has more pebbles than the other, that player always has a winning strategy.
+White still has a winning strategy: Take a single stone from the right of any row.
+
+Provided the game consists of one or more rows, where each row consist only of pebbles of the same colour, if one player has more pebbles than the other, that player always has a winning strategy.
+
+### maude's simple evaluator
+
+Maude started with the following notes:
+
+    {isArray, every} = require 'underscore'
+
+    white = {}
+    black = {}
+
+    class HackenstringGame
+      validRow = (row) ->
+        isArray(row) and every(row, (stone) -> stone is white or stone is black)
+      constructor: (@rows) ->
+        throw 'invalid' unless every(@rows, validRow)
+        
+    describe "HackenstringGame", ->
+    
+      it "shouldn't throw an error for no rows or empty rows", ->
+        expect( -> new HackenstringGame([]) ).not.toThrow()
+        expect( -> new HackenstringGame([[]]) ).not.toThrow()
+        expect( -> new HackenstringGame([[], []]) ).not.toThrow()
+        
+      it "shouldn't throw an error for rows with stnes", ->
+        expect( -> new HackenstringGame([[white]]) ).not.toThrow()
+        expect( -> new HackenstringGame([[white, white]]) ).not.toThrow()
+        expect( -> new HackenstringGame([[black]]) ).not.toThrow()
+        expect( -> new HackenstringGame([[white, black]]) ).not.toThrow()
 
 ---
 
 **WARNING: THIS ESSAY IS A WORK IN PROGRESS**
-
----
 
 notes:
