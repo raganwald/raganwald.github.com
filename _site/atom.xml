@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-24T22:13:18-04:00</updated>
+  <updated>2013-03-25T18:48:57-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -95,53 +95,183 @@
 
 &lt;p&gt;A “move” consists of choosing any stone of the player’s colour, and removing that stone along with all others to its right in the same row regardless of colour. For example, given:&lt;/p&gt;
 
-&lt;p&gt;●●●●&lt;br /&gt;
-○○○  &lt;/p&gt;
+&lt;p&gt;→●●●●&lt;br /&gt;
+→○○○  &lt;/p&gt;
 
 &lt;p&gt;If it was White’s turn, White could choose to remove the third white stone on the fourth row, which also removes the fourth, producing:&lt;/p&gt;
 
-&lt;p&gt;●●&lt;br /&gt;
-○○○  &lt;/p&gt;
+&lt;p&gt;→●●&lt;br /&gt;
+→○○○  &lt;/p&gt;
 
 &lt;p&gt;Black would then be able to select any of the three stones on the second row. The game ends when one player has no legal move on their turn. That player loses.&lt;/p&gt;
 
 &lt;p&gt;This very simple game is subject to easy analysis. You can probably work it out intuitively: White can always win simply by taking a single stone from the right of the first row. We can make it slightly more complex:&lt;/p&gt;
 
-&lt;p&gt;●&lt;br /&gt;
-○○○&lt;br /&gt;
-●●●  &lt;/p&gt;
+&lt;p&gt;→●&lt;br /&gt;
+→○○○&lt;br /&gt;
+→●●●  &lt;/p&gt;
 
 &lt;p&gt;Or even:&lt;/p&gt;
 
-&lt;p&gt;●●●●&lt;br /&gt;
-○○○&lt;br /&gt;
-○○&lt;br /&gt;
-●●●  &lt;/p&gt;
+&lt;p&gt;→●●●●&lt;br /&gt;
+→○○○&lt;br /&gt;
+→○○&lt;br /&gt;
+→●●●  &lt;/p&gt;
 
 &lt;p&gt;White still has a winning strategy: Take a single stone from the right of any row.&lt;/p&gt;
 
 &lt;p&gt;Provided the game consists of one or more rows, where each row consist only of pebbles of the same colour, if one player has more pebbles than the other, that player always has a winning strategy.&lt;/p&gt;
 
+&lt;h3 id=&quot;evaluating-a-game&quot;&gt;evaluating a game&lt;/h3&gt;
+
+&lt;p&gt;This business of “having a winning strategy” is important, so much so that we’ll formalize it. Every game can be given a &lt;em&gt;value&lt;/em&gt;. We’ll formalize the value by assigning it a number. What number? Let’s start with the simplest possible game:&lt;/p&gt;
+
+&lt;p&gt;This is the game where there are no pebbles. If White plays first, White loses with best play. We give this game a zero. We can add pebbles to the game and end up with the same outcome: White loses if White plays first. As long as we add an equal number of white and black pebbles, and as long as each row only contains pebbles of one colour, if there are an equal number of pebbles, the game evaluates to zero.&lt;/p&gt;
+
+&lt;p&gt;What happens if one player has more pebbles than the other? Let’s consider the case where White has one pebble and Black has none:&lt;/p&gt;
+
+&lt;p&gt;→●&lt;/p&gt;
+
+&lt;p&gt;If it’s White’s turn to play, White takes the pebble and the game becomes transformed into the game above where it is Black’s turn to play. We know this to be a win for White. If it’s Black’s turn to play, Black loses immediately.&lt;/p&gt;
+
+&lt;p&gt;So adding one pebble for White turns this from a game where White loses if it’s White’s turn to play into a game where White always wins. This is better than zero, so let’s call this game one. If we add another pebble for White, we can call it two, another white pebble makes it three, and so on.&lt;/p&gt;
+
+&lt;p&gt;What if we add pebbles for Black? This game:&lt;/p&gt;
+
+&lt;p&gt;→○&lt;/p&gt;
+
+&lt;p&gt;Is a win for Black whether it is White’s turn to play or not. That’s worse than zero, so we call it negative one. Additional stones for Black make it negative two, negative three, and so on.&lt;/p&gt;
+
+&lt;p&gt;Now if we add stones for both White and Black but refrain from mixing stones of two different colours on the same line, we end up with games like this:&lt;/p&gt;
+
+&lt;p&gt;→●&lt;br /&gt;
+→○○○&lt;br /&gt;
+→●●●  &lt;/p&gt;
+
+&lt;p&gt;Intuitively, the best strategy for each player is to remove a single stone on their turn. Since they alternate taking stones, you can reduce any such game by removing an equal number of stones of each colour, leaving zero or more stones of a single colour.&lt;/p&gt;
+
+&lt;p&gt;Or more succinctly, every game of this type can be evaluated by counting +1 for each white stone and -1 for each black stone.&lt;/p&gt;
+
 &lt;h3 id=&quot;maudes-simple-evaluator&quot;&gt;maude’s simple evaluator&lt;/h3&gt;
 
 &lt;p&gt;Maude started with the following notes:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;{isArray, any} = require 'underscore'
+&lt;pre&gt;&lt;code&gt;{isArray, every, reduce, isEmpty} = require 'underscore'
 
 white = {}
 black = {}
 
 class HackenstringGame
+  invert = (colour) -&amp;gt;
+    if colour is white
+      black
+    else if colour is black
+      white
+  stoneValue = (colour) -&amp;gt;
+    if colour is white
+      1
+    else if colour is black
+      -1
   validRow = (row) -&amp;gt;
     isArray(row) and every(row, (stone) -&amp;gt; stone is white or stone is black)
   constructor: (@rows) -&amp;gt;
-    throw 'invalid' unless every(@rows, validRow)
-    
+    throw 'invalid' unless isArray(@rows) and every(@rows, validRow)
+  evaluation: -&amp;gt;
+    reduce @rows,
+      (acc, row) -&amp;gt;
+          startColour = row[0]
+          firstOther = row.indexOf(invert(startColour))
+          if row.length is 0
+            acc
+          else if firstOther &amp;lt; 1
+            row.length * stoneValue(startColour) + acc
+          else
+            throw &quot;TODO: Implement Me&quot;
+      , 0
+
 describe &quot;HackenstringGame&quot;, -&amp;gt;
 
-  it &quot;shouldn't throw an error for no rows&quot;, -&amp;gt;
-    expect( -&amp;gt; new HackenStringGame([]) ).not.toThrow new Error('invalid')
+  noRows = new HackenstringGame([])
+  oneEmptyRow = new HackenstringGame([[]])
+  twoEmptyRows = new HackenstringGame([[]])
+
+  describe &quot;construction&quot;, -&amp;gt;
+
+    it &quot;shouldn't throw an error for no rows or empty rows&quot;, -&amp;gt;
+      expect( -&amp;gt; noRows ).not.toThrow()
+      expect( -&amp;gt; oneEmptyRow ).not.toThrow()
+      expect( -&amp;gt; twoEmptyRows ).not.toThrow()
+
+    it &quot;shouldn't throw an error for rows with stones&quot;, -&amp;gt;
+      expect( -&amp;gt; new HackenstringGame([[white]]) ).not.toThrow()
+      expect( -&amp;gt; new HackenstringGame([[white, white]]) ).not.toThrow()
+      expect( -&amp;gt; new HackenstringGame([[black]]) ).not.toThrow()
+      expect( -&amp;gt; new HackenstringGame([[white, black]]) ).not.toThrow()
+
+    it &quot;should throw an error for a row with a non-stone&quot;, -&amp;gt;
+      expect( -&amp;gt; new HackenstringGame([[{}]]) ).toThrow()
+
+  describe &quot;evaluation&quot;, -&amp;gt;
+
+    it &quot;should be zero for empty games&quot;, -&amp;gt;
+      expect( noRows.evaluation() ).toEqual(0)
+      expect( twoEmptyRows.evaluation() ).toEqual(0)
+    
+    it &quot;shoudl be zero for equal games&quot;, -&amp;gt;
+      expect( new HackenstringGame([[white], [black]]).evaluation() ).toEqual(0)
+      
+    it &quot;should be positive for games where white has more stones&quot;, -&amp;gt;
+      whiteWins = new HackenstringGame [
+        [white]
+        [black, black, black]
+        [white, white, white, white]
+      ]
+      expect( whiteWins.evaluation() ).toEqual 2
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Zee Hackenbush continued:&lt;/p&gt;
+
+&lt;h3 id=&quot;mixed-rows&quot;&gt;mixed rows&lt;/h3&gt;
+
+&lt;p&gt;The rules of the game permit a row to have both white and black stones in any order. Let’s start with the simplest and second simplest games we’ve seen. This is the simplest:&lt;/p&gt;
+
+&lt;p&gt;→&lt;/p&gt;
+
+&lt;p&gt;White loses when playing first and wins when playing second. That’s worse than:&lt;/p&gt;
+
+&lt;p&gt;→●&lt;/p&gt;
+
+&lt;p&gt;Where White always wins, but better than:&lt;/p&gt;
+
+&lt;p&gt;→○&lt;/p&gt;
+
+&lt;p&gt;Where White always loses whether going first or second. These games evaluate to &lt;code&gt;0&lt;/code&gt;, &lt;code&gt;+1&lt;/code&gt;, and &lt;code&gt;-1&lt;/code&gt; respectively.&lt;/p&gt;
+
+&lt;p&gt;Let’s add a stone to the same row on the last game:&lt;/p&gt;
+
+&lt;p&gt;→○●&lt;/p&gt;
+
+&lt;p&gt;This is a win for Black no matter what, but consider the fact that it’s a little “asymmetrical:” If White plays first, the game is transformed into:&lt;/p&gt;
+
+&lt;p&gt;→○&lt;/p&gt;
+
+&lt;p&gt;And Black wins as above. But if Black plays first, the game is transformed into:&lt;/p&gt;
+
+&lt;p&gt;→&lt;/p&gt;
+
+&lt;p&gt;And White doesn’t get a move. Thus, the game is clearly worse than zero, but not quite as bad as &lt;/p&gt;
+
+&lt;p&gt;→○&lt;/p&gt;
+
+&lt;p&gt;Where White never gets to move. What is better than &lt;code&gt;-1&lt;/code&gt; but worse than &lt;code&gt;0&lt;/code&gt;? Let’s guess &lt;code&gt;-1/2&lt;/code&gt;. And if that is the case, then this game:&lt;/p&gt;
+
+&lt;p&gt;→●○&lt;/p&gt;
+
+&lt;p&gt;Is going to be a win for White no matter what, and thus better than &lt;code&gt;0&lt;/code&gt; but not as good as:&lt;/p&gt;
+
+&lt;p&gt;→●&lt;/p&gt;
+
+&lt;p&gt;Which is a win for White without Black getting a move. We’ll call that game &lt;code&gt;+1/2&lt;/code&gt; since it lies between &lt;code&gt;0&lt;/code&gt; and &lt;code&gt;+1&lt;/code&gt;.&lt;/p&gt;
 
 &lt;hr /&gt;
 
