@@ -28,15 +28,13 @@ The team talked for a while longer before deciding to ask for enough budget to h
 "After some cajoling, he wrote this for me:"
 
 {% highlight ruby %}
-def fib_binet(n)
-  a = (1+Math.sqrt(5))**n
-  b = (1-Math.sqrt(5))**n
-  c = (2**n)*Math.sqrt(5)
-  return ((a-b)/c).truncate()
+def closed_fib(n)
+  a = Math.sqrt(5)
+  return ((1/a)*(((1+a)/2)**n)).round()
 end
 
 (0..100).each do | i |
-  puts fib_binet(i)
+  puts closed_fib(i)
 end
 
 #=> 0
@@ -50,17 +48,19 @@ end
 #   354224848179263111168
 {% endhighlight %}
 
-"I gave him one last chance, I said tha tI'd asked the previous candidate to give me the 1,000th, 10,000th, 100,000th, and 1,000,000th Fibonacci numbers and did that requirement alter his algorithm at all?"
+"He wrote it quickly, and that was impressive, but I got nowhere trying to quiz him about its limitations. For example, I asked him if we were calculating the 1,000,000th Fibonacci number how we could be sure that Ruby's built-in `**` operator wouldn't take a naïve approach with big integers?"
 
-"He looked at me like I was insulting his manhood. *I told you,* he said, *This is the right way to do it, everything else is just wanking. Now ask me some proper programming questions or I'm out of here!*"
+"I also asked him how we could be sure that `Math.sqrt(5)` would have the necessary precision for the 100,000th number, and how he would calculate the necessary precision, but he looked at me like he was Samuel L. Jackson and I was asking 'what' too many times."
+
+"I gave him one last chance, I said that I'd asked the previous candidate to give me the 10,000th, 100,000th, and 1,000,000th Fibonacci numbers, and perhaps if his algorithm had some limitations we could discuss some alternatives, but he let me know that he did not suffer fools gladly, and hadn't I heard him twice the first time that this was the correct implementation?"
 
 "In response, I simply typed this into `irb`:"
 
 {% highlight ruby %}
-fib_binet(1000)
+closed_fib(10000)
 #=> FloatDomainError: Infinity
 #   	from (irb):38:in `truncate'
-#   	from (irb):38:in `fib_binet'
+#   	from (irb):38:in `closed_fib'
 #   	from (irb):44
 #   	from /Users/williams/.rvm/rubies/ruby-1.9.3-p327/bin/irb:16:in `<main>'
 {% endhighlight %}

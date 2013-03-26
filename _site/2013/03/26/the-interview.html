@@ -69,6 +69,8 @@
 
 <p>The team talked for a while longer before deciding to ask for enough budget to hire both Bob and Carol. Later, at BEvERage-O’Clock, someone asked about Scott.</p>
 
+<p><img src="/assets/images/fib.gif" alt="The Fibonacci Spiral" /></p>
+
 <p>“Who else interviewed Scott? He was a handful!” The team chuckled, the story had been going around the office for a week.</p>
 
 <p>“A difficult case?”</p>
@@ -83,15 +85,13 @@
 
 <p>“After some cajoling, he wrote this for me:”</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">fib_binet</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-  <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">**</span><span class="n">n</span>
-  <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">**</span><span class="n">n</span>
-  <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-  <span class="k">return</span> <span class="p">((</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>
+<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">closed_fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+  <span class="n">a</span> <span class="o">=</span> <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+  <span class="k">return</span> <span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="p">(((</span><span class="mi">1</span><span class="o">+</span><span class="n">a</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">round</span><span class="p">()</span>
 <span class="k">end</span>
 
 <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span> <span class="n">i</span> <span class="o">|</span>
-  <span class="nb">puts</span> <span class="n">fib_binet</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="n">closed_fib</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 <span class="k">end</span>
 
 <span class="c1">#=&gt; 0</span>
@@ -105,9 +105,11 @@
 <span class="c1">#   354224848179263111168</span>
 </code></pre></div>
 
-<p>“I gave him one last chance, I said tha tI’d asked the previous candidate to give me the 1,000th, 10,000th, 100,000th, and 1,000,000th Fibonacci numbers and did that requirement alter his algorithm at all?”</p>
+<p>“He wrote it quickly, and that was impressive, but I got nowhere trying to quiz him about its limitations. For example, I asked him if we were calculating the 1,000,000th Fibonacci number how we could be sure that Ruby’s built-in <code>**</code> operator wouldn’t take a naïve approach with big integers?”</p>
 
-<p>“He looked at me like I was insulting his manhood. <em>I told you,</em> he said, <em>This is the right way to do it, everything else is just wanking. Now ask me some proper programming questions or I’m out of here!</em>”</p>
+<p>“I also asked him how we could be sure that <code>Math.sqrt(5)</code> would have the necessary precision for the 100,000th number, and how he would calculate the necessary precision, but he looked at me like he was Samuel L. Jackson and I was asking ‘what’ too many times.”</p>
+
+<p>“I gave him one last chance, I said that I’d asked the previous candidate to give me the 10,000th, 100,000th, and 1,000,000th Fibonacci numbers, and perhaps if his algorithm had some limitations we could discuss some alternatives, but he let me know that he did not suffer fools gladly, and hadn’t I heard him twice the first time that this was the correct implementation?”</p>
 
 <p>“In response, I simply typed this into <code>irb</code>:”</p>
 
