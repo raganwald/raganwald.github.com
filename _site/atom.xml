@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-26T19:26:53-04:00</updated>
+  <updated>2013-03-26T19:28:02-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -75,10 +75,10 @@
 
 &lt;p&gt;“In response, I simply typed this into &lt;code&gt;irb&lt;/code&gt;:”&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;fib_binet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;closed_fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; FloatDomainError: Infinity&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;#   	from (irb):38:in `truncate&amp;#39;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#   	from (irb):38:in `fib_binet&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   	from (irb):38:in `closed_fib&amp;#39;&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;#   	from (irb):44&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;#   	from /Users/williams/.rvm/rubies/ruby-1.9.3-p327/bin/irb:16:in `&amp;lt;main&amp;gt;&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;

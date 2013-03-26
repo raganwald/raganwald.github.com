@@ -68,3 +68,11 @@ closed_fib(10000)
 "Alas, he didn't have the decency to apologise before leaving, he just shouted something about trick questions. What could I do? After he left, I emailed his resume to StinkWare, our competition. They deserve each other."
 
 The team had a good laugh about that.
+
+### author's note
+
+THis is entirely fictional and not intended to suggest anything about the right way to interview someone or be interviewed, it's just a shaggy dog story ending up with an insight: *The gap between theory and practice is narrower in theory than it is in practice*.
+
+In this case, the closed-form solution is excellent up to somewhere between n = 1,000 and n = 10,000, and then the imprecisions and trade-offs inherent in number representations and library math routines come into play.
+
+So like anything, keep an open mind about the strengths and weaknesses of any approach, no matter how "obvious" things may seem.

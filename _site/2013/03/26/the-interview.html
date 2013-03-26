@@ -113,10 +113,10 @@
 
 <p>“In response, I simply typed this into <code>irb</code>:”</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">fib_binet</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby"><span class="n">closed_fib</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
 <span class="c1">#=&gt; FloatDomainError: Infinity</span>
 <span class="c1">#   	from (irb):38:in `truncate&#39;</span>
-<span class="c1">#   	from (irb):38:in `fib_binet&#39;</span>
+<span class="c1">#   	from (irb):38:in `closed_fib&#39;</span>
 <span class="c1">#   	from (irb):44</span>
 <span class="c1">#   	from /Users/williams/.rvm/rubies/ruby-1.9.3-p327/bin/irb:16:in `&lt;main&gt;&#39;</span>
 </code></pre></div>
