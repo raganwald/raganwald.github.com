@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-26T19:36:11-04:00</updated>
+  <updated>2013-03-26T19:37:43-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -23,7 +23,9 @@
           <name>Reginald Braithwaite</name>
           <uri>http://raganwald.com/</uri>
         </author>
-        <content type="html">&lt;p&gt;It had been a long and gruelling process, but the ThinkWare team had whittled the virtual stack of resumes down to Bob and Carol. “Bob,” said Alice, “Was great. The interview got off to a great start when I fizzbuzzed him with Fibonacci. He asked whether I wanted an Enumerator or iterative function. When I suggested he try something recursive, he had no trouble whatsoever.” &lt;/p&gt;
+        <content type="html">&lt;p&gt;It had been a long and gruelling process, but the ThinkWare team had whittled the virtual stack of resumes down to Bob and Carol.&lt;/p&gt;
+
+&lt;p&gt;“Bob was great,” said Alice, “The interview got off to a great start when I fizzbuzzed him with Fibonacci. He asked whether I wanted an Enumerator or iterative function. When I suggested he try something recursive, he had no trouble whatsoever.” &lt;/p&gt;
 
 &lt;p&gt;“He even mentioned trampolining when I wondered about asking for the ten thousandth Fibonacci number. I probed about the closed form solution, and while he knew one existed, he admitted up front that he hand’t used it. We discussed requirements and use cases and things went really well from there.”&lt;/p&gt;
 
