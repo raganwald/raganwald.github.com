@@ -277,9 +277,9 @@ If there are any stones remaining (there weren't in this example), we remove and
 
 This seems very arbitrary, but if you play the games out, you see that the stones that are leftmost on a row are the most important because they cannot be removed by the other player, and the further a stone is to the right of those stones, the less significance it has to the outcome of a game.
 
-### maude's second evaluation
+### maude works with dyadic fractions
 
-Maude began by making some notes about dyadic fractions:[^dyadic]
+Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is an even power of two.[^dyadic]
 
 [^dyadic]: [Dyadic fractions or dyadic reals](https://en.wikipedia.org/wiki/Dyadic_fraction)
 

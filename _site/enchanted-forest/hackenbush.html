@@ -345,9 +345,9 @@ describe "HackenstringGame", -&gt;
 
 <p>This seems very arbitrary, but if you play the games out, you see that the stones that are leftmost on a row are the most important because they cannot be removed by the other player, and the further a stone is to the right of those stones, the less significance it has to the outcome of a game.</p>
 
-<h3 id="maudes-second-evaluation">maude’s second evaluation</h3>
+<h3 id="maude-works-with-dyadic-fractions">maude works with dyadic fractions</h3>
 
-<p>Maude began by making some notes about dyadic fractions:<sup id="fnref:dyadic"><a href="#fn:dyadic" rel="footnote">3</a></sup></p>
+<p>Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is an even power of two.<sup id="fnref:dyadic"><a href="#fn:dyadic" rel="footnote">3</a></sup></p>
 
 <hr />
 
@@ -381,8 +381,8 @@ twoToPowerOf = applyLeft(Math.pow, 2)</p>
     else
       “#{@a}/#{denominator}”
   plus: (that) -&gt;
-    b = Math.max(self.b, that.b)
-    a1 = self.a * twoToPowerOf(b - self.b)
+    b = Math.max(this.b, that.b)
+    a1 = this.a * twoToPowerOf(b - this.b)
     a2 = that.a * twoToPowerOf(b - that.b)
     new Dyadic(a1 + a2, b)</p>
 

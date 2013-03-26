@@ -6,8 +6,8 @@
     <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
-    <pubDate>Tue, 26 Mar 2013 02:49:30 -0400</pubDate>
-    <lastBuildDate>Tue, 26 Mar 2013 02:49:30 -0400</lastBuildDate>
+    <pubDate>Tue, 26 Mar 2013 11:35:27 -0400</pubDate>
+    <lastBuildDate>Tue, 26 Mar 2013 11:35:27 -0400</lastBuildDate>
 
     
       
@@ -283,9 +283,9 @@ describe &quot;HackenstringGame&quot;, -&amp;gt;
 
 &lt;p&gt;This seems very arbitrary, but if you play the games out, you see that the stones that are leftmost on a row are the most important because they cannot be removed by the other player, and the further a stone is to the right of those stones, the less significance it has to the outcome of a game.&lt;/p&gt;
 
-&lt;h3 id=&quot;maudes-second-evaluation&quot;&gt;maude’s second evaluation&lt;/h3&gt;
+&lt;h3 id=&quot;maude-works-with-dyadic-fractions&quot;&gt;maude works with dyadic fractions&lt;/h3&gt;
 
-&lt;p&gt;Maude began by making some notes about dyadic fractions:&lt;sup id=&quot;fnref:dyadic&quot;&gt;&lt;a href=&quot;#fn:dyadic&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is an even power of two.&lt;sup id=&quot;fnref:dyadic&quot;&gt;&lt;a href=&quot;#fn:dyadic&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
 
@@ -319,8 +319,8 @@ twoToPowerOf = applyLeft(Math.pow, 2)&lt;/p&gt;
     else
       “#{@a}/#{denominator}”
   plus: (that) -&amp;gt;
-    b = Math.max(self.b, that.b)
-    a1 = self.a * twoToPowerOf(b - self.b)
+    b = Math.max(this.b, that.b)
+    a1 = this.a * twoToPowerOf(b - this.b)
     a2 = that.a * twoToPowerOf(b - that.b)
     new Dyadic(a1 + a2, b)&lt;/p&gt;
 
@@ -2613,6 +2613,263 @@ M.infinity - Bus 2, Bus 3, Bus 5, Bus 7, Bus 11, ..., 42
     
       
     
+      
+    
+      
+        <item>
+          <title>A program to compute the nth Fibonacci number</title>
+          <link>http://raganwald.com/homoiconic/2008/12/12/fibonacci.html</link>
+          <pubDate>Fri, 12 Dec 2008 00:00:00 -0500</pubDate>
+          <author>reg@braythwayt.com (Reginald Braithwaite)</author>
+          <guid>http://raganwald.com/homoiconic/2008/12/12/fibonacci</guid>
+          <description>&lt;p&gt;Since &lt;a href=&quot;http://braythwayt.com/reginald/RegBraithwaite20120423.pdf&quot; title=&quot;Reginald Braithwaite's Resume&quot;&gt;I’m looking for a job again&lt;/a&gt; and people often like to ask for a &lt;a href=&quot;http://weblog.raganwald.com/2007/01/dont-overthink-fizzbuzz.html&quot; title=&quot;Don't Overthink FizzBuzz&quot;&gt;fizzbuzz&lt;/a&gt; program to weed out the folks who can’t string together a few lines of code, I thought I’d write up a program to compute the nth Fibonacci number. There’s an intriguing bit of matrix math involved, so I learned something while implementing it.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Reminder: This was written in 2008, it does not necessarily reflect my employment situation today.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Recently I was having lunch with &lt;a href=&quot;http://unspace.ca&quot;&gt;some of Toronto’s most interesting Ruby developers&lt;/a&gt;, and the subject of interview questions came up. Specifically, writing a program to compute the nth Fibonacci number. Unsurprisingly, we agreed it might be useful as a screener for weeding out the people who were completely delusional about their prospects as a professional programmer. You know, the type of person who stares blankly at the screen and has no idea where to start, even when told that all we wanted was a program that correctly prints an answer. No tests, no specs, no shouldas, no passengers, no CSS, just prove you actually can write something, anything.&lt;/p&gt;
+
+&lt;p&gt;We also agreed that any &lt;a href=&quot;http://www.nomachetejuggling.com/2008/12/11/my-least-favorite-interview-question/&quot; title=&quot;My Least Favorite Interview Question &amp;raquo; Absolutely No Machete Juggling&quot;&gt;Guess the answer I’m thinking of&lt;/a&gt; problem is terrible, including Fibonacci. Should it iterate? Recurse? Memoize? Is it overkill to use advanced math to be really fast? Or will you get tossed out of the interview for writing a naive recursive solution? Unless the interviewer is very specific that they just want you to prove that you actually have written ten or more lines of working Ruby code in your life, there could be any number of reasons to disqualify any solution.&lt;/p&gt;
+
+&lt;p&gt;But we batted around a few ideas for how to gild the lily, and since I have just found myself contemplating the prospect of being asked to write a program to compute the nth Fibonacci number, I thought I’d get some practice and write one in advance. Since I’m doing it for myself, I’m going to optimize for maximum personal growth.&lt;/p&gt;
+
+&lt;p&gt;Here we go…&lt;/p&gt;
+
+&lt;h2 id=&quot;enter-the-matrix&quot;&gt;Enter The Matrix&lt;/h2&gt;
+
+&lt;p&gt;One problem with calculating a Finonacci number is that naive algorithms require &lt;em&gt;n&lt;/em&gt; addition operations. There are some interesting things we can do to improve on this. One way is to transform &lt;em&gt;n&lt;/em&gt; additions into raising something to the power of &lt;em&gt;n&lt;/em&gt;. This turns &lt;em&gt;n&lt;/em&gt; additions into &lt;em&gt;n&lt;/em&gt; multiplications. That seems retrograde, but hold on to your disbelief.&lt;/p&gt;
+
+&lt;p&gt;This is actually nice, because there is a trick about raising something to a power that we can exploit. But first things first. As explained in &lt;a href=&quot;http://expertvoices.nsdl.org/cornell-cs322/2008/03/25/sum-of-fibonacci-numbers/&quot;&gt;Sum of Fibonacci numbers?&lt;/a&gt;, we can express the Fibonacci number &lt;code&gt;F(n)&lt;/code&gt; using a 2x2 matrix:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[ 1 1 ] n      [ F(n+1) F(n)   ]
+[ 1 0 ]    =   [ F(n)   F(n-1) ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.maths.surrey.ac.uk/explore/emmaspages/option1.html&quot; title=&quot;Matrices and Determinants&quot;&gt;Multiplying two matrices&lt;/a&gt; is a little interesting if you have never seen it before:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[ a b ]       [ e f ]   [ ae + bg  af + bh ]
+[ c d ] times [ g h ] = [ ce + dg  cf + dh ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Our matrices always have diagonal symmetry, so we can simplify the calculation because &lt;em&gt;c&lt;/em&gt; is always equal to &lt;em&gt;b&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[ a b ]       [ d e ]   [ ad + be  ae + bf ]
+[ b c ] times [ e f ] = [ bd + ce  be + cf ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now we are given that we are multiplying two matrices with diagonal symmetry. Will the result have diagonal symmetry? In other words, will &lt;code&gt;ae + bf&lt;/code&gt; always be equal to &lt;code&gt;bd + ce&lt;/code&gt;? Remember that &lt;code&gt;a = b + c&lt;/code&gt; at all times and &lt;code&gt;d = e + f&lt;/code&gt; provided that each is a power of &lt;code&gt;[[1,1], [1,0]]&lt;/code&gt;. Therefore:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ae + bf = (b + c)e + bf
+        = be + ce + bf
+bd + ce = b(e + f) + ce
+        = be + bf + ce
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That simplifies things for us, we can say:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[ a b ]       [ d e ]   [ ad + be  ae + bf ]
+[ b c ] times [ e f ] = [ ae + bf  be + cf ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And thus, we can always work with three elements instead of four. Let’s express this as operations on arrays:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[a, b, c] times [d, e, f] = [ad + be, ae + bf, be + cf]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Which we can code in Ruby:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;def times(*ems)
+  ems.inject do |product, matrix|
+  	a,b,c = product; d,e,f = matrix
+  	[a*d + b*e, a*e + b*f, b*e + c*f]
+  end
+end
+
+times([1,1,0]) # =&amp;gt; [1, 1, 0]
+times([1,1,0], [1,1,0]) # =&amp;gt; [2, 1, 1]
+times([1,1,0], [1,1,0], [1,1,0]) # =&amp;gt; [3, 2, 1]
+times([1,1,0], [1,1,0], [1,1,0], [1,1,0]) # =&amp;gt; [5, 3, 2]
+times([1,1,0], [1,1,0], [1,1,0], [1,1,0], [1,1,0]) # =&amp;gt; [8, 5, 3]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Very interesting. We could write out a naive implementation that constructs a long array of copies of &lt;code&gt;[1,1,0]&lt;/code&gt; and then calls &lt;code&gt;times&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;def naive_power(m, n)
+  times(*(1..n).map { |n| m })
+end
+
+naive_power([1,1,0], 1) # =&amp;gt; [1, 1, 0]
+naive_power([1,1,0], 2) # =&amp;gt; [2, 1, 1]
+naive_power([1,1,0], 3) # =&amp;gt; [3, 2, 1]
+naive_power([1,1,0], 4) # =&amp;gt; [5, 3, 2]
+naive_power([1,1,0], 5) # =&amp;gt; [8, 5, 3]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now let’s make an observation: instead of accumulating a product by iterating over the list, let’s &lt;a href=&quot;http://www.cs.berkeley.edu/~vazirani/algorithms/chap2.pdf&quot;&gt;Divide and Conquer&lt;/a&gt;. Let’s take the easy case: Don’t you agree that &lt;code&gt;times([1,1,0], [1,1,0], [1,1,0], [1,1,0])&lt;/code&gt; is equal to &lt;code&gt;times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))&lt;/code&gt;? And that this saves us an operation, since &lt;code&gt;times([1,1,0], [1,1,0], [1,1,0], [1,1,0])&lt;/code&gt; is implemented as:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;times([1,1,0],
+	times([1,1,0],
+		times([1,1,0],[1,1,0]))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Whereas &lt;code&gt;times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))&lt;/code&gt; can be implemented as:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;begin
+	double = times([1,1,0], [1,1,0])
+	times(double, double)
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This only requires two operations rather than three. Furthermore, it is recursive. &lt;code&gt;naive_power([1,1,0], 8)&lt;/code&gt; requires seven operations. However, it can be formulated as:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;begin
+	quadruple = begin
+		double = times([1,1,0], [1,1,0])
+		times(double, double)
+	end
+	times(quadruple, quadruple)
+end			
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now we only need three operations compared to seven. Of course, we left out how to deal with odd numbers. Fixing that also fixes how to deal with even numbers that aren’t neat powers of two:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;def power(m, n)
+  if n == 1
+    m
+  else
+    halves = power(m, n / 2)
+    if n % 2 == 0
+      times(halves, halves)
+    else
+      times(halves, halves, m)
+    end
+  end
+end
+
+power([1,1,0], 1) # =&amp;gt; [1, 1, 0]
+power([1,1,0], 2) # =&amp;gt; [2, 1, 1]
+power([1,1,0], 3) # =&amp;gt; [3, 2, 1]
+power([1,1,0], 4) # =&amp;gt; [5, 3, 2]
+power([1,1,0], 5) # =&amp;gt; [8, 5, 3]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now we can write our complete fibonacci function:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;def fib(n)
+  return n if n &amp;lt; 2
+  power([1,1,0], n - 1).first
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And dress things up in idiomatic Ruby using the anonymous module pattern:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Integer
+  
+  include(Module.new do
+
+    times = lambda do |*ems|
+      ems.inject do |product, matrix|
+      	a,b,c = product; d,e,f = matrix
+      	[a*d + b*e, a*e + b*f, b*e + c*f]
+      end
+    end
+
+    power = lambda do |m, n|
+      if n == 1
+        m
+      else
+        halves = power.call(m, n / 2)
+        if n % 2 == 0
+          times.call(halves, halves)
+        else
+          times.call(halves, halves, m)
+        end
+      end
+    end
+
+    define_method :matrix_fib do
+      return self if self &amp;lt; 2
+      power.call([1,1,0], self - 1).first
+    end
+
+  end)
+  
+end
+
+(0..20).map { |n| n.matrix_fib }
+	# =&amp;gt; [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We’re done!&lt;/p&gt;
+
+&lt;p&gt;p.s. No we’re not done: &lt;a href=&quot;http://github.com/raganwald/homoiconic/tree/master/2008-12-17/another_fibonacci.md#readme&quot;&gt;Another program to compute the nth Fibonacci number&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;p.p.s. No, this isn’t &lt;a href=&quot;http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/194815&quot; title=&quot;Fast Fibonacci method&quot;&gt;the fastest implementation&lt;/a&gt; by far. But it beats the pants off of a naive iterative implementation. See &lt;a href=&quot;http:fibonacci.rb&quot;&gt;fibonacci.rb&lt;/a&gt; for details.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Christoph Temmel &lt;a href=&quot;http://github.com/kar8nga/homoiconic/tree&quot; title=&quot;kar8nga's homoiconic at master &amp;mdash; GitHub&quot;&gt;forked homoiconic&lt;/a&gt; and added these observations:&lt;/p&gt;
+
+&lt;p&gt;*Another option would be to decompose *&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;A = [ 1 1 ]
+    [ 1 0 ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;into along its eigenspace (eigenvalues \lambda_{1,2}=-\frac{1\pm\sqrt{5}}{2} = -\frac{1}{2}\mp\frac{\sqrt{5}{2}}) to get&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;A = Q^t D
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;and&lt;/em&gt; &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;D = [ \lambda_1 0         ]
+    [ 0         \lambda_2 ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;where Q is the orthonormal matrix of the normated eigenvectors with QQ^t = I and D is the above diagonal matrix with the eigenvalues \lambda_{1,2} (see also &lt;a href=&quot;http://en.wikipedia.org/wiki/Symmetric_matrix#Properties&quot;&gt;Wikipedia&lt;/a&gt;). Now it’s easy to take powers of A&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;A^n = Q^t D^n D
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;*The only difficulty is, that in order to avoid floating point arithmetic one would have to do the powers in the field \mathbb{Q}[\sqrt{5}] - this would ask for a custom datatype with overloading of addition and multiplication (the part needed for this exercise). *&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;more-fun-with-fib&quot;&gt;More fun with Fib&lt;/h3&gt;
+
+&lt;p&gt;As noted on &lt;a href=&quot;http://news.ycombinator.com/item?id=3903551&quot;&gt;news.ycombinator.com&lt;/a&gt;, There is a closed-form solution to the function &lt;code&gt;fib&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression&lt;/p&gt;
+
+&lt;p&gt;In the context of a hypothetical job interview, of course, the correct answer is whatever produces the most interesting discussion. If asked in a real interview, I might ask “Do you want the closed-form or are you trying to get me to correctly write a recursive function?” If you write out the closed-form, once in a very long while you will probably encounter someone who tries to out-clever your cleverness and demands that you write it without &lt;code&gt;Math.sqrt&lt;/code&gt; or some other arbitrary way of forcing you to demonstrate that your brain has the right shape for handling recursion.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;My recent work:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.minus.com/iL337yTdgFj7.png&quot; alt=&quot;&quot; /&gt;&lt;a href=&quot;http://leanpub.com/javascript-allonge&quot; title=&quot;JavaScript Allongé&quot;&gt;&lt;img src=&quot;http://i.minus.com/iW2E1A8M5UWe6.jpeg&quot; alt=&quot;JavaScript Allongé&quot; /&gt;&lt;/a&gt;&lt;img src=&quot;http://i.minus.com/iL337yTdgFj7.png&quot; alt=&quot;&quot; /&gt;&lt;a href=&quot;http://leanpub.com/coffeescript-ristretto&quot; title=&quot;CoffeeScript Ristretto&quot;&gt;&lt;img src=&quot;http://i.minus.com/iMmGxzIZkHSLD.jpeg&quot; alt=&quot;CoffeeScript Ristretto&quot; /&gt;&lt;/a&gt;&lt;img src=&quot;http://i.minus.com/iL337yTdgFj7.png&quot; alt=&quot;&quot; /&gt;&lt;a href=&quot;http://leanpub.com/combinators&quot; title=&quot;Kestrels, Quirky Birds, and Hopeless Egocentricity&quot;&gt;&lt;img src=&quot;http://i.minus.com/ibw1f1ARQ4bhi1.jpeg&quot; alt=&quot;Kestrels, Quirky Birds, and Hopeless Egocentricity&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://leanpub.com/javascript-allonge&quot;&gt;JavaScript Allongé&lt;/a&gt;, &lt;a href=&quot;http://leanpub.com/coffeescript-ristretto&quot;&gt;CoffeeScript Ristretto&lt;/a&gt;, and my &lt;a href=&quot;http://leanpub.com/u/raganwald&quot;&gt;other books&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://allong.es&quot;&gt;allong.es&lt;/a&gt;, practical function combinators and decorators for JavaScript.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/raganwald/method-combinators&quot;&gt;Method Combinators&lt;/a&gt;, a CoffeeScript/JavaScript library for writing method decorators, simply and easily.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://github.com/raganwald/jquery-combinators&quot;&gt;jQuery Combinators&lt;/a&gt;, what else? A jQuery plugin for writing your own fluent, jQuery-like code.  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;(Spot a bug or a spelling mistake? This is a Github repo, fork it and send me a pull request!)&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;a href=&quot;http://braythwayt.com&quot;&gt;Reg Braithwaite&lt;/a&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;http://twitter.com/raganwald&quot;&gt;@raganwald&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+</description>
+        </item>
       
     
 

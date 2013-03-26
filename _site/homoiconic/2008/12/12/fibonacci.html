@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/assets/js/respond.js"></script>
+    
+    
+    
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <LINK REL=StyleSheet HREF="/assets/css/pygments.css" TYPE="text/css" MEDIA=screen>
+    <link href="http://raganwald.com/atom.xml" type="application/atom+xml" rel="alternate" title="raganwald.com">
+    <link rel="alternate" type="application/rss+xml" href="http://raganwald.com/rss.xml" title="raganwald.com">
+    <title>A program to compute the nth Fibonacci number</title>
+    </head>
+  <body>
+    <div id="container">
+      <div class="inner">
+        
+              <div id="header">
+        <h1>A program to compute the nth Fibonacci number</h1>
+        <h2><a href="/">via raganwald.com</a></h2>
+      </div><!-- end header -->
+
+        <hr>
+
+        <section id="main_content">
+          
+          
+
+
+
+  
+  
+
+  
+    
+    
+  
+
+  
+  
+
+          
+          <p>Since <a href="http://braythwayt.com/reginald/RegBraithwaite20120423.pdf" title="Reginald Braithwaite's Resume">I’m looking for a job again</a> and people often like to ask for a <a href="http://weblog.raganwald.com/2007/01/dont-overthink-fizzbuzz.html" title="Don't Overthink FizzBuzz">fizzbuzz</a> program to weed out the folks who can’t string together a few lines of code, I thought I’d write up a program to compute the nth Fibonacci number. There’s an intriguing bit of matrix math involved, so I learned something while implementing it.</p>
+
+<p><em>Reminder: This was written in 2008, it does not necessarily reflect my employment situation today.</em></p>
+
+<p>Recently I was having lunch with <a href="http://unspace.ca">some of Toronto’s most interesting Ruby developers</a>, and the subject of interview questions came up. Specifically, writing a program to compute the nth Fibonacci number. Unsurprisingly, we agreed it might be useful as a screener for weeding out the people who were completely delusional about their prospects as a professional programmer. You know, the type of person who stares blankly at the screen and has no idea where to start, even when told that all we wanted was a program that correctly prints an answer. No tests, no specs, no shouldas, no passengers, no CSS, just prove you actually can write something, anything.</p>
+
+<p>We also agreed that any <a href="http://www.nomachetejuggling.com/2008/12/11/my-least-favorite-interview-question/" title="My Least Favorite Interview Question &raquo; Absolutely No Machete Juggling">Guess the answer I’m thinking of</a> problem is terrible, including Fibonacci. Should it iterate? Recurse? Memoize? Is it overkill to use advanced math to be really fast? Or will you get tossed out of the interview for writing a naive recursive solution? Unless the interviewer is very specific that they just want you to prove that you actually have written ten or more lines of working Ruby code in your life, there could be any number of reasons to disqualify any solution.</p>
+
+<p>But we batted around a few ideas for how to gild the lily, and since I have just found myself contemplating the prospect of being asked to write a program to compute the nth Fibonacci number, I thought I’d get some practice and write one in advance. Since I’m doing it for myself, I’m going to optimize for maximum personal growth.</p>
+
+<p>Here we go…</p>
+
+<h2 id="enter-the-matrix">Enter The Matrix</h2>
+
+<p>One problem with calculating a Finonacci number is that naive algorithms require <em>n</em> addition operations. There are some interesting things we can do to improve on this. One way is to transform <em>n</em> additions into raising something to the power of <em>n</em>. This turns <em>n</em> additions into <em>n</em> multiplications. That seems retrograde, but hold on to your disbelief.</p>
+
+<p>This is actually nice, because there is a trick about raising something to a power that we can exploit. But first things first. As explained in <a href="http://expertvoices.nsdl.org/cornell-cs322/2008/03/25/sum-of-fibonacci-numbers/">Sum of Fibonacci numbers?</a>, we can express the Fibonacci number <code>F(n)</code> using a 2x2 matrix:</p>
+
+<pre><code>[ 1 1 ] n      [ F(n+1) F(n)   ]
+[ 1 0 ]    =   [ F(n)   F(n-1) ]
+</code></pre>
+
+<p><a href="http://www.maths.surrey.ac.uk/explore/emmaspages/option1.html" title="Matrices and Determinants">Multiplying two matrices</a> is a little interesting if you have never seen it before:</p>
+
+<pre><code>[ a b ]       [ e f ]   [ ae + bg  af + bh ]
+[ c d ] times [ g h ] = [ ce + dg  cf + dh ]
+</code></pre>
+
+<p>Our matrices always have diagonal symmetry, so we can simplify the calculation because <em>c</em> is always equal to <em>b</em>:</p>
+
+<pre><code>[ a b ]       [ d e ]   [ ad + be  ae + bf ]
+[ b c ] times [ e f ] = [ bd + ce  be + cf ]
+</code></pre>
+
+<p>Now we are given that we are multiplying two matrices with diagonal symmetry. Will the result have diagonal symmetry? In other words, will <code>ae + bf</code> always be equal to <code>bd + ce</code>? Remember that <code>a = b + c</code> at all times and <code>d = e + f</code> provided that each is a power of <code>[[1,1], [1,0]]</code>. Therefore:</p>
+
+<pre><code>ae + bf = (b + c)e + bf
+        = be + ce + bf
+bd + ce = b(e + f) + ce
+        = be + bf + ce
+</code></pre>
+
+<p>That simplifies things for us, we can say:</p>
+
+<pre><code>[ a b ]       [ d e ]   [ ad + be  ae + bf ]
+[ b c ] times [ e f ] = [ ae + bf  be + cf ]
+</code></pre>
+
+<p>And thus, we can always work with three elements instead of four. Let’s express this as operations on arrays:</p>
+
+<pre><code>[a, b, c] times [d, e, f] = [ad + be, ae + bf, be + cf]
+</code></pre>
+
+<p>Which we can code in Ruby:</p>
+
+<pre><code>def times(*ems)
+  ems.inject do |product, matrix|
+  	a,b,c = product; d,e,f = matrix
+  	[a*d + b*e, a*e + b*f, b*e + c*f]
+  end
+end
+
+times([1,1,0]) # =&gt; [1, 1, 0]
+times([1,1,0], [1,1,0]) # =&gt; [2, 1, 1]
+times([1,1,0], [1,1,0], [1,1,0]) # =&gt; [3, 2, 1]
+times([1,1,0], [1,1,0], [1,1,0], [1,1,0]) # =&gt; [5, 3, 2]
+times([1,1,0], [1,1,0], [1,1,0], [1,1,0], [1,1,0]) # =&gt; [8, 5, 3]
+</code></pre>
+
+<p>Very interesting. We could write out a naive implementation that constructs a long array of copies of <code>[1,1,0]</code> and then calls <code>times</code>:</p>
+
+<pre><code>def naive_power(m, n)
+  times(*(1..n).map { |n| m })
+end
+
+naive_power([1,1,0], 1) # =&gt; [1, 1, 0]
+naive_power([1,1,0], 2) # =&gt; [2, 1, 1]
+naive_power([1,1,0], 3) # =&gt; [3, 2, 1]
+naive_power([1,1,0], 4) # =&gt; [5, 3, 2]
+naive_power([1,1,0], 5) # =&gt; [8, 5, 3]
+</code></pre>
+
+<p>Now let’s make an observation: instead of accumulating a product by iterating over the list, let’s <a href="http://www.cs.berkeley.edu/~vazirani/algorithms/chap2.pdf">Divide and Conquer</a>. Let’s take the easy case: Don’t you agree that <code>times([1,1,0], [1,1,0], [1,1,0], [1,1,0])</code> is equal to <code>times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))</code>? And that this saves us an operation, since <code>times([1,1,0], [1,1,0], [1,1,0], [1,1,0])</code> is implemented as:</p>
+
+<pre><code>times([1,1,0],
+	times([1,1,0],
+		times([1,1,0],[1,1,0]))
+</code></pre>
+
+<p>Whereas <code>times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))</code> can be implemented as:</p>
+
+<pre><code>begin
+	double = times([1,1,0], [1,1,0])
+	times(double, double)
+end
+</code></pre>
+
+<p>This only requires two operations rather than three. Furthermore, it is recursive. <code>naive_power([1,1,0], 8)</code> requires seven operations. However, it can be formulated as:</p>
+
+<pre><code>begin
+	quadruple = begin
+		double = times([1,1,0], [1,1,0])
+		times(double, double)
+	end
+	times(quadruple, quadruple)
+end			
+</code></pre>
+
+<p>Now we only need three operations compared to seven. Of course, we left out how to deal with odd numbers. Fixing that also fixes how to deal with even numbers that aren’t neat powers of two:</p>
+
+<pre><code>def power(m, n)
+  if n == 1
+    m
+  else
+    halves = power(m, n / 2)
+    if n % 2 == 0
+      times(halves, halves)
+    else
+      times(halves, halves, m)
+    end
+  end
+end
+
+power([1,1,0], 1) # =&gt; [1, 1, 0]
+power([1,1,0], 2) # =&gt; [2, 1, 1]
+power([1,1,0], 3) # =&gt; [3, 2, 1]
+power([1,1,0], 4) # =&gt; [5, 3, 2]
+power([1,1,0], 5) # =&gt; [8, 5, 3]
+</code></pre>
+
+<p>Now we can write our complete fibonacci function:</p>
+
+<pre><code>def fib(n)
+  return n if n &lt; 2
+  power([1,1,0], n - 1).first
+end
+</code></pre>
+
+<p>And dress things up in idiomatic Ruby using the anonymous module pattern:</p>
+
+<pre><code>class Integer
+  
+  include(Module.new do
+
+    times = lambda do |*ems|
+      ems.inject do |product, matrix|
+      	a,b,c = product; d,e,f = matrix
+      	[a*d + b*e, a*e + b*f, b*e + c*f]
+      end
+    end
+
+    power = lambda do |m, n|
+      if n == 1
+        m
+      else
+        halves = power.call(m, n / 2)
+        if n % 2 == 0
+          times.call(halves, halves)
+        else
+          times.call(halves, halves, m)
+        end
+      end
+    end
+
+    define_method :matrix_fib do
+      return self if self &lt; 2
+      power.call([1,1,0], self - 1).first
+    end
+
+  end)
+  
+end
+
+(0..20).map { |n| n.matrix_fib }
+	# =&gt; [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
+</code></pre>
+
+<p>We’re done!</p>
+
+<p>p.s. No we’re not done: <a href="http://github.com/raganwald/homoiconic/tree/master/2008-12-17/another_fibonacci.md#readme">Another program to compute the nth Fibonacci number</a>.</p>
+
+<p>p.p.s. No, this isn’t <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/194815" title="Fast Fibonacci method">the fastest implementation</a> by far. But it beats the pants off of a naive iterative implementation. See <a href="http:fibonacci.rb">fibonacci.rb</a> for details.</p>
+
+<hr />
+
+<p>Christoph Temmel <a href="http://github.com/kar8nga/homoiconic/tree" title="kar8nga's homoiconic at master &mdash; GitHub">forked homoiconic</a> and added these observations:</p>
+
+<p>*Another option would be to decompose *</p>
+
+<pre><code>A = [ 1 1 ]
+    [ 1 0 ]
+</code></pre>
+
+<p><em>into along its eigenspace (eigenvalues \lambda_{1,2}=-\frac{1\pm\sqrt{5}}{2} = -\frac{1}{2}\mp\frac{\sqrt{5}{2}}) to get</em></p>
+
+<pre><code>A = Q^t D
+</code></pre>
+
+<p><em>and</em> </p>
+
+<pre><code>D = [ \lambda_1 0         ]
+    [ 0         \lambda_2 ]
+</code></pre>
+
+<p><em>where Q is the orthonormal matrix of the normated eigenvectors with QQ^t = I and D is the above diagonal matrix with the eigenvalues \lambda_{1,2} (see also <a href="http://en.wikipedia.org/wiki/Symmetric_matrix#Properties">Wikipedia</a>). Now it’s easy to take powers of A</em></p>
+
+<pre><code>A^n = Q^t D^n D
+</code></pre>
+
+<p>*The only difficulty is, that in order to avoid floating point arithmetic one would have to do the powers in the field \mathbb{Q}[\sqrt{5}] - this would ask for a custom datatype with overloading of addition and multiplication (the part needed for this exercise). *</p>
+
+<hr />
+
+<h3 id="more-fun-with-fib">More fun with Fib</h3>
+
+<p>As noted on <a href="http://news.ycombinator.com/item?id=3903551">news.ycombinator.com</a>, There is a closed-form solution to the function <code>fib</code>.</p>
+
+<p>http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression</p>
+
+<p>In the context of a hypothetical job interview, of course, the correct answer is whatever produces the most interesting discussion. If asked in a real interview, I might ask “Do you want the closed-form or are you trying to get me to correctly write a recursive function?” If you write out the closed-form, once in a very long while you will probably encounter someone who tries to out-clever your cleverness and demands that you write it without <code>Math.sqrt</code> or some other arbitrary way of forcing you to demonstrate that your brain has the right shape for handling recursion.</p>
+
+<hr />
+
+<p>My recent work:</p>
+
+<p><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/javascript-allonge" title="JavaScript Allongé"><img src="http://i.minus.com/iW2E1A8M5UWe6.jpeg" alt="JavaScript Allongé" /></a><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/coffeescript-ristretto" title="CoffeeScript Ristretto"><img src="http://i.minus.com/iMmGxzIZkHSLD.jpeg" alt="CoffeeScript Ristretto" /></a><img src="http://i.minus.com/iL337yTdgFj7.png" alt="" /><a href="http://leanpub.com/combinators" title="Kestrels, Quirky Birds, and Hopeless Egocentricity"><img src="http://i.minus.com/ibw1f1ARQ4bhi1.jpeg" alt="Kestrels, Quirky Birds, and Hopeless Egocentricity" /></a></p>
+
+<ul>
+  <li><a href="http://leanpub.com/javascript-allonge">JavaScript Allongé</a>, <a href="http://leanpub.com/coffeescript-ristretto">CoffeeScript Ristretto</a>, and my <a href="http://leanpub.com/u/raganwald">other books</a>.</li>
+  <li><a href="http://allong.es">allong.es</a>, practical function combinators and decorators for JavaScript.</li>
+  <li><a href="https://github.com/raganwald/method-combinators">Method Combinators</a>, a CoffeeScript/JavaScript library for writing method decorators, simply and easily.</li>
+  <li><a href="http://github.com/raganwald/jquery-combinators">jQuery Combinators</a>, what else? A jQuery plugin for writing your own fluent, jQuery-like code.  </li>
+</ul>
+
+<hr />
+
+<p>(Spot a bug or a spelling mistake? This is a Github repo, fork it and send me a pull request!)</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="http://braythwayt.com">Reg Braithwaite</a></td>
+      <td><a href="http://twitter.com/raganwald">@raganwald</a></td>
+    </tr>
+  </tbody>
+</table>
+
+        </section>
+
+        <footer>
+    This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+    <br/><br/>
+  <a href="https://twitter.com/raganwald" class="twitter-follow-button" data-show-count="false">Follow @raganwald</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="raganwald">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</footer>
+
+      </div>
+    </div>
+
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38371925-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  </body>
+</html>
