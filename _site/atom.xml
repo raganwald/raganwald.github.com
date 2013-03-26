@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-26T19:35:32-04:00</updated>
+  <updated>2013-03-26T19:36:11-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -89,7 +89,7 @@
 
 &lt;h3 id=&quot;authors-note&quot;&gt;author’s note&lt;/h3&gt;
 
-&lt;p&gt;THis is entirely fictional and not intended to suggest anything about the right way to interview someone or be interviewed, it’s just a shaggy dog story ending up with an insight: &lt;em&gt;The gap between theory and practice is narrower in theory than it is in practice&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;This is entirely fictional and not intended to suggest anything about the right way to interview someone or be interviewed, it’s just a shaggy dog story ending up with an insight: &lt;em&gt;The gap between theory and practice is narrower in theory than it is in practice&lt;/em&gt;.&lt;/p&gt;
 
 &lt;p&gt;In this case, the closed-form solution is excellent up to somewhere between n = 1,000 and n = 10,000, and then the imprecisions and trade-offs inherent in number representations and library math routines come into play.&lt;/p&gt;
 
