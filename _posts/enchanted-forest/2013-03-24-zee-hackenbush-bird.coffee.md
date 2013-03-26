@@ -8,15 +8,13 @@ permalink: /enchanted-forest/hackenbush.html
 
 Previous: [A Surreal Encounter With a Winged Elephant](./horton.html)
 
-**WARNING: THIS ESSAY IS A WORK IN PROGRESS**
-
 ---
 
 Moses led Maude to a sandy riverbank, where a number of birds had congregated. Maude watched for a few moments, and she saw that all along the riverbank, birds were arrayed, each with a small territory. Each bird had collected river pebbles of various colours and had them arranged in rows or pits.
 
 Other birds would flutter along from one territory to another, examining the arrangements of stones. They would sometimes engage each other in conversation, and in some places they would rearrange the stones in concert with the bird stationed there in some kind of elaborate ritual.
 
-### the bowers
+### the bowerbirds and their pebble bowers
 
 "Each of these birds," explained Moses, "Makes a bower out of pebbles. Prospective mates inspect the bowers looking for signs of intelligence. A few bowerbirds find it sufficient to make elaborate patterns of pebbles and sand, the Mandelbrot Bird[^Mandelbrot] is a spectacular example of this type. But on this riverbank, the birds specialize in patterns of pebbles that can be rearranged in specific patterns.
 
@@ -150,7 +148,7 @@ Maude started with the following notes:
     white = {}
     black = {}
 
-    class HackenstringGame
+    class SimpleHackenstringGame
       invert = (colour) ->
         if colour is white
           black
@@ -178,11 +176,11 @@ Maude started with the following notes:
                 throw "TODO: Implement Me"
           , 0
     
-    describe "HackenstringGame", ->
+    describe "SimpleHackenstringGame", ->
     
-      noRows = new HackenstringGame([])
-      oneEmptyRow = new HackenstringGame([[]])
-      twoEmptyRows = new HackenstringGame([[]])
+      noRows = new SimpleHackenstringGame([])
+      oneEmptyRow = new SimpleHackenstringGame([[]])
+      twoEmptyRows = new SimpleHackenstringGame([[]])
     
       describe "construction", ->
 
@@ -192,13 +190,13 @@ Maude started with the following notes:
           expect( -> twoEmptyRows ).not.toThrow()
 
         it "shouldn't throw an error for rows with stones", ->
-          expect( -> new HackenstringGame([[white]]) ).not.toThrow()
-          expect( -> new HackenstringGame([[white, white]]) ).not.toThrow()
-          expect( -> new HackenstringGame([[black]]) ).not.toThrow()
-          expect( -> new HackenstringGame([[white, black]]) ).not.toThrow()
+          expect( -> new SimpleHackenstringGame([[white]]) ).not.toThrow()
+          expect( -> new SimpleHackenstringGame([[white, white]]) ).not.toThrow()
+          expect( -> new SimpleHackenstringGame([[black]]) ).not.toThrow()
+          expect( -> new SimpleHackenstringGame([[white, black]]) ).not.toThrow()
 
         it "should throw an error for a row with a non-stone", ->
-          expect( -> new HackenstringGame([[{}]]) ).toThrow()
+          expect( -> new SimpleHackenstringGame([[{}]]) ).toThrow()
 
       describe "evaluation", ->
 
@@ -207,10 +205,10 @@ Maude started with the following notes:
           expect( twoEmptyRows.evaluation() ).toEqual(0)
         
         it "shoudl be zero for equal games", ->
-          expect( new HackenstringGame([[white], [black]]).evaluation() ).toEqual(0)
+          expect( new SimpleHackenstringGame([[white], [black]]).evaluation() ).toEqual(0)
           
         it "should be positive for games where white has more stones", ->
-          whiteWins = new HackenstringGame [
+          whiteWins = new SimpleHackenstringGame [
             [white]
             [black, black, black]
             [white, white, white, white]
@@ -279,7 +277,7 @@ This seems very arbitrary, but if you play the games out, you see that the stone
 
 ### maude works with dyadic fractions
 
-Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is an even power of two.[^dyadic]
+Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is an natural power of two.[^dyadic]
 
 [^dyadic]: [Dyadic fractions or dyadic reals](https://en.wikipedia.org/wiki/Dyadic_fraction)
 
@@ -318,9 +316,94 @@ Maude began by making some notes about dyadic fractions. A dyadic fraction is a 
       it "should handle plus", ->
         expect( new Dyadic(5, 3).plus(new Dyadic(5, 3)).toString() ).toEqual '1 1/4'
         
+With dyadic fractions under her belt, she was able to extend her understanding of evaluating Hackenstring games with rows of mixed pebbles:
+
+    {isArray, every, reduce, isEmpty} = require 'underscore'
+
+    white = {}
+    black = {}
+    zero = new Dyadic(0, 0)
+
+    class MixedHackenstringGame
+      invert = (colour) ->
+        if colour is white
+          black
+        else if colour is black
+          white
+      stoneValue = (colour) ->
+        if colour is white
+          1
+        else if colour is black
+          -1
+      validRow = (row) ->
+        isArray(row) and every(row, (stone) -> stone is white or stone is black)
+      constructor: (@rows) ->
+        throw 'invalid' unless isArray(@rows) and every(@rows, validRow)
+      evaluation: ->
+        reduce @rows,
+          (acc, row) ->
+              startColour = row[0]
+              if row.length is 0
+                acc
+              else
+                firstOther = row.indexOf(invert(startColour))
+                if firstOther is -1
+                  acc.plus(new Dyadic(row.length * stoneValue(startColour), 0))
+                else
+                  acc = acc.plus (new Dyadic(firstOther * stoneValue(startColour), 0))
+                  row.slice(firstOther).forEach (stone, index) ->
+                    acc = acc.plus (new Dyadic(stoneValue(stone), index + 1))
+                  acc
+          , zero
+    
+    describe "MixedHackenstringGame", ->
+    
+      noRows = new MixedHackenstringGame([])
+      oneEmptyRow = new MixedHackenstringGame([[]])
+      twoEmptyRows = new MixedHackenstringGame([[]])
+    
+      describe "regression-free evaluation", ->
+
+        it "should be zero for empty games", ->
+          expect( noRows.evaluation().toString() ).toEqual '0'
+          expect( twoEmptyRows.evaluation().toString() ).toEqual '0'
+        
+        it "should be zero for equal games", ->
+          wb = new MixedHackenstringGame([[white], [black]])
+          expect( wb.evaluation().toString() ).toEqual '0'
+          
+        it "should be positive for games where white has more stones", ->
+          whiteWins = new MixedHackenstringGame [
+            [white]
+            [black, black, black]
+            [white, white, white, white]
+          ]
+          expect( whiteWins.evaluation().toString() ).toEqual '2'
+          
+      describe "with mixed stones", ->
+      
+        it "should be -1/2 for b-w", ->
+          bw = new MixedHackenstringGame([ [black, white] ])
+          expect( bw.evaluation().toString() ).toEqual '-1/2'
+
+Maude played around with a few more examples, then challenged Zee Hackenbush Bird.
+
+### the challenge
+
+"This is all very interesting," said Maude, "And I think I see where you are going with Hackenstrings. I wouldn't have grasped it without some context, but knowing that you're using Hackenstrings to explain Horton's flocks, I'm guessing that a HackenString game is another way of expressing the numbers that proper flocks can express."
+
+"And they seem easier to work with than flocks with their birds that know sets of birds they outrank or are outranked by. Nevertheless, I fail to see what Hackenstring games make--as you put it--easy that oridinary arithmatic cannot handle."
+
+Zee Hackenbush Bird waggled his eyebrows and stalked back and forth theatrically. "You have grasped the essential points. We could carry on to discuss arithmetic in Hackenstrings. Compared to the system arboreal primates use, it has several advantages. As my old professor The Walker Bird has said, the concept of addition is natural, consisting merely of laying out adjacent rows; negation, and hence subtraction, is natural, consisting of swapping the ownership of each pebble."
+
+"But I think the most exciting thing that hackenstrings make easy require us to take a little leave of our senses."
+
+And with that, he opened his discussion of Irrational Hackenstrings.
 
 ---
 
-**WARNING: THIS ESSAY IS A WORK IN PROGRESS**
+Coming Soon: **Irrational Hackenstrings, from the Infinite to the Infinitesimal**
+
+---
 
 notes:

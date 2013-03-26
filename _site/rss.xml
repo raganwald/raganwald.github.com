@@ -6,8 +6,8 @@
     <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
-    <pubDate>Tue, 26 Mar 2013 12:12:54 -0400</pubDate>
-    <lastBuildDate>Tue, 26 Mar 2013 12:12:54 -0400</lastBuildDate>
+    <pubDate>Tue, 26 Mar 2013 13:38:11 -0400</pubDate>
+    <lastBuildDate>Tue, 26 Mar 2013 13:38:11 -0400</lastBuildDate>
 
     
       
@@ -19,15 +19,13 @@
           <guid>http://raganwald.com/enchanted-forest/zee-hackenbush-bird.coffee</guid>
           <description>&lt;p&gt;Previous: &lt;a href=&quot;./horton.html&quot;&gt;A Surreal Encounter With a Winged Elephant&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;WARNING: THIS ESSAY IS A WORK IN PROGRESS&lt;/strong&gt;&lt;/p&gt;
-
 &lt;hr /&gt;
 
 &lt;p&gt;Moses led Maude to a sandy riverbank, where a number of birds had congregated. Maude watched for a few moments, and she saw that all along the riverbank, birds were arrayed, each with a small territory. Each bird had collected river pebbles of various colours and had them arranged in rows or pits.&lt;/p&gt;
 
 &lt;p&gt;Other birds would flutter along from one territory to another, examining the arrangements of stones. They would sometimes engage each other in conversation, and in some places they would rearrange the stones in concert with the bird stationed there in some kind of elaborate ritual.&lt;/p&gt;
 
-&lt;h3 id=&quot;the-bowers&quot;&gt;the bowers&lt;/h3&gt;
+&lt;h3 id=&quot;the-bowerbirds-and-their-pebble-bowers&quot;&gt;the bowerbirds and their pebble bowers&lt;/h3&gt;
 
 &lt;p&gt;“Each of these birds,” explained Moses, “Makes a bower out of pebbles. Prospective mates inspect the bowers looking for signs of intelligence. A few bowerbirds find it sufficient to make elaborate patterns of pebbles and sand, the Mandelbrot Bird&lt;sup id=&quot;fnref:Mandelbrot&quot;&gt;&lt;a href=&quot;#fn:Mandelbrot&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; is a spectacular example of this type. But on this riverbank, the birds specialize in patterns of pebbles that can be rearranged in specific patterns.&lt;/p&gt;
 
@@ -155,7 +153,7 @@
 white = {}
 black = {}
 
-class HackenstringGame
+class SimpleHackenstringGame
   invert = (colour) -&amp;gt;
     if colour is white
       black
@@ -183,11 +181,11 @@ class HackenstringGame
             throw &quot;TODO: Implement Me&quot;
       , 0
 
-describe &quot;HackenstringGame&quot;, -&amp;gt;
+describe &quot;SimpleHackenstringGame&quot;, -&amp;gt;
 
-  noRows = new HackenstringGame([])
-  oneEmptyRow = new HackenstringGame([[]])
-  twoEmptyRows = new HackenstringGame([[]])
+  noRows = new SimpleHackenstringGame([])
+  oneEmptyRow = new SimpleHackenstringGame([[]])
+  twoEmptyRows = new SimpleHackenstringGame([[]])
 
   describe &quot;construction&quot;, -&amp;gt;
 
@@ -197,13 +195,13 @@ describe &quot;HackenstringGame&quot;, -&amp;gt;
       expect( -&amp;gt; twoEmptyRows ).not.toThrow()
 
     it &quot;shouldn't throw an error for rows with stones&quot;, -&amp;gt;
-      expect( -&amp;gt; new HackenstringGame([[white]]) ).not.toThrow()
-      expect( -&amp;gt; new HackenstringGame([[white, white]]) ).not.toThrow()
-      expect( -&amp;gt; new HackenstringGame([[black]]) ).not.toThrow()
-      expect( -&amp;gt; new HackenstringGame([[white, black]]) ).not.toThrow()
+      expect( -&amp;gt; new SimpleHackenstringGame([[white]]) ).not.toThrow()
+      expect( -&amp;gt; new SimpleHackenstringGame([[white, white]]) ).not.toThrow()
+      expect( -&amp;gt; new SimpleHackenstringGame([[black]]) ).not.toThrow()
+      expect( -&amp;gt; new SimpleHackenstringGame([[white, black]]) ).not.toThrow()
 
     it &quot;should throw an error for a row with a non-stone&quot;, -&amp;gt;
-      expect( -&amp;gt; new HackenstringGame([[{}]]) ).toThrow()
+      expect( -&amp;gt; new SimpleHackenstringGame([[{}]]) ).toThrow()
 
   describe &quot;evaluation&quot;, -&amp;gt;
 
@@ -212,10 +210,10 @@ describe &quot;HackenstringGame&quot;, -&amp;gt;
       expect( twoEmptyRows.evaluation() ).toEqual(0)
     
     it &quot;shoudl be zero for equal games&quot;, -&amp;gt;
-      expect( new HackenstringGame([[white], [black]]).evaluation() ).toEqual(0)
+      expect( new SimpleHackenstringGame([[white], [black]]).evaluation() ).toEqual(0)
       
     it &quot;should be positive for games where white has more stones&quot;, -&amp;gt;
-      whiteWins = new HackenstringGame [
+      whiteWins = new SimpleHackenstringGame [
         [white]
         [black, black, black]
         [white, white, white, white]
@@ -285,11 +283,90 @@ describe &quot;HackenstringGame&quot;, -&amp;gt;
 
 &lt;h3 id=&quot;maude-works-with-dyadic-fractions&quot;&gt;maude works with dyadic fractions&lt;/h3&gt;
 
-&lt;p&gt;Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is an even power of two.&lt;sup id=&quot;fnref:dyadic&quot;&gt;&lt;a href=&quot;#fn:dyadic&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is an natural power of two.&lt;sup id=&quot;fnref:dyadic&quot;&gt;&lt;a href=&quot;#fn:dyadic&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;With dyadic fractions under her belt, she was able to extend her understanding of evaluating Hackenstring games with rows of mixed pebbles:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{isArray, every, reduce, isEmpty} = require 'underscore'
+
+white = {}
+black = {}
+zero = new Dyadic(0, 0)
+
+class MixedHackenstringGame
+  invert = (colour) -&amp;gt;
+    if colour is white
+      black
+    else if colour is black
+      white
+  stoneValue = (colour) -&amp;gt;
+    if colour is white
+      1
+    else if colour is black
+      -1
+  validRow = (row) -&amp;gt;
+    isArray(row) and every(row, (stone) -&amp;gt; stone is white or stone is black)
+  constructor: (@rows) -&amp;gt;
+    throw 'invalid' unless isArray(@rows) and every(@rows, validRow)
+  evaluation: -&amp;gt;
+    reduce @rows,
+      (acc, row) -&amp;gt;
+          startColour = row[0]
+          if row.length is 0
+            acc
+          else
+            firstOther = row.indexOf(invert(startColour))
+            if firstOther is -1
+              acc.plus(new Dyadic(row.length * stoneValue(startColour), 0))
+            else
+              acc = acc.plus (new Dyadic(firstOther * stoneValue(startColour), 0))
+              row.slice(firstOther).forEach (stone, index) -&amp;gt;
+                acc = acc.plus (new Dyadic(stoneValue(stone), index + 1))
+              acc
+      , zero
+
+describe &quot;MixedHackenstringGame&quot;, -&amp;gt;
+
+  noRows = new MixedHackenstringGame([])
+  oneEmptyRow = new MixedHackenstringGame([[]])
+  twoEmptyRows = new MixedHackenstringGame([[]])
+
+  describe &quot;regression-free evaluation&quot;, -&amp;gt;
+
+    it &quot;should be zero for empty games&quot;, -&amp;gt;
+      expect( noRows.evaluation().toString() ).toEqual '0'
+      expect( twoEmptyRows.evaluation().toString() ).toEqual '0'
+    
+    it &quot;should be zero for equal games&quot;, -&amp;gt;
+      wb = new MixedHackenstringGame([[white], [black]])
+      expect( wb.evaluation().toString() ).toEqual '0'
+      
+    it &quot;should be positive for games where white has more stones&quot;, -&amp;gt;
+      whiteWins = new MixedHackenstringGame [
+        [white]
+        [black, black, black]
+        [white, white, white, white]
+      ]
+      expect( whiteWins.evaluation().toString() ).toEqual '2'
+      
+  describe &quot;with mixed stones&quot;, -&amp;gt;
+  
+    it &quot;should be -1/2 for b-w&quot;, -&amp;gt;
+      bw = new MixedHackenstringGame([ [black, white] ])
+      expect( bw.evaluation().toString() ).toEqual '-1/2'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Maude played around with a few more examples, then challenged Zee Hackenbush Bird.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-challenge&quot;&gt;the challenge&lt;/h3&gt;
+
+&lt;p&gt;“This is all very interesting,” said Maude, “And I think I see where you are going with Hackenstrings. I wouldn’t have grasped it without some context, but knowing that you’re using Hackenstrings to explain Horton’s flocks, I’m guessing that a HackenString game is another way of expressing the numbers that proper flocks can express.”&lt;/p&gt;
+
+&lt;p&gt;“And they seem easier to work with than flocks with their birds that know sets of birds they outrank or are outranked by. Nevertheless, I fail to see what Hackenstring games make–as you put it–easy that oridinary arithmatic cannot handle.”&lt;/p&gt;
+
+&lt;p&gt;Zee Hackenbush Bird waggled his eyebrows and stalked back and forth theatrically. “You have grasped the essential points. We could carry on to discuss arithmatic in Hackenstrings, “&lt;/p&gt;
 
 &lt;hr /&gt;
-
-&lt;p&gt;&lt;strong&gt;WARNING: THIS ESSAY IS A WORK IN PROGRESS&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;notes:&lt;/p&gt;
 &lt;div class=&quot;footnotes&quot;&gt;
