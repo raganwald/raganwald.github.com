@@ -6,8 +6,8 @@
     <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
-    <pubDate>Tue, 26 Mar 2013 14:28:10 -0400</pubDate>
-    <lastBuildDate>Tue, 26 Mar 2013 14:28:10 -0400</lastBuildDate>
+    <pubDate>Tue, 26 Mar 2013 14:29:34 -0400</pubDate>
+    <lastBuildDate>Tue, 26 Mar 2013 14:29:34 -0400</lastBuildDate>
 
     
       
@@ -35,7 +35,7 @@
 
 &lt;p&gt;&lt;a href=&quot;http://www.flickr.com/photos/laempel/5969810490/&quot; title=&quot;Sanfrauen beim Mancala by leo.laempel, on Flickr&quot;&gt;&lt;img src=&quot;http://farm7.staticflickr.com/6149/5969810490_cb25e6f6fa_z.jpg&quot; width=&quot;480&quot; height=&quot;640&quot; alt=&quot;Sanfrauen beim Mancala&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;“Ah,” said Moses. “These are bowerbirds from the Mancala or Warri famly.&lt;sup id=&quot;fnref:mancala&quot;&gt;&lt;a href=&quot;#fn:mancala&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; As you can see, their bowers consist of rows of pits.”&lt;/p&gt;
+&lt;p&gt;“Ah,” said Moses. “These are bowerbirds from the Mancala or Oware family.&lt;sup id=&quot;fnref:mancala&quot;&gt;&lt;a href=&quot;#fn:mancala&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; As you can see, their bowers consist of rows of pits.”&lt;/p&gt;
 
 &lt;h3 id=&quot;game-birds&quot;&gt;game birds&lt;/h3&gt;
 
@@ -420,7 +420,7 @@ describe &quot;MixedHackenstringGame&quot;, -&amp;gt;
       &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Benoit_Mandelbrot&quot;&gt;Benoit Mandelbrot&lt;/a&gt; (1924 − 2010)&lt;a href=&quot;#fnref:Mandelbrot&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
     &lt;li id=&quot;fn:mancala&quot;&gt;
-      &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Mancala&quot;&gt;The Manacala family of games on Wikipedia&lt;/a&gt;&lt;a href=&quot;#fnref:mancala&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Mancala&quot;&gt;Manacala&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Oware&quot;&gt;Oware&lt;/a&gt;&lt;a href=&quot;#fnref:mancala&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
     &lt;li id=&quot;fn:walker&quot;&gt;
       &lt;p&gt;See &lt;a href=&quot;http://web.archive.org/web/20070120052054/http://www.maths.nott.ac.uk/personal/anw/Research/Hack/&quot;&gt;Hackenstrings, and the 0.999… ?= 1 FAQ&lt;/a&gt; by A.N. Walker, School of Mathematical Sciences, University of Nottingham&lt;a href=&quot;#fnref:walker&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;

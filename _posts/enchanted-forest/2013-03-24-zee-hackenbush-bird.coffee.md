@@ -20,7 +20,7 @@ Other birds would flutter along from one territory to another, examining the arr
 
 [^Mandelbrot]: [Benoit Mandelbrot](https://en.wikipedia.org/wiki/Benoit_Mandelbrot) (1924 − 2010)
 
-"To fully appreciate the bower's ingenious owner, the inspecting bird will interact withe the stones. If they are intrigued or excited by what they discover, they favour the owner with their, um, admiration."
+"To fully appreciate the bower's ingenious owner, the inspecting bird will interact with the stones. If they are intrigued or excited by what they discover, they favour the owner with their, um, admiration."
 
 Maude was intrigued by the birds and had a look at a few that were close by. Each bird had laid out several rows of pits in the sand, and most of the pits contained pebbles. The birds were taking turns scooping pebbles out of pits and distributing them to other pits. "What is going on with these?" she asked.
 
@@ -396,9 +396,9 @@ Maude played around with a few more examples, then challenged Zee Hackenbush Bir
 
 Zee Hackenbush Bird waggled his eyebrows and stalked back and forth theatrically. "You have grasped the essential points. We could carry on to discuss arithmetic in Hackenstrings. Compared to the system arboreal primates use, it has several advantages. As my old professor The Walker Bird has said, the concept of addition is natural, consisting merely of laying out adjacent rows; negation, and hence subtraction, is natural, consisting of swapping the ownership of each pebble."
 
-"But I think the most exciting thing that hackenstrings make easy require us to take a little leave of our senses."
+"But I think the most exciting thing that Hackenstrings make easy require us to take a little leave of our senses."
 
-And with that, he opened his discussion of Irrational Hackenstrings.
+And with that, he opened his discussion of *Irrational Hackenstrings*.
 
 ---
 
