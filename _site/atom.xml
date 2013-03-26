@@ -4,13 +4,89 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-26T14:29:34-04:00</updated>
+  <updated>2013-03-26T18:50:42-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
     <email>reg@braythwayt.com</email>
   </author>
 
+  
+    
+      <entry>
+        <id>http://raganwald.com/2013/03/26/the-interview</id>
+        <link type="text/html" rel="alternate" href="http://raganwald.com/2013/03/26/the-interview.html"/>
+        <title>The Interview</title>
+        <published>2013-03-26T00:00:00-04:00</published>
+        <updated>2013-03-26T00:00:00-04:00</updated>
+        <author>
+          <name>Reginald Braithwaite</name>
+          <uri>http://raganwald.com/</uri>
+        </author>
+        <content type="html">&lt;p&gt;It had been a long and gruelling process, but the ThinkWare team had whittled the virtual stack of resumes down to Bob and Carol. “Bob,” said Alice, “Was great. The interview got off to a great start when I fizzbuzzed him with Fibonacci. He asked whether I wanted an Enumerator or iterative function. When I suggested he try something recursive, he had no trouble whatsoever.” &lt;/p&gt;
+
+&lt;p&gt;“He even mentioned trampolining when I wondered about asking for the ten thousandth Fibonacci number. I probed about the closed form solution, and while he knew one existed, he admitted up front that he hand’t used it. We discussed requirements and use cases and things went really well from there.”&lt;/p&gt;
+
+&lt;p&gt;Ted was equally enthusiastic about Carol. “Super solid on algorithms, she brought up &lt;a href=&quot;http://raganwald.com/2008/12/12/fibonacci.html&quot;&gt;raganwald’s matrix implementation&lt;/a&gt; and we had a good laugh about how you could beat the pants off it with a caching solution. She wrote one and it worked just fine with the 10,000th number.”&lt;/p&gt;
+
+&lt;p&gt;The team talked for a while longer before deciding to ask for enough budget to hire both Bob and Carol. Later, at BEvERage-O’Clock, someone asked about Scott.&lt;/p&gt;
+
+&lt;p&gt;“Who else interviewed Scott? He was a handful!” The team chuckled, the story had been going around the office for a week.&lt;/p&gt;
+
+&lt;p&gt;“A difficult case?”&lt;/p&gt;
+
+&lt;p&gt;“That’s putting it mildly,” said &lt;a href=&quot;http://raganwald.com/2011/11/01/williams-master-of-the-comefrom.html&quot;&gt;Williams&lt;/a&gt;, the grizzled veteran who had handled Scott’s first meeting of the day. “When I tried to fizzbuzz him, he refused, saying that this was no way to interview someone.”&lt;/p&gt;
+
+&lt;p&gt;“I tried to explain that we value craftsmanship, and that this was as good an opportunity as any to discuss the many different considerations when writing software (not to mention validate that someone can actually write software), but I think he flipped the bozo bit on me, he acted like I was a blithering idiot for thinking there was anything to discuss with respect to Fibonacci.”&lt;/p&gt;
+
+&lt;p&gt;“What did you do?” Wondered the team. Williams was a sweet guy, but he had a martial arts background and some strong opinions about interpersonal respect.&lt;/p&gt;
+
+&lt;p&gt;“Oh, I said that if it was obvious, maybe he could tell me what the only true solution might be. He told me that there was a closed form solution and I would fail an interview with him if I didn’t know that and submit it.”&lt;/p&gt;
+
+&lt;p&gt;“After some cajoling, he wrote this for me:”&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib_binet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;truncate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib_binet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; 0&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   1&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   1&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   2&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   3&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   ...&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   135301852344707186688&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   218922995834555891712&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   354224848179263111168&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;“I gave him one last chance, I said tha tI’d asked the previous candidate to give me the 1,000th, 10,000th, 100,000th, and 1,000,000th Fibonacci numbers and did that requirement alter his algorithm at all?”&lt;/p&gt;
+
+&lt;p&gt;“He looked at me like I was insulting his manhood. &lt;em&gt;I told you,&lt;/em&gt; he said, &lt;em&gt;This is the right way to do it, everything else is just wanking. Now ask me some proper programming questions or I’m out of here!&lt;/em&gt;”&lt;/p&gt;
+
+&lt;p&gt;“In response, I simply typed this into &lt;code&gt;irb&lt;/code&gt;:”&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;fib_binet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; FloatDomainError: Infinity&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   	from (irb):38:in `truncate&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   	from (irb):38:in `fib_binet&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   	from (irb):44&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   	from /Users/williams/.rvm/rubies/ruby-1.9.3-p327/bin/irb:16:in `&amp;lt;main&amp;gt;&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;“Alas, he didn’t have the decency to apologise before leaving, he just shouted something about trick questions. What could I do? After he left, I emailed his resume to StinkWare, our competition. They deserve each other.”&lt;/p&gt;
+
+&lt;p&gt;The team had a good laugh about that.&lt;/p&gt;
+</content>
+      </entry>
+    
   
     
       <entry>
@@ -35,7 +111,7 @@
 
 &lt;p&gt;“Each of these birds,” explained Moses, “Makes a bower out of pebbles. Prospective mates inspect the bowers looking for signs of intelligence. A few bowerbirds find it sufficient to make elaborate patterns of pebbles and sand, the Mandelbrot Bird&lt;sup id=&quot;fnref:Mandelbrot&quot;&gt;&lt;a href=&quot;#fn:Mandelbrot&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; is a spectacular example of this type. But on this riverbank, the birds specialize in patterns of pebbles that can be rearranged in specific patterns.&lt;/p&gt;
 
-&lt;p&gt;“To fully appreciate the bower’s ingenious owner, the inspecting bird will interact withe the stones. If they are intrigued or excited by what they discover, they favour the owner with their, um, admiration.”&lt;/p&gt;
+&lt;p&gt;“To fully appreciate the bower’s ingenious owner, the inspecting bird will interact with the stones. If they are intrigued or excited by what they discover, they favour the owner with their, um, admiration.”&lt;/p&gt;
 
 &lt;p&gt;Maude was intrigued by the birds and had a look at a few that were close by. Each bird had laid out several rows of pits in the sand, and most of the pits contained pebbles. The birds were taking turns scooping pebbles out of pits and distributing them to other pits. “What is going on with these?” she asked.&lt;/p&gt;
 
@@ -408,9 +484,9 @@ describe &quot;MixedHackenstringGame&quot;, -&amp;gt;
 
 &lt;p&gt;Zee Hackenbush Bird waggled his eyebrows and stalked back and forth theatrically. “You have grasped the essential points. We could carry on to discuss arithmetic in Hackenstrings. Compared to the system arboreal primates use, it has several advantages. As my old professor The Walker Bird has said, the concept of addition is natural, consisting merely of laying out adjacent rows; negation, and hence subtraction, is natural, consisting of swapping the ownership of each pebble.”&lt;/p&gt;
 
-&lt;p&gt;“But I think the most exciting thing that hackenstrings make easy require us to take a little leave of our senses.”&lt;/p&gt;
+&lt;p&gt;“But I think the most exciting thing that Hackenstrings make easy require us to take a little leave of our senses.”&lt;/p&gt;
 
-&lt;p&gt;And with that, he opened his discussion of Irrational Hackenstrings.&lt;/p&gt;
+&lt;p&gt;And with that, he opened his discussion of &lt;em&gt;Irrational Hackenstrings&lt;/em&gt;.&lt;/p&gt;
 
 &lt;hr /&gt;
 

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/assets/js/respond.js"></script>
+    
+    
+    
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <LINK REL=StyleSheet HREF="/assets/css/pygments.css" TYPE="text/css" MEDIA=screen>
+    <link href="http://raganwald.com/atom.xml" type="application/atom+xml" rel="alternate" title="raganwald.com">
+    <link rel="alternate" type="application/rss+xml" href="http://raganwald.com/rss.xml" title="raganwald.com">
+    <title>The Interview</title>
+    </head>
+  <body>
+    <div id="container">
+      <div class="inner">
+        
+              <div id="header">
+        <h1>The Interview</h1>
+        <h2><a href="/">via raganwald.com</a></h2>
+      </div><!-- end header -->
+
+        <hr>
+
+        <section id="main_content">
+          
+          
+
+
+
+  
+  
+
+  
+    
+    
+    
+  
+
+  
+    <iframe style="position:relative;float:right;left:180px;top:0px;margin-left:-160px;" width="160" height="400" src="https://leanpub.com/combinators/embed" frameborder="0" allowtransparency="true"></iframe>
+    
+  
+  
+    <iframe src="http://rcm.amazon.com/e/cm?lt1=_blank&bc1=000000&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=raganwald001-20&o=1&p=8&l=as4&m=amazon&f=ifr&ref=ss_til&asins=B00A376YAK" style="position:relative;float:right;left:180px;top:420px;margin-left:-160px;width:120px;height:240px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+    
+  
+  
+
+          
+          <p>It had been a long and gruelling process, but the ThinkWare team had whittled the virtual stack of resumes down to Bob and Carol. “Bob,” said Alice, “Was great. The interview got off to a great start when I fizzbuzzed him with Fibonacci. He asked whether I wanted an Enumerator or iterative function. When I suggested he try something recursive, he had no trouble whatsoever.” </p>
+
+<p>“He even mentioned trampolining when I wondered about asking for the ten thousandth Fibonacci number. I probed about the closed form solution, and while he knew one existed, he admitted up front that he hand’t used it. We discussed requirements and use cases and things went really well from there.”</p>
+
+<p>Ted was equally enthusiastic about Carol. “Super solid on algorithms, she brought up <a href="http://raganwald.com/2008/12/12/fibonacci.html">raganwald’s matrix implementation</a> and we had a good laugh about how you could beat the pants off it with a caching solution. She wrote one and it worked just fine with the 10,000th number.”</p>
+
+<p>The team talked for a while longer before deciding to ask for enough budget to hire both Bob and Carol. Later, at BEvERage-O’Clock, someone asked about Scott.</p>
+
+<p>“Who else interviewed Scott? He was a handful!” The team chuckled, the story had been going around the office for a week.</p>
+
+<p>“A difficult case?”</p>
+
+<p>“That’s putting it mildly,” said <a href="http://raganwald.com/2011/11/01/williams-master-of-the-comefrom.html">Williams</a>, the grizzled veteran who had handled Scott’s first meeting of the day. “When I tried to fizzbuzz him, he refused, saying that this was no way to interview someone.”</p>
+
+<p>“I tried to explain that we value craftsmanship, and that this was as good an opportunity as any to discuss the many different considerations when writing software (not to mention validate that someone can actually write software), but I think he flipped the bozo bit on me, he acted like I was a blithering idiot for thinking there was anything to discuss with respect to Fibonacci.”</p>
+
+<p>“What did you do?” Wondered the team. Williams was a sweet guy, but he had a martial arts background and some strong opinions about interpersonal respect.</p>
+
+<p>“Oh, I said that if it was obvious, maybe he could tell me what the only true solution might be. He told me that there was a closed form solution and I would fail an interview with him if I didn’t know that and submit it.”</p>
+
+<p>“After some cajoling, he wrote this for me:”</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">fib_binet</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+  <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">**</span><span class="n">n</span>
+  <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">**</span><span class="n">n</span>
+  <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+  <span class="k">return</span> <span class="p">((</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>
+<span class="k">end</span>
+
+<span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span> <span class="n">i</span> <span class="o">|</span>
+  <span class="nb">puts</span> <span class="n">fib_binet</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1">#=&gt; 0</span>
+<span class="c1">#   1</span>
+<span class="c1">#   1</span>
+<span class="c1">#   2</span>
+<span class="c1">#   3</span>
+<span class="c1">#   ...</span>
+<span class="c1">#   135301852344707186688</span>
+<span class="c1">#   218922995834555891712</span>
+<span class="c1">#   354224848179263111168</span>
+</code></pre></div>
+
+<p>“I gave him one last chance, I said tha tI’d asked the previous candidate to give me the 1,000th, 10,000th, 100,000th, and 1,000,000th Fibonacci numbers and did that requirement alter his algorithm at all?”</p>
+
+<p>“He looked at me like I was insulting his manhood. <em>I told you,</em> he said, <em>This is the right way to do it, everything else is just wanking. Now ask me some proper programming questions or I’m out of here!</em>”</p>
+
+<p>“In response, I simply typed this into <code>irb</code>:”</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">fib_binet</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="c1">#=&gt; FloatDomainError: Infinity</span>
+<span class="c1">#   	from (irb):38:in `truncate&#39;</span>
+<span class="c1">#   	from (irb):38:in `fib_binet&#39;</span>
+<span class="c1">#   	from (irb):44</span>
+<span class="c1">#   	from /Users/williams/.rvm/rubies/ruby-1.9.3-p327/bin/irb:16:in `&lt;main&gt;&#39;</span>
+</code></pre></div>
+
+<p>“Alas, he didn’t have the decency to apologise before leaving, he just shouted something about trick questions. What could I do? After he left, I emailed his resume to StinkWare, our competition. They deserve each other.”</p>
+
+<p>The team had a good laugh about that.</p>
+
+        </section>
+
+        <footer>
+    This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+    <br/><br/>
+  <a href="https://twitter.com/raganwald" class="twitter-follow-button" data-show-count="false">Follow @raganwald</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="raganwald">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</footer>
+
+      </div>
+    </div>
+
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38371925-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  </body>
+</html>
