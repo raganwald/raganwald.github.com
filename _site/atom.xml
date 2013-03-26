@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-26T14:25:09-04:00</updated>
+  <updated>2013-03-26T14:28:10-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -31,7 +31,7 @@
 
 &lt;p&gt;Other birds would flutter along from one territory to another, examining the arrangements of stones. They would sometimes engage each other in conversation, and in some places they would rearrange the stones in concert with the bird stationed there in some kind of elaborate ritual.&lt;/p&gt;
 
-&lt;h3 id=&quot;the-bowerbirds-and-their-pebble-bowers&quot;&gt;the bowerbirds and their pebble bowers&lt;/h3&gt;
+&lt;h3 id=&quot;the-bowerbirds-and-their-pebbles&quot;&gt;the bowerbirds and their pebbles&lt;/h3&gt;
 
 &lt;p&gt;“Each of these birds,” explained Moses, “Makes a bower out of pebbles. Prospective mates inspect the bowers looking for signs of intelligence. A few bowerbirds find it sufficient to make elaborate patterns of pebbles and sand, the Mandelbrot Bird&lt;sup id=&quot;fnref:Mandelbrot&quot;&gt;&lt;a href=&quot;#fn:Mandelbrot&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; is a spectacular example of this type. But on this riverbank, the birds specialize in patterns of pebbles that can be rearranged in specific patterns.&lt;/p&gt;
 
@@ -41,7 +41,7 @@
 
 &lt;p&gt;&lt;a href=&quot;http://www.flickr.com/photos/laempel/5969810490/&quot; title=&quot;Sanfrauen beim Mancala by leo.laempel, on Flickr&quot;&gt;&lt;img src=&quot;http://farm7.staticflickr.com/6149/5969810490_cb25e6f6fa_z.jpg&quot; width=&quot;480&quot; height=&quot;640&quot; alt=&quot;Sanfrauen beim Mancala&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;“Ah,” said Moses. “These are bowerbirds from the Mancala or Warri famly. As you can see, their bowers consist of rows of pits.”&lt;/p&gt;
+&lt;p&gt;“Ah,” said Moses. “These are bowerbirds from the Mancala or Warri famly.&lt;sup id=&quot;fnref:mancala&quot;&gt;&lt;a href=&quot;#fn:mancala&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; As you can see, their bowers consist of rows of pits.”&lt;/p&gt;
 
 &lt;h3 id=&quot;game-birds&quot;&gt;game birds&lt;/h3&gt;
 
@@ -81,7 +81,7 @@
 
 &lt;p&gt;“This,” and here he waved his wing over several rows of black and white pebbles, “Is a game I have modestly named &lt;em&gt;Hackenstrings&lt;/em&gt;. It is a good introduction for someone as intelligent and curious as you are.”&lt;/p&gt;
 
-&lt;p&gt;Zee Hackenbush Bird opened his beak and delivered what must have been a very familiar lecture, for he sang it in a squeaky voice while strutting and dancing back and forth.&lt;sup id=&quot;fnref:walker&quot;&gt;&lt;a href=&quot;#fn:walker&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Zee Hackenbush Bird opened his beak and delivered what must have been a very familiar lecture, for he sang it in a squeaky voice while strutting and dancing back and forth.&lt;sup id=&quot;fnref:walker&quot;&gt;&lt;a href=&quot;#fn:walker&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;hackenstrings&quot;&gt;Hackenstrings&lt;/h2&gt;
 
@@ -289,7 +289,7 @@ describe &quot;SimpleHackenstringGame&quot;, -&amp;gt;
 
 &lt;h3 id=&quot;maude-works-with-dyadic-fractions&quot;&gt;maude works with dyadic fractions&lt;/h3&gt;
 
-&lt;p&gt;Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is a natural power of two.&lt;sup id=&quot;fnref:dyadic&quot;&gt;&lt;a href=&quot;#fn:dyadic&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is a natural power of two.&lt;sup id=&quot;fnref:dyadic&quot;&gt;&lt;a href=&quot;#fn:dyadic&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;{applyLeft} = require('allong.es')
 twoToPowerOf = applyLeft(Math.pow, 2)
@@ -424,6 +424,9 @@ describe &quot;MixedHackenstringGame&quot;, -&amp;gt;
   &lt;ol&gt;
     &lt;li id=&quot;fn:Mandelbrot&quot;&gt;
       &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Benoit_Mandelbrot&quot;&gt;Benoit Mandelbrot&lt;/a&gt; (1924 − 2010)&lt;a href=&quot;#fnref:Mandelbrot&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:mancala&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Mancala&quot;&gt;The Manacala family of games on Wikipedia&lt;/a&gt;&lt;a href=&quot;#fnref:mancala&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
     &lt;li id=&quot;fn:walker&quot;&gt;
       &lt;p&gt;See &lt;a href=&quot;http://web.archive.org/web/20070120052054/http://www.maths.nott.ac.uk/personal/anw/Research/Hack/&quot;&gt;Hackenstrings, and the 0.999… ?= 1 FAQ&lt;/a&gt; by A.N. Walker, School of Mathematical Sciences, University of Nottingham&lt;a href=&quot;#fnref:walker&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;

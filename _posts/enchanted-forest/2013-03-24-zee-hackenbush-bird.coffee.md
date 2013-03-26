@@ -14,7 +14,7 @@ Moses led Maude to a sandy riverbank, where a number of birds had congregated. M
 
 Other birds would flutter along from one territory to another, examining the arrangements of stones. They would sometimes engage each other in conversation, and in some places they would rearrange the stones in concert with the bird stationed there in some kind of elaborate ritual.
 
-### the bowerbirds and their pebble bowers
+### the bowerbirds and their pebbles
 
 "Each of these birds," explained Moses, "Makes a bower out of pebbles. Prospective mates inspect the bowers looking for signs of intelligence. A few bowerbirds find it sufficient to make elaborate patterns of pebbles and sand, the Mandelbrot Bird[^Mandelbrot] is a spectacular example of this type. But on this riverbank, the birds specialize in patterns of pebbles that can be rearranged in specific patterns.
 
@@ -26,7 +26,9 @@ Maude was intrigued by the birds and had a look at a few that were close by. Eac
 
 <a href="http://www.flickr.com/photos/laempel/5969810490/" title="Sanfrauen beim Mancala by leo.laempel, on Flickr"><img src="http://farm7.staticflickr.com/6149/5969810490_cb25e6f6fa_z.jpg" width="480" height="640" alt="Sanfrauen beim Mancala"></a>
 
-"Ah," said Moses. "These are bowerbirds from the Mancala or Warri famly. As you can see, their bowers consist of rows of pits."
+"Ah," said Moses. "These are bowerbirds from the Mancala or Oware family.[^mancala] As you can see, their bowers consist of rows of pits."
+
+[^mancala]: [Manacala](https://en.wikipedia.org/wiki/Mancala) and [Oware](https://en.wikipedia.org/wiki/Oware)
 
 ### game birds
 
