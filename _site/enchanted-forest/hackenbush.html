@@ -107,7 +107,7 @@
 
 <h3 id="game-birds">game birds</h3>
 
-<p>“An essential part of their ritual bower behaviour is that each bird chooses a pit, picks up the pebbles it it, and then distributes them to other pits is a proscribed fashion, typically one at a time, clockwise. The birds alternate distributing stones in this fashion.”</p>
+<p>“An essential part of their ritual bower behaviour is that each bird chooses a pit, picks up the pebbles it it, and then distributes them to other pits is a prescribed fashion, typically one at a time, clockwise. The birds alternate distributing stones in this fashion.”</p>
 
 <p>“At some point, the ritual reaches an end and the birds evaluate the result, declaring either the host or visiting bird the <em>winner</em>. The important thing to note about these games is that the host bird devises a series of rules proscribing the allowed actions, the birds alternate actions, and that every ritual ends with one or the other winning. No randomness or hidden information is involved.”</p>
 
@@ -353,6 +353,42 @@ describe "SimpleHackenstringGame", -&gt;
 
 <p>Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is a natural power of two.<sup id="fnref:dyadic"><a href="#fn:dyadic" rel="footnote">3</a></sup></p>
 
+<pre><code>{applyLeft} = require('allong.es')
+twoToPowerOf = applyLeft(Math.pow, 2)
+
+class Dyadic
+  constructor: (@a, @b) -&gt;
+    [@a, @b] = [@a / 2, @b - 1] until (@a % 2 or @b is 0)
+  toString: -&gt;
+    denominator = twoToPowerOf(@b)
+    if denominator is 1
+      "" + @a
+    else if @a &gt; denominator
+      [units, a] = [Math.floor(@a / denominator), @a % denominator]
+      "#{units} #{a}/#{denominator}"
+    else
+      "#{@a}/#{denominator}"
+  plus: (that) -&gt;
+    b = Math.max(this.b, that.b)
+    a1 = this.a * twoToPowerOf(b - this.b)
+    a2 = that.a * twoToPowerOf(b - that.b)
+    new Dyadic(a1 + a2, b)
+    
+describe "dyadic", -&gt;
+
+  it "should have readable output", -&gt;
+    expect( new Dyadic(5, 0).toString() ).toEqual '5'
+    expect( new Dyadic(5, 1).toString() ).toEqual '2 1/2'
+    expect( new Dyadic(5, 2).toString() ).toEqual '1 1/4'
+    expect( new Dyadic(5, 3).toString() ).toEqual '5/8'
+    
+  it "should handle overflow", -&gt;
+    expect( new Dyadic(10, 3).toString() ).toEqual '1 1/4'
+    
+  it "should handle plus", -&gt;
+    expect( new Dyadic(5, 3).plus(new Dyadic(5, 3)).toString() ).toEqual '1 1/4'
+</code></pre>
+
 <p>With dyadic fractions under her belt, she was able to extend her understanding of evaluating Hackenstring games with rows of mixed pebbles:</p>
 
 <pre><code>{isArray, every, reduce, isEmpty} = require 'underscore'
@@ -445,6 +481,7 @@ describe "MixedHackenstringGame", -&gt;
 <hr />
 
 <p>notes:</p>
+
 <div class="footnotes">
   <ol>
     <li id="fn:Mandelbrot">
@@ -454,42 +491,7 @@ describe "MixedHackenstringGame", -&gt;
       <p>See <a href="http://web.archive.org/web/20070120052054/http://www.maths.nott.ac.uk/personal/anw/Research/Hack/">Hackenstrings, and the 0.999… ?= 1 FAQ</a> by A.N. Walker, School of Mathematical Sciences, University of Nottingham<a href="#fnref:walker" rel="reference">&#8617;</a></p>
     </li>
     <li id="fn:dyadic">
-      <p><a href="https://en.wikipedia.org/wiki/Dyadic_fraction">Dyadic fractions or dyadic reals</a></p>
-
-      <p>{applyLeft} = require(‘allong.es’)
-twoToPowerOf = applyLeft(Math.pow, 2)</p>
-
-      <p>class Dyadic
-  constructor: (@a, @b) -&gt;
-    [@a, @b] = [@a / 2, @b - 1] until (@a % 2 or @b is 0)
-  toString: -&gt;
-    denominator = twoToPowerOf(@b)
-    if denominator is 1
-      “” + @a
-    else if @a &gt; denominator
-      [units, a] = [Math.floor(@a / denominator), @a % denominator]
-      “#{units} #{a}/#{denominator}”
-    else
-      “#{@a}/#{denominator}”
-  plus: (that) -&gt;
-    b = Math.max(this.b, that.b)
-    a1 = this.a * twoToPowerOf(b - this.b)
-    a2 = that.a * twoToPowerOf(b - that.b)
-    new Dyadic(a1 + a2, b)</p>
-
-      <p>describe “dyadic”, -&gt;</p>
-
-      <p>it “should have readable output”, -&gt;
-    expect( new Dyadic(5, 0).toString() ).toEqual ‘5’
-    expect( new Dyadic(5, 1).toString() ).toEqual ‘2 1/2’
-    expect( new Dyadic(5, 2).toString() ).toEqual ‘1 1/4’
-    expect( new Dyadic(5, 3).toString() ).toEqual ‘5/8’</p>
-
-      <p>it “should handle overflow”, -&gt;
-    expect( new Dyadic(10, 3).toString() ).toEqual ‘1 1/4’</p>
-
-      <p>it “should handle plus”, -&gt;
-    expect( new Dyadic(5, 3).plus(new Dyadic(5, 3)).toString() ).toEqual ‘1 1/4’<a href="#fnref:dyadic" rel="reference">&#8617;</a></p>
+      <p><a href="https://en.wikipedia.org/wiki/Dyadic_fraction">Dyadic fractions or dyadic reals</a><a href="#fnref:dyadic" rel="reference">&#8617;</a></p>
     </li>
   </ol>
 </div>

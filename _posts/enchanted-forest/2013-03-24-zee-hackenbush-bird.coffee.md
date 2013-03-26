@@ -30,7 +30,7 @@ Maude was intrigued by the birds and had a look at a few that were close by. Eac
 
 ### game birds
 
-"An essential part of their ritual bower behaviour is that each bird chooses a pit, picks up the pebbles it it, and then distributes them to other pits is a proscribed fashion, typically one at a time, clockwise. The birds alternate distributing stones in this fashion."
+"An essential part of their ritual bower behaviour is that each bird chooses a pit, picks up the pebbles it it, and then distributes them to other pits is a prescribed fashion, typically one at a time, clockwise. The birds alternate distributing stones in this fashion."
 
 "At some point, the ritual reaches an end and the birds evaluate the result, declaring either the host or visiting bird the *winner*. The important thing to note about these games is that the host bird devises a series of rules proscribing the allowed actions, the birds alternate actions, and that every ritual ends with one or the other winning. No randomness or hidden information is involved."
 

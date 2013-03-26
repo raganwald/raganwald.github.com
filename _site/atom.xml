@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-26T13:45:19-04:00</updated>
+  <updated>2013-03-26T14:25:09-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -45,7 +45,7 @@
 
 &lt;h3 id=&quot;game-birds&quot;&gt;game birds&lt;/h3&gt;
 
-&lt;p&gt;“An essential part of their ritual bower behaviour is that each bird chooses a pit, picks up the pebbles it it, and then distributes them to other pits is a proscribed fashion, typically one at a time, clockwise. The birds alternate distributing stones in this fashion.”&lt;/p&gt;
+&lt;p&gt;“An essential part of their ritual bower behaviour is that each bird chooses a pit, picks up the pebbles it it, and then distributes them to other pits is a prescribed fashion, typically one at a time, clockwise. The birds alternate distributing stones in this fashion.”&lt;/p&gt;
 
 &lt;p&gt;“At some point, the ritual reaches an end and the birds evaluate the result, declaring either the host or visiting bird the &lt;em&gt;winner&lt;/em&gt;. The important thing to note about these games is that the host bird devises a series of rules proscribing the allowed actions, the birds alternate actions, and that every ritual ends with one or the other winning. No randomness or hidden information is involved.”&lt;/p&gt;
 
@@ -291,6 +291,42 @@ describe &quot;SimpleHackenstringGame&quot;, -&amp;gt;
 
 &lt;p&gt;Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is a natural power of two.&lt;sup id=&quot;fnref:dyadic&quot;&gt;&lt;a href=&quot;#fn:dyadic&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
+&lt;pre&gt;&lt;code&gt;{applyLeft} = require('allong.es')
+twoToPowerOf = applyLeft(Math.pow, 2)
+
+class Dyadic
+  constructor: (@a, @b) -&amp;gt;
+    [@a, @b] = [@a / 2, @b - 1] until (@a % 2 or @b is 0)
+  toString: -&amp;gt;
+    denominator = twoToPowerOf(@b)
+    if denominator is 1
+      &quot;&quot; + @a
+    else if @a &amp;gt; denominator
+      [units, a] = [Math.floor(@a / denominator), @a % denominator]
+      &quot;#{units} #{a}/#{denominator}&quot;
+    else
+      &quot;#{@a}/#{denominator}&quot;
+  plus: (that) -&amp;gt;
+    b = Math.max(this.b, that.b)
+    a1 = this.a * twoToPowerOf(b - this.b)
+    a2 = that.a * twoToPowerOf(b - that.b)
+    new Dyadic(a1 + a2, b)
+    
+describe &quot;dyadic&quot;, -&amp;gt;
+
+  it &quot;should have readable output&quot;, -&amp;gt;
+    expect( new Dyadic(5, 0).toString() ).toEqual '5'
+    expect( new Dyadic(5, 1).toString() ).toEqual '2 1/2'
+    expect( new Dyadic(5, 2).toString() ).toEqual '1 1/4'
+    expect( new Dyadic(5, 3).toString() ).toEqual '5/8'
+    
+  it &quot;should handle overflow&quot;, -&amp;gt;
+    expect( new Dyadic(10, 3).toString() ).toEqual '1 1/4'
+    
+  it &quot;should handle plus&quot;, -&amp;gt;
+    expect( new Dyadic(5, 3).plus(new Dyadic(5, 3)).toString() ).toEqual '1 1/4'
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;With dyadic fractions under her belt, she was able to extend her understanding of evaluating Hackenstring games with rows of mixed pebbles:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;{isArray, every, reduce, isEmpty} = require 'underscore'
@@ -383,6 +419,7 @@ describe &quot;MixedHackenstringGame&quot;, -&amp;gt;
 &lt;hr /&gt;
 
 &lt;p&gt;notes:&lt;/p&gt;
+
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
     &lt;li id=&quot;fn:Mandelbrot&quot;&gt;
@@ -392,42 +429,7 @@ describe &quot;MixedHackenstringGame&quot;, -&amp;gt;
       &lt;p&gt;See &lt;a href=&quot;http://web.archive.org/web/20070120052054/http://www.maths.nott.ac.uk/personal/anw/Research/Hack/&quot;&gt;Hackenstrings, and the 0.999… ?= 1 FAQ&lt;/a&gt; by A.N. Walker, School of Mathematical Sciences, University of Nottingham&lt;a href=&quot;#fnref:walker&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
     &lt;li id=&quot;fn:dyadic&quot;&gt;
-      &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Dyadic_fraction&quot;&gt;Dyadic fractions or dyadic reals&lt;/a&gt;&lt;/p&gt;
-
-      &lt;p&gt;{applyLeft} = require(‘allong.es’)
-twoToPowerOf = applyLeft(Math.pow, 2)&lt;/p&gt;
-
-      &lt;p&gt;class Dyadic
-  constructor: (@a, @b) -&amp;gt;
-    [@a, @b] = [@a / 2, @b - 1] until (@a % 2 or @b is 0)
-  toString: -&amp;gt;
-    denominator = twoToPowerOf(@b)
-    if denominator is 1
-      “” + @a
-    else if @a &amp;gt; denominator
-      [units, a] = [Math.floor(@a / denominator), @a % denominator]
-      “#{units} #{a}/#{denominator}”
-    else
-      “#{@a}/#{denominator}”
-  plus: (that) -&amp;gt;
-    b = Math.max(this.b, that.b)
-    a1 = this.a * twoToPowerOf(b - this.b)
-    a2 = that.a * twoToPowerOf(b - that.b)
-    new Dyadic(a1 + a2, b)&lt;/p&gt;
-
-      &lt;p&gt;describe “dyadic”, -&amp;gt;&lt;/p&gt;
-
-      &lt;p&gt;it “should have readable output”, -&amp;gt;
-    expect( new Dyadic(5, 0).toString() ).toEqual ‘5’
-    expect( new Dyadic(5, 1).toString() ).toEqual ‘2 1/2’
-    expect( new Dyadic(5, 2).toString() ).toEqual ‘1 1/4’
-    expect( new Dyadic(5, 3).toString() ).toEqual ‘5/8’&lt;/p&gt;
-
-      &lt;p&gt;it “should handle overflow”, -&amp;gt;
-    expect( new Dyadic(10, 3).toString() ).toEqual ‘1 1/4’&lt;/p&gt;
-
-      &lt;p&gt;it “should handle plus”, -&amp;gt;
-    expect( new Dyadic(5, 3).plus(new Dyadic(5, 3)).toString() ).toEqual ‘1 1/4’&lt;a href=&quot;#fnref:dyadic&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Dyadic_fraction&quot;&gt;Dyadic fractions or dyadic reals&lt;/a&gt;&lt;a href=&quot;#fnref:dyadic&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
