@@ -1,8 +1,7 @@
 ---
 title: A program to compute the nth Fibonacci number
 layout: default
-tags: ruby
-categories: homoiconic
+tags: [homoiconic, ruby]
 ---
 
 Since [I'm looking for a job again](http://braythwayt.com/reginald/RegBraithwaite20120423.pdf "Reginald Braithwaite's Resume") and people often like to ask for a [fizzbuzz](http://raganwald.com/2007/01/dont-overthink-fizzbuzz.html "Don't Overthink FizzBuzz") program to weed out the folks who can't string together a few lines of code, I thought I'd write up a program to compute the nth Fibonacci number. There's an intriguing bit of matrix math involved, so I learned something while implementing it.
