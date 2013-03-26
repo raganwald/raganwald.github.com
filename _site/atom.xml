@@ -4,7 +4,7 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-25T18:48:57-04:00</updated>
+  <updated>2013-03-26T02:49:30-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
@@ -273,6 +273,26 @@ describe &quot;HackenstringGame&quot;, -&amp;gt;
 
 &lt;p&gt;Which is a win for White without Black getting a move. We’ll call that game &lt;code&gt;+1/2&lt;/code&gt; since it lies between &lt;code&gt;0&lt;/code&gt; and &lt;code&gt;+1&lt;/code&gt;.&lt;/p&gt;
 
+&lt;p&gt;If we apply this reasoning to more complex mixed rows, we arrive at a surprisingly simple evaluation for each row. First, we evaluate and remove the first stone and all stones of the same colour. So given:&lt;/p&gt;
+
+&lt;p&gt;→●○&lt;br /&gt;
+→○○&lt;/p&gt;
+
+&lt;p&gt;We take the first row as &lt;code&gt;+1&lt;/code&gt; and the second row as &lt;code&gt;-2&lt;/code&gt; for a total of &lt;code&gt;-1&lt;/code&gt; and are left with:&lt;/p&gt;
+
+&lt;p&gt;→○&lt;br /&gt;
+→&lt;/p&gt;
+
+&lt;p&gt;Now we remove the first stone from each row and assign it a value of &lt;code&gt;+1/2&lt;/code&gt; or &lt;code&gt;-1/2&lt;/code&gt; respectively. In this case, we have one black stone so we get &lt;code&gt;-1/2&lt;/code&gt;. We add that to our existing &lt;code&gt;-1&lt;/code&gt; and end up with &lt;code&gt;-1 1/2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;If there are any stones remaining (there weren’t in this example), we remove and assign them values of &lt;code&gt;+1/4&lt;/code&gt; or &lt;code&gt;-1/4&lt;/code&gt;. If there are still stones remaining, we remove and assign them values of &lt;code&gt;+1/8&lt;/code&gt; or &lt;code&gt;-1/8&lt;/code&gt;. This continues until there are no stones remaining.&lt;/p&gt;
+
+&lt;p&gt;This seems very arbitrary, but if you play the games out, you see that the stones that are leftmost on a row are the most important because they cannot be removed by the other player, and the further a stone is to the right of those stones, the less significance it has to the outcome of a game.&lt;/p&gt;
+
+&lt;h3 id=&quot;maudes-second-evaluation&quot;&gt;maude’s second evaluation&lt;/h3&gt;
+
+&lt;p&gt;Maude began by making some notes about dyadic fractions:&lt;sup id=&quot;fnref:dyadic&quot;&gt;&lt;a href=&quot;#fn:dyadic&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
 &lt;hr /&gt;
 
 &lt;p&gt;&lt;strong&gt;WARNING: THIS ESSAY IS A WORK IN PROGRESS&lt;/strong&gt;&lt;/p&gt;
@@ -285,6 +305,44 @@ describe &quot;HackenstringGame&quot;, -&amp;gt;
     &lt;/li&gt;
     &lt;li id=&quot;fn:walker&quot;&gt;
       &lt;p&gt;See &lt;a href=&quot;http://web.archive.org/web/20070120052054/http://www.maths.nott.ac.uk/personal/anw/Research/Hack/&quot;&gt;Hackenstrings, and the 0.999… ?= 1 FAQ&lt;/a&gt; by A.N. Walker, School of Mathematical Sciences, University of Nottingham&lt;a href=&quot;#fnref:walker&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:dyadic&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Dyadic_fraction&quot;&gt;Dyadic fractions or dyadic reals&lt;/a&gt;&lt;/p&gt;
+
+      &lt;p&gt;{applyLeft} = require(‘allong.es’)
+twoToPowerOf = applyLeft(Math.pow, 2)&lt;/p&gt;
+
+      &lt;p&gt;class Dyadic
+  constructor: (@a, @b) -&amp;gt;
+    [@a, @b] = [@a / 2, @b - 1] until (@a % 2 or @b is 0)
+  toString: -&amp;gt;
+    denominator = twoToPowerOf(@b)
+    if denominator is 1
+      “” + @a
+    else if @a &amp;gt; denominator
+      [units, a] = [Math.floor(@a / denominator), @a % denominator]
+      “#{units} #{a}/#{denominator}”
+    else
+      “#{@a}/#{denominator}”
+  plus: (that) -&amp;gt;
+    b = Math.max(self.b, that.b)
+    a1 = self.a * twoToPowerOf(b - self.b)
+    a2 = that.a * twoToPowerOf(b - that.b)
+    new Dyadic(a1 + a2, b)&lt;/p&gt;
+
+      &lt;p&gt;describe “dyadic”, -&amp;gt;&lt;/p&gt;
+
+      &lt;p&gt;it “should have readable output”, -&amp;gt;
+    expect( new Dyadic(5, 0).toString() ).toEqual ‘5’
+    expect( new Dyadic(5, 1).toString() ).toEqual ‘2 1/2’
+    expect( new Dyadic(5, 2).toString() ).toEqual ‘1 1/4’
+    expect( new Dyadic(5, 3).toString() ).toEqual ‘5/8’&lt;/p&gt;
+
+      &lt;p&gt;it “should handle overflow”, -&amp;gt;
+    expect( new Dyadic(10, 3).toString() ).toEqual ‘1 1/4’&lt;/p&gt;
+
+      &lt;p&gt;it “should handle plus”, -&amp;gt;
+    expect( new Dyadic(5, 3).plus(new Dyadic(5, 3)).toString() ).toEqual ‘1 1/4’&lt;a href=&quot;#fnref:dyadic&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;

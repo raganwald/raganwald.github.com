@@ -261,7 +261,63 @@ Is going to be a win for White no matter what, and thus better than `0` but not 
 
 Which is a win for White without Black getting a move. We'll call that game `+1/2` since it lies between `0` and `+1`.
 
-If we apply this reasoning to more complex mixed rows, we arrive at a surprisingly simple evaluation for each row:
+If we apply this reasoning to more complex mixed rows, we arrive at a surprisingly simple evaluation for each row. First, we evaluate and remove the first stone and all stones of the same colour. So given:
+
+&#8594;&#9679;&#9675;  
+&#8594;&#9675;&#9675;
+
+We take the first row as `+1` and the second row as `-2` for a total of `-1` and are left with:
+
+&#8594;&#9675;  
+&#8594;
+
+Now we remove the first stone from each row and assign it a value of `+1/2` or `-1/2` respectively. In this case, we have one black stone so we get `-1/2`. We add that to our existing `-1` and end up with `-1 1/2`.
+
+If there are any stones remaining (there weren't in this example), we remove and assign them values of `+1/4` or `-1/4`. If there are still stones remaining, we remove and assign them values of `+1/8` or `-1/8`. This continues until there are no stones remaining.
+
+This seems very arbitrary, but if you play the games out, you see that the stones that are leftmost on a row are the most important because they cannot be removed by the other player, and the further a stone is to the right of those stones, the less significance it has to the outcome of a game.
+
+### maude's second evaluation
+
+Maude began by making some notes about dyadic fractions:[^dyadic]
+
+[^dyadic]: [Dyadic fractions or dyadic reals](https://en.wikipedia.org/wiki/Dyadic_fraction)
+
+    {applyLeft} = require('allong.es')
+    twoToPowerOf = applyLeft(Math.pow, 2)
+
+    class Dyadic
+      constructor: (@a, @b) ->
+        [@a, @b] = [@a / 2, @b - 1] until (@a % 2 or @b is 0)
+      toString: ->
+        denominator = twoToPowerOf(@b)
+        if denominator is 1
+          "" + @a
+        else if @a > denominator
+          [units, a] = [Math.floor(@a / denominator), @a % denominator]
+          "#{units} #{a}/#{denominator}"
+        else
+          "#{@a}/#{denominator}"
+      plus: (that) ->
+        b = Math.max(this.b, that.b)
+        a1 = this.a * twoToPowerOf(b - this.b)
+        a2 = that.a * twoToPowerOf(b - that.b)
+        new Dyadic(a1 + a2, b)
+        
+    describe "dyadic", ->
+    
+      it "should have readable output", ->
+        expect( new Dyadic(5, 0).toString() ).toEqual '5'
+        expect( new Dyadic(5, 1).toString() ).toEqual '2 1/2'
+        expect( new Dyadic(5, 2).toString() ).toEqual '1 1/4'
+        expect( new Dyadic(5, 3).toString() ).toEqual '5/8'
+        
+      it "should handle overflow", ->
+        expect( new Dyadic(10, 3).toString() ).toEqual '1 1/4'
+        
+      it "should handle plus", ->
+        expect( new Dyadic(5, 3).plus(new Dyadic(5, 3)).toString() ).toEqual '1 1/4'
+        
 
 ---
 

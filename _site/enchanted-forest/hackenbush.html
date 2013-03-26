@@ -329,6 +329,26 @@ describe "HackenstringGame", -&gt;
 
 <p>Which is a win for White without Black getting a move. We’ll call that game <code>+1/2</code> since it lies between <code>0</code> and <code>+1</code>.</p>
 
+<p>If we apply this reasoning to more complex mixed rows, we arrive at a surprisingly simple evaluation for each row. First, we evaluate and remove the first stone and all stones of the same colour. So given:</p>
+
+<p>→●○<br />
+→○○</p>
+
+<p>We take the first row as <code>+1</code> and the second row as <code>-2</code> for a total of <code>-1</code> and are left with:</p>
+
+<p>→○<br />
+→</p>
+
+<p>Now we remove the first stone from each row and assign it a value of <code>+1/2</code> or <code>-1/2</code> respectively. In this case, we have one black stone so we get <code>-1/2</code>. We add that to our existing <code>-1</code> and end up with <code>-1 1/2</code>.</p>
+
+<p>If there are any stones remaining (there weren’t in this example), we remove and assign them values of <code>+1/4</code> or <code>-1/4</code>. If there are still stones remaining, we remove and assign them values of <code>+1/8</code> or <code>-1/8</code>. This continues until there are no stones remaining.</p>
+
+<p>This seems very arbitrary, but if you play the games out, you see that the stones that are leftmost on a row are the most important because they cannot be removed by the other player, and the further a stone is to the right of those stones, the less significance it has to the outcome of a game.</p>
+
+<h3 id="maudes-second-evaluation">maude’s second evaluation</h3>
+
+<p>Maude began by making some notes about dyadic fractions:<sup id="fnref:dyadic"><a href="#fn:dyadic" rel="footnote">3</a></sup></p>
+
 <hr />
 
 <p><strong>WARNING: THIS ESSAY IS A WORK IN PROGRESS</strong></p>
@@ -341,6 +361,44 @@ describe "HackenstringGame", -&gt;
     </li>
     <li id="fn:walker">
       <p>See <a href="http://web.archive.org/web/20070120052054/http://www.maths.nott.ac.uk/personal/anw/Research/Hack/">Hackenstrings, and the 0.999… ?= 1 FAQ</a> by A.N. Walker, School of Mathematical Sciences, University of Nottingham<a href="#fnref:walker" rel="reference">&#8617;</a></p>
+    </li>
+    <li id="fn:dyadic">
+      <p><a href="https://en.wikipedia.org/wiki/Dyadic_fraction">Dyadic fractions or dyadic reals</a></p>
+
+      <p>{applyLeft} = require(‘allong.es’)
+twoToPowerOf = applyLeft(Math.pow, 2)</p>
+
+      <p>class Dyadic
+  constructor: (@a, @b) -&gt;
+    [@a, @b] = [@a / 2, @b - 1] until (@a % 2 or @b is 0)
+  toString: -&gt;
+    denominator = twoToPowerOf(@b)
+    if denominator is 1
+      “” + @a
+    else if @a &gt; denominator
+      [units, a] = [Math.floor(@a / denominator), @a % denominator]
+      “#{units} #{a}/#{denominator}”
+    else
+      “#{@a}/#{denominator}”
+  plus: (that) -&gt;
+    b = Math.max(self.b, that.b)
+    a1 = self.a * twoToPowerOf(b - self.b)
+    a2 = that.a * twoToPowerOf(b - that.b)
+    new Dyadic(a1 + a2, b)</p>
+
+      <p>describe “dyadic”, -&gt;</p>
+
+      <p>it “should have readable output”, -&gt;
+    expect( new Dyadic(5, 0).toString() ).toEqual ‘5’
+    expect( new Dyadic(5, 1).toString() ).toEqual ‘2 1/2’
+    expect( new Dyadic(5, 2).toString() ).toEqual ‘1 1/4’
+    expect( new Dyadic(5, 3).toString() ).toEqual ‘5/8’</p>
+
+      <p>it “should handle overflow”, -&gt;
+    expect( new Dyadic(10, 3).toString() ).toEqual ‘1 1/4’</p>
+
+      <p>it “should handle plus”, -&gt;
+    expect( new Dyadic(5, 3).plus(new Dyadic(5, 3)).toString() ).toEqual ‘1 1/4’<a href="#fnref:dyadic" rel="reference">&#8617;</a></p>
     </li>
   </ol>
 </div>
