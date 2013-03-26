@@ -279,8 +279,6 @@ This seems very arbitrary, but if you play the games out, you see that the stone
 
 Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is a natural power of two.[^dyadic]
 
-[^dyadic]: [Dyadic fractions or dyadic reals](https://en.wikipedia.org/wiki/Dyadic_fraction)
-
     {applyLeft} = require('allong.es')
     twoToPowerOf = applyLeft(Math.pow, 2)
 
@@ -407,3 +405,5 @@ Coming Soon: **Irrational Hackenstrings, from the Infinite to the Infinitesimal*
 ---
 
 notes:
+
+[^dyadic]: [Dyadic fractions or dyadic reals](https://en.wikipedia.org/wiki/Dyadic_fraction)

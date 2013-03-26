@@ -6,8 +6,8 @@
     <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
-    <pubDate>Tue, 26 Mar 2013 13:42:42 -0400</pubDate>
-    <lastBuildDate>Tue, 26 Mar 2013 13:42:42 -0400</lastBuildDate>
+    <pubDate>Tue, 26 Mar 2013 13:45:19 -0400</pubDate>
+    <lastBuildDate>Tue, 26 Mar 2013 13:45:19 -0400</lastBuildDate>
 
     
       
@@ -221,7 +221,7 @@ describe &quot;SimpleHackenstringGame&quot;, -&amp;gt;
       expect( whiteWins.evaluation() ).toEqual 2
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Zee Hackenbush continued:&lt;/p&gt;
+&lt;p&gt;Zee Hackenbush continued his lecture on Hackenstrings:&lt;/p&gt;
 
 &lt;h3 id=&quot;mixed-rows&quot;&gt;mixed rows&lt;/h3&gt;
 
@@ -283,7 +283,7 @@ describe &quot;SimpleHackenstringGame&quot;, -&amp;gt;
 
 &lt;h3 id=&quot;maude-works-with-dyadic-fractions&quot;&gt;maude works with dyadic fractions&lt;/h3&gt;
 
-&lt;p&gt;Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is an natural power of two.&lt;sup id=&quot;fnref:dyadic&quot;&gt;&lt;a href=&quot;#fn:dyadic&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is a natural power of two.&lt;sup id=&quot;fnref:dyadic&quot;&gt;&lt;a href=&quot;#fn:dyadic&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;With dyadic fractions under her belt, she was able to extend her understanding of evaluating Hackenstring games with rows of mixed pebbles:&lt;/p&gt;
 
