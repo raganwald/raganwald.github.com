@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/assets/js/respond.js"></script>
+    
+    
+    
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <LINK REL=StyleSheet HREF="/assets/css/pygments.css" TYPE="text/css" MEDIA=screen>
+    <link href="http://raganwald.com/atom.xml" type="application/atom+xml" rel="alternate" title="raganwald.com">
+    <link rel="alternate" type="application/rss+xml" href="http://raganwald.com/rss.xml" title="raganwald.com">
+    <title>Williams, Master of the COMEFROM</title>
+    </head>
+  <body>
+    <div id="container">
+      <div class="inner">
+        
+              <div id="header">
+        <h1>Williams, Master of the COMEFROM</h1>
+        <h2><a href="/">via raganwald.com</a></h2>
+      </div><!-- end header -->
+
+        <hr>
+
+        <section id="main_content">
+          
+          
+
+
+
+  
+  
+
+  
+
+  
+  
+  
+
+          
+          <p>In this business, you meet more than your fair share of eccentric developers with their own idiosyncratic ideas about software development. (If you’re like me, you need go no further than a mirror to see what one looks like.) One of the most iconoclastic fellows I ever met was a grizzled veteran named Jim Kelly. For reasons of interest only to cultural antiques, everyone called him “Williams.”</p>
+
+<p>Williams claimed to have gotten started when using punch cards and random access memory was considered effete by the <a href="http://www.pbm.com/~lindahl/mel.html" title="The Story of Mel">drum memory wizards of the previous generation</a>. Like many retro-grouches, he would fondly recall rites of passage such as booting computers by toggling the three bootstrap instructions into a CPU’s front panel. If his eccentricity stopped at recounting tales from days of yore, I’d probably have forgotten him years ago.</p>
+
+<p>However, Williams was unique. Most veterans cling to whatever beliefs about software development were in vogue when they were cutting their teeth. Be it the utility of Lisp, the superiority of the VAX architecture, or the string-theory-like perfection of Smalltalk, most veterans cling to technology and ideas that were cutting edge back in their day. Not Williams. Williams had invented his own software development methodology, and he espoused it with the fervour of an evangelist on a street corner.</p>
+
+<p>He had long ago accepted that the rest of the world was not about to change to do things the “right way,” but he likewise refused to submit to fashion, no matter what the costs to his reputation or career. So he bounced from job to job, constantly being let go for “lack of fit with the team,” until he wound up at ThinkWare, a contracting firm. The partners at ThinkWare specialized in finding ways for square pegs to write software that fit in round holes, and they carefully walled Williams off so that he could write software his own way with very little interference from anyone else.</p>
+
+<p>Williams had a style that ThinkWare described as “unorthodox, but effective.” </p>
+
+<h3 id="ill-take-you-darling-and-you-and-you-and-you">I’ll take you, darling. And you. And you. And. You.</h3>
+
+<p>Typically, ThinkWare would give Williams a list of features to implement. Williams was very big on dependencies, and he would very carefully draw a graph of feature dependencies. For example, if he was going to write a Facebook Clone, his diagram would show that commenting on a wall post depended on wall posts, which in turn depended on walls.</p>
+
+<p>Williams would then work along the graph, not starting any feature until all of its dependencies were fully implemented. And he would work on a single feature at a time, completing the feature in its entirety before staring another. Williams loathed developing infrastructure that would “pay off later,” he preferred to write the simplest and least amount of code required to get the current feature to work.</p>
+
+<p>In that respect, his style resembled many agile developers. And in another respect, he appeared “agile” to those who never read his code: Williams loved to write tests. When Williams delivered a feature, there was much, much more test code than working code. Williams had been taught to write automated unit tests at a time when the standard architecture for making code “testable” consisted of writing a command-line wrapper so that the tests could be baked into a shell script, and he never wavered from his belief that if you haven’t tested it, it doesn’t work.</p>
+
+<p>So Williams’ process was simple: Work on features one at a time, write the minimum amount of code to get the feature to work, practise <a href="http://en.wikipedia.org/wiki/You_ain't_gonna_need_it" title="You ain't gonna need it">YAGNI</a>, and write comprehensive tests for each feature.</p>
+
+<h3 id="too-busy-looking-good">Too busy looking good</h3>
+
+<p>Although Williams’ style seemed contemporary, it was his heterodox practices that drove a wedge between him and his colleagues. Unlike every other agilist on this or any planet, Williams disdained refactoring. It wasn’t that he saw no value in refactoring: Scrolling through his checkins revealed that he would write and rewrite the code for each feature numerous times.</p>
+
+<p>However, once Williams delivered a feature, he liked to move on to the next feature and leave the code for existing features unchanged as much as possible. For example, if he delivered a wall post feature, it might include an ActiveRecord model class:</p>
+
+<pre><code>	# wall_post.rb
+
+	class WallPost &lt; ActiveRecord::Model
+		# ...
+	end
+</code></pre>
+
+<p>Once the Wall Posts were delivered with tests, he might work on comments. But instead of changing <code>wall_post.rb</code> to read:</p>
+
+<pre><code>	# wall_post.rb
+
+	class WallPost &lt; ActiveRecord::Model
+		has_many :comments
+		# ...
+	end
+</code></pre>
+
+<p>Williams would isolate all of the code for comments into a module or plugin, and “monkey patch” the <code>WallPost</code> class:</p>
+
+<pre><code>	# vendor/plugins/comments/lib/railtie.rb
+
+	WallPost.class_eval do
+		has_many :comments
+		# ...
+	end
+</code></pre>
+
+<p>Since none of the code written so far needed to know that a wall post could have comments, he saw no value in cluttering up those files with comment-handling code. Instead, he put the relationship between wall posts and comments in the code that was responsible for doing something with comments. His code was uniformly organized so that the code dependencies were exactly isomorphic to the feature dependencies.</p>
+
+<p>Williams used every decoupling technique in the book and several he invented himself, from monkey-patching to method combinators to writing observers on classes. Inexperienced developers would often be completely bewildered as to how anything worked at all, and would search in vain for signs of a heavyweight <a href="http://en.wikipedia.org/wiki/Dependency_injection">Dependency-Injection</a> framework.</p>
+
+<p>Features are fairly coarse-grained, so after getting over the shock of Williams’s style, most developers could adjust. However, Williams also used these decoupling techniques for fine-grained cross-cutting concerns as well. So instead of writing:</p>
+
+<pre><code>	# wall_post.rb
+
+	class WallPost &lt; ActiveRecord::Model
+
+		def doSomething
+			WallPost.transaction do
+				# ...
+			end
+		end
+</code></pre>
+
+ 		end
+
+<p>Williams would write:</p>
+
+<pre><code>	# wall_post.rb
+
+	class WallPost &lt; ActiveRecord::Model
+
+		def do_something
+			# ...
+		end
+</code></pre>
+
+ 		end
+
+<p>And:</p>
+
+<pre><code>	# wall_post_persistence.rb
+
+	WallPost.class_eval do
+
+		def do_something_with_db_transaction
+			WallPost.transaction do
+				do_something_without_db_transaction
+			end
+		end
+
+		alias_method_chain :do_something, :db_transaction
+
+	end
+</code></pre>
+
+<p>The net result was that his models were always small and directly concerned with business logic, while implementation details like error handling and persistence were moved out into separate modules and plugins.</p>
+
+<h3 id="how-sloppy-your-man-works">How sloppy your man works</h3>
+
+<p>Of course, his colleagues rioted at the thought of working with his code.</p>
+
+<blockquote>
+  <p>In Smalltalk, everything happens somewhere else–Adele Goldberg</p>
+</blockquote>
+
+<p>When looking at one of Williams’ model classes, all you would see is the basic, bare bones minimum functionality. Other features would be entirely implemented elsewhere, often in plugins of one kind or another. That made following the code annoying for developers used to the “One model class to rule them all” style of coding.</p>
+
+<p>And the one or two folks who prayed at the <a href="http://www.springsource.org/" title="Spring Framework">Big Church</a> were aghast at the lack of an Injection Container and the complete absence of XML configuration. As one educated wag put it:</p>
+
+<blockquote>
+  <p>Williams has elevated the <a href="http://en.wikipedia.org/wiki/Goto#Computed_GOTO">computed</a>, non-local <a href="http://en.wikipedia.org/wiki/COMEFROM">COMEFROM</a> to an art form</p>
+</blockquote>
+
+<p>Worse, Williams’ style made it obvious how little work he really did. His methods were short and simple and to the point. It looked as if he was bored and making work for himself with all the decoupling, because the decoupling was easily the most advanced code in any of his projects.</p>
+
+<p>It seemed like a code smell to have infrastructure code that was more advanced than the domain code, as if he was an <a href="http://www.joelonsoftware.com/articles/fog0000000018.html" title="Don't Let Architecture Astronauts Scare You">architecture astronaut</a> intent on making life hard for himself and his colleagues.</p>
+
+<h3 id="unorthodox-but-effective">Unorthodox, but effective</h3>
+
+<p>Meanwhile, the ThinkWare partners had adopted a tolerant attitude towards Williams and his code. Despite the objections from his colleagues, they had noticed that his code really did work and tend to stay working, mostly because it really was decoupled. New features could always be backed out simply by removing their plugins or modules.</p>
+
+<p>This was most evident when examining his mountains of test code. Very little of it was concerned with mocking and stubbing functionality, because he could always test his models without persistence layers or error handling frameworks to stub in.</p>
+
+<p>Williams, they had discovered, was a good developer… Within his limitations. Those limitations being, as well as he worked and as well as his code worked, when handed off to someone else his dependency decoupling would invariably erode away. Entropy would rot his architecture, as developers would work around it to get things done quickly.</p>
+
+<h3 id="ghettoes-are-the-same-all-over-the-world">Ghettoes are the same all over the world.</h3>
+
+<p>It wasn’t that his colleagues were unimaginative or lazy, but Williams’ style clashed with an environment that celebrates YAGNI and refactoring. Decoupling was, most developers reasoned, something they weren’t going to need, and if they did, it could be refactored in later.</p>
+
+<p>So the ThinkWare partners put Williams in charge of small projects where he could practice his own brand of architecture in peace, and largely left him to his own devices. The clients were happy, and he was happy. Once in a while another developer would work with him on a limited basis, and after getting up to speed on how things worked in his particular corner of the Universe, they’d fall in line and get a lot of stuff done.</p>
+
+<p>Sometimes they’d return to another project and try to implement some of his ideas, with middling success. But as long as the developers learned something from the experience, the ThinkWare partners figured that pairing Williams with a colleague from time to time was a win.</p>
+
+<p>The last time I saw Williams, he had grown an afro and was carrying a tennis racket, obviously on his way to a game. We chatted for a while, and he excitedly told me about a framework he was developing for implementing really <a href="https://github.com/raganwald/YouAreDaChef" title="YouAreDaChef">lightweight decoupling</a> in some weird dialect of JavaScript.</p>
+
+<p>I never saw him again, but I like to imagine that he’s still at ThinkWare, writing solid code and evangelizing his ideas to anyone who will listen.</p>
+
+
+        </section>
+
+        <footer>
+    This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+    <br/><br/>
+  <a href="https://twitter.com/raganwald" class="twitter-follow-button" data-show-count="false">Follow @raganwald</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="raganwald">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</footer>
+
+      </div>
+    </div>
+
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38371925-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  </body>
+</html>
