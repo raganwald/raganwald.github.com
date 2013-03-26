@@ -215,7 +215,7 @@ Maude started with the following notes:
           ]
           expect( whiteWins.evaluation() ).toEqual 2
           
-Zee Hackenbush continued:
+Zee Hackenbush continued his lecture on Hackenstrings:
 
 ### mixed rows
 
@@ -277,7 +277,7 @@ This seems very arbitrary, but if you play the games out, you see that the stone
 
 ### maude works with dyadic fractions
 
-Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is an natural power of two.[^dyadic]
+Maude began by making some notes about dyadic fractions. A dyadic fraction is a fraction where the denominator is a natural power of two.[^dyadic]
 
 [^dyadic]: [Dyadic fractions or dyadic reals](https://en.wikipedia.org/wiki/Dyadic_fraction)
 
