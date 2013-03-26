@@ -4,9 +4,9 @@ layout: default
 tags: [homoiconic, ruby]
 ---
 
-Since [I'm looking for a job again](http://braythwayt.com/reginald/RegBraithwaite20120423.pdf "Reginald Braithwaite's Resume") and people often like to ask for a [fizzbuzz](http://raganwald.com/2007/01/dont-overthink-fizzbuzz.html "Don't Overthink FizzBuzz") program to weed out the folks who can't string together a few lines of code, I thought I'd write up a program to compute the nth Fibonacci number. There's an intriguing bit of matrix math involved, so I learned something while implementing it.
+Since [I'm looking for a job again](http://braythwayt.com/reginald/RegBraithwaite20120423.pdf "Reginald Braithwaite's Resume") and people often like to ask for a [fizzbuzz](http://raganwald.com/2007/01/dont-overthink-fizzbuzz.html "Don't Overthink FizzBuzz") program to weed out the folks who can't string together a few lines of code, I thought I'd write up a program to compute the *n*th Fibonacci number. There's an intriguing bit of matrix math involved, so I learned something while implementing it.[^closed]
 
-*Reminder: This was written in 2008, it does not necessarily reflect my employment situation today. But that being said... I'm working independently and very interested in opportunities to make great software with good people.*
+[^closed]: There is a [closed-form solution](http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression) to the function `fib`, so in the context of a hypothetical job interview the correct algorithm is *whatever produces the most interesting discussion*.
 
 Recently I was having lunch with [some of Toronto's most interesting Ruby developers](http://unspace.ca), and the subject of interview questions came up. Specifically, writing a program to compute the nth Fibonacci number. Unsurprisingly, we agreed it might be useful as a screener for weeding out the people who were completely delusional about their prospects as a professional programmer. You know, the type of person who stares blankly at the screen and has no idea where to start, even when told that all we wanted was a program that correctly prints an answer. No tests, no specs, no shouldas, no passengers, no CSS, just prove you actually can write something, anything.
 
@@ -187,38 +187,4 @@ We're done!
 
 p.s. No we're not done: [Another program to compute the nth Fibonacci number](http://github.com/raganwald/homoiconic/tree/master/2008-12-17/another_fibonacci.md#readme).
 
-p.p.s. No, this isn't [the fastest implementation](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/194815 "Fast Fibonacci method") by far. But it beats the pants off of a naive iterative implementation. See [fibonacci.rb](http:fibonacci.rb) for details.
-
----
-
-Christoph Temmel [forked homoiconic](http://github.com/kar8nga/homoiconic/tree "kar8nga's homoiconic at master &mdash; GitHub") and added these observations:
-
-*Another option would be to decompose *
-
-  	A = [ 1 1 ]
-  	    [ 1 0 ]
-
-*into along its eigenspace (eigenvalues \lambda\_{1,2}=-\frac{1\pm\sqrt{5}}{2} = -\frac{1}{2}\mp\frac{\sqrt{5}{2}}) to get*
-
-  	A = Q^t D
-
-*and* 
-
-  	D = [ \lambda_1 0         ]
-          [ 0         \lambda_2 ]
-
-*where Q is the orthonormal matrix of the normated eigenvectors with QQ^t = I and D is the above diagonal matrix with the eigenvalues \lambda\_{1,2} (see also [Wikipedia](http://en.wikipedia.org/wiki/Symmetric_matrix#Properties)). Now it's easy to take powers of A*
-
-      A^n = Q^t D^n D
-
-*The only difficulty is, that in order to avoid floating point arithmetic one would have to do the powers in the field \mathbb{Q}[\sqrt{5}] - this would ask for a custom datatype with overloading of addition and multiplication (the part needed for this exercise). *
-
----
-
-### More fun with Fib
-
-As noted on [news.ycombinator.com](http://news.ycombinator.com/item?id=3903551), There is a closed-form solution to the function `fib`.
-
-http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression
-
-In the context of a hypothetical job interview, of course, the correct answer is whatever produces the most interesting discussion. If asked in a real interview, I might ask "Do you want the closed-form or are you trying to get me to correctly write a recursive function?" If you write out the closed-form, once in a very long while you will probably encounter someone who tries to out-clever your cleverness and demands that you write it without `Math.sqrt` or some other arbitrary way of forcing you to demonstrate that your brain has the right shape for handling recursion.
+p.p.s. No, this isn't [the fastest implementation](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/194815 "Fast Fibonacci method") by far. But it beats the pants off of a naïve iterative implementation.

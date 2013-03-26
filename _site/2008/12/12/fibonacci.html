@@ -45,6 +45,15 @@
   
 
   
+
+  
+  
+
+
+  
+  
+
+  
     
     
   
@@ -53,9 +62,7 @@
   
 
           
-          <p>Since <a href="http://braythwayt.com/reginald/RegBraithwaite20120423.pdf" title="Reginald Braithwaite's Resume">I’m looking for a job again</a> and people often like to ask for a <a href="http://raganwald.com/2007/01/dont-overthink-fizzbuzz.html" title="Don't Overthink FizzBuzz">fizzbuzz</a> program to weed out the folks who can’t string together a few lines of code, I thought I’d write up a program to compute the nth Fibonacci number. There’s an intriguing bit of matrix math involved, so I learned something while implementing it.</p>
-
-<p><em>Reminder: This was written in 2008, it does not necessarily reflect my employment situation today. But that being said… I’m working independently and very interested in opportunities to make great software with good people.</em></p>
+          <p>Since <a href="http://braythwayt.com/reginald/RegBraithwaite20120423.pdf" title="Reginald Braithwaite's Resume">I’m looking for a job again</a> and people often like to ask for a <a href="http://raganwald.com/2007/01/dont-overthink-fizzbuzz.html" title="Don't Overthink FizzBuzz">fizzbuzz</a> program to weed out the folks who can’t string together a few lines of code, I thought I’d write up a program to compute the <em>n</em>th Fibonacci number. There’s an intriguing bit of matrix math involved, so I learned something while implementing it.<sup id="fnref:closed"><a href="#fn:closed" rel="footnote">1</a></sup></p>
 
 <p>Recently I was having lunch with <a href="http://unspace.ca">some of Toronto’s most interesting Ruby developers</a>, and the subject of interview questions came up. Specifically, writing a program to compute the nth Fibonacci number. Unsurprisingly, we agreed it might be useful as a screener for weeding out the people who were completely delusional about their prospects as a professional programmer. You know, the type of person who stares blankly at the screen and has no idea where to start, even when told that all we wanted was a program that correctly prints an answer. No tests, no specs, no shouldas, no passengers, no CSS, just prove you actually can write something, anything.</p>
 
@@ -234,43 +241,14 @@ bd + ce = b(e + f) + ce
 
 <p>p.s. No we’re not done: <a href="http://github.com/raganwald/homoiconic/tree/master/2008-12-17/another_fibonacci.md#readme">Another program to compute the nth Fibonacci number</a>.</p>
 
-<p>p.p.s. No, this isn’t <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/194815" title="Fast Fibonacci method">the fastest implementation</a> by far. But it beats the pants off of a naive iterative implementation. See <a href="http:fibonacci.rb">fibonacci.rb</a> for details.</p>
-
-<hr />
-
-<p>Christoph Temmel <a href="http://github.com/kar8nga/homoiconic/tree" title="kar8nga's homoiconic at master &mdash; GitHub">forked homoiconic</a> and added these observations:</p>
-
-<p>*Another option would be to decompose *</p>
-
-  	A = [ 1 1 ]
-  	    [ 1 0 ]
-
-<p><em>into along its eigenspace (eigenvalues \lambda_{1,2}=-\frac{1\pm\sqrt{5}}{2} = -\frac{1}{2}\mp\frac{\sqrt{5}{2}}) to get</em></p>
-
-  	A = Q^t D
-
-<p><em>and</em> </p>
-
-  	D = [ \lambda_1 0         ]
-<pre><code>      [ 0         \lambda_2 ]
-</code></pre>
-
-<p><em>where Q is the orthonormal matrix of the normated eigenvectors with QQ^t = I and D is the above diagonal matrix with the eigenvalues \lambda_{1,2} (see also <a href="http://en.wikipedia.org/wiki/Symmetric_matrix#Properties">Wikipedia</a>). Now it’s easy to take powers of A</em></p>
-
-<pre><code>  A^n = Q^t D^n D
-</code></pre>
-
-<p>*The only difficulty is, that in order to avoid floating point arithmetic one would have to do the powers in the field \mathbb{Q}[\sqrt{5}] - this would ask for a custom datatype with overloading of addition and multiplication (the part needed for this exercise). *</p>
-
-<hr />
-
-<h3 id="more-fun-with-fib">More fun with Fib</h3>
-
-<p>As noted on <a href="http://news.ycombinator.com/item?id=3903551">news.ycombinator.com</a>, There is a closed-form solution to the function <code>fib</code>.</p>
-
-<p>http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression</p>
-
-<p>In the context of a hypothetical job interview, of course, the correct answer is whatever produces the most interesting discussion. If asked in a real interview, I might ask “Do you want the closed-form or are you trying to get me to correctly write a recursive function?” If you write out the closed-form, once in a very long while you will probably encounter someone who tries to out-clever your cleverness and demands that you write it without <code>Math.sqrt</code> or some other arbitrary way of forcing you to demonstrate that your brain has the right shape for handling recursion.</p>
+<p>p.p.s. No, this isn’t <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/194815" title="Fast Fibonacci method">the fastest implementation</a> by far. But it beats the pants off of a naïve iterative implementation.</p>
+<div class="footnotes">
+  <ol>
+    <li id="fn:closed">
+      <p>There is a <a href="http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression">closed-form solution</a> to the function <code>fib</code>, so in the context of a hypothetical job interview the correct algorithm is <em>whatever produces the most interesting discussion</em>.<a href="#fnref:closed" rel="reference">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
 
         </section>
 
