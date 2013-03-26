@@ -74,7 +74,7 @@
 
 <h2 id="enter-the-matrix">Enter The Matrix</h2>
 
-<p>One problem with calculating a Finonacci number is that naive algorithms require <em>n</em> addition operations. There are some interesting things we can do to improve on this. One way is to transform <em>n</em> additions into raising something to the power of <em>n</em>. This turns <em>n</em> additions into <em>n</em> multiplications. That seems retrograde, but hold on to your disbelief.</p>
+<p>One problem with calculating a Fibonacci number is that naive algorithms require <em>n</em> addition operations. There are some interesting things we can do to improve on this. One way is to transform <em>n</em> additions into raising something to the power of <em>n</em>. This turns <em>n</em> additions into <em>n</em> multiplications. That seems retrograde, but hold on to your disbelief.</p>
 
 <p>This is actually nice, because there is a trick about raising something to a power that we can exploit. But first things first. As explained in <a href="http://expertvoices.nsdl.org/cornell-cs322/2008/03/25/sum-of-fibonacci-numbers/">Sum of Fibonacci numbers?</a>, we can express the Fibonacci number <code>F(n)</code> using a 2x2 matrix:</p>
 
@@ -242,10 +242,14 @@ bd + ce = b(e + f) + ce
 <p>p.s. No we’re not done: <a href="http://github.com/raganwald/homoiconic/tree/master/2008-12-17/another_fibonacci.md#readme">Another program to compute the nth Fibonacci number</a>.</p>
 
 <p>p.p.s. No, this isn’t <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/194815" title="Fast Fibonacci method">the fastest implementation</a> by far. But it beats the pants off of a naïve iterative implementation.</p>
+
+<hr />
+
+<p>notes:</p>
 <div class="footnotes">
   <ol>
     <li id="fn:closed">
-      <p>There is a <a href="http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression">closed-form solution</a> to the function <code>fib</code>, so in the context of a hypothetical job interview the correct algorithm is <em>whatever produces the most interesting discussion</em>.<a href="#fnref:closed" rel="reference">&#8617;</a></p>
+      <p>There is a <a href="http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression">closed-form solution</a> to the function <code>fib</code>, so in the context of a job interview, <em>whatever produces the most interesting discussion</em> is the correct algorithm to implement.<a href="#fnref:closed" rel="reference">&#8617;</a></p>
     </li>
   </ol>
 </div>
