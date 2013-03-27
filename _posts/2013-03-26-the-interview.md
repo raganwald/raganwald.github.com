@@ -7,17 +7,13 @@ It had been a long and gruelling process, but the ThinkWare team had whittled th
 
 "Bob was great," said Alice, "The interview got off to a great start when I fizzbuzzed him with Fibonacci. He asked whether I wanted an Enumerator or iterative function. When I suggested he try something recursive, he had no trouble whatsoever." 
 
-"He even mentioned trampolining when I wondered about asking for the ten thousandth Fibonacci number. I probed about the closed form solution, and while he knew one existed, he admitted up front that he hand't used it. We discussed requirements and use cases and things went really well from there."
-
-Ted was equally enthusiastic about Carol. "Super solid on algorithms, she brought up [raganwald's matrix implementation](http://raganwald.com/2008/12/12/fibonacci.html) and we had a good laugh about how you could beat the pants off it with a caching solution. She wrote one and it worked just fine with the 10,000th number."
+Ted was equally enthusiastic about Carol. "Super solid on algorithms, she brought up [raganwald's matrix implementation](http://raganwald.com/2008/12/12/fibonacci.html) and we had a good laugh about how you could beat the pants off it with a caching solution. She wrote one and it worked just fine with the 10,000th, 100,000th, and 1,000,000th numbers."
 
 ![The Fibonacci Spiral](/assets/images/fib.gif)
 
 ### scott
 
-The team talked for a while longer before deciding to ask for enough budget to hire both Bob and Carol. Later, at BEvERage-O'Clock, someone asked about Scott.
-
-"Who else interviewed Scott? He was a handful!" The team chuckled, the story had been going around the office for a week.
+The team talked for a while longer before deciding to ask for enough budget to hire both Bob and Carol. Later, at BEvERage-O'Clock, someone asked about Scott."Who else interviewed Scott? He was a handful!" The team chuckled, the story had been going around the office for a week.
 
 "A difficult case?"
 

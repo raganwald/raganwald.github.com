@@ -6,8 +6,8 @@
     <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
-    <pubDate>Tue, 26 Mar 2013 20:06:05 -0400</pubDate>
-    <lastBuildDate>Tue, 26 Mar 2013 20:06:05 -0400</lastBuildDate>
+    <pubDate>Tue, 26 Mar 2013 21:56:44 -0400</pubDate>
+    <lastBuildDate>Tue, 26 Mar 2013 21:56:44 -0400</lastBuildDate>
 
     
       
@@ -25,15 +25,17 @@
 
 &lt;p&gt;Ted was equally enthusiastic about Carol. “Super solid on algorithms, she brought up &lt;a href=&quot;http://raganwald.com/2008/12/12/fibonacci.html&quot;&gt;raganwald’s matrix implementation&lt;/a&gt; and we had a good laugh about how you could beat the pants off it with a caching solution. She wrote one and it worked just fine with the 10,000th number.”&lt;/p&gt;
 
-&lt;p&gt;The team talked for a while longer before deciding to ask for enough budget to hire both Bob and Carol. Later, at BEvERage-O’Clock, someone asked about Scott.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;/assets/images/fib.gif&quot; alt=&quot;The Fibonacci Spiral&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;scott&quot;&gt;scott&lt;/h3&gt;
+
+&lt;p&gt;The team talked for a while longer before deciding to ask for enough budget to hire both Bob and Carol. Later, at BEvERage-O’Clock, someone asked about Scott.&lt;/p&gt;
 
 &lt;p&gt;“Who else interviewed Scott? He was a handful!” The team chuckled, the story had been going around the office for a week.&lt;/p&gt;
 
 &lt;p&gt;“A difficult case?”&lt;/p&gt;
 
-&lt;p&gt;“That’s putting it mildly,” said &lt;a href=&quot;http://raganwald.com/2011/11/01/williams-master-of-the-comefrom.html&quot;&gt;Williams&lt;/a&gt;, the grizzled veteran who had handled Scott’s first meeting of the day. “When I tried to fizzbuzz him, he refused, saying that this was no way to interview someone.”&lt;/p&gt;
+&lt;p&gt;“That’s putting it mildly,” said &lt;a href=&quot;http://raganwald.com/2011/11/01/williams-master-of-the-comefrom.html&quot;&gt;Williams&lt;/a&gt;, the grizzled veteran who had handled Scott’s first meeting of the day. “When I asked him to write Fibonacci for me, he refused, saying that this was no way to interview someone.”&lt;/p&gt;
 
 &lt;p&gt;“I tried to explain that we value craftsmanship, and that this was as good an opportunity as any to discuss the many different considerations when writing software (not to mention validate that someone can actually write software), but I think he flipped the bozo bit on me, he acted like I was a blithering idiot for thinking there was anything to discuss with respect to Fibonacci.”&lt;/p&gt;
 
@@ -67,9 +69,9 @@
 
 &lt;p&gt;“I also asked him how we could be sure that &lt;code&gt;Math.sqrt(5)&lt;/code&gt; would have the necessary precision for the 100,000th number, and how he would calculate the necessary precision, but he looked at me like he was Samuel L. Jackson and I was asking ‘what’ too many times.”&lt;/p&gt;
 
-&lt;p&gt;“I gave him one last chance, I said that I’d asked the previous candidate to give me the 10,000th, 100,000th, and 1,000,000th Fibonacci numbers, and perhaps if his algorithm had some limitations we could discuss some alternatives, but he let me know that he did not suffer fools gladly, and hadn’t I heard him twice the first time that this was the correct implementation?”&lt;/p&gt;
+&lt;p&gt;“I gave him one last chance, I said that I’d asked the previous candidate to give me the 10,000th, 100,000th, and 1,000,000th Fibonacci numbers, and perhaps if his algorithm had some limitations we could discuss some alternatives?”&lt;/p&gt;
 
-&lt;p&gt;“In response, I simply typed this into &lt;code&gt;irb&lt;/code&gt;:”&lt;/p&gt;
+&lt;p&gt;“But he let me know that he did not suffer fools gladly, and hadn’t I heard him twice the first time that this was the correct implementation? In response, I simply typed this into &lt;code&gt;irb&lt;/code&gt;:”&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;closed_fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; FloatDomainError: Infinity&lt;/span&gt;
@@ -79,17 +81,17 @@
 &lt;span class=&quot;c1&quot;&gt;#   	from /Users/williams/.rvm/rubies/ruby-1.9.3-p327/bin/irb:16:in `&amp;lt;main&amp;gt;&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;“Alas, he didn’t have the decency to apologise before leaving, he just shouted something about trick questions. What could I do? After he left, I emailed his resume to StinkWare, our competition. They deserve each other.”&lt;/p&gt;
+&lt;p&gt;“After he left, I emailed his resume to StinkWare, our competition. They deserve each other.”&lt;/p&gt;
 
 &lt;p&gt;The team had a good laugh about that.&lt;/p&gt;
 
-&lt;h3 id=&quot;authors-note&quot;&gt;author’s note&lt;/h3&gt;
+&lt;h3 id=&quot;the-moral-of-the-story&quot;&gt;the moral of the story&lt;/h3&gt;
 
-&lt;p&gt;This is entirely fictional and not intended to suggest anything about the right way to interview someone or be interviewed, it’s just a shaggy dog story ending up with an insight: &lt;em&gt;The gap between theory and practice is narrower in theory than it is in practice&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Even the most “obvious” programs have hidden limitations or considerations, and what makes programming such as fascinating (and maddening!) discipline is the need to take nothing for granted and to be flexible about the notion that there is always more than one way to do it.&lt;/p&gt;
 
-&lt;p&gt;In this case, the closed-form solution is excellent up to somewhere between n = 1,000 and n = 10,000, and then the imprecisions and trade-offs inherent in number representations and library math routines come into play.&lt;/p&gt;
+&lt;p&gt;In this case (Ruby 1.9.3), the closed-form solution is excellent up to somewhere between n = 1,000 and n = 10,000, and then the imprecisions and trade-offs inherent in number representations and library math routines come into play.&lt;/p&gt;
 
-&lt;p&gt;So like anything, keep an open mind about the strengths and weaknesses of any approach, no matter how “obvious” things may seem.&lt;/p&gt;
+&lt;p&gt;An integer-only solution doesn’t suffer from these limitations in Ruby, although the performance of an iterative solution would be crippling. So like anything, keep an open mind about the strengths and weaknesses of any approach, no matter how “obvious” things may seem.&lt;/p&gt;
 </description>
         </item>
       
