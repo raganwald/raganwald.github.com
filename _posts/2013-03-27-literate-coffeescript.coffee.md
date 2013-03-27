@@ -33,6 +33,8 @@ First, I include a code sample in my blog. If you're not 100% familiar with Mark
       else
         n * factorial(n-1)
 
+&nbsp;
+
     describe "my factorial", ->
     
       it "should return one for zero", ->
