@@ -25,7 +25,7 @@ Recently, Jeremy Ashkenas released a new feature within CoffeeScript: The abilit
 
 I recently started writing a serious of posts about [an enchanted forest](http://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html). These posts take the form of a story punctuated with code examples. Literate CoffeeScript is obviously terrific for documenting code, but I thought it might also be ideal for blogging. So I set up a workflow.
 
-First, I include a code sample in my blog, like this:
+First, I include a code sample in my blog. If you're not 100% familiar with Markdown and code, the raw markdown source is [here](https://raw.github.com/raganwald/raganwald.github.com/master/_posts/2013-03-27-literate-coffeescript.coffee.md). It ends up looking like this:
 
     factorial = (n) ->
       if n = 0
