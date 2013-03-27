@@ -6,7 +6,7 @@ tags: [coffeescript]
 
 With the demise of Posterous, I was motivated to "get my blogging house in order" and move all of my blogging onto Github. I've written about using Jekyll and Github Pages elsewhere,[^2013] but the short form is:
 
-[^2013]: [twenty Thirteen](http://raganwald.com/2013/02/20/twenty-thirteen.html)
+[^2013]: [Twenty Thirteen](http://raganwald.com/2013/02/20/twenty-thirteen.html)
 
 1. I have my own domains via registrar [gandi.net](http://gandi.net). They point to Github's IP.
 2. Each blog gets a repository.
