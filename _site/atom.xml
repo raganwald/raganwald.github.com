@@ -4,13 +4,44 @@
   <title>raganwald.com</title>
   <link href="http://raganwald.com/"/>
   <link type="application/atom+xml" rel="self" href="http://raganwald.com/atom.xml"/>
-  <updated>2013-03-26T21:56:44-04:00</updated>
+  <updated>2013-03-27T09:46:14-04:00</updated>
   <id>http://raganwald.com/</id>
   <author>
     <name>Reginald Braithwaite</name>
     <email>reg@braythwayt.com</email>
   </author>
 
+  
+    
+      <entry>
+        <id>http://raganwald.com/2013/03/27/literate-coffeescript.coffee</id>
+        <link type="text/html" rel="alternate" href="http://raganwald.com/2013/03/27/literate-coffeescript.coffee.html"/>
+        <title>My Literate CoffeeScript Blogging Workflow</title>
+        <published>2013-03-27T00:00:00-04:00</published>
+        <updated>2013-03-27T00:00:00-04:00</updated>
+        <author>
+          <name>Reginald Braithwaite</name>
+          <uri>http://raganwald.com/</uri>
+        </author>
+        <content type="html">&lt;p&gt;With the demise of Posterous, I wa smotivated to “get my blogging house in order” and move all of my blogging onto Github. I’ve written about using Jekyll and Github Pages elsewhere, but the short form is:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I have my own domains via registrar &lt;a href=&quot;http://gandi.net&quot;&gt;gandi.net&lt;/a&gt;. They point to Github’s IP.&lt;/li&gt;
+  &lt;li&gt;Each blog gets a repository.&lt;/li&gt;
+  &lt;li&gt;The repository has a &lt;code&gt;CNAME&lt;/code&gt; file containing the blog’s domain name. For example, &lt;a href=&quot;https://github.com/raganwald/raganwald.github.com/blob/master/CNAME&quot;&gt;this one&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Each repository is set up with various Jekyll things like a &lt;code&gt;_config.yml&lt;/code&gt; files, folders for the &lt;code&gt;_layouts&lt;/code&gt; and &lt;code&gt;_includes&lt;/code&gt; that Liquid Templates need, and so on.&lt;/li&gt;
+  &lt;li&gt;I have some Liquid Template stuff stuff going on to &lt;a href=&quot;https://github.com/raganwald/raganwald.github.com/blob/master/_includes/book.html&quot;&gt;associate post tags with books&lt;/a&gt; to “advertise” in the margin and to &lt;a href=&quot;https://raw.github.com/raganwald/raganwald.github.com/master/index.md&quot;&gt;include a list of the published posts&lt;/a&gt; in &lt;code&gt;index.html&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/raganwald/raganwald.github.com/blob/master/atom.xml&quot;&gt;Atom&lt;/a&gt; and &lt;a href=&quot;https://github.com/raganwald/raganwald.github.com/blob/master/rss.xml&quot;&gt;RSS&lt;/a&gt; feeds are handled by more Liquid markup.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Everything up to this point is a standard blog.&lt;/p&gt;
+
+&lt;h3 id=&quot;literate-coffeescript&quot;&gt;literate coffeescript&lt;/h3&gt;
+
+&lt;p&gt;Recently, Jeremy Ashkenas released a new feature within CoffeeScript: The ability to parse what he calls “Literate CoffeeScript:” CoffeeScript that lives within a Markdown document. The CoffeeScript transpiler will now ignore the markdown and transpile CoffeeScript in the code sections.&lt;/p&gt;
+</content>
+      </entry>
+    
   
     
       <entry>
@@ -27,17 +58,13 @@
 
 &lt;p&gt;“Bob was great,” said Alice, “The interview got off to a great start when I fizzbuzzed him with Fibonacci. He asked whether I wanted an Enumerator or iterative function. When I suggested he try something recursive, he had no trouble whatsoever.” &lt;/p&gt;
 
-&lt;p&gt;“He even mentioned trampolining when I wondered about asking for the ten thousandth Fibonacci number. I probed about the closed form solution, and while he knew one existed, he admitted up front that he hand’t used it. We discussed requirements and use cases and things went really well from there.”&lt;/p&gt;
-
-&lt;p&gt;Ted was equally enthusiastic about Carol. “Super solid on algorithms, she brought up &lt;a href=&quot;http://raganwald.com/2008/12/12/fibonacci.html&quot;&gt;raganwald’s matrix implementation&lt;/a&gt; and we had a good laugh about how you could beat the pants off it with a caching solution. She wrote one and it worked just fine with the 10,000th number.”&lt;/p&gt;
+&lt;p&gt;Ted was equally enthusiastic about Carol. “Super solid on algorithms, she brought up &lt;a href=&quot;http://raganwald.com/2008/12/12/fibonacci.html&quot;&gt;raganwald’s matrix implementation&lt;/a&gt; and we had a good laugh about how you could beat the pants off it with a caching solution. She wrote one and it worked just fine with the 10,000th, 100,000th, and 1,000,000th numbers.”&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/fib.gif&quot; alt=&quot;The Fibonacci Spiral&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;scott&quot;&gt;scott&lt;/h3&gt;
 
-&lt;p&gt;The team talked for a while longer before deciding to ask for enough budget to hire both Bob and Carol. Later, at BEvERage-O’Clock, someone asked about Scott.&lt;/p&gt;
-
-&lt;p&gt;“Who else interviewed Scott? He was a handful!” The team chuckled, the story had been going around the office for a week.&lt;/p&gt;
+&lt;p&gt;The team talked for a while longer before deciding to ask for enough budget to hire both Bob and Carol. Later, at BEvERage-O’Clock, someone asked about Scott.”Who else interviewed Scott? He was a handful!” The team chuckled, the story had been going around the office for a week.&lt;/p&gt;
 
 &lt;p&gt;“A difficult case?”&lt;/p&gt;
 
