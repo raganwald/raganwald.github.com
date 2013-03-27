@@ -1,7 +1,7 @@
 ---
 title: My Literate CoffeeScript Blogging Workflow
 layout: default
-tags: [coffeescript]
+tags: [coffeescript, hide-specs]
 ---
 
 With the demise of Posterous, I was motivated to "get my blogging house in order" and move all of my blogging onto Github. I've written about using Jekyll and Github Pages elsewhere,[^2013] but the short form is:
@@ -66,7 +66,7 @@ And now I know that I need to change the `=` to `is` in the code above.
 
 Obviously, it's a benefit to find bugs and fix them before my readers find them and send me pull requests ([this blog is a Github Repo](https://github.com/raganwald/raganwald.github.com)!). But it's also a benefit to have an incentive to write tests. I don't do TDD in a blog post, but writing tests after the fact does make me think a little more about the case analysis and I think it's a benefit for readers.
 
-The downside is that the snippets become quite a bit longer thanks to the expectations. In my stories, I use a little JavaScript to hide the snippets and readers can click a link to expand them. I'm considering taking a similar approach to hiding the expectations in all posts.
+The downside is that the snippets become quite a bit longer thanks to the expectations. In my stories, I use a little JavaScript to hide the snippets and readers can click a link to expand them. I now use a similar approach to hiding the expectations in any post with a special `hide-specs` tag.
 
 But in the mean time, I find that when I'm writing CoffeeScript, it's a win to be able to run my expectations right in my posts. If you're blogging with Markdown, consider setting up your own Literate CoffeeScript workflow. It's a time-saver and make sit easy to get the code right.
 
