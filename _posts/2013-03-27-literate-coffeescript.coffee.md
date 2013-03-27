@@ -32,15 +32,13 @@ First, I include a code sample in my blog. If you're not 100% familiar with Mark
         1
       else
         n * factorial(n-1)
-
-&nbsp;
+        
+I then add some [jasmine-node](https://github.com/mhevery/jasmine-node) specifications. Obviously, I have [node.js](http://nodejs.org) installed along with [jasmine](http://pivotal.github.com/jasmine/) and jasmine-node.
 
     describe "my factorial", ->
     
       it "should return one for zero", ->
         expect( factorial(0) ).toEqual 1
-        
-I then add some [jasmine-node](https://github.com/mhevery/jasmine-node) specifications. Obviously, I have [node.js](http://nodejs.org) installed along with [jasmine](http://pivotal.github.com/jasmine/) and jasmine-node.
         
 I could run these manually, but it's awkward because while CoffeeScript has been updated to handle "literate" markdown, jasmine-node has not. So jasmine-node is looking for ordinary CoffeeScript and will choke on Literate CoffeeScript. So I'd have to use `coffee` to compile the Literate CoffeeScript to JavaScript and then run jasmine-node on the JavaScript.
 
