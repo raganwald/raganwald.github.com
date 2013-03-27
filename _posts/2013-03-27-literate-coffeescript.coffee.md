@@ -56,7 +56,7 @@ I hacked together the laziest of crappy shell scripts to do it for me:
     jasmine-node ~/Dropbox/sites/raganwald.github.com/_specs --matchall
     "
     
-The quotes are to tell the CoffeeScript compiler to ignore this. The script compiles the post(s) I specify  into a specs folder and then runs them (by default it does the enchanted forest posts in bulk). So whenever I add a new snippet, I write some expectations and then run the post:
+I added the quotes here so that the CoffeeScript compiler will ignore the shell script in this post. The script compiles the post(s) I specify into the `_specs` folder and then runs them (by default it does the enchanted forest posts in bulk). So whenever I add a new snippet, I write some expectations and then run the post:
 
 ![Failure!](/assets/images/failure.png)
 

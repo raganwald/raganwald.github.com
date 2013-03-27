@@ -1,9 +1,8 @@
 ---
-title: Zee Hackenbush Bird
+title: Zee Hackenbush Bird (Hidden Specs)
 layout: default
-tags: [coffeescript, surrealnumbers, hide-code]
+tags: [coffeescript, surrealnumbers, hide-specs]
 categories: enchanted-forest
-permalink: /enchanted-forest/hackenbush.html
 ---
 
 Previous: [A Surreal Encounter With a Winged Elephant](./horton.html)
