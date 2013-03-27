@@ -70,4 +70,8 @@ The downside is that the snippets become quite a bit longer thanks to the expect
 
 But in the mean time, I find that when I'm writing CoffeeScript, it's a win to be able to run my expectations right in my posts. If you're blogging with Markdown, consider setting up your own Literate CoffeeScript workflow. It's a time-saver and make sit easy to get the code right.
 
-And if you aren't using CoffeeScript... Why not use Literate CoffeeScript as an excuse to gie it a try?
+And if you aren't using CoffeeScript... Why not use Literate CoffeeScript as an excuse to give it a try?
+
+---
+
+notes:
