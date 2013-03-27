@@ -176,7 +176,9 @@ Maude started with the following notes:
               else
                 throw "TODO: Implement Me"
           , 0
-    
+
+Then she checked her work:
+
     describe "SimpleHackenstringGame", ->
     
       noRows = new SimpleHackenstringGame([])
@@ -300,6 +302,8 @@ Maude began by making some notes about dyadic fractions. A dyadic fraction is a 
         a1 = this.a * twoToPowerOf(b - this.b)
         a2 = that.a * twoToPowerOf(b - that.b)
         new Dyadic(a1 + a2, b)
+
+Then she checked her work:
         
     describe "dyadic", ->
     
@@ -354,6 +358,8 @@ With dyadic fractions under her belt, she was able to extend her understanding o
                     acc = acc.plus (new Dyadic(stoneValue(stone), index + 1))
                   acc
           , zero
+
+Then she checked her work:
     
     describe "MixedHackenstringGame", ->
     
