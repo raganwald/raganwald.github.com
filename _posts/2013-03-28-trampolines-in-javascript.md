@@ -1,4 +1,5 @@
 ---
+title: Trampolines in JavaScript
 layout: default
 tags: [allonge, effectivejs, funjs]
 ---
