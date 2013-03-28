@@ -19,4 +19,4 @@ Previous: [Zee Hackenbush Bird](./hackenbush.html)
 
 ---
 
-Zee Hackenbush Bird led them over closer to the river, where a series of Hackenstring games were laid out. Beside each game were huge piles of spare pebbles. "Notice," he pointed out, "The addition of the flat rock to these games."
+Zee Hackenbush Bird led them over closer to the river, where a series of Hackenstring games were laid out. Beside each game were huge piles of spare pebbles. "Notice," he pointed out, "The addition of some flat rocks to the black and white pebbles in these games."
