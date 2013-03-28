@@ -6,9 +6,142 @@
     <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
-    <pubDate>Wed, 27 Mar 2013 13:07:33 -0400</pubDate>
-    <lastBuildDate>Wed, 27 Mar 2013 13:07:33 -0400</lastBuildDate>
+    <pubDate>Thu, 28 Mar 2013 10:19:51 -0400</pubDate>
+    <lastBuildDate>Thu, 28 Mar 2013 10:19:51 -0400</lastBuildDate>
 
+    
+      
+        <item>
+          <title>Trampolines In Javascript</title>
+          <link>http://raganwald.com/2013/03/28/trampolines-in-javascript.html</link>
+          <pubDate>Thu, 28 Mar 2013 00:00:00 -0400</pubDate>
+          <author>reg@braythwayt.com (Reginald Braithwaite)</author>
+          <guid>http://raganwald.com/2013/03/28/trampolines-in-javascript</guid>
+          <description>&lt;blockquote&gt;
+  &lt;p&gt;A trampoline is a loop that iteratively invokes &lt;a href=&quot;https://en.wikipedia.org/wiki/Thunk_(functional_programming)&quot;&gt;thunk&lt;/a&gt;-returning functions (&lt;a href=&quot;https://en.wikipedia.org/wiki/Continuation-passing_style&quot;&gt;continuation-passing style&lt;/a&gt;). A single trampoline is sufficient to express all control transfers of a program; a program so expressed is trampolined, or in trampolined style; converting a program to trampolined style is trampolining. Trampolined functions can be used to implement &lt;a href=&quot;https://en.wikipedia.org/wiki/Tail-recursive_function&quot;&gt;tail-recursive&lt;/a&gt; function calls in stack-oriented programming languages.–&lt;a href=&quot;https://en.wikipedia.org/wiki/Trampoline_(computing)&quot;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This description is precise and appropriate for a reference work, but it is nearly impossible to go out and read about thunks, continuation-passing style, and tail-recursion without learning about trampolining along the way.&lt;/p&gt;
+
+&lt;p&gt;So it is exactly how one ought to answer the question “define trampolining” on an examination, because it demonstrates that you’ve learned the subject thoroughly. But if asked to &lt;em&gt;explain&lt;/em&gt; trampolining, a more tutorial-focused approach is called for.&lt;/p&gt;
+
+&lt;p&gt;Let’s begin with a use case.&lt;/p&gt;
+
+&lt;h3 id=&quot;recursion-see-recursion&quot;&gt;recursion, see recursion&lt;/h3&gt;
+
+&lt;p&gt;You are asked to demonstrate that you know how to write a recursive function, perhaps in one of those job interviews where they like to take a small snippet of code and use it as an excuse to talk about programming philosophies.&lt;/p&gt;
+
+&lt;p&gt;The challenge is to implement factorial in recursive style.&lt;/p&gt;
+
+&lt;p&gt;You write:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;factorial&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;factorial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The immediate limitation of this implementation is that since it calls itself &lt;em&gt;n&lt;/em&gt; times, to get a result you need a stack on &lt;em&gt;n&lt;/em&gt; stack frames in a typical stack-based programming language implementation. And JavaScript is such an implementation.&lt;/p&gt;
+
+&lt;p&gt;This creates two problems: First, we need space O&lt;em&gt;n&lt;/em&gt; for all those stack frames. It’s as if we actually wrote out &lt;code&gt;1 x 1 x 2 x 3 x 4 x ...&lt;/code&gt; before doing any calculations. Second, most languages have a limit on the size of the stack much smaller than the limit on the amount of memory you need for data.&lt;/p&gt;
+
+&lt;p&gt;Trying this in Node, I get:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;factorial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 3628800&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;factorial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; RangeError: Maximum call stack size exceeded&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We can easily rewrite this in iterative style, but there are other functions that aren’t so amenable to rewriting and using a simple example allows us to concentrate on the mechanism rather than the “domain.”&lt;/p&gt;
+
+&lt;h3 id=&quot;tail-call-elimination&quot;&gt;tail-call elimination&lt;/h3&gt;
+
+&lt;p&gt;Let’s pretend you’re told that you are now targeting a JavaScript implementation that implements &lt;a href=&quot;https://en.wikipedia.org/wiki/Tail-call_optimization&quot;&gt;Tail-Call Optimization&lt;/a&gt;. Meaning, that when a function returns the result of calling itself, the language doesn’t actually perform another function call, it turns the whole thing into a loop for you.&lt;/p&gt;
+
+&lt;p&gt;As written, &lt;code&gt;factorial&lt;/code&gt; cannot be optimized because it doesn’t return the result of a function call, it performs a function call and then does something with the result. So it still needs stack frames.&lt;/p&gt;
+
+&lt;p&gt;Lisp programmers in days of yore would rewrite functions like this into “Tail Recursive Form,” and that’s what we’re going to do. What we need to do is take the expression &lt;code&gt;n * factorial(n - 1)&lt;/code&gt; and push it down into a function so we can just call it with parameters.&lt;/p&gt;
+
+&lt;h3 id=&quot;stack-frames&quot;&gt;stack frames&lt;/h3&gt;
+
+&lt;p&gt;Now you have probably jumped directly to how to do this, but I am not so smart and when I first read about it my eyes glazed over and my head hurt for several days.&lt;/p&gt;
+
+&lt;p&gt;The explanation is this. When a function is called, a &lt;em&gt;stack frame&lt;/em&gt; is created that contains all the information needed to resume execution with the result. Imagine that we are a really, really naïve interpreter parsing and executing the JavaScript code as we go.&lt;/p&gt;
+
+&lt;p&gt;When you first call &lt;code&gt;factorial(10)&lt;/code&gt;, like so:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;factorial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Our interpreter thinks to itself:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I’m calling a function, so create a stack frame.&lt;/li&gt;
+  &lt;li&gt;Inside the stack frame, I’ll put a little list of arguments, in this case &lt;code&gt;[10]&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Inside the stack frame, I’ll put reference to the context, or &lt;code&gt;this&lt;/code&gt;. We don’t care about that right now.&lt;/li&gt;
+  &lt;li&gt;Inside the stack frame, I’ll put a note about where I am going to continue after the function returns, in this case, I’ll be on the command line.&lt;/li&gt;
+  &lt;li&gt;That reference will have a little “hole” in it for what to do with the result of calling the function. In this case, I’ll convert it to a string and print it out: &lt;code&gt;console.log(_);&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Ok, I’ll call the function.&lt;/li&gt;
+  &lt;li&gt;The function code grabs the parameters from the topmost stack frame and executes a bunch of stuff. In this case, it winds up with the expression &lt;code&gt;n * factorial(n - 1)&lt;/code&gt;. It evaluates &lt;code&gt;n&lt;/code&gt; and &lt;code&gt;n - 1&lt;/code&gt; and winds up with &lt;code&gt;10 * factorial(9)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;So we’re ready to call a function again:
+    1. I’m calling a function, so create a stack frame.
+    2. Inside the stack frame, I’ll put a little list of arguments, in this case &lt;code&gt;[9]&lt;/code&gt;
+    3. Inside the stack frame, I’ll put reference to the context, or &lt;code&gt;this&lt;/code&gt;. We don’t care about that right now.
+    4. Inside the stack frame, I’ll put a note about where I am going to continue after the function returns, in this case, I’ll be evaluating &lt;code&gt;10 * _&lt;/code&gt;
+    5. That reference will have a little “hole” in it for what to do with the result of calling the function. We call that &lt;code&gt;_&lt;/code&gt; in &lt;code&gt;10 * _&lt;/code&gt;
+    6. Ok, I’ll call the function.
+    7. The function code grabs the parameters from the topmost stack frame and executes a bunch of stuff. In this case, it winds up with the expression &lt;code&gt;9 * factorial(8)&lt;/code&gt;.
+    8. And on we go…&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This is easy if we have a helper function. In production we’d use IIFEs and other techniques to encapsulate things and prevent the creation of a new closure every time we call &lt;code&gt;factorial&lt;/code&gt;, but we aren’t in production, so:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;factorial&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;accumulatingFactorial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  
+  &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;accumulatingFactorial&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;accumulatingFactorial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;acc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;acc&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now our function either returns a value or it returns the result of calling another function without doing anything with that result. &lt;/p&gt;
+
+&lt;p&gt;Sharp-eyed functional programmers will notice that we’re basically rewriting this thing into a fold over a lazy sequence, but it is man’s nature to find many paths to enlightenment, so let’s push on.&lt;/p&gt;
+
+&lt;p&gt;This won’t actually work in current JavaScript implementations either, because they don’t actually eliminate the tail call:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;factorial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; 3628800&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;factorial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;//=&amp;gt; RangeError: Maximum call stack size exceeded&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So what to do? Well, naturally we’re asked to Greenspun tail-call elimination on top of JavaScript.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Greenspun’s Tenth Rule: Any sufficiently complicated C or Fortran program contains an ad hoc, informally-specified, bug-ridden, slow implementation of half of Common Lisp.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Steele &amp;amp; Crockford’s Corollary to Greenspun’s Tenth Rule: Any sufficiently interesting JavaScript library contains an ad hoc, informally-specified, bug-ridden, slow implementation of half of Haskell.&lt;sup id=&quot;fnref:corollary&quot;&gt;&lt;a href=&quot;#fn:corollary&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Now what to do? We &lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:corollary&quot;&gt;
+      &lt;p&gt;I made that up. But I suspect that Oliver Steele, who wrote one of the first hard-core functional programming libraries for JavaScript, and Douglas Crockford, famous for “The Good Parts,” would agree.&lt;a href=&quot;#fnref:corollary&quot; rel=&quot;reference&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        </item>
+      
     
       
         <item>
@@ -70,7 +203,7 @@ jasmine-node ~/Dropbox/sites/raganwald.github.com/_specs --matchall
 &quot;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The quotes are to tell the CoffeeScript compiler to ignore this. The script compiles the post(s) I specify  into a specs folder and then runs them (by default it does the enchanted forest posts in bulk). So whenever I add a new snippet, I write some expectations and then run the post:&lt;/p&gt;
+&lt;p&gt;I added the quotes here so that the CoffeeScript compiler will ignore the shell script in this post. The script compiles the post(s) I specify into the &lt;code&gt;_specs&lt;/code&gt; folder and then runs them (by default it does the enchanted forest posts in bulk). So whenever I add a new snippet, I write some expectations and then run the post:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/failure.png&quot; alt=&quot;Failure!&quot; /&gt;&lt;/p&gt;
 
@@ -80,7 +213,7 @@ jasmine-node ~/Dropbox/sites/raganwald.github.com/_specs --matchall
 
 &lt;p&gt;Obviously, it’s a benefit to find bugs and fix them before my readers find them and send me pull requests (&lt;a href=&quot;https://github.com/raganwald/raganwald.github.com&quot;&gt;this blog is a Github Repo&lt;/a&gt;!). But it’s also a benefit to have an incentive to write tests. I don’t do TDD in a blog post, but writing tests after the fact does make me think a little more about the case analysis and I think it’s a benefit for readers.&lt;/p&gt;
 
-&lt;p&gt;The downside is that the snippets become quite a bit longer thanks to the expectations. In my stories, I use a little JavaScript to hide the snippets and readers can click a link to expand them. I’m considering taking a similar approach to hiding the expectations in all posts.&lt;/p&gt;
+&lt;p&gt;The downside is that the snippets become quite a bit longer thanks to the expectations. In my stories, I use a little JavaScript to hide the snippets and readers can click a link to expand them. I now use a similar approach to hiding the expectations in any post with a special &lt;code&gt;hide-specs&lt;/code&gt; tag.&lt;/p&gt;
 
 &lt;p&gt;But in the mean time, I find that when I’m writing CoffeeScript, it’s a win to be able to run my expectations right in my posts. If you’re blogging with Markdown, consider setting up your own Literate CoffeeScript workflow. It’s a time-saver and make sit easy to get the code right.&lt;/p&gt;
 
@@ -571,19 +704,19 @@ describe &quot;MixedHackenstringGame&quot;, -&amp;gt;
 
 &lt;h3 id=&quot;the-challenge&quot;&gt;the challenge&lt;/h3&gt;
 
-&lt;p&gt;“This is all very interesting,” said Maude, “And I think I see where you are going with Hackenstrings. I wouldn’t have grasped it without some context, but knowing that you’re using Hackenstrings to explain Horton’s flocks, I’m guessing that a HackenString game is another way of expressing the numbers that proper flocks can express.”&lt;/p&gt;
+&lt;p&gt;“This is all very interesting,” said Maude, “And I think I see where you are going with Hackenstrings. I wouldn’t have grasped it without some context, but knowing that you’re using Hackenstrings to explain Horton’s flocks, I’m guessing that a Hackenstring game is another way of expressing the numbers that proper flocks can express.”&lt;/p&gt;
 
-&lt;p&gt;“And they seem easier to work with than flocks with their birds that know sets of birds they outrank or are outranked by. Nevertheless, I fail to see what Hackenstring games make–as you put it–easy that oridinary arithmatic cannot handle.”&lt;/p&gt;
+&lt;p&gt;“And they seem easier to work with than flocks with their birds that know sets of birds they outrank or are outranked by. Nevertheless, I fail to see what Hackenstring games make–as you put it–easy that ordinary arithmetic cannot handle.”&lt;/p&gt;
 
 &lt;p&gt;Zee Hackenbush Bird waggled his eyebrows and stalked back and forth theatrically. “You have grasped the essential points. We could carry on to discuss arithmetic in Hackenstrings. Compared to the system arboreal primates use, it has several advantages. As my old professor The Walker Bird has said, the concept of addition is natural, consisting merely of laying out adjacent rows; negation, and hence subtraction, is natural, consisting of swapping the ownership of each pebble.”&lt;/p&gt;
 
 &lt;p&gt;“But I think the most exciting thing that Hackenstrings make easy require us to take a little leave of our senses.”&lt;/p&gt;
 
-&lt;p&gt;And with that, he opened his discussion of &lt;em&gt;Irrational Hackenstrings&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;And with that, he opened his discussion of &lt;em&gt;Hyperreal Hackenstrings&lt;/em&gt;.&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;p&gt;Coming Soon: &lt;strong&gt;Irrational Hackenstrings, from the Infinite to the Infinitesimal&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Coming Soon: &lt;strong&gt;Hyperreal Hackenstrings, from the Infinite to the Infinitesimal&lt;/strong&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
 
@@ -2772,6 +2905,10 @@ M.infinity - Bus 2, Bus 3, Bus 5, Bus 7, Bus 11, ..., 42
 
 &lt;div class=&quot;related&quot;&gt;
   &lt;ul&gt;
+    
+    &lt;li&gt;
+&lt;span&gt;&lt;/span&gt; &lt;a href=&quot;&quot;&gt;&lt;/a&gt;
+    &lt;/li&gt;
     
     &lt;li&gt;
 &lt;span&gt;&lt;/span&gt; &lt;a href=&quot;&quot;&gt;&lt;/a&gt;

@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/assets/css/stylesheet.css" media="screen" />
+    
     <link rel="stylesheet" type="text/css" href="/assets/css/pygment_trac.css" media="screen" />
+    <LINK REL=StyleSheet HREF="/assets/css/pygments.css" TYPE="text/css" MEDIA=screen>
     <link rel="stylesheet" type="text/css" href="/assets/css/print.css" media="print" />
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -14,12 +16,12 @@
     <script src="/assets/js/respond.js"></script>
     
     
+    <script src="/assets/js/hide-specs.js"></script>
     
     <!--[if lt IE 8]>
     <link rel="stylesheet" href="/assets/css/ie.css">
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <LINK REL=StyleSheet HREF="/assets/css/pygments.css" TYPE="text/css" MEDIA=screen>
     <link href="http://raganwald.com/atom.xml" type="application/atom+xml" rel="alternate" title="raganwald.com">
     <link rel="alternate" type="application/rss+xml" href="http://raganwald.com/rss.xml" title="raganwald.com">
     <title>My Literate CoffeeScript Blogging Workflow</title>
@@ -56,6 +58,16 @@
   
     <iframe src="http://rcm.amazon.com/e/cm?lt1=_blank&bc1=000000&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=raganwald001-20&o=1&p=8&l=as4&m=amazon&f=ifr&ref=ss_til&asins=1449321054" style="position:relative;float:right;left:180px;top:420px;margin-left:-160px;width:120px;height:240px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
     
+  
+  
+
+
+  
+  
+
+  
+
+  
   
   
 
@@ -113,7 +125,7 @@ jasmine-node ~/Dropbox/sites/raganwald.github.com/_specs --matchall
 "
 </code></pre>
 
-<p>The quotes are to tell the CoffeeScript compiler to ignore this. The script compiles the post(s) I specify  into a specs folder and then runs them (by default it does the enchanted forest posts in bulk). So whenever I add a new snippet, I write some expectations and then run the post:</p>
+<p>I added the quotes here so that the CoffeeScript compiler will ignore the shell script in this post. The script compiles the post(s) I specify into the <code>_specs</code> folder and then runs them (by default it does the enchanted forest posts in bulk). So whenever I add a new snippet, I write some expectations and then run the post:</p>
 
 <p><img src="/assets/images/failure.png" alt="Failure!" /></p>
 
@@ -123,7 +135,7 @@ jasmine-node ~/Dropbox/sites/raganwald.github.com/_specs --matchall
 
 <p>Obviously, it’s a benefit to find bugs and fix them before my readers find them and send me pull requests (<a href="https://github.com/raganwald/raganwald.github.com">this blog is a Github Repo</a>!). But it’s also a benefit to have an incentive to write tests. I don’t do TDD in a blog post, but writing tests after the fact does make me think a little more about the case analysis and I think it’s a benefit for readers.</p>
 
-<p>The downside is that the snippets become quite a bit longer thanks to the expectations. In my stories, I use a little JavaScript to hide the snippets and readers can click a link to expand them. I’m experimenting with a similar approach to hiding the expectations in all posts.</p>
+<p>The downside is that the snippets become quite a bit longer thanks to the expectations. In my stories, I use a little JavaScript to hide the snippets and readers can click a link to expand them. I now use a similar approach to hiding the expectations in any post with a special <code>hide-specs</code> tag.</p>
 
 <p>But in the mean time, I find that when I’m writing CoffeeScript, it’s a win to be able to run my expectations right in my posts. If you’re blogging with Markdown, consider setting up your own Literate CoffeeScript workflow. It’s a time-saver and make sit easy to get the code right.</p>
 
