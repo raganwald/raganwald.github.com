@@ -267,7 +267,7 @@ Bilby's approach has a few more moving parts, but they are very clear and the na
 
 ### summary
 
-*Trampolining* is a technique for greenspunning tail-call elimination. Meaning, if you take take a recursive function and rewrite it in tail-call form, you can eliminate the need to create a stack frame for every 'invocation'.
+*Trampolining* is a technique for greenspunning tail-call elimination. Meaning, if you take a recursive function and rewrite it in tail-call form, you can eliminate the need to create a stack frame for every 'invocation'.
 
 It is very handy in a language like JavaScript, in that it allows you to use a recursive style for functions without worrying about limitations on stack sizes.
 
