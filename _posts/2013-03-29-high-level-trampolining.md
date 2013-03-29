@@ -2,6 +2,8 @@
 layout: default
 ---
 
+<a href="http://www.flickr.com/photos/mr_tentacle/2834914130/" title="Gymnastics Venue with Trampolines by mr_tentacle, on Flickr"><img src="http://farm4.staticflickr.com/3057/2834914130_c3b6733551_z.jpg" alt="Gymnastics Venue with Trampolines"></a>
+
 in [Trampolines in JavaScript][t], we used a ridiculously simple factorial function to understand how [trampolining] works. To recap, we started with:
 
 [t]: http://raganwald.com/2013/03/28/trampolines-in-javascript.html
@@ -16,8 +18,6 @@ function factorial (n) {
 {% endhighlight %}
 
 The major problem given for this code is that stack-based languages like JavaScript consume order *n* space to compute factorial. Some implementations will have a limited stack and fail, others will simply consume an unnecessary amount of memory to compute the desired result.
-
-<a href="http://www.flickr.com/photos/mr_tentacle/2834914130/" title="Gymnastics Venue with Trampolines by mr_tentacle, on Flickr"><img src="http://farm4.staticflickr.com/3057/2834914130_c3b6733551_z.jpg" alt="Gymnastics Venue with Trampolines"></a>
 
 One solution presented was: 
 
