@@ -89,13 +89,13 @@ If we had an implementation of JavaScript capable of tail-call elimination, we w
 
 {% highlight javascript %}
 function factorial (n) {
-  var innerFactorial = function myself (acc, n) {
+  var _factorial = function myself (acc, n) {
     return n
     ? myself(acc * n, n - 1)
     : acc
   };
   
-  return innerFactorial(1, n);
+  return _factorial(1, n);
 }
 {% endhighlight %}
 
@@ -171,13 +171,13 @@ Now here's our implementation of `factorial` that is wrapped around a trampoline
 
 {% highlight javascript %}
 function factorial (n) {
-  var innerFactorial = trampoline( function myself (acc, n) {
+  var _factorial = trampoline( function myself (acc, n) {
     return n
     ? function () { return myself(acc * n, n - 1); }
     : acc
   });
   
-  return innerFactorial(1, n);
+  return _factorial(1, n);
 }
 
 factorial(10);
@@ -208,13 +208,13 @@ var trampoline = function (fn) {
 };
 
 function factorial (n) {
-  var innerFactorial = trampoline( function myself (acc, n) {
+  var _factorial = trampoline( function myself (acc, n) {
     return n.greater(0)
     ? function () { return myself(acc.times(n), n.minus(1)); }
     : acc
   });
   
-  return innerFactorial(bigInt.one, bigInt(n));
+  return _factorial(bigInt.one, bigInt(n));
 }
 
 factorial(10).toString()
@@ -248,13 +248,13 @@ var B = require('bilby'),
     trampoline = B.trampoline;
     
 function factorial (n) {
-  var innerFactorial =  function myself (acc, n) {
+  var _factorial =  function myself (acc, n) {
     return n.greater(0)
     ? cont( function () { return myself(acc.times(n), n.minus(1)); })
     : done( acc )
   };
   
-  return trampoline( innerFactorial(bigInt.one, bigInt(n)) );
+  return trampoline( _factorial(bigInt.one, bigInt(n)) );
 }
 
 factorial(10).toString();
@@ -270,6 +270,10 @@ Bilby's approach has a few more moving parts, but they are very clear and the na
 *Trampolining* is a technique for greenspunning tail-call elimination. Meaning, if you take a recursive function and rewrite it in tail-call form, you can eliminate the need to create a stack frame for every 'invocation'.
 
 It is very handy in a language like JavaScript, in that it allows you to use a recursive style for functions without worrying about limitations on stack sizes.
+
+---
+
+Follow-up: [High Level Trampolining](/2013/03/29/high-level-trampolining.html)
 
 ---
 
