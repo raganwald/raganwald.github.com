@@ -17,7 +17,7 @@ var totals = splat('total')(orders);
 
 If you're working all those out for the first time, it probably seems inordinately clever and an exercise in wankery.
 
-On the other hand, if you do think in terms of Higher-Order Functions ("HOFs"), `splat` is a small incremental improvement on `map`, and a variation on this code that uses the deservedly popular Underscore library:
+On the other hand, if you do think in terms of Higher-Order Functions ("HOFs"), `splat` is a small incremental improvement on `map`, and a variation on this code that uses the deservedly popular [Underscore](http://underscorejs.org) library:
 
 {% highlight javascript %}
 var _ = require('underscore');
@@ -25,7 +25,7 @@ var _ = require('underscore');
 var totals = _.pluck(orders, 'total');
 {% endhighlight %}
 
-And by "variation," I really do mean variation. `splat` is more than a composition of `get` left partial application of `map` to the right partial application function. If that seems like gobbledegook to you, it's because I'm using *jargon*.
+And by "variation," I really do mean variation. `splat` is a composition of `get` with the left partial application of `map` to the right partial application function. If that seems like gobbledegook to you, it's because I'm using *jargon*.
 
 I'll say that again, explicitly:
 
@@ -45,9 +45,11 @@ function splat (propertyName) {
 };
 {% endhighlight %}
 
+Is that better? Yes when you're learning about HOFs in JavaScript, but quite possibly no when you're encountering the same pattern for the twelfth time in  code base, each time written out slightly differently, and one of them has a bug because the person writing it out was on their fourteenth straight hour programming things like this explicitly.
+
 Technicians who work in a homogenous culture use jargon as a form of compression. Jargon is not clever, it is simply unfamiliar to those not immersed in its culture. Being "explicit" instead of using "jargon" is appropriate for audiences who are simultaneously unfamiliar with the jargon and unwilling to learn it.
 
-### jargon is not abstraction
+### jargon is not clever, and it's also not abstraction
 
 An abstraction is a construct designed to separate implementation from contracted behaviour. If `map` happens to be implemented as an iteration, that is an implementation detail. Programmers are not expected to write programs that presume that side-effects will be executed in strict order.
 
