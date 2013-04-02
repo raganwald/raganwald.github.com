@@ -8,12 +8,13 @@ tags: [programming, effectivejs]
 Me too! And if we are all thinking the exact same thing when we read or write the words "explicit" and "clever," there is nothing else to say on the subject. But consider this piece of code in JavaScript:
 
 {% highlight javascript %}
-var splat = require'allong.es').splat;
+var splat = require('allong.es').splat,
+    get = require('allong.es').get;
 
-var totals = splat('total')(orders);
+var totals = splat(get('total'))(orders);
 {% endhighlight %}
 
-`splat('total')(orders)` is not explicit if your knowledge of JavaScript is limited to the syntax, semantics, and standard libraries. To understand it, you need to know that `splat` is a function that produces a `flatMap`, and you need to know enough about functional programming to know what a flatMap is, or be able to relate it to `Array.prototype.map`.
+`splat(get('total'))(orders)` is not explicit if your knowledge of JavaScript is limited to the syntax, semantics, and standard libraries. To understand it, you need to know that `splat` is a function that produces a `flatMap`, that `get` turns a string into a property accessor, and you need to know enough about functional programming to know what a flatMap is, or be able to relate it to `Array.prototype.map`.
 
 If you're working all those out for the first time, it probably seems inordinately clever and an exercise in wankery.
 
@@ -25,29 +26,37 @@ var _ = require('underscore');
 var totals = _.pluck(orders, 'total');
 {% endhighlight %}
 
-And by "variation," I really do mean variation. `splat` is a composition of `get` with the left partial application of `map` to the right partial application function. If that seems like gobbledegook to you, it's because I'm using *jargon*.
+And by "variation," I really do mean variation. `splat` is the left partial application of `map` to the right partial application function. If that seems like gobbledegook to you, it's because I'm using *jargon*.
 
-I'll say that again, explicitly:
+Here's the jargon in JavaScript:
 
 {% highlight javascript %}
-function get (propertyName) {
-  return function (object) {
-    return object[propertyName];
-  }
+var applyFirst = require('allong.es').applyFirst,
+    applyLast = require('allong.es').applyLast,
+    map = require('underscore').map;
+    
+var splat = applyFirst(applyLast, map);
+{% endhighlight %}
+
+I'll say that again in JavaScript, this time explicitly:
+
+{% highlight javascript %}
+function map (list, fn) {
+  return Array.prototype.map.call(list, fn);
 };
 
-function splat (propertyName) {
-  var getter = get(propertyName);
-  
-  return function (mappable) {
-    return mappable.map(getter);
-  }
+function splat (fn) {
+  return function (list) {
+    return map(list, function (something) {
+      return fn(something) 
+    });
+  };
 };
 {% endhighlight %}
 
-Is that better? Yes when you're learning about HOFs in JavaScript, but quite possibly no when you're encountering the same pattern for the twelfth time in  code base, each time written out slightly differently, and one of them has a bug because the person writing it out was on their fourteenth straight hour programming things like this explicitly.
+Is that better? *Yes* when you're learning about HOFs in JavaScript, but quite possibly *no* when you're encountering a similar pattern for the twelfth time in the same code base, each time written out slightly differently, and one of them has a bug because the person writing it out was on their fourteenth straight hour programming things like this explicitly.
 
-Technicians who work in a homogenous culture use jargon as a form of compression. Jargon is not clever, it is simply unfamiliar to those not immersed in its culture. Being "explicit" instead of using "jargon" is appropriate for audiences who are simultaneously unfamiliar with the jargon and unwilling to learn it.
+This is one of the reasons that in addition to avoiding "clever" code, pragmatic programmers also avoid "repeating themselves." Jargon is one of the ways we avoid repeating ourselves in code.
 
 ### jargon is not clever, and it's also not abstraction
 
