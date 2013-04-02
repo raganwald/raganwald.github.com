@@ -83,3 +83,5 @@ Something like ActiveRecord can be said to be an abstraction that attempts to wi
 ### so, when is something explicit and when is it clever?
 
 Clearly, "explicit" and "clever" are not a dichotomy. Code that is not explicit may be jargon. Or it may be an abstraction. And yes, it may also be too clever for its own good.
+
+([discuss](https://news.ycombinator.com/item?id=5481101))
