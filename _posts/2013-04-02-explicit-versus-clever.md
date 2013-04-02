@@ -1,5 +1,6 @@
 ---
 layout: default
+title: Explicit vs. Clever
 tags: [programming, effectivejs]
 ---
 
