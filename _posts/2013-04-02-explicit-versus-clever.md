@@ -15,7 +15,7 @@ var splat = require('allong.es').splat,
 var totals = splat(get('total'))(orders);
 {% endhighlight %}
 
-`splat(get('total'))(orders)` is not explicit if your knowledge of JavaScript is limited to the syntax, semantics, and standard libraries. To understand it, you need to know that `splat` is a function that produces a `flatMap`, that `get` turns a string into a property accessor, and you need to know enough about functional programming to know what a flatMap is, or be able to relate it to `Array.prototype.map`.
+`splat(get('total'))(orders)` is not explicit if your knowledge of JavaScript is limited to the syntax, semantics, and standard libraries. To understand it, you need to know that `splat` is a function that produces a `map`, that `get` turns a string into a property accessor, and you need to know enough about functional programming to know what a map is, or be able to relate it to `Array.prototype.map`.
 
 If you're working all those out for the first time, it probably seems inordinately clever and an exercise in wankery.
 
@@ -85,3 +85,19 @@ Something like ActiveRecord can be said to be an abstraction that attempts to wi
 Clearly, "explicit" and "clever" are not a dichotomy. Code that is not explicit may be jargon. Or it may be an abstraction. And yes, it may also be too clever for its own good.
 
 ([discuss](https://news.ycombinator.com/item?id=5481101))
+
+---
+
+post scriptum
+
+For those who are curious about why you'd use `splat` and `get` in a world where you can use `pluck`, the answer is that they are part of a combinatory style of functional programming where the emphasis is on *composing* functions rather than applying them.
+
+In that world, you do use `pluck`. But it's a simple one-liner you write yourself:
+
+{% highlight javascript %}
+var pluck = compose(splat, get);
+
+// ...
+
+var totals = pluck('total')(orders);
+{% endhighlight %}
