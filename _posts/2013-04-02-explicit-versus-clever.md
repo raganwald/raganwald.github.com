@@ -4,7 +4,7 @@ title: Explicit vs. Clever
 tags: [programming, effectivejs]
 ---
 
-> "Proud to say I work with a team of developers who value explicit code over clever code"--[Michael R. Bernstein](http://michaelrbernste.in)
+> "Proud to say I work with a team of developers who value explicit code over clever code"--[Michael R. Bernstein](https://twitter.com/mrb_bk/status/319127230905208832)
 
 Me too! And if we are all thinking the exact same thing when we read or write the words "explicit" and "clever," there is nothing else to say on the subject. But consider this piece of code in JavaScript:
 
