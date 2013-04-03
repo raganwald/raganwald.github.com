@@ -12,8 +12,7 @@ Me too! And if we are all thinking the exact same thing when we read or write th
 
 {% highlight javascript %}
 var mapWith = require('allong.es').mapWith,
-    attrWith = require('allong.es').attrWith,
-    compose = require('allong.es').compose;
+    attrWith = require('allong.es').attrWith;
 
 var totaller = mapWith(attrWith('total'));
 
@@ -34,7 +33,7 @@ var _ = require('underscore');
 var orderTotals = _.pluck(orders, 'total');
 {% endhighlight %}
 
-[^pluck]: So why not use `_.pluck`? It's even simpler! I often do use pluck`, of course. The benefit of `mapWith` and `attrWith` when used consistently in a codebase is that they *compose* very nicely because they're written to take a single value as an argument and return a function. For example, the `allong.es` library does include its own version of `pluck`, and the definition is a one-liner `var pluck = compose(mapWith, attrWith)`. The `allong.es` library is written with this philosophy in mind, but `mapWith` and `attrWith` are shown here to illustrate the opacity of jargon to those who are not immersed in its culture.
+[^pluck]: So why not use `_.pluck`? It's even simpler! The benefit of `mapWith` and `attrWith` when used consistently in a codebase is that they *compose* very nicely because they're written to take a single value as an argument and return a function. `mapWith` and `attrWith` are shown here to illustrate the opacity of jargon to those who are not immersed in its culture. In actual fact, the `allong.es` library does include its own version of pluck, and the definition is a one-liner: `var pluck = compose(mapWith, attrWith)`.
 
 ### jargon
 
