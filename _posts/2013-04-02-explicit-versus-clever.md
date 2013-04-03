@@ -1,10 +1,10 @@
 ---
 layout: default
 title: Explicit vs. Clever
-tags: [programming, effectivejs]
+tags: [allonge, LiSP]
 ---
 
-*Revised!*
+*Revised to change some of the nomenclature!*
 
 > "Proud to say I work with a team of developers who value explicit code over clever code"--[Michael R. Bernstein](https://twitter.com/mrb_bk/status/319127230905208832)
 
@@ -93,7 +93,7 @@ Something like ActiveRecord can be said to be an abstraction that attempts to wi
 
 Clearly, "explicit" and "clever" are not a dichotomy. Code that is not explicit may be jargon. Or it may be an abstraction. And yes, it may also be too clever for its own good.
 
-([discuss](https://news.ycombinator.com/item?id=5481101))
+(discuss on [/r/javascript](hhttp://www.reddit.com/r/javascript/comments/1bl24h/explicit_vs_clever/))
 
 ---
 
