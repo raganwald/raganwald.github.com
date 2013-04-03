@@ -4,39 +4,49 @@ title: Explicit vs. Clever
 tags: [programming, effectivejs]
 ---
 
+*Revised!*
+
 > "Proud to say I work with a team of developers who value explicit code over clever code"--[Michael R. Bernstein](https://twitter.com/mrb_bk/status/319127230905208832)
 
 Me too! And if we are all thinking the exact same thing when we read or write the words "explicit" and "clever," there is nothing else to say on the subject. But consider this piece of code in JavaScript:
 
 {% highlight javascript %}
-var splat = require('allong.es').splat,
-    get = require('allong.es').get;
+var mapWith = require('allong.es').mapWith,
+    attrWith = require('allong.es').attrWith,
+    compose = require('allong.es').compose;
 
-var totals = splat(get('total'))(orders);
+var totaller = mapWith(attrWith('total'));
+
+// ...
+
+var orderTotals = totaller(orders);
 {% endhighlight %}
 
-`splat(get('total'))(orders)` is not explicit if your knowledge of JavaScript is limited to the syntax, semantics, and standard libraries. To understand it, you need to know that `splat` is a function that produces a `map`, that `get` turns a string into a property accessor, and you need to know enough about functional programming to know what a map is, or be able to relate it to `Array.prototype.map`.
+`mapWith(attrWith('total'))` is not explicit if your knowledge of JavaScript is limited to the syntax, semantics, and standard libraries. To understand it, you need to know that `mapWith` is a function that produces a `map`, that `attrWith` turns a string into a property accessor, and you need to know enough about functional programming to know what a map is, or be able to relate it to `Array.prototype.map`.
 
 If you're working all those out for the first time, it probably seems inordinately clever and an exercise in wankery.
 
-On the other hand, if you do think in terms of Higher-Order Functions ("HOFs"), `splat` is a small incremental improvement on `map`, and a variation on this code that uses the deservedly popular [Underscore](http://underscorejs.org) library:
+On the other hand, if you do think in terms of Higher-Order Functions ("HOFs"), `mapWith` is a small incremental improvement on `.map`, and it's also a variation on this code that uses the deservedly popular [Underscore](http://underscorejs.org) library:[^pluck]
 
 {% highlight javascript %}
 var _ = require('underscore');
 
-var totals = _.pluck(orders, 'total');
+var orderTotals = _.pluck(orders, 'total');
 {% endhighlight %}
 
-And by "variation," I really do mean variation. `splat` is the left partial application of `map` to the right partial application function. If that seems like gobbledegook to you, it's because I'm using *jargon*.
+[^pluck]: So why not use `_.pluck`? It's even simpler! I often do use pluck`, of course. The benefit of `mapWith` and `attrWith` when used consistently in a codebase is that they *compose* very nicely because they're written to take a single value as an argument and return a function. For example, the `allong.es` library does include its own version of `pluck`, and the definition is a one-liner `var pluck = compose(mapWith, attrWith)`. The `allong.es` library is written with this philosophy in mind, but `mapWith` and `attrWith` are shown here to illustrate the opacity of jargon to those who are not immersed in its culture.
+
+### jargon
+
+ `mapWith` is the self-curried right partial application of the `map` function. If that seems like gobbledegook to you, it's because I'm using *jargon*.
 
 Here's the jargon in JavaScript:
 
 {% highlight javascript %}
-var applyFirst = require('allong.es').applyFirst,
-    applyLast = require('allong.es').applyLast,
+var applyLast = require('allong.es').applyLast,
     map = require('underscore').map;
     
-var splat = applyFirst(applyLast, map);
+var mapWith = applyLast(map);
 {% endhighlight %}
 
 I'll say that again in JavaScript, this time explicitly:
@@ -46,7 +56,7 @@ function map (list, fn) {
   return Array.prototype.map.call(list, fn);
 };
 
-function splat (fn) {
+function mapWith (fn) {
   return function (list) {
     return map(list, function (something) {
       return fn(something) 
@@ -55,9 +65,9 @@ function splat (fn) {
 };
 {% endhighlight %}
 
-Is that better? *Yes* when you're learning about HOFs in JavaScript, but quite possibly *no* when you're encountering a similar pattern for the twelfth time in the same code base, each time written out slightly differently, and one of them has a bug because the person writing it out was on their fourteenth straight hour programming things like this explicitly.
+Is the second, most explicit form better? *Yes* when you're learning about HOFs in JavaScript, but quite possibly *no* when you're encountering a similar pattern for the twelfth time in the same code base, each time written out slightly differently, and one of them has a bug because the person writing it out was on their fourteenth straight hour programming things like this explicitly.
 
-This is one of the reasons that in addition to avoiding "clever" code, pragmatic programmers also avoid "repeating themselves." Jargon is one of the ways we avoid repeating ourselves in code.
+And of course, there's no point in having *inconsistent* jargon, or one-offs here and there in a code base. Jargon is only a win when it's used consistently.
 
 ### jargon is not clever, and it's also not abstraction
 
@@ -88,16 +98,4 @@ Clearly, "explicit" and "clever" are not a dichotomy. Code that is not explicit 
 
 ---
 
-post scriptum
-
-For those who are curious about why you'd use `splat` and `get` in a world where you can use `pluck`, the answer is that they are part of a combinatory style of functional programming where the emphasis is on *composing* functions rather than applying them.
-
-In that world, you do use `pluck`. But it's a simple one-liner you write yourself:
-
-{% highlight javascript %}
-var pluck = compose(splat, get);
-
-// ...
-
-var totals = pluck('total')(orders);
-{% endhighlight %}
+notes:
