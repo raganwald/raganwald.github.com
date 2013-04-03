@@ -93,7 +93,7 @@ Something like ActiveRecord can be said to be an abstraction that attempts to wi
 
 Clearly, "explicit" and "clever" are not a dichotomy. Code that is not explicit may be jargon. Or it may be an abstraction. And yes, it may also be too clever for its own good.
 
-(discuss on [/r/javascript](hhttp://www.reddit.com/r/javascript/comments/1bl24h/explicit_vs_clever/))
+(discuss on [/r/javascript](http://www.reddit.com/r/javascript/comments/1bl24h/explicit_vs_clever/))
 
 ---
 
