@@ -84,7 +84,7 @@ squareAll([5, 7, 5]);
   //=> [25, 49, 25]
 {% endhighlight %}
 
-We've just partially applied the value `square` to the function `map`. We got back a unary function, `squareAll`, that we could use as we liked. Partially applying `map` in this fashion is handy, so much so that the [allong.es] library includes a function called `splat` that does this exact thing.
+We've just partially applied the value `square` to the function `map`. We got back a unary function, `squareAll`, that we could use as we liked. Partially applying `map` in this fashion is handy, so much so that the [allong.es] library includes a function called `mapWith` that does this exact thing.
 
 [allong.es]: http://allong.es
 
