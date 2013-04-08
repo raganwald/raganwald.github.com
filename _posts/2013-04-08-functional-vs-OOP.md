@@ -24,6 +24,9 @@ Is one of these two models the overwhelming "winner" in the business environment
 
 
 [![](http://dieselsweeties.com/hstrips/0/3/2/7/03279.png)](http://dieselsweeties.com)
+
+---
+
 Of course, the answer is, *business programming is dominated by the functional model, not the OO model.* Does this seem like a surprising answer? Only if you are thinking solely of Java, C++, C#, and Ruby.
 
 When you think of it, all that "OO" is usually a thin skin over access to various databases that support SQL, a very functional language. While it is possible to manage a database such that all access to its tables is done through PL/SQL stored procedures, this usually creates a severe programming bottleneck for very little real gain.
