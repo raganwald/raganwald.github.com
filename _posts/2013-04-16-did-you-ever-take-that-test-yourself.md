@@ -39,3 +39,7 @@ I just think of the need for documentation as a "risk smell," and a hint that te
 And that's it: If a piece of code "ought" to have some comment or developer documentation, tests for that code are higher priority than tests for self-explanatory code. Write them first.
 
 I can't tell you that you should *always* follow this pattern, but what I do say is that it is a kind of "default" for me. Meaning, if I don't have a good reason to do otherwise, I try to follow this rule.
+
+---
+
+notes:
