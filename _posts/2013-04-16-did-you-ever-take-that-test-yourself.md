@@ -42,4 +42,6 @@ I can't tell you that you should *always* follow this pattern, but what I do say
 
 ---
 
+([discuss](https://news.ycombinator.com/item?id=5557621))
+
 notes:
