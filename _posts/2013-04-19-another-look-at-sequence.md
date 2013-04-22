@@ -1,8 +1,9 @@
 ---
 layout: default
 tags: [javascript]
-published: false
 ---
+
+### preamble
 
 One of the goals of the [allong.es] library is to provide easy-to-use tools for writing JavaScript and CoffeeScript programs using *functional composition*. To pick an example out of thin air, this snippet shows how to write a method that uses *Maybe* to ensure that it doesn't do anything if you pass in `null` or `undefined`, and that uses *Fluent* to ensure that it always returns the receiver, jQuery-style:
 
@@ -66,11 +67,15 @@ var doFourThings = sequence(
   finallyDoThis);
 {% endhighlight %}
 
-In this form, *Sequence* is simplicity itself: `sequence = flip(compose)` . It's no more and no less than calling "compose" with the arguments flipped from back to front.
+In this form, *Sequence* looks like simplicity itself: `sequence = flip(compose)`. It has the same mechanism as calling "compose" with the arguments flipped from back to front.
 
-### sequence with a twist
+But semantically, it's different. The compose function is all about doing more than one thing; *The sequence function is all about doing things in a specific order*. In this post, we're going to look at the ways it can be used and some of the very special features it has.
 
-Let's up the ante a bit. Consider this code:
+By the end, we'll have a handle on using sequence to manage asynchronous functions, special error handling, and other "programmable semantics."
+
+## Mapping Semantics
+
+We saw how to use sequence to emulate what we can already do with semicolons. Let's up the ante a bit. Consider this code:
 
 {% highlight javascript %}
 function meetsMinimumBalanceRequirement (accountNumber) {
@@ -82,7 +87,7 @@ function meetsMinimumBalanceRequirement (accountNumber) {
 }
 {% endhighlight %}
 
-ALl those calls to "maybe" ensure that if we get a `null` or `undefined` anywhere along the way, the result will be null or undefined without throwing exceptions. Despite that, it's exactly what we saw before, so we can write:
+Those calls to "maybe" ensure that if we get a `null` or `undefined` anywhere along the way, the result will be null or undefined without throwing exceptions. Despite that, it's exactly what we saw before, so we can write:
 
 {% highlight javascript %}
 var meetsMinimumBalanceRequirement = sequence(
@@ -91,117 +96,227 @@ var meetsMinimumBalanceRequirement = sequence(
   maybe( exceedsMinimum ));
 {% endhighlight %}
 
-This is fine, but if you write something like this more than once, you're going to wind up trying to extract this idea of "maybe sequencing:"
+Maybe isn't the only function decorator we might want to use with sequence. *Andand* and *oror* are similarly useful. Andand is a lot like "maybe" it is looking for *truthiness* rather than just existence.
+
+Consider the way Ruby on Rails filters work: They are chained together, but if any of them return something "falsy," the entire chain is aborted. We can get the same effect like this
 
 {% highlight javascript %}
-var maybeSequence = variadic( function (fns) {
-  return sequence.apply(this, map(fns, maybe));
+sequence(
+  andand(authorizeUser),
+  andand(fetchRecord),
+  andand(updateRecord)
+)(user);
+{% endhighlight %}
+
+For example, if *authorizeUser* returns something falsy, the rest of the functions are skipped.
+
+*OrOr* has its uses as well. C-style functions (or functions that wrap such an API) often return an error value rather than raising an exception. "Oror" handles this by skipping the remaining functions if any function returns a *truthy* value.
+
+In JavaScript, 0 is false and non-zero integers are truthy, so oror is perfect for such sequences. For a moment, please pretend that the JavaScript world is synchronous, and we don't have to do any special dances with callbacks, promises, or other async code. We could write something like:
+
+{% highlight javascript %}
+var fs = require('fs');
+
+sequence(
+  oror(function () { return fs.mkdir('./hello',0777); }),
+  oror(function () { return fs.writeFile('./hello/world.txt', 'Hello!'); }),
+  oror(function () { return fs.readFile('./hello/world.txt', 'UTF-8'); })
+)();
+{% endhighlight %}
+
+Oror links these functions together and skips the remainder of the sequence if any function returns something truthy like a non-zero integer, which is exactly the functionality you want (or would want if you could solve the async problem. Stay tuned!).
+
+### drying up
+
+This code is not DRY. Furthermore, the explicit calls to decorators like maybe and oror imply that these are the concerns of individual functions, when we are really thinking that this is a property of the sequence of functions itself.
+
+What we want is a way to say that the group of functions is governed by maybe, andand, or oror semantics. And we can do that, thanks to the way two different features interact.
+
+First, *sequence* has flattening semantics. Meaning, you can pass in functions or arrays of functions as you please:
+
+{% highlight javascript %}
+sequence(
+  andand(authorizeUser),
+  [andand(fetchRecord), andand(updateRecord)]
+)(user);
+{% endhighlight %}
+
+This feature allows you to arrange your code in a hierarchy to aid readability if you like, and it also allows you two write functions that return lists of functions to be evaluated by sequence. That is very powerful, but let's not get distracted just yet. Just file away the idea that sequence evaluates the functions in order without concerns for arrays.
+
+Next, the function decorators *maybe*, *andand*, and *oror* all have "map-if-many" semantics. Here's the code from [allong.es]:
+
+{% highlight javascript %}
+function mapIfMany (fn) {
+  return variadic( function (argList) {
+    if (argList.length === 1) {
+      return fn.call(this, argList[0]);
+    }
+    else return map(argList, fn);
+  });
+}
+
+var maybe = mapIfMany( function maybe (fn) {
+  fn = functionalize(fn);
+  return function () {
+    var i;
+
+    if (arguments.length === 0) {
+      return
+    }
+    else {
+      for (i = 0; i < arguments.length; ++i) {
+        if (arguments[i] == null) return arguments[i];
+      }
+      return fn.apply(this, arguments)
+    }
+  }
 });
 {% endhighlight %}
 
-Well done! Hopefully people will consider this "explicit" but not "clever," as in, *It explicitly returns a sequence of functions mapped by maybe*.
+What this means is that if you call "maybe" with a single function (the usual case), you get a wrapped function back. But if you call it with more than one function as separate arguments, you get an array of functions back. The same is true or andand and oror.
 
-### a better way
-
-This "maybeSequence" stuff is very common.[^maybe] So much so that [allong.es] provides a really easy way to express sequencing with Maybe semantics:
+When we put that together with *sequence*, we get:
 
 {% highlight javascript %}
-var Maybe = sequence.Maybe;
-
-var meetsMinimumBalanceRequirement = sequence(Maybe,
+var meetsMinimumBalanceRequirement = sequence( maybe(
   find,
   getWith('balance'),
   exceedsMinimum
-);
+));
+
+sequence( andand(
+  authorizeUser,
+  fetchRecord,
+  updateRecord
+))(user);
+
+sequence( oror(
+  function () { return fs.mkdir('./hello',0777); },
+  function () { return fs.writeFile('./hello/world.txt', 'Hello!'); },
+  function () { return fs.readFile('./hello/world.txt', 'UTF-8'); }
+))();
 {% endhighlight %}
 
-[^maybe]: It should be noted that there is a reasonable argument that if you are constantly checking for null or undefined, making it easier to check is simply masking a deeper problem with your design. Never assume that just because your tools make something easy and/or terse, that it's automatically a good idea to do it.
+Each one of these decorators returns an array of decorated functions, and sequence is evaluating them one by one. Thus, we can elegantly manage the semantics of a sequence of functions, while communicating that we want maybe (or andand, or oror) semantics throughout.
 
-What's going on here? Let's begin with how to use the abstraction without getting into its exact implementation. The abstraction is, when you call `sequence`, you have the option of defining some special behaviour by passing a special object as the first parameter.
+And of course, you can write your own decorators and use them with sequence. Just be sure they have "map-if-many" semantics.
 
-What is this first parameter? It's an instance of class `Sequence`.[^class] Hmmm, name smell: There is a function called "sequence", all lower-case, and a class called "Sequence," capitalized. Is that going to be confusing?
+### summary
 
-[^class]: Where by "class," we really mean, *An object created by the Sequence constructor*, but you knew that.
+The sequence function can be enhanced by decorating the functions you pass in to add semantics. The [allong.es] library includes three such decorators: *maybe*, *andand*, and *oror*. You can also write your own, provided that you incorporate "map-if-many" semantics.
 
-Not if you follow the English rule (apologies to non-English speakers) that proper names, i.e. nouns, are capitalized, and verbs are not. So if I say that *I saw Harry harry the hounds*, "Harry" is a person and "harry" is a verb meaning *to harass, annoy, or prove a nuisance to by or as if by repeated attacks; worry.*
+## Chaining Semantics
 
-So "Sequence" is the class, as in "a Sequence," and "sequence" is the verb, as in "sequence these functions." Ok, but let's ask: What's going on? What is this "Maybe" Sequence? Here's the definition straight from the library:
+What we've seen so far is pretty useful. Being able to decorate functions with semantics inside a sequence cleans up the code and opens the door for generating sequences of functions dynamically.
+
+Is there anything else we could do besides decorate functions? Yes. Let's consider how the *sequence* function might work. Somewhere in its core, it might contain a *reduce* method. If it didn't do anything else, it might look like this:
 
 {% highlight javascript %}
-var Maybe = new Sequence({
-  map: maybe
+var sequence = variadic( function (fns) {
+  return function (argument) {
+    return fns.reduce(function (value, fn) {
+      return fn(value);
+    }, argument);
+  };
 });
 {% endhighlight %}
 
-There's a lot we could say about this, but it boils down to being able to control what the functions do and how the functions are wired together. In this case, we say that we're *mapping Maybe over the functions in the sequence*. It's as if we wrote something like this:
+In it's core is the reduce method, wherein we have a value being passed from one function to the next, and we transform the value with our (possible decorated) function, like this:
+
+    original argument -> [function 1] -> first value -> [function 2] -> second value ...
+    
+We've discussed how to transform the functions. So what else could we meddle with? How about the way we chain the functions together!?
+
+### sequence with a capital S
+
+Let's begin with a use case. We'll pick logging. Our functions have signatures that look like this:
 
 {% highlight javascript %}
-var meetsMinimumBalanceRequirement = apply(sequence, [
-  find,
-  getWith('balance'),
-  exceedsMinimum].map(maybe)
-);
+function double (number) {
+  var result = number * 2;
+  return [result, ['' + number + ' * 2 = ' + result]];  
+}
+
+function plus1 (number) {
+  var result = number * 1;
+  return [result, ['' + number + ' + 1 = ' + result]];  
+}
 {% endhighlight %}
 
-As far as "Maybe" (with a capital M) is concerned, that's all that's going on. There's another piece, but before we get there, let's look at some other uses for Sequences (with a capital S) that map.
-
-### mapping sequences
-
-Behind the scenes, if you don't specify a map with a Sequence the sequence function actually uses the default Sequence, it's called *Identity*. It looks like this:
+How are we to chain these together to calculate `2 * 2 + 1`? Our problem is that we no longer have functions that tidily have compatible inputs and outputs.Well, if we were writing our own version of sequence, it could look like this:
 
 {% highlight javascript %}
-function identity (fn) { return fn; }
-
-var Identity = new Sequence({
-  map: identity
+var sequenceWithLogging = variadic( function (fns) {
+  return function (argument) {
+    return flatten(fns).reduce(function (valueAndLogList, fn) {
+      var value = valueAndLogList[0],
+          logList = valueAndLogList[1],
+          resultAndLogList = fn(value),
+          result = resultAndLogList[0],
+          resultLogList = flatten(logList.concat(resultAndLogList[1]));
+          
+      return [result, resultLogList];
+    }, [argument, []]);
+  };
 });
 {% endhighlight %}
 
-You can confirm this for yourself by writing `sequence(Identity, ...)` anywhere you'd write `sequence(...)`. You get the exact same result. What else could we do with mapping?
-
-We could make some variations using the *andand* and *oror* function decorators from [allong.es]:
+Then we could write:
 
 {% highlight javascript %}
-var AndAnd = new Sequence({
-  map: andand
-});
-
-var OrOr = new Sequence({
-  map: oror
-});
+sequenceWithLogging( double, plus1 )(2)
+  //=> [5, ['2 * 2 = 4', '4 + 1 = 5']]
 {% endhighlight %}
 
-Calling `sequence(AndAnd, ...)` would be a lot like `sequence(Maybe, ...)`, only it is looking for *truthiness*. Consider the way Ruby on Rails filters work: They are chained together, but if any of them return something "falsy," the entire chain is aborted.
-
-That's what our *AndAnd* sequence does:
+That looks good, but we don't want to rewrite sequence by hand every time we want a new set of semantics involving some special chaining. So let's extract the bits we want into an object:
 
 {% highlight javascript %}
-sequence(AndAnd,
+var WithLogging = {
+  chain: function (valueAndLogList, fn) {
+            var value = valueAndLogList[0],
+                logList = valueAndLogList[1],
+                resultAndLogList = fn(value),
+                result = resultAndLogList[0],
+                resultLogList = flatten(logList.concat(resultAndLogList[1]));
+          
+            return [result, resultLogList];
+          },
+  of: function (argument) {
+    return [argument, []];
+  }
+};
+{% endhighlight %}
+
+The two things we've changed are called *chain* and *of*. "Chain" handles chaining functions together when their inputs and outputs don't fit, and "of" handles getting the initial argument into the proper form for the head of the chain.
+
+Out of embarrassment, we won't examine the code within sequence that supports this, but you don't need to visit a sausage factory to enjoy sausages[^sausages]. Here's how you use our new object:
+
+[^sausages]: And perhaps it's best if you don't!
+
+{% highlight javascript %}
+sequence(WithLogging, double, plus1 )(2)
+  //=> [5, ['2 * 2 = 4', '4 + 1 = 5']]
+{% endhighlight %}
+
+Behind the scenes, sequence checks to see if the first object defines object or prototype methods for *chain*, *of*, and as it happens, *map*.
+
+If you define a map method, sequence uses it the way we used our decorators. So we can also write:
+
+{% highlight javascript %}
+sequence( { map: andand },
   authorizeUser,
   fetchRecord,
   updateRecord
 )(user);
 {% endhighlight %}
 
-If *authorizeUser* returns something falsy, the rest of the functions are skipped.
+The benefit of the object approach is that if you need to define some semantics that include mapping and chaining, you can do it in one place.
 
-*OrOr* has its uses as well. When you have a C-style API (or functions that wrap such an API). C-style functions often return an error value rather than raising an exception, and "OrOr" handles this by skipping the remaining functions if any function returns a truthy value.
+If you're just mapping, you can use decorators or an object. And if you want to compose two sets of semantics, you can use both.
 
-In JavaScript, 0 is false and non-zero integers are truthy, so OrOr is perfect for such sequences. For a moment, please pretend that the JavaScript world is synchronous, and we don't have to do any special dances with callbacks, promises, or other async code. We could write something like:
+### composing semantics
 
-{% highlight javascript %}
-var fs = require('fs');
-
-sequence(OrOr,
-  function () { return fs.mkdir('./hello',0777); },
-  function () { return fs.writeFile('./hello/world.txt', 'Hello!'); }
-  function () { return fs.readFile('./hello/world.txt', 'UTF-8'); }
-)();
-{% endhighlight %}
-
-*OrOr* links these functions together and skips the remainder of the sequence if any function returns something truthy like a non-zero integer.
-
-------------------------------------------------------------------
+We did some hand-waving about asynchronicity. Here's some example code showing how to write and read a file in Node:
 
 {% highlight javascript %}
 var fs = require('fs');
@@ -221,44 +336,98 @@ fs.mkdir('./hello',0777,function(err) {
 });
 {% endhighlight %}
 
-Having seen "sequence" and "maybeSequence," you'll be tempted to write "callbackSequence" (or search for a library that provides a similar function for taming nested callbacks). But let's stop the madness! We're *repeating ourselves*.
+We pretended these functions were synchronous, but we can see that they are actually asynchronous, and they accept a callback as their last parameter. So we need to chain them together using the callbacks.
 
-Wouldn't it be better if we could simply write:
+They also check for an error being returned, so we need to decorate them to provide error checking. We know how to do that with a decorator.
+
+Let's pretend that the [allong.es] library already defines a handy object for chaining callbacks called *Callback*. Good thing it does:
 
 {% highlight javascript %}
-var doFourThings = sequence(
-  doThis,
-  thenThis,
-  andThenThis,
-  finallyDoThis);
-  
-// and:
-
-var meetsMinimumBalanceRequirement = sequence(Maybe,
-  find,
-  getWith('balance'),
-  exceedsMinimum);
-
-// and:
-
-var fs = require('fs');
-
-function checkError (err, callback) {
-  if (err) throw err;
-  callback();
-}
-
-sequence(Callback,
-  applyLeft(fs.mkdir, './hello', 0777),
-  checkError,
-  applyLeft(fs.writeFile, './hello/world.txt', 'Hello!'),
-  checkError,
-  applyLeft(fs.readFile, './hello/world.txt', 'UTF-8'),
-  function(err, data) {
-    if (err) throw err;
-    console.log(data);
+var Callback = {
+  of: variadic( function (values) {
+    return function(callback) {
+      return callback.apply(this, values);
+    };
+  }),
+  map: function(fn) {
+    if (fn.length === 1) {
+      return function(value) {
+        return function(callback) {
+          return fn(value, callback);
+        };
+      };
+    }
+    else return variadic(fn.length, function(values) {
+      return function (callback) {
+        return fn.apply(this, values.concat([callback]));
+      }
+    });
+  },
+  chain: function(mValue, fn) {
+    var _this = this;
+    if (fn.length === 1) {
+      return function(callback) {
+        return mValue(function(value) {
+          return _this.map(fn)(value)(callback);
+        });
+      };
+    }
+    else return function(callback) {
+      return mValue(variadic(fn.length, function (values) {
+        return _this.map(fn).apply(this, values)(callback);
+      }));
+    };
   }
-);
+};
 {% endhighlight %}
 
-Not bad, but what's with all the "check error" code? This reminds
+Instead of nesting our code, we can wrap the individual pieces in functions that just take a callback:
+
+{% highlight javascript %}
+var fs = require('fs');
+
+sequence(Callback,
+  function (callback) { fs.mkdir('./hello', 0777, callback); },
+  function (callback) { fs.writeFile('./hello/world.txt', 'Hello!', callback); },
+  function (callback) { fs.readFile('./hello/world.txt', 'UTF-8', callback); }
+)()(function(err, data) {
+  if (err) throw err;
+  console.log('DATA:', data);
+})
+  // Prints "DATA: Hello!" and returns undefined
+{% endhighlight %}
+
+Some of this can be cleaned up. Observe:
+
+{% highlight javascript %}
+fs.mkdir.length
+  //=> 3
+fs.writeFile.length
+  //=> 4
+fs.readFile.length
+  //=> 2
+{% endhighlight %}
+
+"mkdir" and "writeFile" both require the callback parameter. Therefore, we can use partial application to convert them into a function taking one argument. Unfortunately, "readFile" does not have this extra arity, so we must leave the wrapper function in place for it:
+
+{% highlight javascript %}
+sequence(Callback,
+  callLeft(fs.mkdir, './hello', 0777),
+  callLeft(fs.writeFile, './hello/world.txt', 'Hello!'),
+  function (callback) { fs.readFile('./hello/world.txt', 'UTF-8', callback); }
+)()(function(err, data) {
+  if (err) throw err;
+  console.log('DATA:', data);
+})
+  // Prints "DATA: Hello!" and returns undefined
+{% endhighlight %}
+
+Thus, we've used *Callback* to sequence pieces of code that would otherwise require nested callbacks. Hopefully, you will not be surprised to learn that [allong.es] also supports *sequence(Then, ...)* for sequencing functions that return promises.
+
+## Summary
+
+Now, there are various one-off library functions for doing all of these things. But what we've seen here is that instead of one special function for sequencing functions, another for functions with a particular kind of wrapping semantics,  another for chaining functions that take callbacks, and yet another for chaining functions that return promises, we have just one function, *sequence* that handles them all in a unified manner.
+
+Furthermore, it is expandable: You can write functions that generate lists of functions to sequence. You can write your own definitions for chaining and mapping functions. You can control your own semantics.
+
+The sequence function is very simple to use for the simple case. But it *scales with the complexity of what you would like to accomplish*.
