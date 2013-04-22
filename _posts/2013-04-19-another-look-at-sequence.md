@@ -431,3 +431,7 @@ Now, there are various one-off library functions for doing all of these things. 
 Furthermore, it is expandable: You can write functions that generate lists of functions to sequence. You can write your own definitions for chaining and mapping functions. You can control your own semantics.
 
 The sequence function is very simple to use for the simple case. But it *scales with the complexity of what you would like to accomplish*.
+
+---
+
+notes:
