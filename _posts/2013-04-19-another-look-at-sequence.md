@@ -67,7 +67,9 @@ var doFourThings = sequence(
   finallyDoThis);
 {% endhighlight %}
 
-In this form, *Sequence* looks like simplicity itself: `sequence = flip(compose)`. It has the same mechanism as calling "compose" with the arguments flipped from back to front.
+In this form, *sequence* looks like simplicity itself: `sequence = flip(compose)`. It has the same mechanism as calling "compose" with the arguments flipped from back to front.[^pipeline]
+
+[^pipeline]: The sequence function is also known as "pipeline" in some libraries.
 
 But semantically, it's different. The compose function is all about doing more than one thing; *The sequence function is all about doing things in a specific order*. In this post, we're going to look at the ways it can be used and some of the very special features it has.
 
