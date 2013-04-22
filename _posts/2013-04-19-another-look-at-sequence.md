@@ -25,13 +25,13 @@ function compose (a, b) {
 }
 {% endhighlight %}
 
-In practice, the [allong.es] version permits the use of any number of functions not just two), and it permits the last function to have any arity whatsoever. But the principle is straightforward.
+In practice, the [allong.es] version permits the use of any number of functions (not just two), and it permits the last function to have any arity whatsoever. But the principle is straightforward.
 
 ### back-assbaggery
 
 If you look at *compose*, you see that when you call it, the functions are applied from right-to-left, not left-to-right. Function "b" is called before function "a." This is exactly what we mean when we talk about functional composition, and that's fine.
 
-But what if we are thinking of something else? namely, that we want to apply some functions in sequence? We can use compose, but if we want:
+But what if we want to apply some functions in sequence? We can use compose, but if we want:
 
 {% highlight javascript %}
 function doFourThings (something) {
@@ -46,8 +46,6 @@ function doFourThings (something) {
 We would have to write it like this:
 
 {% highlight javascript %}
-var compose = require('allong.es').allong.es.compose;
-
 var doFourThings = compose(finallyDoThis, andThenThis, thenThis, doThis);
 {% endhighlight %}
 
@@ -58,8 +56,6 @@ It's back-asswards. That's a hint that maybe we shouldn't be using compose when 
 Naturally, [allong.es] has you covered:
 
 {% highlight javascript %}
-var sequence = require('allong.es').allong.es.sequence;
-
 var doFourThings = sequence(
   doThis,
   thenThis,
@@ -71,9 +67,9 @@ In this form, *sequence* looks like simplicity itself: `sequence = flip(compose)
 
 [^pipeline]: The sequence function is also known as "pipeline" in some libraries.
 
-But semantically, it's different. The compose function is all about doing more than one thing; *The sequence function is all about doing things in a specific order*. In this post, we're going to look at the ways it can be used and some of the very special features it has.
+But semantically, it's different. The compose function is all about doing more than one thing; *The sequence function is all about doing things in a specific order*.
 
-By the end, we'll have a handle on using sequence to manage asynchronous functions, special error handling, and other "programmable semantics."
+In this post, we're going to look at the ways it can be used and some of the very special features it has. By the end, we'll have a handle on using sequence to manage asynchronous functions, special error handling, and other "programmable semantics."
 
 ## Mapping Semantics
 
@@ -175,7 +171,7 @@ var maybe = mapIfMany( function maybe (fn) {
 });
 {% endhighlight %}
 
-What this means is that if you call "maybe" with a single function (the usual case), you get a wrapped function back. But if you call it with more than one function as separate arguments, you get an array of functions back. The same is true or andand and oror.
+What this means is that if you call "maybe" with a single function (the usual case), you get a wrapped function back. But if you call it with more than one function as separate arguments, you get an array of functions back. The same is true with andand and oror.
 
 When we put that together with *sequence*, we get:
 
@@ -248,7 +244,7 @@ function plus1 (number) {
 How are we to chain these together to calculate `2 * 2 + 1`? Our problem is that we no longer have functions that tidily have compatible inputs and outputs.Well, if we were writing our own version of sequence, it could look like this:
 
 {% highlight javascript %}
-var sequenceWithLogging = variadic( function (fns) {
+var sequenceWithWithArrayWriter= variadic( function (fns) {
   return function (argument) {
     return flatten(fns).reduce(function (valueAndLogList, fn) {
       var value = valueAndLogList[0],
@@ -266,14 +262,14 @@ var sequenceWithLogging = variadic( function (fns) {
 Then we could write:
 
 {% highlight javascript %}
-sequenceWithLogging( double, plus1 )(2)
+sequenceWithArrayWriter( double, plus1 )(2)
   //=> [5, ['2 * 2 = 4', '4 + 1 = 5']]
 {% endhighlight %}
 
 That looks good, but we don't want to rewrite sequence by hand every time we want a new set of semantics involving some special chaining. So let's extract the bits we want into an object:
 
 {% highlight javascript %}
-var WithLogging = {
+var ArrayWriter = {
   chain: function (valueAndLogList, fn) {
             var value = valueAndLogList[0],
                 logList = valueAndLogList[1],
@@ -296,7 +292,7 @@ Out of embarrassment, we won't examine the code within sequence that supports th
 [^sausages]: And perhaps it's best if you don't!
 
 {% highlight javascript %}
-sequence(WithLogging, double, plus1 )(2)
+sequence(ArrayWriter, double, plus1 )(2)
   //=> [5, ['2 * 2 = 4', '4 + 1 = 5']]
 {% endhighlight %}
 
