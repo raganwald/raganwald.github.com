@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Advanced JavaScript Programming with Sequences
+title: Advanced JavaScript with Sequences
 tags: [javascript]
 ---
 
