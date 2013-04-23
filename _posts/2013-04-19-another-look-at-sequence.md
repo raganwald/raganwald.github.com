@@ -200,7 +200,7 @@ sequence( oror(
 ))();
 {% endhighlight %}
 
-Each one of these decorators returns an array of decorated functions, and sequence is evaluating them one by one. Thus, we can elegantly manage the semantics of a sequence of functions, while communicating that we want maybe (or `andand`, or oror) semantics throughout.
+Each one of these decorators returns an array of decorated functions, and sequence is evaluating them one by one. Thus, we can elegantly manage the semantics of a sequence of functions, while communicating that we want `maybe`, `andand`, or `oror` semantics throughout.
 
 And of course, you can write your own decorators and use them with sequence. Just be sure they have "map-if-many" semantics.
 
