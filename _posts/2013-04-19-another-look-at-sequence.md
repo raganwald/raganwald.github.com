@@ -343,48 +343,7 @@ We pretended these functions were synchronous, but we can see that they are actu
 
 They also check for an error being returned, so we need to decorate them to provide error checking. We know how to do that with a decorator.
 
-Let's pretend that the [allong.es] library already defines a handy object for chaining callbacks called *Callback*. Good thing it does:
-
-{% highlight javascript %}
-var Callback = {
-  of: variadic( function (values) {
-    return function(callback) {
-      return callback.apply(this, values);
-    };
-  }),
-  map: function(fn) {
-    if (fn.length === 1) {
-      return function(value) {
-        return function(callback) {
-          return fn(value, callback);
-        };
-      };
-    }
-    else return variadic(fn.length, function(values) {
-      return function (callback) {
-        return fn.apply(this, values.concat([callback]));
-      }
-    });
-  },
-  chain: function(mValue, fn) {
-    var _this = this;
-    if (fn.length === 1) {
-      return function(callback) {
-        return mValue(function(value) {
-          return _this.map(fn)(value)(callback);
-        });
-      };
-    }
-    else return function(callback) {
-      return mValue(variadic(fn.length, function (values) {
-        return _this.map(fn).apply(this, values)(callback);
-      }));
-    };
-  }
-};
-{% endhighlight %}
-
-Instead of nesting our code, we can wrap the individual pieces in functions that just take a callback:
+It would save us a lot of bother writing code if the [allong.es] library already defined a handy object for chaining callbacks. [Good thing it does](https://github.com/raganwald/allong.es/blob/master/lib/allong.es.js#L1444-L1479)! Instead of nesting our code, we use the `Callback` object. Now we can wrap the individual pieces in functions that take a callback:
 
 {% highlight javascript %}
 var fs = require('fs');
