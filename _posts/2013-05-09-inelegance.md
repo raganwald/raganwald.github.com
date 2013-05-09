@@ -150,9 +150,11 @@ And now:
     curry(flip(echo))(1)(2)(3)(4)
       //=> [4, 3, 2, 1]
       
-Which is nice, and less inelegant than not being able to compose `curry` with `flip`. I could also have used some other special case mechanism like storing the original length of a function in a special property when reversing a function, but it felt less inelegant to cut with JavaScript's grain and respect the way it handles function arity "natively."
+Which is nice, and might less inelegant than not being able to compose `curry` with `flip`.
 
-This inelegance problem crops up even more when working with large frameworks: Features interact in ways that expose edge cases. It's vital to make code as compseable as possible and thus as elegant as possible, but sooner or later you may find yourself holding your nose and trying to find the minimum level of inelegance.
+I could also have used some other special case mechanism like storing the original length of a function in a special property when reversing a function, but it felt less inelegant to cut with JavaScript's grain and respect the way it handles function arity "natively."
+
+This inelegance problem crops up even more when working with large frameworks: Features interact in ways that expose edge cases. It's vital to make code as composeable as possible and thus as elegant as possible, but sooner or later you may find yourself holding your nose and trying to find the minimum level of inelegance.
 
 And it may well be that the least inelegant thing to do is simply declare that certain elements don't compose at all. Maybe that's what should have happened here. Maybe currying flipped functions should simply be banned.
 
