@@ -9,6 +9,10 @@ One of the easiest way to make a set of features scale is to make them composeab
 
 To be elegant, you want things to be composeable, and you ideally want them to compose in a natural, simple way. When designing feature "A," you shouldn't have to write special case code for composing A with B and A with C. What happens when you add "D?" Are you supposed to go back and retroactively change A, B, and C to compose with D?
 
+![Audrey Hepburn](/assets/images/audrey.jpg)
+
+### inelegance
+
 Special case code is often a sign of *inelegance*, a smell that the model is not right. I've written a lot of inelegant code. For example, I was recently working with adding some functional idioms to JavaScript.
 
 (Although these examples are in JavaScript, I don't think the concept of inelegance is JavaScript-specific.)
