@@ -17,12 +17,7 @@ Special case code is often a sign of *inelegance*, a smell that the model is not
 
 (Although these examples are in JavaScript, I don't think the concept of inelegance is JavaScript-specific.)
 
-At some point, I wrote a *curry* function. To [refresh your memory][cpa], currying is:
-
-1. `curry(f(x) {...}) === f(x) {...}`
-2. `curry(f(x, y, ...) {...}) = curry(f2(y, ...) { return f(x, y, ...); })`
-
-In other words, it create a chain of functions that take on parameter each. For example, here is a function that curries a binary functionL
+At some point, I wrote a *curry* function. To [refresh your memory][cpa], currying creates a chain of functions that take on parameter each. For example, here is a function that curries a binary function:
 
     function curry2 (f) {
       return function (first) {
@@ -121,7 +116,7 @@ Great! Now for the "elegance" test:
     curry(flip(echo))(1)(2)(3)(4)
       //=> TypeError: object is not a function
       
-The problem is that `curry` inspects its function to work out how many arguments are expected. But `flip` breaks the implied ocntract by returning a function that doesn't declare any arguments:
+The problem is that `curry` inspects its function to work out how many arguments are expected. But `flip` breaks the implied contract by returning a function that doesn't declare any arguments:
 
     echo.length
       //=> 4
