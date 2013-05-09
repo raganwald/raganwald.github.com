@@ -37,9 +37,9 @@ I also wrote a *flip* function that takes any function and reverses its argument
       }
     }
     
-The two functions compose: You can write `curry2(flip2(f))` (although `flip2(curry2(f))` doesn't make any sense). So far, things are minimal and elegant. Of course, not all functions are binary. How do we write a generalized flip or curry function,one that handles arbitrarily polyadic functions?
+The two functions compose: You can write `curry2(flip2(f))`. So far, things are minimal and elegant. Of course, not all functions are binary. How do we write a generalized flip or curry function, one that handles arbitrarily polyadic functions?
 
-JavaScript functions are also objects with properties. one of them, `.length`, is the number of arguments declared. So:
+JavaScript functions are also objects with properties. One of them, `.length`, is the number of arguments declared. So:
 
     function () {}.length
       //=> 0
