@@ -161,4 +161,4 @@ This inelegance problem crops up even more when working with large frameworks: F
 
 And it may well be that the least inelegant thing to do is simply declare that certain elements don't compose at all. Maybe that's what should have happened here. Maybe currying flipped functions should simply be banned.
 
-What do you think?
+[What do you think?](http://www.reddit.com/r/javascript/comments/1e0gzp/inelegance/ "Discuss on /r/javascript")
