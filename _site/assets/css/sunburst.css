@@ -14,7 +14,7 @@ body {
 pre.textmate-source {
 	margin: 0;
 	padding: 0 0 0 2px;
-	font-family: Monaco, monospace;
+	font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
 	font-size: 11px;
 	line-height: 1.3em;
 	word-wrap: break-word;

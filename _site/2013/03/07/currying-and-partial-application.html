@@ -131,7 +131,7 @@
   <span class="c1">//=&gt; [25, 49, 25]</span>
 </code></pre></div>
 
-<p>We’ve just partially applied the value <code>square</code> to the function <code>map</code>. We got back a unary function, <code>squareAll</code>, that we could use as we liked. Partially applying <code>map</code> in this fashion is handy, so much so that the <a href="http://allong.es">allong.es</a> library includes a function called <code>splat</code> that does this exact thing.</p>
+<p>We’ve just partially applied the value <code>square</code> to the function <code>map</code>. We got back a unary function, <code>squareAll</code>, that we could use as we liked. Partially applying <code>map</code> in this fashion is handy, so much so that the <a href="http://allong.es">allong.es</a> library includes a function called <code>mapWith</code> that does this exact thing.</p>
 
 <p>If we had to physically write ourselves a wrapper function every time we want to do some partial application, we’d never bother. Being programmers though, we can automate this. There are two ways to do it.</p>
 
