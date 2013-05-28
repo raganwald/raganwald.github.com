@@ -3,7 +3,7 @@ title: index.html
 layout: default
 ---
 
-Technical essays by [Reginald "raganwald" Braithwaite](http://braythwayt.com), author of:
+Technical essays by [Reginald "raganwald" Braithwaite](http://braythwayt.com), author of the books:
 
 * [JavaScript Allongé](http://leanpub.com/javascript-allonge)
 * [CoffeeScript Ristretto](http://leanpub.com/coffeescript-ristretto)
