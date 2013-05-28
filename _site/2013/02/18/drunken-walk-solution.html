@@ -175,7 +175,7 @@
 
 <p>This is isomorphic to the problem of discovering whether a linked list loops, all we have to do is transform the game’s iterator into an iterator that has the property that it uniquely identifies each square. As given, the iterator does not have this property: If it returns <code>N</code> twice, for example, this could be the same cell or two different cells that both have a spinner set to “N.”</p>
 
-<p>We aren’t given the position of the chequer at any time, but what we can do is convert the directions we are given into a position relative to the starting square. One wrinkle: JavaScript does not do structural equivalence in comparisons, so we can’t use an array or object to represent our relative position.<sup id="fnref:canonical"><a href="#fn:canonical" rel="footnote">1</a></sup></p>
+<p>We aren’t given the position of the chequer at any time, but what we can do is convert the directions we are given into a position relative to the starting square. One wrinkle: JavaScript does not do structural equivalence in comparisons, so we can’t use an array or object to represent our relative position.<sup id="fnref:canonical"><a href="#fn:canonical" class="footnote">1</a></sup></p>
 
 <p>So instead, we represent positions as strings, and that adds some fiddling to translate back and forth from strings to numbers. We use <code>accumulate</code> to transform an iterator of directions into an iterator of offsets represented as strings. If our tortoise and hare ever end up with the same string representation, the path loops and the game does not terminate.</p>
 
@@ -245,7 +245,7 @@
 <div class="footnotes">
   <ol>
     <li id="fn:canonical">
-      <p>We also can’t canonicalize objects, because we are constrained to write a solution that requires constant space.<a href="#fnref:canonical" rel="reference">&#8617;</a></p>
+      <p>We also can’t canonicalize objects, because we are constrained to write a solution that requires constant space.<a href="#fnref:canonical" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>

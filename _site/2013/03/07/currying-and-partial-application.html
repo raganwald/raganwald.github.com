@@ -178,7 +178,7 @@
   <span class="c1">//=&gt; [25, 49, 25]</span>
 </code></pre></div>
 
-<p>Converting a polyadic function into a nested series of unary functions is called <strong>currying</strong>, after Haskell Curry, who popularized the technique. He actually rediscovered the combinatory logic work of <a href="https://en.wikipedia.org/wiki/Moses_Schönfinkel">Moses Schönfinkel</a>, so we could easily call it “schönfinkeling.”<sup id="fnref:birds"><a href="#fn:birds" rel="footnote">1</a></sup></p>
+<p>Converting a polyadic function into a nested series of unary functions is called <strong>currying</strong>, after Haskell Curry, who popularized the technique. He actually rediscovered the combinatory logic work of <a href="https://en.wikipedia.org/wiki/Moses_Schönfinkel">Moses Schönfinkel</a>, so we could easily call it “schönfinkeling.”<sup id="fnref:birds"><a href="#fn:birds" class="footnote">1</a></sup></p>
 
 <p>Our <code>rightmostCurry</code> function curries any binary function into a chain of unary functions starting with the second argument. This is a “rightmost” curry because it starts at the right.</p>
 
@@ -252,7 +252,7 @@
 <span class="p">};</span>
 </code></pre></div>
 
-<p>However it is usually implemented in more direct fashion:<sup id="fnref:caveat"><a href="#fn:caveat" rel="footnote">2</a></sup></p>
+<p>However it is usually implemented in more direct fashion:<sup id="fnref:caveat"><a href="#fn:caveat" class="footnote">2</a></sup></p>
 
 <div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">rightmostUnaryPartialApplication</span> <span class="p">(</span><span class="nx">binaryFn</span><span class="p">,</span> <span class="nx">secondArg</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">firstArg</span><span class="p">)</span> <span class="p">{</span>
@@ -285,7 +285,7 @@
 
 <h3 id="so-whats-the-difference-between-currying-and-partial-application">so what’s the difference between currying and partial application?</h3>
 
-<p>“Currying is the decomposition of a polyadic function into a chain of nested unary functions. Thus decomposed, you can partially apply one or more arguments,<sup id="fnref:also"><a href="#fn:also" rel="footnote">3</a></sup> although the curry operation itself does not apply any arguments to the function.”</p>
+<p>“Currying is the decomposition of a polyadic function into a chain of nested unary functions. Thus decomposed, you can partially apply one or more arguments,<sup id="fnref:also"><a href="#fn:also" class="footnote">3</a></sup> although the curry operation itself does not apply any arguments to the function.”</p>
 
 <p>“Partial application is the conversion of a polyadic function into a function taking fewer arguments arguments by providing one or more arguments in advance.”</p>
 
@@ -294,7 +294,7 @@
 <p>Yes. And no. Here are some further directions to explore on your own:</p>
 
 <ol>
-  <li>We saw how to use currying to implement partial application. Is it possible to use partial application to implement currying? Why? Why not?<sup id="fnref:tao"><a href="#fn:tao" rel="footnote">4</a></sup></li>
+  <li>We saw how to use currying to implement partial application. Is it possible to use partial application to implement currying? Why? Why not?<sup id="fnref:tao"><a href="#fn:tao" class="footnote">4</a></sup></li>
   <li>All of our examples of partial application have concerned converting binary functions into unary functions by providing one argument. Write more general versions of <code>applyFirst</code> and <code>applyLast</code> that provide one argument to any polyadic function. For example, if you have a function that takes four arguments, <code>applyFirst</code> should return a function taking three arguments.</li>
   <li>When you have <code>applyFirst</code> and <code>applyLast</code> working with all polyadic functions, try implementing <code>applyLeft</code> and <code>applyRight</code>: <code>applyLeft</code> takes a polyadic function and one <em>or more</em> arguments and leftmost partially applies them. So if you provide it with a ternary function and two arguments, it should return a unary function. <code>applyRight</code> does the same with rightmost application.</li>
   <li>Rewrite curry and rightmostCurry to accept any polyadic function. So just as a binary function curries into two nested unary functions, a ternary function should curry into three nested unary functions and so on.</li>
@@ -314,16 +314,16 @@
 <div class="footnotes">
   <ol>
     <li id="fn:birds">
-      <p>When Raymond Smullyan wrote his seminal introduction to combinatory logic, he called it “To Mock a Mockingbird” and used forests of birds as his central metaphor to pay tribute to Schönfinkel. Schön means “beautiful” and Fink means “finch” in German, although Finkl may be Yiddish for “sparkle.” So his name may mean “beautiful finch,” or it may mean “beautiful sparkle.”<a href="#fnref:birds" rel="reference">&#8617;</a></p>
+      <p>When Raymond Smullyan wrote his seminal introduction to combinatory logic, he called it “To Mock a Mockingbird” and used forests of birds as his central metaphor to pay tribute to Schönfinkel. Schön means “beautiful” and Fink means “finch” in German, although Finkl may be Yiddish for “sparkle.” So his name may mean “beautiful finch,” or it may mean “beautiful sparkle.”<a href="#fnref:birds" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:caveat">
-      <p>All of our implementations are grossly simplified. Full implementations can handle polyadic functions with more than two arguments and are context-agnostic.<a href="#fnref:caveat" rel="reference">&#8617;</a></p>
+      <p>All of our implementations are grossly simplified. Full implementations can handle polyadic functions with more than two arguments and are context-agnostic.<a href="#fnref:caveat" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:also">
-      <p>There are a lot of other reasons to curry functions, but this is an article about the relationship between currying and partial application, not an introduction to combinatory logic and functional programming :-)<a href="#fnref:also" rel="reference">&#8617;</a></p>
+      <p>There are a lot of other reasons to curry functions, but this is an article about the relationship between currying and partial application, not an introduction to combinatory logic and functional programming :-)<a href="#fnref:also" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:tao">
-      <p>A Taoist ordered a vegetarian hot dog from a street vendor: “Make me one with everything,” he requested politely.<a href="#fnref:tao" rel="reference">&#8617;</a></p>
+      <p>A Taoist ordered a vegetarian hot dog from a street vendor: “Make me one with everything,” he requested politely.<a href="#fnref:tao" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>
