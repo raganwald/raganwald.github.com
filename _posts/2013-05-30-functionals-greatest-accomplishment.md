@@ -1,6 +1,6 @@
 ---
 layout: default
-tags: allonge, funjs
+tags: [allonge, funjs]
 title: Functional's Greatest Accomplishment
 ---
 
