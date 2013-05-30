@@ -1,5 +1,4 @@
 pygments: true
 lsi: false
 safe: false
-markdown: kramdown
 exclude: [config.rb, README.md, specs.command]
