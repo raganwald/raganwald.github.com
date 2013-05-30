@@ -1,7 +1,7 @@
 ---
 layout: default
 tags: allonge, funjs
-title: Functional JavaScript's Greatest Accomplishment
+title: Functional's Greatest Accomplishment
 ---
 
 ### functional
