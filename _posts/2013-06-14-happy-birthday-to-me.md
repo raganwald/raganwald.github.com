@@ -24,7 +24,7 @@ For example.
 
 ### pattern matching
 
-SNOBOL (and yes, Icon) introduced pattern matching as a first-class concept. To the max, you might say.
+[SNOBOL](https://dl.dropboxusercontent.com/u/5038808/bookshelf/gb.pdf) (and yes, Icon) introduced pattern matching as a first-class concept. To the max, you might say.
 
 You had primitives like `SUCCEED`, `FAIL`, and `FENCE` you could stick inside patterns to control backtracking.
 
@@ -40,7 +40,7 @@ Speaking of pattern matching, the FP people have taken over this term and now us
     
     function length ([first, butFirst...]) { return 1 + length(butFirst); }
     
-Through the magic of destructuring, the language matches calls to `length` against the various definitions and evaluates the body of the first one that "matches" the parameters. It's a fabulous way to write clear code.
+Through the magic of [destructuring](http://blog.carbonfive.com/2011/09/28/destructuring-assignment-in-coffeescript/), the language matches calls to `length` against the various definitions and evaluates the body of the first one that "matches" the parameters. It's a fabulous way to write clear code.
 
 But why argue whether "pattern matching" means SNOBOL or Haskell? I'd applaud a language that "swings both ways." Let's start with something subtle. Let's say that this pseudo-CoffeeScript:
 
@@ -73,7 +73,7 @@ Speaking of which...
 
 ### monads, monads everywhere but no more drops of ink
 
-I'm tired of Greenspunning monads and even more tired of reading explanations that force us to parse the semantics and the implementation in the same essay. It's sweet that Haskell gives us syntactic sugar for Monads (like `>>=` and `do`), but what if we went "all the way?"
+I'm tired of Greenspunning monads and even more tired of [reading explanations that force us to parse the semantics and the implementation in the same essay](https://en.wikibooks.org/wiki/Haskell/Understanding_monads). It's sweet that Haskell gives us syntactic sugar for Monads (like `>>=` and `do`), but what if we went "all the way?"
 
 So this is simple. I want a language with Algol-ish syntax, meaning some form for delimiting sequences of expressions, like `{ ... }`, or `begin ... end`, or if you're old school, `(BEGIN ...)`. And by default, it should do exactly what you expect.
 
