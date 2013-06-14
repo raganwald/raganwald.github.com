@@ -2,9 +2,7 @@
 layout: default
 ---
 
-Why yes, it **is** my birthday today. Wondering what to get me? Just a second, some people are singing:
-
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/hgmcJCMHl7w?rel=0" frameborder="0" allowfullscreen></iframe>
+Why yes, it **is** my birthday today. Wondering what to get me? Just a second, some people are [singing](https://www.youtube.com/watch?v=hgmcJCMHl7w)...
 
 Okay. It's simple, really. I'd like yet another programming language. It doesn't have to have entirely new ideas, but if it is going to recycle some old ideas, I'd really like it if it recycled some old ideas that every other damn language isn't recycling.
 
