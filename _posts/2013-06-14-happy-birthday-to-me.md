@@ -6,7 +6,7 @@ Why yes, it **is** my birthday today. Wondering what to get me? Just a second, s
 
 Okay. It's simple, really. I'd like yet another programming language. It doesn't have to have entirely new ideas, but if it is going to recycle some old ideas, I'd really like it if it recycled some old ideas that every other damn language isn't recycling.
 
-HNow it's easy to design an esoteric language and say "Here, Reg, knock yourself out." But I have a special caveat. I want a language that is designed according to the **principle of maximum surprise**.
+Now, it's easy to design an esoteric language and say "Here, Reg, knock yourself out." But I have a special caveat. I want a language that is designed according to the **principle of maximum surprise**.
 
 ### the principle of maximum surprise
 
