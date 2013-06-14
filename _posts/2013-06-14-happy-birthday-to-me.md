@@ -121,7 +121,7 @@ But call-by-name and/or call-by-need could be added to existing mutation-friendl
 
 ### time to go
 
-I'm off for a birthday ride, so I'll stop mid-rant. It's easy to suggest things, much harder to ship them when you have to consider the costs of each feature and the way they interact. But nevertheless, this is the one day of teh year when I ought to be able to say, "Here's what I'd like to unwrap."
+I'm off for a birthday ride, so I'll stop mid-rant. It's easy to suggest things, much harder to ship them when you have to consider the costs of each feature and the way they interact. But nevertheless, this is the one day of the year when I ought to be able to say, "Here's what I'd like to unwrap."
 
 Each of these ideas adheres to my "principle of maximum surprise." Namely, it looks and behaves exactly like you expect. Until it doesn't, and then you are pleasantly but maximally surprised!
 
