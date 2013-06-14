@@ -125,8 +125,6 @@ I'm off for a birthday ride, so I'll stop mid-rant. It's easy to suggest things,
 
 Each of these ideas adheres to my "principle of maximum surprise." Namely, it looks and behaves exactly like you expect. Until it doesn't, and then you are pleasantly but maximally surprised!
 
-So...
+If I can't have these by Midnight June 14th, feel free to give them to me by the morning of [December 25th](https://en.wikipedia.org/wiki/Christmas). And if you *really* want to surprise me, don't do any of these, but figure out another way to engineer maximal nasal-coffee-over-keyboard spray.
 
-If I can't have these by Midnight June 14th, feel free to give them to me on December 31st. Or if you *really* want to surprise me, don't do any of these, but figure out another way to engineer maximal nasal-coffee-over-keyboard spray.
-
-You have six months!
+You have nearly six months!
