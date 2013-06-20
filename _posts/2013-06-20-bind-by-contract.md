@@ -4,6 +4,8 @@ title: Why Ruby Needs to Attack Itself
 tags: noindex
 ---
 
+*This is a draft. Please do not post on Hacker News, &c.*
+
 ### abstract
 
 In this essay, I argue that programming languages tend to solve less-and-less important problems as they mature, and that it's important for Ruby to break with this behaviour if it is to survive.
