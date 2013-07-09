@@ -72,117 +72,107 @@
   
 
           
-          <p><a href="http://effectivejs.com"><img src="http://i.minus.com/ibjveCleaJzli1.png" alt="Effective JavaScript" /></a></p>
+          <p><a href='http://effectivejs.com'><img alt='Effective JavaScript' src='http://i.minus.com/ibjveCleaJzli1.png' /></a></p>
 
-<p><strong>The Book</strong>: David Herman’s <a href="http://effectivejs.com">Effective JavaScript</a> is an in-depth look at the JavaScript programming language and how to use it effectively to write more portable, robust, and maintainable applications and libraries. Using the concise, scenario-driven style of the <a href="http://www.informit.com/esds">Effective Software Development Series</a>, this book brings together tips, techniques, and realistic code examples to explain the important concepts in JavaScript.</p>
+<p><strong>The Book</strong>: David Herman&#8217;s <a href='http://effectivejs.com'>Effective JavaScript</a> is an in-depth look at the JavaScript programming language and how to use it effectively to write more portable, robust, and maintainable applications and libraries. Using the concise, scenario-driven style of the <a href='http://www.informit.com/esds'>Effective Software Development Series</a>, this book brings together tips, techniques, and realistic code examples to explain the important concepts in JavaScript.</p>
 
-<p><strong>My Recommendation</strong>: <a href="http://www.amazon.com/gp/product/0321812182/ref=as_li_ss_tl?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0321812182" title="Buy on Amazon.com">Buy it</a>, read it, and keep it as a reference work.</p>
+<p><strong>My Recommendation</strong>: <a href='http://www.amazon.com/gp/product/0321812182/ref=as_li_ss_tl?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0321812182' title='Buy on Amazon.com'>Buy it</a>, read it, and keep it as a reference work.</p>
 
-<h2 id="when-asi-met-iife">When ASI met IIFE</h2>
+<h2 id='when_asi_met_iife'>When ASI met IIFE</h2>
 
 <p>Some time ago I was asymmetrically pairing with a colleague, and I begun a new JavaScript file like this:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="p">;(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
-	<span class="c1">// ...</span>
-<span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span>
+<div class='highlight'><pre><code class='javascript'><span class='p'>;(</span><span class='kd'>function</span> <span class='p'>(</span><span class='nx'>$</span><span class='p'>)</span> <span class='p'>{</span>
+	<span class='c1'>// ...</span>
+<span class='p'>})(</span><span class='nx'>jQuery</span><span class='p'>);</span>
 </code></pre></div>
+<p>&#8220;What,&#8221; she asked, &#8220;is the purpose of the opening semicolon?&#8221;</p>
 
-<p>“What,” she asked, “is the purpose of the opening semicolon?”</p>
+<p>The truth is, I didn&#8217;t really know. I&#8217;d read <em>somewhere</em> that when JavaScript loads your files, if you had some buggy code in file A, then file B could be corrupted by whatever was last in file A if the environment loaded A before B. In other words, the environment behaved as if all the code was concatenated together.</p>
 
-<p>The truth is, I didn’t really know. I’d read <em>somewhere</em> that when JavaScript loads your files, if you had  some buggy code in file A, then file B could be corrupted by whatever was last in file A if the environment loaded A before B. In other words, the environment behaved as if all the code was concatenated together.</p>
+<p>But I was hazy on the details, and admitted as much. She may have felt she learned something, then again she&#8217;s rather bright and productivity focused, so perhaps she knew what was going on but didn&#8217;t want to take time out to discuss it.</p>
 
-<p>But I was hazy on the details, and admitted as much. She may have felt she learned something, then again she’s rather bright and productivity focused, so perhaps she knew what was going on but didn’t want to take time out to discuss it.</p>
+<p>She didn&#8217;t ask about the <a href='http://www.benalman.com/news/2010/11/immediately-invoked-function-expression/'>Immediately Invoked Function Expression</a>, so we moved along and I don&#8217;t think I&#8217;ve thought about why I start files with an opening semicolon since. Until the other day, when I was reading <em>Effective JavaScript</em>.</p>
 
-<p>She didn’t ask about the <a href="http://www.benalman.com/news/2010/11/immediately-invoked-function-expression/">Immediately Invoked Function Expression</a>, so we moved along and I don’t think I’ve thought about why I start files with an opening semicolon since. Until the other day, when I was reading <em>Effective JavaScript</em>.</p>
-
-<p><em>Item 6, “Learn the Limits of Semicolon Insertion,”</em> began with what I thought I knew about Automatic Semicolon Insertion (“ASI”), such as the rule that ASI is error correction, so semicolons are only ever inserted when the next input token cannot be parsed.</p>
+<p><em>Item 6, &#8220;Learn the Limits of Semicolon Insertion,&#8221;</em> began with what I thought I knew about Automatic Semicolon Insertion (&#8220;ASI&#8221;), such as the rule that ASI is error correction, so semicolons are only ever inserted when the next input token cannot be parsed.</p>
 
 <p>But it also explained some of the <em>implications</em> of what I thought I knew: That there are five problematic characters <code>(</code>, <code>[</code>, <code>+</code>, <code>-</code>, and<code>/</code>. That each of these characters can acts either as an expression operator or as the prefix of a statement, and therefore that any statement beginning with one of these characters could be trouble if you are depending on ASI.</p>
 
-<h3 id="implications">Implications</h3>
+<h3 id='implications'>Implications</h3>
 
 <p>This is the crux of the value that <em>Effective JavaScript</em> provides. The behaviour of programming languages and environments is a little like mathematics or physics. There are certain axioms, facts if you will, that are freely available to all for free. It is not difficult to find out what the rules are for ASI. And the specification for valid sequences of tokens in JavaScript is also easy to discover, for free, with a web browser.</p>
 
-<p>And so it goes for everything, the rules about how functions are expressed, about how names are bound, about prototypes, about the context for a function that is extracted from an array  with <code>arr[3]</code>, and so on. These axioms are all known.</p>
+<p>And so it goes for everything, the rules about how functions are expressed, about how names are bound, about prototypes, about the context for a function that is extracted from an array with <code>arr[3]</code>, and so on. These axioms are all known.</p>
 
 <blockquote>
-  <p>“Genius is an African who dreams up snow.”–Vladimir Nabokov</p>
+<p>&#8220;Genius is an African who dreams up snow.&#8221;&#8211;Vladimir Nabokov</p>
 </blockquote>
 
-<p>But like mathematics or physics, it is the interactions between the axioms that gives rise to an extraordinarily complex set of behaviours. From quantum physics arise all sorts of physical behaviours, but can you really “dream up snow” from the Standard Model on first principles alone?</p>
+<p>But like mathematics or physics, it is the interactions between the axioms that gives rise to an extraordinarily complex set of behaviours. From quantum physics arise all sorts of physical behaviours, but can you really &#8220;dream up snow&#8221; from the Standard Model on first principles alone?</p>
 
-<p>What we get from <em>Effective JavaScript</em> is a brief explanation of the base principles, and then a curated set of implications. What makes one such book brilliant and another pedestrian is the balance it strikes between two opposing qualities: <em>Familiarity</em> and <em>Surprise</em>.  The topics discussed must be familiar to us, they must cover problems we encounter and can recognise. And there must be some surprises, some “Whoa, I never thought of that” moments.</p>
+<p>What we get from <em>Effective JavaScript</em> is a brief explanation of the base principles, and then a curated set of implications. What makes one such book brilliant and another pedestrian is the balance it strikes between two opposing qualities: <em>Familiarity</em> and <em>Surprise</em>. The topics discussed must be familiar to us, they must cover problems we encounter and can recognise. And there must be some surprises, some &#8220;Whoa, I never thought of that&#8221; moments.</p>
 
-<p>When a book is too familiar, it fails to add value. “Yes, yes,” we say, “I know all about prototypes. Tell me something I don’t know.” When a book is too surprising, it also fails to add value. We say, “It’s a richly entertaining exercise in <a href="https://twitter.com/raganwald/status/286670901905342464" title="Portmanteau of 'Theory' and 'Theatrics,' a highly entertaining explanation of theory with little practical value.">theoretrics</a>, nothing more.”</p>
+<p>When a book is too familiar, it fails to add value. &#8220;Yes, yes,&#8221; we say, &#8220;I know all about prototypes. Tell me something I don&#8217;t know.&#8221; When a book is too surprising, it also fails to add value. We say, &#8220;It&#8217;s a richly entertaining exercise in <a href='https://twitter.com/raganwald/status/286670901905342464' title='Portmanteau of '>theoretrics</a>, nothing more.&#8221;</p>
 
 <p>For this reason, what we need from a book is not just a knowledgable author able to dive deeply into the subject matter, but also someone able to carefully choose when to briefly explain, secure that we grasp the point, and when to dive into implications that are sure to surprise us.</p>
 
 <p>Without expert curation, we either get a brief book that fails to strike the proper balance, or we get a book that runs to 600 pages and still fails to strike the proper balance because in his zeal, the writer lurches from obvious to arcane without rhyme or reason.</p>
 
-<h3 id="back-to-the-leading-semicolon">Back to the Leading Semicolon</h3>
+<h3 id='back_to_the_leading_semicolon'>Back to the Leading Semicolon</h3>
 
 <p>As you by now expect, <em>Effective JavaScript</em> explained why I was inserting that leading semicolon. When file A and file B both use an IIFE, and when each file is loaded separately, a semicolon is automatically inserted at the end. So they look like this to the interpreter:</p>
+<div class='highlight'><pre><code class='javascript'><span class='p'>(</span><span class='kd'>function</span> <span class='p'>(</span><span class='nx'>$</span><span class='p'>)</span> <span class='p'>{</span>
+	<span class='c1'>// ... A</span>
+<span class='p'>})(</span><span class='nx'>jQuery</span><span class='p'>);</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
-	<span class="c1">// ... A</span>
-<span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span>
-
-<span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
-	<span class="c1">// ... B</span>
-<span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span>
+<span class='p'>(</span><span class='kd'>function</span> <span class='p'>(</span><span class='nx'>$</span><span class='p'>)</span> <span class='p'>{</span>
+	<span class='c1'>// ... B</span>
+<span class='p'>})(</span><span class='nx'>jQuery</span><span class='p'>);</span>
 </code></pre></div>
-
 <p>No problem. But one day you add naïve concatenation to your asset streaming, and now the code is all in one big file:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
-	<span class="c1">// ... A</span>
-<span class="p">})(</span><span class="nx">jQuery</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
-	<span class="c1">// ... B</span>
-<span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span>
+<div class='highlight'><pre><code class='javascript'><span class='p'>(</span><span class='kd'>function</span> <span class='p'>(</span><span class='nx'>$</span><span class='p'>)</span> <span class='p'>{</span>
+	<span class='c1'>// ... A</span>
+<span class='p'>})(</span><span class='nx'>jQuery</span><span class='p'>)(</span><span class='kd'>function</span> <span class='p'>(</span><span class='nx'>$</span><span class='p'>)</span> <span class='p'>{</span>
+	<span class='c1'>// ... B</span>
+<span class='p'>})(</span><span class='nx'>jQuery</span><span class='p'>);</span>
 </code></pre></div>
+<p>Instead of two IIFEs, you now have one function expression being called with <code>jQuery</code> as its argument. You then call the result it returns with a big function expression as its argument. You then call what that returns with <code>jQuery</code> as its argument. That&#8217;s a bug.</p>
 
-<p>Instead of two IIFEs, you now have one function expression being called with <code>jQuery</code> as its argument. You then call the result it returns with a big function expression as its argument. You then call what that returns with <code>jQuery</code> as its argument. That’s a bug.</p>
-
-<p>It wouldn’t have been a bug if every file included was terminated with a semicolon, but you can only control the code you write. Let’s say you wrote B, and you terminated yours with a semicolon and prefixed it with a semicolon defensively. After concatenation, you end up with:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
-	<span class="c1">// ... A</span>
-<span class="p">})(</span><span class="nx">jQuery</span><span class="p">);(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
-	<span class="c1">// ... B</span>
-<span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span>
+<p>It wouldn&#8217;t have been a bug if every file included was terminated with a semicolon, but you can only control the code you write. Let&#8217;s say you wrote B, and you terminated yours with a semicolon and prefixed it with a semicolon defensively. After concatenation, you end up with:</p>
+<div class='highlight'><pre><code class='javascript'><span class='p'>(</span><span class='kd'>function</span> <span class='p'>(</span><span class='nx'>$</span><span class='p'>)</span> <span class='p'>{</span>
+	<span class='c1'>// ... A</span>
+<span class='p'>})(</span><span class='nx'>jQuery</span><span class='p'>);(</span><span class='kd'>function</span> <span class='p'>(</span><span class='nx'>$</span><span class='p'>)</span> <span class='p'>{</span>
+	<span class='c1'>// ... B</span>
+<span class='p'>})(</span><span class='nx'>jQuery</span><span class='p'>);</span>
 </code></pre></div>
-
 <p>And that works fine. Now, <em>this is not the only way to solve this problem</em>. JavaScript has moved along since I first saw that idiom, and there are plenty of minification libraries and module management libraries that solve this problem for you whether you include an extra semicolon or not. Some of them solve the scoping issues that the IIFE is intended to solve.</p>
 
-<p><em>Effective JavaScript</em> didn’t tell me this is a “best practice.” It told me how a few things (that I thought I already knew) interacted in an unusual way. And thus some programmer, at some time in the past, recommended the leading semicolon and IIFE as sensible given the tools of the day. Now that I understand the issue properly, I’m no longer blindly using the idiom out of… I can’t think of a better word than <em>faith</em>.</p>
+<p><em>Effective JavaScript</em> didn&#8217;t tell me this is a &#8220;best practice.&#8221; It told me how a few things (that I thought I already knew) interacted in an unusual way. And thus some programmer, at some time in the past, recommended the leading semicolon and IIFE as sensible given the tools of the day. Now that I understand the issue properly, I&#8217;m no longer blindly using the idiom out of&#8230; I can&#8217;t think of a better word than <em>faith</em>.</p>
 
-<p>I value this kind of enlightenment from a book, a lecture or a course. I’m now in a much better position to evaluate alternate approaches to breaking JavaScript into multiple files. I now know something I didn’t really know I didn’t know.</p>
+<p>I value this kind of enlightenment from a book, a lecture or a course. I&#8217;m now in a much better position to evaluate alternate approaches to breaking JavaScript into multiple files. I now know something I didn&#8217;t really know I didn&#8217;t know.</p>
 
-<h2 id="whoa-thats-important">Whoa, That’s Important</h2>
+<h2 id='whoa_thats_important'>Whoa, That&#8217;s Important</h2>
 
-<p>That is an awful lot of words for, “Effective JavaScript explained why prefacing files that contain an IIFE with a semicolon fixes a problem that ASI could introduce when you concatenate files with old-school tools,” but I wanted to provide a taste of what it felt like for me to read David Herman’s book.</p>
+<p>That is an awful lot of words for, &#8220;Effective JavaScript explained why prefacing files that contain an IIFE with a semicolon fixes a problem that ASI could introduce when you concatenate files with old-school tools,&#8221; but I wanted to provide a taste of what it felt like for me to read David Herman&#8217;s book.</p>
 
-<p>I was constantly saying to myself, “Of course, of course, I know that, well that follows from that, and yes, therefore that follows from that,” and then suddenly: <em>“Whoa! That’s important!”</em></p>
+<p>I was constantly saying to myself, &#8220;Of course, of course, I know that, well that follows from that, and yes, therefore that follows from that,&#8221; and then suddenly: <em>&#8220;Whoa! That&#8217;s important!&#8221;</em></p>
 
-<p>Whether it was insights into writing constructors that worked with or without the <code>new</code> keyword, the perils of the Array Constructor, or repeated forays into iteration and its subtleties, I was pleased by the fine balance David Herman struck between familiarity and surprise. I felt like I knew more than half of what he wrote. But the other half… Solid gold. And the half I knew helped me understand the value of the half I didn’t know.</p>
+<p>Whether it was insights into writing constructors that worked with or without the <code>new</code> keyword, the perils of the Array Constructor, or repeated forays into iteration and its subtleties, I was pleased by the fine balance David Herman struck between familiarity and surprise. I felt like I knew more than half of what he wrote. But the other half&#8230; Solid gold. And the half I knew helped me understand the value of the half I didn&#8217;t know.</p>
 
 <p>Of course, what is surprising to Bob may be familiar to Carol. And what Ted thinks is useless language trivia may be a pearl of wisdom to Alice. So one can reasonably ask, should every JavaScript programmer own a copy of <em>Effective JavaScript</em>?</p>
 
 <p>I think Effective JavaScript is going to be an important text for all but the complete neophyte. That being said, beginners may find that the more experience they obtain writing JavaScript software, the more value they obtain from the book. While it touches on functional programming, objects and so-called classes in JavaScript, and even writing good APIs in JavaScript, each of these topics is also well-served by a more didactic book presenting the subject matter within the context of a larger framework or approach to programming.</p>
 
-<p>But with that experience in hand, Effective JavaScript’s approach of picking a topic and explaining the crucial implications and consequences adds enormous value to the reader’s hands-on experience and to the knowledge delivered in other books or courses.</p>
+<p>But with that experience in hand, Effective JavaScript&#8217;s approach of picking a topic and explaining the crucial implications and consequences adds enormous value to the reader&#8217;s hands-on experience and to the knowledge delivered in other books or courses.</p>
 
-<p>And there are sixty-eight topics! This is not a couple of blog posts fleshed out, formatted into chapters, and reprinted as a book. It’s a substantial work covering the entire JavaScript language from functions and closures to asynchronous programming. The coverage of asynchronous JavaScript would justify buying and reading this book on its own, it’s that good.</p>
+<p>And there are sixty-eight topics! This is not a couple of blog posts fleshed out, formatted into chapters, and reprinted as a book. It&#8217;s a substantial work covering the entire JavaScript language from functions and closures to asynchronous programming. The coverage of asynchronous JavaScript would justify buying and reading this book on its own, it&#8217;s that good.</p>
 
-<h2 id="my-bottom-line">My Bottom Line</h2>
+<h2 id='my_bottom_line'>My Bottom Line</h2>
 
-<p><em>Effective JavaScript</em> feels like more than just a good read, it feels like a book I’ll dip into again and again. If you’re working with JavaScript and feel like you have a good grasp of the language, I recommend it.</p>
+<p><em>Effective JavaScript</em> feels like more than just a good read, it feels like a book I&#8217;ll dip into again and again. If you&#8217;re working with JavaScript and feel like you have a good grasp of the language, I recommend it.</p>
 
-<p><a href="http://www.amazon.com/gp/product/0321812182/ref=as_li_ss_tl?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0321812182" title="Buy on Amazon.com">Effective JavaScript</a>, 200 pages. This review is based on the <a href="http://www.amazon.com/gp/product/B00AC1RP14/ref=as_li_ss_tl?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=B00AC1RP14">Kindle Edition</a> on iOS and OS X.</p>
+<p><a href='http://www.amazon.com/gp/product/0321812182/ref=as_li_ss_tl?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0321812182' title='Buy on Amazon.com'>Effective JavaScript</a>, 200 pages. This review is based on the <a href='http://www.amazon.com/gp/product/B00AC1RP14/ref=as_li_ss_tl?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=B00AC1RP14'>Kindle Edition</a> on iOS and OS X.</p>
 
-<p>(Discuss this review on <a href="http://news.ycombinator.com/item?id=5002439">hacker news</a> and <a href="http://www.reddit.com/r/javascript/comments/15w0ab/effective_javascript_reviewed/">r/javascript</a>)</p>
-
-
+<p>(Discuss this review on <a href='http://news.ycombinator.com/item?id=5002439'>hacker news</a> and <a href='http://www.reddit.com/r/javascript/comments/15w0ab/effective_javascript_reviewed/'>r/javascript</a>)</p>
         </section>
 
         <footer>

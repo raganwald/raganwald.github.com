@@ -58,105 +58,91 @@
   
 
           
-          <p>This morning I was perusing <a href="http://reddit.com/r/javascript">/r/javascript</a>, where I saw an announcement for version 2.0.0 of the <a href="http://craftjs.org/">Craft</a> JavaScript utility belt library.</p>
+          <p>This morning I was perusing <a href='http://reddit.com/r/javascript'>/r/javascript</a>, where I saw an announcement for version 2.0.0 of the <a href='http://craftjs.org/'>Craft</a> JavaScript utility belt library.</p>
 
-<p>Unlike other libraries, Craft is not afraid to extend the prototypes for built-in “classes” such as <code>Function</code>. For example, Craft provides <code>Function.prototype.attach</code>, which provides the same functionality as <code>Function.prototype.bind</code>. I presume it’s for backward compatibility in browsers that don’t support <code>.bind</code>.</p>
+<p>Unlike other libraries, Craft is not afraid to extend the prototypes for built-in &#8220;classes&#8221; such as <code>Function</code>. For example, Craft provides <code>Function.prototype.attach</code>, which provides the same functionality as <code>Function.prototype.bind</code>. I presume it&#8217;s for backward compatibility in browsers that don&#8217;t support <code>.bind</code>.</p>
 
-<p>Now, some libraries would shim <code>.bind</code> if it isn’t present, and others would provide a function that calls <code>.bind</code> if its present. There are trade-offs between the three approaches, and personally I think that it’s a win to have libraries that take different approaches to this issue so that programmers can select the approach that fits their personal needs.</p>
+<p>Now, some libraries would shim <code>.bind</code> if it isn&#8217;t present, and others would provide a function that calls <code>.bind</code> if its present. There are trade-offs between the three approaches, and personally I think that it&#8217;s a win to have libraries that take different approaches to this issue so that programmers can select the approach that fits their personal needs.</p>
 
-<p>But it reminded me of an open issue in my own <a href="http://allong.es">allong.es</a> library that I’m going to fix today. Let me show you. Here’s how <code>Function.prototype.bind works</code>:</p>
+<p>But it reminded me of an open issue in my own <a href='http://allong.es'>allong.es</a> library that I&#8217;m going to fix today. Let me show you. Here&#8217;s how <code>Function.prototype.bind works</code>:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>greet</span> <span class='p'>(</span><span class='nx'>whom</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='k'>this</span><span class='p'>.</span><span class='nx'>greeting</span> <span class='o'>+</span> <span class='s2'>&quot; &quot;</span> <span class='o'>+</span> <span class='nx'>whom</span><span class='p'>;</span>
+<span class='p'>};</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">greet</span> <span class="p">(</span><span class="nx">whom</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">greeting</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nx">whom</span><span class="p">;</span>
-<span class="p">};</span>
+<span class='kd'>var</span> <span class='nx'>polite</span> <span class='o'>=</span> <span class='nx'>greet</span><span class='p'>.</span><span class='nx'>bind</span><span class='p'>({</span> <span class='nx'>greeting</span><span class='o'>:</span> <span class='s2'>&quot;hello&quot;</span> <span class='p'>});</span>
 
-<span class="kd">var</span> <span class="nx">polite</span> <span class="o">=</span> <span class="nx">greet</span><span class="p">.</span><span class="nx">bind</span><span class="p">({</span> <span class="nx">greeting</span><span class="o">:</span> <span class="s2">&quot;hello&quot;</span> <span class="p">});</span>
-
-<span class="nx">polite</span><span class="p">(</span><span class="s2">&quot;bind&quot;</span><span class="p">);</span>
-  <span class="c1">//=&gt; &#39;hello bind&#39;</span>
+<span class='nx'>polite</span><span class='p'>(</span><span class='s2'>&quot;bind&quot;</span><span class='p'>);</span>
+  <span class='c1'>//=&gt; &#39;hello bind&#39;</span>
 </code></pre></div>
-
 <p>And <code>Function.prototype.attach</code>:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>casual</span> <span class='o'>=</span> <span class='nx'>greet</span><span class='p'>.</span><span class='nx'>attach</span><span class='p'>({</span> <span class='nx'>greeting</span><span class='o'>:</span> <span class='s2'>&quot;howdy&quot;</span> <span class='p'>});</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">casual</span> <span class="o">=</span> <span class="nx">greet</span><span class="p">.</span><span class="nx">attach</span><span class="p">({</span> <span class="nx">greeting</span><span class="o">:</span> <span class="s2">&quot;howdy&quot;</span> <span class="p">});</span>
-
-<span class="nx">casual</span><span class="p">(</span><span class="s2">&quot;attach&quot;</span><span class="p">);</span>
-  <span class="c1">//=&gt; &#39;howdy attach&#39;</span>
+<span class='nx'>casual</span><span class='p'>(</span><span class='s2'>&quot;attach&quot;</span><span class='p'>);</span>
+  <span class='c1'>//=&gt; &#39;howdy attach&#39;</span>
 </code></pre></div>
-
-<p>What’s the difference? Let’s check the function arity:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="nx">polite</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-  <span class="c1">//=&gt; 1</span>
-<span class="nx">casual</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-  <span class="c1">//=&gt; 0</span>
+<p>What&#8217;s the difference? Let&#8217;s check the function arity:</p>
+<div class='highlight'><pre><code class='javascript'><span class='nx'>polite</span><span class='p'>.</span><span class='nx'>length</span><span class='p'>;</span>
+  <span class='c1'>//=&gt; 1</span>
+<span class='nx'>casual</span><span class='p'>.</span><span class='nx'>length</span><span class='p'>;</span>
+  <span class='c1'>//=&gt; 0</span>
 </code></pre></div>
-
 <p><code>Function.prototype.bind</code> returns a new function with the correct arity. <code>Function.prototype.attach</code> returns a function that declares no arguments and instead extracts them from the <code>arguments</code> pseudo-variable, therefore it has no arity. <code>Function.prototype.partial</code> does the exact same thing.</p>
 
-<p>I knew to check this, because <a href="http://allong.es">allong.es</a> uses the exact same technique. And frankly, it’s usually just fine. I’ve been doing things this way for years, and besides a little weight gain and declining eyesight, I feel just fine.</p>
+<p>I knew to check this, because <a href='http://allong.es'>allong.es</a> uses the exact same technique. And frankly, it&#8217;s usually just fine. I&#8217;ve been doing things this way for years, and besides a little weight gain and declining eyesight, I feel just fine.</p>
 
-<h3 id="when-arity-matters">when arity matters</h3>
+<h3 id='when_arity_matters'>when arity matters</h3>
 
-<p>I noticed this <a href="https://github.com/raganwald/allong.es/issues/5">a few weeks ago</a> when I started to work with some functions that need to know the arity of a function they are manipulating. I’m going to start talking about <a href="http://allong.es">allong.es</a> now because I don’t want to make it seem like I’m criticizing <a href="http://craftjs.org/">Craft</a>. Just the opposite, I think it’s neat-o, and I don’t know that it would be improved by changing this behaviour.</p>
+<p>I noticed this <a href='https://github.com/raganwald/allong.es/issues/5'>a few weeks ago</a> when I started to work with some functions that need to know the arity of a function they are manipulating. I&#8217;m going to start talking about <a href='http://allong.es'>allong.es</a> now because I don&#8217;t want to make it seem like I&#8217;m criticizing <a href='http://craftjs.org/'>Craft</a>. Just the opposite, I think it&#8217;s neat-o, and I don&#8217;t know that it would be improved by changing this behaviour.</p>
 
-<p>But here’s why I am looking at changing <a href="http://allong.es">allong.es</a>. Consider <code>curry</code>, a function that turns a polyadic function into a chained or nested series of unary functions:</p>
+<p>But here&#8217;s why I am looking at changing <a href='http://allong.es'>allong.es</a>. Consider <code>curry</code>, a function that turns a polyadic function into a chained or nested series of unary functions:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>curry</span> <span class='o'>=</span> <span class='nx'>require</span><span class='p'>(</span><span class='s1'>&#39;allong.es&#39;</span><span class='p'>).</span><span class='nx'>curry</span><span class='p'>;</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">curry</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">curry</span><span class="p">;</span>
+<span class='kd'>function</span> <span class='nx'>introduction</span> <span class='p'>(</span><span class='nx'>a</span><span class='p'>,</span> <span class='nx'>b</span><span class='p'>,</span> <span class='nx'>c</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='s1'>&#39;&#39;</span> <span class='o'>+</span> <span class='nx'>a</span> <span class='o'>+</span> <span class='s1'>&#39;, &#39;</span> <span class='o'>+</span> <span class='nx'>b</span> <span class='o'>+</span> <span class='s1'>&#39;, may I introduce you to &#39;</span> <span class='o'>+</span> <span class='nx'>c</span>
+<span class='p'>};</span>
 
-<span class="kd">function</span> <span class="nx">introduction</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="nx">a</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="nx">b</span> <span class="o">+</span> <span class="s1">&#39;, may I introduce you to &#39;</span> <span class="o">+</span> <span class="nx">c</span>
-<span class="p">};</span>
-
-<span class="nx">introduction</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;alice&#39;</span><span class="p">,</span> <span class="s1">&#39;bob&#39;</span><span class="p">);</span>
-  <span class="c1">//=&gt; &#39;hello, alice, may I introduce you to bob&#39;</span>
+<span class='nx'>introduction</span><span class='p'>(</span><span class='s1'>&#39;hello&#39;</span><span class='p'>,</span> <span class='s1'>&#39;alice&#39;</span><span class='p'>,</span> <span class='s1'>&#39;bob&#39;</span><span class='p'>);</span>
+  <span class='c1'>//=&gt; &#39;hello, alice, may I introduce you to bob&#39;</span>
   
-<span class="kd">var</span> <span class="nx">curried</span> <span class="o">=</span> <span class="nx">curry</span><span class="p">(</span><span class="nx">introduction</span><span class="p">);</span>
+<span class='kd'>var</span> <span class='nx'>curried</span> <span class='o'>=</span> <span class='nx'>curry</span><span class='p'>(</span><span class='nx'>introduction</span><span class='p'>);</span>
 
-<span class="nx">curried</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)(</span><span class="s1">&#39;alice&#39;</span><span class="p">)(</span><span class="s1">&#39;bob&#39;</span><span class="p">);</span>
-  <span class="c1">//=&gt; &#39;hello, alice, may I introduce you to bob&#39;</span>
+<span class='nx'>curried</span><span class='p'>(</span><span class='s1'>&#39;hello&#39;</span><span class='p'>)(</span><span class='s1'>&#39;alice&#39;</span><span class='p'>)(</span><span class='s1'>&#39;bob&#39;</span><span class='p'>);</span>
+  <span class='c1'>//=&gt; &#39;hello, alice, may I introduce you to bob&#39;</span>
 </code></pre></div>
-
 <p>The trouble is that the current implementation of <code>curry</code> relies on checking the arity of the function you are currying. So we would expect that if we were to use <code>applyFirst</code> to partially apply the first argument of <code>introduction</code>, we should be able to curry the remaining two arguments:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>applyLeft</span> <span class='o'>=</span> <span class='nx'>require</span><span class='p'>(</span><span class='s1'>&#39;allong.es&#39;</span><span class='p'>).</span><span class='nx'>applyLeft</span><span class='p'>;</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">applyLeft</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">applyLeft</span><span class="p">;</span>
+<span class='kd'>function</span> <span class='nx'>introduction</span> <span class='p'>(</span><span class='nx'>a</span><span class='p'>,</span> <span class='nx'>b</span><span class='p'>,</span> <span class='nx'>c</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='s1'>&#39;&#39;</span> <span class='o'>+</span> <span class='nx'>a</span> <span class='o'>+</span> <span class='s1'>&#39;, &#39;</span> <span class='o'>+</span> <span class='nx'>b</span> <span class='o'>+</span> <span class='s1'>&#39;, may I introduce you to &#39;</span> <span class='o'>+</span> <span class='nx'>c</span>
+<span class='p'>};</span>
+<span class='nx'>casual</span> <span class='o'>=</span> <span class='nx'>applyLeft</span><span class='p'>(</span><span class='nx'>introduction</span><span class='p'>,</span> <span class='s1'>&#39;howdy&#39;</span><span class='p'>);</span>
 
-<span class="kd">function</span> <span class="nx">introduction</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="nx">a</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="nx">b</span> <span class="o">+</span> <span class="s1">&#39;, may I introduce you to &#39;</span> <span class="o">+</span> <span class="nx">c</span>
-<span class="p">};</span>
-<span class="nx">casual</span> <span class="o">=</span> <span class="nx">applyLeft</span><span class="p">(</span><span class="nx">introduction</span><span class="p">,</span> <span class="s1">&#39;howdy&#39;</span><span class="p">);</span>
-
-<span class="nx">casual</span><span class="p">(</span><span class="s1">&#39;ted&#39;</span><span class="p">,</span> <span class="s1">&#39;carol&#39;</span><span class="p">);</span>
-  <span class="c1">//=&gt; &#39;howdy, ted, may I introduce you to carol&#39;</span>
+<span class='nx'>casual</span><span class='p'>(</span><span class='s1'>&#39;ted&#39;</span><span class='p'>,</span> <span class='s1'>&#39;carol&#39;</span><span class='p'>);</span>
+  <span class='c1'>//=&gt; &#39;howdy, ted, may I introduce you to carol&#39;</span>
   
-<span class="kd">var</span> <span class="nx">curried</span> <span class="o">=</span> <span class="nx">curry</span><span class="p">(</span><span class="nx">casual</span><span class="p">);</span>
+<span class='kd'>var</span> <span class='nx'>curried</span> <span class='o'>=</span> <span class='nx'>curry</span><span class='p'>(</span><span class='nx'>casual</span><span class='p'>);</span>
 
-<span class="nx">curried</span><span class="p">(</span><span class="s1">&#39;ted&#39;</span><span class="p">)(</span><span class="s1">&#39;carol&#39;</span><span class="p">);</span>
-  <span class="c1">//=&gt; ???</span>
+<span class='nx'>curried</span><span class='p'>(</span><span class='s1'>&#39;ted&#39;</span><span class='p'>)(</span><span class='s1'>&#39;carol&#39;</span><span class='p'>);</span>
+  <span class='c1'>//=&gt; ???</span>
 </code></pre></div>
-
 <p>But no:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="nx">TypeError</span><span class="o">:</span> <span class="nx">string</span> <span class="nx">is</span> <span class="nx">not</span> <span class="nx">a</span> <span class="kd">function</span>
+<div class='highlight'><pre><code class='javascript'><span class='nx'>TypeError</span><span class='o'>:</span> <span class='nx'>string</span> <span class='nx'>is</span> <span class='nx'>not</span> <span class='nx'>a</span> <span class='kd'>function</span>
 </code></pre></div>
+<p>The problem is that <code>applyFirst</code>, like Craft&#8217;s <code>Function.prototype.attach</code>, returns a function with arity zero. But <code>curry</code> relies on the function having the proper arity. So they each work separately, but not together.</p>
 
-<p>The problem is that <code>applyFirst</code>, like Craft’s <code>Function.prototype.attach</code>, returns a function with arity zero. But <code>curry</code> relies on the function having the proper arity. So they each work separately, but not together.</p>
+<h3 id='a_symptom_of_a_general_problem'>a symptom of a general problem</h3>
 
-<h3 id="a-symptom-of-a-general-problem">a symptom of a general problem</h3>
+<p>This is, in the very small, a problem that happens with a lot of &#8220;greenspunning.&#8221; When you&#8217;re emulating or hacking together new functionality, it is sometimes challenging but often straightforward to get it to work for the &#8220;common case,&#8221; the one in the tests.</p>
 
-<p>This is, in the very small, a problem that happens with a lot of “greenspunning.” When you’re emulating or hacking together new functionality, it is sometimes challenging but often straightforward to get it to work for the “common case,” the one in the tests.</p>
+<p>But in reality there will be little edge cases you don&#8217;t handle properly. They may seem incredibly rare when you think of a person writing some code that uses your function or library directly in their domain code, but they aren&#8217;t as rare as you think.</p>
 
-<p>But in reality there will be little edge cases you don’t handle properly. They may seem incredibly rare when you think of a person writing some code that uses your function or library directly in their domain code, but they aren’t as rare as you think.</p>
-
-<p>The reason is that when we write libraries, we tend to think that because we’ve wrapped the implementation up inside of a nice polite API, we can use more “advanced” techniques like working with the <code>arguments</code> array instead of parameters directly. There’s a subtle “social order” where libraries are expected to do the heavy lifting and client code is expected to be simple and readable, relying on libraries for anything complicated.</p>
+<p>The reason is that when we write libraries, we tend to think that because we&#8217;ve wrapped the implementation up inside of a nice polite API, we can use more &#8220;advanced&#8221; techniques like working with the <code>arguments</code> array instead of parameters directly. There&#8217;s a subtle &#8220;social order&#8221; where libraries are expected to do the heavy lifting and client code is expected to be simple and readable, relying on libraries for anything complicated.</p>
 
 <p>When the client code calls several libraries, you end up with advanced code interacting with advanced code, and the mathematics of it are such that the likelihood of edge cases interacting rises exponentially.</p>
 
-<h3 id="what-to-do">what to do</h3>
+<h3 id='what_to_do'>what to do</h3>
 
-<p>Well, I’m going to change <a href="http://allong.es">allong.es</a>. Given that it includes <code>applyLeft</code> and <code>curry</code>, it seems wrong to say that they aren’t compatible and composeable. But at the same time, there’s nothing unreasonable about a library like Craft simply choosing to emphasize KISS. Different design priorities produce different choices.</p>
-
-
+<p>Well, I&#8217;m going to change <a href='http://allong.es'>allong.es</a>. Given that it includes <code>applyLeft</code> and <code>curry</code>, it seems wrong to say that they aren&#8217;t compatible and composeable. But at the same time, there&#8217;s nothing unreasonable about a library like Craft simply choosing to emphasize KISS. Different design priorities produce different choices.</p>
         </section>
 
         <footer>

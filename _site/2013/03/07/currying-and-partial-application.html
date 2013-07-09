@@ -62,272 +62,234 @@
   
 
           
-          <p>I was participating in <a href="http://wrocloverb.com">wroc_love.rb</a> last week-end, and <a href="http://steveklabnik.com">Steve Klabnik</a> put up a slide mentioning <a href="https://en.wikipedia.org/wiki/Partial_application">partial application</a> and <a href="https://en.wikipedia.org/wiki/Currying">currying</a>. “The difference between them is not important right now,” he said, pressing on. And it wasn’t.</p>
+          <p>I was participating in <a href='http://wrocloverb.com'>wroc_love.rb</a> last week-end, and <a href='http://steveklabnik.com'>Steve Klabnik</a> put up a slide mentioning <a href='https://en.wikipedia.org/wiki/Partial_application'>partial application</a> and <a href='https://en.wikipedia.org/wiki/Currying'>currying</a>. &#8220;The difference between them is not important right now,&#8221; he said, pressing on. And it wasn&#8217;t.</p>
 
-<p>But here we are, it’s a brand new day, and we’ve already read five different explanations of <code>this</code> and closures this week, but only three or four about currying, so let’s get into it.</p>
+<p>But here we are, it&#8217;s a brand new day, and we&#8217;ve already read five different explanations of <code>this</code> and closures this week, but only three or four about currying, so let&#8217;s get into it.</p>
 
-<h3 id="arity">arity</h3>
+<h3 id='arity'>arity</h3>
 
-<p>Before we jump in, let’s get some terminology straight. Functions have <em>arity</em>, meaning the number of arguments they accept. A “unary” function accepts one argument, a “polyadic” function takes more than one argument. There are specialized terms we can use: A “binary” function accepts two, a “ternary” function accepts three, and you can rustle about with greek or latin words and invent names for functions that accept more than three arguments.</p>
+<p>Before we jump in, let&#8217;s get some terminology straight. Functions have <em>arity</em>, meaning the number of arguments they accept. A &#8220;unary&#8221; function accepts one argument, a &#8220;polyadic&#8221; function takes more than one argument. There are specialized terms we can use: A &#8220;binary&#8221; function accepts two, a &#8220;ternary&#8221; function accepts three, and you can rustle about with greek or latin words and invent names for functions that accept more than three arguments.</p>
 
-<p>Some functions accept a variable number of arguments, we call them <em>variadic</em>, although variadic functions and functions taking no arguments aren’t our primary focus in this essay.</p>
+<p>Some functions accept a variable number of arguments, we call them <em>variadic</em>, although variadic functions and functions taking no arguments aren&#8217;t our primary focus in this essay.</p>
 
-<h3 id="partial-application">partial application</h3>
+<h3 id='partial_application'>partial application</h3>
 
-<p>Partial application is straightforward. We could start with addition or some such completely trivial example, but if you don’t mind we’ll have a look at something from the <a href="http://allong.es">allong.es</a> JavaScript library that is of actual use in daily programming.</p>
+<p>Partial application is straightforward. We could start with addition or some such completely trivial example, but if you don&#8217;t mind we&#8217;ll have a look at something from the <a href='http://allong.es'>allong.es</a> JavaScript library that is of actual use in daily programming.</p>
 
-<p>As a preamble, let’s make ourselves a <code>map</code> function that maps another function over a list:</p>
+<p>As a preamble, let&#8217;s make ourselves a <code>map</code> function that maps another function over a list:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>__map</span> <span class='o'>=</span> <span class='p'>[].</span><span class='nx'>map</span><span class='p'>;</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">__map</span> <span class="o">=</span> <span class="p">[].</span><span class="nx">map</span><span class="p">;</span>
+<span class='kd'>function</span> <span class='nx'>map</span> <span class='p'>(</span><span class='nx'>list</span><span class='p'>,</span> <span class='nx'>unaryFn</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>__map</span><span class='p'>.</span><span class='nx'>call</span><span class='p'>(</span><span class='nx'>list</span><span class='p'>,</span> <span class='nx'>unaryFn</span><span class='p'>);</span>
+<span class='p'>};</span>
 
-<span class="kd">function</span> <span class="nx">map</span> <span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">unaryFn</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">__map</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">unaryFn</span><span class="p">);</span>
-<span class="p">};</span>
+<span class='kd'>function</span> <span class='nx'>square</span> <span class='p'>(</span><span class='nx'>n</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>n</span> <span class='o'>*</span> <span class='nx'>n</span><span class='p'>;</span>
+<span class='p'>};</span>
 
-<span class="kd">function</span> <span class="nx">square</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">n</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="nx">map</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="nx">square</span><span class="p">);</span>
-  <span class="c1">//=&gt; [1, 4, 9]</span>
+<span class='nx'>map</span><span class='p'>([</span><span class='mi'>1</span><span class='p'>,</span> <span class='mi'>2</span><span class='p'>,</span> <span class='mi'>3</span><span class='p'>],</span> <span class='nx'>square</span><span class='p'>);</span>
+  <span class='c1'>//=&gt; [1, 4, 9]</span>
 </code></pre></div>
-
 <p><code>map</code> is obviously a binary function, <code>square</code> is a unary function. When we called <code>map</code> with arguments <code>[1, 2, 3]</code> and <code>square</code>, we <em>applied</em> the arguments to the function and got our result.</p>
 
-<p>Since <code>map</code> takes two arguments, and we supplied two arguments, we <em>fully applied</em> the arguments to the function. So what’s partial application? Supplying fewer arguments. Like supplying one argument to <code>map</code>.</p>
+<p>Since <code>map</code> takes two arguments, and we supplied two arguments, we <em>fully applied</em> the arguments to the function. So what&#8217;s partial application? Supplying fewer arguments. Like supplying one argument to <code>map</code>.</p>
 
-<p>Now what happens if we supply one argument to <code>map</code>? We can’t get a result without the other argument, so what we get back is a unary function that takes the other argument and produces the result we want.</p>
+<p>Now what happens if we supply one argument to <code>map</code>? We can&#8217;t get a result without the other argument, so what we get back is a unary function that takes the other argument and produces the result we want.</p>
 
-<p>If we’re going to apply one argument to <code>map</code>, let’s make it the <code>unaryFn</code>. We’ll start with the end result and work backwards. First thing we do, is set up a wrapper around map:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">mapWrapper</span> <span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">unaryFn</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">map</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">unaryFn</span><span class="p">);</span>
-<span class="p">};</span>
+<p>If we&#8217;re going to apply one argument to <code>map</code>, let&#8217;s make it the <code>unaryFn</code>. We&#8217;ll start with the end result and work backwards. First thing we do, is set up a wrapper around map:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>mapWrapper</span> <span class='p'>(</span><span class='nx'>list</span><span class='p'>,</span> <span class='nx'>unaryFn</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>map</span><span class='p'>(</span><span class='nx'>list</span><span class='p'>,</span> <span class='nx'>unaryFn</span><span class='p'>);</span>
+<span class='p'>};</span>
 </code></pre></div>
-
-<p>Next we’ll break our binary wrapper function into two nested unary functions:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">mapWrapper</span> <span class="p">(</span><span class="nx">unaryFn</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">map</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">unaryFn</span><span class="p">);</span>
-  <span class="p">};</span>
-<span class="p">};</span>
+<p>Next we&#8217;ll break our binary wrapper function into two nested unary functions:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>mapWrapper</span> <span class='p'>(</span><span class='nx'>unaryFn</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>list</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>map</span><span class='p'>(</span><span class='nx'>list</span><span class='p'>,</span> <span class='nx'>unaryFn</span><span class='p'>);</span>
+  <span class='p'>};</span>
+<span class='p'>};</span>
 </code></pre></div>
-
 <p>Now we can supply our arguments one at a time:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="nx">mapWrapper</span><span class="p">(</span><span class="nx">square</span><span class="p">)([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]);</span>
-  <span class="c1">//=&gt; [1, 4, 9]</span>
+<div class='highlight'><pre><code class='javascript'><span class='nx'>mapWrapper</span><span class='p'>(</span><span class='nx'>square</span><span class='p'>)([</span><span class='mi'>1</span><span class='p'>,</span> <span class='mi'>2</span><span class='p'>,</span> <span class='mi'>3</span><span class='p'>]);</span>
+  <span class='c1'>//=&gt; [1, 4, 9]</span>
 </code></pre></div>
+<p>Instead of a binary <code>map</code> function that returns our result, we now have a unary function that returns a unary function that returns our result. So where&#8217;s the partial application? Let&#8217;s get our hands on the second unary function:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>squareAll</span> <span class='o'>=</span> <span class='nx'>mapWrapper</span><span class='p'>(</span><span class='nx'>square</span><span class='p'>);</span>
+  <span class='c1'>//=&gt; [function]</span>
 
-<p>Instead of a binary <code>map</code> function that returns our result, we now have a unary function that returns a unary function that returns our result. So where’s the partial application? Let’s get our hands on the second unary function:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">squareAll</span> <span class="o">=</span> <span class="nx">mapWrapper</span><span class="p">(</span><span class="nx">square</span><span class="p">);</span>
-  <span class="c1">//=&gt; [function]</span>
-
-<span class="nx">squareAll</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]);</span>
-  <span class="c1">//=&gt; [1, 4, 9]</span>
-<span class="nx">squareAll</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">]);</span>
-  <span class="c1">//=&gt; [25, 49, 25]</span>
+<span class='nx'>squareAll</span><span class='p'>([</span><span class='mi'>1</span><span class='p'>,</span> <span class='mi'>2</span><span class='p'>,</span> <span class='mi'>3</span><span class='p'>]);</span>
+  <span class='c1'>//=&gt; [1, 4, 9]</span>
+<span class='nx'>squareAll</span><span class='p'>([</span><span class='mi'>5</span><span class='p'>,</span> <span class='mi'>7</span><span class='p'>,</span> <span class='mi'>5</span><span class='p'>]);</span>
+  <span class='c1'>//=&gt; [25, 49, 25]</span>
 </code></pre></div>
+<p>We&#8217;ve just partially applied the value <code>square</code> to the function <code>map</code>. We got back a unary function, <code>squareAll</code>, that we could use as we liked. Partially applying <code>map</code> in this fashion is handy, so much so that the <a href='http://allong.es'>allong.es</a> library includes a function called <code>mapWith</code> that does this exact thing.</p>
 
-<p>We’ve just partially applied the value <code>square</code> to the function <code>map</code>. We got back a unary function, <code>squareAll</code>, that we could use as we liked. Partially applying <code>map</code> in this fashion is handy, so much so that the <a href="http://allong.es">allong.es</a> library includes a function called <code>mapWith</code> that does this exact thing.</p>
+<p>If we had to physically write ourselves a wrapper function every time we want to do some partial application, we&#8217;d never bother. Being programmers though, we can automate this. There are two ways to do it.</p>
 
-<p>If we had to physically write ourselves a wrapper function every time we want to do some partial application, we’d never bother. Being programmers though, we can automate this. There are two ways to do it.</p>
-
-<h3 id="currying">currying</h3>
+<h3 id='currying'>currying</h3>
 
 <p>First up, we can write a function that returns a wrapper function. Sticking with binary function, we start with this:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">wrapper</span> <span class="p">(</span><span class="nx">unaryFn</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">map</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">unaryFn</span><span class="p">);</span>
-  <span class="p">};</span>
-<span class="p">};</span>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>wrapper</span> <span class='p'>(</span><span class='nx'>unaryFn</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>list</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>map</span><span class='p'>(</span><span class='nx'>list</span><span class='p'>,</span> <span class='nx'>unaryFn</span><span class='p'>);</span>
+  <span class='p'>};</span>
+<span class='p'>};</span>
 </code></pre></div>
-
 <p>Rename <code>map</code> and the two arguments:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">wrapper</span> <span class="p">(</span><span class="nx">secondArg</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">firstArg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">binaryFn</span><span class="p">(</span><span class="nx">firstArg</span><span class="p">,</span> <span class="nx">secondArg</span><span class="p">);</span>
-  <span class="p">};</span>
-<span class="p">};</span>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>wrapper</span> <span class='p'>(</span><span class='nx'>secondArg</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>firstArg</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>binaryFn</span><span class='p'>(</span><span class='nx'>firstArg</span><span class='p'>,</span> <span class='nx'>secondArg</span><span class='p'>);</span>
+  <span class='p'>};</span>
+<span class='p'>};</span>
 </code></pre></div>
-
 <p>And now we can wrap the whole thing in a function that takes <code>binaryFn</code> as an argument:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">rightmostCurry</span> <span class="p">(</span><span class="nx">binaryFn</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">secondArg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">firstArg</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">binaryFn</span><span class="p">(</span><span class="nx">firstArg</span><span class="p">,</span> <span class="nx">secondArg</span><span class="p">);</span>
-    <span class="p">};</span>
-  <span class="p">};</span>
-<span class="p">};</span>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>rightmostCurry</span> <span class='p'>(</span><span class='nx'>binaryFn</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>secondArg</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>firstArg</span><span class='p'>)</span> <span class='p'>{</span>
+      <span class='k'>return</span> <span class='nx'>binaryFn</span><span class='p'>(</span><span class='nx'>firstArg</span><span class='p'>,</span> <span class='nx'>secondArg</span><span class='p'>);</span>
+    <span class='p'>};</span>
+  <span class='p'>};</span>
+<span class='p'>};</span>
 </code></pre></div>
+<p>So now we&#8217;ve &#8216;abstracted&#8217; our little pattern. We can use it like this:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>rightmostCurriedMap</span> <span class='o'>=</span> <span class='nx'>rightmostCurry</span><span class='p'>(</span><span class='nx'>map</span><span class='p'>);</span>
 
-<p>So now we’ve ‘abstracted’ our little pattern. We can use it like this:</p>
+<span class='kd'>var</span> <span class='nx'>squareAll</span> <span class='o'>=</span> <span class='nx'>rightmostCurriedMap</span><span class='p'>(</span><span class='nx'>square</span><span class='p'>);</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">rightmostCurriedMap</span> <span class="o">=</span> <span class="nx">rightmostCurry</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
-
-<span class="kd">var</span> <span class="nx">squareAll</span> <span class="o">=</span> <span class="nx">rightmostCurriedMap</span><span class="p">(</span><span class="nx">square</span><span class="p">);</span>
-
-<span class="nx">squareAll</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">]);</span>
-  <span class="c1">//=&gt; [1, 4, 9]</span>
-<span class="nx">squareAll</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">]);</span>
-  <span class="c1">//=&gt; [25, 49, 25]</span>
+<span class='nx'>squareAll</span><span class='p'>([</span><span class='mi'>1</span><span class='p'>,</span> <span class='mi'>4</span><span class='p'>,</span> <span class='mi'>9</span><span class='p'>]);</span>
+  <span class='c1'>//=&gt; [1, 4, 9]</span>
+<span class='nx'>squareAll</span><span class='p'>([</span><span class='mi'>5</span><span class='p'>,</span> <span class='mi'>7</span><span class='p'>,</span> <span class='mi'>5</span><span class='p'>]);</span>
+  <span class='c1'>//=&gt; [25, 49, 25]</span>
 </code></pre></div>
+<p>Converting a polyadic function into a nested series of unary functions is called <strong>currying</strong>, after Haskell Curry, who popularized the technique. He actually rediscovered the combinatory logic work of <a href='https://en.wikipedia.org/wiki/Moses_Schönfinkel'>Moses Schönfinkel</a>, so we could easily call it &#8220;schönfinkeling.&#8221;<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup></p>
 
-<p>Converting a polyadic function into a nested series of unary functions is called <strong>currying</strong>, after Haskell Curry, who popularized the technique. He actually rediscovered the combinatory logic work of <a href="https://en.wikipedia.org/wiki/Moses_Schönfinkel">Moses Schönfinkel</a>, so we could easily call it “schönfinkeling.”<sup id="fnref:birds"><a href="#fn:birds" class="footnote">1</a></sup></p>
+<p>Our <code>rightmostCurry</code> function curries any binary function into a chain of unary functions starting with the second argument. This is a &#8220;rightmost&#8221; curry because it starts at the right.</p>
 
-<p>Our <code>rightmostCurry</code> function curries any binary function into a chain of unary functions starting with the second argument. This is a “rightmost” curry because it starts at the right.</p>
+<p>The opposite order would be a &#8220;leftmost&#8221; curry. Most logicians work with leftmost currying, so when we write a leftmost curry, most people just call it &#8220;curry:&#8221;</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>curry</span> <span class='p'>(</span><span class='nx'>binaryFn</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>firstArg</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>secondArg</span><span class='p'>)</span> <span class='p'>{</span>
+      <span class='k'>return</span> <span class='nx'>binaryFn</span><span class='p'>(</span><span class='nx'>firstArg</span><span class='p'>,</span> <span class='nx'>secondArg</span><span class='p'>);</span>
+    <span class='p'>};</span>
+  <span class='p'>};</span>
+<span class='p'>};</span>
 
-<p>The opposite order would be a “leftmost” curry. Most logicians work with leftmost currying, so when we write a leftmost curry, most people just call it “curry:”</p>
+<span class='kd'>var</span> <span class='nx'>curriedMap</span> <span class='o'>=</span> <span class='nx'>curry</span><span class='p'>(</span><span class='nx'>map</span><span class='p'>),</span>
+    <span class='kr'>double</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>n</span><span class='p'>)</span> <span class='p'>{</span> <span class='nx'>n</span> <span class='o'>+</span> <span class='nx'>n</span><span class='p'>;</span> <span class='p'>};</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">curry</span> <span class="p">(</span><span class="nx">binaryFn</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">firstArg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">secondArg</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">binaryFn</span><span class="p">(</span><span class="nx">firstArg</span><span class="p">,</span> <span class="nx">secondArg</span><span class="p">);</span>
-    <span class="p">};</span>
-  <span class="p">};</span>
-<span class="p">};</span>
+<span class='kd'>var</span> <span class='nx'>oneToThreeEach</span> <span class='o'>=</span> <span class='nx'>curriedMap</span><span class='p'>([</span><span class='mi'>1</span><span class='p'>,</span> <span class='mi'>2</span><span class='p'>,</span> <span class='mi'>3</span><span class='p'>]);</span>
 
-<span class="kd">var</span> <span class="nx">curriedMap</span> <span class="o">=</span> <span class="nx">curry</span><span class="p">(</span><span class="nx">map</span><span class="p">),</span>
-    <span class="kr">double</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="nx">n</span> <span class="o">+</span> <span class="nx">n</span><span class="p">;</span> <span class="p">};</span>
-
-<span class="kd">var</span> <span class="nx">oneToThreeEach</span> <span class="o">=</span> <span class="nx">curriedMap</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]);</span>
-
-<span class="nx">oneToThreeEach</span><span class="p">(</span><span class="nx">square</span><span class="p">);</span>
-  <span class="c1">//=&gt; [1, 4, 9]</span>
-<span class="nx">oneToThreeEach</span><span class="p">(</span><span class="kr">double</span><span class="p">);</span>
-  <span class="c1">//=&gt; [2, 4, 6]</span>
+<span class='nx'>oneToThreeEach</span><span class='p'>(</span><span class='nx'>square</span><span class='p'>);</span>
+  <span class='c1'>//=&gt; [1, 4, 9]</span>
+<span class='nx'>oneToThreeEach</span><span class='p'>(</span><span class='kr'>double</span><span class='p'>);</span>
+  <span class='c1'>//=&gt; [2, 4, 6]</span>
 </code></pre></div>
+<p>When would you use a regular curry and when would you use a rightmost curry? It really depends on your usage. In our binary function example, we&#8217;re emulating a kind of subject-object grammar. The first argument we want to use is going to be the subject, the second is going to be the object.</p>
 
-<p>When would you use a regular curry and when would you use a rightmost curry? It really depends on your usage. In our binary function example, we’re emulating a kind of subject-object grammar. The first argument we want to use is going to be the subject, the second is going to be the object.</p>
+<p>So when we use a rightmost curry on <code>map</code>, we are setting up a &#8220;sentence&#8221; that makes the mapping function the subject.</p>
 
-<p>So when we use a rightmost curry on <code>map</code>, we are setting up a “sentence” that makes the mapping function the subject.</p>
+<p>So we read <code>squareAll([1, 2, 3])</code> as &#8220;square all the elements of the array <span>1, 2, 3</span>.&#8221; By using a rightmost curry, we made &#8220;squaring&#8221; the subject and the list the object. Whereas when we used a regular curry, the list became the subject and the mapper function became the object.</p>
 
-<p>So we read <code>squareAll([1, 2, 3])</code> as “square all the elements of the array [1, 2, 3].” By using a rightmost curry, we made “squaring” the subject and the list the object. Whereas when we used a regular curry, the list became the subject and the mapper function became the object.</p>
+<p>Another way to look at it that is a little more like &#8220;patterns and programming&#8221; is to think about what you want to name and/or reuse. Having both kinds of currying lets you name and/or reuse either the mapping function or the list.</p>
 
-<p>Another way to look at it that is a little more like “patterns and programming” is to think about what you want to name and/or reuse. Having both kinds of currying lets you name and/or reuse either the mapping function or the list.</p>
+<h3 id='partial_application'>partial application</h3>
 
-<h3 id="partial-application-1">partial application</h3>
+<p>So many words about currying! What about &#8220;partial application?&#8221; Well, if you have currying you don&#8217;t need partial application. And conversely, if you have partial application you don&#8217;t need currying. So when you write this kind of essay, it&#8217;s easy to spend a lot of words describing one of these two things and then explain everything else on top of what you already have.</p>
 
-<p>So many words about currying! What about “partial application?” Well, if you have currying you don’t need partial application. And conversely, if you have partial application you don’t need currying. So when you write this kind of essay, it’s easy to spend a lot of words describing one of these two things and then explain everything else on top of what you already have.</p>
-
-<p>Let’s look at our rightmost curry again:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">rightmostCurry</span> <span class="p">(</span><span class="nx">binaryFn</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">secondArg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">firstArg</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">binaryFn</span><span class="p">(</span><span class="nx">firstArg</span><span class="p">,</span> <span class="nx">secondArg</span><span class="p">);</span>
-    <span class="p">};</span>
-  <span class="p">};</span>
-<span class="p">};</span>
+<p>Let&#8217;s look at our rightmost curry again:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>rightmostCurry</span> <span class='p'>(</span><span class='nx'>binaryFn</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>secondArg</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>firstArg</span><span class='p'>)</span> <span class='p'>{</span>
+      <span class='k'>return</span> <span class='nx'>binaryFn</span><span class='p'>(</span><span class='nx'>firstArg</span><span class='p'>,</span> <span class='nx'>secondArg</span><span class='p'>);</span>
+    <span class='p'>};</span>
+  <span class='p'>};</span>
+<span class='p'>};</span>
 </code></pre></div>
-
 <p>You might find yourself writing code like this over and over again:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">squareAll</span> <span class="o">=</span> <span class="nx">rightmostCurry</span><span class="p">(</span><span class="nx">map</span><span class="p">)(</span><span class="nx">square</span><span class="p">),</span>
-    <span class="nx">doubleAll</span> <span class="o">=</span> <span class="nx">rightmostCurry</span><span class="p">(</span><span class="nx">map</span><span class="p">)(</span><span class="kr">double</span><span class="p">);</span>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>squareAll</span> <span class='o'>=</span> <span class='nx'>rightmostCurry</span><span class='p'>(</span><span class='nx'>map</span><span class='p'>)(</span><span class='nx'>square</span><span class='p'>),</span>
+    <span class='nx'>doubleAll</span> <span class='o'>=</span> <span class='nx'>rightmostCurry</span><span class='p'>(</span><span class='nx'>map</span><span class='p'>)(</span><span class='kr'>double</span><span class='p'>);</span>
 </code></pre></div>
+<p>This business of making a rightmost curry and then immediately applying an argument to it is extremely common, and when something&#8217;s common we humans like to name it. And it has a name, it&#8217;s called a <em>rightmost unary partial application of the map function</em>.</p>
 
-<p>This business of making a rightmost curry and then immediately applying an argument to it is extremely common, and when something’s common we humans like to name it. And it has a name, it’s called a <em>rightmost unary partial application of the map function</em>.</p>
-
-<p>What a mouthful. Let’s take it step by step:</p>
+<p>What a mouthful. Let&#8217;s take it step by step:</p>
 
 <ol>
-  <li>rightmost: From the right.</li>
-  <li>unary: One argument.</li>
-  <li>partial application: Not applying all of the arguments.</li>
-  <li>map: To the map function.</li>
+<li>rightmost: From the right.</li>
+
+<li>unary: One argument.</li>
+
+<li>partial application: Not applying all of the arguments.</li>
+
+<li>map: To the map function.</li>
 </ol>
 
-<p>So what we’re really doing is applying one argument to the map function. It’s a binary function, so that means what we’re left with is a unary function. Again, functional languages and libraries almost always include a first-class function to do this for us.</p>
+<p>So what we&#8217;re really doing is applying one argument to the map function. It&#8217;s a binary function, so that means what we&#8217;re left with is a unary function. Again, functional languages and libraries almost always include a first-class function to do this for us.</p>
 
 <p>We <em>could</em> build one out of a rightmost curry:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">rightmostUnaryPartialApplication</span> <span class="p">(</span><span class="nx">binaryFn</span><span class="p">,</span> <span class="nx">secondArg</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">rightmostCurry</span><span class="p">(</span><span class="nx">binaryFn</span><span class="p">)(</span><span class="nx">secondArg</span><span class="p">);</span>
-<span class="p">};</span>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>rightmostUnaryPartialApplication</span> <span class='p'>(</span><span class='nx'>binaryFn</span><span class='p'>,</span> <span class='nx'>secondArg</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>rightmostCurry</span><span class='p'>(</span><span class='nx'>binaryFn</span><span class='p'>)(</span><span class='nx'>secondArg</span><span class='p'>);</span>
+<span class='p'>};</span>
 </code></pre></div>
-
-<p>However it is usually implemented in more direct fashion:<sup id="fnref:caveat"><a href="#fn:caveat" class="footnote">2</a></sup></p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">rightmostUnaryPartialApplication</span> <span class="p">(</span><span class="nx">binaryFn</span><span class="p">,</span> <span class="nx">secondArg</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">firstArg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">binaryFn</span><span class="p">(</span><span class="nx">firstArg</span><span class="p">,</span> <span class="nx">secondArg</span><span class="p">);</span>
-  <span class="p">};</span>
-<span class="p">};</span>
+<p>However it is usually implemented in more direct fashion:<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup></p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>rightmostUnaryPartialApplication</span> <span class='p'>(</span><span class='nx'>binaryFn</span><span class='p'>,</span> <span class='nx'>secondArg</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>firstArg</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>binaryFn</span><span class='p'>(</span><span class='nx'>firstArg</span><span class='p'>,</span> <span class='nx'>secondArg</span><span class='p'>);</span>
+  <span class='p'>};</span>
+<span class='p'>};</span>
 </code></pre></div>
-
-<p><code>rightmostUnaryPartialApplication</code> is a bit much, so we’ll alias it <code>applyLast</code>:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">applyLast</span> <span class="o">=</span> <span class="nx">rightmostUnaryPartialApplication</span><span class="p">;</span>
+<p><code>rightmostUnaryPartialApplication</code> is a bit much, so we&#8217;ll alias it <code>applyLast</code>:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>applyLast</span> <span class='o'>=</span> <span class='nx'>rightmostUnaryPartialApplication</span><span class='p'>;</span>
 </code></pre></div>
-
-<p>And here’re our <code>squareAll</code> and <code>doubleAll</code> functions built with <code>applyLast</code>:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">squareAll</span> <span class="o">=</span> <span class="nx">applyLast</span><span class="p">(</span><span class="nx">map</span><span class="p">,</span> <span class="nx">square</span><span class="p">),</span>
-    <span class="nx">doubleAll</span> <span class="o">=</span> <span class="nx">applyLast</span><span class="p">(</span><span class="nx">map</span><span class="p">,</span> <span class="kr">double</span><span class="p">);</span>
+<p>And here&#8217;re our <code>squareAll</code> and <code>doubleAll</code> functions built with <code>applyLast</code>:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>squareAll</span> <span class='o'>=</span> <span class='nx'>applyLast</span><span class='p'>(</span><span class='nx'>map</span><span class='p'>,</span> <span class='nx'>square</span><span class='p'>),</span>
+    <span class='nx'>doubleAll</span> <span class='o'>=</span> <span class='nx'>applyLast</span><span class='p'>(</span><span class='nx'>map</span><span class='p'>,</span> <span class='kr'>double</span><span class='p'>);</span>
 </code></pre></div>
-
-<p>You can also make an <code>applyFirst</code> function (we’ll skip calling it “leftmostUnaryPartialApplication”):</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">applyFirst</span> <span class="p">(</span><span class="nx">binaryFn</span><span class="p">,</span> <span class="nx">firstArg</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">secondArg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">binaryFn</span><span class="p">(</span><span class="nx">firstArg</span><span class="p">,</span> <span class="nx">secondArg</span><span class="p">);</span>
-  <span class="p">};</span>
-<span class="p">};</span>
+<p>You can also make an <code>applyFirst</code> function (we&#8217;ll skip calling it &#8220;leftmostUnaryPartialApplication&#8221;):</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>applyFirst</span> <span class='p'>(</span><span class='nx'>binaryFn</span><span class='p'>,</span> <span class='nx'>firstArg</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>secondArg</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>binaryFn</span><span class='p'>(</span><span class='nx'>firstArg</span><span class='p'>,</span> <span class='nx'>secondArg</span><span class='p'>);</span>
+  <span class='p'>};</span>
+<span class='p'>};</span>
 </code></pre></div>
-
 <p>As with leftmost and rightmost currying, you want to have both in your toolbox so that you can choose what you are naming and/or reusing.</p>
 
-<h3 id="so-whats-the-difference-between-currying-and-partial-application">so what’s the difference between currying and partial application?</h3>
+<h3 id='so_whats_the_difference_between_currying_and_partial_application'>so what&#8217;s the difference between currying and partial application?</h3>
 
-<p>“Currying is the decomposition of a polyadic function into a chain of nested unary functions. Thus decomposed, you can partially apply one or more arguments,<sup id="fnref:also"><a href="#fn:also" class="footnote">3</a></sup> although the curry operation itself does not apply any arguments to the function.”</p>
+<p>&#8220;Currying is the decomposition of a polyadic function into a chain of nested unary functions. Thus decomposed, you can partially apply one or more arguments,<sup id='fnref:3'><a href='#fn:3' rel='footnote'>3</a></sup> although the curry operation itself does not apply any arguments to the function.&#8221;</p>
 
-<p>“Partial application is the conversion of a polyadic function into a function taking fewer arguments arguments by providing one or more arguments in advance.”</p>
+<p>&#8220;Partial application is the conversion of a polyadic function into a function taking fewer arguments arguments by providing one or more arguments in advance.&#8221;</p>
 
-<h3 id="is-that-all-there-is">is that all there is?</h3>
+<h3 id='is_that_all_there_is'>is that all there is?</h3>
 
 <p>Yes. And no. Here are some further directions to explore on your own:</p>
 
 <ol>
-  <li>We saw how to use currying to implement partial application. Is it possible to use partial application to implement currying? Why? Why not?<sup id="fnref:tao"><a href="#fn:tao" class="footnote">4</a></sup></li>
-  <li>All of our examples of partial application have concerned converting binary functions into unary functions by providing one argument. Write more general versions of <code>applyFirst</code> and <code>applyLast</code> that provide one argument to any polyadic function. For example, if you have a function that takes four arguments, <code>applyFirst</code> should return a function taking three arguments.</li>
-  <li>When you have <code>applyFirst</code> and <code>applyLast</code> working with all polyadic functions, try implementing <code>applyLeft</code> and <code>applyRight</code>: <code>applyLeft</code> takes a polyadic function and one <em>or more</em> arguments and leftmost partially applies them. So if you provide it with a ternary function and two arguments, it should return a unary function. <code>applyRight</code> does the same with rightmost application.</li>
-  <li>Rewrite curry and rightmostCurry to accept any polyadic function. So just as a binary function curries into two nested unary functions, a ternary function should curry into three nested unary functions and so on.</li>
-  <li>Review the source code for <a href="http://allong.es">allong.es</a>, the functional programming library extracted from <a href="http://leanpub.com/javascript-allonge">JavaScript Allongé</a>, especially <a href="https://github.com/raganwald/allong.es/blob/master/lib/partial_application.js">partial_application.js</a>.</li>
+<li>We saw how to use currying to implement partial application. Is it possible to use partial application to implement currying? Why? Why not?<sup id='fnref:4'><a href='#fn:4' rel='footnote'>4</a></sup></li>
+
+<li>All of our examples of partial application have concerned converting binary functions into unary functions by providing one argument. Write more general versions of <code>applyFirst</code> and <code>applyLast</code> that provide one argument to any polyadic function. For example, if you have a function that takes four arguments, <code>applyFirst</code> should return a function taking three arguments.</li>
+
+<li>When you have <code>applyFirst</code> and <code>applyLast</code> working with all polyadic functions, try implementing <code>applyLeft</code> and <code>applyRight</code>: <code>applyLeft</code> takes a polyadic function and one <em>or more</em> arguments and leftmost partially applies them. So if you provide it with a ternary function and two arguments, it should return a unary function. <code>applyRight</code> does the same with rightmost application.</li>
+
+<li>Rewrite curry and rightmostCurry to accept any polyadic function. So just as a binary function curries into two nested unary functions, a ternary function should curry into three nested unary functions and so on.</li>
+
+<li>Review the source code for <a href='http://allong.es'>allong.es</a>, the functional programming library extracted from <a href='http://leanpub.com/javascript-allonge'>JavaScript Allongé</a>, especially <a href='https://github.com/raganwald/allong.es/blob/master/lib/partial_application.js'>partial_application.js</a>.</li>
 </ol>
 
-<p>Thanks for reading, if you discover a bug in the code, please either <a href="https://github.com/raganwald/raganwald.github.com">fork the repo</a> and submit a pull request, or <a href="https://github.com/raganwald/raganwald.github.com/issues">submit an issue on Github</a>.</p>
+<p>Thanks for reading, if you discover a bug in the code, please either <a href='https://github.com/raganwald/raganwald.github.com'>fork the repo</a> and submit a pull request, or <a href='https://github.com/raganwald/raganwald.github.com/issues'>submit an issue on Github</a>.</p>
 
-<p>p.s. Another essay you might find interesting: <a href="http://raganwald.com/2013/01/05/practical-applications-of-partial-application.html">Practical Applications of Partial Application</a>.</p>
+<p>p.s. Another essay you might find interesting: <a href='http://raganwald.com/2013/01/05/practical-applications-of-partial-application.html'>Practical Applications of Partial Application</a>.</p>
 
-<p>(<a href="http://www.reddit.com/r/javascript/comments/19urej/whats_the_difference_between_currying_and_partial/">discuss</a>)</p>
-
+<p>(<a href='http://www.reddit.com/r/javascript/comments/19urej/whats_the_difference_between_currying_and_partial/'>discuss</a>)</p>
 <hr />
-
 <p>notes:</p>
-
-<div class="footnotes">
-  <ol>
-    <li id="fn:birds">
-      <p>When Raymond Smullyan wrote his seminal introduction to combinatory logic, he called it “To Mock a Mockingbird” and used forests of birds as his central metaphor to pay tribute to Schönfinkel. Schön means “beautiful” and Fink means “finch” in German, although Finkl may be Yiddish for “sparkle.” So his name may mean “beautiful finch,” or it may mean “beautiful sparkle.”<a href="#fnref:birds" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:caveat">
-      <p>All of our implementations are grossly simplified. Full implementations can handle polyadic functions with more than two arguments and are context-agnostic.<a href="#fnref:caveat" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:also">
-      <p>There are a lot of other reasons to curry functions, but this is an article about the relationship between currying and partial application, not an introduction to combinatory logic and functional programming :-)<a href="#fnref:also" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:tao">
-      <p>A Taoist ordered a vegetarian hot dog from a street vendor: “Make me one with everything,” he requested politely.<a href="#fnref:tao" class="reversefootnote">&#8617;</a></p>
-    </li>
-  </ol>
-</div>
-
+<div class='footnotes'><hr /><ol><li id='fn:1'>
+<p>When Raymond Smullyan wrote his seminal introduction to combinatory logic, he called it &#8220;To Mock a Mockingbird&#8221; and used forests of birds as his central metaphor to pay tribute to Schönfinkel. Schön means &#8220;beautiful&#8221; and Fink means &#8220;finch&#8221; in German, although Finkl may be Yiddish for &#8220;sparkle.&#8221; So his name may mean &#8220;beautiful finch,&#8221; or it may mean &#8220;beautiful sparkle.&#8221;</p>
+<a href='#fnref:1' rev='footnote'>&#8617;</a></li><li id='fn:2'>
+<p>All of our implementations are grossly simplified. Full implementations can handle polyadic functions with more than two arguments and are context-agnostic.</p>
+<a href='#fnref:2' rev='footnote'>&#8617;</a></li><li id='fn:3'>
+<p>There are a lot of other reasons to curry functions, but this is an article about the relationship between currying and partial application, not an introduction to combinatory logic and functional programming :-)</p>
+<a href='#fnref:3' rev='footnote'>&#8617;</a></li><li id='fn:4'>
+<p>A Taoist ordered a vegetarian hot dog from a street vendor: &#8220;Make me one with everything,&#8221; he requested politely.</p>
+<a href='#fnref:4' rev='footnote'>&#8617;</a></li></ol></div>
         </section>
 
         <footer>

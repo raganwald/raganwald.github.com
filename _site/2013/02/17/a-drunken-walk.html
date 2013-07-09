@@ -72,234 +72,216 @@
   
 
           
-          <p>In <a href="http://raganwald.com/2013/02/15/turtles-and-iterators.js.html">Tortoises, Teleporting Turtles, and Iterators</a>, we looked at the “Tortoise and Hare” algorithm for detecting a linked list. Like many such algorithms, it “tangles” two different concerns:</p>
+          <p>In <a href='http://raganwald.com/2013/02/15/turtles-and-iterators.js.html'>Tortoises, Teleporting Turtles, and Iterators</a>, we looked at the &#8220;Tortoise and Hare&#8221; algorithm for detecting a linked list. Like many such algorithms, it &#8220;tangles&#8221; two different concerns:</p>
 
 <ol>
-  <li>The mechanism for iterating over a list.</li>
-  <li>The algorithm for detecting a loop in a list.</li>
+<li>The mechanism for iterating over a list.</li>
+
+<li>The algorithm for detecting a loop in a list.</li>
 </ol>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>LinkedList</span> <span class='o'>=</span> <span class='p'>(</span><span class='kd'>function</span><span class='p'>()</span> <span class='p'>{</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">LinkedList</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class='kd'>function</span> <span class='nx'>LinkedList</span><span class='p'>(</span><span class='nx'>content</span><span class='p'>,</span> <span class='nx'>next</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>this</span><span class='p'>.</span><span class='nx'>content</span> <span class='o'>=</span> <span class='nx'>content</span><span class='p'>;</span>
+    <span class='k'>this</span><span class='p'>.</span><span class='nx'>next</span> <span class='o'>=</span> <span class='nx'>next</span> <span class='o'>!=</span> <span class='kc'>null</span> <span class='o'>?</span> <span class='nx'>next</span> <span class='o'>:</span> <span class='k'>void</span> <span class='mi'>0</span><span class='p'>;</span>
+  <span class='p'>}</span>
 
-  <span class="kd">function</span> <span class="nx">LinkedList</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="nx">content</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">next</span> <span class="o">=</span> <span class="nx">next</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="nx">next</span> <span class="o">:</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="p">}</span>
+  <span class='nx'>LinkedList</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>.</span><span class='nx'>appendTo</span> <span class='o'>=</span> <span class='kd'>function</span><span class='p'>(</span><span class='nx'>content</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='k'>new</span> <span class='nx'>LinkedList</span><span class='p'>(</span><span class='nx'>content</span><span class='p'>,</span> <span class='k'>this</span><span class='p'>);</span>
+  <span class='p'>};</span>
 
-  <span class="nx">LinkedList</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">appendTo</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-  <span class="p">};</span>
+  <span class='nx'>LinkedList</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>.</span><span class='nx'>tailNode</span> <span class='o'>=</span> <span class='kd'>function</span><span class='p'>()</span> <span class='p'>{</span>
+    <span class='kd'>var</span> <span class='nx'>nextThis</span><span class='p'>;</span>
+    <span class='k'>return</span> <span class='p'>((</span><span class='nx'>nextThis</span> <span class='o'>=</span> <span class='k'>this</span><span class='p'>.</span><span class='nx'>next</span><span class='p'>)</span> <span class='o'>!=</span> <span class='kc'>null</span> <span class='o'>?</span> <span class='nx'>nextThis</span><span class='p'>.</span><span class='nx'>tailNode</span><span class='p'>()</span> <span class='o'>:</span> <span class='k'>void</span> <span class='mi'>0</span><span class='p'>)</span> <span class='o'>||</span> <span class='k'>this</span><span class='p'>;</span>
+  <span class='p'>};</span>
 
-  <span class="nx">LinkedList</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">tailNode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">nextThis</span><span class="p">;</span>
-    <span class="k">return</span> <span class="p">((</span><span class="nx">nextThis</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">next</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="nx">nextThis</span><span class="p">.</span><span class="nx">tailNode</span><span class="p">()</span> <span class="o">:</span> <span class="k">void</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="k">this</span><span class="p">;</span>
-  <span class="p">};</span>
+  <span class='k'>return</span> <span class='nx'>LinkedList</span><span class='p'>;</span>
 
-  <span class="k">return</span> <span class="nx">LinkedList</span><span class="p">;</span>
+<span class='p'>})();</span>
 
-<span class="p">})();</span>
-
-<span class="kd">function</span> <span class="nx">tortoiseAndHareLoopDetector</span> <span class="p">(</span><span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">hare</span><span class="p">,</span> <span class="nx">tortoise</span><span class="p">,</span> <span class="nx">nextHare</span><span class="p">;</span>
-  <span class="nx">tortoise</span> <span class="o">=</span> <span class="nx">list</span><span class="p">;</span>
-  <span class="nx">hare</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">next</span><span class="p">;</span>
-  <span class="k">while</span> <span class="p">((</span><span class="nx">tortoise</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">hare</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">tortoise</span> <span class="o">===</span> <span class="nx">hare</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nx">tortoise</span> <span class="o">=</span> <span class="nx">tortoise</span><span class="p">.</span><span class="nx">next</span><span class="p">;</span>
-    <span class="nx">hare</span> <span class="o">=</span> <span class="p">(</span><span class="nx">nextHare</span> <span class="o">=</span> <span class="nx">hare</span><span class="p">.</span><span class="nx">next</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="nx">nextHare</span><span class="p">.</span><span class="nx">next</span> <span class="o">:</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-<span class="p">};</span>
+<span class='kd'>function</span> <span class='nx'>tortoiseAndHareLoopDetector</span> <span class='p'>(</span><span class='nx'>list</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>hare</span><span class='p'>,</span> <span class='nx'>tortoise</span><span class='p'>,</span> <span class='nx'>nextHare</span><span class='p'>;</span>
+  <span class='nx'>tortoise</span> <span class='o'>=</span> <span class='nx'>list</span><span class='p'>;</span>
+  <span class='nx'>hare</span> <span class='o'>=</span> <span class='nx'>list</span><span class='p'>.</span><span class='nx'>next</span><span class='p'>;</span>
+  <span class='k'>while</span> <span class='p'>((</span><span class='nx'>tortoise</span> <span class='o'>!=</span> <span class='kc'>null</span><span class='p'>)</span> <span class='o'>&amp;&amp;</span> <span class='p'>(</span><span class='nx'>hare</span> <span class='o'>!=</span> <span class='kc'>null</span><span class='p'>))</span> <span class='p'>{</span>
+    <span class='k'>if</span> <span class='p'>(</span><span class='nx'>tortoise</span> <span class='o'>===</span> <span class='nx'>hare</span><span class='p'>)</span> <span class='p'>{</span>
+      <span class='k'>return</span> <span class='kc'>true</span><span class='p'>;</span>
+    <span class='p'>}</span>
+    <span class='nx'>tortoise</span> <span class='o'>=</span> <span class='nx'>tortoise</span><span class='p'>.</span><span class='nx'>next</span><span class='p'>;</span>
+    <span class='nx'>hare</span> <span class='o'>=</span> <span class='p'>(</span><span class='nx'>nextHare</span> <span class='o'>=</span> <span class='nx'>hare</span><span class='p'>.</span><span class='nx'>next</span><span class='p'>)</span> <span class='o'>!=</span> <span class='kc'>null</span> <span class='o'>?</span> <span class='nx'>nextHare</span><span class='p'>.</span><span class='nx'>next</span> <span class='o'>:</span> <span class='k'>void</span> <span class='mi'>0</span><span class='p'>;</span>
+  <span class='p'>}</span>
+  <span class='k'>return</span> <span class='kc'>false</span><span class='p'>;</span>
+<span class='p'>};</span>
 </code></pre></div>
-
-<h3 id="functional-iterators">functional iterators</h3>
+<h3 id='functional_iterators'>functional iterators</h3>
 
 <p>We then went on to discuss how to use functional iterators to untangle concerns like this, and used taking the sum of a list as an example. A functional iterator is a stateful function that iterates over a data structure. Every time you call it, it returns the next element from the data structure. If and when it completes its traversal, it returns <code>undefined</code>.</p>
 
 <p>For example, here is a function that takes an array and returns a functional iterator over the array:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">ArrayIterator</span> <span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">array</span><span class="p">[</span><span class="nx">index</span><span class="o">++</span><span class="p">];</span>
-  <span class="p">};</span>
-<span class="p">};</span>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>ArrayIterator</span> <span class='p'>(</span><span class='nx'>array</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>index</span> <span class='o'>=</span> <span class='mi'>0</span><span class='p'>;</span>
+  <span class='k'>return</span> <span class='kd'>function</span><span class='p'>()</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>array</span><span class='p'>[</span><span class='nx'>index</span><span class='o'>++</span><span class='p'>];</span>
+  <span class='p'>};</span>
+<span class='p'>};</span>
 </code></pre></div>
-
 <p>Iterators allow us to write (or refactor) functions to operate on iterators instead of data structures. That increases reuse. We can also write higher-order functions that operate directly on iterators such as mapping and selecting. That allows us to write lazy algorithms.</p>
 
-<h3 id="refactoring-the-tortoise-and-hare">refactoring the tortoise and hare</h3>
+<h3 id='refactoring_the_tortoise_and_hare'>refactoring the tortoise and hare</h3>
 
-<p>In <a href="http://raganwald.com/2013/02/15/turtles-and-iterators.js.html">the previous post</a>, we refactored other algorithms, but not the Tortoise and Hare. Let’s do that now: We’ll refactor it to use iterators instead of directly operate on linked lists. We’ll add an <code>.iterator()</code> method to linked lists, and we’ll rewrite our loop detector function to take an “iterable” instead of a list:</p>
+<p>In <a href='http://raganwald.com/2013/02/15/turtles-and-iterators.js.html'>the previous post</a>, we refactored other algorithms, but not the Tortoise and Hare. Let&#8217;s do that now: We&#8217;ll refactor it to use iterators instead of directly operate on linked lists. We&#8217;ll add an <code>.iterator()</code> method to linked lists, and we&#8217;ll rewrite our loop detector function to take an &#8220;iterable&#8221; instead of a list:</p>
+<div class='highlight'><pre><code class='javascript'><span class='nx'>LinkedList</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>.</span><span class='nx'>iterator</span> <span class='o'>=</span> <span class='kd'>function</span><span class='p'>()</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>list</span> <span class='o'>=</span> <span class='k'>this</span><span class='p'>;</span>
+  <span class='k'>return</span> <span class='kd'>function</span><span class='p'>()</span> <span class='p'>{</span>
+    <span class='kd'>var</span> <span class='nx'>value</span> <span class='o'>=</span> <span class='nx'>list</span> <span class='o'>!=</span> <span class='kc'>null</span> <span class='o'>?</span> <span class='nx'>list</span><span class='p'>.</span><span class='nx'>content</span> <span class='o'>:</span> <span class='k'>void</span> <span class='mi'>0</span><span class='p'>;</span>
+    <span class='nx'>list</span> <span class='o'>=</span> <span class='nx'>list</span> <span class='o'>!=</span> <span class='kc'>null</span> <span class='o'>?</span> <span class='nx'>list</span><span class='p'>.</span><span class='nx'>next</span> <span class='o'>:</span> <span class='k'>void</span> <span class='mi'>0</span><span class='p'>;</span>
+    <span class='k'>return</span> <span class='nx'>value</span><span class='p'>;</span>
+  <span class='p'>};</span>
+<span class='p'>};</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="nx">LinkedList</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">iterator</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-  <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">list</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="nx">list</span><span class="p">.</span><span class="nx">content</span> <span class="o">:</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="nx">list</span> <span class="o">=</span> <span class="nx">list</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="nx">list</span><span class="p">.</span><span class="nx">next</span> <span class="o">:</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
-  <span class="p">};</span>
-<span class="p">};</span>
-
-<span class="kd">function</span> <span class="nx">tortoiseAndHareLoopDetector</span> <span class="p">(</span><span class="nx">iterable</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">tortoise</span> <span class="o">=</span> <span class="nx">iterable</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span>
-      <span class="nx">hare</span> <span class="o">=</span> <span class="nx">iterable</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span> 
-      <span class="nx">tortoiseValue</span><span class="p">,</span> 
-      <span class="nx">hareValue</span><span class="p">;</span>
-  <span class="k">while</span> <span class="p">(((</span><span class="nx">tortoiseValue</span> <span class="o">=</span> <span class="nx">tortoise</span><span class="p">())</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="nx">hare</span><span class="p">(),</span> <span class="nx">hareValue</span> <span class="o">=</span> <span class="nx">hare</span><span class="p">())</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">tortoiseValue</span> <span class="o">===</span> <span class="nx">hareValue</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-<span class="p">};</span>
+<span class='kd'>function</span> <span class='nx'>tortoiseAndHareLoopDetector</span> <span class='p'>(</span><span class='nx'>iterable</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>tortoise</span> <span class='o'>=</span> <span class='nx'>iterable</span><span class='p'>.</span><span class='nx'>iterator</span><span class='p'>(),</span>
+      <span class='nx'>hare</span> <span class='o'>=</span> <span class='nx'>iterable</span><span class='p'>.</span><span class='nx'>iterator</span><span class='p'>(),</span> 
+      <span class='nx'>tortoiseValue</span><span class='p'>,</span> 
+      <span class='nx'>hareValue</span><span class='p'>;</span>
+  <span class='k'>while</span> <span class='p'>(((</span><span class='nx'>tortoiseValue</span> <span class='o'>=</span> <span class='nx'>tortoise</span><span class='p'>())</span> <span class='o'>!=</span> <span class='kc'>null</span><span class='p'>)</span> <span class='o'>&amp;&amp;</span> <span class='p'>((</span><span class='nx'>hare</span><span class='p'>(),</span> <span class='nx'>hareValue</span> <span class='o'>=</span> <span class='nx'>hare</span><span class='p'>())</span> <span class='o'>!=</span> <span class='kc'>null</span><span class='p'>))</span> <span class='p'>{</span>
+    <span class='k'>if</span> <span class='p'>(</span><span class='nx'>tortoiseValue</span> <span class='o'>===</span> <span class='nx'>hareValue</span><span class='p'>)</span> <span class='p'>{</span>
+      <span class='k'>return</span> <span class='kc'>true</span><span class='p'>;</span>
+    <span class='p'>}</span>
+  <span class='p'>}</span>
+  <span class='k'>return</span> <span class='kc'>false</span><span class='p'>;</span>
+<span class='p'>};</span>
 </code></pre></div>
+<p>We now have a function that will operate on anything that responds to the <code>.iterate()</code> method.<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup> It&#8217;s classic &#8220;Duck Typed&#8221; Object-Orientation. So, how shall we put it to work?</p>
 
-<p>We now have a function that will operate on anything that responds to the <code>.iterate()</code> method.<sup id="fnref:not-exactly"><a href="#fn:not-exactly" class="footnote">1</a></sup> It’s classic “Duck Typed” Object-Orientation. So, how shall we put it to work?</p>
-
-<h3 id="a-drunken-walk">a drunken walk</h3>
+<h3 id='a_drunken_walk'>a drunken walk</h3>
 
 <p><em>Consider a finite checkerboard of unknown size. On each square we randomly place an arrow pointing to one of its four sides. For convenience, we shall uniformly label the directions: N, S, E, and W. A chequer is placed randomly on the checkerboard. Each move consists of moving the red chequer one square in the direction of the arrow in the square it occupies. If the arrow should cause the chequer to move off the edge of the board, the game halts.</em></p>
 
-<p><em>As a player moves the chequer, he calls out the direction of movement, e.g. “N, E, N, S, N, E…” Write an algorithm that will determine whether the game halts strictly from the called out directions, in constant space.</em></p>
+<p><em>As a player moves the chequer, he calls out the direction of movement, e.g. &#8220;N, E, N, S, N, E&#8230;&#8221; Write an algorithm that will determine whether the game halts strictly from the called out directions, in constant space.</em></p>
 
-<h3 id="hints">hints</h3>
+<h3 id='hints'>hints</h3>
 
-<p>You’ll need a “Board” and/or “Game” class that acts as iterable, along with some notion of directions. Here’s one possible implementation:</p>
+<p>You&#8217;ll need a &#8220;Board&#8221; and/or &#8220;Game&#8221; class that acts as iterable, along with some notion of directions. Here&#8217;s one possible implementation:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>DIRECTIONS</span> <span class='o'>=</span> <span class='p'>[</span>
+                   <span class='p'>{</span>
+                     <span class='nx'>delta</span><span class='o'>:</span> <span class='p'>[</span><span class='mi'>1</span><span class='p'>,</span> <span class='mi'>0</span><span class='p'>],</span>
+                     <span class='nx'>toString</span><span class='o'>:</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span> <span class='k'>return</span> <span class='s1'>&#39;N&#39;</span><span class='p'>;</span> <span class='p'>}</span>
+                   <span class='p'>},</span>
+                   <span class='p'>{</span>
+                     <span class='nx'>delta</span><span class='o'>:</span> <span class='p'>[</span><span class='mi'>0</span><span class='p'>,</span> <span class='mi'>1</span><span class='p'>],</span>
+                     <span class='nx'>toString</span><span class='o'>:</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span> <span class='k'>return</span> <span class='s1'>&#39;E&#39;</span><span class='p'>;</span> <span class='p'>}</span>
+                   <span class='p'>},</span>
+                   <span class='p'>{</span>
+                     <span class='nx'>delta</span><span class='o'>:</span> <span class='p'>[</span><span class='o'>-</span><span class='mi'>1</span><span class='p'>,</span> <span class='mi'>0</span><span class='p'>],</span>
+                     <span class='nx'>toString</span><span class='o'>:</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span> <span class='k'>return</span> <span class='s1'>&#39;S&#39;</span><span class='p'>;</span> <span class='p'>}</span>
+                   <span class='p'>},</span>
+                   <span class='p'>{</span>
+                     <span class='nx'>delta</span><span class='o'>:</span> <span class='p'>[</span><span class='mi'>0</span><span class='p'>,</span> <span class='o'>-</span><span class='mi'>1</span><span class='p'>],</span>
+                     <span class='nx'>toString</span><span class='o'>:</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span> <span class='k'>return</span> <span class='s1'>&#39;W&#39;</span><span class='p'>;</span> <span class='p'>}</span>
+                   <span class='p'>}</span>
+                 <span class='p'>];</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">DIRECTIONS</span> <span class="o">=</span> <span class="p">[</span>
-                   <span class="p">{</span>
-                     <span class="nx">delta</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-                     <span class="nx">toString</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">&#39;N&#39;</span><span class="p">;</span> <span class="p">}</span>
-                   <span class="p">},</span>
-                   <span class="p">{</span>
-                     <span class="nx">delta</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-                     <span class="nx">toString</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">&#39;E&#39;</span><span class="p">;</span> <span class="p">}</span>
-                   <span class="p">},</span>
-                   <span class="p">{</span>
-                     <span class="nx">delta</span><span class="o">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-                     <span class="nx">toString</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">&#39;S&#39;</span><span class="p">;</span> <span class="p">}</span>
-                   <span class="p">},</span>
-                   <span class="p">{</span>
-                     <span class="nx">delta</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-                     <span class="nx">toString</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">&#39;W&#39;</span><span class="p">;</span> <span class="p">}</span>
-                   <span class="p">}</span>
-                 <span class="p">];</span>
-
-<span class="kd">var</span> <span class="nx">Game</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="kd">function</span> <span class="nx">Game</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span>
-        <span class="nx">j</span><span class="p">;</span>
+<span class='kd'>var</span> <span class='nx'>Game</span> <span class='o'>=</span> <span class='p'>(</span><span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+  <span class='kd'>function</span> <span class='nx'>Game</span> <span class='p'>()</span> <span class='p'>{</span>
+    <span class='kd'>var</span> <span class='nx'>i</span><span class='p'>,</span>
+        <span class='nx'>j</span><span class='p'>;</span>
     
-    <span class="k">this</span><span class="p">.</span><span class="nx">size</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">board</span> <span class="o">=</span> <span class="p">[];</span>
-    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">size</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">board</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
-      <span class="k">for</span> <span class="p">(</span><span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">size</span><span class="p">;</span> <span class="o">++</span><span class="nx">j</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">board</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">DIRECTIONS</span><span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nx">DIRECTIONS</span><span class="p">.</span><span class="nx">length</span><span class="p">)];</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">initialPosition</span> <span class="o">=</span> <span class="p">[</span>
-      <span class="mi">2</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">size</span> <span class="o">-</span> <span class="mi">4</span><span class="p">)),</span> 
-      <span class="mi">2</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">size</span> <span class="o">-</span> <span class="mi">4</span><span class="p">))</span>
-    <span class="p">];</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
-  <span class="p">};</span>
+    <span class='k'>this</span><span class='p'>.</span><span class='nx'>size</span> <span class='o'>=</span> <span class='nb'>Math</span><span class='p'>.</span><span class='nx'>floor</span><span class='p'>(</span><span class='nb'>Math</span><span class='p'>.</span><span class='nx'>random</span><span class='p'>()</span> <span class='o'>*</span> <span class='mi'>8</span><span class='p'>)</span> <span class='o'>+</span> <span class='mi'>8</span><span class='p'>;</span>
+    <span class='k'>this</span><span class='p'>.</span><span class='nx'>board</span> <span class='o'>=</span> <span class='p'>[];</span>
+    <span class='k'>for</span> <span class='p'>(</span><span class='nx'>i</span> <span class='o'>=</span> <span class='mi'>0</span><span class='p'>;</span> <span class='nx'>i</span> <span class='o'>&lt;</span> <span class='k'>this</span><span class='p'>.</span><span class='nx'>size</span><span class='p'>;</span> <span class='o'>++</span><span class='nx'>i</span><span class='p'>)</span> <span class='p'>{</span>
+      <span class='k'>this</span><span class='p'>.</span><span class='nx'>board</span><span class='p'>[</span><span class='nx'>i</span><span class='p'>]</span> <span class='o'>=</span> <span class='p'>[];</span>
+      <span class='k'>for</span> <span class='p'>(</span><span class='nx'>j</span> <span class='o'>=</span> <span class='mi'>0</span><span class='p'>;</span> <span class='nx'>j</span> <span class='o'>&lt;</span> <span class='k'>this</span><span class='p'>.</span><span class='nx'>size</span><span class='p'>;</span> <span class='o'>++</span><span class='nx'>j</span><span class='p'>)</span> <span class='p'>{</span>
+        <span class='k'>this</span><span class='p'>.</span><span class='nx'>board</span><span class='p'>[</span><span class='nx'>i</span><span class='p'>][</span><span class='nx'>j</span><span class='p'>]</span> <span class='o'>=</span> <span class='nx'>DIRECTIONS</span><span class='p'>[</span><span class='nb'>Math</span><span class='p'>.</span><span class='nx'>floor</span><span class='p'>(</span><span class='nb'>Math</span><span class='p'>.</span><span class='nx'>random</span><span class='p'>()</span> <span class='o'>*</span> <span class='nx'>DIRECTIONS</span><span class='p'>.</span><span class='nx'>length</span><span class='p'>)];</span>
+      <span class='p'>}</span>
+    <span class='p'>}</span>
+    <span class='k'>this</span><span class='p'>.</span><span class='nx'>initialPosition</span> <span class='o'>=</span> <span class='p'>[</span>
+      <span class='mi'>2</span> <span class='o'>+</span> <span class='nb'>Math</span><span class='p'>.</span><span class='nx'>floor</span><span class='p'>(</span><span class='nb'>Math</span><span class='p'>.</span><span class='nx'>random</span><span class='p'>()</span> <span class='o'>*</span> <span class='p'>(</span><span class='k'>this</span><span class='p'>.</span><span class='nx'>size</span> <span class='o'>-</span> <span class='mi'>4</span><span class='p'>)),</span> 
+      <span class='mi'>2</span> <span class='o'>+</span> <span class='nb'>Math</span><span class='p'>.</span><span class='nx'>floor</span><span class='p'>(</span><span class='nb'>Math</span><span class='p'>.</span><span class='nx'>random</span><span class='p'>()</span> <span class='o'>*</span> <span class='p'>(</span><span class='k'>this</span><span class='p'>.</span><span class='nx'>size</span> <span class='o'>-</span> <span class='mi'>4</span><span class='p'>))</span>
+    <span class='p'>];</span>
+    <span class='k'>return</span> <span class='k'>this</span><span class='p'>;</span>
+  <span class='p'>};</span>
   
-  <span class="nx">Game</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">contains</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">position</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">size</span> <span class="o">&amp;&amp;</span> <span class="nx">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">size</span><span class="p">;</span>
-  <span class="p">};</span>
+  <span class='nx'>Game</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>.</span><span class='nx'>contains</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>position</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>position</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>]</span> <span class='o'>&gt;=</span> <span class='mi'>0</span> <span class='o'>&amp;&amp;</span> <span class='nx'>position</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>]</span> <span class='o'>&lt;</span> <span class='k'>this</span><span class='p'>.</span><span class='nx'>size</span> <span class='o'>&amp;&amp;</span> <span class='nx'>position</span><span class='p'>[</span><span class='mi'>1</span><span class='p'>]</span> <span class='o'>&gt;=</span> <span class='mi'>0</span> <span class='o'>&amp;&amp;</span> <span class='nx'>position</span><span class='p'>[</span><span class='mi'>1</span><span class='p'>]</span> <span class='o'>&lt;</span> <span class='k'>this</span><span class='p'>.</span><span class='nx'>size</span><span class='p'>;</span>
+  <span class='p'>};</span>
   
-  <span class="nx">Game</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">iterator</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">position</span> <span class="o">=</span> <span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">initialPosition</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="k">this</span><span class="p">.</span><span class="nx">initialPosition</span><span class="p">[</span><span class="mi">1</span><span class="p">]];</span>
-    <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">direction</span><span class="p">;</span>
-      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">position</span><span class="p">))</span> <span class="p">{</span>
-        <span class="nx">direction</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">board</span><span class="p">[</span><span class="nx">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="nx">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]];</span>
-        <span class="nx">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">direction</span><span class="p">.</span><span class="nx">delta</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-        <span class="nx">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">direction</span><span class="p">.</span><span class="nx">delta</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-        <span class="k">return</span> <span class="nx">direction</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
-      <span class="p">}</span>
-      <span class="k">else</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-  <span class="p">};</span>
+  <span class='nx'>Game</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>.</span><span class='nx'>iterator</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+    <span class='kd'>var</span> <span class='nx'>position</span> <span class='o'>=</span> <span class='p'>[</span><span class='k'>this</span><span class='p'>.</span><span class='nx'>initialPosition</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>],</span> <span class='k'>this</span><span class='p'>.</span><span class='nx'>initialPosition</span><span class='p'>[</span><span class='mi'>1</span><span class='p'>]];</span>
+    <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+      <span class='kd'>var</span> <span class='nx'>direction</span><span class='p'>;</span>
+      <span class='k'>if</span> <span class='p'>(</span><span class='k'>this</span><span class='p'>.</span><span class='nx'>contains</span><span class='p'>(</span><span class='nx'>position</span><span class='p'>))</span> <span class='p'>{</span>
+        <span class='nx'>direction</span> <span class='o'>=</span> <span class='k'>this</span><span class='p'>.</span><span class='nx'>board</span><span class='p'>[</span><span class='nx'>position</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>]][</span><span class='nx'>position</span><span class='p'>[</span><span class='mi'>1</span><span class='p'>]];</span>
+        <span class='nx'>position</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>]</span> <span class='o'>+=</span> <span class='nx'>direction</span><span class='p'>.</span><span class='nx'>delta</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>];</span>
+        <span class='nx'>position</span><span class='p'>[</span><span class='mi'>1</span><span class='p'>]</span> <span class='o'>+=</span> <span class='nx'>direction</span><span class='p'>.</span><span class='nx'>delta</span><span class='p'>[</span><span class='mi'>1</span><span class='p'>];</span>
+        <span class='k'>return</span> <span class='nx'>direction</span><span class='p'>.</span><span class='nx'>toString</span><span class='p'>();</span>
+      <span class='p'>}</span>
+      <span class='k'>else</span> <span class='p'>{</span>
+        <span class='k'>return</span> <span class='k'>void</span> <span class='mi'>0</span><span class='p'>;</span>
+      <span class='p'>}</span>
+    <span class='p'>}.</span><span class='nx'>bind</span><span class='p'>(</span><span class='k'>this</span><span class='p'>);</span>
+  <span class='p'>};</span>
   
-  <span class="k">return</span> <span class="nx">Game</span><span class="p">;</span>
+  <span class='k'>return</span> <span class='nx'>Game</span><span class='p'>;</span>
   
-<span class="p">})();</span>
+<span class='p'>})();</span>
 </code></pre></div>
-
-<p>In <a href="http://raganwald.com/2013/02/15/turtles-and-iterators.js.html">Tortoises, Teleporting Turtles, and Iterators</a>, we saw the <code>fold</code> function that converts a finite iterator into a value:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">fold</span> <span class="p">(</span><span class="nx">iter</span><span class="p">,</span> <span class="nx">binaryFn</span><span class="p">,</span> <span class="nx">seed</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">acc</span><span class="p">,</span> <span class="nx">element</span><span class="p">;</span>
-  <span class="nx">acc</span> <span class="o">=</span> <span class="nx">seed</span><span class="p">;</span>
-  <span class="nx">element</span> <span class="o">=</span> <span class="nx">iter</span><span class="p">();</span>
-  <span class="k">while</span> <span class="p">(</span><span class="nx">element</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">acc</span> <span class="o">=</span> <span class="nx">binaryFn</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">acc</span><span class="p">,</span> <span class="nx">element</span><span class="p">);</span>
-    <span class="nx">element</span> <span class="o">=</span> <span class="nx">iter</span><span class="p">();</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="nx">acc</span><span class="p">;</span>
-<span class="p">};</span>
+<p>In <a href='http://raganwald.com/2013/02/15/turtles-and-iterators.js.html'>Tortoises, Teleporting Turtles, and Iterators</a>, we saw the <code>fold</code> function that converts a finite iterator into a value:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>fold</span> <span class='p'>(</span><span class='nx'>iter</span><span class='p'>,</span> <span class='nx'>binaryFn</span><span class='p'>,</span> <span class='nx'>seed</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>acc</span><span class='p'>,</span> <span class='nx'>element</span><span class='p'>;</span>
+  <span class='nx'>acc</span> <span class='o'>=</span> <span class='nx'>seed</span><span class='p'>;</span>
+  <span class='nx'>element</span> <span class='o'>=</span> <span class='nx'>iter</span><span class='p'>();</span>
+  <span class='k'>while</span> <span class='p'>(</span><span class='nx'>element</span> <span class='o'>!=</span> <span class='kc'>null</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='nx'>acc</span> <span class='o'>=</span> <span class='nx'>binaryFn</span><span class='p'>.</span><span class='nx'>call</span><span class='p'>(</span><span class='nx'>element</span><span class='p'>,</span> <span class='nx'>acc</span><span class='p'>,</span> <span class='nx'>element</span><span class='p'>);</span>
+    <span class='nx'>element</span> <span class='o'>=</span> <span class='nx'>iter</span><span class='p'>();</span>
+  <span class='p'>}</span>
+  <span class='k'>return</span> <span class='nx'>acc</span><span class='p'>;</span>
+<span class='p'>};</span>
 </code></pre></div>
-
-<p>There’s a similar function that works with finite or infinite iterators, <code>accumulate</code>:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">accumulate</span> <span class="p">(</span><span class="nx">iter</span><span class="p">,</span> <span class="nx">binaryFn</span><span class="p">,</span> <span class="nx">seed</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">acc</span> <span class="o">=</span> <span class="nx">seed</span><span class="p">;</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="nx">element</span> <span class="o">=</span> <span class="nx">iter</span><span class="p">();</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">element</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">element</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="p">(</span><span class="nx">acc</span> <span class="o">=</span> <span class="nx">binaryFn</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">acc</span><span class="p">,</span> <span class="nx">element</span><span class="p">));</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">};</span>
+<p>There&#8217;s a similar function that works with finite or infinite iterators, <code>accumulate</code>:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>accumulate</span> <span class='p'>(</span><span class='nx'>iter</span><span class='p'>,</span> <span class='nx'>binaryFn</span><span class='p'>,</span> <span class='nx'>seed</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>acc</span> <span class='o'>=</span> <span class='nx'>seed</span><span class='p'>;</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+    <span class='nx'>element</span> <span class='o'>=</span> <span class='nx'>iter</span><span class='p'>();</span>
+    <span class='k'>if</span> <span class='p'>(</span><span class='nx'>element</span> <span class='o'>==</span> <span class='kc'>null</span><span class='p'>)</span> <span class='p'>{</span>
+      <span class='k'>return</span> <span class='nx'>element</span><span class='p'>;</span>
+    <span class='p'>}</span>
+    <span class='k'>else</span> <span class='p'>{</span>
+      <span class='k'>return</span> <span class='p'>(</span><span class='nx'>acc</span> <span class='o'>=</span> <span class='nx'>binaryFn</span><span class='p'>.</span><span class='nx'>call</span><span class='p'>(</span><span class='nx'>element</span><span class='p'>,</span> <span class='nx'>acc</span><span class='p'>,</span> <span class='nx'>element</span><span class='p'>));</span>
+    <span class='p'>}</span>
+  <span class='p'>}</span>
+<span class='p'>};</span>
 </code></pre></div>
-
 <p><code>accumulate</code> can be very handy for solving this problem. Like <code>fold</code>, accumulate takes an iterator, a binary function, and a seed. But instead of returning the final, accumulated value, it returns an iterator over the accumulated values. Compare and contrast:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>sum</span> <span class='p'>(</span><span class='nx'>x</span><span class='p'>,</span> <span class='nx'>y</span><span class='p'>)</span> <span class='p'>{</span> <span class='k'>return</span> <span class='nx'>x</span> <span class='o'>+</span> <span class='nx'>y</span><span class='p'>;</span> <span class='p'>}</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">sum</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">;</span> <span class="p">}</span>
+<span class='nx'>fold</span><span class='p'>(</span><span class='nx'>ArrayIterator</span><span class='p'>([</span><span class='mi'>1</span><span class='p'>,</span> <span class='mi'>2</span><span class='p'>,</span> <span class='mi'>3</span><span class='p'>,</span> <span class='mi'>4</span><span class='p'>,</span> <span class='mi'>5</span><span class='p'>]),</span> <span class='nx'>sum</span><span class='p'>,</span> <span class='mi'>0</span><span class='p'>);</span>
+  <span class='c1'>//=&gt; 15</span>
 
-<span class="nx">fold</span><span class="p">(</span><span class="nx">ArrayIterator</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]),</span> <span class="nx">sum</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-  <span class="c1">//=&gt; 15</span>
-
-<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">accumulate</span><span class="p">(</span><span class="nx">ArrayIterator</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]),</span> <span class="nx">sum</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; 1</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; 3</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; 6</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; 10</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; 15</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; undefined</span>
+<span class='kd'>var</span> <span class='nx'>i</span> <span class='o'>=</span> <span class='nx'>accumulate</span><span class='p'>(</span><span class='nx'>ArrayIterator</span><span class='p'>([</span><span class='mi'>1</span><span class='p'>,</span> <span class='mi'>2</span><span class='p'>,</span> <span class='mi'>3</span><span class='p'>,</span> <span class='mi'>4</span><span class='p'>,</span> <span class='mi'>5</span><span class='p'>]),</span> <span class='nx'>sum</span><span class='p'>,</span> <span class='mi'>0</span><span class='p'>);</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; 1</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; 3</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; 6</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; 10</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; 15</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; undefined</span>
 </code></pre></div>
-
 <p><code>accumulate</code> can be thought of as iterating over the steps of a fold. Accumulate can also be thought of as a stateful map from one iterator to another.</p>
 
-<h3 id="a-solution">a solution</h3>
+<h3 id='a_solution'>a solution</h3>
 
 <p>One possible solution is posted separately to prevent spoilers. Try at least thinking it through before peeking!</p>
 
-<p><a href="http://raganwald.com/2013/02/18/drunken-walk-solution.html">Solving the “Drunken Walk” problem with iterators</a>.</p>
-<div class="footnotes">
-  <ol>
-    <li id="fn:not-exactly">
-      <p>As Chris Johnsen <a href="https://github.com/braythwayt/braythwayt.github.com/commit/a92cb21fe8f16438ca5326161458f99101e0ded3#commitcomment-2672985">points out</a>: <em>The list-specific implementation of tortoiseAndHareLoopDetector (also in the prior post) compares “locations” (i.e. “cons cell” object identity), but this version compares values; this introduces a bug with respect to iterators whose values do not represent their “locations”. In particular, the LinkedList iterator can trigger this bug since its values do not (necessarily) represent their “locations”: when a list has identical values at positions N and 2N, the function will return true whether or not the list/iterable actually has a looping tail.</em> In other words, the iterable version only works for lists that have unique values for each “cell.”<a href="#fnref:not-exactly" class="reversefootnote">&#8617;</a></p>
-    </li>
-  </ol>
-</div>
-
+<p><a href='http://raganwald.com/2013/02/18/drunken-walk-solution.html'>Solving the &#8220;Drunken Walk&#8221; problem with iterators</a>.</p>
+<div class='footnotes'><hr /><ol><li id='fn:1'>
+<p>As Chris Johnsen <a href='https://github.com/braythwayt/braythwayt.github.com/commit/a92cb21fe8f16438ca5326161458f99101e0ded3#commitcomment-2672985'>points out</a>: <em>The list-specific implementation of tortoiseAndHareLoopDetector (also in the prior post) compares “locations” (i.e. “cons cell” object identity), but this version compares values; this introduces a bug with respect to iterators whose values do not represent their “locations”. In particular, the LinkedList iterator can trigger this bug since its values do not (necessarily) represent their “locations”: when a list has identical values at positions N and 2N, the function will return true whether or not the list/iterable actually has a looping tail.</em> In other words, the iterable version only works for lists that have unique values for each &#8220;cell.&#8221;</p>
+<a href='#fnref:1' rev='footnote'>&#8617;</a></li></ol></div>
         </section>
 
         <footer>

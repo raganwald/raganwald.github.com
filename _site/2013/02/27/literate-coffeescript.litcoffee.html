@@ -62,24 +62,22 @@
   
 
           
-          <h3 id="first-constructors-must-return-their-instance">first, constructors must return their instance</h3>
+          <h3 id='first_constructors_must_return_their_instance'>first, constructors must return their instance</h3>
 
-<p>Jeremy Ashkenas recently announced that CoffeeScript 1.5 is out. One of its changes concerns constructors created with CoffeeScript’s <code>class</code> keyword. It used to be possible to write this:</p>
+<p>Jeremy Ashkenas recently announced that CoffeeScript 1.5 is out. One of its changes concerns constructors created with CoffeeScript&#8217;s <code>class</code> keyword. It used to be possible to write this:</p>
 
 <pre><code>###
 class Weird
   constructor: -&gt;
-    return { exclamation: "That's Strange" }
-###
-</code></pre>
+    return { exclamation: &quot;That&#39;s Strange&quot; }
+###</code></pre>
 
-<p>And when you wrote <code>new Weird()</code>, you’d get a plain object, not an instance of <code>Weird</code>. This is no longer the case. Now when you write the above, you get an error: <em>CANNOT RETURN A VALUE FROM A CONSTRUCTOR: “{ EXCLAMATION: “THAT’S STRANGE” }” IN CLASS WEIRD</em>. Does this matter? Only in edge cases. in <a href="http://leanpub.com/javascript-allonge">JavaScript Allongé</a>, I borrowed a pattern from <a href="http://effectivejs.com">Effective JavaScript</a>. Here’s the use case. Consider this constructor with a variable number of arguments:</p>
+<p>And when you wrote <code>new Weird()</code>, you&#8217;d get a plain object, not an instance of <code>Weird</code>. This is no longer the case. Now when you write the above, you get an error: <em>CANNOT RETURN A VALUE FROM A CONSTRUCTOR: &#8220;{ EXCLAMATION: &#8220;THAT&#8217;S STRANGE&#8221; }&#8221; IN CLASS WEIRD</em>. Does this matter? Only in edge cases. in <a href='http://leanpub.com/javascript-allonge'>JavaScript Allongé</a>, I borrowed a pattern from <a href='http://effectivejs.com'>Effective JavaScript</a>. Here&#8217;s the use case. Consider this constructor with a variable number of arguments:</p>
 
 <pre><code>class Contact
-  constructor: (@name, @emails...) -&gt;
-</code></pre>
+  constructor: (@name, @emails...) -&gt;</code></pre>
 
-<p>We can write things like <code>new Contact('raganwald', 'reg@braythwayt.com', 'reg@raganwald.com')</code>. Good. Now: How do we call this programmatically if we have an array of contacts? Don’t say “Use<code>.apply</code>,” that doesn’t work for constructors, just for normal functions. So we have to rewrite its signature. Or do we?</p>
+<p>We can write things like <code>new Contact(&#39;raganwald&#39;, &#39;reg@braythwayt.com&#39;, &#39;reg@raganwald.com&#39;)</code>. Good. Now: How do we call this programmatically if we have an array of contacts? Don&#8217;t say &#8220;Use<code>.apply</code>,&#8221; that doesn&#8217;t work for constructors, just for normal functions. So we have to rewrite its signature. Or do we?</p>
 
 <pre><code>###
 class Contact
@@ -92,18 +90,16 @@ class Contact
     # ...
   doSomethingElse: -&gt;
     # ...
-###
-</code></pre>
+###</code></pre>
 
 <p>Then, whenever we wanted to use <code>.apply</code>, we could:</p>
 
 <pre><code>### 
-testArray = ['raganwald', 'reg@braythwayt.com', 'reg@raganwald.com']
-  
+testArray = [&#39;raganwald&#39;, &#39;reg@braythwayt.com&#39;, &#39;reg@raganwald.com&#39;]
+
 Contact.apply(null, testArray)
   #=&gt; returns a new contact record
-###
-</code></pre>
+###</code></pre>
 
 <p>Other benefits would include being able to use combinators on constructors:</p>
 
@@ -116,14 +112,13 @@ class Router
     return self
 
 SingletonRouter = once(Router)
-###
-</code></pre>
+###</code></pre>
 
-<p>However, we’re not going to be able to do that any more. It’s not a huge deal, there are other ways to work around these infrequent use cases, and overall the benefit of having constructors constrained to always return the instance is likely to far outweigh the lack of flexibility.</p>
+<p>However, we&#8217;re not going to be able to do that any more. It&#8217;s not a huge deal, there are other ways to work around these infrequent use cases, and overall the benefit of having constructors constrained to always return the instance is likely to far outweigh the lack of flexibility.</p>
 
-<h3 id="working-around-the-change">working around the change</h3>
+<h3 id='working_around_the_change'>working around the change</h3>
 
-<p>You can work around this issue very easily. CoffeeScript doesn’t stop you from writing a JavaScript-style class, so you can simply write your constructor function directly, eschewing the convenience of the <code>class</code> keyword:</p>
+<p>You can work around this issue very easily. CoffeeScript doesn&#8217;t stop you from writing a JavaScript-style class, so you can simply write your constructor function directly, eschewing the convenience of the <code>class</code> keyword:</p>
 
 <pre><code>Contact = (@name, @emails...) -&gt;
   self = if this instanceof Contact then this else new Contact()
@@ -135,37 +130,35 @@ Contact::doSomething = -&gt;
 Contact::doSomethingElse = -&gt;
   # ...
   
-console.log new Contact('raganwald', 'reg@braythwayt.com', 'reg@raganwald.com')
-  #=&gt; { name: 'raganwald',
+console.log new Contact(&#39;raganwald&#39;, &#39;reg@braythwayt.com&#39;, &#39;reg@raganwald.com&#39;)
+  #=&gt; { name: &#39;raganwald&#39;,
   #     emails: 
-  #     [ 'reg@braythwayt.com', 'reg@raganwald.com' ] }
+  #     [ &#39;reg@braythwayt.com&#39;, &#39;reg@raganwald.com&#39; ] }
 
-testArray = ['raganwald', 'reg@braythwayt.com', 'reg@raganwald.com']
-  
+testArray = [&#39;raganwald&#39;, &#39;reg@braythwayt.com&#39;, &#39;reg@raganwald.com&#39;]
+
 Contact.apply(null, testArray)
-  #=&gt; { name: 'raganwald',
+  #=&gt; { name: &#39;raganwald&#39;,
   #     emails: 
-  #     [ 'reg@braythwayt.com', 'reg@raganwald.com' ] }
-</code></pre>
+  #     [ &#39;reg@braythwayt.com&#39;, &#39;reg@raganwald.com&#39; ] }</code></pre>
 
-<h3 id="second-literate-coffeescript">second, literate coffeescript</h3>
+<h3 id='second_literate_coffeescript'>second, literate coffeescript</h3>
 
-<p>The other news, and yes I’ve buried the lede by leaving it for last, is that CoffeeScript now supports a “literate” mode. Here’s what Jeremy has to say:</p>
+<p>The other news, and yes I&#8217;ve buried the lede by leaving it for last, is that CoffeeScript now supports a &#8220;literate&#8221; mode. Here&#8217;s what Jeremy has to say:</p>
 
 <blockquote>
-  <p>“Besides being used as an ordinary programming language, CoffeeScript may also be written in “literate” mode. If you name your file with a  .litcoffee extension, you can write it as a Markdown document — a document that also happens to be executable CoffeeScript code. The compiler will treat any indented blocks (Markdown’s way of indicating source code) as code, and ignore the rest as comments.”</p>
+<p>&#8220;Besides being used as an ordinary programming language, CoffeeScript may also be written in &#8220;literate&#8221; mode. If you name your file with a .litcoffee extension, you can write it as a Markdown document — a document that also happens to be executable CoffeeScript code. The compiler will treat any indented blocks (Markdown&#8217;s way of indicating source code) as code, and ignore the rest as comments.&#8221;</p>
 
-  <p>“Just for kicks, a little bit of the compiler is currently implemented in this fashion: See it as a document, raw, and properly highlighted in a text editor.”</p>
+<p>&#8220;Just for kicks, a little bit of the compiler is currently implemented in this fashion: See it as a document, raw, and properly highlighted in a text editor.&#8221;</p>
 
-  <p>“I’m fairly excited about this direction for the language, and am looking forward to writing (and more importantly, reading) more programs in this style. As 1.5.0 is the first version of CoffeeScript that supports it, let us know if you have any ideas for improving the feature.”</p>
+<p>&#8221;I&#8217;m fairly excited about this direction for the language, and am looking forward to writing (and more importantly, reading) more programs in this style. As 1.5.0 is the first version of CoffeeScript that supports it, let us know if you have any ideas for improving the feature.&#8221;</p>
 </blockquote>
 
 <p>Does it work? It certainly does, and I have a very powerful use case for it. This blog post was written as a literate CoffeeScript document, so I was able to run it by typing <code>coffee 2013-02-27-literate-coffeescript.litcoffee</code> on the command line.</p>
 
-<p>For the moment, Jekyll insists on parsing  <code>.litcoffee</code> files as text, so whenever I want to write about CoffeeScript, I need to add a <code>.md</code> to the suffix before pushing to the server. But that’s still much better than error-prone cutting and pasting of snippets, and in the fullness of time I hope that CoffeeScript will recognize <code>.coffee.md</code> as <a href="https://github.com/jashkenas/coffee-script/issues/2736">Literate CoffeeScript</a>.</p>
+<p>For the moment, Jekyll insists on parsing <code>.litcoffee</code> files as text, so whenever I want to write about CoffeeScript, I need to add a <code>.md</code> to the suffix before pushing to the server. But that&#8217;s still much better than error-prone cutting and pasting of snippets, and in the fullness of time I hope that CoffeeScript will recognize <code>.coffee.md</code> as <a href='https://github.com/jashkenas/coffee-script/issues/2736'>Literate CoffeeScript</a>.</p>
 
-<p>That’s going to be a big time saver.</p>
-
+<p>That&#8217;s going to be a big time saver.</p>
         </section>
 
         <footer>

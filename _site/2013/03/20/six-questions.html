@@ -89,115 +89,102 @@
   
 
           
-          <p>Today, Michael Fogus announced that O’Reilly will be publishing his new book, <a href="http://www.amazon.com/Functional-JavaScript-Introducing-Programming-Underscore-js/dp/1449360726/?tag=raganwald-20">Functional JavaScript</a> (It’s available for preorder at a discount <a href="http://www.amazon.com/Functional-JavaScript-Introducing-Programming-Underscore-js/dp/1449360726/?tag=raganwald-20">now</a>). Fogus is no wide-eyed newcomer just discovering functional programming, he’s the author of the <a href="http://fogus.github.com/lemonad/">Lemonad</a> library for advanced functional programming in JavaScript and is a co-author of the well-regarded  “<a href="http://www.amazon.com/gp/product/1935182641/ref=as_li_ss_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1935182641&amp;linkCode=as2&amp;tag=raganwald001-20">The Joy of Clojure</a>.”</p>
+          <p>Today, Michael Fogus announced that O&#8217;Reilly will be publishing his new book, <a href='http://www.amazon.com/Functional-JavaScript-Introducing-Programming-Underscore-js/dp/1449360726/?tag=raganwald-20'>Functional JavaScript</a> (It&#8217;s available for preorder at a discount <a href='http://www.amazon.com/Functional-JavaScript-Introducing-Programming-Underscore-js/dp/1449360726/?tag=raganwald-20'>now</a>). Fogus is no wide-eyed newcomer just discovering functional programming, he&#8217;s the author of the <a href='http://fogus.github.com/lemonad/'>Lemonad</a> library for advanced functional programming in JavaScript and is a co-author of the well-regarded &#8221;<a href='http://www.amazon.com/gp/product/1935182641/ref=as_li_ss_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1935182641&amp;linkCode=as2&amp;tag=raganwald001-20'>The Joy of Clojure</a>.&#8221;</p>
 
-<p>On Hacker News, contributor “GhotiFish” raised a very reasonable concern:</p>
+<p>On Hacker News, contributor &#8220;GhotiFish&#8221; raised a very reasonable concern:</p>
 
 <blockquote>
-  <p>I find these topics to be fun, and I want to use them. However, I can’t help but feel that if I use these design patterns, they might unintentionally obfuscate my intentions to my peers.</p>
+<p>I find these topics to be fun, and I want to use them. However, I can&#8217;t help but feel that if I use these design patterns, they might unintentionally obfuscate my intentions to my peers.</p>
 </blockquote>
 
-<p>This is a great question to ponder. It comes up many times, in many different forms, and it strikes at the very heart of the craft and profession of software development (as distinct from “programming” or “computer science”). Software Development is a team activity conducted over a medium to long time frame where success is measured by return on investment.</p>
+<p>This is a great question to ponder. It comes up many times, in many different forms, and it strikes at the very heart of the craft and profession of software development (as distinct from &#8220;programming&#8221; or &#8220;computer science&#8221;). Software Development is a team activity conducted over a medium to long time frame where success is measured by return on investment.</p>
 
 <p><strong>We must always ask whether a new tool, a new language, a new technique, or even a new way to talk about an existing idea is a net positive return over the lifetime of the project.</strong> The answer can and will change from project to project and especially from time to time within the same project.</p>
 
-<p>Here’s the time-honoured recipe for analyzing the situation: Ask yourself <em>who</em>, <em>what</em>, <em>where</em>, <em>when</em>, and <em>why</em>. Once you are satisfied with the answers to the first six questions, investigate <strong>how</strong>.</p>
+<p>Here&#8217;s the time-honoured recipe for analyzing the situation: Ask yourself <em>who</em>, <em>what</em>, <em>where</em>, <em>when</em>, and <em>why</em>. Once you are satisfied with the answers to the first six questions, investigate <strong>how</strong>.</p>
 
-<h3 id="who">who</h3>
+<h3 id='who'>who</h3>
 
-<p>I have a theory about Old Dogs.<sup id="fnref:old"><a href="#fn:old" class="footnote">1</a></sup> As is usual for blog posts, it is extrapolated from an extensive statistical study where <code>n=1</code>. My theory is that the reason young adults find it easier to learn things than old adults has to do with their emotional attachments to their sense of self-definition.</p>
+<p>I have a theory about Old Dogs.<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup> As is usual for blog posts, it is extrapolated from an extensive statistical study where <code>n=1</code>. My theory is that the reason young adults find it easier to learn things than old adults has to do with their emotional attachments to their sense of self-definition.</p>
 
-<p>When you’re nineteen, you are still looking for your place in the world. If you’re currently programming in Python, you think it’s a cool language, but if I ask you what you’ll be doing in five years, you have no idea. To you, the world is changing at a breakneck pace and everything changes, therefore learning the new new thing is a part of life.</p>
+<p>When you&#8217;re nineteen, you are still looking for your place in the world. If you&#8217;re currently programming in Python, you think it&#8217;s a cool language, but if I ask you what you&#8217;ll be doing in five years, you have no idea. To you, the world is changing at a breakneck pace and everything changes, therefore learning the new new thing is a part of life.</p>
 
 <p>Whereas, at fifty, I am often tempted to think that few things change. Once upon a time, old white men with radio stations and newspapers tried to control the outcome of elections. Technology disrupted those businesses so thoroughly that now, old white men with television stations and satellites try to control the outcome of elections.</p>
 
-<p>To a cynic, some things don’t change very much. I still shave by scraping hair off my chin with a razor. Maybe there are three or four blades instead of the one that was common when my voice first broke, but whoop-de-fucking-do.</p>
+<p>To a cynic, some things don&#8217;t change very much. I still shave by scraping hair off my chin with a razor. Maybe there are three or four blades instead of the one that was common when my voice first broke, but whoop-de-fucking-do.</p>
 
-<p>Old Dogs tend to see how much things are the same, and they perpetuate (or perpetrate!) this state of affairs by resisting change. They have a sense of identity (“I’m a Rails Programmer!”), and they fiercely defend it (“We don’t need no stinking node.js ‘round here”). That leads them to obstruct new ideas.</p>
+<p>Old Dogs tend to see how much things are the same, and they perpetuate (or perpetrate!) this state of affairs by resisting change. They have a sense of identity (&#8221;I&#8217;m a Rails Programmer!&#8221;), and they fiercely defend it (&#8220;We don&#8217;t need no stinking node.js &#8216;round here&#8221;). That leads them to obstruct new ideas.</p>
 
-<p>You may find that although the benefits of a new idea in theory are terrific, in practice you will be derailed if your team is overloaded with Old Dogs. Whereas if your team has a critical mass of frisky pups, go for it! The pups may need help figuring things out, but they’ll wag their tails and fight over the chance to play, learn, and grow.</p>
+<p>You may find that although the benefits of a new idea in theory are terrific, in practice you will be derailed if your team is overloaded with Old Dogs. Whereas if your team has a critical mass of frisky pups, go for it! The pups may need help figuring things out, but they&#8217;ll wag their tails and fight over the chance to play, learn, and grow.</p>
 
-<h3 id="what">what</h3>
+<h3 id='what'>what</h3>
 
 <p>There is a difference between techniques that are novel and those that are merely unfamiliar.</p>
 
-<p>If I read the word “compose” in a codebase and don’t know what it means, I can google <code>function compose</code> and find out just as if I was looking at a SQL query and needed to be reminded of the semantics of <code>RIGHT OUTER JOIN</code>. The same goes for things like partial application,<sup id="fnref:pa"><a href="#fn:pa" class="footnote">2</a></sup> or trampolining.<sup id="fnref:trampoline"><a href="#fn:trampoline" class="footnote">3</a></sup></p>
+<p>If I read the word &#8220;compose&#8221; in a codebase and don&#8217;t know what it means, I can google <code>function compose</code> and find out just as if I was looking at a SQL query and needed to be reminded of the semantics of <code>RIGHT OUTER JOIN</code>. The same goes for things like partial application,<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup> or trampolining.<sup id='fnref:3'><a href='#fn:3' rel='footnote'>3</a></sup></p>
 
-<p>People can learn an unfamiliar technique. And once it is learned, they benefit from it forever. It is straightforward to learn something using Google and/or StackOverflow and/or an excellent programming blog.<sup id="fnref:blog"><a href="#fn:blog" class="footnote">4</a></sup> Hundreds of books are written about things like functional programming, including the subject of the comment.</p>
+<p>People can learn an unfamiliar technique. And once it is learned, they benefit from it forever. It is straightforward to learn something using Google and/or StackOverflow and/or an excellent programming blog.<sup id='fnref:4'><a href='#fn:4' rel='footnote'>4</a></sup> Hundreds of books are written about things like functional programming, including the subject of the comment.</p>
 
-<p>Familiarity can easily be acquired, provided the technique is unfamiliar to the team, but has been used extensively enough that there is an “information infrastructure” of books, blog posts, StackOverflow questions, sample codebases on Github, libraries, and so on.</p>
+<p>Familiarity can easily be acquired, provided the technique is unfamiliar to the team, but has been used extensively enough that there is an &#8220;information infrastructure&#8221; of books, blog posts, StackOverflow questions, sample codebases on Github, libraries, and so on.</p>
 
-<p>This may or may not be the case for some bone-headed attempt to write a client-side JavaScript application using Operational Transforms to mediate concurrent editing. <sup id="fnref:guilty"><a href="#fn:guilty" class="footnote">5</a></sup> But it is obviously the case for writing programs in a functional style.</p>
+<p>This may or may not be the case for some bone-headed attempt to write a client-side JavaScript application using Operational Transforms to mediate concurrent editing. <sup id='fnref:5'><a href='#fn:5' rel='footnote'>5</a></sup> But it is obviously the case for writing programs in a functional style.</p>
 
-<h3 id="where">where</h3>
+<h3 id='where'>where</h3>
 
-<p>I don’t mean what kind of company or team you have. When I ask, “where,” I mean, <em>Where in the code would you use this?</em> In any non-trivial code base, some pieces work fine, are rarely updated, and nobody looks that them. Others a re a big ball of mud but are so mission critical that nobody wants to touch them for fear of breaking everything.</p>
+<p>I don&#8217;t mean what kind of company or team you have. When I ask, &#8220;where,&#8221; I mean, <em>Where in the code would you use this?</em> In any non-trivial code base, some pieces work fine, are rarely updated, and nobody looks that them. Others a re a big ball of mud but are so mission critical that nobody wants to touch them for fear of breaking everything.</p>
 
-<p>New techniques do not necessarily “obfuscate” such code. If you replace a loop with a map, well, that’s not much of an improvement or an obfuscation. But if you can introduce some method decorators and dry up a ton of code while making the central responsibility of each method clearer, that might be a small investment in unfamiliarity that will pay a big dividend in understanding the underlying domain logic being expressed.</p>
+<p>New techniques do not necessarily &#8220;obfuscate&#8221; such code. If you replace a loop with a map, well, that&#8217;s not much of an improvement or an obfuscation. But if you can introduce some method decorators and dry up a ton of code while making the central responsibility of each method clearer, that might be a small investment in unfamiliarity that will pay a big dividend in understanding the underlying domain logic being expressed.</p>
 
-<p>An easy way to sort this out for yourself is to pretend that you’re in a meeting with an external analyst hired by the board of directors. “Go ahead and use that technique,” she says, “I’ll review it in a year. If it’s a net loss, you’re fired.”</p>
+<p>An easy way to sort this out for yourself is to pretend that you&#8217;re in a meeting with an external analyst hired by the board of directors. &#8220;Go ahead and use that technique,&#8221; she says, &#8221;I&#8217;ll review it in a year. If it&#8217;s a net loss, you&#8217;re fired.&#8221;</p>
 
-<p>Obviously you want to pick the one place in the code where it is a clear net win, and avoid at all costs places where it has uncertain benefit. Where is that? Where isn’t that?</p>
+<p>Obviously you want to pick the one place in the code where it is a clear net win, and avoid at all costs places where it has uncertain benefit. Where is that? Where isn&#8217;t that?</p>
 
 <blockquote>
-  <p>Software Development is a team activity conducted over a medium to long time frame where success is measured by return on investment. We must always ask whether a new tool, a new language, a new technique, or even a new way to talk about an existing idea is a net positive return over the lifetime of the project.</p>
+<p>Software Development is a team activity conducted over a medium to long time frame where success is measured by return on investment. We must always ask whether a new tool, a new language, a new technique, or even a new way to talk about an existing idea is a net positive return over the lifetime of the project.</p>
 </blockquote>
 
-<h3 id="when">when</h3>
+<h3 id='when'>when</h3>
 
-<p>Early in a project’s life, I think you have greater freedom to invest in “new” techniques. Over time, new techniques become familiar to a team, even if only because you keep ramming them down everybody’s throats until every new hire is given a tour of the codebase and told “You might as well figure this folding shit out, because it works and we’re tired of trying to rewrite it with for loops.”</p>
+<p>Early in a project&#8217;s life, I think you have greater freedom to invest in &#8220;new&#8221; techniques. Over time, new techniques become familiar to a team, even if only because you keep ramming them down everybody&#8217;s throats until every new hire is given a tour of the codebase and told &#8220;You might as well figure this folding shit out, because it works and we&#8217;re tired of trying to rewrite it with for loops.&#8221;</p>
 
 <p>But early in a project, you have a longer time frame to collect the dividends. There will be more changes and upgrades. More new team members coming aboard that will find the code easier to read if you have correctly chosen techniques that clarify the intent once you get the hang of what a partial application does.</p>
 
 <p>And if your technique is anything better than mediocre, you have a fighting chance of everyone adopting it as they write new code, which means it becomes the standard and will one day become the legacy technique itself. You plant a flower and the bees pollinate it and the seeds spread and one day you will have a meadow full of flowers.</p>
 
-<p>Whereas, a legacy project may not be long for this world. Or at least, the rate of change is slower, therefore you get fewer dividends from your “enhancement.” Meanwhile, the costs of your enhancement are higher than on a new project, because you have to go in and rewrite everything with this new idea to avoid the codebase becoming a chaotic mess of whatever technique was in vogue when that particular line of code was written.</p>
+<p>Whereas, a legacy project may not be long for this world. Or at least, the rate of change is slower, therefore you get fewer dividends from your &#8220;enhancement.&#8221; Meanwhile, the costs of your enhancement are higher than on a new project, because you have to go in and rewrite everything with this new idea to avoid the codebase becoming a chaotic mess of whatever technique was in vogue when that particular line of code was written.</p>
 
 <p>There are exceptions, such as refactorings that make legacy code more testable, but again if we squint and scribble on the back of the envelope, we see that young projects can afford to take a few more chances.</p>
 
-<h3 id="why">why</h3>
+<h3 id='why'>why</h3>
 
-<p>Entertainment is no reason to try a new technique. Neither is learning on someone else’s dime. Everyone can be entertained ad infinitum reading about enchanted forests<sup id="fnref:ef"><a href="#fn:ef" class="footnote">6</a></sup> or schools teaching JavaScript programming.<sup id="fnref:hilbert"><a href="#fn:hilbert" class="footnote">7</a></sup> In this day and age, you have plenty of opportunity to learn on your own. Everyone reading this blog has access to personal development environments. There’s zero need to fool around on a project that has a mission to deliver change in the world outside of your head.</p>
+<p>Entertainment is no reason to try a new technique. Neither is learning on someone else&#8217;s dime. Everyone can be entertained ad infinitum reading about enchanted forests<sup id='fnref:6'><a href='#fn:6' rel='footnote'>6</a></sup> or schools teaching JavaScript programming.<sup id='fnref:7'><a href='#fn:7' rel='footnote'>7</a></sup> In this day and age, you have plenty of opportunity to learn on your own. Everyone reading this blog has access to personal development environments. There&#8217;s zero need to fool around on a project that has a mission to deliver change in the world outside of your head.</p>
 
 <p>You can and should look for practical reasons that a new technique will untangle conflated concerns, or collect scattered responsibilities into a single concern, or clarify the underlying domain logic and intent of code.</p>
 
 <p>When such reasons exist, you have excellent motive to ask whether the technique also passes the <em>who</em>, <em>what</em>, <em>where</em>, and <em>when</em> questions. And if the answer to all of these is affirmative, Then press ahead with your new technique or idea or tool or even language.</p>
 
-<p>And if that new idea happens to be the proven-over-time and widely adopted techniques of functional programming as expressed in the JavaScript language, books like <a href="http://www.amazon.com/Functional-JavaScript-Introducing-Programming-Underscore-js/dp/1449360726/?tag=raganwald-20">Functional JavaScript</a> will answer the sixth question:</p>
+<p>And if that new idea happens to be the proven-over-time and widely adopted techniques of functional programming as expressed in the JavaScript language, books like <a href='http://www.amazon.com/Functional-JavaScript-Introducing-Programming-Underscore-js/dp/1449360726/?tag=raganwald-20'>Functional JavaScript</a> will answer the sixth question:</p>
 
 <p><strong>How</strong>.</p>
-
 <hr />
-
-<p>postscript: </p>
+<p>postscript:</p>
 
 <p>notes:</p>
-<div class="footnotes">
-  <ol>
-    <li id="fn:old">
-      <p>There is a saying that age is an attitude, not an amplitude. This goes double for the expression “Old Dogs.” Please don’t make ageist assumptions strictly because someone has a few battle scars and some grey hair. Likewise, don’t get your hopes up high just because someone is more worried about acne than wrinkles.<a href="#fnref:old" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:pa">
-      <p><a href="http://raganwald.com/2013/01/05/practical-applications-of-partial-application.html">Practical Applications of Partial Application</a><a href="#fnref:pa" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:trampoline">
-      <p><a href="https://en.wikipedia.org/wiki/Trampoline_(computing)#High_Level_Programming">Trampoline (Computing) on Wikipedia</a><a href="#fnref:trampoline" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:blog">
-      <p>Or a hit and miss blog like <a href="http://raganwald.com">this</a><a href="#fnref:blog" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:guilty">
-      <p>As the author knows all too well!<a href="#fnref:guilty" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:ef">
-      <p><a href="http://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html">A long time ago, in a village far, far away</a><a href="#fnref:ef" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:hilbert">
-      <p><a href="http://raganwald.com/2013/02/21/hilberts-school.html">Hilbert’s Grand JavaScript School</a><a href="#fnref:hilbert" class="reversefootnote">&#8617;</a></p>
-    </li>
-  </ol>
-</div>
-
+<div class='footnotes'><hr /><ol><li id='fn:1'>
+<p>There is a saying that age is an attitude, not an amplitude. This goes double for the expression &#8220;Old Dogs.&#8221; Please don&#8217;t make ageist assumptions strictly because someone has a few battle scars and some grey hair. Likewise, don&#8217;t get your hopes up high just because someone is more worried about acne than wrinkles.</p>
+<a href='#fnref:1' rev='footnote'>&#8617;</a></li><li id='fn:2'>
+<p><a href='http://raganwald.com/2013/01/05/practical-applications-of-partial-application.html'>Practical Applications of Partial Application</a></p>
+<a href='#fnref:2' rev='footnote'>&#8617;</a></li><li id='fn:3'>
+<p><a href='https://en.wikipedia.org/wiki/Trampoline_(computing'>Trampoline (Computing) on Wikipedia</a>#High_Level_Programming)</p>
+<a href='#fnref:3' rev='footnote'>&#8617;</a></li><li id='fn:4'>
+<p>Or a hit and miss blog like <a href='http://raganwald.com'>this</a></p>
+<a href='#fnref:4' rev='footnote'>&#8617;</a></li><li id='fn:5'>
+<p>As the author knows all too well!</p>
+<a href='#fnref:5' rev='footnote'>&#8617;</a></li><li id='fn:6'>
+<p><a href='http://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html'>A long time ago, in a village far, far away</a></p>
+<a href='#fnref:6' rev='footnote'>&#8617;</a></li><li id='fn:7'>
+<p><a href='http://raganwald.com/2013/02/21/hilberts-school.html'>Hilbert&#8217;s Grand JavaScript School</a></p>
+<a href='#fnref:7' rev='footnote'>&#8617;</a></li></ol></div>
         </section>
 
         <footer>

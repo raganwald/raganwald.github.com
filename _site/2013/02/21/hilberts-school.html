@@ -62,268 +62,241 @@
   
 
           
-          <p>Dr. Hilbert “Bertie” David grows tired of blogging about JavaScript, and decides to cash in on the seemingly inexhaustible supply of impressionable young minds seeking to “Learn JavaScript in Five Days.”</p>
+          <p>Dr. Hilbert &#8220;Bertie&#8221; David grows tired of blogging about JavaScript, and decides to cash in on the seemingly inexhaustible supply of impressionable young minds seeking to &#8220;Learn JavaScript in Five Days.&#8221;</p>
 
-<p>He opens his <em>Grand JavaScript School</em> on the shores of the Andaman Sea in Thailand, and with some clever engineering, he is able to install a countably infinite<sup id="fnref:count"><a href="#fn:count" class="footnote">1</a></sup> number of seats in his lecture hall.</p>
+<p>He opens his <em>Grand JavaScript School</em> on the shores of the Andaman Sea in Thailand, and with some clever engineering, he is able to install a countably infinite<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup> number of seats in his lecture hall.</p>
+<a href='http://www.flickr.com/photos/quinet/6105449498/' title='Island panorama 3 by quinet, on Flickr'><img alt='Island panorama 3' height='289' src='http://farm7.staticflickr.com/6079/6105449498_2bb67e2fd2_z.jpg' width='640' /></a>
+<h3 id='day_one'>day one</h3>
 
-<p><a href="http://www.flickr.com/photos/quinet/6105449498/" title="Island panorama 3 by quinet, on Flickr"><img src="http://farm7.staticflickr.com/6079/6105449498_2bb67e2fd2_z.jpg" width="640" height="289" alt="Island panorama 3" /></a></p>
-
-<h3 id="day-one">day one</h3>
-
-<p>Well, an infinite number of students show up on the first day. “Line up please!” he calls out to them with a bullhorn of his own invention. “Line up! Good. Each of you has a number. The first person in line is zero, the next person is one, and so on. The machine will call out a number. When you hear your number, step forward, pay your fee in bitcoins, take your receipt, then you may enter the lecture hall and find the seat with your number on it. Thank you, the lecture will begin when everyone has been seated.”</p>
+<p>Well, an infinite number of students show up on the first day. &#8220;Line up please!&#8221; he calls out to them with a bullhorn of his own invention. &#8220;Line up! Good. Each of you has a number. The first person in line is zero, the next person is one, and so on. The machine will call out a number. When you hear your number, step forward, pay your fee in bitcoins, take your receipt, then you may enter the lecture hall and find the seat with your number on it. Thank you, the lecture will begin when everyone has been seated.&#8221;</p>
 
 <p>Bertie quickly whips out a JavaScript IDE he has devised, and he writes himself a functional iterator. Instead of iterating over a data structure in memory, it generates seat numbers on demand:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>Numbers</span> <span class='p'>()</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>number</span> <span class='o'>=</span> <span class='mi'>0</span><span class='p'>;</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>number</span><span class='o'>++</span><span class='p'>;</span>
+  <span class='p'>};</span>
+<span class='p'>};</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">Numbers</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">number</span><span class="o">++</span><span class="p">;</span>
-  <span class="p">};</span>
-<span class="p">};</span>
+<span class='kd'>var</span> <span class='nx'>seats</span> <span class='o'>=</span> <span class='nx'>Numbers</span><span class='p'>();</span>
+<span class='k'>while</span> <span class='p'>(</span><span class='kc'>true</span><span class='p'>)</span>
+  <span class='nx'>console</span><span class='p'>.</span><span class='nx'>log</span><span class='p'>(</span><span class='nx'>seats</span><span class='p'>());</span>
 
-<span class="kd">var</span> <span class="nx">seats</span> <span class="o">=</span> <span class="nx">Numbers</span><span class="p">();</span>
-<span class="k">while</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">seats</span><span class="p">());</span>
-
-<span class="c1">//=&gt; 0, 1, 2, 3, ...</span>
+<span class='c1'>//=&gt; 0, 1, 2, 3, ...</span>
 </code></pre></div>
-
 <p>He simply calls out the numbers as they are printed, and the students file into the auditorium in an orderly fashion, filling it completely. Well, the first day is very long indeed. But Bertie has an infinite supply of bitcoins and things go well.</p>
 
-<p>Avoiding the well-travelled road of explaining “this,” “closures,” or “monads,” he decides to explain functional iterators using the Tortoise and Hare algorithm<sup id="fnref:tortoise"><a href="#fn:tortoise" class="footnote">2</a></sup> as an example. People are scratching their heads, but on the second day, all of the students from the first day return. So it must have been a decent lecture.</p>
+<p>Avoiding the well-travelled road of explaining &#8220;this,&#8221; &#8220;closures,&#8221; or &#8220;monads,&#8221; he decides to explain functional iterators using the Tortoise and Hare algorithm<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup> as an example. People are scratching their heads, but on the second day, all of the students from the first day return. So it must have been a decent lecture.</p>
 
-<h3 id="day-two">day two</h3>
+<h3 id='day_two'>day two</h3>
 
 <p>In fact, a few people liked the lecture so much that they recommended it to their friends, and one million additional students are lined up for seats in his class on the morning of the second day. He has an infinite number of seats in the auditorium, but they are all full. What can he do?</p>
 
-<p>Out comes the IDE and the bullhorn. This time, he uses the <a href="http://allong.es" title="Free recipes from JavaScript Allongé">allong.es</a> library and writes the following:</p>
+<p>Out comes the IDE and the bullhorn. This time, he uses the <a href='http://allong.es' title='Free recipes from JavaScript Allongé'>allong.es</a> library and writes the following:</p>
+<div class='highlight'><pre><code class='javascript'><span class='nx'>map</span> <span class='o'>=</span> <span class='nx'>require</span><span class='p'>(</span><span class='s1'>&#39;allong.es&#39;</span><span class='p'>).</span><span class='nx'>iterators</span><span class='p'>.</span><span class='nx'>map</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="nx">map</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;allong.es&#39;</span><span class="p">).</span><span class="nx">iterators</span><span class="p">.</span><span class="nx">map</span>
-
-<span class="kd">var</span> <span class="nx">oldSeats</span> <span class="o">=</span> <span class="nx">Numbers</span><span class="p">(),</span>
-    <span class="nx">newSeats</span> <span class="o">=</span> <span class="nx">map</span><span class="p">(</span><span class="nx">Numbers</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">+</span> <span class="mi">1000000</span><span class="p">;</span> <span class="p">});</span>
+<span class='kd'>var</span> <span class='nx'>oldSeats</span> <span class='o'>=</span> <span class='nx'>Numbers</span><span class='p'>(),</span>
+    <span class='nx'>newSeats</span> <span class='o'>=</span> <span class='nx'>map</span><span class='p'>(</span><span class='nx'>Numbers</span><span class='p'>(),</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>n</span><span class='p'>)</span> <span class='p'>{</span> <span class='k'>return</span> <span class='nx'>n</span> <span class='o'>+</span> <span class='mi'>1000000</span><span class='p'>;</span> <span class='p'>});</span>
     
-<span class="kd">function</span> <span class="nx">MoveToSeat</span> <span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="nx">from</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39; -&gt; &#39;</span> <span class="o">+</span> <span class="nx">to</span><span class="p">();</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<span class='kd'>function</span> <span class='nx'>MoveToSeat</span> <span class='p'>(</span><span class='nx'>from</span><span class='p'>,</span> <span class='nx'>to</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='s1'>&#39;&#39;</span> <span class='o'>+</span> <span class='nx'>from</span><span class='p'>()</span> <span class='o'>+</span> <span class='s1'>&#39; -&gt; &#39;</span> <span class='o'>+</span> <span class='nx'>to</span><span class='p'>();</span>
+  <span class='p'>}</span>
+<span class='p'>}</span>
 
-<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">MoveToSeat</span><span class="p">(</span><span class="nx">oldSeats</span><span class="p">,</span> <span class="nx">newSeats</span><span class="p">);</span>
+<span class='kd'>var</span> <span class='nx'>i</span> <span class='o'>=</span> <span class='nx'>MoveToSeat</span><span class='p'>(</span><span class='nx'>oldSeats</span><span class='p'>,</span> <span class='nx'>newSeats</span><span class='p'>);</span>
 
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; 0 -&gt; 1000000</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//-&gt; 1 -&gt; 1000001</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//-&gt; 2 -&gt; 1000002</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; 3 -&gt; 1000003</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; 0 -&gt; 1000000</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//-&gt; 1 -&gt; 1000001</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//-&gt; 2 -&gt; 1000002</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; 3 -&gt; 1000003</span>
 
-<span class="c1">// ...</span>
+<span class='c1'>// ...</span>
 </code></pre></div>
-
 <p>He has constructed an iterator with instructions for moving seats. Bertie tells the first person to move from seat zero to seat one million, the second from one to one million and one, and so forth. This means that seats 0 through 999,999 become vacant, so the 1,000,000 new students have a place to sit. Day Two goes well, and he is very pleased with his venture.</p>
 
-<h3 id="day-three">day three</h3>
+<h3 id='day_three'>day three</h3>
 
-<p>His fame spreads, and Jeff Atwood starts a discussion about Bertie’s JavaScript school on his new <a href="http://www.discourse.org">Discourse</a> discussion platform. There’s so much interest, Jeff charters a bus with an infinite number of seats and brings his infinite number of fans to Bertie’s school for Day Three. The bus’s seats have numbers from zero just like the auditorium.</p>
+<p>His fame spreads, and Jeff Atwood starts a discussion about Bertie&#8217;s JavaScript school on his new <a href='http://www.discourse.org'>Discourse</a> discussion platform. There&#8217;s so much interest, Jeff charters a bus with an infinite number of seats and brings his infinite number of fans to Bertie&#8217;s school for Day Three. The bus&#8217;s seats have numbers from zero just like the auditorium.</p>
 
 <p>All of the students from Day Two have returned, so the auditorium is already full. Bertie is perplexed, but after scratching his head for a few moments, whips out his bullhorn and write the following JavaScript:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>EvenNumbers</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>map</span><span class='p'>(</span><span class='nx'>Numbers</span><span class='p'>(),</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>n</span><span class='p'>)</span> <span class='p'>{</span> <span class='k'>return</span> <span class='nx'>n</span> <span class='o'>*</span> <span class='mi'>2</span><span class='p'>;</span> <span class='p'>});</span>
+<span class='p'>}</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">EvenNumbers</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">map</span><span class="p">(</span><span class="nx">Numbers</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="p">});</span>
-<span class="p">}</span>
+<span class='kd'>var</span> <span class='nx'>i</span> <span class='o'>=</span> <span class='nx'>MoveToSeat</span><span class='p'>(</span><span class='nx'>Numbers</span><span class='p'>(),</span> <span class='nx'>EvenNumbers</span><span class='p'>());</span>
 
-<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">MoveToSeat</span><span class="p">(</span><span class="nx">Numbers</span><span class="p">(),</span> <span class="nx">EvenNumbers</span><span class="p">());</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; 0 -&gt; 0</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//-&gt; 1 -&gt; 2</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//-&gt; 2 -&gt; 4</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; 3 -&gt; 6</span>
 
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; 0 -&gt; 0</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//-&gt; 1 -&gt; 2</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//-&gt; 2 -&gt; 4</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; 3 -&gt; 6</span>
-
-<span class="c1">// ...</span>
+<span class='c1'>// ...</span>
 </code></pre></div>
+<p>Now all the existing students are in the even numbered seats, so he&#8217;s ready to seat Jeff&#8217;s fans:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>OddNumbers</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>map</span><span class='p'>(</span><span class='nx'>Numbers</span><span class='p'>(),</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>n</span><span class='p'>)</span> <span class='p'>{</span> <span class='k'>return</span> <span class='nx'>n</span> <span class='o'>*</span> <span class='mi'>2</span> <span class='o'>+</span> <span class='mi'>1</span><span class='p'>;</span> <span class='p'>});</span>
+<span class='p'>}</span>
 
-<p>Now all the existing students are in the even numbered seats, so he’s ready to seat Jeff’s fans:</p>
+<span class='kd'>var</span> <span class='nx'>i</span> <span class='o'>=</span> <span class='nx'>MoveToSeat</span><span class='p'>(</span><span class='nx'>Numbers</span><span class='p'>(),</span> <span class='nx'>OddNumbers</span><span class='p'>());</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">OddNumbers</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">map</span><span class="p">(</span><span class="nx">Numbers</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">});</span>
-<span class="p">}</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; 0 -&gt; 1</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//-&gt; 1 -&gt; 3</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//-&gt; 2 -&gt; 5</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; 3 -&gt; 7</span>
 
-<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">MoveToSeat</span><span class="p">(</span><span class="nx">Numbers</span><span class="p">(),</span> <span class="nx">OddNumbers</span><span class="p">());</span>
-
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; 0 -&gt; 1</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//-&gt; 1 -&gt; 3</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//-&gt; 2 -&gt; 5</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; 3 -&gt; 7</span>
-
-<span class="c1">// ...</span>
+<span class='c1'>// ...</span>
 </code></pre></div>
+<p>Bertie calls out the seat numbers on Jeff&#8217;s bus and the number of an odd-numbered (and therefore vacant) seat in the auditorium for them to occupy. Bertie has managed to add an infinite number of students to an infinitely large but full auditorium.</p>
 
-<p>Bertie calls out the seat numbers on Jeff’s bus and the number of an odd-numbered (and therefore vacant) seat in the auditorium for them to occupy. Bertie has managed to add an infinite number of students to an infinitely large but full auditorium.</p>
+<p>He&#8217;s so pleased, Bertie lets Jeff be the guest lecturer. The audience has loved Bertie&#8217;s abstract approach to programming so far, but they&#8217;re hungry for practical knowledge and Jeff enthrals them with a walkthrough of how the Discourse User Experience is implemented.</p>
 
-<p>He’s so pleased, Bertie lets Jeff be the guest lecturer. The audience has loved Bertie’s abstract approach to programming so far, but they’re hungry for practical knowledge and Jeff enthrals them  with a walkthrough of how the Discourse User Experience is implemented.</p>
-
-<p>As a bonus, Jeff shares his insights into programming productivity.<sup id="fnref:jeff"><a href="#fn:jeff" class="footnote">3</a></sup> By the end of the day, everyone is typing over 100wpm and has placed an order for multiple wall-sized monitors on eBay.</p>
-
-<p><a href="http://www.flickr.com/photos/raver_mikey/4118859026/" title="Nice selection of REAL buses! by Gene Hunt, on Flickr"><img src="http://farm3.staticflickr.com/2516/4118859026_ee4f8ce254_z.jpg" width="640" height="480" alt="Nice selection of REAL buses!" /></a></p>
-
-<h3 id="day-four">day four</h3>
+<p>As a bonus, Jeff shares his insights into programming productivity.<sup id='fnref:3'><a href='#fn:3' rel='footnote'>3</a></sup> By the end of the day, everyone is typing over 100wpm and has placed an order for multiple wall-sized monitors on eBay.</p>
+<a href='http://www.flickr.com/photos/raver_mikey/4118859026/' title='Nice selection of REAL buses! by Gene Hunt, on Flickr'><img alt='Nice selection of REAL buses!' height='480' src='http://farm3.staticflickr.com/2516/4118859026_ee4f8ce254_z.jpg' width='640' /></a>
+<h3 id='day_four'>day four</h3>
 
 <p>Day Three went well, so all the students return and the auditorium remains full. Everyone is very pleased and looking forward to Day Four.</p>
 
-<p>But the excitement has a downside: Reddit hears about what’s going on and an infinite number of subreddits, each of which has an infinite number of redditors, all decide to show up on day four to disrupt his lecture with trolling about how lame JavaScript is as a programming language. Each sends an infinitely large bus, with every seat full. Like Jeff’s bus, each bus numbers its seat from zero and as luck would have it, each bus has has a number and the buses are numbered from zero.</p>
+<p>But the excitement has a downside: Reddit hears about what&#8217;s going on and an infinite number of subreddits, each of which has an infinite number of redditors, all decide to show up on day four to disrupt his lecture with trolling about how lame JavaScript is as a programming language. Each sends an infinitely large bus, with every seat full. Like Jeff&#8217;s bus, each bus numbers its seat from zero and as luck would have it, each bus has has a number and the buses are numbered from zero.</p>
 
-<p>Bertie has to seat an infinite number of infinite groups of people, in an infinite auditorium that is already full! Now what? Out comes the bullhorn and yesterday’s program, and he quickly moves all of his existing students into the even-numbered seats, leaving an infinite number of odd seats available for newcomers.</p>
+<p>Bertie has to seat an infinite number of infinite groups of people, in an infinite auditorium that is already full! Now what? Out comes the bullhorn and yesterday&#8217;s program, and he quickly moves all of his existing students into the even-numbered seats, leaving an infinite number of odd seats available for newcomers.</p>
 
 <p>He writes a new program:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">Diagonals</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">map</span><span class="p">(</span><span class="nx">Numbers</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">bus</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">seat</span> <span class="o">=</span> <span class="nx">n</span> <span class="o">-</span> <span class="nx">bus</span><span class="p">;</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">bus</span> <span class="o">&lt;=</span> <span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="p">{</span>
-          <span class="nx">bus</span><span class="o">:</span> <span class="nx">bus</span><span class="o">++</span><span class="p">,</span>
-          <span class="nx">seat</span><span class="o">:</span> <span class="nx">seat</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-      <span class="k">else</span> <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">};</span>
-  <span class="p">});</span>
-<span class="p">};</span>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>Diagonals</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>map</span><span class='p'>(</span><span class='nx'>Numbers</span><span class='p'>(),</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>n</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='kd'>var</span> <span class='nx'>bus</span> <span class='o'>=</span> <span class='mi'>0</span><span class='p'>;</span>
+    <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+      <span class='kd'>var</span> <span class='nx'>seat</span> <span class='o'>=</span> <span class='nx'>n</span> <span class='o'>-</span> <span class='nx'>bus</span><span class='p'>;</span>
+      <span class='k'>if</span> <span class='p'>(</span><span class='nx'>bus</span> <span class='o'>&lt;=</span> <span class='nx'>n</span><span class='p'>)</span> <span class='p'>{</span>
+        <span class='k'>return</span> <span class='p'>{</span>
+          <span class='nx'>bus</span><span class='o'>:</span> <span class='nx'>bus</span><span class='o'>++</span><span class='p'>,</span>
+          <span class='nx'>seat</span><span class='o'>:</span> <span class='nx'>seat</span>
+        <span class='p'>}</span>
+      <span class='p'>}</span>
+      <span class='k'>else</span> <span class='k'>return</span> <span class='k'>void</span> <span class='mi'>0</span><span class='p'>;</span>
+    <span class='p'>};</span>
+  <span class='p'>});</span>
+<span class='p'>};</span>
 </code></pre></div>
-
 <p>He has an Espresso Allongé and contemplates his work so far. <code>Diagonals</code> is an iterator over an infinite collection of iterators, each of which uniquely identifies a bus and seat on that bus. They look something like this:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">0</span><span class="p">}</span>
-<span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">0</span><span class="p">}</span>
-<span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">0</span><span class="p">}</span>
-<span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span> <span class="nx">bus</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">seat</span><span class="o">:</span> <span class="mi">0</span> <span class="p">}</span>
-<span class="p">...</span>
+<div class='highlight'><pre><code class='javascript'><span class='p'>{</span> <span class='nx'>bus</span><span class='o'>:</span> <span class='mi'>0</span><span class='p'>,</span> <span class='nx'>seat</span><span class='o'>:</span> <span class='mi'>0</span><span class='p'>}</span>
+<span class='p'>{</span> <span class='nx'>bus</span><span class='o'>:</span> <span class='mi'>0</span><span class='p'>,</span> <span class='nx'>seat</span><span class='o'>:</span> <span class='mi'>1</span><span class='p'>},</span> <span class='p'>{</span> <span class='nx'>bus</span><span class='o'>:</span> <span class='mi'>1</span><span class='p'>,</span> <span class='nx'>seat</span><span class='o'>:</span> <span class='mi'>0</span><span class='p'>}</span>
+<span class='p'>{</span> <span class='nx'>bus</span><span class='o'>:</span> <span class='mi'>0</span><span class='p'>,</span> <span class='nx'>seat</span><span class='o'>:</span> <span class='mi'>2</span><span class='p'>},</span> <span class='p'>{</span> <span class='nx'>bus</span><span class='o'>:</span> <span class='mi'>1</span><span class='p'>,</span> <span class='nx'>seat</span><span class='o'>:</span> <span class='mi'>1</span><span class='p'>},</span> <span class='p'>{</span> <span class='nx'>bus</span><span class='o'>:</span> <span class='mi'>2</span><span class='p'>,</span> <span class='nx'>seat</span><span class='o'>:</span> <span class='mi'>0</span><span class='p'>}</span>
+<span class='p'>{</span> <span class='nx'>bus</span><span class='o'>:</span> <span class='mi'>0</span><span class='p'>,</span> <span class='nx'>seat</span><span class='o'>:</span> <span class='mi'>3</span><span class='p'>},</span> <span class='p'>{</span> <span class='nx'>bus</span><span class='o'>:</span> <span class='mi'>1</span><span class='p'>,</span> <span class='nx'>seat</span><span class='o'>:</span> <span class='mi'>2</span><span class='p'>},</span> <span class='p'>{</span> <span class='nx'>bus</span><span class='o'>:</span> <span class='mi'>2</span><span class='p'>,</span> <span class='nx'>seat</span><span class='o'>:</span> <span class='mi'>1</span><span class='p'>},</span> <span class='p'>{</span> <span class='nx'>bus</span><span class='o'>:</span> <span class='mi'>3</span><span class='p'>,</span> <span class='nx'>seat</span><span class='o'>:</span> <span class='mi'>0</span> <span class='p'>}</span>
+<span class='p'>...</span>
 </code></pre></div>
-
 <p>If you think of the buses and seats forming a square, the diagonals iterator makes a path from one corner and works its way out, enumerating over every possible combination of bus and seat. Thus, given countably infinite time, it will list every one of the countably infinite number of Redditors on each of the countably infinite number of buses.</p>
 
 <p>To move forward, Bertie needs a <code>concatenate</code> iterator for iterators:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>concatenate</span> <span class='p'>(</span><span class='nx'>iteratorOfIterators</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>thisIterator</span> <span class='o'>=</span> <span class='nx'>iteratorOfIterators</span><span class='p'>();</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='nx'>myself</span> <span class='p'>()</span> <span class='p'>{</span>
+    <span class='kd'>var</span> <span class='nx'>value</span><span class='p'>;</span>
+    <span class='k'>if</span> <span class='p'>(</span><span class='nx'>thisIterator</span> <span class='o'>==</span> <span class='kc'>null</span><span class='p'>)</span>
+      <span class='k'>return</span> <span class='k'>void</span> <span class='mi'>0</span>
+    <span class='nx'>value</span> <span class='o'>=</span> <span class='nx'>thisIterator</span><span class='p'>();</span>
+    <span class='k'>if</span> <span class='p'>(</span><span class='nx'>value</span> <span class='o'>!=</span> <span class='kc'>null</span><span class='p'>)</span> <span class='p'>{</span>
+      <span class='k'>return</span> <span class='nx'>value</span><span class='p'>;</span>
+    <span class='p'>}</span>
+    <span class='k'>else</span> <span class='p'>{</span>
+      <span class='nx'>thisIterator</span> <span class='o'>=</span> <span class='nx'>iteratorOfIterators</span><span class='p'>();</span>
+      <span class='k'>return</span> <span class='nx'>myself</span><span class='p'>();</span>
+    <span class='p'>}</span>
+  <span class='p'>};</span>
+<span class='p'>};</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">concatenate</span> <span class="p">(</span><span class="nx">iteratorOfIterators</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">thisIterator</span> <span class="o">=</span> <span class="nx">iteratorOfIterators</span><span class="p">();</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="nx">myself</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">value</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">thisIterator</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
-      <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span>
-    <span class="nx">value</span> <span class="o">=</span> <span class="nx">thisIterator</span><span class="p">();</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="p">{</span>
-      <span class="nx">thisIterator</span> <span class="o">=</span> <span class="nx">iteratorOfIterators</span><span class="p">();</span>
-      <span class="k">return</span> <span class="nx">myself</span><span class="p">();</span>
-    <span class="p">}</span>
-  <span class="p">};</span>
-<span class="p">};</span>
+<span class='kd'>var</span> <span class='nx'>PeopleOnTheBuses</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>concatenate</span><span class='p'>(</span><span class='nx'>Dialognals</span><span class='p'>());</span>
+<span class='p'>};</span>
 
-<span class="kd">var</span> <span class="nx">PeopleOnTheBuses</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">concatenate</span><span class="p">(</span><span class="nx">Dialognals</span><span class="p">());</span>
-<span class="p">};</span>
+<span class='kd'>var</span> <span class='nx'>i</span> <span class='o'>=</span> <span class='nx'>PeopleOnTheBuses</span><span class='p'>();</span>
 
-<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">PeopleOnTheBuses</span><span class="p">();</span>
-
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; { bus: 0, seat: 0 }</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; { bus: 0, seat: 1 }</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; { bus: 1, seat: 0 }</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; { bus: 0, seat: 0 }</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; { bus: 0, seat: 1 }</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; { bus: 1, seat: 0 }</span>
   
-<span class="c1">// ...</span>
+<span class='c1'>// ...</span>
 </code></pre></div>
-
 <p>Bertie is satisfied, but the natives are restless, so he keeps coding, then reaches for his bullhorn:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>RedditorSeats</span> <span class='o'>=</span> <span class='nx'>map</span><span class='p'>(</span><span class='nx'>PeopleOnTheBuses</span><span class='p'>(),</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>o</span><span class='p'>)</span> <span class='p'>{</span> 
+      <span class='k'>return</span> <span class='s1'>&#39;bus: &#39;</span> <span class='o'>+</span> <span class='nx'>o</span><span class='p'>.</span><span class='nx'>bus</span> <span class='o'>+</span> <span class='s1'>&#39;, seat: &#39;</span> <span class='o'>+</span> <span class='nx'>o</span><span class='p'>.</span><span class='nx'>seat</span><span class='p'>;</span> 
+    <span class='p'>}),</span>
+    <span class='nx'>i</span> <span class='o'>=</span> <span class='nx'>MoveToSeat</span><span class='p'>(</span><span class='nx'>RedditorSeats</span><span class='p'>,</span> <span class='nx'>OddNumbers</span><span class='p'>());</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">RedditorSeats</span> <span class="o">=</span> <span class="nx">map</span><span class="p">(</span><span class="nx">PeopleOnTheBuses</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span> 
-      <span class="k">return</span> <span class="s1">&#39;bus: &#39;</span> <span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">bus</span> <span class="o">+</span> <span class="s1">&#39;, seat: &#39;</span> <span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">seat</span><span class="p">;</span> 
-    <span class="p">}),</span>
-    <span class="nx">i</span> <span class="o">=</span> <span class="nx">MoveToSeat</span><span class="p">(</span><span class="nx">RedditorSeats</span><span class="p">,</span> <span class="nx">OddNumbers</span><span class="p">());</span>
-
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; &#39;bus: 0, seat: 0 -&gt; 1&#39;</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; &#39;bus: 0, seat: 1 -&gt; 3&#39;</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; &#39;bus: 1, seat: 0 -&gt; 5&#39;</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; &#39;bus: 0, seat: 2 -&gt; 7&#39;</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; &#39;bus: 1, seat: 1 -&gt; 9&#39;</span>
-<span class="nx">i</span><span class="p">();</span>
-  <span class="c1">//=&gt; &#39;bus: 2, seat: 0 -&gt; 11&#39;</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; &#39;bus: 0, seat: 0 -&gt; 1&#39;</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; &#39;bus: 0, seat: 1 -&gt; 3&#39;</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; &#39;bus: 1, seat: 0 -&gt; 5&#39;</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; &#39;bus: 0, seat: 2 -&gt; 7&#39;</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; &#39;bus: 1, seat: 1 -&gt; 9&#39;</span>
+<span class='nx'>i</span><span class='p'>();</span>
+  <span class='c1'>//=&gt; &#39;bus: 2, seat: 0 -&gt; 11&#39;</span>
   
-<span class="c1">// ...</span>
+<span class='c1'>// ...</span>
 </code></pre></div>
-
-<p>Well, this seats an infinite number of Redditors on an infinite number of buses in an infinite auditorium that was already full. He does a code walkthrough with the students, then segues on to talk about other interesting aspects of Georg Cantor<sup id="fnref:cantor"><a href="#fn:cantor" class="footnote">4</a></sup>’s work and a digression into Hotel Management.<sup id="fnref:grand"><a href="#fn:grand" class="footnote">5</a></sup> By the time he finishes with a discussion of the Hypergame<sup id="fnref:kongregate"><a href="#fn:kongregate" class="footnote">6</a></sup> proof of the infinite number of infinities, everyone has forgotten that they came to scoff.</p>
+<p>Well, this seats an infinite number of Redditors on an infinite number of buses in an infinite auditorium that was already full. He does a code walkthrough with the students, then segues on to talk about other interesting aspects of Georg Cantor<sup id='fnref:4'><a href='#fn:4' rel='footnote'>4</a></sup>&#8217;s work and a digression into Hotel Management.<sup id='fnref:5'><a href='#fn:5' rel='footnote'>5</a></sup> By the time he finishes with a discussion of the Hypergame<sup id='fnref:6'><a href='#fn:6' rel='footnote'>6</a></sup> proof of the infinite number of infinities, everyone has forgotten that they came to scoff.</p>
 
 <p>He finishes with a summary of what he learned seating students:</p>
 
 <ol>
-  <li>You can put a countably infinite number of seats into a one-to-one correspondence with the numbers, therefore they have the same <em>cardinality</em>.</li>
-  <li>You can add a finite number to an countably infinite number and put your new number into a one-to-one correspondence with the numbers, therefore infinity plus a finite number has the same cardinality as the numbers.</li>
-  <li>You can add infinity to infinity and put your new number into a one-to-one correspondence with the numbers, therefore infinity plus infinity has the same cardinality as the numbers. By induction, you can add a finite number of infinities together and have the same cardinality as the numbers.</li>
-  <li>You can add an infinite number of infinities to infinity and put your new number into a one-to-one correspondence with the numbers, therefore an infinity times infinity has the same cardinality as the numbers.</li>
+<li>You can put a countably infinite number of seats into a one-to-one correspondence with the numbers, therefore they have the same <em>cardinality</em>.</li>
+
+<li>You can add a finite number to an countably infinite number and put your new number into a one-to-one correspondence with the numbers, therefore infinity plus a finite number has the same cardinality as the numbers.</li>
+
+<li>You can add infinity to infinity and put your new number into a one-to-one correspondence with the numbers, therefore infinity plus infinity has the same cardinality as the numbers. By induction, you can add a finite number of infinities together and have the same cardinality as the numbers.</li>
+
+<li>You can add an infinite number of infinities to infinity and put your new number into a one-to-one correspondence with the numbers, therefore an infinity times infinity has the same cardinality as the numbers.</li>
 </ol>
 
-<h3 id="day-five">day five</h3>
+<h3 id='day_five'>day five</h3>
 
-<p>On Day Five, everyone is back and he announces that there will be a test: <em>“Outside our doors,”</em> he announces, <em>“Are an infinite number of aircraft carriers, each of which has an infinitely large flight deck. Parked on each flight deck are an infinite number of buses, each of which contains–you guessed it–an infinite number of sailors and air crew eager to join our school for the next semester.”</em></p>
+<p>On Day Five, everyone is back and he announces that there will be a test: <em>&#8220;Outside our doors,&#8221;</em> he announces, <em>&#8220;Are an infinite number of aircraft carriers, each of which has an infinitely large flight deck. Parked on each flight deck are an infinite number of buses, each of which contains&#8211;you guessed it&#8211;an infinite number of sailors and air crew eager to join our school for the next semester.&#8221;</em></p>
 
-<p><em>“Write a JavaScript program to seat them all in our lecture hall. If your program works, you may come up to the front and receive your signed diploma. If you can prove that no program works, you will also receive your diploma. Good luck!”</em></p>
+<p><em>&#8220;Write a JavaScript program to seat them all in our lecture hall. If your program works, you may come up to the front and receive your signed diploma. If you can prove that no program works, you will also receive your diploma. Good luck!&#8221;</em></p>
 
 <p>In other words, Bertie wants his students to use JavaScript to figure out whether infinity cubed is countable. Is it?</p>
 
-<h3 id="post-scriptum">post scriptum</h3>
+<h3 id='post_scriptum'>post scriptum</h3>
 
-<p>While the students busy themselves writing the test, he sends a pull request to integrate his <code>concatenate</code> function into <a href="http://allong.es" title="Free recipes from JavaScript Allongé">allong.es</a>.</p>
+<p>While the students busy themselves writing the test, he sends a pull request to integrate his <code>concatenate</code> function into <a href='http://allong.es' title='Free recipes from JavaScript Allongé'>allong.es</a>.</p>
 
-<h3 id="post-post-scriptum">post-post scriptum</h3>
+<h3 id='postpost_scriptum'>post-post scriptum</h3>
 
-<p><a href="http://raganwald.com/2013/02/22/breaking-news-programming-school-closed.html">Dr. Hilbert’s School Has Been Closed For Admissions Irregularities</a></p>
+<p><a href='http://raganwald.com/2013/02/22/breaking-news-programming-school-closed.html'>Dr. Hilbert&#8217;s School Has Been Closed For Admissions Irregularities</a></p>
 
-<h3 id="end-notes">end notes</h3>
-<div class="footnotes">
-  <ol>
-    <li id="fn:count">
-      <p>Meaning, he is able to put the seats in a one-to-one correspondence with the natural numbers. He does this by numbering the seats from zero. See <a href="https://en.wikipedia.org/wiki/Countable_set">Countable Sets</a>.<a href="#fnref:count" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:tortoise">
-      <p><a href="http://raganwald.com/2013/02/15/turtles-and-iterators.js.html">http://raganwald.com/2013/02/15/turtles-and-iterators.js.html</a><a href="#fnref:tortoise" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:jeff">
-      <p>“As far as I’m concerned, you can never be too rich, too thin, or have too much screen space.”–<a href="http://www.codinghorror.com/blog/2010/04/three-monitors-for-every-user.html">Three Monitors For Every User</a><a href="#fnref:jeff" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:cantor">
-      <p><a href="https://en.wikipedia.org/wiki/Georg_Cantor">https://en.wikipedia.org/wiki/Georg_Cantor</a><a href="#fnref:cantor" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:grand">
-      <p><a href="https://en.wikipedia.org/wiki/Hilbert's_paradox_of_the_Grand_Hotel">https://en.wikipedia.org/wiki/Hilbert’s_paradox_of_the_Grand_Hotel</a><a href="#fnref:grand" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:kongregate">
-      <p><a href="http://www.kongregate.com/forums/9/topics/93615">http://www.kongregate.com/forums/9/topics/93615</a><a href="#fnref:kongregate" class="reversefootnote">&#8617;</a></p>
-    </li>
-  </ol>
-</div>
-
+<h3 id='end_notes'>end notes</h3>
+<div class='footnotes'><hr /><ol><li id='fn:1'>
+<p>Meaning, he is able to put the seats in a one-to-one correspondence with the natural numbers. He does this by numbering the seats from zero. See <a href='https://en.wikipedia.org/wiki/Countable_set'>Countable Sets</a>.</p>
+<a href='#fnref:1' rev='footnote'>&#8617;</a></li><li id='fn:2'>
+<p><a href='http://raganwald.com/2013/02/15/turtles-and-iterators.js.html'>http://raganwald.com/2013/02/15/turtles-and-iterators.js.html</a></p>
+<a href='#fnref:2' rev='footnote'>&#8617;</a></li><li id='fn:3'>
+<p>&#8220;As far as I&#8217;m concerned, you can never be too rich, too thin, or have too much screen space.&#8221;&#8211;<a href='http://www.codinghorror.com/blog/2010/04/three-monitors-for-every-user.html'>Three Monitors For Every User</a></p>
+<a href='#fnref:3' rev='footnote'>&#8617;</a></li><li id='fn:4'>
+<p><a href='https://en.wikipedia.org/wiki/Georg_Cantor'>https://en.wikipedia.org/wiki/Georg_Cantor</a></p>
+<a href='#fnref:4' rev='footnote'>&#8617;</a></li><li id='fn:5'>
+<p><a href='https://en.wikipedia.org/wiki/Hilbert&apos;s_paradox_of_the_Grand_Hotel'>https://en.wikipedia.org/wiki/Hilbert&#8217;s_paradox_of_the_Grand_Hotel</a></p>
+<a href='#fnref:5' rev='footnote'>&#8617;</a></li><li id='fn:6'>
+<p><a href='http://www.kongregate.com/forums/9/topics/93615'>http://www.kongregate.com/forums/9/topics/93615</a></p>
+<a href='#fnref:6' rev='footnote'>&#8617;</a></li></ol></div>
         </section>
 
         <footer>

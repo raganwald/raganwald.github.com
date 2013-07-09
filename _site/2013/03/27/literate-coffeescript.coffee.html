@@ -72,47 +72,50 @@
   
 
           
-          <p>With the demise of Posterous, I was motivated to “get my blogging house in order” and move all of my blogging onto Github. I’ve written about using Jekyll and Github Pages elsewhere,<sup id="fnref:2013"><a href="#fn:2013" class="footnote">1</a></sup> but the short form is:</p>
+          <p>With the demise of Posterous, I was motivated to &#8220;get my blogging house in order&#8221; and move all of my blogging onto Github. I&#8217;ve written about using Jekyll and Github Pages elsewhere,<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup> but the short form is:</p>
 
 <ol>
-  <li>I have my own domains via registrar <a href="http://gandi.net">gandi.net</a>. They point to Github’s IP.</li>
-  <li>Each blog gets a repository.</li>
-  <li>The repository has a <code>CNAME</code> file containing the blog’s domain name. For example, <a href="https://github.com/raganwald/raganwald.github.com/blob/master/CNAME">this one</a>.</li>
-  <li>Each repository is set up with various Jekyll things like a <code>_config.yml</code> files, folders for the <code>_layouts</code> and <code>_includes</code> that Liquid Templates need, and so on.</li>
-  <li>I have some Liquid Template stuff stuff going on to <a href="https://github.com/raganwald/raganwald.github.com/blob/master/_includes/book.html">associate post tags with books</a> to “advertise” in the margin and to <a href="https://raw.github.com/raganwald/raganwald.github.com/master/index.md">include a list of the published posts</a> in <code>index.html</code>.</li>
-  <li><a href="https://github.com/raganwald/raganwald.github.com/blob/master/atom.xml">Atom</a> and <a href="https://github.com/raganwald/raganwald.github.com/blob/master/rss.xml">RSS</a> feeds are handled by more Liquid markup.</li>
+<li>I have my own domains via registrar <a href='http://gandi.net'>gandi.net</a>. They point to Github&#8217;s IP.</li>
+
+<li>Each blog gets a repository.</li>
+
+<li>The repository has a <code>CNAME</code> file containing the blog&#8217;s domain name. For example, <a href='https://github.com/raganwald/raganwald.github.com/blob/master/CNAME'>this one</a>.</li>
+
+<li>Each repository is set up with various Jekyll things like a <code>_config.yml</code> files, folders for the <code>_layouts</code> and <code>_includes</code> that Liquid Templates need, and so on.</li>
+
+<li>I have some Liquid Template stuff stuff going on to <a href='https://github.com/raganwald/raganwald.github.com/blob/master/_includes/book.html'>associate post tags with books</a> to &#8220;advertise&#8221; in the margin and to <a href='https://raw.github.com/raganwald/raganwald.github.com/master/index.md'>include a list of the published posts</a> in <code>index.html</code>.</li>
+
+<li><a href='https://github.com/raganwald/raganwald.github.com/blob/master/atom.xml'>Atom</a> and <a href='https://github.com/raganwald/raganwald.github.com/blob/master/rss.xml'>RSS</a> feeds are handled by more Liquid markup.</li>
 </ol>
 
 <p>Everything up to this point is a standard blog.</p>
 
-<h3 id="literate-coffeescript">literate coffeescript</h3>
+<h3 id='literate_coffeescript'>literate coffeescript</h3>
 
-<p>Recently, Jeremy Ashkenas released a new feature within CoffeeScript: The ability to parse what he calls “Literate CoffeeScript:” CoffeeScript that lives within a Markdown document. The CoffeeScript transpiler will now ignore the markdown and transpile CoffeeScript in the code sections.<sup id="fnref:caveat"><a href="#fn:caveat" class="footnote">2</a></sup></p>
+<p>Recently, Jeremy Ashkenas released a new feature within CoffeeScript: The ability to parse what he calls &#8220;Literate CoffeeScript:&#8221; CoffeeScript that lives within a Markdown document. The CoffeeScript transpiler will now ignore the markdown and transpile CoffeeScript in the code sections.<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup></p>
 
-<p>I recently started writing a serious of posts about <a href="http://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html">an enchanted forest</a>. These posts take the form of a story punctuated with code examples. Literate CoffeeScript is obviously terrific for documenting code, but I thought it might also be ideal for blogging. So I set up a workflow.</p>
+<p>I recently started writing a serious of posts about <a href='http://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html'>an enchanted forest</a>. These posts take the form of a story punctuated with code examples. Literate CoffeeScript is obviously terrific for documenting code, but I thought it might also be ideal for blogging. So I set up a workflow.</p>
 
-<p>First, I include a code sample in my blog. If you’re not 100% familiar with Markdown and code, the raw markdown source is <a href="https://raw.github.com/raganwald/raganwald.github.com/master/_posts/2013-03-27-literate-coffeescript.coffee.md">here</a>. It ends up looking like this:</p>
+<p>First, I include a code sample in my blog. If you&#8217;re not 100% familiar with Markdown and code, the raw markdown source is <a href='https://raw.github.com/raganwald/raganwald.github.com/master/_posts/2013-03-27-literate-coffeescript.coffee.md'>here</a>. It ends up looking like this:</p>
 
 <pre><code>factorial = (n) -&gt;
   if n = 0
     1
   else
-    n * factorial(n-1)
-</code></pre>
+    n * factorial(n-1)</code></pre>
 
-<p>I then add some <a href="https://github.com/mhevery/jasmine-node">jasmine-node</a> specifications. Obviously, I have <a href="http://nodejs.org">node.js</a> installed along with <a href="http://pivotal.github.com/jasmine/">jasmine</a> and jasmine-node.</p>
+<p>I then add some <a href='https://github.com/mhevery/jasmine-node'>jasmine-node</a> specifications. Obviously, I have <a href='http://nodejs.org'>node.js</a> installed along with <a href='http://pivotal.github.com/jasmine/'>jasmine</a> and jasmine-node.</p>
 
-<pre><code>describe "my factorial", -&gt;
+<pre><code>describe &quot;my factorial&quot;, -&gt;
 
-  it "should return one for zero", -&gt;
-    expect( factorial(0) ).toEqual 1
-</code></pre>
+  it &quot;should return one for zero&quot;, -&gt;
+    expect( factorial(0) ).toEqual 1</code></pre>
 
-<p>I could run these manually, but it’s awkward because while CoffeeScript has been updated to handle “literate” markdown, jasmine-node has not. So jasmine-node is looking for ordinary CoffeeScript and will choke on Literate CoffeeScript. So I’d have to use <code>coffee</code> to compile the Literate CoffeeScript to JavaScript and then run jasmine-node on the JavaScript.</p>
+<p>I could run these manually, but it&#8217;s awkward because while CoffeeScript has been updated to handle &#8220;literate&#8221; markdown, jasmine-node has not. So jasmine-node is looking for ordinary CoffeeScript and will choke on Literate CoffeeScript. So I&#8217;d have to use <code>coffee</code> to compile the Literate CoffeeScript to JavaScript and then run jasmine-node on the JavaScript.</p>
 
 <p>I hacked together the laziest of crappy shell scripts to do it for me:</p>
 
-<pre><code>"
+<pre><code>&quot;
 #!/bin/sh
 
 rm -f ~/Dropbox/sites/raganwald.github.com/_specs/*.js
@@ -122,39 +125,30 @@ else
   coffee --output ~/Dropbox/sites/raganwald.github.com/_specs --compile ~/Dropbox/sites/raganwald.github.com/_posts/enchanted-forest/*.coffee.md
 fi
 jasmine-node ~/Dropbox/sites/raganwald.github.com/_specs --matchall
-"
-</code></pre>
+&quot;</code></pre>
 
 <p>I added the quotes here so that the CoffeeScript compiler will ignore the shell script in this post. The script compiles the post(s) I specify into the <code>_specs</code> folder and then runs them (by default it does the enchanted forest posts in bulk). So whenever I add a new snippet, I write some expectations and then run the post:</p>
 
-<p><img src="/assets/images/failure.png" alt="Failure!" /></p>
+<p><img alt='Failure!' src='/assets/images/failure.png' /></p>
 
 <p>And now I know that I need to change the <code>=</code> to <code>is</code> in the code above.</p>
 
-<h3 id="weighing-the-benefits">weighing the benefits</h3>
+<h3 id='weighing_the_benefits'>weighing the benefits</h3>
 
-<p>Obviously, it’s a benefit to find bugs and fix them before my readers find them and send me pull requests (<a href="https://github.com/raganwald/raganwald.github.com">this blog is a Github Repo</a>!). But it’s also a benefit to have an incentive to write tests. I don’t do TDD in a blog post, but writing tests after the fact does make me think a little more about the case analysis and I think it’s a benefit for readers.</p>
+<p>Obviously, it&#8217;s a benefit to find bugs and fix them before my readers find them and send me pull requests (<a href='https://github.com/raganwald/raganwald.github.com'>this blog is a Github Repo</a>!). But it&#8217;s also a benefit to have an incentive to write tests. I don&#8217;t do TDD in a blog post, but writing tests after the fact does make me think a little more about the case analysis and I think it&#8217;s a benefit for readers.</p>
 
 <p>The downside is that the snippets become quite a bit longer thanks to the expectations. In my stories, I use a little JavaScript to hide the snippets and readers can click a link to expand them. I now use a similar approach to hiding the expectations in any post with a special <code>hide-specs</code> tag.</p>
 
-<p>But in the mean time, I find that when I’m writing CoffeeScript, it’s a win to be able to run my expectations right in my posts. If you’re blogging with Markdown, consider setting up your own Literate CoffeeScript workflow. It’s a time-saver and make sit easy to get the code right.</p>
+<p>But in the mean time, I find that when I&#8217;m writing CoffeeScript, it&#8217;s a win to be able to run my expectations right in my posts. If you&#8217;re blogging with Markdown, consider setting up your own Literate CoffeeScript workflow. It&#8217;s a time-saver and make sit easy to get the code right.</p>
 
-<p>And if you aren’t using CoffeeScript… Why not use Literate CoffeeScript as an excuse to give it a try?</p>
-
+<p>And if you aren&#8217;t using CoffeeScript&#8230; Why not use Literate CoffeeScript as an excuse to give it a try?</p>
 <hr />
-
 <p>notes:</p>
-<div class="footnotes">
-  <ol>
-    <li id="fn:2013">
-      <p><a href="http://raganwald.com/2013/02/20/twenty-thirteen.html">Twenty Thirteen</a><a href="#fnref:2013" class="reversefootnote">&#8617;</a></p>
-    </li>
-    <li id="fn:caveat">
-      <p>At this time, Literate CoffeeScript respects code indented with four or more spaces. Hopefully, it will one day respect various other flavours of Markdown code markup such as code fences or even Liquid highlight tags.<a href="#fnref:caveat" class="reversefootnote">&#8617;</a></p>
-    </li>
-  </ol>
-</div>
-
+<div class='footnotes'><hr /><ol><li id='fn:1'>
+<p><a href='http://raganwald.com/2013/02/20/twenty-thirteen.html'>Twenty Thirteen</a></p>
+<a href='#fnref:1' rev='footnote'>&#8617;</a></li><li id='fn:2'>
+<p>At this time, Literate CoffeeScript respects code indented with four or more spaces. Hopefully, it will one day respect various other flavours of Markdown code markup such as code fences or even Liquid highlight tags.</p>
+<a href='#fnref:2' rev='footnote'>&#8617;</a></li></ol></div>
         </section>
 
         <footer>

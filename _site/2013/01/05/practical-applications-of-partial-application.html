@@ -72,31 +72,27 @@
   
 
           
-          <p>What is <a href="http://en.wikipedia.org/wiki/Partial_application">partial application</a>? And most importantly, why do we care about it?</p>
+          <p>What is <a href='http://en.wikipedia.org/wiki/Partial_application'>partial application</a>? And most importantly, why do we care about it?</p>
 
-<h2 id="recap">Recap</h2>
+<h2 id='recap'>Recap</h2>
 
-<p>First, a quick recap (You can skip this if you’re familiar with functions in JavaScript). Just about everything here applies to CoffeeScript as well, except for some folderol about handling multiple arguments. And everything except <code>this</code> applies to just about any programming language that supports functions as first class objects.</p>
+<p>First, a quick recap (You can skip this if you&#8217;re familiar with functions in JavaScript). Just about everything here applies to CoffeeScript as well, except for some folderol about handling multiple arguments. And everything except <code>this</code> applies to just about any programming language that supports functions as first class objects.</p>
 
-<p>The functions we’re going to discuss look like this:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">add</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
-<span class="p">}</span>
+<p>The functions we&#8217;re going to discuss look like this:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>add</span> <span class='p'>(</span><span class='nx'>a</span><span class='p'>,</span> <span class='nx'>b</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>a</span> <span class='o'>+</span> <span class='nx'>b</span><span class='p'>;</span>
+<span class='p'>}</span>
 </code></pre></div>
-
 <p>Or this:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">something</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
-<span class="p">};</span>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>something</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>a</span><span class='p'>,</span> <span class='nx'>b</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>a</span> <span class='o'>+</span> <span class='nx'>b</span><span class='p'>;</span>
+<span class='p'>};</span>
 </code></pre></div>
+<h3 id='arity_and_higherorder_functions'>arity and higher-order functions</h3>
 
-<h3 id="arity-and-higher-order-functions">arity and higher-order functions</h3>
+<p>JavaScript functions take values as arguments and return values. A function that doesn&#8217;t take arguments is <em>nullary</em>, a function taking one argument is <em>unary</em>, a function taking two or more arguments is <em>polyadic</em>, and a function that can take a variable number of arguments is <em>variadic</em>. JavaScript functions are values, so JavaScript functions can take functions as arguments, return functions, or both. Generally speaking, a function that either takes at least one function as an argument or returns a function (or both) is referred to as a &#8220;higher-order&#8221; function.</p>
 
-<p>JavaScript functions take values as arguments and return values. A function that doesn’t take arguments is <em>nullary</em>, a function taking one argument is <em>unary</em>, a function taking two or more arguments is <em>polyadic</em>, and a function that can take a variable number of arguments is <em>variadic</em>. JavaScript functions are values, so JavaScript functions can take functions as arguments, return functions, or both. Generally speaking, a function that either takes at least one function as an argument or returns a function (or both) is referred to as a “higher-order” function.</p>
-
-<p>Here’a very simple higher-order function that takes a number and a function as arguments:</p>
+<p>Here&#8217;a very simple higher-order function that takes a number and a function as arguments:</p>
 
 <pre><code>function repeat (num, fn) {
   var i, value;
@@ -108,323 +104,282 @@
 }
 
 repeat(3, function () { 
-  console.log('Hello') 
+  console.log(&#39;Hello&#39;) 
 })
   //=&gt;
-    'Hello'
-    'Hello'
-    'Hello'
-    undefined
-</code></pre>
+    &#39;Hello&#39;
+    &#39;Hello&#39;
+    &#39;Hello&#39;
+    undefined</code></pre>
 
-<h2 id="helper-function">Helper Function</h2>
+<h2 id='helper_function'>Helper Function</h2>
 
 <p>For the purposes of this article, assume the presence of the helper function <code>variadic</code> (or <code>ellipsis</code>) that converts any variadic function into a unary function taking an array of parameters. It saves us the drudgery of slicing <code>arguments</code>:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>__slice</span> <span class='o'>=</span> <span class='nb'>Array</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>.</span><span class='nx'>slice</span><span class='p'>;</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">__slice</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">;</span>
+<span class='kd'>function</span> <span class='nx'>ellipsis</span> <span class='p'>(</span><span class='nx'>fn</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>if</span> <span class='p'>(</span><span class='nx'>fn</span><span class='p'>.</span><span class='nx'>length</span> <span class='o'>&lt;</span> <span class='mi'>1</span><span class='p'>)</span> <span class='k'>return</span> <span class='nx'>fn</span><span class='p'>;</span>
 
-<span class="kd">function</span> <span class="nx">ellipsis</span> <span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">fn</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">fn</span><span class="p">;</span>
-
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">ordinaryArgs</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">?</span> 
-          <span class="nx">__slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">:</span> <span class="p">[]),</span>
-        <span class="nx">restOfTheArgsList</span> <span class="o">=</span> <span class="nx">__slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">,</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="nx">args</span> <span class="o">=</span> <span class="p">(</span><span class="nx">fn</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;=</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">?</span>
-          <span class="nx">ordinaryArgs</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span><span class="nx">restOfTheArgsList</span><span class="p">])</span> <span class="o">:</span> <span class="p">[]);</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+    <span class='kd'>var</span> <span class='nx'>ordinaryArgs</span> <span class='o'>=</span> <span class='p'>(</span><span class='mi'>1</span> <span class='o'>&lt;=</span> <span class='nx'>arguments</span><span class='p'>.</span><span class='nx'>length</span> <span class='o'>?</span> 
+          <span class='nx'>__slice</span><span class='p'>.</span><span class='nx'>call</span><span class='p'>(</span><span class='nx'>arguments</span><span class='p'>,</span> <span class='mi'>0</span><span class='p'>,</span> <span class='nx'>fn</span><span class='p'>.</span><span class='nx'>length</span> <span class='o'>-</span> <span class='mi'>1</span><span class='p'>)</span> <span class='o'>:</span> <span class='p'>[]),</span>
+        <span class='nx'>restOfTheArgsList</span> <span class='o'>=</span> <span class='nx'>__slice</span><span class='p'>.</span><span class='nx'>call</span><span class='p'>(</span><span class='nx'>arguments</span><span class='p'>,</span> <span class='nx'>fn</span><span class='p'>.</span><span class='nx'>length</span> <span class='o'>-</span> <span class='mi'>1</span><span class='p'>),</span>
+        <span class='nx'>args</span> <span class='o'>=</span> <span class='p'>(</span><span class='nx'>fn</span><span class='p'>.</span><span class='nx'>length</span> <span class='o'>&lt;=</span> <span class='nx'>arguments</span><span class='p'>.</span><span class='nx'>length</span> <span class='o'>?</span>
+          <span class='nx'>ordinaryArgs</span><span class='p'>.</span><span class='nx'>concat</span><span class='p'>([</span><span class='nx'>restOfTheArgsList</span><span class='p'>])</span> <span class='o'>:</span> <span class='p'>[]);</span>
     
-    <span class="k">return</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">};</span>
+    <span class='k'>return</span> <span class='nx'>fn</span><span class='p'>.</span><span class='nx'>apply</span><span class='p'>(</span><span class='k'>this</span><span class='p'>,</span> <span class='nx'>args</span><span class='p'>);</span>
+  <span class='p'>}</span>
+<span class='p'>};</span>
 
-<span class="kd">var</span> <span class="nx">variadic</span> <span class="o">=</span> <span class="nx">ellipsis</span><span class="p">;</span>
+<span class='kd'>var</span> <span class='nx'>variadic</span> <span class='o'>=</span> <span class='nx'>ellipsis</span><span class='p'>;</span>
 
-<span class="kd">function</span> <span class="nx">unary</span> <span class="p">(</span><span class="nx">first</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">first</span>
-<span class="p">}</span>
+<span class='kd'>function</span> <span class='nx'>unary</span> <span class='p'>(</span><span class='nx'>first</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>first</span>
+<span class='p'>}</span>
 
-<span class="nx">unary</span><span class="p">(</span><span class="s1">&#39;why&#39;</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;there&#39;</span><span class="p">)</span>
-  <span class="c1">//=&gt; &#39;why&#39;</span>
+<span class='nx'>unary</span><span class='p'>(</span><span class='s1'>&#39;why&#39;</span><span class='p'>,</span> <span class='s1'>&#39;hello&#39;</span><span class='p'>,</span> <span class='s1'>&#39;there&#39;</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; &#39;why&#39;</span>
   
-<span class="nx">variadic</span><span class="p">(</span><span class="nx">unary</span><span class="p">)(</span><span class="s1">&#39;why&#39;</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;there&#39;</span><span class="p">)</span>
-  <span class="c1">//=&gt; [ &#39;why&#39;, &#39;hello&#39;, &#39;there&#39; ]</span>
+<span class='nx'>variadic</span><span class='p'>(</span><span class='nx'>unary</span><span class='p'>)(</span><span class='s1'>&#39;why&#39;</span><span class='p'>,</span> <span class='s1'>&#39;hello&#39;</span><span class='p'>,</span> <span class='s1'>&#39;there&#39;</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; [ &#39;why&#39;, &#39;hello&#39;, &#39;there&#39; ]</span>
   
-<span class="kd">function</span> <span class="nx">binary</span> <span class="p">(</span><span class="nx">first</span><span class="p">,</span> <span class="nx">rest</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="p">[</span><span class="nx">first</span><span class="p">,</span> <span class="nx">rest</span><span class="p">]</span>
-<span class="p">}</span>
+<span class='kd'>function</span> <span class='nx'>binary</span> <span class='p'>(</span><span class='nx'>first</span><span class='p'>,</span> <span class='nx'>rest</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='p'>[</span><span class='nx'>first</span><span class='p'>,</span> <span class='nx'>rest</span><span class='p'>]</span>
+<span class='p'>}</span>
 
-<span class="nx">binary</span><span class="p">(</span><span class="s1">&#39;why&#39;</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;there&#39;</span><span class="p">)</span>
-  <span class="c1">//=&gt; [ &#39;why&#39;, &#39;hello&#39; ]</span>
+<span class='nx'>binary</span><span class='p'>(</span><span class='s1'>&#39;why&#39;</span><span class='p'>,</span> <span class='s1'>&#39;hello&#39;</span><span class='p'>,</span> <span class='s1'>&#39;there&#39;</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; [ &#39;why&#39;, &#39;hello&#39; ]</span>
 
-<span class="nx">variadic</span><span class="p">(</span><span class="nx">binary</span><span class="p">)(</span><span class="s1">&#39;why&#39;</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;there&#39;</span><span class="p">)</span>
-  <span class="c1">//=&gt; [ &#39;why&#39;, [ &#39;hello&#39;, &#39;there&#39; ] ]</span>
+<span class='nx'>variadic</span><span class='p'>(</span><span class='nx'>binary</span><span class='p'>)(</span><span class='s1'>&#39;why&#39;</span><span class='p'>,</span> <span class='s1'>&#39;hello&#39;</span><span class='p'>,</span> <span class='s1'>&#39;there&#39;</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; [ &#39;why&#39;, [ &#39;hello&#39;, &#39;there&#39; ] ]</span>
 </code></pre></div>
+<p>Variadic is a <em>function decorator</em>, it &#8220;decorates&#8221; a function with some additional functionality while remaining true to its underlying purpose.</p>
 
-<p>Variadic is a <em>function decorator</em>, it “decorates” a function with some additional functionality while remaining true to its underlying purpose.</p>
+<p><a href='http://www.flickr.com/photos/randomskk/4259022251/'><img alt='Nixie Clock Case' src='http://farm5.staticflickr.com/4043/4259022251_43edf87308_z.jpg' /></a></p>
 
-<p><a href="http://www.flickr.com/photos/randomskk/4259022251/"><img src="http://farm5.staticflickr.com/4043/4259022251_43edf87308_z.jpg" alt="Nixie Clock Case" /></a></p>
-
-<h2 id="what-is-partial-application">What is Partial Application?</h2>
+<h2 id='what_is_partial_application'>What is Partial Application?</h2>
 
 <p>Partial application is an operation that we can apply to polyadic (arity two or more) functions. Normally, function application is a single operation:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>greet</span> <span class='p'>(</span><span class='nx'>me</span><span class='p'>,</span> <span class='nx'>you</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='s2'>&quot;Hello, &quot;</span> <span class='o'>+</span> <span class='nx'>you</span> <span class='o'>+</span> <span class='s2'>&quot;, my name is &quot;</span> <span class='o'>+</span> <span class='nx'>me</span>
+<span class='p'>}</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">greet</span> <span class="p">(</span><span class="nx">me</span><span class="p">,</span> <span class="nx">you</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="s2">&quot;Hello, &quot;</span> <span class="o">+</span> <span class="nx">you</span> <span class="o">+</span> <span class="s2">&quot;, my name is &quot;</span> <span class="o">+</span> <span class="nx">me</span>
-<span class="p">}</span>
-
-<span class="nx">greet</span><span class="p">(</span><span class="s1">&#39;Helios&#39;</span><span class="p">,</span> <span class="s1">&#39;Eartha&#39;</span><span class="p">)</span>
-  <span class="c1">//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
+<span class='nx'>greet</span><span class='p'>(</span><span class='s1'>&#39;Helios&#39;</span><span class='p'>,</span> <span class='s1'>&#39;Eartha&#39;</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
 </code></pre></div>
+<p>Partial application allows us to break that single operation into two applications, one &#8220;here and right away,&#8221; and one possibly elsewhere and possibly later. How do we do something elsewhere and possibly later in JavaScript? With a function, of course, and elaborate architectures are built around this idea using techniques such as Continuation-Passing Style (a/k/a Callbacks) and Promises.</p>
 
-<p>Partial application allows us to break that single operation into two applications, one “here and right away,” and one possibly elsewhere and possibly later. How do we do something elsewhere and possibly later in JavaScript? With a function, of course, and elaborate architectures are built around this idea using techniques such as Continuation-Passing Style (a/k/a Callbacks) and Promises.</p>
+<p>But for our purposes, we understand partial application to be an operation that takes a polyadic function and applies some of the arguments and produces a function to be executed elsewhere and/or later. A fully generalized partial application operation permits us to apply one or more arguments in any position (possibly leaving holes to be filled), but let&#8217;s consider the simplest of all possible partial applications: Given a polyadic function and a single value, it applies the value to the first argument and returns a function representing the rest of the application.</p>
 
-<p>But for our purposes, we understand partial application to be an operation that takes a polyadic function and applies some of the arguments and produces a function to be executed elsewhere and/or later. A fully generalized partial application operation permits us to apply one or more arguments in any position (possibly leaving holes to be filled), but let’s consider the simplest of all possible partial applications: Given a polyadic function and a single value, it applies the value to the first argument and returns a function representing the rest of the application.</p>
-
-<p>Let’s do it by hand. Working backwards, we want a function that looks like this:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">heliosGreets</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">you</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">me</span> <span class="o">=</span> <span class="s1">&#39;Helios&#39;</span><span class="p">;</span>
+<p>Let&#8217;s do it by hand. Working backwards, we want a function that looks like this:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>heliosGreets</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>you</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>me</span> <span class='o'>=</span> <span class='s1'>&#39;Helios&#39;</span><span class='p'>;</span>
   
-  <span class="k">return</span> <span class="nx">greet</span><span class="p">(</span><span class="nx">me</span><span class="p">,</span> <span class="nx">you</span><span class="p">)</span>
-<span class="p">};</span>
+  <span class='k'>return</span> <span class='nx'>greet</span><span class='p'>(</span><span class='nx'>me</span><span class='p'>,</span> <span class='nx'>you</span><span class='p'>)</span>
+<span class='p'>};</span>
 
-<span class="nx">heliosGreets</span><span class="p">(</span><span class="s1">&#39;Eartha&#39;</span><span class="p">)</span>
-  <span class="c1">//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
+<span class='nx'>heliosGreets</span><span class='p'>(</span><span class='s1'>&#39;Eartha&#39;</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
 </code></pre></div>
+<p>We can&#8217;t have <code>&#39;Helios&#39;</code> hard-coded, so we&#8217;ll hoist it out into an Immediately Invoked Function Expression:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>heliosGreets</span> <span class='o'>=</span> <span class='p'>(</span><span class='kd'>function</span> <span class='p'>(</span><span class='nx'>me</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>you</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>greet</span><span class='p'>(</span><span class='nx'>me</span><span class='p'>,</span> <span class='nx'>you</span><span class='p'>)</span>
+  <span class='p'>}</span>
+<span class='p'>})(</span><span class='s1'>&#39;Helios&#39;</span><span class='p'>);</span>
 
-<p>We can’t have <code>'Helios'</code> hard-coded, so we’ll hoist it out into an Immediately Invoked Function Expression:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">heliosGreets</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">me</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">you</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">greet</span><span class="p">(</span><span class="nx">me</span><span class="p">,</span> <span class="nx">you</span><span class="p">)</span>
-  <span class="p">}</span>
-<span class="p">})(</span><span class="s1">&#39;Helios&#39;</span><span class="p">);</span>
-
-<span class="nx">heliosGreets</span><span class="p">(</span><span class="s1">&#39;Eartha&#39;</span><span class="p">)</span>
-  <span class="c1">//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
+<span class='nx'>heliosGreets</span><span class='p'>(</span><span class='s1'>&#39;Eartha&#39;</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
 </code></pre></div>
+<p>Let&#8217;s hoist the <code>greet</code> function too, and genericize the names a bit:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>heliosGreets</span> <span class='o'>=</span> <span class='p'>(</span><span class='kd'>function</span> <span class='p'>(</span><span class='nx'>fn</span><span class='p'>,</span> <span class='nx'>first</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>second</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>fn</span><span class='p'>(</span><span class='nx'>first</span><span class='p'>,</span> <span class='nx'>second</span><span class='p'>);</span>
+  <span class='p'>}</span>
+<span class='p'>})(</span><span class='nx'>greet</span><span class='p'>,</span> <span class='s1'>&#39;Helios&#39;</span><span class='p'>);</span>
 
-<p>Let’s hoist the <code>greet</code> function too, and genericize the names a bit:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">heliosGreets</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">first</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">second</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">first</span><span class="p">,</span> <span class="nx">second</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">})(</span><span class="nx">greet</span><span class="p">,</span> <span class="s1">&#39;Helios&#39;</span><span class="p">);</span>
-
-<span class="nx">heliosGreets</span><span class="p">(</span><span class="s1">&#39;Eartha&#39;</span><span class="p">)</span>
-  <span class="c1">//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
+<span class='nx'>heliosGreets</span><span class='p'>(</span><span class='s1'>&#39;Eartha&#39;</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
 </code></pre></div>
+<p>Now our inner function is a bit generalized. Some of the functions it may use might require the current context. Let&#8217;s preserve it:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>heliosGreets</span> <span class='o'>=</span> <span class='p'>(</span><span class='kd'>function</span> <span class='p'>(</span><span class='nx'>fn</span><span class='p'>,</span> <span class='nx'>first</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>second</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>fn</span><span class='p'>.</span><span class='nx'>apply</span><span class='p'>(</span><span class='k'>this</span><span class='p'>,</span> <span class='p'>[</span><span class='nx'>first</span><span class='p'>,</span> <span class='nx'>second</span><span class='p'>]);</span>
+  <span class='p'>}</span>
+<span class='p'>})(</span><span class='nx'>greet</span><span class='p'>,</span> <span class='s1'>&#39;Helios&#39;</span><span class='p'>);</span>
 
-<p>Now our inner function is a bit generalized. Some of the functions it may use might require the current context. Let’s preserve it:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">heliosGreets</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">first</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">second</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">[</span><span class="nx">first</span><span class="p">,</span> <span class="nx">second</span><span class="p">]);</span>
-  <span class="p">}</span>
-<span class="p">})(</span><span class="nx">greet</span><span class="p">,</span> <span class="s1">&#39;Helios&#39;</span><span class="p">);</span>
-
-<span class="nx">heliosGreets</span><span class="p">(</span><span class="s1">&#39;Eartha&#39;</span><span class="p">)</span>
-  <span class="c1">//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
+<span class='nx'>heliosGreets</span><span class='p'>(</span><span class='s1'>&#39;Eartha&#39;</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
 </code></pre></div>
+<p>And you know what else? Some functions we might apply have more than two arguments. Let&#8217;s make the inner function variadic:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>heliosGreets</span> <span class='o'>=</span> <span class='p'>(</span><span class='kd'>function</span> <span class='p'>(</span><span class='nx'>fn</span><span class='p'>,</span> <span class='nx'>first</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>variadic</span><span class='p'>(</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>args</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>fn</span><span class='p'>.</span><span class='nx'>apply</span><span class='p'>(</span><span class='k'>this</span><span class='p'>,</span> <span class='p'>[</span><span class='nx'>first</span><span class='p'>].</span><span class='nx'>concat</span><span class='p'>(</span><span class='nx'>args</span><span class='p'>));</span>
+  <span class='p'>})</span>
+<span class='p'>})(</span><span class='nx'>greet</span><span class='p'>,</span> <span class='s1'>&#39;Helios&#39;</span><span class='p'>);</span>
 
-<p>And you know what else? Some functions we might apply have more than two arguments. Let’s make the inner function variadic:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">heliosGreets</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">first</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">variadic</span><span class="p">(</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">[</span><span class="nx">first</span><span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nx">args</span><span class="p">));</span>
-  <span class="p">})</span>
-<span class="p">})(</span><span class="nx">greet</span><span class="p">,</span> <span class="s1">&#39;Helios&#39;</span><span class="p">);</span>
-
-<span class="nx">heliosGreets</span><span class="p">(</span><span class="s1">&#39;Eartha&#39;</span><span class="p">)</span>
-  <span class="c1">//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
+<span class='nx'>heliosGreets</span><span class='p'>(</span><span class='s1'>&#39;Eartha&#39;</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
 </code></pre></div>
+<p>There&#8217;s only one thing left to do, extract our IIFE and give it a name:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>applyFirst</span> <span class='p'>(</span><span class='nx'>fn</span><span class='p'>,</span> <span class='nx'>first</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>variadic</span><span class='p'>(</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>args</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>fn</span><span class='p'>.</span><span class='nx'>apply</span><span class='p'>(</span><span class='k'>this</span><span class='p'>,</span> <span class='p'>[</span><span class='nx'>first</span><span class='p'>].</span><span class='nx'>concat</span><span class='p'>(</span><span class='nx'>args</span><span class='p'>))</span>
+  <span class='p'>})</span>
+<span class='p'>}</span>
 
-<p>There’s only one thing left to do, extract our IIFE and give it a name:</p>
+<span class='kd'>var</span> <span class='nx'>heliosGreets</span> <span class='o'>=</span> <span class='nx'>applyFirst</span><span class='p'>(</span><span class='nx'>greet</span><span class='p'>,</span> <span class='s1'>&#39;Helios&#39;</span><span class='p'>);</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">applyFirst</span> <span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">first</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">variadic</span><span class="p">(</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">[</span><span class="nx">first</span><span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nx">args</span><span class="p">))</span>
-  <span class="p">})</span>
-<span class="p">}</span>
-
-<span class="kd">var</span> <span class="nx">heliosGreets</span> <span class="o">=</span> <span class="nx">applyFirst</span><span class="p">(</span><span class="nx">greet</span><span class="p">,</span> <span class="s1">&#39;Helios&#39;</span><span class="p">);</span>
-
-<span class="nx">heliosGreets</span><span class="p">(</span><span class="s1">&#39;Eartha&#39;</span><span class="p">)</span>
-  <span class="c1">//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
+<span class='nx'>heliosGreets</span><span class='p'>(</span><span class='s1'>&#39;Eartha&#39;</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; &#39;Hello, Eartha, my name is Helios&#39;</span>
 </code></pre></div>
-
-<p>In essence, we have split one function (greet) into two pieces, one taking the first argument when we called <code>applyFirst(greet, 'Helios')</code>, and one taking  the rest, which we put in the variable <code>heliosGreets</code> and indeed when we called it with <code>'Eartha'</code>, we got back the completed application of the greet function.</p>
+<p>In essence, we have split one function (greet) into two pieces, one taking the first argument when we called <code>applyFirst(greet, &#39;Helios&#39;)</code>, and one taking the rest, which we put in the variable <code>heliosGreets</code> and indeed when we called it with <code>&#39;Eartha&#39;</code>, we got back the completed application of the greet function.</p>
 
 <p>To summarize, partial application splits the application of a function into two pieces, one of which we apply now with an argument, and one of which we can apply elsewhere and later with the remaining argument(s).</p>
 
-<p>This “splitting into two” has another name in programming, it’s called <em>decomposition</em>. Normally we decompose functions by extracting sub-functions manually, or perhaps with the assistance of a refactoring editor. Refactoring and decomposition are deeply related. Refactoring is the process of decomposing a program and then recombining the parts along different lines.</p>
+<p>This &#8220;splitting into two&#8221; has another name in programming, it&#8217;s called <em>decomposition</em>. Normally we decompose functions by extracting sub-functions manually, or perhaps with the assistance of a refactoring editor. Refactoring and decomposition are deeply related. Refactoring is the process of decomposing a program and then recombining the parts along different lines.</p>
 
-<p>If we think of partial application as a kind of decomposition, something interesting emerges. We’re decomposing along the lines of the arguments a function takes. This is often congruent to something in the domain, because different arguments tend to represent different things.</p>
+<p>If we think of partial application as a kind of decomposition, something interesting emerges. We&#8217;re decomposing along the lines of the arguments a function takes. This is often congruent to something in the domain, because different arguments tend to represent different things.</p>
 
-<h3 id="applyleft">applyleft</h3>
+<h3 id='applyleft'>applyleft</h3>
 
 <p>Before we go further, here is a more general version of <code>applyFirst</code> that takes a variable number of arguments. <code>applyFirst</code> is simpler and executes faster when you only need one argument, but <code>applyLeft</code> allows you to partially apply any number of arguments.</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">applyLeft</span> <span class="o">=</span> <span class="nx">variadic</span><span class="p">(</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">fnAndLeftArguments</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="nx">fnAndLeftArguments</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-      <span class="nx">leftArguments</span> <span class="o">=</span> <span class="nx">fnAndLeftArguments</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>applyLeft</span> <span class='o'>=</span> <span class='nx'>variadic</span><span class='p'>(</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>fnAndLeftArguments</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>fn</span> <span class='o'>=</span> <span class='nx'>fnAndLeftArguments</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>],</span>
+      <span class='nx'>leftArguments</span> <span class='o'>=</span> <span class='nx'>fnAndLeftArguments</span><span class='p'>.</span><span class='nx'>slice</span><span class='p'>(</span><span class='mi'>1</span><span class='p'>);</span>
       
-  <span class="k">return</span> <span class="nx">variadic</span><span class="p">(</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">rightArguments</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">leftArguments</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">rightArguments</span><span class="p">))</span>
-  <span class="p">})</span>
-<span class="p">});</span>
+  <span class='k'>return</span> <span class='nx'>variadic</span><span class='p'>(</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>rightArguments</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>fn</span><span class='p'>.</span><span class='nx'>apply</span><span class='p'>(</span><span class='k'>this</span><span class='p'>,</span> <span class='nx'>leftArguments</span><span class='p'>.</span><span class='nx'>concat</span><span class='p'>(</span><span class='nx'>rightArguments</span><span class='p'>))</span>
+  <span class='p'>})</span>
+<span class='p'>});</span>
 </code></pre></div>
+<p>JavaScript&#8217;s <code>.bind</code> function looks a lot like <code>applyLeft</code>, however <code>.bind</code> forces you to bind the context, <code>applyLeft</code> allows you to skip binding the context. It&#8217;s useful when writing combinators and other higher-order functions. Again, these are function that could very well live in a library, it&#8217;s how to use them that matters.</p>
 
-<p>JavaScript’s <code>.bind</code> function looks a lot like <code>applyLeft</code>, however <code>.bind</code> forces you to bind the context, <code>applyLeft</code> allows you to skip binding the context. It’s useful when writing combinators and other higher-order functions. Again, these are function that could very well live in a library, it’s how to use them that matters.</p>
+<p><a href='http://www.flickr.com/photos/nix-pix/2529018779/'><img alt='Switchboard' src='http://i.minus.com/ibxLN2qmaDYNnz.jpg' /></a></p>
 
-<p><a href="http://www.flickr.com/photos/nix-pix/2529018779/"><img src="http://i.minus.com/ibxLN2qmaDYNnz.jpg" alt="Switchboard" /></a></p>
+<h2 id='binding_is_partial_application'>Binding is Partial Application</h2>
 
-<h2 id="binding-is-partial-application">Binding is Partial Application</h2>
-
-<p>Lots of libraries include a <code>map</code> function. Modern JavaScript includes a map method for arrays, but that obviously won’t work with array-like data structures (<code>arguments</code> and so forth). Typically, they look like this:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="nx">map</span><span class="p">(</span><span class="nx">array</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
-<span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+<p>Lots of libraries include a <code>map</code> function. Modern JavaScript includes a map method for arrays, but that obviously won&#8217;t work with array-like data structures (<code>arguments</code> and so forth). Typically, they look like this:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>results</span> <span class='o'>=</span> <span class='nx'>map</span><span class='p'>(</span><span class='nx'>array</span><span class='p'>,</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>element</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='c1'>// ...</span>
+<span class='p'>},</span> <span class='k'>this</span><span class='p'>);</span>
 </code></pre></div>
+<p>Note the third parameter (<code>this</code>) that specifies the context for the function applications. If you don&#8217;t supply it, the function being applied to each element cannot access anything in the current context. This is especially important if we&#8217;re using a map inside of a method. Depending on how <code>map</code> is written, the context will be the global context, <code>null</code>, or even some array (yecch!).</p>
 
-<p>Note the third parameter (<code>this</code>) that specifies the context for the function applications. If you don’t supply it, the function being applied to each element cannot access anything in the current context. This is especially important if we’re using a map inside of a method. Depending on how <code>map</code> is written, the context will be the global context, <code>null</code>, or even some array (yecch!).</p>
-
-<p>Before we go any further, let’s get rid of <code>this</code>. We can bind our function to <code>this</code> so that it always evaluates in the current context:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="nx">map</span><span class="p">(</span><span class="nx">array</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// ...</span>
-<span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+<p>Before we go any further, let&#8217;s get rid of <code>this</code>. We can bind our function to <code>this</code> so that it always evaluates in the current context:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>results</span> <span class='o'>=</span> <span class='nx'>map</span><span class='p'>(</span><span class='nx'>array</span><span class='p'>,</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>element</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='c1'>// ...</span>
+<span class='p'>}.</span><span class='nx'>bind</span><span class='p'>(</span><span class='k'>this</span><span class='p'>));</span>
 </code></pre></div>
+<p>Now it doesn&#8217;t matter how <code>map</code> deals with not supplying a context. Hey, this seems vaguely familiar. This is a function to be evaluated when given a context and an element: <code>function (element) { ... }</code>. And this applies the context now and waits for the element later: <code>function (element) { ... }.bind(this)</code>.</p>
 
-<p>Now it doesn’t matter how <code>map</code> deals with not supplying a context. Hey, this seems vaguely familiar. This is a function to be evaluated when given a context and an element: <code>function (element) { ... }</code>. And this applies  the context now and waits for the element later: <code>function (element) { ... }.bind(this)</code>.</p>
+<p>Binding the context is a JavaScript-specific form of partial application. It&#8217;s very useful. And all we have to do with the rest of partial application is open our mind to other possibilities.</p>
 
-<p>Binding the context is a JavaScript-specific form of partial application. It’s very useful. And all we have to do with the rest of partial application is open our mind to other possibilities.</p>
+<p><a href='http://www.flickr.com/photos/doctorow/2570338478/'><img alt='Phone-wire tangle' src='http://farm4.staticflickr.com/3175/2570338478_8efc990bba_z.jpg' /></a></p>
 
-<p><a href="http://www.flickr.com/photos/doctorow/2570338478/"><img src="http://farm4.staticflickr.com/3175/2570338478_8efc990bba_z.jpg" alt="Phone-wire tangle" /></a></p>
-
-<h2 id="partial-application-of-mapping">Partial Application Of Mapping</h2>
+<h2 id='partial_application_of_mapping'>Partial Application Of Mapping</h2>
 
 <p>Mapping (and folding/reducing) is extremely common. After fooling around with <code>for</code> loops for years, a programmer can be forgiven for being extremely satisfied by writing maps whenever he wants to do something to a collection. But further abstraction is not only possible, but preferable.</p>
 
-<p>Before we illustrate that, let’s introduce another partial application function in both single and general form:</p>
+<p>Before we illustrate that, let&#8217;s introduce another partial application function in both single and general form:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>applyLast</span> <span class='p'>(</span><span class='nx'>fn</span><span class='p'>,</span> <span class='nx'>last</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='nx'>variadic</span><span class='p'>(</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>args</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>fn</span><span class='p'>.</span><span class='nx'>apply</span><span class='p'>(</span><span class='k'>this</span><span class='p'>,</span> <span class='nx'>args</span><span class='p'>.</span><span class='nx'>concat</span><span class='p'>([</span><span class='nx'>last</span><span class='p'>]))</span>
+  <span class='p'>})</span>
+<span class='p'>}</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">applyLast</span> <span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">last</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">variadic</span><span class="p">(</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span><span class="nx">last</span><span class="p">]))</span>
-  <span class="p">})</span>
-<span class="p">}</span>
-
-<span class="kd">var</span> <span class="nx">applyRight</span> <span class="o">=</span> <span class="nx">variadic</span><span class="p">(</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">fnAndRightArguments</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="nx">fnAndRightArguments</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-      <span class="nx">rightArguments</span> <span class="o">=</span> <span class="nx">fnAndRightArguments</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class='kd'>var</span> <span class='nx'>applyRight</span> <span class='o'>=</span> <span class='nx'>variadic</span><span class='p'>(</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>fnAndRightArguments</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>fn</span> <span class='o'>=</span> <span class='nx'>fnAndRightArguments</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>],</span>
+      <span class='nx'>rightArguments</span> <span class='o'>=</span> <span class='nx'>fnAndRightArguments</span><span class='p'>.</span><span class='nx'>slice</span><span class='p'>(</span><span class='mi'>1</span><span class='p'>);</span>
       
-  <span class="k">return</span> <span class="nx">variadic</span><span class="p">(</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">leftArguments</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">leftArguments</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">rightArguments</span><span class="p">))</span>
-  <span class="p">})</span>
-<span class="p">});</span>
+  <span class='k'>return</span> <span class='nx'>variadic</span><span class='p'>(</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>leftArguments</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='k'>return</span> <span class='nx'>fn</span><span class='p'>.</span><span class='nx'>apply</span><span class='p'>(</span><span class='k'>this</span><span class='p'>,</span> <span class='nx'>leftArguments</span><span class='p'>.</span><span class='nx'>concat</span><span class='p'>(</span><span class='nx'>rightArguments</span><span class='p'>))</span>
+  <span class='p'>})</span>
+<span class='p'>});</span>
 </code></pre></div>
+<p>Now we can do something interesting. Let&#8217;s say we have a collection of reference objects representing something in a cache. We are doing some reference counting so we can do cache eviction. Incrementing a reference and decrementing a reference are rather obvious: <code>ref.incrementReferenceCount()</code> and <code>ref.decrementReferenceCount()</code>. Each <code>ref</code> contains a list of dependents <code>this.dependentRefs()</code>. Here&#8217;s our implementation of <code>decrementReferenceCount</code>:</p>
+<div class='highlight'><pre><code class='javascript'><span class='nx'>Reference</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>.</span><span class='nx'>decrementReferenceCount</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+  <span class='o'>--</span><span class='k'>this</span><span class='p'>.</span><span class='nx'>referenceCount</span><span class='p'>;</span>
+  <span class='k'>if</span> <span class='p'>(</span><span class='nx'>referenceCount</span> <span class='o'>===</span> <span class='mi'>0</span><span class='p'>)</span>
+    <span class='k'>this</span><span class='p'>.</span><span class='nx'>decrementDependentCounts</span><span class='p'>();</span>
+<span class='p'>};</span>
 
-<p>Now we can do something interesting. Let’s say we have a collection of reference objects representing something in a cache. We are doing some reference counting so we can do cache eviction. Incrementing a reference and decrementing a reference are rather obvious: <code>ref.incrementReferenceCount()</code> and <code>ref.decrementReferenceCount()</code>. Each <code>ref</code> contains a list of dependents <code>this.dependentRefs()</code>. Here’s our implementation of <code>decrementReferenceCount</code>:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="nx">Reference</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">decrementReferenceCount</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="o">--</span><span class="k">this</span><span class="p">.</span><span class="nx">referenceCount</span><span class="p">;</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">referenceCount</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">decrementDependentCounts</span><span class="p">();</span>
-<span class="p">};</span>
-
-<span class="nx">Reference</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">decrementDependentCounts</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">map</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">dependentRefs</span><span class="p">(),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dependent</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">dependent</span><span class="p">.</span><span class="nx">decrementReferenceCount</span><span class="p">();</span>
-  <span class="p">});</span>
-<span class="p">};</span>
+<span class='nx'>Reference</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>.</span><span class='nx'>decrementDependentCounts</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+  <span class='nx'>map</span><span class='p'>(</span><span class='k'>this</span><span class='p'>.</span><span class='nx'>dependentRefs</span><span class='p'>(),</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>dependent</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='nx'>dependent</span><span class='p'>.</span><span class='nx'>decrementReferenceCount</span><span class='p'>();</span>
+  <span class='p'>});</span>
+<span class='p'>};</span>
 </code></pre></div>
-
 <p>We use our <code>applyLast</code> function on <code>map</code>:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="nx">Reference</span><span class="p">.</span><span class="nx">decrementCounts</span> <span class="o">=</span> <span class="nx">applyLast</span><span class="p">(</span><span class="nx">map</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ref</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">ref</span><span class="p">.</span><span class="nx">decrementReferenceCount</span><span class="p">();</span>
-<span class="p">});</span>
+<div class='highlight'><pre><code class='javascript'><span class='nx'>Reference</span><span class='p'>.</span><span class='nx'>decrementCounts</span> <span class='o'>=</span> <span class='nx'>applyLast</span><span class='p'>(</span><span class='nx'>map</span><span class='p'>,</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>ref</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='nx'>ref</span><span class='p'>.</span><span class='nx'>decrementReferenceCount</span><span class='p'>();</span>
+<span class='p'>});</span>
 </code></pre></div>
-
-<p>Now we have a so-called class method that can decrement the counts of any list. Let’s use it to refactor things:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="nx">Reference</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">decrementReferenceCount</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="o">--</span><span class="k">this</span><span class="p">.</span><span class="nx">referenceCount</span><span class="p">;</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">referenceCount</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="nx">Reference</span><span class="p">.</span><span class="nx">decrementCounts</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">dependentRefs</span><span class="p">());</span>
-<span class="p">};</span>
+<p>Now we have a so-called class method that can decrement the counts of any list. Let&#8217;s use it to refactor things:</p>
+<div class='highlight'><pre><code class='javascript'><span class='nx'>Reference</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>.</span><span class='nx'>decrementReferenceCount</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+  <span class='o'>--</span><span class='k'>this</span><span class='p'>.</span><span class='nx'>referenceCount</span><span class='p'>;</span>
+  <span class='k'>if</span> <span class='p'>(</span><span class='nx'>referenceCount</span> <span class='o'>===</span> <span class='mi'>0</span><span class='p'>)</span>
+    <span class='nx'>Reference</span><span class='p'>.</span><span class='nx'>decrementCounts</span><span class='p'>(</span><span class='k'>this</span><span class='p'>.</span><span class='nx'>dependentRefs</span><span class='p'>());</span>
+<span class='p'>};</span>
 </code></pre></div>
-
 <p>We still have two functions, but one of them is now a general decrementer that can be used elsewhere. Is this important? Possibly! Is it handy? Very much so when DRYing up code. And you can use this technique with filter/select, with reduce, and anything else working over collections.</p>
 
-<p><a href="http://www.flickr.com/photos/nox_noctis_silentium/5990961019/"><img src="http://farm7.staticflickr.com/6136/5990961019_892e10aa2d_z.jpg" alt="Innards of telephone at the station on the Gwili Railway" /></a></p>
+<p><a href='http://www.flickr.com/photos/nox_noctis_silentium/5990961019/'><img alt='Innards of telephone at the station on the Gwili Railway' src='http://farm7.staticflickr.com/6136/5990961019_892e10aa2d_z.jpg' /></a></p>
 
-<h2 id="another-partial-application-with-binding-semantics">Another Partial Application with Binding Semantics</h2>
+<h2 id='another_partial_application_with_binding_semantics'>Another Partial Application with Binding Semantics</h2>
 
-<p>Languages that don’t do anything special with <code>this</code> are quite happy with a few forms of partial application. JavaScript needs a few more in very large part because of the importance of managing <code>this</code> when working with objects. This function, <code>send</code>, is useful for mapping over objects by sending them a message. It emulates Ruby’s <code>Symbol#to_proc</code> with some extra partial application goodness. For our purposes, the implementation is:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">send</span> <span class="o">=</span> <span class="nx">variadic</span><span class="p">(</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">nameAndArgs</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">methodName</span> <span class="o">=</span> <span class="nx">nameAndArgs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-      <span class="nx">leftArguments</span> <span class="o">=</span> <span class="nx">nameAndArgs</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<p>Languages that don&#8217;t do anything special with <code>this</code> are quite happy with a few forms of partial application. JavaScript needs a few more in very large part because of the importance of managing <code>this</code> when working with objects. This function, <code>send</code>, is useful for mapping over objects by sending them a message. It emulates Ruby&#8217;s <code>Symbol#to_proc</code> with some extra partial application goodness. For our purposes, the implementation is:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>send</span> <span class='o'>=</span> <span class='nx'>variadic</span><span class='p'>(</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>nameAndArgs</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>methodName</span> <span class='o'>=</span> <span class='nx'>nameAndArgs</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>],</span>
+      <span class='nx'>leftArguments</span> <span class='o'>=</span> <span class='nx'>nameAndArgs</span><span class='p'>.</span><span class='nx'>slice</span><span class='p'>(</span><span class='mi'>1</span><span class='p'>);</span>
   
-  <span class="k">return</span> <span class="nx">variadic</span><span class="p">(</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">receiverAndArgs</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">receiver</span> <span class="o">=</span> <span class="nx">receiverAndArgs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="nx">rightArguments</span> <span class="o">=</span> <span class="nx">receiverAndArgs</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">receiver</span><span class="p">[</span><span class="nx">methodName</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">receiver</span><span class="p">,</span> <span class="nx">leftArguments</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">rightArguments</span><span class="p">))</span>
-  <span class="p">})</span>
-<span class="p">})</span>
+  <span class='k'>return</span> <span class='nx'>variadic</span><span class='p'>(</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>receiverAndArgs</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='kd'>var</span> <span class='nx'>receiver</span> <span class='o'>=</span> <span class='nx'>receiverAndArgs</span><span class='p'>[</span><span class='mi'>0</span><span class='p'>],</span>
+        <span class='nx'>rightArguments</span> <span class='o'>=</span> <span class='nx'>receiverAndArgs</span><span class='p'>.</span><span class='nx'>slice</span><span class='p'>(</span><span class='mi'>1</span><span class='p'>);</span>
+    <span class='k'>return</span> <span class='nx'>receiver</span><span class='p'>[</span><span class='nx'>methodName</span><span class='p'>].</span><span class='nx'>apply</span><span class='p'>(</span><span class='nx'>receiver</span><span class='p'>,</span> <span class='nx'>leftArguments</span><span class='p'>.</span><span class='nx'>concat</span><span class='p'>(</span><span class='nx'>rightArguments</span><span class='p'>))</span>
+  <span class='p'>})</span>
+<span class='p'>})</span>
 </code></pre></div>
-
 <p>We use <code>send</code> like this. Instead of:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="nx">Reference</span><span class="p">.</span><span class="nx">decrementCounts</span> <span class="o">=</span> <span class="nx">applyLast</span><span class="p">(</span><span class="nx">map</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ref</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">ref</span><span class="p">.</span><span class="nx">decrementReferenceCount</span><span class="p">();</span>
-<span class="p">});</span>
+<div class='highlight'><pre><code class='javascript'><span class='nx'>Reference</span><span class='p'>.</span><span class='nx'>decrementCounts</span> <span class='o'>=</span> <span class='nx'>applyLast</span><span class='p'>(</span><span class='nx'>map</span><span class='p'>,</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>ref</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='nx'>ref</span><span class='p'>.</span><span class='nx'>decrementReferenceCount</span><span class='p'>();</span>
+<span class='p'>});</span>
 </code></pre></div>
-
 <p>We write:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="nx">Reference</span><span class="p">.</span><span class="nx">decrementCounts</span> <span class="o">=</span> <span class="nx">applyLast</span><span class="p">(</span><span class="nx">map</span><span class="p">,</span> <span class="nx">send</span><span class="p">(</span><span class="s1">&#39;decrementReferenceCount&#39;</span><span class="p">));</span>
+<div class='highlight'><pre><code class='javascript'><span class='nx'>Reference</span><span class='p'>.</span><span class='nx'>decrementCounts</span> <span class='o'>=</span> <span class='nx'>applyLast</span><span class='p'>(</span><span class='nx'>map</span><span class='p'>,</span> <span class='nx'>send</span><span class='p'>(</span><span class='s1'>&#39;decrementReferenceCount&#39;</span><span class='p'>));</span>
 </code></pre></div>
+<p>And people complain JavaScript is verbose. <em>JavaScript is not verbose, attempting to write Java code in JavaScript is verbose</em>. JavaScript is a functional language. When you use functional programming idioms in JavaScript, you are &#8220;cutting with the grain.&#8221;</p>
 
-<p>And people complain JavaScript is verbose. <em>JavaScript is not verbose, attempting to write Java code in JavaScript is verbose</em>. JavaScript is a functional language. When you use functional programming idioms in JavaScript, you are “cutting with the grain.”</p>
-
-<p>Speaking of which… When you’re holding the partial application hammer, every piece of code begins to look like a function to be decomposed nail. The third time you write <code>applyLast(map, ...)</code>, you ought to ask yourself, “Can I extract this?”</p>
+<p>Speaking of which&#8230; When you&#8217;re holding the partial application hammer, every piece of code begins to look like a function to be decomposed nail. The third time you write <code>applyLast(map, ...)</code>, you ought to ask yourself, &#8220;Can I extract this?&#8221;</p>
 
 <p>Yes you can:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>splat</span> <span class='o'>=</span> <span class='nx'>applyFirst</span><span class='p'>(</span><span class='nx'>applyLast</span><span class='p'>,</span> <span class='nx'>map</span><span class='p'>);</span>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">splat</span> <span class="o">=</span> <span class="nx">applyFirst</span><span class="p">(</span><span class="nx">applyLast</span><span class="p">,</span> <span class="nx">map</span><span class="p">);</span>
+<span class='kd'>var</span> <span class='nx'>squareAll</span> <span class='o'>=</span> <span class='nx'>splat</span><span class='p'>(</span><span class='kd'>function</span> <span class='p'>(</span><span class='nx'>n</span><span class='p'>)</span> <span class='p'>{</span> <span class='k'>return</span> <span class='nx'>n</span> <span class='o'>*</span> <span class='nx'>n</span> <span class='p'>});</span>
 
-<span class="kd">var</span> <span class="nx">squareAll</span> <span class="o">=</span> <span class="nx">splat</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">n</span> <span class="p">});</span>
-
-<span class="nx">squareAll</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
-  <span class="c1">//=&gt; [1, 4, 9, 16, 25]</span>
+<span class='nx'>squareAll</span><span class='p'>([</span><span class='mi'>1</span><span class='p'>,</span> <span class='mi'>2</span><span class='p'>,</span> <span class='mi'>3</span><span class='p'>,</span> <span class='mi'>4</span><span class='p'>,</span> <span class='mi'>5</span><span class='p'>])</span>
+  <span class='c1'>//=&gt; [1, 4, 9, 16, 25]</span>
 </code></pre></div>
-
 <p>Which leads us to:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="nx">Reference</span><span class="p">.</span><span class="nx">decrementCounts</span> <span class="o">=</span> <span class="nx">splat</span><span class="p">(</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;decrementReferenceCount&#39;</span><span class="p">));</span>
+<div class='highlight'><pre><code class='javascript'><span class='nx'>Reference</span><span class='p'>.</span><span class='nx'>decrementCounts</span> <span class='o'>=</span> <span class='nx'>splat</span><span class='p'>(</span><span class='nx'>send</span><span class='p'>(</span><span class='s1'>&#39;decrementReferenceCount&#39;</span><span class='p'>));</span>
 </code></pre></div>
+<p><img alt='What are the applications?' src='http://i.minus.com/ibweUTQ6MzlKIm.png' /></p>
 
-<p><img src="http://i.minus.com/ibweUTQ6MzlKIm.png" alt="What are the applications?" /></p>
+<h2 id='conclusion'>Conclusion</h2>
 
-<h2 id="conclusion">Conclusion</h2>
+<p><strong>Partial application is what allows us to abstract away a lot of function scaffolding, in large part because it&#8217;s a compact way to decompose functions</strong>.</p>
 
-<p><strong>Partial application is what allows us to abstract away a lot of function scaffolding, in large part because it’s a compact way to decompose functions</strong>.</p>
-
-<p>(discuss on <a href="https://lobste.rs/s/u2oed1/practical_applications_of_partial_application">lobste.rs</a>, <a href="http://www.reddit.com/r/programming/comments/160mtu/practical_applications_of_partial_application_js/">/r/programming</a> or  <a href="http://www.reddit.com/r/javascript/comments/160ls5/practical_applications_of_partial_application/">/r/javascript</a>)</p>
+<p>(discuss on <a href='https://lobste.rs/s/u2oed1/practical_applications_of_partial_application'>lobste.rs</a>, <a href='http://www.reddit.com/r/programming/comments/160mtu/practical_applications_of_partial_application_js/'>/r/programming</a> or <a href='http://www.reddit.com/r/javascript/comments/160ls5/practical_applications_of_partial_application/'>/r/javascript</a>)</p>
 
 <p>Notes:</p>
 
 <ul>
-  <li><code>variadic</code>/<code>ellipsis</code>, <code>applyFirst</code> and <code>applyLast</code> are just a few of the utility functions in the <a href="http://allong.es">allong.es</a> library.</li>
-  <li><code>applyFirst</code> and <code>applyLast</code> were inspired by Michael Fogus’ <a href="https://github.com/fogus/lemonad">Lemonad</a>. Thanks!</li>
-  <li>The ideas in this post are shamelessly extracted from my book <a href="http://leanpub.com/javascript-allonge">JavaScript Allongé</a>. Yes I am pimping it out! Please consider downloading the free sample PDF. It comes with a no questions asked, 100% money-back guarantee.</li>
+<li><code>variadic</code>/<code>ellipsis</code>, <code>applyFirst</code> and <code>applyLast</code> are just a few of the utility functions in the <a href='http://allong.es'>allong.es</a> library.</li>
+
+<li><code>applyFirst</code> and <code>applyLast</code> were inspired by Michael Fogus&#8217; <a href='https://github.com/fogus/lemonad'>Lemonad</a>. Thanks!</li>
+
+<li>The ideas in this post are shamelessly extracted from my book <a href='http://leanpub.com/javascript-allonge'>JavaScript Allongé</a>. Yes I am pimping it out! Please consider downloading the free sample PDF. It comes with a no questions asked, 100% money-back guarantee.</li>
 </ul>
-
-
         </section>
 
         <footer>

@@ -87,24 +87,25 @@
   
 
           
-          <p><em>Previously in</em> <a href="./horton.html">A Surreal Encounter with a Winged Elephant</a>, <em>Maude learned about proper flocks of birds that could be ordered into “ranks” based on the birds they personally knew in the flock. She learned that such flocks could be used to model the natural numbers and that one could perform addition with such flocks just by working directly with the birds.</em></p>
-
+          <p><em>Previously in</em> <a href='./horton.html'>A Surreal Encounter with a Winged Elephant</a>, <em>Maude learned about proper flocks of birds that could be ordered into &#8220;ranks&#8221; based on the birds they personally knew in the flock. She learned that such flocks could be used to model the natural numbers and that one could perform addition with such flocks just by working directly with the birds.</em></p>
 <hr />
+<h3 id='natural_numbers'>natural numbers</h3>
 
-<h3 id="natural-numbers">natural numbers</h3>
-
-<p>Maude had suddenly realized that a proper flock of birds could model the whole numbers, including the plus or “addition” function. She recapitulated what she knew:</p>
+<p>Maude had suddenly realized that a proper flock of birds could model the whole numbers, including the plus or &#8220;addition&#8221; function. She recapitulated what she knew:</p>
 
 <ol>
-  <li>Each bird on the branch represented a number</li>
-  <li>Presuming they were added in the manner Horton proscribed, each bird represented a number one larger than the number represented by the bird to its left.</li>
-  <li>The <code>P</code> or <code>Plus</code> operation modelled addition.</li>
-  <li>Since any bird plus Mayzie was equal to itself, Mayzie must represent zero.</li>
+<li>Each bird on the branch represented a number</li>
+
+<li>Presuming they were added in the manner Horton proscribed, each bird represented a number one larger than the number represented by the bird to its left.</li>
+
+<li>The <code>P</code> or <code>Plus</code> operation modelled addition.</li>
+
+<li>Since any bird plus Mayzie was equal to itself, Mayzie must represent zero.</li>
 </ol>
 
 <p>She collected her notes and added some new numbers:</p>
 
-<pre><code>{any, map} = require('underscore')
+<pre><code>{any, map} = require(&#39;underscore&#39;)
 
 class FlockingBird
 
@@ -159,74 +160,72 @@ Five = new FlockingBird
   knownToOutrank: [Four]
 Six = new FlockingBird
   knownToOutrank: [Five]
-# ...
-</code></pre>
+# ...</code></pre>
 
-<p>But she had a question. “Horton,” she asked, “You said that Mayzie is sitting in the middle of the branch. Presuming that Mayzie is zero, what birds would sit to her left?”</p>
+<p>But she had a question. &#8220;Horton,&#8221; she asked, &#8220;You said that Mayzie is sitting in the middle of the branch. Presuming that Mayzie is zero, what birds would sit to her left?&#8221;</p>
 
-<p>Horton bounced the question back to Maude: “What numbers are less than zero?”</p>
+<p>Horton bounced the question back to Maude: &#8220;What numbers are less than zero?&#8221;</p>
 
-<h3 id="negative-numbers">negative numbers</h3>
+<h3 id='negative_numbers'>negative numbers</h3>
 
-<p>Maude quickly answered, “Negative numbers,” and then pursed her lips in thought. Up to that moment, all new “numbers” had been constructed by adding a new bird that knew it outranked the bird to its left. Which meant that:</p>
+<p>Maude quickly answered, &#8220;Negative numbers,&#8221; and then pursed her lips in thought. Up to that moment, all new &#8220;numbers&#8221; had been constructed by adding a new bird that knew it outranked the bird to its left. Which meant that:</p>
 
 <ol>
-  <li>Every bird knew the bird to its left.</li>
-  <li>No bird knew the bird to its right.</li>
+<li>Every bird knew the bird to its left.</li>
+
+<li>No bird knew the bird to its right.</li>
 </ol>
 
-<p>There was no way to add a bird to the left of Mayzie using this scheme, since she didn’t know any birds she outranked. What to do? Maude realized that if she changed the scheme and altered Mayzie to accommodate a new bird to Mayzie’s left, she would just be changing Mayzie from a “zero” to a “one.” She had to leave Mayzie unaltered.</p>
+<p>There was no way to add a bird to the left of Mayzie using this scheme, since she didn&#8217;t know any birds she outranked. What to do? Maude realized that if she changed the scheme and altered Mayzie to accommodate a new bird to Mayzie&#8217;s left, she would just be changing Mayzie from a &#8220;zero&#8221; to a &#8220;one.&#8221; She had to leave Mayzie unaltered.</p>
 
-<p>So what could she do with the new bird to Mayzie’s left? It couldn’t know a bird to its left, she would have to construct an infinite chain of birds to make that work. Th enew bird to Mayzie’s left could only know a bird to its <em>right</em>, i.e. Mayzie.</p>
+<p>So what could she do with the new bird to Mayzie&#8217;s left? It couldn&#8217;t know a bird to its left, she would have to construct an infinite chain of birds to make that work. Th enew bird to Mayzie&#8217;s left could only know a bird to its <em>right</em>, i.e. Mayzie.</p>
 
-<p>Maude decided to try this. There was some logic to this, it would be symmetrical to the positive numbers. Now the number to Mayzie’s left would be outranked by Mayzie, only Mayzie wouldn’t know it. So Maude wrote:</p>
+<p>Maude decided to try this. There was some logic to this, it would be symmetrical to the positive numbers. Now the number to Mayzie&#8217;s left would be outranked by Mayzie, only Mayzie wouldn&#8217;t know it. So Maude wrote:</p>
 
 <pre><code>NegativeOne = new FlockingBird
-  knownOutrankedBy: [Zero]
-</code></pre>
+  knownOutrankedBy: [Zero]</code></pre>
 
 <p>And if this held, by extension:</p>
 
 <pre><code>NegativeTwo = new FlockingBird
   knownOutrankedBy: [NegativeOne]
 NegativeThree = new FlockingBird
-  knownOutrankedBy: [NegativeTwo]
-</code></pre>
+  knownOutrankedBy: [NegativeTwo]</code></pre>
 
 <p>And so forth. She then decided to check her work:</p>
 
-<pre><code>describe "negative one plus zero", -&gt;
+<pre><code>describe &quot;negative one plus zero&quot;, -&gt;
   
-  it "should equal negative one", -&gt;
+  it &quot;should equal negative one&quot;, -&gt;
   
     expect( plus(NegativeOne, Zero).isOfEqualRankTo NegativeOne ).toEqual true
     expect( plus(Zero, NegativeOne).isOfEqualRankTo NegativeOne ).toEqual true
 
-describe "negative one plus negative one", -&gt;
+describe &quot;negative one plus negative one&quot;, -&gt;
   
-  it "should equal negative one", -&gt;
+  it &quot;should equal negative one&quot;, -&gt;
   
     expect( plus(NegativeOne, NegativeOne).isOfEqualRankTo NegativeTwo ).toEqual true
 
-describe "negative one plus positive one", -&gt;
+describe &quot;negative one plus positive one&quot;, -&gt;
   
-  it "should equal negative one", -&gt;
+  it &quot;should equal negative one&quot;, -&gt;
   
     expect( plus(NegativeOne, One).isOfEqualRankTo Zero ).toEqual true
-    expect( plus(One, NegativeOne).isOfEqualRankTo Zero ).toEqual true
-</code></pre>
+    expect( plus(One, NegativeOne).isOfEqualRankTo Zero ).toEqual true</code></pre>
 
-<h3 id="dpplegangers">döpplegangers</h3>
+<h3 id='dpplegangers'>döpplegangers</h3>
 
-<p>“Hmmm,” Maude mused, “Given a bird, how do we find the bird representing its negative?”</p>
+<p>&#8220;Hmmm,&#8221; Maude mused, &#8220;Given a bird, how do we find the bird representing its negative?&#8221;</p>
 
-<p>Horton looked at her. “Well, I do know a way to find what I call the döppleganger of any bird in a flock. For example, the döppleganger of the bird immediately to Mayzie’s left is the bird immediately to Mayzie’s right, and so forth.”</p>
+<p>Horton looked at her. &#8220;Well, I do know a way to find what I call the döppleganger of any bird in a flock. For example, the döppleganger of the bird immediately to Mayzie&#8217;s left is the bird immediately to Mayzie&#8217;s right, and so forth.&#8221;</p>
 
-<p>After some discussion that we will omit, Maude understood that given some bird <code>B</code>, its  döppleganger could be identified as being the bird that:</p>
+<p>After some discussion that we will omit, Maude understood that given some bird <code>B</code>, its döppleganger could be identified as being the bird that:</p>
 
 <ol>
-  <li>Is outranked by the döpplegangers of every bird <code>B</code> is known to outrank.</li>
-  <li>Outranks the döpplegangers of every bird known to outrank <code>B</code>.</li>
+<li>Is outranked by the döpplegangers of every bird <code>B</code> is known to outrank.</li>
+
+<li>Outranks the döpplegangers of every bird known to outrank <code>B</code>.</li>
 </ol>
 
 <p>She made the following notes:</p>
@@ -235,34 +234,33 @@ describe "negative one plus positive one", -&gt;
   knownOutrankedBy: map @knownToOutrank, (its) -&gt; its.doppleganger()
   knownToOutrank: map @knownOutrankedBy, (its) -&gt; its.doppleganger()
   
-describe "One's döppleganger", -&gt;
+describe &quot;One&#39;s döppleganger&quot;, -&gt;
 
-  it "should be of equal rank as NegativeOne", -&gt;
+  it &quot;should be of equal rank as NegativeOne&quot;, -&gt;
     
     expect( One.doppleganger().isOfEqualRankTo(NegativeOne) ).toEqual true
   
-describe "NegativeOne's döppleganger", -&gt;
+describe &quot;NegativeOne&#39;s döppleganger&quot;, -&gt;
 
-  it "should be of equal rank as One", -&gt;
+  it &quot;should be of equal rank as One&quot;, -&gt;
     
     expect( NegativeOne.doppleganger().isOfEqualRankTo(One) ).toEqual true
   
-describe "Three's döppleganger", -&gt;
+describe &quot;Three&#39;s döppleganger&quot;, -&gt;
 
-  it "should be of equal rank as NegativeThree", -&gt;
+  it &quot;should be of equal rank as NegativeThree&quot;, -&gt;
     
     expect( Three.doppleganger().isOfEqualRankTo(NegativeThree) ).toEqual true
   
-describe "NegativeThree's döppleganger", -&gt;
+describe &quot;NegativeThree&#39;s döppleganger&quot;, -&gt;
 
-  it "should be of equal rank as Three", -&gt;
+  it &quot;should be of equal rank as Three&quot;, -&gt;
     
-    expect( NegativeThree.doppleganger().isOfEqualRankTo(Three) ).toEqual true
-</code></pre>
+    expect( NegativeThree.doppleganger().isOfEqualRankTo(Three) ).toEqual true</code></pre>
 
-<h3 id="squabbling-birds">squabbling birds</h3>
+<h3 id='squabbling_birds'>squabbling birds</h3>
 
-<p>Maude wasn’t surprised to hear that sometimes, instead of pairing up to work together, one bird would squabble with another another, following it around and undermining its rank. Unlike a pair, the effective rank of the two birds was equivalent to the rank of the squabbling bird subtracted from the bird it was harassing.</p>
+<p>Maude wasn&#8217;t surprised to hear that sometimes, instead of pairing up to work together, one bird would squabble with another another, following it around and undermining its rank. Unlike a pair, the effective rank of the two birds was equivalent to the rank of the squabbling bird subtracted from the bird it was harassing.</p>
 
 <p>Made had no difficulty working out the implications given what she already knew about pairings and döpplegangers:</p>
 
@@ -270,16 +268,15 @@ describe "NegativeThree's döppleganger", -&gt;
 
 expect( subtract(Three, One).isOfEqualRankTo(Two) ).toEqual true
 
-expect( subtract(Zero, NegativeOne).isOfEqualRankTo(One) ).toEqual true
-</code></pre>
+expect( subtract(Zero, NegativeOne).isOfEqualRankTo(One) ).toEqual true</code></pre>
 
-<h3 id="nesting-birds">nesting birds</h3>
+<h3 id='nesting_birds'>nesting birds</h3>
 
-<p>“Speaking of pairs,” Horton said, “I have discovered something interesting. When two birds mate and nest, they select and defend a territory. You might think that the size of their territory would be commensurate with the rank of the two birds as a pair, but this is not so. So strong is their instinct to protect their nest that when eggs or chicks are in the nest, their rank is equivalent to the <em>product</em> of their ranks, not the sum.”</p>
+<p>&#8220;Speaking of pairs,&#8221; Horton said, &#8220;I have discovered something interesting. When two birds mate and nest, they select and defend a territory. You might think that the size of their territory would be commensurate with the rank of the two birds as a pair, but this is not so. So strong is their instinct to protect their nest that when eggs or chicks are in the nest, their rank is equivalent to the <em>product</em> of their ranks, not the sum.&#8221;</p>
 
 <p>Maude started to think in her mind how one might repeatedly sum the ranks of the birds to arrive at the proper result, but Horton was furiously drawing strange characters in the sand.</p>
 
-<p>After some exposition on his part, checking, and correction on Maude’s part, she transcribed his methods into her own notes:</p>
+<p>After some exposition on his part, checking, and correction on Maude&#8217;s part, she transcribed his methods into her own notes:</p>
 
 <pre><code>multiply = (x, y) -&gt;
   [XLYL, XLYR, XRYL, XRYR] = [[], [], [], []]
@@ -315,9 +312,9 @@ expect( subtract(Zero, NegativeOne).isOfEqualRankTo(One) ).toEqual true
     knownOutrankedBy: XLYR.concat(XRYL)
   
   
-describe "multiplication by zero", -&gt;
+describe &quot;multiplication by zero&quot;, -&gt;
 
-  it "should turn any number into zero", -&gt;
+  it &quot;should turn any number into zero&quot;, -&gt;
     expect( multiply(Zero, Zero).isOfEqualRankTo(Zero) ).toEqual true
     expect( multiply(Zero, One).isOfEqualRankTo(Zero) ).toEqual true
     expect( multiply(One, Zero).isOfEqualRankTo(Zero) ).toEqual true
@@ -330,9 +327,9 @@ describe "multiplication by zero", -&gt;
     expect( multiply(Zero, Two).isOfEqualRankTo(Two) ).toEqual false
     expect( multiply(Two, Zero).isOfEqualRankTo(One) ).toEqual false
   
-describe "multiplication by one", -&gt;
+describe &quot;multiplication by one&quot;, -&gt;
 
-  it "should turn any number into itself", -&gt;
+  it &quot;should turn any number into itself&quot;, -&gt;
     expect( multiply(Zero, One).isOfEqualRankTo(Zero) ).toEqual true
     expect( multiply(One, Zero).isOfEqualRankTo(Zero) ).toEqual true
     expect( multiply(One, One).isOfEqualRankTo(One) ).toEqual true
@@ -345,18 +342,14 @@ describe "multiplication by one", -&gt;
     expect( multiply(One, Two).isOfEqualRankTo(Three) ).toEqual false
     expect( multiply(Two, One).isOfEqualRankTo(One) ).toEqual false
   
-describe "multiplication by two", -&gt;
+describe &quot;multiplication by two&quot;, -&gt;
 
-  it "should double any number", -&gt;
+  it &quot;should double any number&quot;, -&gt;
     expect( multiply(Two, Two).isOfEqualRankTo(Four) ).toEqual true
     expect( multiply(Two, Three).isOfEqualRankTo(Six) ).toEqual true
-    expect( multiply(Three, Two).isOfEqualRankTo(Six) ).toEqual true
-</code></pre>
-
+    expect( multiply(Three, Two).isOfEqualRankTo(Six) ).toEqual true</code></pre>
 <hr />
-
-<p>Continue “<a href="./horton.html#what-does-it-mean">A Surreal Encounter With a Winged Elephant</a>”</p>
-
+<p>Continue &#8221;<a href='./horton.html#what-does-it-mean'>A Surreal Encounter With a Winged Elephant</a>&#8221;</p>
         </section>
 
         <footer>

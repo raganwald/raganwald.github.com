@@ -72,177 +72,163 @@
   
 
           
-          <p><em>From time to time people mention that they’ve heard that JavaScript doesn’t have classes, that it uses “prototypical inheritance,” and what is the difference between class-based inheritance and prototype-based inheritance?</em></p>
-
+          <p><em>From time to time people mention that they&#8217;ve heard that JavaScript doesn&#8217;t have classes, that it uses &#8220;prototypical inheritance,&#8221; and what is the difference between class-based inheritance and prototype-based inheritance?</em></p>
 <hr />
+<p>Although each &#8220;object-oriented&#8221; programming language has its own particular set of semantics, the majority in popular use have &#8220;classes.&#8221; A class is an entity responsible for creating objects and defining the behaviour of objects. Classes may be objects in their own right, but if they are, they&#8217;re different from other types of objects. For example, the <code>String</code> class in Ruby is not itself a string, it&#8217;s an object whose class is <code>Class</code>. All objects in a &#8220;classical&#8221; system have a class, and their class is a &#8220;class.&#8221;</p>
 
-<p>Although each “object-oriented” programming language has its own particular set of semantics, the majority in popular use have “classes.” A class is an entity responsible for creating objects and defining the behaviour of objects. Classes may be objects in their own right, but if they are, they’re different from other types of objects. For example, the <code>String</code> class in Ruby is not itself a string, it’s an object whose class is <code>Class</code>. All objects in a “classical” system have a class, and their class is a “class.”</p>
+<p>That sounds tautological, until we look at JavaScript. But let&#8217;s start with a quick review of a popular classist language, Ruby.</p>
 
-<p>That sounds tautological, until we look at JavaScript. But let’s start with a quick review of a popular classist language, Ruby.</p>
+<h3 id='ruby'>ruby</h3>
 
-<h3 id="ruby">ruby</h3>
-
-<p>In Ruby, classes are objects, but they’re special objects. For example, here are some of the methods associated with the Ruby class <code>String</code>:</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="nb">String</span><span class="o">.</span><span class="n">methods</span>
-  <span class="c1">#=&gt; [:try_convert, :allocate, :new, :superclass, :freeze, :===, :==,</span>
-       <span class="ss">:&lt;=&gt;</span><span class="p">,</span> <span class="p">:</span><span class="o">&lt;</span><span class="p">,</span> <span class="p">:</span><span class="o">&lt;=</span><span class="p">,</span> <span class="ss">:&gt;</span><span class="p">,</span> <span class="ss">:&gt;=</span><span class="p">,</span> <span class="ss">:to_s</span><span class="p">,</span> <span class="ss">:included_modules</span><span class="p">,</span> <span class="ss">:include?</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> 
-       <span class="ss">:ancestors</span><span class="p">,</span> <span class="ss">:instance_methods</span><span class="p">,</span> <span class="ss">:public_instance_methods</span><span class="p">,</span> 
-       <span class="ss">:protected_instance_methods</span><span class="p">,</span> <span class="ss">:private_instance_methods</span><span class="p">,</span> <span class="ss">:constants</span><span class="p">,</span> 
-       <span class="ss">:const_get</span><span class="p">,</span> <span class="ss">:const_set</span><span class="p">,</span> <span class="ss">:const_defined?</span><span class="p">,</span> <span class="ss">:const_missing</span><span class="p">,</span> 
-       <span class="ss">:class_variables</span><span class="p">,</span> <span class="ss">:remove_class_variable</span><span class="p">,</span> <span class="ss">:class_variable_get</span><span class="p">,</span> 
-       <span class="ss">:class_variable_set</span><span class="p">,</span> <span class="ss">:class_variable_defined?</span><span class="p">,</span> <span class="ss">:public_constant</span><span class="p">,</span> 
-       <span class="ss">:private_constant</span><span class="p">,</span> <span class="ss">:module_exec</span><span class="p">,</span> <span class="ss">:class_exec</span><span class="p">,</span> <span class="ss">:module_eval</span><span class="p">,</span> <span class="ss">:class_eval</span><span class="p">,</span> 
-       <span class="ss">:method_defined?</span><span class="p">,</span> <span class="ss">:public_method_defined?</span><span class="p">,</span> <span class="ss">:private_method_defined?</span><span class="p">,</span> 
-       <span class="ss">:protected_method_defined?</span><span class="p">,</span> <span class="ss">:public_class_method</span><span class="p">,</span> <span class="ss">:private_class_method</span><span class="p">,</span> 
-       <span class="c1"># ...</span>
-       <span class="p">:</span><span class="o">!=</span><span class="p">,</span> <span class="ss">:instance_eval</span><span class="p">,</span> <span class="ss">:instance_exec</span><span class="p">,</span> <span class="ss">:__send__</span><span class="p">,</span> <span class="ss">:__id__</span><span class="o">]</span> 
+<p>In Ruby, classes are objects, but they&#8217;re special objects. For example, here are some of the methods associated with the Ruby class <code>String</code>:</p>
+<div class='highlight'><pre><code class='ruby'><span class='nb'>String</span><span class='o'>.</span><span class='n'>methods</span>
+  <span class='c1'>#=&gt; [:try_convert, :allocate, :new, :superclass, :freeze, :===, :==,</span>
+       <span class='ss'>:&lt;=&gt;</span><span class='p'>,</span> <span class='p'>:</span><span class='o'>&lt;</span><span class='p'>,</span> <span class='p'>:</span><span class='o'>&lt;=</span><span class='p'>,</span> <span class='ss'>:&gt;</span><span class='p'>,</span> <span class='ss'>:&gt;=</span><span class='p'>,</span> <span class='ss'>:to_s</span><span class='p'>,</span> <span class='ss'>:included_modules</span><span class='p'>,</span> <span class='ss'>:include?</span><span class='p'>,</span> <span class='ss'>:name</span><span class='p'>,</span> 
+       <span class='ss'>:ancestors</span><span class='p'>,</span> <span class='ss'>:instance_methods</span><span class='p'>,</span> <span class='ss'>:public_instance_methods</span><span class='p'>,</span> 
+       <span class='ss'>:protected_instance_methods</span><span class='p'>,</span> <span class='ss'>:private_instance_methods</span><span class='p'>,</span> <span class='ss'>:constants</span><span class='p'>,</span> 
+       <span class='ss'>:const_get</span><span class='p'>,</span> <span class='ss'>:const_set</span><span class='p'>,</span> <span class='ss'>:const_defined?</span><span class='p'>,</span> <span class='ss'>:const_missing</span><span class='p'>,</span> 
+       <span class='ss'>:class_variables</span><span class='p'>,</span> <span class='ss'>:remove_class_variable</span><span class='p'>,</span> <span class='ss'>:class_variable_get</span><span class='p'>,</span> 
+       <span class='ss'>:class_variable_set</span><span class='p'>,</span> <span class='ss'>:class_variable_defined?</span><span class='p'>,</span> <span class='ss'>:public_constant</span><span class='p'>,</span> 
+       <span class='ss'>:private_constant</span><span class='p'>,</span> <span class='ss'>:module_exec</span><span class='p'>,</span> <span class='ss'>:class_exec</span><span class='p'>,</span> <span class='ss'>:module_eval</span><span class='p'>,</span> <span class='ss'>:class_eval</span><span class='p'>,</span> 
+       <span class='ss'>:method_defined?</span><span class='p'>,</span> <span class='ss'>:public_method_defined?</span><span class='p'>,</span> <span class='ss'>:private_method_defined?</span><span class='p'>,</span> 
+       <span class='ss'>:protected_method_defined?</span><span class='p'>,</span> <span class='ss'>:public_class_method</span><span class='p'>,</span> <span class='ss'>:private_class_method</span><span class='p'>,</span> 
+       <span class='c1'># ...</span>
+       <span class='p'>:</span><span class='o'>!=</span><span class='p'>,</span> <span class='ss'>:instance_eval</span><span class='p'>,</span> <span class='ss'>:instance_exec</span><span class='p'>,</span> <span class='ss'>:__send__</span><span class='p'>,</span> <span class='ss'>:__id__</span><span class='o'>]</span> 
 </code></pre></div>
-
 <p>And here are some of the methods associated with an instance of a string:</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="nb">String</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">methods</span>
-  <span class="c1">#=&gt; [:&lt;=&gt;, :==, :===, :eql?, :hash, :casecmp, :+, :*, :%, :[],</span>
-       <span class="ss">:[]=</span><span class="p">,</span> <span class="ss">:insert</span><span class="p">,</span> <span class="ss">:length</span><span class="p">,</span> <span class="ss">:size</span><span class="p">,</span> <span class="ss">:bytesize</span><span class="p">,</span> <span class="ss">:empty?</span><span class="p">,</span> <span class="p">:</span><span class="o">=~</span><span class="p">,</span>
-       <span class="ss">:match</span><span class="p">,</span> <span class="ss">:succ</span><span class="p">,</span> <span class="ss">:succ!</span><span class="p">,</span> <span class="ss">:next</span><span class="p">,</span> <span class="ss">:next!</span><span class="p">,</span> <span class="ss">:upto</span><span class="p">,</span> <span class="ss">:index</span><span class="p">,</span> <span class="ss">:rindex</span><span class="p">,</span>
-       <span class="ss">:replace</span><span class="p">,</span> <span class="ss">:clear</span><span class="p">,</span> <span class="ss">:chr</span><span class="p">,</span> <span class="ss">:getbyte</span><span class="p">,</span> <span class="ss">:setbyte</span><span class="p">,</span> <span class="ss">:byteslice</span><span class="p">,</span>
-       <span class="ss">:to_i</span><span class="p">,</span> <span class="ss">:to_f</span><span class="p">,</span> <span class="ss">:to_s</span><span class="p">,</span> <span class="ss">:to_str</span><span class="p">,</span> <span class="ss">:inspect</span><span class="p">,</span> <span class="ss">:dump</span><span class="p">,</span> <span class="ss">:upcase</span><span class="p">,</span>
-       <span class="ss">:downcase</span><span class="p">,</span> <span class="ss">:capitalize</span><span class="p">,</span> <span class="ss">:swapcase</span><span class="p">,</span> <span class="ss">:upcase!</span><span class="p">,</span> <span class="ss">:downcase!</span><span class="p">,</span>
-       <span class="ss">:capitalize!</span><span class="p">,</span> <span class="ss">:swapcase!</span><span class="p">,</span> <span class="ss">:hex</span><span class="p">,</span> <span class="ss">:oct</span><span class="p">,</span> <span class="ss">:split</span><span class="p">,</span> <span class="ss">:lines</span><span class="p">,</span> <span class="ss">:bytes</span><span class="p">,</span>
-       <span class="ss">:chars</span><span class="p">,</span> <span class="ss">:codepoints</span><span class="p">,</span> <span class="ss">:reverse</span><span class="p">,</span> <span class="ss">:reverse!</span><span class="p">,</span> <span class="ss">:concat</span><span class="p">,</span> <span class="ss">:&lt;&lt;</span><span class="p">,</span>
-       <span class="ss">:prepend</span><span class="p">,</span> <span class="ss">:crypt</span><span class="p">,</span> <span class="ss">:intern</span><span class="p">,</span> <span class="ss">:to_sym</span><span class="p">,</span> <span class="ss">:ord</span><span class="p">,</span> <span class="ss">:include?</span><span class="p">,</span>
-       <span class="ss">:start_with?</span><span class="p">,</span> <span class="ss">:end_with?</span><span class="p">,</span> <span class="ss">:scan</span><span class="p">,</span> <span class="ss">:ljust</span><span class="p">,</span> <span class="ss">:rjust</span><span class="p">,</span> <span class="ss">:center</span><span class="p">,</span>
-       <span class="c1"># ...</span>
-       <span class="ss">:instance_eval</span><span class="p">,</span> <span class="ss">:instance_exec</span><span class="p">,</span> <span class="ss">:__send__</span><span class="p">,</span> <span class="ss">:__id__</span><span class="o">]</span>
+<div class='highlight'><pre><code class='ruby'><span class='nb'>String</span><span class='o'>.</span><span class='n'>new</span><span class='o'>.</span><span class='n'>methods</span>
+  <span class='c1'>#=&gt; [:&lt;=&gt;, :==, :===, :eql?, :hash, :casecmp, :+, :*, :%, :[],</span>
+       <span class='ss'>:[]=</span><span class='p'>,</span> <span class='ss'>:insert</span><span class='p'>,</span> <span class='ss'>:length</span><span class='p'>,</span> <span class='ss'>:size</span><span class='p'>,</span> <span class='ss'>:bytesize</span><span class='p'>,</span> <span class='ss'>:empty?</span><span class='p'>,</span> <span class='p'>:</span><span class='o'>=~</span><span class='p'>,</span>
+       <span class='ss'>:match</span><span class='p'>,</span> <span class='ss'>:succ</span><span class='p'>,</span> <span class='ss'>:succ!</span><span class='p'>,</span> <span class='ss'>:next</span><span class='p'>,</span> <span class='ss'>:next!</span><span class='p'>,</span> <span class='ss'>:upto</span><span class='p'>,</span> <span class='ss'>:index</span><span class='p'>,</span> <span class='ss'>:rindex</span><span class='p'>,</span>
+       <span class='ss'>:replace</span><span class='p'>,</span> <span class='ss'>:clear</span><span class='p'>,</span> <span class='ss'>:chr</span><span class='p'>,</span> <span class='ss'>:getbyte</span><span class='p'>,</span> <span class='ss'>:setbyte</span><span class='p'>,</span> <span class='ss'>:byteslice</span><span class='p'>,</span>
+       <span class='ss'>:to_i</span><span class='p'>,</span> <span class='ss'>:to_f</span><span class='p'>,</span> <span class='ss'>:to_s</span><span class='p'>,</span> <span class='ss'>:to_str</span><span class='p'>,</span> <span class='ss'>:inspect</span><span class='p'>,</span> <span class='ss'>:dump</span><span class='p'>,</span> <span class='ss'>:upcase</span><span class='p'>,</span>
+       <span class='ss'>:downcase</span><span class='p'>,</span> <span class='ss'>:capitalize</span><span class='p'>,</span> <span class='ss'>:swapcase</span><span class='p'>,</span> <span class='ss'>:upcase!</span><span class='p'>,</span> <span class='ss'>:downcase!</span><span class='p'>,</span>
+       <span class='ss'>:capitalize!</span><span class='p'>,</span> <span class='ss'>:swapcase!</span><span class='p'>,</span> <span class='ss'>:hex</span><span class='p'>,</span> <span class='ss'>:oct</span><span class='p'>,</span> <span class='ss'>:split</span><span class='p'>,</span> <span class='ss'>:lines</span><span class='p'>,</span> <span class='ss'>:bytes</span><span class='p'>,</span>
+       <span class='ss'>:chars</span><span class='p'>,</span> <span class='ss'>:codepoints</span><span class='p'>,</span> <span class='ss'>:reverse</span><span class='p'>,</span> <span class='ss'>:reverse!</span><span class='p'>,</span> <span class='ss'>:concat</span><span class='p'>,</span> <span class='ss'>:&lt;&lt;</span><span class='p'>,</span>
+       <span class='ss'>:prepend</span><span class='p'>,</span> <span class='ss'>:crypt</span><span class='p'>,</span> <span class='ss'>:intern</span><span class='p'>,</span> <span class='ss'>:to_sym</span><span class='p'>,</span> <span class='ss'>:ord</span><span class='p'>,</span> <span class='ss'>:include?</span><span class='p'>,</span>
+       <span class='ss'>:start_with?</span><span class='p'>,</span> <span class='ss'>:end_with?</span><span class='p'>,</span> <span class='ss'>:scan</span><span class='p'>,</span> <span class='ss'>:ljust</span><span class='p'>,</span> <span class='ss'>:rjust</span><span class='p'>,</span> <span class='ss'>:center</span><span class='p'>,</span>
+       <span class='c1'># ...</span>
+       <span class='ss'>:instance_eval</span><span class='p'>,</span> <span class='ss'>:instance_exec</span><span class='p'>,</span> <span class='ss'>:__send__</span><span class='p'>,</span> <span class='ss'>:__id__</span><span class='o'>]</span>
 </code></pre></div>
+<p>As you can see, a &#8220;class&#8221; in Ruby is very different from an &#8220;instance of that class.&#8221; And the methods of a class are very different from the methods of an instance of that class.</p>
 
-<p>As you can see, a “class” in Ruby is very different from an “instance of that class.” And the methods of a class are very different from the methods of an instance of that class.</p>
-
-<p>Here’s how you define a Queue in Ruby:</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">Queue</span>
-  <span class="k">def</span> <span class="nf">initialize</span>
-    <span class="vi">@array</span><span class="p">,</span> <span class="vi">@head</span><span class="p">,</span> <span class="vi">@tail</span> <span class="o">=</span> <span class="o">[]</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
-  <span class="k">end</span>
+<p>Here&#8217;s how you define a Queue in Ruby:</p>
+<div class='highlight'><pre><code class='ruby'><span class='k'>class</span> <span class='nc'>Queue</span>
+  <span class='k'>def</span> <span class='nf'>initialize</span>
+    <span class='vi'>@array</span><span class='p'>,</span> <span class='vi'>@head</span><span class='p'>,</span> <span class='vi'>@tail</span> <span class='o'>=</span> <span class='o'>[]</span><span class='p'>,</span> <span class='mi'>0</span><span class='p'>,</span> <span class='o'>-</span><span class='mi'>1</span>
+  <span class='k'>end</span>
   
-  <span class="k">def</span> <span class="nf">pushTail</span> <span class="n">value</span>
-    <span class="vi">@array</span><span class="o">[</span><span class="vi">@tail</span> <span class="o">+=</span> <span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>
-  <span class="k">end</span>
+  <span class='k'>def</span> <span class='nf'>pushTail</span> <span class='n'>value</span>
+    <span class='vi'>@array</span><span class='o'>[</span><span class='vi'>@tail</span> <span class='o'>+=</span> <span class='mi'>1</span><span class='o'>]</span> <span class='o'>=</span> <span class='n'>value</span>
+  <span class='k'>end</span>
   
-  <span class="k">def</span> <span class="nf">pullHead</span>
-    <span class="k">if</span> <span class="o">!</span><span class="vi">@isEmpty</span>
-      <span class="vi">@array</span><span class="o">[</span><span class="vi">@head</span><span class="o">].</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">value</span><span class="o">|</span>
-        <span class="vi">@array</span><span class="o">[</span><span class="vi">@head</span><span class="o">]</span> <span class="o">=</span> <span class="kp">nil</span>
-        <span class="vi">@head</span> <span class="o">+=</span> <span class="mi">1</span>
-      <span class="p">}</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
+  <span class='k'>def</span> <span class='nf'>pullHead</span>
+    <span class='k'>if</span> <span class='o'>!</span><span class='vi'>@isEmpty</span>
+      <span class='vi'>@array</span><span class='o'>[</span><span class='vi'>@head</span><span class='o'>].</span><span class='n'>tap</span> <span class='p'>{</span> <span class='o'>|</span><span class='n'>value</span><span class='o'>|</span>
+        <span class='vi'>@array</span><span class='o'>[</span><span class='vi'>@head</span><span class='o'>]</span> <span class='o'>=</span> <span class='kp'>nil</span>
+        <span class='vi'>@head</span> <span class='o'>+=</span> <span class='mi'>1</span>
+      <span class='p'>}</span>
+    <span class='k'>end</span>
+  <span class='k'>end</span>
   
-  <span class="k">def</span> <span class="nf">isEmpty</span>
-    <span class="vi">@tail</span> <span class="o">&lt;</span> <span class="vi">@head</span>
-  <span class="k">end</span>
-<span class="k">end</span>
+  <span class='k'>def</span> <span class='nf'>isEmpty</span>
+    <span class='vi'>@tail</span> <span class='o'>&lt;</span> <span class='vi'>@head</span>
+  <span class='k'>end</span>
+<span class='k'>end</span>
 </code></pre></div>
+<p>There is special syntax for defining a class, and special syntax for defining the behaviour of instances. There are different ways of defining the way new instances are created in classist languages. Ruby uses a &#8220;magic method&#8221; called <code>initialize</code>. Now let&#8217;s look at JavaScript.</p>
 
-<p>There is special syntax for defining a class, and special syntax for defining the behaviour of instances. There are different ways of defining the way new instances are created in classist languages. Ruby uses a “magic method” called <code>initialize</code>. Now let’s look at JavaScript.</p>
+<h3 id='javascript_has_constructors_and_prototypes'>javascript has constructors and prototypes</h3>
 
-<h3 id="javascript-has-constructors-and-prototypes">javascript has constructors and prototypes</h3>
+<p>JavaScript objects don&#8217;t have a formal class, and thus there&#8217;s no special syntax for defining how to create an instance or define its behaviour.</p>
 
-<p>JavaScript objects don’t have a formal class, and thus there’s no special syntax for defining how to create an instance or define its behaviour.</p>
-
-<p>JavaScript instances are created with a <em>constructor</em>. The constructor of an instance is a function that was invoked with the <code>new</code> operator. In JavaScript, any function can be a constructor, even if it doesn’t look like one:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">square</span> <span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">n</span><span class="p">;</span> <span class="p">}</span>
-  <span class="c1">//=&gt; undefined</span>
-<span class="nx">square</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-  <span class="c1">//=&gt; 4</span>
-<span class="nx">square</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">constructor</span>
-  <span class="c1">//=&gt; [Function: Number]</span>
-<span class="k">new</span> <span class="nx">square</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-  <span class="c1">//=&gt; {}</span>
-<span class="k">new</span> <span class="nx">square</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nx">constructor</span>
-  <span class="c1">//=&gt; [Function: square]</span>
+<p>JavaScript instances are created with a <em>constructor</em>. The constructor of an instance is a function that was invoked with the <code>new</code> operator. In JavaScript, any function can be a constructor, even if it doesn&#8217;t look like one:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>square</span> <span class='p'>(</span><span class='nx'>n</span><span class='p'>)</span> <span class='p'>{</span> <span class='k'>return</span> <span class='nx'>n</span> <span class='o'>*</span> <span class='nx'>n</span><span class='p'>;</span> <span class='p'>}</span>
+  <span class='c1'>//=&gt; undefined</span>
+<span class='nx'>square</span><span class='p'>(</span><span class='mi'>2</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; 4</span>
+<span class='nx'>square</span><span class='p'>(</span><span class='mi'>2</span><span class='p'>).</span><span class='nx'>constructor</span>
+  <span class='c1'>//=&gt; [Function: Number]</span>
+<span class='k'>new</span> <span class='nx'>square</span><span class='p'>(</span><span class='mi'>2</span><span class='p'>)</span>
+  <span class='c1'>//=&gt; {}</span>
+<span class='k'>new</span> <span class='nx'>square</span><span class='p'>(</span><span class='mi'>2</span><span class='p'>).</span><span class='nx'>constructor</span>
+  <span class='c1'>//=&gt; [Function: square]</span>
 </code></pre></div>
-
 <p>As you can see, the <code>square</code> function will act as a constructor if you call it with <code>new</code>. <em>There is no special kind of thing that constructs new objects, every function is (potentially) a constructor</em>.</p>
 
-<p>That’s different from a true classical language, where the class is a special kind of object that creates new instances.</p>
+<p>That&#8217;s different from a true classical language, where the class is a special kind of object that creates new instances.</p>
 
-<p>How does JavaScript define the behaviour of instances? JavaScript doesn’t have a special syntax or special kind of object for that, it has “prototypes.” Prototypes are objects, but unlike a classical system, there are no special methods or properties associated with a prototype. Any object can be a prototype, even an empty object. In fact, that’s exactly what is associated with a constructor by default:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">Nullo</span> <span class="p">()</span> <span class="p">{};</span>
-<span class="nx">Nullo</span><span class="p">.</span><span class="nx">prototype</span>
-  <span class="c1">//=&gt; {}</span>
+<p>How does JavaScript define the behaviour of instances? JavaScript doesn&#8217;t have a special syntax or special kind of object for that, it has &#8220;prototypes.&#8221; Prototypes are objects, but unlike a classical system, there are no special methods or properties associated with a prototype. Any object can be a prototype, even an empty object. In fact, that&#8217;s exactly what is associated with a constructor by default:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>function</span> <span class='nx'>Nullo</span> <span class='p'>()</span> <span class='p'>{};</span>
+<span class='nx'>Nullo</span><span class='p'>.</span><span class='nx'>prototype</span>
+  <span class='c1'>//=&gt; {}</span>
 </code></pre></div>
-
-<p>There’s absolutely nothing special about a prototype object. No special class methods, no special constructor of its own, nothing. Let’s look at a simple Queue in JavaScript:</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">Queue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">array</span> <span class="o">=</span> <span class="p">[];</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">head</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">tail</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-<span class="p">};</span>
+<p>There&#8217;s absolutely nothing special about a prototype object. No special class methods, no special constructor of its own, nothing. Let&#8217;s look at a simple Queue in JavaScript:</p>
+<div class='highlight'><pre><code class='javascript'><span class='kd'>var</span> <span class='nx'>Queue</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+  <span class='k'>this</span><span class='p'>.</span><span class='nx'>array</span> <span class='o'>=</span> <span class='p'>[];</span>
+  <span class='k'>this</span><span class='p'>.</span><span class='nx'>head</span> <span class='o'>=</span> <span class='mi'>0</span><span class='p'>;</span>
+  <span class='k'>this</span><span class='p'>.</span><span class='nx'>tail</span> <span class='o'>=</span> <span class='o'>-</span><span class='mi'>1</span><span class='p'>;</span>
+<span class='p'>};</span>
   
-<span class="nx">Queue</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">pushTail</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">tail</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
-<span class="p">};</span>
-<span class="nx">Queue</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">pullHead</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">value</span><span class="p">;</span>
+<span class='nx'>Queue</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>.</span><span class='nx'>pushTail</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>value</span><span class='p'>)</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='k'>this</span><span class='p'>.</span><span class='nx'>array</span><span class='p'>[</span><span class='k'>this</span><span class='p'>.</span><span class='nx'>tail</span> <span class='o'>+=</span> <span class='mi'>1</span><span class='p'>]</span> <span class='o'>=</span> <span class='nx'>value</span><span class='p'>;</span>
+<span class='p'>};</span>
+<span class='nx'>Queue</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>.</span><span class='nx'>pullHead</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+  <span class='kd'>var</span> <span class='nx'>value</span><span class='p'>;</span>
   
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span> <span class="p">{</span>
-    <span class="nx">value</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">head</span><span class="p">];</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">array</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">head</span><span class="p">]</span> <span class="o">=</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">head</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">};</span>
-<span class="nx">Queue</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isEmpty</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">tail</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">head</span><span class="p">;</span>
-<span class="p">};</span>
+  <span class='k'>if</span> <span class='p'>(</span><span class='o'>!</span><span class='k'>this</span><span class='p'>.</span><span class='nx'>isEmpty</span><span class='p'>())</span> <span class='p'>{</span>
+    <span class='nx'>value</span> <span class='o'>=</span> <span class='k'>this</span><span class='p'>.</span><span class='nx'>array</span><span class='p'>[</span><span class='k'>this</span><span class='p'>.</span><span class='nx'>head</span><span class='p'>];</span>
+    <span class='k'>this</span><span class='p'>.</span><span class='nx'>array</span><span class='p'>[</span><span class='k'>this</span><span class='p'>.</span><span class='nx'>head</span><span class='p'>]</span> <span class='o'>=</span> <span class='k'>void</span> <span class='mi'>0</span><span class='p'>;</span>
+    <span class='k'>this</span><span class='p'>.</span><span class='nx'>head</span> <span class='o'>+=</span> <span class='mi'>1</span><span class='p'>;</span>
+    <span class='k'>return</span> <span class='nx'>value</span><span class='p'>;</span>
+  <span class='p'>}</span>
+<span class='p'>};</span>
+<span class='nx'>Queue</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>.</span><span class='nx'>isEmpty</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+  <span class='k'>return</span> <span class='k'>this</span><span class='p'>.</span><span class='nx'>tail</span> <span class='o'>&lt;</span> <span class='k'>this</span><span class='p'>.</span><span class='nx'>head</span><span class='p'>;</span>
+<span class='p'>};</span>
 
-<span class="nx">Queue</span><span class="p">.</span><span class="nx">prototype</span>
-  <span class="c1">//=&gt;  { pushTail: [Function],</span>
-          <span class="nx">pullHead</span><span class="o">:</span> <span class="p">[</span><span class="nb">Function</span><span class="p">],</span>
-          <span class="nx">isEmpty</span><span class="o">:</span> <span class="p">[</span><span class="nb">Function</span><span class="p">]</span> <span class="p">}</span>
+<span class='nx'>Queue</span><span class='p'>.</span><span class='nx'>prototype</span>
+  <span class='c1'>//=&gt;  { pushTail: [Function],</span>
+          <span class='nx'>pullHead</span><span class='o'>:</span> <span class='p'>[</span><span class='nb'>Function</span><span class='p'>],</span>
+          <span class='nx'>isEmpty</span><span class='o'>:</span> <span class='p'>[</span><span class='nb'>Function</span><span class='p'>]</span> <span class='p'>}</span>
 </code></pre></div>
-
 <p>The first way a prototype in JavaScript is different from a class in Ruby is that the prototype is an ordinary object with exactly the same properties that we expect to find in an instance: Methods <code>pushTail</code>, <code>pullHead</code>, and <code>isEmpty</code>.</p>
 
-<p>The second way is that <em>any</em> object can be a prototype. It can have functions (which act like methods), it can have other values (like numbers, booleans, objects, or strings). It can be an object you’re using for something else: An account, a view, a DOM object if you’re in the browser, anything.</p>
+<p>The second way is that <em>any</em> object can be a prototype. It can have functions (which act like methods), it can have other values (like numbers, booleans, objects, or strings). It can be an object you&#8217;re using for something else: An account, a view, a DOM object if you&#8217;re in the browser, anything.</p>
 
-<p>“Classes” are objects in most “classical” languages, but they are a special kind of object. In JavaScript, prototypes are not a special kind of object, they’re just objects.</p>
+<p>&#8220;Classes&#8221; are objects in most &#8220;classical&#8221; languages, but they are a special kind of object. In JavaScript, prototypes are not a special kind of object, they&#8217;re just objects.</p>
 
-<h3 id="summary-of-the-difference-between-classes-and-prototypes">summary of the difference between classes and prototypes</h3>
+<h3 id='summary_of_the_difference_between_classes_and_prototypes'>summary of the difference between classes and prototypes</h3>
 
-<p>A class in a formal classist language can be an object, but it’s a special kind of object with special properties and methods. It is responsible for creating new instances and for defining the behaviour of instances.</p>
+<p>A class in a formal classist language can be an object, but it&#8217;s a special kind of object with special properties and methods. It is responsible for creating new instances and for defining the behaviour of instances.</p>
 
 <p>Instance behaviour in a classist language is defined with special syntax. If changes are allowed dynamically, they are done with special syntax and/or special methods invoked on the class.</p>
 
 <p>JavaScript splits the responsibility for instances into a constructor and a prototype. A constructor in JavaScript can be any function. Constructors are responsible for creating new instances.</p>
 
-<p>A prototype in JavaScript can be any object. Prototypes are responsible for defining the behaviour of instances. prototypes don’t have special methods or properties.</p>
+<p>A prototype in JavaScript can be any object. Prototypes are responsible for defining the behaviour of instances. prototypes don&#8217;t have special methods or properties.</p>
 
 <p>Instance behaviour in JavaScript is defined by modifying the prototype directly, e.g. by adding functions to it as properties. There is no special syntax for defining a class or modifying a class.</p>
 
-<h3 id="so-why-do-some-people-say-that-javascript-has-classes-for-some-definition-of-class">so why do some people say that javascript has “classes” for some definition of “class?”</h3>
+<h3 id='so_why_do_some_people_say_that_javascript_has_classes_for_some_definition_of_class'>so why do some people say that javascript has &#8220;classes&#8221; for some definition of &#8220;class?&#8221;</h3>
 
 <p>Because, <strong>if</strong>:</p>
 
 <ol>
-  <li>You use a function as a constructor, and;</li>
-  <li>You use a prototype for defining instance methods, and;</li>
-  <li>The prototype is used strictly for defining the instance methods and nothing else;</li>
+<li>You use a function as a constructor, and;</li>
+
+<li>You use a prototype for defining instance methods, and;</li>
+
+<li>The prototype is used strictly for defining the instance methods and nothing else;</li>
 </ol>
 
 <p><strong>Then</strong>:</p>
 
-<p>You will have something that works just like a simple class-based system, with the constructor function and its prototype acting as the “class.”</p>
+<p>You will have something that works just like a simple class-based system, with the constructor function and its prototype acting as the &#8220;class.&#8221;</p>
 
-<p>But if you want more, you have a flexible system that does allow you to do <a href="https://github.com/raganwald/homoiconic/blob/master/2013/01/function_and_method_decorators.html#function-and-method-decorators" title="Function and Method Decorators">much much more</a>. It’s up to you.</p>
+<p>But if you want more, you have a flexible system that does allow you to do <a href='https://github.com/raganwald/homoiconic/blob/master/2013/01/function_and_method_decorators.html#function-and-method-decorators' title='Function and Method Decorators'>much much more</a>. It&#8217;s up to you.</p>
 
-<p>(<a href="http://www.reddit.com/r/javascript/comments/17v813/classes_vs_prototypes_in_js/">discuss</a>)</p>
-
-
+<p>(<a href='http://www.reddit.com/r/javascript/comments/17v813/classes_vs_prototypes_in_js/'>discuss</a>)</p>
         </section>
 
         <footer>
