@@ -44,7 +44,7 @@ Unfortunately, it's hard to squeeze something like that through the narrow bandw
 
 Katrina Owen does a great talk about refactoring:
 
-<iframe src="http://www.slideshare.net/slideshow/embed_code/13358779" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen webkitallowfullscreen mozallowfullscreen> </iframe>
+<iframe src="http://www.slideshare.net/slideshow/embed_code/13358779" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen> </iframe>
 
 *[Therapeutic Refactoring] by Katrina Owen*
 
