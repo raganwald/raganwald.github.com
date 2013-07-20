@@ -4,9 +4,10 @@ layout: default
 tags: [javascript]
 ---
 
-Some people will tell you that [JavaScript isn't Scheme](jis). Of course it isn't: Scheme is Scheme, JavaScript is JavaScript. There are excellent reasons why JavaScript is nothing like Scheme. Pretty much everything that makes Scheme Scheme is nowhere to be found in JavaScript.
+Some people will tell you that [JavaScript isn't Scheme][jis]. Of course it isn't: Scheme is [Scheme], JavaScript is JavaScript. There are excellent reasons why JavaScript is nothing like Scheme. Pretty much everything that makes Scheme Scheme is nowhere to be found in JavaScript.
 
 [jis]: http://journal.stuffwithstuff.com/2013/07/18/javascript-isnt-scheme/
+[Scheme]: http://groups.csail.mit.edu/mac/projects/scheme/
 
 One of the fundamental ideas in Scheme is to be minimal and elegant to the point of pain. In early Schemes, there was no real block scoping. You had to create block scopes using `let` as you do today, but `let` was implemented as a macro that acted a lot like JavaScript's Immediately Invoked Function Expression idiom.
 
