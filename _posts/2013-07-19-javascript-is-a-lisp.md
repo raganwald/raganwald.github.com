@@ -34,3 +34,9 @@ I think it's mostly false, but just true enough to be *interesting*. And that's 
 ### pax, exeunt
 
 So in summary, I do not think that JavaScript is Scheme or Lisp. I do not think it adds value to thinking about Scheme or Lisp to think that there is a meaningful relationship between Scheme or Lisp and JavaScript. but I do think it is interesting and productive to think about what JavaScript draws from Scheme and/or Lisp, and to that end I often say that JavaScript is "a" Lisp when talking about JavaScript.
+
+---
+
+p.s. Dave Herman pointed me to a [great essay](http://cs.brown.edu/~sk/Publications/Papers/Published/sk-teach-pl-post-linnaean/paper.pdf). The opening line says it best:
+
+> Programming language “paradigms” are a moribund and tedious legacy of a bygone age.
