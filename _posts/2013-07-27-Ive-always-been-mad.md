@@ -293,7 +293,9 @@ The second example is different. The first `i` encountered by CoffeeScript is in
 
 In the third example, `i` (and `str`) are declared outside of both `table` and `row`, and thus again they all end up being the same variable with no shadowing.
 
-Now, CoffeeScript *could* scan an entire function before deciding what variables belong where, but it doesn't. That simplifies things, because you don't have to worry about a variable being declared later that affects your code. Everything you need to understand is in the same file and above your code.
+Now, CoffeeScript *could* scan an entire function before deciding what variables belong where, but it doesn't.[^hoist] That simplifies things, because you don't have to worry about a variable being declared later that affects your code. Everything you need to understand is in the same file and above your code.
+
+[^hoist]: Scanning all of the code first is called "hoisting," in part because some declarations nested in blocks are "hoisted" up to the level of the function, and all declarations are "hoisted" to the top of the function. This is a source of confusion for some programmers, but it isn't germane to this essay.
 
 In many cases, it also allows you to manipulate whether a variable is shadowed or not by carefully controlling the order of assignments. That's good, right?
 
@@ -354,13 +356,13 @@ This breaks your code because the `i` you used at the top "captures" the other v
       return '<tr>' + str + '</tr>';
     }
     
-It will always mean the same thing no matter where it is in a file, and no matter what comes before it or after it. There is no spooky "action-at-a-distance" where code somewhere else changes what this code means.
+It will always mean the same thing no matter where it is in a file, and no matter what comes before it or after it. There is no spooky "action-at-a-distance" where code somewhere else changes what this code means. Whereas in CoffeeScript, you don't know whether the `i` in `row` is local to `row` or not without scanning the code that comes before it in the same or enclosing scopes.
 
 ### coffeescript's failure mode
 
 In this case, CoffeeScript has a failure mode: The meaning of a function seems to be changed by altering its position within a file or (in what amounts to the same thing) by altering code that appears before it in a file in the same or enclosing scopes. In contrast, JavaScript's `var` declaration never exhibits this failure mode. JavaScript has a different action-at-a-distance failure mode, where *neglecting* `var` causes action at a much further distance: The meaning of code can be affected by code written in an entirely different file.
 
-Mind you it isn't even remotely true that the meaning of our `row` function is affected by declaring an `i` in an enclosing scope. Our function always did what it was expected to do and always will. It's really the meaning of the *enclosing* code that changes. If we maintain the habit of always initializing variables we expect to use locally, our functions work just fine.
+Mind you, the result of calling our `row` function is not affected by declaring an `i` in an enclosing scope. Our function always did what it was expected to do and always will. Although you and I know *why* the change breaks the `table` function is that `row` now uses an enclosed variable, imagine that we were writing unit tests. All of our tests for `row` would continue to pass, it's the tests for `table` that break. So in an evidence-based programming sense, when we maintain the habit of always initializing variables we expect to use locally, changing code outside of those functions only changes the evidence that the enclosing code produces.
 
 So one way to look at this is that `row` is fine, but moving `i` around changes the meaning of the code where you move `i`. And why wouldn't you expect making changes to `table` to change its meaning?
 
