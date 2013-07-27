@@ -1,7 +1,7 @@
 ---
 layout: default
-title: "I've Always Been Mad"
-tags: [javascript]
+title: "It's a Mad, Mad, Mad World: Scoping in CoffeeScript and JavaScript"
+tags: [javascript, coffeescript]
 ---
 
 > "I've been mad for fucking years, absolutely years, been over the edge for yonks, been working me buns off for bands..."
