@@ -368,7 +368,7 @@ So one way to look at this is that `row` is fine, but moving `i` around changes 
 
 ### so which way to the asylum?
 
-To many people, both design choices are insane. Accidentally getting global variables when you neglect `var` is brutal, and action-at-a-distance affecting the meaning of a function (even if it is always within the same file) flies against everything we have learned about the importance of writing small chunks of code that completely encapsulate their behaviour.
+If you ask around, you can find people who dislike JavaScript's behaviour, and [others who dislike CoffeeScript's behaviour](http://donatstudios.com/CoffeeScript-Madness). Accidentally getting global variables when you neglect `var` is brutal, and action-at-a-distance affecting the meaning of a function (even if it is always within the same file) flies against everything we have learned about the importance of writing small chunks of code that completely encapsulate their behaviour.
 
 Of course, programmers tend to internalize the languages they learn to use. If you write a lot of JavaScript, you habitually use `var` and may have tools that slap your wrist when you don't. You're bewildered by all this talk of action-at-a-distance. It will seems to you to be one of those rookie mistake problems that quickly goes away and is not a practical concern.
 
