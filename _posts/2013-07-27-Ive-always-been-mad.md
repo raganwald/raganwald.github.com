@@ -6,7 +6,9 @@ tags: [javascript]
 
 > "I've been mad for fucking years, absolutely years, been over the edge for yonks, been working me buns off for bands..."
 
-> "I've always been mad, I know I've been mad, like the most of us...very hard to explain why you're mad, even if you're not mad..."--Speak to Me, written by Nick Mason
+> "I've always been mad, I know I've been mad, like the most of us...very hard to explain why you're mad, even if you're not mad..."
+
+>--"Speak to Me," Nick Mason
 
 ### coffeescript
 
@@ -16,7 +18,7 @@ CoffeeScript, as many people know, is a transpile-to-JavaScript language. For th
     
 Transpiles directly to:
 
-    function () { return 'hello, world'; }
+    function () { return 'Hello, world'; }
     
 This is convenient syntactic sugar, and by removing what some folks call the "syntactic vinegar" of extraneous symbols, it encourages the use of constructs that would otherwise make the code noisy and obscure the important meaning. The vast majority of features introduced by CoffeeScript are of this nature: They introduce local changes that transpile directly to JavaScript.[^rewrite]
 
@@ -114,26 +116,30 @@ Now function `foo` will return `1` because the second declaration of `bar` is in
 
 Now over time people have discovered that global variables are generally a very bad idea, and accidental global variables doubly so. Here's an example of why:
 
-    function row (numberOfCells) {
-      var str = '';
-      for (i = 0; i < numberOfCells; ++i) {
-        str = str + '<td></td>';
-      }
-      return '<tr>' + str + '</tr>';
-    }
-    
-    function table (numberOfRows, numberOfColumns) {
-      var str = '';
-      for (i = 0; i < numberOfRows; ++i) {
-        str = str + row(numberOfColumns);
-      }
-      return '<table>' + str + '</table>';
-    }
+```javascript
+function row (numberOfCells) {
+  var str = '';
+  for (i = 0; i < numberOfCells; ++i) {
+    str = str + '<td></td>';
+  }
+  return '<tr>' + str + '</tr>';
+}
+
+function table (numberOfRows, numberOfColumns) {
+  var str = '';
+  for (i = 0; i < numberOfRows; ++i) {
+    str = str + row(numberOfColumns);
+  }
+  return '<table>' + str + '</table>';
+}
+```
     
 Let's try it:
 
-    table(3, 3)
-      //=> "<table><tr><td></td><td></td><td></td></tr></table>"
+```javascript
+  table(3, 3)
+    //=> "<table><tr><td></td><td></td><td></td></tr></table>"
+```
       
 We only get one row, because the variable `i` in the function `row` is global, and so is the variable `i` in the function `table`, so they're the exact same global variable. Therefore, after counting out three columns, `i` is `3` and the `for` loop in `table` finishes. Oops!
 
@@ -258,25 +264,25 @@ It works just fine. Here's another:
       
 Broken! And a third:
 
-  str = ""
-  i = 0
-  table = (numberOfRows, numberOfColumns) ->
-    row = (numberOfCells) ->
-      str = ""
-      i = 0
-      while i < numberOfCells
-        str = str + "<td></td>"
-        ++i
-      "<tr>" + str + "</tr>"
     str = ""
     i = 0
-    while i < numberOfRows
-      str = str + row(numberOfColumns)
-      ++i
-    return "<table>" + str + "</table>"
+    table = (numberOfRows, numberOfColumns) ->
+      row = (numberOfCells) ->
+        str = ""
+        i = 0
+        while i < numberOfCells
+          str = str + "<td></td>"
+          ++i
+        "<tr>" + str + "</tr>"
+      str = ""
+      i = 0
+      while i < numberOfRows
+        str = str + row(numberOfColumns)
+        ++i
+      return "<table>" + str + "</table>"
   
-  table(3,3)
-    //=> "<table><tr><td></td><td></td><td></td></tr></table>"
+    table(3,3)
+      //=> "<table><tr><td></td><td></td><td></td></tr></table>"
     
 Also broken! Although the three examples look similar, the first gives us what we expect but the second and third do not. What gives?
 
