@@ -283,9 +283,9 @@ Broken! And a third:
     
 Also broken! Although the three examples look similar, the first gives us what we expect but the second and third do not. What gives?
 
-Well, CoffeeScript doesn't allow us to "declare" that variables are local with `var`. They're always local. But local to *what?* In CoffeeScript, they're local to *the function that contains the first assignment to the variable*.[^params] So in our first example, reading from the top, the first use of `str` and `i` is inside the `row` function, so CoffeeScript makes them local to `row`.
+Well, CoffeeScript doesn't allow us to "declare" that variables are local with `var`. They're always local. But local to *what?* In CoffeeScript, they're local to *the function that either declares the variable as a parameter or that contains the first assignment to the variable*.[^order] So in our first example, reading from the top, the first use of `str` and `i` is inside the `row` function, so CoffeeScript makes them local to `row`.
 
-[^params]: Or the first use of the variable as a parameter, much the same thing.
+[^order]: [Lexical scope and order](https://github.com/jashkenas/coffee-script/issues/1121)
 
 A little later on, the code makes an assignment to `i` and `str` within the `table` function. This scope happens to enclose `row`'s scope, but it is different so it can't share the `str` and `i` variables. CoffeeScript thus makes the `i` and `str` in `table` variables local to `table`. As a result, the `i` and `str` in `row` end up shadowing the `i` and `str` in `table`.
 
