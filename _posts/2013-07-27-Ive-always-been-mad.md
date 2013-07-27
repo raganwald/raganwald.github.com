@@ -116,30 +116,27 @@ Now function `foo` will return `1` because the second declaration of `bar` is in
 
 Now over time people have discovered that global variables are generally a very bad idea, and accidental global variables doubly so. Here's an example of why:
 
-```javascript
-function row (numberOfCells) {
-  var str = '';
-  for (i = 0; i < numberOfCells; ++i) {
-    str = str + '<td></td>';
-  }
-  return '<tr>' + str + '</tr>';
-}
 
-function table (numberOfRows, numberOfColumns) {
-  var str = '';
-  for (i = 0; i < numberOfRows; ++i) {
-    str = str + row(numberOfColumns);
-  }
-  return '<table>' + str + '</table>';
-}
-```
+    function row (numberOfCells) {
+      var str = '';
+      for (i = 0; i < numberOfCells; ++i) {
+        str = str + '<td></td>';
+      }
+      return '<tr>' + str + '</tr>';
+    }
+    
+    function table (numberOfRows, numberOfColumns) {
+      var str = '';
+      for (i = 0; i < numberOfRows; ++i) {
+        str = str + row(numberOfColumns);
+      }
+      return '<table>' + str + '</table>';
+    }
     
 Let's try it:
 
-```javascript
-  table(3, 3)
-    //=> "<table><tr><td></td><td></td><td></td></tr></table>"
-```
+    table(3, 3)
+      //=> "<table><tr><td></td><td></td><td></td></tr></table>"
       
 We only get one row, because the variable `i` in the function `row` is global, and so is the variable `i` in the function `table`, so they're the exact same global variable. Therefore, after counting out three columns, `i` is `3` and the `for` loop in `table` finishes. Oops!
 
