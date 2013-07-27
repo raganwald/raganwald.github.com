@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "It's a Mad, Mad, Mad World: Scoping in CoffeeScript and JavaScript"
+title: "It's a Mad, Mad, Mad, Mad World: Scoping in CoffeeScript and JavaScript"
 tags: [javascript, coffeescript]
 ---
 
