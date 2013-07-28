@@ -173,3 +173,254 @@ And this is especially bad because the two functions could be anywhere in the co
 
 Now, this isn't a bug in JavaScript the language, just a feature that permits the creation of very nasty bugs. So I call it a *failure mode*, not a language bug.
 
+### coffeescript to the rescue
+
+CoffeeScript addresses this failure mode in two ways. First, all variables are local to functions. If you wish to do something in the global environment, you must do it explicitly. So in JavaScript:
+
+{% highlight javascript %}
+UserModel = Backbone.Model.extend({ ... });
+var user = new UserModel(...);
+{% endhighlight %}
+    
+While in CoffeeScript:
+
+{% highlight coffeescript %}
+window.UserModel = window.Backbone.Model.extend({ ... })
+user = new window.UserModel(...)
+{% endhighlight %}
+    
+Likewise, CoffeeScript bakes the IIFE enclosing every file in by default. So instead of:
+
+{% highlight javascript %}
+;(function () {
+  // ...
+})();
+{% endhighlight %}
+    
+You can just write your code.[^bare]
+
+[^bare]: If you don't want the file enclosed in an IIFE, you can compile your CoffeeScript with the `--bare` command-line switch.
+
+The net result is that it is almost impossible to replicate the JavaScript failure mode of creating or clobbering a global variable by accident. That is a benefit.
+
+### what would coffeescript do?
+
+This sounds great, but CoffeeScript can be surprising to JavaScript programmers. Let's revisit our `table` function. First, we'll fix it:
+
+{% highlight javascript %}
+function row (numberOfCells) {
+  var i,
+      str = '';
+  for (i = 0; i < numberOfCells; ++i) {
+    str = str + '<td></td>';
+  }
+  return '<tr>' + str + '</tr>';
+}
+
+function table (numberOfRows, numberOfColumns) {
+  var i,
+      str = '';
+  for (i = 0; i < numberOfRows; ++i) {
+    str = str + row(numberOfColumns);
+  }
+  return '<table>' + str + '</table>';
+}
+
+table(3, 3)
+  //=> "<table><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
+      
+Good! Now suppose we notice that no function calls `row` other than `table`. Although there is a slightly more "performant" way to do this, we decide that the clearest and simplest way to indicate this relationship is to nest `row` inside `table` Pascal-style:
+
+{% highlight javascript %}
+function table (numberOfRows, numberOfColumns) {
+  var i,
+      str = '';
+  for (i = 0; i < numberOfRows; ++i) {
+    str = str + row(numberOfColumns);
+  }
+  return '<table>' + str + '</table>';
+  
+  function row (numberOfCells) {
+    var i,
+        str = '';
+    for (i = 0; i < numberOfCells; ++i) {
+      str = str + '<td></td>';
+    }
+    return '<tr>' + str + '</tr>';
+  }
+}
+{% endhighlight %}
+    
+It still works like a charm, because the `i` in `row` shadows the `i` in `table`, so there's no conflict. Okay. Now how does it work in CoffeeScript?
+
+Here's one possible translation to CoffeeScript:
+
+{% highlight coffeescript %}
+table = (numberOfRows, numberOfColumns) ->
+  row = (numberOfCells) ->
+    str = ""
+    i = 0
+    while i < numberOfCells
+      str = str + "<td></td>"
+      ++i
+    "<tr>" + str + "</tr>"
+  str = ""
+  i = 0
+  while i < numberOfRows
+    str = str + row(numberOfColumns)
+    ++i
+  return "<table>" + str + "</table>"
+  
+table(3,3)
+  #=> "<table><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
+
+It works just fine. Here's another:  
+
+{% highlight coffeescript %}
+table = (numberOfRows, numberOfColumns) ->
+  str = ""
+  i = 0
+  row = (numberOfCells) ->
+    str = ""
+    i = 0
+    while i < numberOfCells
+      str = str + "<td></td>"
+      ++i
+    "<tr>" + str + "</tr>"
+  str = ""
+  i = 0
+  while i < numberOfRows
+    str = str + row(numberOfColumns)
+    ++i
+  return "<table>" + str + "</table>"
+  
+table(3,3)
+  #=> "<table><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
+      
+Broken! And a third:
+
+{% highlight coffeescript %}
+str = ""
+i = 0
+table = (numberOfRows, numberOfColumns) ->
+  row = (numberOfCells) ->
+    str = ""
+    i = 0
+    while i < numberOfCells
+      str = str + "<td></td>"
+      ++i
+    "<tr>" + str + "</tr>"
+  str = ""
+  i = 0
+  while i < numberOfRows
+    str = str + row(numberOfColumns)
+    ++i
+  return "<table>" + str + "</table>"
+
+table(3,3)
+  #=> "<table><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
+    
+Also broken! Although the three examples look similar, the first gives us what we expect but the second and third do not. What gives?
+
+Well, CoffeeScript doesn't allow us to "declare" that variables are local with `var`. They're always local. But local to *what?* In CoffeeScript, they're local to *the function that either declares the variable as a parameter or that contains the first assignment to the variable*.[^order] So in our first example, reading from the top, the first use of `str` and `i` is inside the `row` function, so CoffeeScript makes them local to `row`.
+
+[^order]: [Lexical scope and order](https://github.com/jashkenas/coffee-script/issues/1121)
+
+A little later on, the code makes an assignment to `i` and `str` within the `table` function. This scope happens to enclose `row`'s scope, but it is different so it can't share the `str` and `i` variables. CoffeeScript thus makes the `i` and `str` in `table` variables local to `table`. As a result, the `i` and `str` in `row` end up shadowing the `i` and `str` in `table`.
+
+The second example is different. The first `i` encountered by CoffeeScript is in `table`, so CoffeeScript makes it local to `table` as we'd expect. The second `i` is local to `row`. But since `row` in enclosed by `table`, it's possible to make that `i` refer to the `i` already defined, and thus CoffeeScript does *not* shadow the variable. The `i` inside `row` is the same variable as the `i` inside `table`.
+
+In the third example, `i` (and `str`) are declared outside of both `table` and `row`, and thus again they all end up being the same variable with no shadowing.
+
+Now, CoffeeScript *could* scan an entire function before deciding what variables belong where, but it doesn't. That simplifies things, because you don't have to worry about a variable being declared later that affects your code. Everything you need to understand is in the same file and above your code.
+
+[^hoist]: Scanning all of the code first is called "hoisting," in part because some declarations nested in blocks are "hoisted" up to the level of the function, and all declarations are "hoisted" to the top of the function. This is a source of confusion for some programmers, but it isn't germane to this essay.
+
+In many cases, it also allows you to manipulate whether a variable is shadowed or not by carefully controlling the order of assignments. That's good, right?
+
+### all those against the bill, say "nay nay!"
+
+Detractors of this behaviour say this is not good. When JavaScript is written using `var`, the meaning of a function is not changed by what is written elsewhere in the file before the code in question. Although you can use this feature to control shadowing by deliberately ordering your code to get the desired result, a simple refactoring can break what you've already written.
+
+For example, if you write:
+
+{% highlight coffeescript %}
+table = (numberOfRows, numberOfColumns) ->
+  row = (numberOfCells) ->
+    str = ""
+    i = 0
+    while i < numberOfCells
+      str = str + "<td></td>"
+      ++i
+    "<tr>" + str + "</tr>"
+  str = ""
+  i = 0
+  while i < numberOfRows
+    str = str + row(numberOfColumns)
+    ++i
+  return "<table>" + str + "</table>"
+
+table(3,3)
+  #=> "<table><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
+      
+All will be well, until you are debugging late one night, and you add:
+
+{% highlight coffeescript %}
+console.log('Hello!') for i in [1..5]
+
+table = (numberOfRows, numberOfColumns) ->
+  row = (numberOfCells) ->
+    str = ""
+    i = 0
+    while i < numberOfCells
+      str = str + "<td></td>"
+      ++i
+    "<tr>" + str + "</tr>"
+  str = ""
+  i = 0
+  while i < numberOfRows
+    str = str + row(numberOfColumns)
+    ++i
+  return "<table>" + str + "</table>"
+
+table(3,3)
+  #=> "table><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
+      
+This breaks your code because the `i` you used at the top "captures" the other variables so they are now all the same thing. To someone used to JavaScript, this is a Very Bad Thing™. When you write this in JavaScript:
+
+{% highlight javascript %}
+function row (numberOfCells) {
+  var i,
+      str = '';
+  for (i = 0; i < numberOfCells; ++i) {
+    str = str + '<td></td>';
+  }
+  return '<tr>' + str + '</tr>';
+}
+{% endhighlight %}
+    
+It will always mean the same thing no matter where it is in a file, and no matter what comes before it or after it. There is no spooky "action-at-a-distance" where code somewhere else changes what this code means. Whereas in CoffeeScript, you don't know whether the `i` in `row` is local to `row` or not without scanning the code that comes before it in the same or enclosing scopes.
+
+### coffeescript's failure mode
+
+In this case, CoffeeScript has a failure mode: The meaning of a function seems to be changed by altering its position within a file or (in what amounts to the same thing) by altering code that appears before it in a file in the same or enclosing scopes. In contrast, JavaScript's `var` declaration never exhibits this failure mode. JavaScript has a different action-at-a-distance failure mode, where *neglecting* `var` causes action at a much further distance: The meaning of code can be affected by code written in an entirely different file.
+
+Mind you, the result of calling our `row` function is not affected by declaring an `i` in an enclosing scope. Our function always did what it was expected to do and always will. Although you and I know *why* the change breaks the `table` function is that `row` now uses an enclosed variable, imagine that we were writing unit tests. All of our tests for `row` would continue to pass, it's the tests for `table` that break. So in an evidence-based programming sense, when we maintain the habit of always initializing variables we expect to use locally, changing code outside of those functions only changes the evidence that the enclosing code produces.
+
+So one way to look at this is that `row` is fine, but moving `i` around changes the meaning of the code where you move `i`. And why wouldn't you expect making changes to `table` to change its meaning?
+
+### so which way to the asylum?
+
+If you ask around, you can find people who dislike JavaScript's behaviour, and [others who dislike CoffeeScript's behaviour](http://donatstudios.com/CoffeeScript-Madness). Accidentally getting global variables when you neglect `var` is brutal, and action-at-a-distance affecting the meaning of a function (even if it is always within the same file) flies against everything we have learned about the importance of writing small chunks of code that completely encapsulate their behaviour.
+
+Of course, programmers tend to internalize the languages they learn to use. If you write a lot of JavaScript, you habitually use `var` and may have tools that slap your wrist when you don't. You're bewildered by all this talk of action-at-a-distance. It will seems to you to be one of those rookie mistake problems that quickly goes away and is not a practical concern.
+
+Likewise, if you write twenty thousand lines of CoffeeScript, you may never be bitten by its first-use-is-a-declaration behaviour. You may be in the habit of using variable names like `iRow` and `iColumn` out of habit. You may find that your files never get so large and your functions so deeply nested that a "capture" problem takes longer than three seconds to diagnose and fix.
+
+It's a bit of a cop-out, but I suggest that this issue resembles the debate over strong, manifest typing vs. dynamic typing. In theory, one is vastly preferable to the other. But in practice, large stable codebases are written with both kinds of languages, and programmers seem to adjust to overcome the failure modes of their tools unconsciously while harvesting the benefits that each language provides.
