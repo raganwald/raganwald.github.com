@@ -112,3 +112,64 @@ function fiddleSticks (bar) {
     
 Because of something called hoisting,[^hoist] these all mean the same this: `foo` is local to function `fiddleSticks`, and therefore it is NOT global and ISN'T magically coupled to every other file loaded whether written by yourself or someone else.
 
+### nested scope
+
+JavaScript permits scope nesting. If you write this:
+
+{% highlight javascript %}
+function foo () {
+  var bar = 1;
+  var bar = 2;
+  return bar;
+}
+{% endhighlight %}
+
+Then `bar` will be `2`. Declaring `bar` twice makes no difference, since both declarations are in the same scope. However, if you nest functions, you can nest scopes:
+
+{% highlight javascript %}
+function foo () {
+  var bar = 1;
+  function foofoo () {
+    var bar = 2;
+  }
+  return bar;
+}
+{% endhighlight %}
+
+Now function `foo` will return `1` because the second declaration of `bar` is inside a nested function, and therefore inside a nested scope, and therefore it's a completely different variable that happens to share the same name. This is called *shadowing*: The variable `bar` inside `foofoo` *shadows* the variable `bar` inside `foo`.
+
+### javascript failure modes
+
+Now over time people have discovered that global variables are generally a very bad idea, and accidental global variables doubly so. Here's an example of why:
+
+{% highlight javascript %}
+function row (numberOfCells) {
+  var str = '';
+  for (i = 0; i < numberOfCells; ++i) {
+    str = str + '<td></td>';
+  }
+  return '<tr>' + str + '</tr>';
+}
+
+function table (numberOfRows, numberOfColumns) {
+  var str = '';
+  for (i = 0; i < numberOfRows; ++i) {
+    str = str + row(numberOfColumns);
+  }
+  return '<table>' + str + '</table>';
+}
+{% endhighlight %}
+    
+Let's try it:
+
+{% highlight javascript %}
+table(3, 3)
+  //=> "<table><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
+      
+We only get one row, because the variable `i` in the function `row` is global, and so is the variable `i` in the function `table`, so they're the exact same global variable. Therefore, after counting out three columns, `i` is `3` and the `for` loop in `table` finishes. Oops!
+
+And this is especially bad because the two functions could be anywhere in the code. If you accidentally use a global variable and call a function elsewhere that accidentally uses the same global variable, pfft, you have a bug. This is nasty because there's this weird action-at-a-distance where a bug in one file reaches out and breaks some code in another file.
+
+Now, this isn't a bug in JavaScript the language, just a feature that permits the creation of very nasty bugs. So I call it a *failure mode*, not a language bug.
+
