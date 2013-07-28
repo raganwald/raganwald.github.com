@@ -14,13 +14,19 @@ tags: [javascript, coffeescript]
 
 CoffeeScript, as many people know, is a transpile-to-JavaScript language. For the most part, it does not introduce major changes in semantics. For example, this:
 
-    -> 'Hello, world'
-    
-Transpiles directly to:
+{% highlight coffeescript %}
+-> 'Hello, world'
+{% endhighlight %}
 
-    function () { return 'Hello, world'; }
-    
+Transpiles[^trans] directly to:
+
+{% highlight javascript %}
+function () { return 'Hello, world'; }
+{% endhighlight %}
+
 This is convenient syntactic sugar, and by removing what some folks call the "syntactic vinegar" of extraneous symbols, it encourages the use of constructs that would otherwise make the code noisy and obscure the important meaning. The vast majority of features introduced by CoffeeScript are of this nature: They introduce local changes that transpile directly to JavaScript.[^rewrite]
+
+[^trans]: Yes, "transpile" is a real word, or at least, a real piece of jargon. It's a contraction of "transcompiler," which is a compiler that translates one language to another language at a similar level of abstraction. There's room for debate over what constitutes a "similar level of abstraction." [https://en.wikipedia.org/wiki/Source-to-source_compiler](https://en.wikipedia.org/wiki/Source-to-source_compiler)
 
 [^rewrite]: There are other possibilities: You could write a Tail-Call Optimized language that transpiles to JavaScript, however its changes wouldn't always be local: Some function calls would be rewritten substantially to use trampolining. Or adding continuations to a language might cause everything to be rewritten in continuation-passing style.
 
@@ -30,11 +36,15 @@ CoffeeScript also introduces features that don't exist in JavaScript, such as de
 
 One CoffeeScript feature does introduce confusion, and the more you know JavaScript the more confusion it introduces. This is the behaviour of the assignment operator, the lowly (and prevalent!) equals sign:
 
-    foo = 'bar'
+{% highlight coffeescript %}
+foo = 'bar'
+{% endhighlight %}
     
 Although it *looks* almost identical to assignment in JavaScript:
 
-    foo = 'bar';
+{% highlight javascript %}
+foo = 'bar';
+{% endhighlight %}
     
 It has *different semantics*. That's confusing. Oh wait, it's worse than that: *Sometimes* it has different semantics. Sometimes it doesn't.
 
@@ -42,73 +52,89 @@ It has *different semantics*. That's confusing. Oh wait, it's worse than that: *
 
 Well, let's review the wonderful world of JavaScript. We'll pretend we're in a browser application, and we write:
 
-    foo = 'bar';
+{% highlight javascript %}
+foo = 'bar';
+{% endhighlight %}
     
 What does this mean? Well, *it depends*: If this is in the top level of a file, and not inside of a function, then `foo` is a *global variable*. In JavaScript, global means global across all files, so you are now writing code that is coupled with every other file in your application or any vendored code you are loading.
 
 But what if it's inside a function?
 
-    function fiddleSticks (bar) {
-      foo = bar;
-      // ...
-    }
+{% highlight javascript %}
+function fiddleSticks (bar) {
+  foo = bar;
+  // ...
+}
+{% endhighlight %}
 
 For another example, many people enclose file code in an Immediately Invoked Function Expression ("IIFE") like this:
 
-    ;(function () {
-      foo = 'bar'
-      // more code...
-    })();
+{% highlight javascript %}
+;(function () {
+  foo = 'bar'
+  // more code...
+})();
+{% endhighlight %}
     
 What do `foo = 'bar';` or `foo = bar;` mean in these cases? Well, *it depends* as we say. It depends on whether `foo` is *declared* somewhere else in the same scope. For example:
 
-    function fiddleSticks (bar) {
-      var foo;
-      foo = bar;
-      // ...
-    }
+{% highlight javascript %}
+function fiddleSticks (bar) {
+  var foo;
+  foo = bar;
+  // ...
+}
+{% endhighlight %}
 
 Or:
 
-    function fiddleSticks (bar) {
-      foo = bar;
-      // ...
-      var foo = batzIndaBelfrie;
-      // ...
-    } 
+{% highlight javascript %}
+function fiddleSticks (bar) {
+  foo = bar;
+  // ...
+  var foo = batzIndaBelfrie;
+  // ...
+} 
+{% endhighlight %}
     
 Or even:
 
-    function fiddleSticks (bar) {
-      foo = bar;
-      // ...
-      function foo () {
-        // ...
-      }
-      // ...
-    }
+{% highlight javascript %}
+function fiddleSticks (bar) {
+  foo = bar;
+  // ...
+  function foo () {
+    // ...
+  }
+  // ...
+}
+{% endhighlight %}
     
-Because of something called hoisting, these all mean the same this: `foo` is local to function `fiddleSticks`, and therefore it is NOT global and ISN'T magically coupled to every other file loaded whether written by yourself or someone else.
+Because of something called hoisting,[^hoist] these all mean the same this: `foo` is local to function `fiddleSticks`, and therefore it is NOT global and ISN'T magically coupled to every other file loaded whether written by yourself or someone else.
 
 ### nested scope
 
 JavaScript permits scope nesting. If you write this:
 
-    function foo () {
-      var bar = 1;
-      var bar = 2;
-      return bar;
-    }
+{% highlight javascript %}
+function foo () {
+  var bar = 1;
+  var bar = 2;
+  return bar;
+}
+{% endhighlight %}
 
 Then `bar` will be `2`. Declaring `bar` twice makes no difference, since both declarations are in the same scope. However, if you nest functions, you can nest scopes:
 
-    function foo () {
-      var bar = 1;
-      function foofoo () {
-        var bar = 2;
-      }
-      return bar;
-    }
+{% highlight javascript %}
+function foo () {
+  var bar = 1;
+  function foofoo () {
+    var bar = 2;
+  }
+  return bar;
+}
+{% endhighlight %}
 
 Now function `foo` will return `1` because the second declaration of `bar` is inside a nested function, and therefore inside a nested scope, and therefore it's a completely different variable that happens to share the same name. This is called *shadowing*: The variable `bar` inside `foofoo` *shadows* the variable `bar` inside `foo`.
 
@@ -116,27 +142,30 @@ Now function `foo` will return `1` because the second declaration of `bar` is in
 
 Now over time people have discovered that global variables are generally a very bad idea, and accidental global variables doubly so. Here's an example of why:
 
+{% highlight javascript %}
+function row (numberOfCells) {
+  var str = '';
+  for (i = 0; i < numberOfCells; ++i) {
+    str = str + '<td></td>';
+  }
+  return '<tr>' + str + '</tr>';
+}
 
-    function row (numberOfCells) {
-      var str = '';
-      for (i = 0; i < numberOfCells; ++i) {
-        str = str + '<td></td>';
-      }
-      return '<tr>' + str + '</tr>';
-    }
-    
-    function table (numberOfRows, numberOfColumns) {
-      var str = '';
-      for (i = 0; i < numberOfRows; ++i) {
-        str = str + row(numberOfColumns);
-      }
-      return '<table>' + str + '</table>';
-    }
+function table (numberOfRows, numberOfColumns) {
+  var str = '';
+  for (i = 0; i < numberOfRows; ++i) {
+    str = str + row(numberOfColumns);
+  }
+  return '<table>' + str + '</table>';
+}
+{% endhighlight %}
     
 Let's try it:
 
-    table(3, 3)
-      //=> "<table><tr><td></td><td></td><td></td></tr></table>"
+{% highlight javascript %}
+table(3, 3)
+  //=> "<table><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
       
 We only get one row, because the variable `i` in the function `row` is global, and so is the variable `i` in the function `table`, so they're the exact same global variable. Therefore, after counting out three columns, `i` is `3` and the `for` loop in `table` finishes. Oops!
 
@@ -148,21 +177,25 @@ Now, this isn't a bug in JavaScript the language, just a feature that permits th
 
 CoffeeScript addresses this failure mode in two ways. First, all variables are local to functions. If you wish to do something in the global environment, you must do it explicitly. So in JavaScript:
 
-    UserModel = Backbone.Model.extend({ ... });
-
-    var user = new UserModel(...);
+{% highlight javascript %}
+UserModel = Backbone.Model.extend({ ... });
+var user = new UserModel(...);
+{% endhighlight %}
     
 While in CoffeeScript:
 
-    window.UserModel = window.Backbone.Model.extend({ ... })
-
-    user = new window.UserModel(...)
+{% highlight coffeescript %}
+window.UserModel = window.Backbone.Model.extend({ ... })
+user = new window.UserModel(...)
+{% endhighlight %}
     
 Likewise, CoffeeScript bakes the IIFE enclosing every file in by default. So instead of:
 
-    ;(function () {
-      // ...
-    })();
+{% highlight javascript %}
+;(function () {
+  // ...
+})();
+{% endhighlight %}
     
 You can just write your code.[^bare]
 
@@ -174,112 +207,122 @@ The net result is that it is almost impossible to replicate the JavaScript failu
 
 This sounds great, but CoffeeScript can be surprising to JavaScript programmers. Let's revisit our `table` function. First, we'll fix it:
 
-    function row (numberOfCells) {
-      var i,
-          str = '';
-      for (i = 0; i < numberOfCells; ++i) {
-        str = str + '<td></td>';
-      }
-      return '<tr>' + str + '</tr>';
-    }
+{% highlight javascript %}
+function row (numberOfCells) {
+  var i,
+      str = '';
+  for (i = 0; i < numberOfCells; ++i) {
+    str = str + '<td></td>';
+  }
+  return '<tr>' + str + '</tr>';
+}
 
-    function table (numberOfRows, numberOfColumns) {
-      var i,
-          str = '';
-      for (i = 0; i < numberOfRows; ++i) {
-        str = str + row(numberOfColumns);
-      }
-      return '<table>' + str + '</table>';
-    }
-    
-    table(3, 3)
-      //=> "<table><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>"
+function table (numberOfRows, numberOfColumns) {
+  var i,
+      str = '';
+  for (i = 0; i < numberOfRows; ++i) {
+    str = str + row(numberOfColumns);
+  }
+  return '<table>' + str + '</table>';
+}
+
+table(3, 3)
+  //=> "<table><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
       
 Good! Now suppose we notice that no function calls `row` other than `table`. Although there is a slightly more "performant" way to do this, we decide that the clearest and simplest way to indicate this relationship is to nest `row` inside `table` Pascal-style:
 
-    function table (numberOfRows, numberOfColumns) {
-      var i,
-          str = '';
-      for (i = 0; i < numberOfRows; ++i) {
-        str = str + row(numberOfColumns);
-      }
-      return '<table>' + str + '</table>';
-      
-      function row (numberOfCells) {
-        var i,
-            str = '';
-        for (i = 0; i < numberOfCells; ++i) {
-          str = str + '<td></td>';
-        }
-        return '<tr>' + str + '</tr>';
-      }
+{% highlight javascript %}
+function table (numberOfRows, numberOfColumns) {
+  var i,
+      str = '';
+  for (i = 0; i < numberOfRows; ++i) {
+    str = str + row(numberOfColumns);
+  }
+  return '<table>' + str + '</table>';
+  
+  function row (numberOfCells) {
+    var i,
+        str = '';
+    for (i = 0; i < numberOfCells; ++i) {
+      str = str + '<td></td>';
     }
+    return '<tr>' + str + '</tr>';
+  }
+}
+{% endhighlight %}
     
 It still works like a charm, because the `i` in `row` shadows the `i` in `table`, so there's no conflict. Okay. Now how does it work in CoffeeScript?
 
 Here's one possible translation to CoffeeScript:
 
-    table = (numberOfRows, numberOfColumns) ->
-      row = (numberOfCells) ->
-        str = ""
-        i = 0
-        while i < numberOfCells
-          str = str + "<td></td>"
-          ++i
-        "<tr>" + str + "</tr>"
-      str = ""
-      i = 0
-      while i < numberOfRows
-        str = str + row(numberOfColumns)
-        ++i
-      return "<table>" + str + "</table>"
-      
-    table(3,3)
-      //=> "<table><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>"
+{% highlight coffeescript %}
+table = (numberOfRows, numberOfColumns) ->
+  row = (numberOfCells) ->
+    str = ""
+    i = 0
+    while i < numberOfCells
+      str = str + "<td></td>"
+      ++i
+    "<tr>" + str + "</tr>"
+  str = ""
+  i = 0
+  while i < numberOfRows
+    str = str + row(numberOfColumns)
+    ++i
+  return "<table>" + str + "</table>"
+  
+table(3,3)
+  #=> "<table><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
 
 It works just fine. Here's another:  
 
-    table = (numberOfRows, numberOfColumns) ->
-      str = ""
-      i = 0
-      row = (numberOfCells) ->
-        str = ""
-        i = 0
-        while i < numberOfCells
-          str = str + "<td></td>"
-          ++i
-        "<tr>" + str + "</tr>"
-      str = ""
-      i = 0
-      while i < numberOfRows
-        str = str + row(numberOfColumns)
-        ++i
-      return "<table>" + str + "</table>"
-      
-    table(3,3)
-      //=> "<table><tr><td></td><td></td><td></td></tr></table>"
+{% highlight coffeescript %}
+table = (numberOfRows, numberOfColumns) ->
+  str = ""
+  i = 0
+  row = (numberOfCells) ->
+    str = ""
+    i = 0
+    while i < numberOfCells
+      str = str + "<td></td>"
+      ++i
+    "<tr>" + str + "</tr>"
+  str = ""
+  i = 0
+  while i < numberOfRows
+    str = str + row(numberOfColumns)
+    ++i
+  return "<table>" + str + "</table>"
+  
+table(3,3)
+  #=> "<table><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
       
 Broken! And a third:
 
+{% highlight coffeescript %}
+str = ""
+i = 0
+table = (numberOfRows, numberOfColumns) ->
+  row = (numberOfCells) ->
     str = ""
     i = 0
-    table = (numberOfRows, numberOfColumns) ->
-      row = (numberOfCells) ->
-        str = ""
-        i = 0
-        while i < numberOfCells
-          str = str + "<td></td>"
-          ++i
-        "<tr>" + str + "</tr>"
-      str = ""
-      i = 0
-      while i < numberOfRows
-        str = str + row(numberOfColumns)
-        ++i
-      return "<table>" + str + "</table>"
-  
-    table(3,3)
-      //=> "<table><tr><td></td><td></td><td></td></tr></table>"
+    while i < numberOfCells
+      str = str + "<td></td>"
+      ++i
+    "<tr>" + str + "</tr>"
+  str = ""
+  i = 0
+  while i < numberOfRows
+    str = str + row(numberOfColumns)
+    ++i
+  return "<table>" + str + "</table>"
+
+table(3,3)
+  #=> "<table><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
     
 Also broken! Although the three examples look similar, the first gives us what we expect but the second and third do not. What gives?
 
@@ -293,7 +336,7 @@ The second example is different. The first `i` encountered by CoffeeScript is in
 
 In the third example, `i` (and `str`) are declared outside of both `table` and `row`, and thus again they all end up being the same variable with no shadowing.
 
-Now, CoffeeScript *could* scan an entire function before deciding what variables belong where, but it doesn't.[^hoist] That simplifies things, because you don't have to worry about a variable being declared later that affects your code. Everything you need to understand is in the same file and above your code.
+Now, CoffeeScript *could* scan an entire function before deciding what variables belong where, but it doesn't. That simplifies things, because you don't have to worry about a variable being declared later that affects your code. Everything you need to understand is in the same file and above your code.
 
 [^hoist]: Scanning all of the code first is called "hoisting," in part because some declarations nested in blocks are "hoisted" up to the level of the function, and all declarations are "hoisted" to the top of the function. This is a source of confusion for some programmers, but it isn't germane to this essay.
 
@@ -305,56 +348,61 @@ Detractors of this behaviour say this is not good. When JavaScript is written us
 
 For example, if you write:
 
-    table = (numberOfRows, numberOfColumns) ->
-      row = (numberOfCells) ->
-        str = ""
-        i = 0
-        while i < numberOfCells
-          str = str + "<td></td>"
-          ++i
-        "<tr>" + str + "</tr>"
-      str = ""
-      i = 0
-      while i < numberOfRows
-        str = str + row(numberOfColumns)
-        ++i
-      return "<table>" + str + "</table>"
-  
-    table(3,3)
-      //=> "<table><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>"
+{% highlight coffeescript %}
+table = (numberOfRows, numberOfColumns) ->
+  row = (numberOfCells) ->
+    str = ""
+    i = 0
+    while i < numberOfCells
+      str = str + "<td></td>"
+      ++i
+    "<tr>" + str + "</tr>"
+  str = ""
+  i = 0
+  while i < numberOfRows
+    str = str + row(numberOfColumns)
+    ++i
+  return "<table>" + str + "</table>"
+
+table(3,3)
+  #=> "<table><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
       
 All will be well, until you are debugging late one night, and you add:
 
-    console.log('Hello!') for i in [1..5]
-    
-    table = (numberOfRows, numberOfColumns) ->
-      row = (numberOfCells) ->
-        str = ""
-        i = 0
-        while i < numberOfCells
-          str = str + "<td></td>"
-          ++i
-        "<tr>" + str + "</tr>"
-      str = ""
-      i = 0
-      while i < numberOfRows
-        str = str + row(numberOfColumns)
-        ++i
-      return "<table>" + str + "</table>"
-  
-    table(3,3)
-      //=> "table><tr><td></td><td></td><td></td></tr></table>"
+{% highlight coffeescript %}
+console.log('Hello!') for i in [1..5]
+
+table = (numberOfRows, numberOfColumns) ->
+  row = (numberOfCells) ->
+    str = ""
+    i = 0
+    while i < numberOfCells
+      str = str + "<td></td>"
+      ++i
+    "<tr>" + str + "</tr>"
+  str = ""
+  i = 0
+  while i < numberOfRows
+    str = str + row(numberOfColumns)
+    ++i
+  return "<table>" + str + "</table>"
+
+table(3,3)
+  #=> "table><tr><td></td><td></td><td></td></tr></table>"
+{% endhighlight %}
       
 This breaks your code because the `i` you used at the top "captures" the other variables so they are now all the same thing. To someone used to JavaScript, this is a Very Bad Thing™. When you write this in JavaScript:
 
-    function row (numberOfCells) {
-      var i,
-          str = '';
-      for (i = 0; i < numberOfCells; ++i) {
-        str = str + '<td></td>';
-      }
-      return '<tr>' + str + '</tr>';
-    }
+function row (numberOfCells) {
+  var i,
+      str = '';
+  for (i = 0; i < numberOfCells; ++i) {
+    str = str + '<td></td>';
+  }
+  return '<tr>' + str + '</tr>';
+}
+{% endhighlight %}
     
 It will always mean the same thing no matter where it is in a file, and no matter what comes before it or after it. There is no spooky "action-at-a-distance" where code somewhere else changes what this code means. Whereas in CoffeeScript, you don't know whether the `i` in `row` is local to `row` or not without scanning the code that comes before it in the same or enclosing scopes.
 
