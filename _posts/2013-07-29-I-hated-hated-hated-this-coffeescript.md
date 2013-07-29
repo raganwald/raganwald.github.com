@@ -35,7 +35,7 @@ function table (numberOfRows, numberOfColumns) {
 One way to write this same thing in idiomatic CoffeeScript is to use a *comprehension*. Comprehensions are familiar to Python programmers (as is CoffeeScript's significant whitespace). Here's a comprehension-based implementation with the debug line that was a failure mode in the previous code by "capturing" a local variable:
 
 {% highlight coffeescript %}
-console.log('here') for x in [1..5]
+console.log('here') for i in [1..5]
 
 table = (numberOfRows, numberOfColumns) ->
   row = (numberOfColumns) ->
