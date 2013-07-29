@@ -8,9 +8,9 @@ In [It's a Mad, Mad, Mad, Mad World: Scoping in CoffeeScript and JavaScript][mad
 
 [mad]: http://raganwald.com/2013/07/27/Ive-always-been-mad.html
 
-I discussed the failure modes of each language. Then, in the conclusion, I offered that JavaScript programmers rarely encounter the JavaScript failure modes. This is true: The often `use strict` and/or various lint tools that identify possible failures early. I also offered that CoffeeScript programmers rarely encounter CoffeeScript's failure modes this is also true, for different reasons. One of those reasons is that idiomatic CoffeeScript rarely resembles idiomatic JavaScript.
+I discussed the failure modes of each language. Then, in the conclusion, I offered that JavaScript programmers rarely encounter the JavaScript failure modes. This is true: JavaScript programmers often `use strict` and/or employ various lint tools that identify possible failures early. I also offered that CoffeeScript programmers rarely encounter CoffeeScript's failure modes. I believe this is also true, but for different reasons. One of those reasons is that idiomatic CoffeeScript rarely resembles idiomatic JavaScript.
 
-CoffeeScript code that is a direct translation of JavaScript is not idiomatic. It's ugly, so much so that people will hate, hate, hate it. And even worse, it is much more likely to contain errors than idiomatic CoffeeScript. Let's take another look at some JavaScript:
+A direct translation of JavaScript to CoffeeScript will be ugly, so much so that people will hate, hate, hate it. And even worse, it is much more likely to contain errors than idiomatic CoffeeScript. Take this JavaScript from the previous post:
 
 {% highlight javascript %}
 function table (numberOfRows, numberOfColumns) {
@@ -30,6 +30,28 @@ function table (numberOfRows, numberOfColumns) {
     return '<tr>' + str + '</tr>';
   }
 }
+{% endhighlight %}
+
+The literal translation to CoffeeScript is horrible and definitely not idiomatic:
+
+{% highlight coffeescript %}
+table = (numberOfRows, numberOfColumns) ->
+  row = (numberOfCells) ->
+    str = ""
+    i = 0
+    while i < numberOfCells
+      str = str + "<td></td>"
+      ++i
+    "<tr>" + str + "</tr>"
+  str = ""
+  i = 0
+  while i < numberOfRows
+    str = str + row(numberOfColumns)
+    ++i
+  return "<table>" + str + "</table>"
+  
+table(3,3)
+  #=> "<table><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>"
 {% endhighlight %}
 
 One way to write this same thing in idiomatic CoffeeScript is to use a *comprehension*. Comprehensions are familiar to Python programmers (as is CoffeeScript's significant whitespace). Here's a comprehension-based implementation with the debug line that was a failure mode in the previous code by "capturing" a local variable:
