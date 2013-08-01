@@ -58,3 +58,69 @@ In CoffeeScript, the compiler will complain if you write `object?.` instead of `
 As Joel Spolsky would say, "andand is a leaky abstraction."
 
 [^icky]: The quality of being as obscure as Ick, an obscure Ruby library.
+
+### the blockhead programmer
+
+Implementing a programming language is an incredibly valuable exercise. Some time ago I wrote a toy Scheme, one where everything was built up from unhygienic macros and just five special forms. `let` isn't one of those five, so I wrote a macro that rewrote
+
+{% highlight %} 
+(let ((foo 1) (bar 2))
+  (+ foo bar))
+{% endhighlight %}
+
+into:
+
+{% highlight %}
+((lambda (foo bar)
+  (+ foo bar)) 
+  1 2)
+{% endhighlight %}
+
+If you're somewhat familiar with JavaScript and Lisp, you'll recognize the second expression as an [Immediately Invoked Function Expression][iife]. The macro provides the illusion that `let` defines and binds local variables in my toy Scheme the way `var` does in JavaScript. But that isn't what happens: In reality, parameters to lambdas are the only mechanism for defining variables.
+
+It's an interesting mechanism, and it has been borrowed for the CoffeeScript language's `do` keyword. JavaScript programmers are often tempted to use it to implement block scoping. In JavaScript, a new scope is only introduced by functions. Take this terrible code:
+
+{% highlight javascript %}
+function whatDoesThisDo (n) {
+  result = '';
+  for (var i = 0; i < n; ++i ) {
+    if (i % 2 === 0) {
+      for (var i = 0; i < n; ++i ) {
+        result = result + 'x';
+      }
+    }
+  }
+  return result;
+}
+
+whatDoesThisDo(6)
+  //=> "xxxxxx"
+{% endhighlight %}
+
+It seems contrived for the purpose of hazing University graduates that interview for programming jobs. The key point for our purposes is that despite the `var` declaration and the fact that `for (var i = 0; i < result.length; ++i )` is nested inside of `if (i % 2 === 0) { ... }`, the `i` indexing the inner loop is the exact same `i` as the one that indexes the outer loop, and that is going to produce problems.
+
+Some languages have [block scope]: The introduction of a block like `{ ... }` introduces a new scope, and therefore you can create a new `i` that *shadows* the original. This is possible in Scheme with the `let` form, and if you have a taste for having one variable mean different things in different places, you can *appear* to create the same effect in JavaScript with an IIFE:
+
+{% highlight javascript %}
+function whatDoesThisDo (n) {
+  result = '';
+  for (var i = 0; i < n; ++i ) {
+    if (i % 2 === 0) (function () {
+      for (var i = 0; i < n; ++i ) {
+        result = result + 'x';
+      }
+    })();
+  }
+  return result;
+}
+
+whatDoesThisDo(6)
+  //=> "xxxxxxxxxxxxxxxxxx"
+{% endhighlight %}
+
+[iife]: https://en.wikipedia.org/wiki/Immediately-invoked_function_expression
+[block scope]: https://en.wikipedia.org/wiki/Scope_(programming)#Block_scope
+
+By using `(function () { ... })();` instead of plain `{ ... }`, we're creating a new JavaScript scope. Passing rapidly over the performance implications of creating a new function only to execute it once and then throw it away, have we implemented block scope as you might find in a language like C#?
+
+Almost.
