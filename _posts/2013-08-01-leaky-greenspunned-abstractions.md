@@ -189,3 +189,5 @@ Personally, I embrace features from other languages. But recognizing that they h
 And perhaps, we can learn from this that languages *are* limited. While it might seem like we can implement any feature from another language we like, the reality is that we can write code that *looks like* another language's code, but under the hood it's still our original language, and trouble awaits those who blindly embrace the abstraction.
 
 **If another language's abstractions are so convenient, maybe we should consider switching rather than writing an ad hoc, informally-specified, bug-ridden, slow implementation of half of a better idea.**
+
+([discuss](http://www.reddit.com/r/javascript/comments/1ji2cr/leaky_greenspunned_abstractions/))
