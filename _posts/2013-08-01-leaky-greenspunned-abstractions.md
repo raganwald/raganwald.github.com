@@ -63,14 +63,14 @@ As Joel Spolsky would say, "andand is a leaky abstraction."
 
 Implementing a programming language is an incredibly valuable exercise. Some time ago I wrote a toy Scheme, one where everything was built up from unhygienic macros and just five special forms. `let` isn't one of those five, so I wrote a macro that rewrote
 
-{% highlight lisp %} 
+{% highlight %} 
 (let ((foo 1) (bar 2))
   (+ foo bar))
 {% endhighlight %}
 
 into:
 
-{% highlight lisp %}
+{% highlight %}
 ((lambda (foo bar)
   (+ foo bar)) 
   1 2)
