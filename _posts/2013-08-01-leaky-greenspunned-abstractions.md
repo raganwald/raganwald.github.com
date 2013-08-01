@@ -62,19 +62,15 @@ As Joel Spolsky would say, "andand is a leaky abstraction."
 ### the blockhead programmer
 
 Implementing a programming language is an incredibly valuable exercise. Some time ago I wrote a toy Scheme, one where everything was built up from unhygienic macros and just five special forms. `let` isn't one of those five, so I wrote a macro that rewrote
-
-{% highlight %} 
-(let ((foo 1) (bar 2))
-  (+ foo bar))
-{% endhighlight %}
+ 
+    (let ((foo 1) (bar 2))
+      (+ foo bar))
 
 into:
 
-{% highlight %}
-((lambda (foo bar)
-  (+ foo bar)) 
-  1 2)
-{% endhighlight %}
+    ((lambda (foo bar)
+      (+ foo bar)) 
+      1 2)
 
 If you're somewhat familiar with JavaScript and Lisp, you'll recognize the second expression as an [Immediately Invoked Function Expression][iife]. The macro provides the illusion that `let` defines and binds local variables in my toy Scheme the way `var` does in JavaScript. But that isn't what happens: In reality, parameters to lambdas are the only mechanism for defining variables.
 
@@ -124,3 +120,72 @@ whatDoesThisDo(6)
 By using `(function () { ... })();` instead of plain `{ ... }`, we're creating a new JavaScript scope. Passing rapidly over the performance implications of creating a new function only to execute it once and then throw it away, have we implemented block scope as you might find in a language like C#?
 
 Almost.
+
+### more leaks
+
+Once again, we have a leaky abstraction. The enthusiastic programmer, having rediscovered how to implement block scope in JavaScript with IIFEs, might decide that IIFEs are the new go-to idiom for block scoping:
+
+{% highlight javascript %}
+function oddsAndEvens (n) {
+  var result;
+  if (n % 2 == 0) {
+    (function () {
+      for (var i = 0; i < n; ++i) {
+        result = result + 'even';
+      }
+      return result;
+    })()
+  }
+  else {
+    (function () {
+      for (var i = 0; i < n; ++i) {
+        result = result + 'odd';
+      }
+      return result;
+    })()
+  }
+}
+
+oddsAndEvens(4)
+  //=> undefined
+{% endhighlight %}
+
+The reasoning behind this code is beyond dubious, but the problem is apparent: The intention was that `return result` return the result from the `oddsAndEvens` function, but in reality it returns the result from the anonymous function enclosing it. In languages like Ruby and C++, blocks are lighter weight than lambdas precisely because the semantics of things like `return` are different from within a block than from within a function body.
+
+It doesn't matter that `let` is implemented with a lambda in our toy Scheme because our toy Scheme doesn't have a `return` form. But it matters greatly in JavaScript. Imagine, for example, that you use [Esprima] to write a preprocessor. You could lose all grip with reality and translate ES5 code like this:
+
+{% highlight javascript %}
+let(x = 1, y = 2) do {
+  x + y;
+} while(true);
+{% endhighlight %}
+
+into:
+
+{% highlight javascript %}
+(function (x, y) {
+  return x + y;
+})(1, 2);
+{% endhighlight %}
+
+Besides the vestigial `while(true)`, this will break badly whenever someone tries to use a `return` inside our pretend-let, just as we saw above. And it gets worse: What is the meaning of `this` inside our so-called blocks?
+
+[Esprima]: http://esprima.org
+
+Now, many of these problems can be fixed. You could write `.call(this, 1, 2)` instead of `(1, 2)` to preserve `this`. You could even use try and catch to establish a new scope for a single variable, as [let-er] does. But once again, we find that when we try to bolt the features from one language onto another, we create a leaky abstraction that falls down for anything but the obvious cases.
+
+[let-er]: https://github.com/getify/let-er
+
+### are we doomed?
+
+Now these examples are contrived, but they reproduce actual bugs I've encountered when writing code using similar mechanisms. And my experience so far is that the more complex the abstraction being borrowed form one language and Greenspunned onto another, the more annoying the abstraction leaks become. Don't get me started on lazy collections in Ruby!
+
+It's natural to wonder if all such efforts should be dismissed as a bad idea. They can be unfamiliar to uniglot programmers, and if my contention is correct, they are fraught with edge cases and subtle bugs. SHould we always try to "cut with the grain" and use a language's "natural" idioms?
+
+Personally, I embrace features from other languages. But recognizing that they have limitations, I avoid embracing them to the point that they become prevalent. Something like [trampolining] can be a very useful tool for surgically solving a particular problem in a language that lacks Tail Call Elimination, but trampolining all of a code base's method calls would be an act of masochism.
+
+[trampolining]: https://en.wikipedia.org/wiki/Trampoline_%28computing%29#High_level_programming
+
+And perhaps, we can learn from this that languages *are* limited. While it might seem like we can implement any feature from another language we like, the reality is that we can write code that *looks like* another language's code, but under the hood it's still our original language, and trouble awaits those who blindly embrace the abstraction.
+
+**If another language's abstractions are so convenient, maybe we should consider switching rather than writing an ad hoc, informally-specified, bug-ridden, slow implementation of half of a better idea.**
