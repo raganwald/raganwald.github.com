@@ -1,5 +1,6 @@
 ---
 layout: default
+tags: [javascript]
 ---
 
 As programmers, it is our job to build software out of abstractions. Logic gates are connected to form a "Von Neumann Computer." An assembler creates an interface that can be programmed with instructions like `MOV 12345, 567890`. A compiler lets us write `x = y`, and so on up to `has_and_belongs_to_many :roles`.
