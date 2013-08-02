@@ -180,7 +180,7 @@ Now, many of these problems can be fixed. You could write `.call(this, 1, 2)` in
 
 Now these examples are contrived, but they reproduce actual bugs I've encountered when writing code using similar mechanisms. And my experience so far is that the more complex the abstraction being borrowed form one language and Greenspunned onto another, the more annoying the abstraction leaks become. Don't get me started on lazy collections in Ruby!
 
-It's natural to wonder if all such efforts should be dismissed as a bad idea. They can be unfamiliar to uniglot programmers, and if my contention is correct, they are fraught with edge cases and subtle bugs. SHould we always try to "cut with the grain" and use a language's "natural" idioms?
+It's natural to wonder if all such efforts should be dismissed as a bad idea. They can be unfamiliar to uniglot programmers, and if my contention is correct, they are fraught with edge cases and subtle bugs. Must we always try to "cut with the grain" and use a language's "natural" idioms?
 
 Personally, I embrace features from other languages. But recognizing that they have limitations, I avoid embracing them to the point that they become prevalent. Something like [trampolining] can be a very useful tool for surgically solving a particular problem in a language that lacks Tail Call Elimination, but trampolining all of a code base's method calls would be an act of masochism.
 
