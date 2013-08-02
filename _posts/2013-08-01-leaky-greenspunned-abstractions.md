@@ -190,4 +190,4 @@ And perhaps, we can learn from this that languages *are* limited. While it might
 
 **If another language's abstractions are so convenient, maybe we should consider switching rather than writing an ad hoc, informally-specified, bug-ridden, slow implementation of half of a better idea.**
 
-([discuss](http://www.reddit.com/r/javascript/comments/1ji2cr/leaky_greenspunned_abstractions/))
+([discuss](http://www.reddit.com/r/programming/comments/1jk8vg/leaky_greenspunned_abstractions/))
