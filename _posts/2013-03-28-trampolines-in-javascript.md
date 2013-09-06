@@ -258,7 +258,7 @@ function factorial (n) {
 }
 
 factorial(10).toString();
-  //=> '
+  //=> '3628800'
 factorial(32768);
   //=> GO FOR LUNCH
 {% endhighlight %}
