@@ -175,7 +175,7 @@ end
 
 {% endhighlight %}
 
-This imore 'OO' than doing the test yourself. Not that there's anything wrong with that! But what if you like to test bank accounts for frozen-ness? Well, you don't really need a `frozen?` method if you don't want one:
+This is much more 'OO' than having code test `frozen?`. Not that there's anything wrong with that! But what if you like to test bank accounts for frozen-ness? Well, you don't really need a `frozen?` method if you don't want one:
 
 {% highlight ruby %}
 
