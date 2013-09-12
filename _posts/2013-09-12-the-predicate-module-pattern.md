@@ -12,7 +12,7 @@ Let's begin by defining the problem: **Representing object predicates**.
 
 We have some objects that represent entities of some sort. They could be in the domain, they could be in the implementation. For our ridiculously simple example, we will choose bank accounts:
 
-{% highlight javascript %}
+{% highlight ruby %}
 class BankAccount
 
   # ... 
@@ -22,7 +22,7 @@ end
 
 Our bank account instances have lots of state. A really forward-looking way to deal with that is to implement a state machine, but let's hand-wave over that and imagine that we're trying to write Java programs with Ruby syntax, so we use a getter and setter for some attribute:
 
-{% highlight javascript %}
+{% highlight ruby %}
 class BankAccount
 
   attr_accessor :frozen
@@ -41,7 +41,7 @@ end
 
 If this attribute is always a boolean, we call it a predicate, and in the Ruby style borrowed from Lisp, we suffix its getter with a `?`:
 
-{% highlight javascript %}
+{% highlight ruby %}
 class BankAccount
 
   attr_writer :frozen
@@ -68,7 +68,7 @@ That's how most of my code is written, and it works just fine. But we should be 
 
 Let's compare this:
 
-{% highlight javascript %}
+{% highlight ruby %}
 class BankAccount
 
   attr_writer :frozen
@@ -82,7 +82,7 @@ end
 
 With the following:
 
-{% highlight javascript %}
+{% highlight ruby %}
 class BankAccount
 
 end
@@ -110,7 +110,7 @@ If we do have a predicate that is not expected to change during the object's lif
 
 Modules can help us out. Let's try:
 
-{% highlight javascript %}
+{% highlight ruby %}
 class BankAccount
 
 end
@@ -137,7 +137,7 @@ Now we're extending an object with a module (not including the module in a class
 
 You can experiment with this pattern. If you find yourself writing a lot of this kidn of code:
 
-{% highlight javascript %}
+{% highlight ruby %}
 if object.frozen?
   raise "Cannot fuggle with a frozen object"
 else
@@ -147,7 +147,7 @@ end
 
 You can write:
 
-{% highlight javascript %}
+{% highlight ruby %}
 
 module Thawed
 
@@ -177,7 +177,7 @@ end
 
 This imore 'OO' than doing the test yourself. Not that there's anything wrong with that! But what if you like to test bank accounts for frozen-ness? Well, you don't really need a `frozen?` method if you don't want one:
 
-{% highlight javascript %}
+{% highlight ruby %}
 
 module Thawed
 
