@@ -135,6 +135,26 @@ bank_account.frozen?
 
 Now we're extending an object with a module (not including the module in a class), and we get the module's functionality in that object. It works like a charm, although you do want to be aware there are now *three* states for frozen-ness: `Frozen`, `Thawed`, and `I-Forgot-To-Extend-The-Object`. And we can mix in as many such predicate modules as we like.
 
+### module responsibilities
+
+With classes including modules, each class is responsible for including the modules it needs. Writing `.extend(Foo)` when creating a new object shifts the responsibility to the client creating an object. That's nearly always a bad idea, so we bakeit into the initialize method. I prefer hashes of options and initializers, but you can do this in other ways:
+
+{% highlight ruby %}
+class BankAccount
+
+  def initialize options = {}
+    self.extend(
+      if options[:frozen]
+        Frozen
+      else
+        Thawed
+      end
+    )
+  end
+
+end
+{% endhighlight %}
+
 You can experiment with this pattern. If you find yourself writing a lot of this kind of code:
 
 {% highlight ruby %}
