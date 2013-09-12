@@ -3,7 +3,7 @@ layout: default
 tags: [ruby]
 ---
 
-In Ruby, modules are often used to [mix functionality into][mixin] concrete classes. Another excellent pattern is to [extend objects][e] as a way of avoiding monkey-patching classes you do not "own." There's a thir dpattern that I find handy and expressive: Using modules as object predicates.
+In Ruby, modules are often used to [mix functionality into][mixin] concrete classes. Another excellent pattern is to [extend objects][e] as a way of avoiding monkey-patching classes you do not "own." There's a third pattern that I find handy and expressive: Using modules as object predicates.
 
 [mixin]: https://en.wikipedia.org/wiki/Mixin
 [e]: http://www.ruby-doc.org/docs/ProgrammingRuby/html/classes.html#UD
