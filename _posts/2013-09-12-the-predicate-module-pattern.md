@@ -218,6 +218,9 @@ Well, there you have it: **The Predicate Module Pattern**. Cheers!
 
 If you make a habit of programming as I do, you will inevitably run into contrary opinions. For example, one widely held opinion is that `#kind_of?` is a "code smell." I agree with this, provided that the expression "code smell" retains it shistorical meaning, namely something that should be double-checked to make sure that it is what you want.
 
+<blockquote class="twitter-tweet" data-partner="tweetdeck"><p><a href="https://twitter.com/raganwald">@raganwald</a> Using kind_of? skeeved me out a bit. Not a stylistic disagreement. Sniffing types I think is widely seen as code smell in Ruby.</p>&mdash; mxavier (@mxavier) <a href="https://twitter.com/mxavier/statuses/378172099308695552">September 12, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 As a general rule, you should be absolutely certain that you are using `.kind_of?` for good rasons, and not because you are unfamiliar with the "Kingdom of Nouns" style of programming where entities are burdened with an every-increasing number of responsibilities because they ought to know everything about how to use them.
 
 In the code above, we're actually presented with three ways to use a bank account's `frozen` predicate attribute:
