@@ -168,7 +168,6 @@ end
 You can write:
 
 {% highlight ruby %}
-
 module Thawed
 
   def frozen?; false; end
@@ -212,3 +211,71 @@ bank_account.kind_of?(Frozen)
 Checking whether an account is a kind of `Frozen` is a matter of taste, of course. But it's no worse in my mind than a `frozen?` method if we do not expect an object to change such a state during its lifetime.
 
 Well, there you have it: **The Predicate Module Pattern**. Cheers!
+
+---
+
+### personal commentary
+
+If you make a habit of programming as I do, you will inevitably run into contrary opinions. For example, one widely held opinion is that `#kind_of?` is a "code smell." I agree with this, provided that the expression "code smell" retains it shistorical meaning, namely something that should be double-checked to make sure that it is what you want.
+
+As a general rule, you should be absolutely certain that you are using `.kind_of?` for good rasons, and not because you are unfamiliar with the "Kingdom of Nouns" style of programming where entities are burdened with an every-increasing number of responsibilities because they ought to know everything about how to use them.
+
+In the code above, we're actually presented with three ways to use a bank account's `frozen` predicate attribute:
+
+1. A method called `frozen?`.
+2. Using `kind_of?(Frozen)`.
+3. Baking flow control into the predicate modules using the `guard_with_frozen_check` method.
+
+If a module is created strictly to communciate a predicate to fellow programmers, it's tru that you can define `frozen?` in a module to show that ths is not expected to change, however there is a problem. The interface of the method `frozen?` is abstract enough that the predicate could be a state that changes, or it could be a state that doesn't change.
+
+That's widely seen as a benefit, but when everything is abstract and could-be-changed in the future, interfaces communicate very little. `kind_of?(Frozen)` pushes the implementation into the interface, true, but it also pushes a contractual promise about the behaviour of `Frozen` into the interface. That can be a benefit when you make a conscious choice that you are trying to make this behaviour obvious.
+
+Generally, modules and classes are used for implementing interfaces, and they shouldn't become the interface. But a predicate module is, IMO, a place where it is worth considering whether the smell is calling out an actual antipattern or whether this is one of those places where a general rule espoused by the mass of the herd doesn't apply.
+
+As for option 3, this speaks to a style of programming that eschews checking predicates or values at all times. The name `guard_with_frozen_check` is good for explaining the mechanism, but terrible in practice. I'd pick *the name* as the smell. Consider instead:
+
+{% highlight ruby %}
+class BankAccount
+
+  def initialize options = {}
+    self.extend(
+      if options[:security_score].andand < 42
+        Frozen
+      else
+        Thawed
+      end
+    )
+  end
+
+end
+
+module Thawed
+
+  def perform_user_action desc
+    yield self
+  end
+
+end
+
+module Frozen
+
+  def perform_user_action desc = 'perform user action'
+    raise "Cannot #{desc} with an object frozen because of a poor security score"
+  end
+
+end
+
+bank_account = BankAccount.new security_score: 74
+
+bank_account.perform_user_action('fuggle') do |acct|
+  fuggle(acct)
+end
+{% endhighlight %}
+
+In this code, clients do not know anything about why an account might be froze, they create accounts and provide security scores, and they ask the accounts to perform user actions. The account checks the frozen "state" via a module.
+
+You could do the same thing by saving teh score and checking it, or saving a frozen predicate attribute, but you wouldn't be communicating that security scores don't change in the context of an instantiated `BankAccount` object.
+
+It's up to you what to do with this pattern. Just be aware that if you read essays by people who switched from Java to Ruby at a time when Ruby was unpopular, they may act as if "popularity" isn't their first consideration when choosing how to write programs.
+
+That's neither good, nor bad, it just *is*.
