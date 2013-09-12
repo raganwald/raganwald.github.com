@@ -218,9 +218,6 @@ Well, there you have it: **The Predicate Module Pattern**. Cheers!
 
 If you make a habit of programming as I do, you will inevitably run into contrary opinions. For example, one widely held opinion is that `#kind_of?` is a "code smell." I agree with this, provided that the expression "code smell" retains it shistorical meaning, namely something that should be double-checked to make sure that it is what you want.
 
-<blockquote class="twitter-tweet" data-partner="tweetdeck"><p><a href="https://twitter.com/raganwald">@raganwald</a> Using kind_of? skeeved me out a bit. Not a stylistic disagreement. Sniffing types I think is widely seen as code smell in Ruby.</p>&mdash; mxavier (@mxavier) <a href="https://twitter.com/mxavier/statuses/378172099308695552">September 12, 2013</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 As a general rule, you should be absolutely certain that you are using `.kind_of?` for good rasons, and not because you are unfamiliar with the "Kingdom of Nouns" style of programming where entities are burdened with an every-increasing number of responsibilities because they ought to know everything about how to use them.
 
 In the code above, we're actually presented with three ways to use a bank account's `frozen` predicate attribute:
@@ -229,7 +226,7 @@ In the code above, we're actually presented with three ways to use a bank accoun
 2. Using `kind_of?(Frozen)`.
 3. Baking flow control into the predicate modules using the `guard_with_frozen_check` method.
 
-If a module is created strictly to communciate a predicate to fellow programmers, it's tru that you can define `frozen?` in a module to show that ths is not expected to change, however there is a problem. The interface of the method `frozen?` is abstract enough that the predicate could be a state that changes, or it could be a state that doesn't change.
+If a module is created strictly to communciate a predicate to fellow programmers, it's true that you can define `frozen?` in a module to show that ths is not expected to change, however there is a problem. The interface of the method `frozen?` is abstract enough that the predicate could be a state that changes, or it could be a state that doesn't change.
 
 That's widely seen as a benefit, but when everything is abstract and could-be-changed in the future, interfaces communicate very little. `kind_of?(Frozen)` pushes the implementation into the interface, true, but it also pushes a contractual promise about the behaviour of `Frozen` into the interface. That can be a benefit when you make a conscious choice that you are trying to make this behaviour obvious.
 
