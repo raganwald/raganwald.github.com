@@ -135,7 +135,7 @@ bank_account.frozen?
 
 Now we're extending an object with a module (not including the module in a class), and we get the module's functionality in that object. It works like a charm, although you do want to be aware there are now *three* states for frozen-ness: `Frozen`, `Thawed`, and `I-Forgot-To-Extend-The-Object`. And we can mix in as many such predicate modules as we like.
 
-You can experiment with this pattern. If you find yourself writing a lot of this kidn of code:
+You can experiment with this pattern. If you find yourself writing a lot of this kind of code:
 
 {% highlight ruby %}
 if object.frozen?
@@ -179,17 +179,9 @@ This is much more 'OO' than having code test `frozen?`. Not that there's anythin
 
 {% highlight ruby %}
 
-module Thawed
+module Thawed; end
 
-  def frozen?; false; end
-
-end
-
-module Frozen
-
-  def frozen?; true; end
-
-end
+module Frozen; end
 
 bank_account = BankAccount.new(...).extend(Frozen)
 
