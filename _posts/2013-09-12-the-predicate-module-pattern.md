@@ -191,4 +191,4 @@ bank_account.kind_of?(Frozen)
 
 Checking whether an account is a kind of `Frozen` is a matter of taste, of course. But it's no worse in my mind than a `frozen?` method if we do not expect an object to change such a state during its lifetime.
 
-Well, there you have it: The Predicate Module Pattern. Cheers!
+Well, there you have it: **The Predicate Module Pattern**. Cheers!
