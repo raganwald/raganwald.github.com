@@ -212,6 +212,8 @@ Checking whether an account is a kind of `Frozen` is a matter of taste, of cours
 
 Well, there you have it: **The Predicate Module Pattern**. Cheers!
 
+([discuss](https://news.ycombinator.com/item?id=6374328))
+
 ---
 
 ### personal commentary
