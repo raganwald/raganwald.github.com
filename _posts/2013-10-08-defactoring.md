@@ -1,6 +1,5 @@
 ---
 layout: default
-published: false
 ---
 
 The other day, a colleague and I were debating whether to defactor some code. No, not refactor the code, *de*-factor the code. Whaaaa?
