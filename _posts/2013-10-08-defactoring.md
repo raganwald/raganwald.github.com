@@ -15,7 +15,7 @@ It's not enough to simply "extract method" repeatedly, turning a single, monolit
 
 That's re-organzing, perhaps, but it's more like futzing with whitespace and indentation than it is refactoring. When you factor a number, you extract other numbers that can be recombined. `42` can be factored into three primes: `[2, 3, 7]`. Those factors can be recombined to make different numbers, for example `6` is `2 * 3` and `21` is `3 * 7`.
 
-Here is a method loosely snarfed from http://rosettacode.org/wiki/Longest_common_subsequence#Ruby:
+Here is a method loosely snarfed from [Longest Common Subsequence](http://rosettacode.org/wiki/Longest_common_subsequence#Ruby):
 
 {% highlight ruby %}
 def find_common_ends(a, b)
