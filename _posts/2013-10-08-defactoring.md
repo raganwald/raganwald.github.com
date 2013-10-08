@@ -104,7 +104,7 @@ Design is a process of making *choices*. Bad design is when you punt on a choice
 
 [Haiku Deck](http://www.haikudeck.com) goes the other way. The authors have made design choices. It does less, much less. It is less flexible overall. But within its domain, it is a better product than PowerPoint. And so it is with software design. Sometimes, increased flexibility introduces unnecessary cognitive overhead. There are options that will never be exercised.
 
-<iframe src="http://www.haikudeck.com/e/pjz03GUWZb" width="640" height="541" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe>
+<iframe src="http://www.haikudeck.com/e/pjz03GUWZb" width="640" height="541" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"/>
 
 Well-written code isn't harder to read on account of the flexibility. We can assume our colleagues know what metaprogramming is, how blocks work, what a method combinator does, and so on. But nevertheless, increased flexibility does mean that the code says far less about how it's intended to work. Whenever you're reading a piece of it, you are thinking, "it might do this, it nmight do that."
 
