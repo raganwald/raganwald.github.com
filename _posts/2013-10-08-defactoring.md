@@ -2,7 +2,7 @@
 layout: default
 ---
 
-The other day, a colleague and I were debating whether to defactor some code. No, not refactor the code, *de*-factor the code. Whaaaa?
+The other day, a colleague and I were debating whether to defactor some code. No, not refactor the code, *de*-factor the code.
 
 ### what is "factoring?"
 
@@ -10,7 +10,7 @@ Defactoring is the process of removing factoring from code. The word "refactorin
 
 *Factoring* starts with taking code that does something, and organizing it into parts that work together *or separately*, and without adding or removing functionality. The canonical example would be to take a program consisting of single, monolithic "God Object," and breaking it out into various entities with individual responsibilities.
 
-It's not enough to simply "extract method" a nbunch of times, turning a single, monolithic object with a single public method into a single, monolithic object with a single method and a series of provate helper methods that are so hopelessly coupled that they can't be called by anything else, and perhaps can't even by called in a different order.
+It's not enough to simply "extract method" repeatedly, turning a single, monolithic object with a single public method into a single, monolithic object with a single method and a series of helper methods that are so hopelessly coupled that they can't be called by anything else, and perhaps can't even by called in a different order.
 
 That's re-organzing, perhaps, but it's more like futzing with whitespace and indentation than it is refactoring. When you factor a number, you extract other numbers that can be recombined. `42` can be factored into three primes: `[2, 3, 7]`. Those factors can be recombined to make different numbers, for example `6` is `2 * 3` and `21` is `3 * 7`.
 
