@@ -104,7 +104,7 @@ Design is a process of making *choices*. Bad design is when you punt on a choice
 
 [Haiku Deck](http://www.haikudeck.com) goes the other way. The authors have made design choices. It does less, much less. It is less flexible overall. But within its domain, it is a better product than PowerPoint. And so it is with software design. Sometimes, increased flexibility introduces unnecessary cognitive overhead. There are options that will never be exercised.
 
-<iframe src="http://www.haikudeck.com/e/pjz03GUWZb" width="640" height="541" frameborder="0" marginheight="0" marginwidth="0" scrolling="no">
+<iframe src="http://www.haikudeck.com/e/pjz03GUWZb" width="500" height="423" frameborder="0" marginheight="10" marginwidth="0" scrolling="no">
 Something that shouldn't matter
 </iframe>
 
