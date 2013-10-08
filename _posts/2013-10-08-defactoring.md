@@ -1,6 +1,6 @@
 ---
 layout: default
-tags: [programming, gameoflife]
+tags: [combinators]
 ---
 
 The other day, a colleague and I were debating whether to defactor some code. No, not refactor the code, *de*-factor the code.
@@ -103,6 +103,8 @@ Why would you wnat to defactor code? More flexible is better, right?
 Design is a process of making *choices*. Bad design is when you punt on a choice. Microsoft PowerPoint makes money by being everything to everybody, but it is not good design for any one user or for any one kind of presentation. It does too much. It's too flexible. It imposes cognitive overhead sorting out how to use all of its bits and pieces to accomplish a task.
 
 [Haiku Deck](http://www.haikudeck.com) goes the other way. The authors have made design choices. It does less, much less. It is less flexible overall. But within its domain, it is a better product than PowerPoint. And so it is with software design. Sometimes, increased flexibility introduces unnecessary cognitive overhead. There are options that will never be exercised.
+
+<iframe src="http://www.haikudeck.com/e/pjz03GUWZb" width="640" height="541" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe><br /><a href="http://www.haikudeck.com/?utm_campaign=embed&utm_source=player&utm_medium=text-link" style="font-family:arial,sans-serif; font-size:8pt;">Created with Haiku Deck, the free presentation app for iPad</a>
 
 Well-written code isn't harder to read on account of the flexibility. We can assume our colleagues know what metaprogramming is, how blocks work, what a method combinator does, and so on. But nevertheless, increased flexibility does mean that the code says far less about how it's intended to work. Whenever you're reading a piece of it, you are thinking, "it might do this, it nmight do that."
 
