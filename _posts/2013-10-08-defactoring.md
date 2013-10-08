@@ -98,11 +98,9 @@ One way to defactor code is to introduce coupling. You have just as many pieces,
 
 Why would you wnat to defactor code? More flexible is better, right?
 
-I dunno, is it?
-
 ### why defactor
 
-Let's get airey-fairey. Design is a process of making *choices*. Bad design is when you punt on a choice. Microsoft PowerPoint makes money by being everything to everybody, but it is not good design for any one user or for any one kind of presentation. It does too much. It's too flexible. It imposes cognitive overhead sorting out how to use all of its bits and pieces to accomplish a task.
+Design is a process of making *choices*. Bad design is when you punt on a choice. Microsoft PowerPoint makes money by being everything to everybody, but it is not good design for any one user or for any one kind of presentation. It does too much. It's too flexible. It imposes cognitive overhead sorting out how to use all of its bits and pieces to accomplish a task.
 
 [Haiku Deck](http://www.haikudeck.com) goes the other way. The authors have made design choices. It does less, much less. It is less flexible overall. But within its domain, it is a better product than PowerPoint. And so it is with software design. Sometimes, increased flexibility introduces unnecessary cognitive overhead. There are options that will never be exercised.
 
