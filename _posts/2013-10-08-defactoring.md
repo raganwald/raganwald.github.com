@@ -129,3 +129,5 @@ Things that are coupled ought to be clustered together in an obvious way, either
 ### summary
 
 Factoring is the division of code into independent entities that can be recombined. Defactoring is the reassembly of formerly independent entities. We factor to introduce flexibility. We defactor to reduce flexibility. Flexibility has a cognitive cost, so we apply it where we think we need it, and remove it from where we think we don't need it. We attempt to keep the appearance of code flexibility aligned with the reality of code flexibility: Things that appear to be independent should not be coupled.
+
+([discuss](http://www.reddit.com/r/programming/comments/1o0777/defactoring/))
