@@ -27,9 +27,9 @@ Type inference made me skip, a parametric polymorphic trip
 Everybody was type-fu fighting
 Compiling fast as lightning
 In fact it was a little bit frightening
-But they did it with expert timing
+But their code had early binding
 
-(repeat)..make sure you have expert timing
+(repeat)..make sure you have early binding
 Type-fu fighting, compiling fast as lightning
 ```
 
