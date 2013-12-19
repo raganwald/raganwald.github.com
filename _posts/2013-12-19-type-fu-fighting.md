@@ -33,4 +33,4 @@ But they did it with expert timing
 Type-fu fighting, compiling fast as lightning
 ```
 
-inspiration: http://www.reddit.com/r/programming/comments/1t8y6g/why_rust_ditched_pure_functions/ce5m1ju
+([inspiration](http://www.reddit.com/r/programming/comments/1t8y6g/why_rust_ditched_pure_functions/ce5m1ju))
