@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Everybody was type-fu fighting
+title: Type-Fu Fighting
 ---
 
 ```
