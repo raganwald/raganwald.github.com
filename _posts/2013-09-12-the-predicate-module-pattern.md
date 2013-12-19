@@ -276,7 +276,7 @@ end
 
 In this code, clients do not know anything about why an account might be froze, they create accounts and provide security scores, and they ask the accounts to perform user actions. The account checks the frozen "state" via a module.
 
-You could do the same thing by saving teh score and checking it, or saving a frozen predicate attribute, but you wouldn't be communicating that security scores don't change in the context of an instantiated `BankAccount` object.
+You could do the same thing by saving the score and checking it, or saving a frozen predicate attribute, but you wouldn't be communicating that security scores don't change in the context of an instantiated `BankAccount` object.
 
 It's up to you what to do with this pattern. Just be aware that if you read essays by people who switched from Java to Ruby at a time when Ruby was unpopular, they may act as if "popularity" isn't their first consideration when choosing how to write programs.
 
