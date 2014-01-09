@@ -14,15 +14,17 @@ function flavourize (body) {
   function flavoured (arg) {
     var args = [].slice.call(arguments);
 
-    flavoured.befores.forEach( function (flavouring) {
-      flavouring.apply(this, args);
-    }, this);
+    for (var i in flavoured.befores) {
+      var flavouring = flavoured.befores[i];
+      if (flavouring.apply(this, args) === false) return;
+    }
 
     var returnValue = flavoured.body.apply(this, arguments);
 
-    flavoured.afters.forEach( function (flavouring) {
-      flavouring.call(this, returnValue);
-    }, this);
+    for (var i in flavoured.afters) {
+      var flavouring = flavoured.afters[i];
+      flavouring.apply(this, returnValue);
+    }
 
     return returnValue;
   }
@@ -71,7 +73,7 @@ var double = flavourize(function (n) { return n * 2; });
 double(2)
   //=> 4
 
-double('two)
+double('two')
   //=> NaN
 
 function mustBeNumeric () {
@@ -90,5 +92,9 @@ double(2)
 double('two')
   //=> Argument Error, "two" is not a number
 ```
+
+The "API" is simple: `unshift` adds functions that are executed before the function body, `push` adds functions that are executed after the function body. Think of it like an array, you unshift things onto the begiing and push them onto the end.
+
+These "flavourings" are normally executed for side effects, but you can write [guard clauses](http://c2.com/cgi/wiki?GuardClause). Return `false` from a function you unshift to bail from the whole thing. Note that `null` and `undefined` won't do, it must be `false`.
 
 Cheers!
