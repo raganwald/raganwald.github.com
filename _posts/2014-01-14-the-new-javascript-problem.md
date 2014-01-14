@@ -333,3 +333,8 @@ But if we wish to accommodate the `new` keyword when writing things like decorat
         Hang on while I get a piece of paper. Ok, I'm ready!
         25
 
+### so what's the problem?
+
+The trouble with approaches like this is that precautions can pile up on top of precautions, until our original intent has been obscured. One solution is *don't do that*, as in, don't try to decorate constructor functions, and be sure you know when a function is designed to create an object with `new` and when it is called normally.
+
+The other possibility is *don't do that*, as in, *don't use `new`*: Write functions and methods that explicitly call `Object.create`, and use `.isPrototypeOf` instead of `instanceof`. This is an equally straightforward approach, and resistant to the edge cases surrounding the `new` keyword when writing modern JavaScript.
