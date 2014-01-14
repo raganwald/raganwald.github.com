@@ -234,3 +234,102 @@ Our rewritten constructor handles the case when `this` is not a new Circle insta
 
 We now have a function we expected would be used with the new keyword, but it also handles the case where the new keyword isn't used.
 
+### handling the case when we do use `new`
+
+It goes the other way as well. Sometimes we write a function that we don't expect to be used with the new keyword, but we later discover that we'd like to invoke it with the new keyword. For example, we might choose to write a function decorator, as one might find in [this essay][be] or in libraries like [Method Combinators][mc]:
+
+[be]: http://blakeembrey.com/articles/wrapping-javascript-functions/ "Wrapping JavaScript Functions"
+[mc]: https://github.com/raganwald/method-combinators
+
+    function before (fn, beforeAdvice) {
+      return unvariadic(fn.length, function (args) {
+        beforeAdvice.apply(this, arguments);
+        return fn.apply(this, arguments);
+      });
+    }
+
+    function add (x, y) {
+      return x + y;
+    }
+
+    add(1, 1)
+      //=> 2
+
+    function preparation () {
+      console.log('Hang on while I get a piece of paper. Ok, I\'m ready!');
+    }
+
+    var newAdd = before(add, preparation);
+
+    newAdd(2, 2)
+      //=>
+        Hang on while I get a piece of paper. Ok, I'm ready!
+        4
+
+Alas, our decorator breaks down if we use it with a traditional constructor:
+
+    function Square (side) {
+      this.side = side;
+    }
+    Square.prototype.area = function () {
+      return this.side * this.side;
+    }
+
+    new Square(1).area()
+      //=> 1
+
+    NewSquare = before(Square, preparation);
+
+    new NewSquare(2).area()
+      //=>
+        Hang on while I get a piece of paper. Ok, I'm ready!
+        TypeError: Object [object Object] has no method 'area'
+
+Again, we can *not do that*: When we construct objects in our own functions or methods using `Object.create`, we don't need to take special precautions when writing decorators:
+
+    var OurSquare = {
+      create: function (side) {
+        var newObject = Object.create(OurSquare.prototype);
+        newObject.side = side;
+        return newObject;
+      },
+      prototype: {
+        area: function () {
+          return this.side * this.side;
+        }
+      }
+    }
+
+    OurSquare.create(3).area()
+      //=> 9
+
+    OurSquare.create = before(OurSquare.create, preparation);
+
+    OurSquare.create(4).area()
+      //=>
+        Hang on while I get a piece of paper. Ok, I'm ready!
+        16
+
+But if we wish to accommodate the `new` keyword when writing things like decorators, we can take precautions:
+
+    // shim for Object.setPrototypeOf
+    Object.setPrototypeOf = Object.setPrototypeOf || function (obj, proto) {
+      obj.__proto__ = proto;
+      return obj;
+    }
+
+    function defensiveBefore (fn, beforeAdvice) {
+      return function wrapped () {
+        if (Object.getPrototypeOf(this) === wrapped.prototype) {
+          Object.setPrototypeOf(this, fn.prototype);
+        }
+        beforeAdvice.apply(this, arguments);
+        return fn.apply(this, arguments);
+      };
+    }
+
+    var NewestSquare = defensiveBefore(Square, preparation);
+      //=>
+        Hang on while I get a piece of paper. Ok, I'm ready!
+        25
+
