@@ -175,3 +175,62 @@ So, you can use `new` or you can use `Object.create` to create new objects with 
 
 But there are some clouds on the horizon.
 
+### why instanceof might be a problem
+
+JavaScript provides an `instanceof` keyword. It appears at first to be useful:
+
+> Most OO programmers prefer using polymorphism to explicitly testing `instanceof`. Wide use of explicit type testing is generally a design smell, but nevertheless it is a useful tool in some circumstances.
+
+    fourByFour instanceof Rectangle
+      //=> true
+
+It is a kind of shorthand for:
+
+    function instanceOf(object, constructor) {
+      return constructor.prototype.isPrototypeOf(object)
+    }
+
+The trouble with `instanceof` is that it is unreliable whenever you use `Object.create` instead of the `new` keyword, or when you replace the prototype of a function used as a constructor. Semantically, the item of interest in the prototype, and therefore if you use `Object.create` instead of the `new` keyword, you must also use `.isPrototypeOf` instead of `instanceof`.
+
+### handling the case when we don't use `new`
+
+When we choose to write our code to use the `new` keyword, we may want to consider taking precautions. As noted in [Effective JavaScript][ej], traditional constructors will usually fail in ugly ways if we accidentally invoke them without using the `new` keyword:
+
+[ej]: http://www.amazon.com/gp/product/0321812182/ref=as_li_ss_tl?tag=raganwald001-20
+
+    function Circle (radius) {
+      this.radius = radius;
+    }
+    Circle.prototype.area = function () {
+      return Math.PI * this.radius * this.radius;
+    }
+
+    new Circle(2).area()
+      //=> 12.566370614359172
+
+    Circle(2).area()
+      //=> TypeError: Cannot call method 'area' of undefined
+
+We can, of course, *not do that*. We can also code defensively:
+
+    function Circle (radius) {
+      var newObject = Circle.prototype.isPrototypeOf(this)
+                      ? this
+                      : new Circle();
+      newObject.radius = radius;
+      return newObject;
+    }
+    Circle.prototype.area = function () {
+      return Math.PI * this.radius * this.radius;
+    }
+
+    new Circle(2).area()
+      //=> 12.566370614359172
+
+    Circle(2).area()
+      //=> 12.566370614359172
+
+Our rewritten constructor handles the case when `this` is not a new Circle instance by creating one before doing the initializing. It also explicitly returns the new object instead of relying on `new` to infer what we want when we don't return anything.
+
+We now have a function we expected would be used with the new keyword, but it also handles the case where the new keyword isn't used.
+
