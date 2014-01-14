@@ -129,7 +129,9 @@ Then you need to have separate prototypes. On the other hand, you might decide t
     }
     GoldenRectangle.prototype = Rectangle.prototype;
 
-Having multiple JavaScript functions share the same prototype serves the same purpose as one Java class having multiple constructor functions.### `Object.create`
+Having multiple JavaScript functions share the same prototype serves the same purpose as one Java class having multiple constructor functions.
+
+### `Object.create`
 
 Constructors are not the only way to create JavaScript objects. `Object.create` creates a new JavaScript object and permits you to specify the prototype:
 
