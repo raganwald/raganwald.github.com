@@ -1,6 +1,7 @@
 ---
+title: The New JavaScript Problem
 layout: default
-tags: [allonge, spessore]
+tags: [javascript]
 ---
 
 The `new` keyword in JavaScript is very straightforward to use:
