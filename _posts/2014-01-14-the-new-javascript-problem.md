@@ -131,7 +131,7 @@ Then you need to have separate prototypes. On the other hand, you might decide t
 
 Having multiple JavaScript functions share the same prototype serves the same purpose as one Java class having multiple constructor functions.
 
-### `Object.create`
+### Object.create
 
 Constructors are not the only way to create JavaScript objects. `Object.create` creates a new JavaScript object and permits you to specify the prototype:
 
@@ -181,8 +181,6 @@ But there are some clouds on the horizon.
 
 JavaScript provides an `instanceof` keyword. It appears at first to be useful:
 
-> Most OO programmers prefer using polymorphism to explicitly testing `instanceof`. Wide use of explicit type testing is generally a design smell, but nevertheless it is a useful tool in some circumstances.
-
     fourByFour instanceof Rectangle
       //=> true
 
@@ -193,6 +191,8 @@ It is a kind of shorthand for:
     }
 
 The trouble with `instanceof` is that it is unreliable whenever you use `Object.create` instead of the `new` keyword, or when you replace the prototype of a function used as a constructor. Semantically, the item of interest in the prototype, and therefore if you use `Object.create` instead of the `new` keyword, you must also use `.isPrototypeOf` instead of `instanceof`.
+
+> Most OO programmers prefer using polymorphism to explicitly testing `instanceof`. Wide use of explicit type testing is generally a design smell, but nevertheless it is a useful tool in some circumstances.
 
 ### handling the case when we don't use `new`
 
@@ -340,3 +340,5 @@ But if we wish to accommodate the `new` keyword when writing things like decorat
 The trouble with approaches like this is that precautions can pile up on top of precautions, until our original intent has been obscured. One solution is *don't do that*, as in, don't try to decorate constructor functions, and be sure you know when a function is designed to create an object with `new` and when it is called normally.
 
 The other possibility is *don't do that*, as in, *don't use `new`*: Write functions and methods that explicitly call `Object.create`, and use `.isPrototypeOf` instead of `instanceof`. This is an equally straightforward approach, and resistant to the edge cases surrounding the `new` keyword when writing modern JavaScript.
+
+([discuss on reddit](http://www.reddit.com/r/javascript/comments/1v7xu0/the_new_javascript_problem/))
