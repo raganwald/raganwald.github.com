@@ -134,6 +134,8 @@ Despite the fact that prototypes are not classes, both prototypes and classes ac
 
 **Metaobjects**. Prototypes and classes are both metaobjects, objects that define objects.
 
+> In computer science, a **metaobject** is an object that manipulates, creates, describes, or implements other objects (including itself). The object that the metaobject is about is called the base object. Some information that a metaobject might store is the base object's type, interface, class, methods, attributes, parse tree, etc. Metaobjects are examples of the computer science concept of *reflection*, where a system has access (usually at run time) to its internal structure. Reflection enables a system to essentially rewrite itself on the fly, to change the actual structure of the system as it executes.--[Wikipedia](https://en.wikipedia.org/wiki/Metaobject)
+
 (To be pedantic, some languages have things they call classes that aren't metaobjects. To be a metaobject, the entity must be an object in the language. SmallTalk, Java and Ruby classes are metaobjects. [C++] classes are not.)
 
 ### can we build classes in javascript?
