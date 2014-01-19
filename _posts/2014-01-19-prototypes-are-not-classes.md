@@ -136,9 +136,31 @@ Despite the fact that prototypes are not classes, both prototypes and classes ac
 
 (To be pedantic, some languages have things they call classes that aren't metaobjects. To be a metaobject, the entity must be an object in the language. SmallTalk, Java and Ruby classes are metaobjects. [C++] classes are not.)
 
+### can we build classes in javascript?
+
+Well of course! And the conventional approach of writing a constructor is kind-of sort-of a first step towards that. You can make things more explicit using `Object.create`:
+
+    var MovieCharacterClass = {
+      create: function create (firstName, lastName) {
+        var mc = Object.create(MovieCharacterClass.prototype);
+        mc.firstName = firstName;
+        mc.lastName = lastName;
+        return mc;
+      },
+      prototype: {
+        fullName: function fullName {
+          return this.firstName + " " + this.lastName;
+        }
+      }
+    }
+
+This is extremely minimalist. Is it a class? Not yet. To be a class, you would need to build upwards from it by creating a metaobject that defined the common behaviour for all classes. Once you do that, you have enshrined in your program the idea that classes are a kind thing that is distinct from the kinds of things you use in your program's domain logic.
+
 ### good or bad?
 
-Clearly, prototypes are *not* classes. A prototype is to a class as a database record is to a model object. Is this a good thing or a bad thing? That is a question for each programmer to answer for themselves. If you embrace the notion that OO programming is about encapsulating internal state, direct manipulation of prototypes is a blatant violation of this core principle.
+Prototypes are *not* classes, and neither are constructor functions bundled with prototypes. They don't encapsulate their private data, and they don't have a metaclass object defining their behaviour.
+
+A prototype is to a class as a database record is to a model object. Is this a good thing or a bad thing? That is a question for each programmer to answer for themselves. If you embrace the notion that OO programming is about encapsulating internal state, direct manipulation of prototypes is a blatant violation of this core principle.
 
 On the other hand, you may not be trying to write "OO" programs. or you may be more relaxed about picking and choosing your principles. Either way, sometimes someone will say that a JavaScript prototype (or a JavaScript constructor function plus its embedded prototype) is a class.
 
