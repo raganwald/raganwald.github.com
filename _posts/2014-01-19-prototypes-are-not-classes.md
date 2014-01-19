@@ -7,6 +7,8 @@ Many people can and do say that "JavaScript has classes." As a very rough, hand-
 
 But it *is* wrong. JavaScript does not have classes. JavaScript has prototypes, and prototypes are not classes. And understanding *why* JavaScript's prototypes are not classes can be helpful for understanding how to "Think in JavaScript" and indeed how to "Think in Objects."
 
+[![Duty Calls](http://imgs.xkcd.com/comics/duty_calls.png)](http:xkcd.org/386)
+
 So let's go:
 
 ### what is a class?
