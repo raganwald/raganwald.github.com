@@ -5,9 +5,9 @@ tags: [allonge, spessore]
 
 Many people can and do say that "JavaScript has classes." As a very rough, hand-wavy way of saying that "JavaScript has things that define the characteristics of one or more objects," this is true. And many people lead healthy, happy, and productive lives without caring whether this statement is actually true, or a wrong but convenient shorthand.
 
-But it *is* wrong. JavaScript does not have classes. JavaScript has prototypes, and prototypes are not classes. And understanding *why* JavaScript's prototypes are not classes can be helpful for understanding how to "Think in JavaScript" and indeed how to "Think in Objects."
-
 [![Duty Calls](http://imgs.xkcd.com/comics/duty_calls.png)](http://xkcd.org/386)
+
+But it *is* wrong. JavaScript does not have classes. JavaScript has prototypes, and prototypes are not classes. And understanding *why* JavaScript's prototypes are not classes can be helpful for understanding how to "Think in JavaScript" and indeed how to "Think in Objects."
 
 So let's go:
 
