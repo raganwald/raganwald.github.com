@@ -164,7 +164,7 @@ A prototype is to a class as a database record is to a model object. Is this a g
 
 On the other hand, you may not be trying to write "OO" programs. or you may be more relaxed about picking and choosing your principles. Either way, sometimes someone will say that a JavaScript prototype (or a JavaScript constructor function plus its embedded prototype) is a class.
 
-And now you will know that JavaScript has metaobjects, but it doesn't have classes.
+What they *really mean* is that JavaScript has metaobjects, not classes.
 
 [C++]: https://en.wikipedia.org/wiki/C%2B%2B
 
