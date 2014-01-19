@@ -152,7 +152,7 @@ Well of course! And the conventional approach of writing a constructor is kind-o
         return mc;
       },
       prototype: {
-        fullName: function fullName {
+        fullName: function fullName () {
           return this.firstName + " " + this.lastName;
         }
       }
