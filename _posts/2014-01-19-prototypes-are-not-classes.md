@@ -168,3 +168,4 @@ And now you will know that JavaScript has metaobjects, but it doesn't have class
 
 [C++]: https://en.wikipedia.org/wiki/C%2B%2B
 
+([discuss](https://news.ycombinator.com/item?id=7084794))
