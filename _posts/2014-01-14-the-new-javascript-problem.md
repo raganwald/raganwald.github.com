@@ -1,6 +1,6 @@
 ---
 layout: default
-tags: [allonge, spessore]
+tags: [spessore, allonge]
 ---
 
 The `new` keyword in JavaScript is very straightforward to use:
