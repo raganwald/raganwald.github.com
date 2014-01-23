@@ -1,7 +1,6 @@
 ---
 layout: default
 title: The New JavaScript Problem
-published: true
 tags: [spessore, allonge]
 ---
 
