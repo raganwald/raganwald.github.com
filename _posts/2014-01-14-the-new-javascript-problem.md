@@ -1,6 +1,7 @@
 ---
 layout: default
-title: The "new" javaScript Problem
+title: The "new" JavaScript Problem
+published: true
 tags: [spessore, allonge]
 ---
 
