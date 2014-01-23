@@ -1,5 +1,6 @@
 ---
 layout: default
+title: The "new" javaScript Problem
 tags: [spessore, allonge]
 ---
 
