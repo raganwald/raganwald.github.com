@@ -200,6 +200,8 @@ class Sample
 
   class << self
 
+    private
+
     def skunkworks
       :ADP
     end
