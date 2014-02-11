@@ -27,7 +27,7 @@ Sample.new.private_foo
   #=> NoMethodError: private method `private_foo' called for #<Sample:0x007fa12192e130>
 ```
 
-Ruby also allows you to make class methods. Class methods are singleton methods of the class object, not instance methods of an instance object of the class. Got it?
+Ruby also allows you to make what other languages call "class methods." Class methods are singleton methods of the class object, not instance methods of a Class's object. Got it?
 
 ```ruby
 class Sample
@@ -45,7 +45,7 @@ Sample.new.bar
   #=> NoMethodError: undefined method `bar' for #<Sample:0x007fa12190d2a0>
 ```
 
-You can combine the two techniques to make private class methods:
+Can we combine the two techniques to make private class methods?:
 
 ```ruby
 class Sample
@@ -62,7 +62,7 @@ Sample.private_bar
   #=> :PRIVATE_FUBAR
 ```
 
-Nay nay! You cannot combine these two techniques to make a private class method. The `private` keyword does some modal thing with respect to instance methods being defined, but the syntax `def self.method_name` is a different kind of thing. That different kind of thing applies to any object:
+Nay nay! You cannot combine these two techniques to make a private class method. The `private` keyword does some modal thing with respect to instance methods being defined in the block, but the syntax `def self.method_name` is a different kind of thing. That different kind of thing applies to any object:
 
 ```
 three = BasicObject.new
@@ -75,7 +75,7 @@ three.to_i
   #=> 3
 ```
 
-The def `somethimng.method_name` semantics ignores any declaration about privacy. Here's a question: Where are the methods `three.to_i` and `three.to_s` defined? In something called a *singleton class*, also called an *eigenclass*. These methods are called *singleton methods* because they apply to `three` but not to anything else:
+The def `something.method_name` semantics ignores any declaration about privacy. Here's a question: Where are the methods `three.to_i` and `three.to_s` defined? In something called a *singleton class*, also called an *eigenclass*. These methods are called *singleton methods* because they apply to `three` but not to anything else:
 
 ```ruby
 four = BasicObject.new
@@ -84,7 +84,7 @@ four.to_i
   #=> NoMethodError: undefined method `to_i' for #<BasicObject:0x007fa121856d20>
 ```
 
-There's another syntax for declaring singleton methods. Behold:
+There's another way to declare a singleton method. Behold:
 
 ```ruby
 class << four
