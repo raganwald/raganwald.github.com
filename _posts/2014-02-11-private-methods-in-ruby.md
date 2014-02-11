@@ -208,3 +208,5 @@ class Sample
 
 end
 ```
+
+([discuss](http://www.reddit.com/r/ruby/comments/1xm50i/private_methods_in_ruby/))
