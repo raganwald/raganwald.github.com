@@ -211,4 +211,4 @@ class Sample
 end
 ```
 
-([discuss](http://www.reddit.com/r/ruby/comments/1xm50i/private_methods_in_ruby/))
+([discuss](http://www.reddit.com/r/ruby/comments/1xm50i/private_methods_in_ruby/); also, I wrote a book, and it's [free to read online](https://leanpub.com/combinators/read))
