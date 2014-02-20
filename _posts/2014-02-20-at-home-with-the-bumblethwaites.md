@@ -18,7 +18,7 @@ What can we say about the Bumblethwaites?
 
 ### constructors
 
-First, we can say that *Amanda is Alex's constructor*. Amanda provides 50% of the blueprint for making Alex, and Amanda actually carried out the work of bringing Alex into existence. (We'll hand-wave furiously about whether there is or isn't a David Bumblethwaite.)
+First, we can say that *Amanda is Alex's constructor*. Amanda provides 50% of the blueprint for making Alex, and Amanda actually carried out the work of bringing Alex into existence. (We'll hand-wave furiously about David Bumblethwaite's role.)
 
 ### formal classes
 
