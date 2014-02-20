@@ -1,6 +1,7 @@
 ---
 layout: default
 tags: [spessore]
+title: "At home with the Bumblethwaites"
 ---
 
 The word "inheritance" is widely used when talking about object-oriented programming. People will say things like "Objects inherit methods from classes," or perhaps "Subclasses inherit behaviour from superclasses," and sometimes they won't even say what is being inherited: "Cow inherits from Ungulate."
