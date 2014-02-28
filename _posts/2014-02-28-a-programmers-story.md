@@ -9,4 +9,4 @@ He slides the drawer open and closed: squeak, creak. Hmmm. Into the garage where
 
 "Did you remember to change that light bulb I asked you about?"
 
---*Malcolm in the Middle, [Health Scare](http://www.imdb.com/title/tt0640340)*
+&emdash;*Malcolm in the Middle, [Health Scare](http://www.imdb.com/title/tt0640340)*
