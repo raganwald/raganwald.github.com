@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Unfinished Work #1: Bind-by-Contract
+title: "Unfinished Work #1: Bind-by-Contract"
 ---
 
 *This is an unfinished work. I am still trying to think through all of the implications of binding names to entities using test suites. It seems fairly obvious how it would work with Ruby Gems. But does it scale downwards? Can I specify a function to be called by contract? How about a class? A constructor? Does this integrate with pattern-matching for function signatures? I still don't know!*
