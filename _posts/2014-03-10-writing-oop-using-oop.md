@@ -208,7 +208,7 @@ All this is certainly not *necessary* for writing good JavaScript programs. But 
 
     var QuadTree = Class.create();
     QuadTree
-      .defineMethod('initialize', function (nw, new, se, sw) {
+      .defineMethod('initialize', function (nw, ne, se, sw) {
         this._nw = nw;
         this._ne = ne;
         this._se = se;
