@@ -1,6 +1,6 @@
 ---
 layout: default
-title: The Class class
+title: Writing OOP Using OOP
 ---
 
 As many people have pointed out, if you turn your head sideways and squint, the following JavaScript can be considered a "class:"
