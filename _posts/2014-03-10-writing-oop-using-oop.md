@@ -31,7 +31,7 @@ The basic proposition of OO is that *objects encapsulate their private state*. T
 
 In the `QuadTree` example above, although we don't know what kinds of things they store, we know that if you want to know a QuadTree's population, you don't muck about with its internal state, you call `.population()`, and it does the rest.
 
-Another part of the proposition is that objects delegate their behaviour to some kind of metaobject, typically called a "class," although in JavaScript (and Self, the language that inspired it), metaobjects are actually called prototypes. This delegation is the most accessible way for two or more objects to share a common set of methods.
+Another part of the proposition is that objects delegate their behaviour to some kind of metaobject, typically called a "class," although in JavaScript, metaobjects are actually called prototypes. This delegation is the most accessible way for two or more objects to share a common set of methods.
 
 Most people who chose to program JavaScript in an OO style readily accept this proposition: Encapsulation is good: By hiding internal state and manipulation, you get delegation, you get polymorphism, you get code that is cohesive but not tightly coupled.
 
@@ -164,6 +164,8 @@ From there, you can go to places like flavouring methods with before- and after-
 All this is certainly not *necessary* for writing good JavaScript programs. But if we do buy the proposition that OO is a good idea for our domain, shouldn't we ask ourselves why we aren't using it for our classes?
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=7377250) and [reddit](http://www.reddit.com/r/programming/comments/203rlw/writing_oop_using_oop_javascript/))
+
+p.s. A few people have pointed out that if you want a subset of classes to share functionality, alternatives such as mixing in traits are superior to subclassing `Class`. This is an **excellent** observation, and it's the kind of thinking this post is trying to provoke: If you start thinking of metaobjects (call them classes if you like) as first-class objects, you start thinking of programming them using the tools and techniques you find most appropriate for programming domain objects.
 
 ---
 
