@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Writing OOP Using OOP
+title: Writing OOP using OOP
 tags: spessore
 ---
 
@@ -23,6 +23,8 @@ This is very different than the kind of class you find in Smalltalk, but it's "c
 
 No big deal, really, there is plenty of excellent JavaScript software that uses this exact pattern for creating objects that delegate their behaviour to a common prototype. But we programmers have a voracious appetite for *learning*, so in the interests of understanding what we give up, here's an explanation of how JavaScript's simple out-of-the-box OO differs from Smalltalk-style OO, and why that might matter for some projects.
 
+> Encapsulation is good: By hiding internal state and manipulation, you get delegation, you get polymorphism, you get code that is cohesive but not tightly coupled.
+
 ### the basic oo-proposition
 
 The basic proposition of OO is that *objects encapsulate their private state*. They provide methods, and you query and update the objects by invoking methods. Objects do not directly access or manipulate each other's internal state. This system is held to lower coupling and increase flexibility, as the interactions between objects are understood to be limited entirely to the methods they expose.
@@ -31,7 +33,7 @@ In the `QuadTree` example above, although we don't know what kinds of things the
 
 Another part of the proposition is that objects delegate their behaviour to some kind of metaobject, typically called a "class," although in JavaScript (and Self, the language that inspired it), metaobjects are actually called prototypes. This delegation is the most accessible way for two or more objects to share a common set of methods.
 
-Most people who chose to program JavaScript in an OO style readily accept this proposition: Encapsulation is good. They understand that by hiding internal state and manipulation, you get delegation, you get polymorphism, you get code that is cohesive but not tightly coupled.
+Most people who chose to program JavaScript in an OO style readily accept this proposition: Encapsulation is good: By hiding internal state and manipulation, you get delegation, you get polymorphism, you get code that is cohesive but not tightly coupled.
 
 This is why they build "classes" representing the various entities in their problem domain. For a JavaScript implementation of HashLife, you might find `Cell` and `QuadTree` classes, for example.
 
@@ -70,6 +72,8 @@ What is the class of `Cell` and of `QuadTree`? How about `Class`? Let us assume 
 
 Naturally. Everything's an object, everything follows the same rules, we don't need to remember a bunch of special cases, because we aren't peeking at the implementation and directly manipulating an object's internal state.
 
+> "You aren't serious about OOP until you subclass Class."
+
 ### going beyond
 
 We haven't looked at `defineMethod`'s implementation, but presumably it looks something like this:
@@ -97,7 +101,7 @@ We start with:
 
     var c = Counter.create();
 
-(Every essay should include a counter example)
+(*Every essay should include a counter example*)
 
 And we add a function written in continuation-passing-style:
 
