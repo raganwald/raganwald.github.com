@@ -163,7 +163,7 @@ From there, you can go to places like flavouring methods with before- and after-
 
 All this is certainly not *necessary* for writing good JavaScript programs. But if we do buy the proposition that OO is a good idea for our domain, shouldn't we ask ourselves why we aren't using it for our classes?
 
-([discuss](http://www.reddit.com/r/programming/comments/203rlw/writing_oop_using_oop_javascript/))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=7377250) and [reddit](http://www.reddit.com/r/programming/comments/203rlw/writing_oop_using_oop_javascript/))
 
 ---
 
