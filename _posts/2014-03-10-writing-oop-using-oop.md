@@ -163,6 +163,8 @@ The last example shows how using first-class objects for classes, objects that e
 
 This is certainly not *necessary* for writing good JavaScript programs. But if we do buy the proposition that OO is a good idea for our domain, shouldn't we ask ourselves why we aren't using it for our classes?
 
+([discuss](http://www.reddit.com/r/programming/comments/203rlw/writing_oop_using_oop_javascript/))
+
 ---
 
     var MetaObjectPrototype = {
