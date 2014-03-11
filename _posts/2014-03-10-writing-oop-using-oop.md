@@ -37,6 +37,8 @@ Most people who chose to program JavaScript in an OO style readily accept this p
 
 This is why they build "classes" representing the various entities in their problem domain. For a JavaScript implementation of HashLife, you might find `Cell` and `QuadTree` classes, for example.
 
+### using oop to write oop
+
 And yet... When it comes to writing and manipulating their classes, does this code look like it encapsulates private state? Or does it look like code directly manipulates internal state?
 
     function Cell (population) {
@@ -46,11 +48,7 @@ And yet... When it comes to writing and manipulating their classes, does this co
       return this._population;
     }
 
-Quite clearly, while this code supports OOP, it is itself written in a non-OOP manner, it is written with the expectation that other entities get to directly manipulate `Cell.prototype`.
-
-What would this code look like if we took the basic proposition of OOP and applied it to writing classes and not just using classes?
-
-### using oop to write oop
+Quite clearly, while this code supports OOP, it is itself written in a non-OOP manner, it is written with the expectation that other entities get to directly manipulate `Cell.prototype`. What would this code look like if we took the basic proposition of OOP and applied it to writing classes and not just using classes?
 
 Quite obviously, classes would be objects that you manipulate with methods. Something like:
 
@@ -72,6 +70,12 @@ What is the class of `Cell` and of `QuadTree`? How about `Class`? Let us assume 
 
 Naturally. Everything's an object, everything follows the same rules, we don't need to remember a bunch of special cases, because we aren't peeking at the implementation and directly manipulating an object's internal state.
 
+OOP allows us to create a subclass for the purpose of extending or sometimes overriding behaviour. So let's imagine that if we want, we can write something like:
+
+    var MinimalQuadTree = Class.create(QuadTree);
+
+This establishes that `MinimalQuadTree` is a subclass of `QuadTree`, and somewhere in the implementation of `.create` is the logic that correctly wires the appropriate prototypes up so that every instance of `MinimalQuadTree` can delegate `population()` to `QuadTree`'s implementation.
+
 > "You aren't serious about OOP until you subclass Class."
 
 ### going beyond
@@ -83,13 +87,7 @@ We haven't looked at `defineMethod`'s implementation, but presumably it looks so
       return this;
     });
 
-It hardy seems worth the trouble to abstract this simple line of code away, however we have strong imaginations, let's use them. OOP allows us to create a subclass for the purpose of extending or sometimes overriding behaviour. So let's imagine that if we want, we can write something like:
-
-    var MinimalQuadTree = Class.create(QuadTree);
-
-This establishes that `MinimalQuadTree` is a subclass of `QuadTree`, and somewhere in the implementation of `.create` is the logic that correctly wires the appropriate prototypes up so that every instance of `MinimalQuadTree` can delegate `population()` to `QuadTree`'s implementation.
-
-Ok, so we imagine we can make subclasses of classes. This does not require a strong imagination. Let us make up a problem, then use our imagination to solve it.
+It hardy seems worth the trouble to abstract this simple line of code away, however we have strong imaginations, let's make up a problem, then use our new tools to solve it.
 
 We start with:
 
@@ -161,7 +159,9 @@ This last example is small, but incredibly important. The proposition of OO is t
 
 The last example shows how using first-class objects for classes, objects that encapsulate their internal state and themselves are instances of classes, we can write code that implements new kinds of semantics--like binding methods to objects--without requiring all other code to be coupled to the exact representation employed.
 
-This is certainly not *necessary* for writing good JavaScript programs. But if we do buy the proposition that OO is a good idea for our domain, shouldn't we ask ourselves why we aren't using it for our classes?
+From there, you can go to places like flavouring methods with before- and after- advice, adding singleton/eigenclasses to objects, pattern-matching methods, the entire world of computing paradigms is open to you.
+
+All this is certainly not *necessary* for writing good JavaScript programs. But if we do buy the proposition that OO is a good idea for our domain, shouldn't we ask ourselves why we aren't using it for our classes?
 
 ([discuss](http://www.reddit.com/r/programming/comments/203rlw/writing_oop_using_oop_javascript/))
 
