@@ -6,7 +6,7 @@ tags: spessore
 
 As many people have pointed out, if you turn your head sideways and squint, the following JavaScript can be considered a "class:"
 
-    function QuadTree (nw, new, se, sw) {
+    function QuadTree (nw, ne, se, sw) {
       this._nw = nw;
       this._ne = ne;
       this._se = se;
