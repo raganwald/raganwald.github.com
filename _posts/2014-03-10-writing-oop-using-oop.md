@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Writing OOP Using OOP
-tags: [allonge, spessore]
+tags: spessore
 ---
 
 As many people have pointed out, if you turn your head sideways and squint, the following JavaScript can be considered a "class:"
@@ -23,9 +23,9 @@ This is very different than the kind of class you find in Smalltalk, but it's "c
 
 No big deal, really, there is plenty of excellent JavaScript software that uses this exact pattern for creating objects that delegate their behaviour to a common prototype. But we programmers have a voracious appetite for *learning*, so in the interests of understanding what we give up, here's an explanation of how JavaScript's simple out-of-the-box OO differs from Smalltalk-style OO, and why that might matter for some projects.
 
-### the basic oo-propositions
+### the basic oo-proposition
 
-The basic proposition of OO is that objects *encapsulate* their private state. They provide methods, and you query and update the objects by invoking methods. Objects do not directly access or manipulate each other's internal state. This system is held to lower coupling and increase flexibility, as the interactions between objects are understood to be limited entirely to the methods they expose.
+The basic proposition of OO is that *objects encapsulate their private state*. They provide methods, and you query and update the objects by invoking methods. Objects do not directly access or manipulate each other's internal state. This system is held to lower coupling and increase flexibility, as the interactions between objects are understood to be limited entirely to the methods they expose.
 
 In the `QuadTree` example above, although we don't know what kinds of things they store, we know that if you want to know a QuadTree's population, you don't muck about with its internal state, you call `.population()`, and it does the rest.
 
@@ -93,7 +93,7 @@ We start with:
     Counter
       .defineMethod('initialize', function () { this._count = 0; })
       .defineMethod('increment', function () { ++this._count; })
-      .defineMethod('count', function () { return this.count; });
+      .defineMethod('count', function () { return this._count; });
 
     var c = Counter.create();
 
@@ -236,5 +236,5 @@ This is certainly not *necessary* for writing good JavaScript programs. But if w
     Counter
       .defineMethod('initialize', function () { this._count = 0; })
       .defineMethod('increment', function () { ++this._count; })
-      .defineMethod('count', function () { return this.count; });
+      .defineMethod('count', function () { return this._count; });
 
