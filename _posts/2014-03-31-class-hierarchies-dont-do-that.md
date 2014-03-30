@@ -50,7 +50,9 @@ These classes and subclasses provide most of the features of classes we find in 
 
 This pattern has become so ingrained in JavaScript culture that ECMAScript-6, the upcoming major revision of the language, provides some "syntactic sugar" so that we can write classes and subclasses without writing the whole pattern out by hand. There is no significant *semantic* change, behind the scenes everything works exactly as we see it here.
 
-Smalltalk was, of course, invented forty years ago. In those forty years, we've learned a lot about what works and what doesn't work in object-oriented programming. Unfortunately, this pattern celebrates the things that don't work, and glosses over or omits the things that work.
+Smalltalk was, of course, [invented forty years ago][sthistory]. In those forty years, we've learned a lot about what works and what doesn't work in object-oriented programming. Unfortunately, this pattern celebrates the things that don't work, and glosses over or omits the things that work.
+
+[sthistory]: http://worrydream.com/EarlyHistoryOfSmalltalk "The Early History of Smalltalk"
 
 Even more unfortunately, the upcoming syntactic sugar doesn't solve any of the problems with classes, but instead solves the problem of "I wish to type fewer characters," or perhaps for the new programmer, "I don't understand how all these moving parts actually work, so I might type it wrong, isn't there an easier way to type it?"
 
