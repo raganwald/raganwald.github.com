@@ -1,5 +1,5 @@
 ---
-lawet: default
+layout: default
 title: What's wrong with class hierarchies in JavaScript
 tags: spessore
 ---
@@ -69,7 +69,7 @@ At a semantic level, classes are the building blocks of an [ontology]. This is o
 
 The idea is to classify (note the word) our knowledge about objects into a tree. At the top is the most general knowledge about all objects, and as we travel down the tree, we get more and more specific knowledge about specific classes of objects, e.g. objects representing Visa Debit accounts.
 
-Only, the real world doesn't work that way. It *really* doesn't work that way. In zoology, for example, we have penguins, birds that swim. And the bat, a mammal that flies. And [monotremes] like the platypus, an animal that lays eggs but nurses its weng with milk.
+Only, the real world doesn't work that way. It *really* doesn't work that way. In zoology, for example, we have penguins, birds that swim. And the bat, a mammal that flies. And [monotremes] like the platypus, an animal that lays eggs but nurses its young with milk.
 
 [monotremes]: https://en.wikipedia.org/wiki/Monotreme
 
