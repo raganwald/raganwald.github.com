@@ -62,21 +62,22 @@ At a semantic level, classes are the building blocks of an [ontology]. This is o
 
 ![An ontology of accounts](/assets/images/tree.png)
 
-The idea is to classify (note the word) our knowledge about objects into a tree. At the top is the most general knowledge about all objects, and as we travel down the tree, we get more and more specific knowledge about specific classes of objects, e.g. objects representing Visa Debit accounts.
+The idea behind class-based OO is to classify (note the word) our knowledge about objects into a tree. At the top is the most general knowledge about all objects, and as we travel down the tree, we get more and more specific knowledge about specific classes of objects, e.g. objects representing Visa Debit accounts.
 
-Only, the real world doesn't work that way. It *really* doesn't work that way. In zoology, for example, we have penguins, birds that swim. And the bat, a mammal that flies. And [monotremes] like the platypus, an animal that lays eggs but nurses its young with milk.
+Only, the real world doesn't work that way. It *really* doesn't work that way. In [morphology], for example, we have penguins, birds that swim. And the bat, a mammal that flies. And [monotremes] like the platypus, an animal that lays eggs but nurses its young with milk.
 
 [monotremes]: https://en.wikipedia.org/wiki/Monotreme
+[morphology]: https://en.wikipedia.org/wiki/Morphology_(biology)
 
-It turns out that our knowledge of the behaviour of non-trivial domains (like zoology or banking) does not classify into a nice tree, it forms a directed acyclic graph. Or if we are to stay in the metaphor, it's a thicket.
+It turns out that our knowledge of the behaviour of non-trivial domains (like morphology or banking) does not classify into a nice tree, it forms a directed acyclic graph. Or if we are to stay in the metaphor, it's a thicket.
 
-Furthermore, the idea of building software on top of an ontology would be broken even if knowledge fit neatly into a tree. Ontologies are not used to build the real world, they are used to describe it from observation. As we learn more, we are constantly updating our ontology, sometimes moving everything around.
+Furthermore, the idea of building software on top of a tree-shaped ontology would be broken even if our knowledge fit neatly into a tree. Ontologies are not used to build the real world, they are used to describe it from observation. As we learn more, we are constantly updating our ontology, sometimes moving everything around.
 
 In software, this is incredibly destructive: Moving everything around breaks everything. In the real world, the humble Platypus does not care if we rearrange the ontology, because we didn't use the ontology to build Australia, just to describe what we found there.
 
 It's sensible to build an ontology from observation of things like bank accounts. That kind of ontology is useful for writing requirements, use cases, tests, and so on. But that doesn't mean that it's useful for writing code the code that *implements* bank accounts.
 
-Classes are the wrong semantic model, and the wisdom of forty years of experience with them is that there are better ways to compose programs.
+Class Hierarchies are the wrong semantic model, and the wisdom of forty years of experience with them is that there are better ways to compose programs.
 
 ### encapsulation
 
