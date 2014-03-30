@@ -74,7 +74,7 @@ Furthermore, the idea of building software on top of an ontology would be broken
 
 In software, this is incredibly destructive: Moving everything around breaks everything. In the real world, the humble Platypus does not care if we rearrange the ontology, because we didn't use the ontology to build Australia, just to describe what we found there.
 
-It's incredibly sensible to build an ontology from observation of things like bank accounts, and that ontology is very useful for writing requirements, use cases, tests, and so on. But that doesn't mean that it's useful for actually writing code.
+It's sensible to build an ontology from observation of things like bank accounts. That kind of ontology is useful for writing requirements, use cases, tests, and so on. But that doesn't mean that it's useful for writing code the code that *implements* bank accounts.
 
 Classes are the wrong semantic model, and the wisdom of fifty years of experience with them is that there are better ways to compose programs.
 
