@@ -21,7 +21,7 @@ tags: spessore
 
     // ...
 
-    var account = new ChequingAccount();
+    var account = new Account();
 
 The pattern can be extended to provide the notion of subclassing:
 
