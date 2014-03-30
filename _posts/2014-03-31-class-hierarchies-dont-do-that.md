@@ -48,12 +48,9 @@ There's even a (questionable) feature for testing whether an object "is an insta
 
 These classes and subclasses provide most of the features of classes we find in languages like Smalltalk:
 
-* Classes are responsible for creating objects;
-* Classes initialize objects with properties (like `balance`);
-* Classes are responsible for and "own" methods;
-* Methods directly manipulate an object's properties;
-* Objects delegate method handling to their classes and superclasses;
-* we can test for membership in the class.
+* Classes are responsible for creating objects and initializing them with properties (like the current balance);
+* Classes are responsible for and "own" methods, Objects delegate method handling to their classes (and superclasses);
+* Methods directly manipulate an object's properties.
 
 This pattern has become so ingrained in JavaScript culture that ECMAScript-6, the upcoming major revision of the language, provides some "syntactic sugar" so that we can write classes and subclasses without writing the whole pattern out by hand. There is no significant *semantic* change, behind the scenes everything works exactly as we see it here.
 
