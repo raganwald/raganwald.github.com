@@ -50,7 +50,7 @@ These classes and subclasses provide most of the features of classes we find in 
 
 This pattern has become so ingrained in JavaScript culture that ECMAScript-6, the upcoming major revision of the language, provides some "syntactic sugar" so that we can write classes and subclasses without writing the whole pattern out by hand. There is no significant *semantic* change, behind the scenes everything works exactly as we see it here.
 
-Smalltalk was, of course, invented fifty years ago. In those fifty years, we've learned a lot about what works and what doesn't work in object-oriented programming. Unfortunately, this pattern celebrates the things that don't work, and glosses over or omits the things that work.
+Smalltalk was, of course, invented forty years ago. In those firty years, we've learned a lot about what works and what doesn't work in object-oriented programming. Unfortunately, this pattern celebrates the things that don't work, and glosses over or omits the things that work.
 
 Even more unfortunately, the upcoming syntactic sugar doesn't solve any of the problems with classes, but instead solves the problem of "I wish to type fewer characters," or perhaps for the new programmer, "I don't understand how all these moving parts actually work, so I might type it wrong, isn't there an easier way to type it?"
 
@@ -76,7 +76,7 @@ In software, this is incredibly destructive: Moving everything around breaks eve
 
 It's sensible to build an ontology from observation of things like bank accounts. That kind of ontology is useful for writing requirements, use cases, tests, and so on. But that doesn't mean that it's useful for writing code the code that *implements* bank accounts.
 
-Classes are the wrong semantic model, and the wisdom of fifty years of experience with them is that there are better ways to compose programs.
+Classes are the wrong semantic model, and the wisdom of forty years of experience with them is that there are better ways to compose programs.
 
 ### encapsulation
 
@@ -94,7 +94,7 @@ Classes have tradeoffs for all three of these use cases, but they are especially
 
 Encapsulation is a core principle of object-oriented programming. (Other styles of programming, such as functional programming, also value encapsulation, although they implement it in different ways). In OOP, encapsulation is achieved by objects having private state and exposing a public interface in the form of methods.
 
-JavaScript does not enforce private state, but it's easy to write well-encapsulated programs: simply avoid having one object directly manipulate another object's properties. Fifty years after Smalltalk was invented, this is a well-understood principle.
+JavaScript does not enforce private state, but it's easy to write well-encapsulated programs: simply avoid having one object directly manipulate another object's properties. Forty years after Smalltalk was invented, this is a well-understood principle.
 
 Obviously, code will have dependencies. `A` will depend on `B`, and `B` will depend on `C`, and dependencies are transitive, so `A` depends on `B` and `A` also depends on `C`. Encapsulation doesn't eliminate dependencies, but it does limit the *scope* of the dependencies: If we change `B` and/or `C`, we will not break `A` provided that we do not remove or change the externally observable behaviour of any of the methods `A` uses.
 
@@ -164,7 +164,7 @@ JavaScript first appeared in 1995, approximately 15 years after Smalltalk was fi
 
 It seems obvious that we should look back and learn from what came before. Good ideas, like encapsulation, functions as first-class objects, delegation, traits, and composition should be embraced and improved upon. New ideas, like promises, should be developed.
 
-People often say that "JavaScript isn't Ruby," that it's prototype-based and not class-based. That's true, but the opportunity is wasted when we reinvent, poorly, ideas that were invented fifty years ago and have been deprecated ever since.
+People often say that "JavaScript isn't Ruby," that it's prototype-based and not class-based. That's true, but the opportunity is wasted when we reinvent, poorly, ideas that were invented forty years ago and have been deprecated ever since.
 
 So if someone asks you to explain how to write a class hierarchy? Go ahead and tell them: "Don't do that!"
 
