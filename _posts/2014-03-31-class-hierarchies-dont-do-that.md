@@ -171,3 +171,5 @@ It seems obvious that we should look back and learn from what came before. Good 
 People often say that "JavaScript isn't Ruby," that it's prototype-based and not class-based. That's true, but the opportunity is wasted when we reinvent, poorly, ideas that were invented fifty years ago and have been deprecated ever since.
 
 So if someone asks you to explain how to write a class hierarchy? Go ahead and tell them: "Don't do that!"
+
+(discuss on [hacker news](https://news.ycombinator.com/item?id=7496968))
