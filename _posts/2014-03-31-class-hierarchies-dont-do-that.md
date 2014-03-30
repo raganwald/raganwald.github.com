@@ -168,4 +168,4 @@ People often say that "JavaScript isn't Ruby," that it's prototype-based and not
 
 So if someone asks you to explain how to write a class hierarchy? Go ahead and tell them: "Don't do that!"
 
-(discuss on [hacker news](https://news.ycombinator.com/item?id=7496968) and [reddit](http://www.reddit.com/r/javascript/comments/21rfnn/class_hierarchies_dont_do_that/))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=7496968), [/r/javascript](http://www.reddit.com/r/javascript/comments/21rfnn/class_hierarchies_dont_do_that/), and [/r/programming](http://www.reddit.com/r/programming/comments/21rfyf/class_hierarchies_dont_do_that/))
