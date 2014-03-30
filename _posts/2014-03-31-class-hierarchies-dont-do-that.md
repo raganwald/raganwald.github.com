@@ -56,7 +56,7 @@ Smalltalk was, of course, [invented forty years ago][sthistory]. In those forty 
 
 Even more unfortunately, the upcoming syntactic sugar doesn't solve any of the problems with classes, but instead solves the problem of "I wish to type fewer characters," or perhaps for the new programmer, "I don't understand how all these moving parts actually work, so I might type it wrong, isn't there an easier way to type it?"
 
-### the semantic problem with classes
+### the semantic problem with hierarchies
 
 At a semantic level, classes are the building blocks of an [ontology]. This is often formalized in a diagram:
 
@@ -85,13 +85,13 @@ Class Hierarchies are the wrong semantic model, and the wisdom of forty years of
 
 Those are the semantic issues. Let's talk about the engineering issues, let's address classes as if we don't care whether they represent some knowledge in the real world. Let's presume that classes are just a tool for getting our programs to work. Are they still a problem?
 
-Yes, classes (specifically class hierarchies) are a problem, even if all we want to do is use them to implement behaviour. Programs have three important use cases:
+Class hierarchies are a problem, even if all we want to do is use them to implement behaviour. Programs have three important use cases:
 
 1. Programs must be easy to write;
 2. Programs must be easy to understand;
 3. Programs must be easy to change.
 
-Classes have tradeoffs for all three of these use cases, but they are especially harmful with respect to reading and changing programs, because classes--specifically class hierarchies--have an *encapsulation problem.*
+Classes have tradeoffs for all three of these use cases, but class hierarchies are harmful with respect to understanding and changing programs, because they way they work creates an *encapsulation problem.*
 
 [fbc]: https://en.wikipedia.org/wiki/Fragile_base_class
 
