@@ -1,10 +1,10 @@
 ---
-layout: default
-title: What's wrong with classes in JavaScript
+lawet: default
+title: What's wrong with class hierarchies in JavaScript
 tags: spessore
 ---
 
-Although *in theory* JavaScript does not have classes, *in practice* there are enough JavaScript people writing things that behave like classes that the following snippet of code is a JavaScript class:
+Although *in theory* JavaScript does not have classes, *in practice* there are enough JavaScript people writing things that behave like classes that the following snippet of code is widely considered to be a JavaScript "class:"
 
     function Account () {
       this._currentBalance = 0;
@@ -44,16 +44,16 @@ There's even a (questionable) feature for testing whether an object "is an insta
     account instanceof ChequingAccount
       //=> true
 
-These classes and subclasses provide most of the features of classes you find in languages like Smalltalk:
+These classes and subclasses provide most of the features of classes we find in languages like Smalltalk:
 
 * Classes are responsible for creating objects;
 * Classes initialize objects with properties (like `balance`);
 * Classes are responsible for and "own" methods;
 * Methods directly manipulate an object's properties;
 * Objects delegate method handling to their classes and superclasses;
-* You can test for membership in the class.
+* we can test for membership in the class.
 
-This pattern has become so ingrained in JavaScript culture that EcmaScript-6, the upcoming major revision of the language, provides some "syntactic sugar" so that you can write classes and subclasses without writing the whole pattern out by hand. There is no significant *semantic* change, behind the scenes everything works exactly as you see it here.
+This pattern has become so ingrained in JavaScript culture that ECMAScript-6, the upcoming major revision of the language, provides some "syntactic sugar" so that we can write classes and subclasses without writing the whole pattern out by hand. There is no significant *semantic* change, behind the scenes everything works exactly as we see it here.
 
 Smalltalk was, of course, invented fifty years ago. In those fifty years, we've learned a lot about what works and what doesn't work in object-oriented programming. Unfortunately, this pattern celebrates the things that don't work, and glosses over or omits the things that work.
 
@@ -67,9 +67,9 @@ At a semantic level, classes are the building blocks of an [ontology]. This is o
 
 ![An ontology of accounts](/assets/images/tree.png)
 
-The idea is to classify (note the word) our knowledge about objects into a tree. At the top is the most general knowledge about all objects, and as you travel down the tree, you get more and more specific knowledge about specific classes of objects, e.g. objects representing Visa Debit accounts.
+The idea is to classify (note the word) our knowledge about objects into a tree. At the top is the most general knowledge about all objects, and as we travel down the tree, we get more and more specific knowledge about specific classes of objects, e.g. objects representing Visa Debit accounts.
 
-Only, the real world doesn't work that way. It *really* doesn't work that way. In zoology, for example, we have penguins, birds that swim. And the bat, a mammal that flies. And [monotremes] like the platypus, an animal that lays eggs but nurses its young with milk.
+Only, the real world doesn't work that way. It *really* doesn't work that way. In zoology, for example, we have penguins, birds that swim. And the bat, a mammal that flies. And [monotremes] like the platypus, an animal that lays eggs but nurses its weng with milk.
 
 [monotremes]: https://en.wikipedia.org/wiki/Monotreme
 
@@ -77,7 +77,7 @@ It turns out that our knowledge of the behaviour of non-trivial domains (like zo
 
 Furthermore, the idea of building software on top of an ontology would be broken even if knowledge fit neatly into a tree. Ontologies are not used to build the real world, they are used to describe it from observation. As we learn more, we are constantly updating our ontology, sometimes moving everything around.
 
-In software, this is incredibly destructive: Moving everything around breaks everything. In the real world, the humble Platypus does not care if you rearrange the ontology, because you didn't use the ontology to build Australia, just to describe what you found there.
+In software, this is incredibly destructive: Moving everything around breaks everything. In the real world, the humble Platypus does not care if we rearrange the ontology, because we didn't use the ontology to build Australia, just to describe what we found there.
 
 It's incredibly sensible to build an ontology from observation of things like bank accounts, and that ontology is very useful for writing requirements, use cases, tests, and so on. But that doesn't mean that it's useful for actually writing code.
 
@@ -85,9 +85,9 @@ Classes are the wrong semantic model, and the wisdom of fifty years of experienc
 
 ### encapsulation
 
-Those are the semantic issues. Let's talk about the engineering issues, let's address is as if we don't care whether classes represent some knowledge in the real world, they're just a tool for getting our programs to work. Fine!
+Those are the semantic issues. Let's talk about the engineering issues, let's address classes as if we don't care whether they represent some knowledge in the real world. Let's presume that classes are just a tool for getting our programs to work. Are they still a problem?
 
-Programs have three important use cases:
+Yes, classes (specifically class hierarchies) are a problem, even if all we want to do is use them to implement behaviour. Programs have three important use cases:
 
 1. Programs must be easy to write;
 2. Programs must be easy to understand;
@@ -99,11 +99,11 @@ Classes have tradeoffs for all three of these use cases, but they are especially
 
 Encapsulation is a core principle of object-oriented programming. (Other styles of programming, such as functional programming, also value encapsulation, although they implement it in different ways). In OOP, encapsulation is achieved by objects having private state and exposing a public interface in the form of methods.
 
-JavaScript does not enforce private state, but it's easy to write well-encapsulated programs: simply avoid having one object directly manipulate another object's properties. Use fancy names like `_currentBalance` if you like, but fifty years after Smalltalk was invented, this is a well-understood principle.
+JavaScript does not enforce private state, but it's easy to write well-encapsulated programs: simply avoid having one object directly manipulate another object's properties. Fifty years after Smalltalk was invented, this is a well-understood principle.
 
-Obviously, code will have dependencies. A will depend on B and B will depend on C, and dependencies are transitive, so A depends on B and C. Encapsulation doesn't eliminate dependencies, but it does limit the *scope* of the dependencies: If you change B and C, you will not break A provided that you do not remove or change the externally observable behaviour of any of the methods A uses.
+Obviously, code will have dependencies. `A` will depend on `B`, and `B` will depend on `C`, and dependencies are transitive, so `A` depends on `B` and `A` also depends on `C`. Encapsulation doesn't eliminate dependencies, but it does limit the *scope* of the dependencies: If we change `B` and/or `C`, we will not break `A` provided that we do not remove or change the externally observable behaviour of any of the methods `A` uses.
 
-So far so good. or at least, it is if A, B and C are objects and/or functions. For example:
+So far so good. or at least, it is if `A`, `B` and `C` are objects and/or functions. For example:
 
     function depositAndReturnBalance(account, amount) {
       return account.deposit(amount).balance();
@@ -113,7 +113,7 @@ So far so good. or at least, it is if A, B and C are objects and/or functions. F
     depositAndReturnBalance(account, 100)
       //=> 100
 
-`depositAndReturnBalance` obviously depends on passing in an object that implements both the `.deposit` and `.balance` methods. But it doesn't depend on how those methods are implemented: You could write this for `Account` and get the same behaviour:
+`depositAndReturnBalance` obviously depends on passing in an object that implements both the `.deposit` and `.balance` methods. But it doesn't depend on how those methods are implemented: we could write this for `Account` and get the same behaviour:
 
     function Account () {
       this._transactionHistory = [];
@@ -142,18 +142,20 @@ Completely different implementation of `.deposit` and `.balance`, but `depositAn
 
 So, our class provides us with a way to encapsulate the implementation of an account balance. Great! What is the problem?
 
-### broken encapsulation
+### superclasses are not encapsulated
 
 We said that encapsulation in JavaScript works when the entities involved are objects and/or functions. But what about classes?
 
-It turns out, the relationship between classes in a hierarchy is *not* encapsulated. This is because classes do not relate to each other through a well-defined interface of methods while "hiding" their internal state from each other. To save you looking up, here's the way our `ChequingAccount` subclass implements the `.process` method:
+It turns out, the relationship between classes in a hierarchy is *not* encapsulated. This is because classes do not relate to each other through a well-defined interface of methods while "hiding" their internal state from each other.
+
+Here's the way our `ChequingAccount` subclass implements the `.process` method:
 
     ChequingAccount.prototype.process = function (cheque) {
       this._currentBalance = this._currentBalance - cheque.amount();
       return this;
     }
 
-If you rewrite the `Account` class to use a transaction history instead of a current balance, it breaks the code in `ChequingAccount`. In JavaScript and all other OO languages in the same family, classes and subclasses share access to the object's private properties. It is not possible to change an implementation detail for `Account` without carefully checking every single subclass and the code depending on those subclasses to see if your internal, "private" change will break them.
+If we rewrite the `Account` class to use a transaction history instead of a current balance, it breaks the code in `ChequingAccount`. In JavaScript other languages in the same family, classes and subclasses share access to the object's private properties. It is not possible to change an implementation detail for `Account` without carefully checking every single subclass and the code depending on those subclasses to see if our internal, "private" change will break them.
 
 Of course, we know that there are dependencies in code, so we are not surprised that subclasses depend on classes. But what is different is that this dependency is not limited in scope to a carefully curated interface of methods and behaviour. We have no encapsulation.
 
