@@ -4,7 +4,7 @@ title: "Class Hierarchies? Don't Do That!"
 tags: spessore
 ---
 
-Although *in theory* JavaScript does not have classes, *in practice* there are enough JavaScript people writing things that behave like classes that the following snippet of code is widely considered to be a JavaScript "class:"
+*In theory* JavaScript does not have classes. *In practice*, the following snippet of code is widely considered to be an example of a "class" in JavaScript:
 
     function Account () {
       this._currentBalance = 0;
