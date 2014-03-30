@@ -155,11 +155,13 @@ Here's the way our `ChequingAccount` subclass implements the `.process` method:
       return this;
     }
 
-If we rewrite the `Account` class to use a transaction history instead of a current balance, it breaks the code in `ChequingAccount`. In JavaScript other languages in the same family, classes and subclasses share access to the object's private properties. It is not possible to change an implementation detail for `Account` without carefully checking every single subclass and the code depending on those subclasses to see if our internal, "private" change will break them.
+If we rewrite the `Account` class to use a transaction history instead of a current balance, it breaks the code in `ChequingAccount`. In JavaScript (and other languages in the same family), classes and subclasses share access to the object's private properties. It is not possible to change an implementation detail for `Account` without carefully checking every single subclass and the code depending on those subclasses to see if our internal, "private" change will break them.
 
 Of course, we know that there are dependencies in code, so we are not surprised that subclasses depend on classes. But what is different is that this dependency is not limited in scope to a carefully curated interface of methods and behaviour. We have no encapsulation.
 
 This problem is not a new discovery. It is well-understood, it even has a name: It's called the [Fragile Base Class Problem][fbc]. Changes to classes near the root of the tree have far-reaching implications, and implications that are orders of magnitude more risky because there is no encapsulation.
+
+Class hierarchies create brittle programs that are difficult to modify.
 
 ### going forward
 
