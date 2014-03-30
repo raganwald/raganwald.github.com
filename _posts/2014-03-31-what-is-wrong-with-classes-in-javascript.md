@@ -1,6 +1,6 @@
 ---
 layout: default
-title: What's wrong with class hierarchies in JavaScript
+title: "Class Hierarchies? Don't Do That!"
 tags: spessore
 ---
 
@@ -28,6 +28,8 @@ The pattern can be extended to provide the notion of subclassing:
     function ChequingAccount () {
       Account.call(this);
     }
+
+    ChequingAccount.prototype = Object.create(Account.prototype);
 
     ChequingAccount.prototype.sufficientFunds = function (cheque) {
       return this._currentBalance >= cheque.amount();
@@ -169,4 +171,6 @@ JavaScript first appeared in 1995, approximately 15 years after Smalltalk was fi
 
 It seems obvious that we should look back and learn from what came before. Good ideas, like encapsulation, functions as first-class objects, delegation, traits, and composition should be embraced and improved upon. New ideas, like promises, should be developed.
 
-But we should not blindly copy--much less reinvent, poorly--old ideas that are now understood to be flawed. Class hierarchies are now understood to be flawed and to be considered a last resort, not the go-to central idea of object-oriented software design.
+People often say that "JavaScript isn't Ruby," that it's prototype-based and not class-based. That's true, but the opportunity is wasted when we reinvent, poorly, ideas that were invented fifty years ago and have been deprecated ever since.
+
+So if someone asks you to explain how to write a class hierarchy? Go ahead and tell them: "Don't do that!"
