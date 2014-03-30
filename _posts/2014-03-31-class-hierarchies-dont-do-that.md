@@ -40,13 +40,9 @@ The pattern can be extended to provide the notion of subclassing:
       return this;
     }
 
-There's even a (questionable) feature for testing whether an object "is an instance of" a particular class:
+These classes and subclasses provide most of the features of classes we find in languages like [Smalltalk]:
 
-    var account = new ChequingAccount();
-    account instanceof ChequingAccount
-      //=> true
-
-These classes and subclasses provide most of the features of classes we find in languages like Smalltalk:
+[Smalltalk]: http://www.squeak.org
 
 * Classes are responsible for creating objects and initializing them with properties (like the current balance);
 * Classes are responsible for and "own" methods, Objects delegate method handling to their classes (and superclasses);
