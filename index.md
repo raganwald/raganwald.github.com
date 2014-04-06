@@ -1,5 +1,5 @@
 ---
-title: index.html
+title: Reginald Braithwaite
 layout: default
 ---
 
