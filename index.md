@@ -3,8 +3,9 @@ title: index.html
 layout: default
 ---
 
-Technical essays by [Reginald "raganwald" Braithwaite](http://braythwayt.com), author of:
+Technical essays by Reginald "raganwald" Braithwaite, author of:
 
+* [JavaScript Spessore](http://leanpub.com/javascript-spessore)
 * [JavaScript Allongé](http://leanpub.com/javascript-allonge)
 * [CoffeeScript Ristretto](http://leanpub.com/coffeescript-ristretto)
 * [Kestrels, Quirky Birds, and Hopeless Egocentricity](http://leanpub.com/combinators)
@@ -18,6 +19,12 @@ And host of:
 * [oscin.es](oscin.es): Work in Progress on Combinatory Logic in JavaScript.
 
 [w]: ./2011/11/01/williams-master-of-the-comefrom.html
+
+Other links:
+
+* email: reg@braythwayt.com
+* github: https://github.com/raganwald
+* lanyrd: http://lanyrd.com/profile/raganwald/
 
 ### essays
 
@@ -58,6 +65,10 @@ And host of:
     {% endfor %}
   </ul>
 </div>
+
+### conference bio
+
+> "Raganwald" is proof that somewhere, a village is missing its idiot. Either that, or a combinatory forest is missing its Idiot Bird, nobody is really sure. His interests include constructing surreal numbers, deconstructing hopelessly egocentric nulls, and celebrating the joy of programming.
 
 ### disclaimer
 
