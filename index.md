@@ -13,18 +13,16 @@ Technical essays by Reginald "raganwald" Braithwaite, author of:
 And host of:
 
 * [allong.es](http://allong.es): Functional Utility Belt for JavaScript/CoffeeScript.
-* [ristrettolo.gy](http://ristrettolo.gy): CoffeeScript Ristretto online.
-* [combinators.info](http://combinators.info): Kestrels, Quirky Birds, and Hopeless Egocentricity online.
 * [recursiveuniver.se](recursiveuniver.se): HashLife implementation of Conway's Game of Life.
-* [oscin.es](oscin.es): Work in Progress on Combinatory Logic in JavaScript.
+* [oscin.es](oscin.es): Combinatory Logic in JavaScript.
 
 [w]: ./2011/11/01/williams-master-of-the-comefrom.html
 
 Other links:
 
-* email: reg@braythwayt.com
-* github: https://github.com/raganwald
-* lanyrd: http://lanyrd.com/profile/raganwald/
+* email: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
+* github: <a href="https://github.com/raganwald">https://github.com/raganwald</a>
+* lanyrd: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
 
 ### essays
 
