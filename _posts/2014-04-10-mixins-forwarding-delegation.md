@@ -344,6 +344,7 @@ Because there is a forwarding method in the consumer object and a handling metho
 consumer[methodName] = function () {
   return toProvider[methodName].apply(toProvider, arguments);
 }
+{% endhighlight %}
 
 Each forwarding function invokes the method in the provider *by name*. So we can do this:
 
