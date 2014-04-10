@@ -654,3 +654,5 @@ We've seen four techniques for separating object behaviour from object propertie
 We've also seen how to implement "later binding" delegation by delegating or forwarding to an object property, and how this can be used for building a state machine. We've seen how these four techniques can be understood to implement two orthogonal ideas: Early versus late binding, and whether methods are evaluated in the receiver's context or the metaobject's context.
 
 We deliberately haven't discussed prototypes or the things you can build with prototypes (like classes). Instead, we take our understanding gleaned from these prototype-less techniques to help us understand what prototypes offer and what tradeoffs they make.
+
+([discuss](http://www.reddit.com/r/javascript/comments/22p3ex/mixins_forwarding_and_delegation_in_javascript/))
