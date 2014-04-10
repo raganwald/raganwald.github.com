@@ -16,18 +16,20 @@ This is an essay, not a style guide.
 
 It is technically possible to write software using objects alone. When we need behaviour for an object, we can give it methods by binding functions to keys in the object:
 
-    var sam = {
-      firstName: 'Sam',
-      lastName: 'Lowry',
-      fullName: function () {
-        return this.firstName + " " + this.lastName;
-      },
-      rename: function (first, last) {
-        this.firstName = first;
-        this.lastName = last;
-        return this;
-      }
-    }
+```javascript
+var sam = {
+  firstName: 'Sam',
+  lastName: 'Lowry',
+  fullName: function () {
+    return this.firstName + " " + this.lastName;
+  },
+  rename: function (first, last) {
+    this.firstName = first;
+    this.lastName = last;
+    return this;
+  }
+}
+```
 
 We call this a "naïve" object. It has state and behaviour, but it lacks division of responsibility between its state and its behaviour.
 
