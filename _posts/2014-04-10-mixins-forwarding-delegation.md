@@ -45,69 +45,79 @@ The basic principle of the metaobject is that we separate the mechanics of behav
 
 The simplest possible metaobject in JavaScript is a *mixin*. Consider our naïve object:
 
-    var sam = {
-      firstName: 'Sam',
-      lastName: 'Lowry',
-      fullName: function () {
-        return this.firstName + " " + this.lastName;
-      },
-      rename: function (first, last) {
-        this.firstName = first;
-        this.lastName = last;
-        return this;
-      }
-    }
+{% highlight javascript %}
+var sam = {
+  firstName: 'Sam',
+  lastName: 'Lowry',
+  fullName: function () {
+    return this.firstName + " " + this.lastName;
+  },
+  rename: function (first, last) {
+    this.firstName = first;
+    this.lastName = last;
+    return this;
+  }
+}
+{% endhighlight %}
 
 We can separate its domain properties from its behaviour:
 
-    var sam = {
-      firstName: 'Sam',
-      lastName: 'Lowry'
-    };
+{% highlight javascript %}
+var sam = {
+  firstName: 'Sam',
+  lastName: 'Lowry'
+};
 
-    var person = {
-      fullName: function () {
-        return this.firstName + " " + this.lastName;
-      },
-      rename: function (first, last) {
-        this.firstName = first;
-        this.lastName = last;
-        return this;
-      }
-    };
+var person = {
+  fullName: function () {
+    return this.firstName + " " + this.lastName;
+  },
+  rename: function (first, last) {
+    this.firstName = first;
+    this.lastName = last;
+    return this;
+  }
+};
+{% endhighlight %}
 
 And use `extend` to mix the behaviour in:
 
-    extend(sam, person);
+{% highlight javascript %}
+extend(sam, person);
 
-    sam.rename
-      //=> [Function]
+sam.rename
+  //=> [Function]
+{% endhighlight %}
 
 This allows us to separate the behaviour from the properties in our code. If we want to use the same behaviour with another object, we can do that:
 
-    var peck = {
-      firstName: 'Sam',
-      lastName: 'Peckinpah'
-    };
+{% highlight javascript %}
+var peck = {
+  firstName: 'Sam',
+  lastName: 'Peckinpah'
+};
 
-    extend(peck, person);
+extend(peck, person);
+{% endhighlight %}
 
 Our `person` object is a *template*, it provides some functionality to be mixed into an object with a function like `extend`. Using templates does not require copying entire functions around, each object gets references to the functions in the template.
 
 Things get even better: You can use more than one template with the same object:
 
-    var hasCareer = {
-      career: function () {
-        return this.chosenCareer;
-      },
-      setCareer: function (career) {
-        this.chosenCareer = career;
-        return this;
-      }
-    };
+{% highlight javascript %}
+var hasCareer = {
+  career: function () {
+    return this.chosenCareer;
+  },
+  setCareer: function (career) {
+    this.chosenCareer = career;
+    return this;
+  }
+};
 
-    extend(peck, hasCareer);
-    peck.setCareer('Director');
+extend(peck, hasCareer);
+peck.setCareer('Director');
+{% endhighlight %}
 
 We say that there is a *many-to-many* relationship between objects and templates.
 
@@ -125,42 +135,46 @@ Encapsulation solves this problem by strictly limiting the scope of interaction 
 
 However, two methods `x()` and `y()` on the same object are tightly coupled by default, because they both interact with all of the object's private state. When we write an object like this:
 
-    var counter = {
-      _value: 0,
-      value: function () {
-        return this._value;
-      },
-      increment: function () {
-        ++this._value;
-        return this;
-      },
-      decrement: function () {
-        --this._value;
-        return this;
-      }
-    }
+{% highlight javascript %}
+var counter = {
+  _value: 0,
+  value: function () {
+    return this._value;
+  },
+  increment: function () {
+    ++this._value;
+    return this;
+  },
+  decrement: function () {
+    --this._value;
+    return this;
+  }
+}
+{% endhighlight %}
 
 We fully understand that `value()`, `increment()`, and `decrement()` are coupled, and they are all together in our code next to each other.
 
 Whereas, if we write:
 
-    function isanIncrementor (object) {
-      object.increment = function () {
-        ++this._value;
-        return this;
-      };
-      return object;
-    }
+{% highlight javascript %}
+function isanIncrementor (object) {
+  object.increment = function () {
+    ++this._value;
+    return this;
+  };
+  return object;
+}
 
-    // ...hundres of lines of code...
+// ...hundreds of lines of code...
 
-    function isaDecrementor (object) {
-      object.decrement = function () {
-        --this._value;
-        return this;
-      };
-      return object;
-    }
+function isaDecrementor (object) {
+  object.decrement = function () {
+    --this._value;
+    return this;
+  };
+  return object;
+}
+{% endhighlight %}
 
 Our two templates are tightly coupled to each other, but not obviously so. They just 'happen' to use the same property. And they might never be both mixed into the same object. Or perhaps they might. Who knows?
 
@@ -174,15 +188,17 @@ And just as objects can encapsulate their own private state, so can templates.
 
 Let's revisit our `hasCareer` template:
 
-    var hasCareer = {
-      career: function () {
-        return this.chosenCareer;
-      },
-      setCareer: function (career) {
-        this.chosenCareer = career;
-        return this;
-      }
-    };
+{% highlight javascript %}
+var hasCareer = {
+  career: function () {
+    return this.chosenCareer;
+  },
+  setCareer: function (career) {
+    this.chosenCareer = career;
+    return this;
+  }
+};
+{% endhighlight %}
 
 `hasCareer` stores its private state in the object's `chosenCareer` property. As we've seen, that introduces coupling if any other method touches `chosenCareer`. What we'd like to do is make `chosenCareer` private. Specifically:
 
@@ -195,20 +211,22 @@ We have a few options. The very simplest, and most "native" to JavaScript, is to
 
 We'll write our own [functional mixin][fm]:
 
-    function HasPrivateCareer (obj) {
-      var chosenCareer;
+{% highlight javascript %}
+function HasPrivateCareer (obj) {
+  var chosenCareer;
 
-      obj.career = function () {
-        return chosenCareer;
-      };
-      obj.setCareer = function (career) {
-        chosenCareer = career;
-        return this;
-      };
-      return obj;
-    }
+  obj.career = function () {
+    return chosenCareer;
+  };
+  obj.setCareer = function (career) {
+    chosenCareer = career;
+    return this;
+  };
+  return obj;
+}
 
-    HasPrivateCareer(peck);
+HasPrivateCareer(peck);
+{% endhighlight %}
 
 `chosenCareer` is a variable within the scope of the `hasCareer`, so the `career` and `setCareer` methods can both access it through lexical scope, but no other method can or ever will.
 
@@ -218,33 +236,39 @@ This approach works well for simple cases. It only works for named variables. We
 
 Another way to achieve privacy in templates is to write them as methods that operate on `this`, but sneakily make `this` refer to a different object. Let's revisit our `extend` function:
 
-    function extendPrivately (receiver, template) {
-      var methodName,
-          privateProperty = Object.create(null);
+{% highlight javascript %}
+function extendPrivately (receiver, template) {
+  var methodName,
+      privateProperty = Object.create(null);
 
-      for (methodName in template) {
-        if (template.hasOwnProperty(methodName)) {
-          receiver[kemethodNamey] = template[methodName].bind(privateProperty);
-        };
-      };
-      return receiver;
+  for (methodName in template) {
+    if (template.hasOwnProperty(methodName)) {
+      receiver[kemethodNamey] = template[methodName].bind(privateProperty);
     };
+  };
+  return receiver;
+};
+{% endhighlight %}
 
 We don't need to embed variables and methods in our function, it creates one private variable (`privateProperty`), and then uses `.bind` to ensure that each method is bound to that variable instead of to the receiver object being extended with the template.
 
 Now we can extend any object with any template, 'privately:'
 
-    extendPrivately(twain, hasCareer);
-    twain.setCareer('Author');
-    twain.career()
-      //=> 'Author'
+{% highlight javascript %}
+extendPrivately(twain, hasCareer);
+twain.setCareer('Author');
+twain.career()
+  //=> 'Author'
+{% endhighlight %}
 
 Has it modified `twain`'s properties?
 
-    twain.chosenCareer
-      //=> undefined
+{% highlight javascript %}
+twain.chosenCareer
+  //=> undefined
+{% endhighlight %}
 
-No. twain has `.setCareer` and `.career` methods, but `.chosencareer` is a property of an object created when `twain` was privately extended, then bound to each method using [`.bind`][bind].
+No. `twain` has `.setCareer` and `.career` methods, but `.chosencareer` is a property of an object created when `twain` was privately extended, then bound to each method using [`.bind`][bind].
 
 [allong.es]: http://allong.es
 [bind]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
@@ -255,46 +279,54 @@ The advantage of this approach over closures is that the template and the mechan
 
 In our scheme above, we used `.bind` to create methods bound to a private object before mixing references to them into our object. There is another way to do it:
 
-    function forward (receiver, methods, toProvider) {
-        for (methodName in methods) {
-          receiver[methodName] = function () {
-            return toProvider[methodName].apply(toProvider, arguments);
-          };
-        }
-      });
+{% highlight javascript %}
+function forward (receiver, methods, toProvider) {
+    for (methodName in methods) {
+      receiver[methodName] = function () {
+        return toProvider[methodName].apply(toProvider, arguments);
+      };
+    }
+  });
 
-      return receiver;
-    };
+  return receiver;
+};
+{% endhighlight %}
 
 This function *forwards* methods to another object. Any other object, it could be a metaobject specifically designed to define behaviour, or it could be a domain object that has other responsibilities.
 
 Dispensing with a lot of mixins, here is a very simple example example. We start with some kind of investment portfolio object that has a `netWorth` method:
 
-    var portfolio = {
-      _investments: [],
-      addInvestment: function (investment) {
-        this._investments.push(investment);
-        return this;
+{% highlight javascript %}
+var portfolio = {
+  _investments: [],
+  addInvestment: function (investment) {
+    this._investments.push(investment);
+    return this;
+  },
+  netWorth: function () {
+    return this._investments.reduce(
+      function (acc, investment) {
+        return acc + investment.value;
       },
-      netWorth: function () {
-        return this._investments.reduce(
-          function (acc, investment) {
-            return acc + investment.value;
-          },
-          0
-        );
-      }
-    };
+      0
+    );
+  }
+};
+{% endhighlight %}
 
 And next we create an investor who has this portfolio of investments:
 
-    var investor = {
-      //...
-    }
+{% highlight javascript %}
+var investor = {
+  //...
+}
+{% endhighlight %}
 
 What if we want to make investments and to know an investor's net worth?
 
-    forward(investor, ['addInvestment', 'netWorth'], portfolio);
+{% highlight javascript %}
+forward(investor, ['addInvestment', 'netWorth'], portfolio);
+{% endhighlight %}
 
 We're saying "Forward all requests for `addInvestment` and `netWorth` to the portfolio object."
 
@@ -308,15 +340,18 @@ The key idea is that when forwarding, the provider object handles each method *i
 
 Because there is a forwarding method in the consumer object and a handling method in the provider, the two can be varied independently. Here's a snippet of our `forward` function from above:
 
-    consumer[methodName] = function () {
-      return toProvider[methodName].apply(toProvider, arguments);
-    }
+{% highlight javascript %}
+consumer[methodName] = function () {
+  return toProvider[methodName].apply(toProvider, arguments);
+}
 
 Each forwarding function invokes the method in the provider *by name*. So we can do this:
 
-    portfolio.netWorth = function () {
-      return "I'm actually bankrupt!";
-    }
+{% highlight javascript %}
+portfolio.netWorth = function () {
+  return "I'm actually bankrupt!";
+}
+{% endhighlight %}
 
 We're overwriting the method in the `portfolio` object, but not the forwarding function. So now, our `investor` object will forward invocations of `netWorth` to the new function, not the original. This is not how out `.bind` system worked above.
 
@@ -344,22 +379,26 @@ So... What goes in the missing spot? What is late-bound, but evaluated in the re
 
 Let's build it. Here's our `forward` function, modified to evaluate method invocation in the receiver's context:
 
-    function delegate (receiver, methods, toProvider) {
-        for (methodName in methods) {
-          receiver[methodName] = function () {
-            return toProvider[methodName].apply(receiver, arguments);
-          };
-        }
-      });
+{% highlight javascript %}
+function delegate (receiver, methods, toProvider) {
+    for (methodName in methods) {
+      receiver[methodName] = function () {
+        return toProvider[methodName].apply(receiver, arguments);
+      };
+    }
+  });
 
-      return receiver;
-    };
+  return receiver;
+};
+{% endhighlight %}
 
 This new `delegate` function does exactly the same thing as the `forward` function, but the function that does the delegation looks like this:
 
-    function () {
-      return toProvider[methodName].apply(receiver, arguments);
-    }
+{% highlight javascript %}
+function () {
+  return toProvider[methodName].apply(receiver, arguments);
+}
+{% endhighlight %}
 
 It uses the receiver as the context instead of the provider. This has all the same coupling implications that our mixins have, of course. And it layers in additional indirection. The indirection gives us some late binding, allowing us to modify the metaobject's methods *after* we have delegated behaviour from a receiver to it.
 
@@ -405,40 +444,44 @@ Encapsulation solves this problem by strictly limiting the scope of interaction 
 
 However, two methods `x()` and `y()` on the same object are tightly coupled by default, because they both interact with all of the object's private state. When we write an object like this:
 
-    var counter = {
-      _value: 0,
-      value: function () {
-        return this._value;
-      },
-      increment: function () {
-        ++this._value;
-        return this;
-      },
-      decrement: function () {
-        --this._value;
-        return this;
-      }
-    }
+{% highlight javascript %}
+var counter = {
+  _value: 0,
+  value: function () {
+    return this._value;
+  },
+  increment: function () {
+    ++this._value;
+    return this;
+  },
+  decrement: function () {
+    --this._value;
+    return this;
+  }
+}
+{% endhighlight %}
 
 We fully understand that `value()`, `increment()`, and `decrement()` are coupled, and they are all together in our code next to each other.
 
 Whereas, if we write two metaobjects:
 
-    var Incrementor = {
-      increment: function () {
-        ++this._value;
-        return this;
-      }
-    };
+{% highlight javascript %}
+var Incrementor = {
+  increment: function () {
+    ++this._value;
+    return this;
+  }
+};
 
-    // ...hundres of lines of code...
+// ...hundreds of lines of code...
 
-    var Decrementor = {
-      decrement: function () {
-        --this._value;
-        return this;
-      }
-    };
+var Decrementor = {
+  decrement: function () {
+    --this._value;
+    return this;
+  }
+};
+{% endhighlight %}
 
 `Incrementor` and `Decrementor` are tightly coupled to each other, but it isn't obvious if you just look at methods. They just 'happen' to use the same property. And if one object delegates to both objects (or mixes both objects in), then they will be coupled by virtue of their common use of the `_value` private property.
 
@@ -450,38 +493,44 @@ The whole point of objects is to encapsulate private data so that you need only 
 
 When comparing Mixins to Delegation (and comparing Private Mixins to Forwarding), we noted that the primary difference is that Mixins are early bound and Delegation is late bound. Let's be specific. Given:
 
-    var counter = {};
+{% highlight javascript %}
+var counter = {};
 
-    var Incrementor = {
-      increment: function () {
-        ++this._value;
-        return this;
-      },
-      value: function (optionalValue) {
-        if (optionalValue != null) {
-          this._value = optionalValue;
-        }
-        return this._value;
-      }
-    };
+var Incrementor = {
+  increment: function () {
+    ++this._value;
+    return this;
+  },
+  value: function (optionalValue) {
+    if (optionalValue != null) {
+      this._value = optionalValue;
+    }
+    return this._value;
+  }
+};
 
-    extend(counter, Incrementor);
+extend(counter, Incrementor);
+{% endhighlight %}
 
 We are mixing `Incrementor` into `counter`. At some point later, we encounter:
 
-    counter.value(42);
+{% highlight javascript %}
+counter.value(42);
+{% endhighlight %}
 
 What function handles the invocation of `.value`? because we mixed `Incrementor` into `counter`, it's the same function as `Incrementor.counter`. We don't look that up when `counter.value(42)` is evaluated, because that was bound to `counter.value` when we extended `counter`. This is early binding.
 
 However, given:
 
-    var counter = {};
+{% highlight javascript %}
+var counter = {};
 
-    delegate(counter, ['increment', 'value'], Incrementor);
+delegate(counter, ['increment', 'value'], Incrementor);
 
-    // ...time passes...
+// ...time passes...
 
-    counter.value(42);
+counter.value(42);
+{% endhighlight %}
 
 We again are most likely invoking `Incrementor.value`, but now we are determining this *at the time `counter.value(42)` is evaluated*. We bound the target of the delegation, `Incrementor`, to `counter`, but we are going to look the actual property of `Incrementor.value` up when it is invoked. This is late binding, and it is useful in that we can make some changes to `Incrementor` after the delegation has been set up, perhaps to add some logging.
 
@@ -491,55 +540,63 @@ It is very nice not to have to do things like this in a very specific order: Whe
 
 But we can get *even later than that*. Although the specific function is late bound, the target of the delegation, `Incrementor`, is early bound. We can late bind that too! Here's a variation on `delegate`:
 
-    function delegateToOwn (receiver, methods, propertyName) {
-        for (methodName in methods) {
-          receiver[methodName] = function () {
-            var toProvider = receiver[propertyName];
-            return toProvider[methodName].apply(receiver, arguments);
-          };
-        }
-      });
+{% highlight javascript %}
+function delegateToOwn (receiver, methods, propertyName) {
+    for (methodName in methods) {
+      receiver[methodName] = function () {
+        var toProvider = receiver[propertyName];
+        return toProvider[methodName].apply(receiver, arguments);
+      };
+    }
+  });
 
-      return receiver;
-    };
+  return receiver;
+};
+{% endhighlight %}
 
 This function sets things up so that an object can delegate to one of its own properties. Let's take another look at the investor example. First, we'll set up our portfolio to separate behaviour from properties with a standard mixin:
 
-    var HasInvestments = {
-      addInvestment: function (investment) {
-        this._investments.push(investment);
-        return this;
+{% highlight javascript %}
+var HasInvestments = {
+  addInvestment: function (investment) {
+    this._investments.push(investment);
+    return this;
+  },
+  netWorth: function () {
+    return this._investments.reduce(
+      function (acc, investment) {
+        return acc + investment.value;
       },
-      netWorth: function () {
-        return this._investments.reduce(
-          function (acc, investment) {
-            return acc + investment.value;
-          },
-          0
-        );
-      }
-    };
+      0
+    );
+  }
+};
 
-    var portfolio = extend({_investments: []}, HasInvestments);
+var portfolio = extend({_investments: []}, HasInvestments);
+{% endhighlight %}
 
 Next we'll make that a property of our investor, and delegate to the property, not the object itself:
 
-    var investor = {
-      // ...
-      nestEgg: portfolio
-    }
+{% highlight javascript %}
+var investor = {
+  // ...
+  nestEgg: portfolio
+}
 
-    delegateToOwn(investor, ['addInvestment', 'netWorth'], 'nestEgg');
+delegateToOwn(investor, ['addInvestment', 'netWorth'], 'nestEgg');
+{% endhighlight %}
 
 Our `investor` object delegates the `addInvestment` and `netWorth` methods to its own `nestEgg` property. So far, this is just like the `delegate` method above. But consider what happens if we decide to assign a new portfolio to our investor:
 
-    var retirementPortfolio = {
-      _investments: [
-        {name: 'IRA fund', worth: '872,000'}
-      ]
-    }
+{% highlight javascript %}
+var retirementPortfolio = {
+  _investments: [
+    {name: 'IRA fund', worth: '872,000'}
+  ]
+}
 
-    investor.nestEgg = retirementPortfolio;
+investor.nestEgg = retirementPortfolio;
+{% endhighlight %}
 
 The `delegateToOwn` delegation now delegates to the new portfolio, because it is bound to the property name, not to the original object. This seems questionable for portfolios--what happens to the old portfolio when you assign a new one?--but has tremendous application for modeling classes of behaviour that change dynamically.
 
@@ -551,74 +608,79 @@ A very common use case for this delegation is when building [finite state machin
 [4r]: https://leanpub.com/4rulesofsimpledesign
 [gol]: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
+{% highlight javascript %}
+var Universe = {
+  // ...
+  numberOfNeighbours: function (location) {
+    // ...
+  }
+};
 
-    var Universe = {
-      // ...
-      numberOfNeighbours: function (location) {
-        // ...
-      }
-    };
+var thisGame = extend({}, Universe);
 
-    var thisGame = extend({}, Universe);
+var Cell = {
+  alive: function () {
+    return this._alive;
+  },
+  numberOfNeighbours: function () {
+    return thisGame.numberOfNeighbours(this._location);
+  },
+  aliveInNextGeneration: function () {
+    if (this.alive()) {
+      return (this.numberOfNeighbours() === 3);
+    }
+    else {
+      return (this.numberOfNeighbours() === 2 || this.numberOfNeighbours() === 3);
+    }
+  }
+};
 
-    var Cell = {
-      alive: function () {
-        return this._alive;
-      },
-      numberOfNeighbours: function () {
-        return thisGame.numberOfNeighbours(this._location);
-      },
-      aliveInNextGeneration: function () {
-        if (this.alive()) {
-          return (this.numberOfNeighbours() === 3);
-        }
-        else {
-          return (this.numberOfNeighbours() === 2 || this.numberOfNeighbours() === 3);
-        }
-      }
-    };
-
-    var someCell = extend({
-      _alive: true,
-      _location: {x: -15, y: 12}
-    }, Cell);
+var someCell = extend({
+  _alive: true,
+  _location: {x: -15, y: 12}
+}, Cell);
+{% endhighlight %}
 
 This business of having an `if (alive())` in the middle of a method is a hint that cells are stateful. We can extract this into a FSM with delegation:
 
-    var Alive = {
-      alive: function () {
-        return true;
-      },
-      aliveInNextGeneration: function () {
-        return (this.numberOfNeighbours() === 3);
-      }
-    };
+{% highlight javascript %}
+var Alive = {
+  alive: function () {
+    return true;
+  },
+  aliveInNextGeneration: function () {
+    return (this.numberOfNeighbours() === 3);
+  }
+};
 
-    var Dead = {
-      alive: function () {
-        return fale;
-      },
-      aliveInNextGeneration: function () {
-        return (this.numberOfNeighbours() === 2 || this.numberOfNeighbours() === 3);
-      }
-    };
+var Dead = {
+  alive: function () {
+    return fale;
+  },
+  aliveInNextGeneration: function () {
+    return (this.numberOfNeighbours() === 2 || this.numberOfNeighbours() === 3);
+  }
+};
 
-    var FsmCell = {
-      numberOfNeighbours: function () {
-        return thisGame.numberOfNeighbours(this._location);
-      }
-    }
+var FsmCell = {
+  numberOfNeighbours: function () {
+    return thisGame.numberOfNeighbours(this._location);
+  }
+}
 
-    delegateToOwn(Cell, ['alive', 'aliveInNextGeneration'], '_state');
+delegateToOwn(Cell, ['alive', 'aliveInNextGeneration'], '_state');
 
-    var someFsmCell = extend({
-      _state: Alive,
-      _location: {x: -15, y: 12}
-    }, FsmCell);
+var someFsmCell = extend({
+  _state: Alive,
+  _location: {x: -15, y: 12}
+}, FsmCell);
+{% endhighlight %}
 
 Our `FsmCell`s delegate `alive` and `aliveInNextGeneration` to their `_state` property, and you can change the state of a cell by assigning it a new state:
 
-    someFsmCell._state = Dead;
+{% highlight javascript %}
+someFsmCell._state = Dead;
+{% endhighlight %}
 
 In practice, states would be assigned en masse, but this demonstrates one of the simplest possible state machines. In the wild, most business objects are state machines, sometimes with multiple, loosely coupled states. Employees can be in or out of the office, on probation, on contract, or permanent. Part time or full time.
 
