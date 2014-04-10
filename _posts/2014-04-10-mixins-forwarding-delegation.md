@@ -552,7 +552,7 @@ The `delegateToOwn` delegation now delegates to the new portfolio, because it is
 
 ### state machines
 
-A very common use case for this delegation is when building [finite state machines][ssm]. As described in the book [Understanding the Four Rules of Simple Design][4r] by Corey Haines, you can implement [Conway's Game of Life][gol] using if statements. Hand waving furiously over other parts of the system, you might get:
+A very common use case for this delegation is when building [finite state machines][ssm]. As described in the book [Understanding the Four Rules of Simple Design][4r] by Corey Haines, you *could* implement [Conway's Game of Life][gol] using if statements. Hand waving furiously over other parts of the system, you might get:
 
 [ssm]: https://en.wikipedia.org/wiki/Finite-state_machine
 [4r]: https://leanpub.com/4rulesofsimpledesign
@@ -591,7 +591,9 @@ var someCell = extend({
 }, Cell);
 {% endhighlight %}
 
-This business of having an `if (alive())` in the middle of a method is a hint that cells are stateful. We can extract this into a FSM with delegation:
+One of the many insights from [Understanding the Four Rules of Simple Design][4r] is that this business of having an `if (alive())` in the middle of a method is a hint that cells are stateful.
+
+We can extract this into a state machine using delegation to a property:
 
 {% highlight javascript %}
 var Alive = {
