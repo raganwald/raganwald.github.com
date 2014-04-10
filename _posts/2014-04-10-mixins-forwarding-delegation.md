@@ -625,13 +625,17 @@ var someFsmCell = extend({
 }, FsmCell);
 {% endhighlight %}
 
-Our `FsmCell`s delegate `alive` and `aliveInNextGeneration` to their `_state` property, and you can change the state of a cell by assigning it a new state:
+`someFsmCell` delegates `alive` and `aliveInNextGeneration` to its `_state` property, and you can change its state with assignment:
 
 {% highlight javascript %}
 someFsmCell._state = Dead;
 {% endhighlight %}
 
-In practice, states would be assigned en masse, but this demonstrates one of the simplest possible state machines. In the wild, most business objects are state machines, sometimes with multiple, loosely coupled states. Employees can be in or out of the office, on probation, on contract, or permanent. Part time or full time.
+In practice, states would be assigned en masse, but this demonstrates one of the simplest possible state machines. In the wild, most business objects are state machines, sometimes with multiple, loosely coupled states. Employees can be:
+
+- In or out of the office;
+- On probation, on contract, or permanent;
+- Part time or full time.
 
 Delegation to a property representing state takes advantage of late binding to break behaviour into smaller components that have cleanly defined responsibilities.
 
