@@ -266,7 +266,7 @@ function extendPrivately (receiver, template) {
 
   for (methodName in template) {
     if (template.hasOwnProperty(methodName)) {
-      receiver[kemethodNamey] = template[methodName].bind(privateProperty);
+      receiver[methodName] = template[methodName].bind(privateProperty);
     };
   };
   return receiver;
