@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Mixins, Forwarding and Delegation in JavaScript"
+title: "Mixins, Forwarding, and Delegation in JavaScript"
 tags: [spessore, allonge]
 ---
 
