@@ -604,7 +604,7 @@ var Alive = {
 
 var Dead = {
   alive: function () {
-    return fale;
+    return false;
   },
   aliveInNextGeneration: function () {
     return (this.numberOfNeighbours() === 2 || this.numberOfNeighbours() === 3);
