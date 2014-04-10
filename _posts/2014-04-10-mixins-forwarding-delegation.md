@@ -304,11 +304,10 @@ In our scheme above, we used `.bind` to create methods bound to a private object
 
 {% highlight javascript %}
 function forward (receiver, methods, toProvider) {
-    methods.forEach(function (methodName) {
-      receiver[methodName] = function () {
-        return toProvider[methodName].apply(toProvider, arguments);
-      };
-    });
+  methods.forEach(function (methodName) {
+    receiver[methodName] = function () {
+      return toProvider[methodName].apply(toProvider, arguments);
+    };
   });
 
   return receiver;
@@ -405,11 +404,10 @@ Let's build it. Here's our `forward` function, modified to evaluate method invoc
 
 {% highlight javascript %}
 function delegate (receiver, methods, toProvider) {
-    methods.forEach(function (methodName) {
-      receiver[methodName] = function () {
-        return toProvider[methodName].apply(receiver, arguments);
-      };
-    });
+  methods.forEach(function (methodName) {
+    receiver[methodName] = function () {
+      return toProvider[methodName].apply(receiver, arguments);
+    };
   });
 
   return receiver;
@@ -492,12 +490,11 @@ But we can get *even later than that*. Although the specific function is late bo
 
 {% highlight javascript %}
 function delegateToOwn (receiver, methods, propertyName) {
-    methods.forEach(function (methodName) {
-      receiver[methodName] = function () {
-        var toProvider = receiver[propertyName];
-        return toProvider[methodName].apply(receiver, arguments);
-      };
-    })
+  methods.forEach(function (methodName) {
+    receiver[methodName] = function () {
+      var toProvider = receiver[propertyName];
+      return toProvider[methodName].apply(receiver, arguments);
+    };
   });
 
   return receiver;
