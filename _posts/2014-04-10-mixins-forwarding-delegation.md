@@ -377,7 +377,7 @@ portfolio.netWorth = function () {
 }
 {% endhighlight %}
 
-We're overwriting the method in the `portfolio` object, but not the forwarding function. So now, our `investor` object will forward invocations of `netWorth` to the new function, not the original. This is not how out `.bind` system worked above.
+We're overwriting the method in the `portfolio` object, but not the forwarding function. So now, our `investor` object will forward invocations of `netWorth` to the new function, not the original. This is not how our `.bind` system worked above.
 
 That makes sense from a "metaphor" perspective. With our `extendPrivately` function above, we are creating an object as a way of making private state, but we don't think of it as really being a first-class entity unto itself. We're mixing those specific methods into a consumer.
 
