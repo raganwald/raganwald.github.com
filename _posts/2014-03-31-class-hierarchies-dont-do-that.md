@@ -77,7 +77,7 @@ Furthermore, the idea of building software on top of a tree-shaped ontology woul
 
 In software, this is incredibly destructive: Moving everything around breaks everything. In the real world, the humble Platypus does not care if we rearrange the ontology, because we didn't use the ontology to build Australia, just to describe what we found there.
 
-It's sensible to build an ontology from observation of things like bank accounts. That kind of ontology is useful for writing requirements, use cases, tests, and so on. But that doesn't mean that it's useful for writing code the code that *implements* bank accounts.
+It's sensible to build an ontology from observation of things like bank accounts. That kind of ontology is useful for writing requirements, use cases, tests, and so on. But that doesn't mean that it's useful for writing the code that *implements* bank accounts.
 
 Class Hierarchies are the wrong semantic model, and the wisdom of forty years of experience with them is that there are better ways to compose programs.
 
