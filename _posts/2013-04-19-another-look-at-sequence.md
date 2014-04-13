@@ -2,6 +2,7 @@
 layout: default
 title: Advanced JavaScript with Sequences
 tags: [javascript]
+published: false
 ---
 
 ### preamble
@@ -45,7 +46,7 @@ function doFourThings (something) {
   var temp1 = doThis(something),
       temp2 = thenThis(temp1),
       temp3 = andThenThis(temp2);
-      
+
   return finallyDoThis(temp3);
 }
 {% endhighlight %}
@@ -81,7 +82,7 @@ function doFourThings (something) {
   var temp1 = doThis(something),
       temp2 = thenThis(temp1),
       temp3 = andThenThis(temp2);
-      
+
   return finallyDoThis(temp3);
 }
 {% endhighlight %}
@@ -99,7 +100,7 @@ function meetsMinimumBalanceRequirement (accountNumber) {
   var account = maybe( find )(accountNumber),
       balance = maybe( getWith('balance') )(account),
       ok = maybe( exceedsMinimum )(balance);
-      
+
   return ok;
 }
 {% endhighlight %}
@@ -227,7 +228,7 @@ var sequence = variadic( function (fns) {
 In the reduce method, we have a value being passed from one function to the next, and we transform the value with our (possible decorated) function, like this:
 
     original argument -> [function 1] -> first value -> [function 2] -> second value ...
-    
+
 We've discussed how to transform the functions. So what else could we meddle with? How about the way we chain the functions together!?
 
 ### sequence with a capital S
@@ -237,12 +238,12 @@ Let's begin with a use case. We'll pick logging. Our functions have signatures t
 {% highlight javascript %}
 function double (number) {
   var result = number * 2;
-  return [result, ['' + number + ' * 2 = ' + result]];  
+  return [result, ['' + number + ' * 2 = ' + result]];
 }
 
 function plus1 (number) {
   var result = number * 1;
-  return [result, ['' + number + ' + 1 = ' + result]];  
+  return [result, ['' + number + ' + 1 = ' + result]];
 }
 {% endhighlight %}
 
@@ -257,7 +258,7 @@ var sequenceWithWithArrayWriter = variadic( function (fns) {
           resultAndLogList = fn(value),
           result = resultAndLogList[0],
           resultLogList = flatten(logList.concat(resultAndLogList[1]));
-          
+
       return [result, resultLogList];
     }, [argument, []]);
   };
@@ -281,7 +282,7 @@ var ArrayWriter = {
                 resultAndLogList = fn(value),
                 result = resultAndLogList[0],
                 resultLogList = flatten(logList.concat(resultAndLogList[1]));
-          
+
             return [result, resultLogList];
           },
   of: function (argument) {
