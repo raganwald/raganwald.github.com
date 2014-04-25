@@ -10,7 +10,7 @@ layout: default
 
 [^cite]: [Callbacks are imperative, promises are functional](https://blog.jcoglan.com/2013/03/30/callbacks-are-imperative-promises-are-functional-nodes-biggest-missed-opportunity/)
 
-As James pointed out, one of JavaScript's defining characteristics is that *everything is a value*. Everything can be stored in an array or as the property of an object. Everything can be passed to a function or method as a parameter. Everything can be returned from a method or parameter. You can use `===` and `!===` on everything.
+As James pointed out, one of JavaScript's defining characteristics is that *everything is a value*. Everything can be stored in an array or as the property of an object. Everything can be passed to a function or method as a parameter. Everything can be returned from a method or parameter. You can use `===` and `!==` on everything.
 
 Especially, some people note, functions. Functions are values. Functions can be passed as parameters. Functions can be returned from functions. An example, here's a simple array-backed stack with an `undo` function:
 
@@ -239,7 +239,7 @@ function after (a, b) {
 }
 {% endhighlight %}
 
-`before` and `after` are very handy for writing [function advice], and again they speak to the idea of transforming functions into other functions that have similar "signatures" or "types."
+`before` and `after` are very handy for writing [function advice][advice], and again they speak to the idea of transforming functions into other functions that have similar "signatures" or "types."
 
 [advice]: https://en.wikipedia.org/wiki/Advice_(programming)
 
