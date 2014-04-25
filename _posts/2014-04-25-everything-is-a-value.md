@@ -243,7 +243,7 @@ function after (a, b) {
 
 When you have a bunch of functions that do things in your problem domain (like `writeLedger` and `withdrawFunds`), and you have functions for transforming (like `memoize`) or composing (like `before`) your domain functions, you have a little algebra for taking *values* and computing new values from them.
 
-Just as `1 + 1 = 2`, `writeLedger + withdrawFunds = transaction`.
+Just as we can write `1 + 1 = 2`, we can also write `writeLedger + withdrawFunds = transaction`.
 
 being able to compute values from values seems so obvious and basic, we do it with numbers, strings, arrays, and functions. But that isn't some special property of "functional programing," it's a special property of everything-is-a-value.
 
@@ -303,6 +303,10 @@ Objects are certainly about classes and prototype chains and methods, but they'r
 And again, this is not some "different thing," composing mixins into prototypes is the same thing as composing functions, which is the same thing as adding one and one to get two: It's everything-as-a-value, just on a larger scale.
 
 ---
+
+### appendix
+
+A function for composing mixins over partial proxies:
 
 {% highlight javascript %}
 var __slice = [].slice;
