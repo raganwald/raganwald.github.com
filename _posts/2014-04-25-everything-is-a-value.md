@@ -209,7 +209,7 @@ function memoize (fn) {
 
 [memoized]: https://en.wikipedia.org/wiki/Memoization
 
-Functions can also *compose* other functions. Hand-waving over context, We can write:
+Functions can also *compose* other functions. Hand-waving over context, we can write:
 
 {% highlight javascript %}
 function compose (a, b) {
@@ -219,7 +219,7 @@ function compose (a, b) {
 }
 {% endhighlight %}
 
-But `compose` isn't the only function that takes two functions and returns another similar function:
+But `compose` isn't the only function that takes two functions and returns another similar function. Here are two other examples (there are infinitely many examples, but only so much space in a blog):
 
 {% highlight javascript %}
 function before (a, b) {
