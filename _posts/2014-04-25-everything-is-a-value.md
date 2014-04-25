@@ -189,7 +189,7 @@ This is not different than the example of passing functions around: They're both
 
 By this definition, JavaScript is not and never will be functional programming, because it does not avoid state and it embraces mutable data. But what it has in common with functional programming is an *algebraic approach to values*.
 
-Consider this function, `once`:
+Consider this function, `memoize`:
 
 {% highlight javascript %}
 function memoize (fn) {
