@@ -249,7 +249,31 @@ Just as we can write `1 + 1 = 2`, we can also write `writeLedger + withdrawFunds
 
 being able to compute values from values seems so obvious and basic, we do it with numbers, strings, arrays, and functions. But that isn't some special property of "functional programing," it's a special property of everything-is-a-value.
 
-If you have values, you can write algebras. For example, here's a composition function for objects:
+If you have objects as values, you can write algebras of objects. Here's a function that transforms an object into a proxy for that object:
+
+{% highlight javascript %}
+function proxy (baseObject, optionalPrototype) {
+  var proxyObject = Object.create(optionalPrototype || null),
+      methodName;
+  for (methodName in baseObject) {
+    if (typeof(baseObject[methodName]) ===  'function') {
+      (function (methodName) {
+        proxyObject[methodName] = function () {
+          var result = baseObject[methodName].apply(baseObject, arguments);
+          return (result === baseObject)
+                 ? proxyObject
+                 : result;
+        }
+      })(methodName);
+    }
+  }
+  return proxyObject;
+}
+{% endhighlight %}
+
+Have you ever wanted to make an object's properties private while making its methods public? You wanted a proxy for the object.
+
+And here's a function that composes two or more objects:
 
 {% highlight javascript %}
 var __slice = [].slice;
