@@ -6,13 +6,13 @@ layout: default
 
 > This of course includes obvious things like numbers, strings, lists, and other data, but also other things we OOP fans don’t typically think of as values: IO operations and other side effects, GUI event streams, null checks, even the notion of sequencing function calls.
 
-> If you’ve ever heard the phrase 'programmable semicolons’ you’ll know what I’m getting at.--James Coglan, [Callbacks are imperative, promises are functional](https://blog.jcoglan.com/2013/03/30/callbacks-are-imperative-promises-are-functional-nodes-biggest-missed-opportunity/)
+> If you’ve ever heard the phrase 'programmable semicolons’ you’ll know what I’m getting at.--James Coglan[^cite]
 
-As James Coglan pointed out, one of JavaScript's defining characteristics is that *everything is a value*. Everything can be stored in an array or as the property of an object. Everything can be passed to a function or method as a parameter. Everything can be returned from a method or parameter. You can use `===` and `!===` on everything.
+[^cite]: [Callbacks are imperative, promises are functional](https://blog.jcoglan.com/2013/03/30/callbacks-are-imperative-promises-are-functional-nodes-biggest-missed-opportunity/)
 
-Especially, some people note, functions. Functions are values. Functions can be passed as parameters. Functions can be returned from functions. An example, here's a simple array-backed stack with an `undo` function:[^partial]
+As James pointed out, one of JavaScript's defining characteristics is that *everything is a value*. Everything can be stored in an array or as the property of an object. Everything can be passed to a function or method as a parameter. Everything can be returned from a method or parameter. You can use `===` and `!===` on everything.
 
-[^partial]: We'll see in [More Encapsulation](#more-encapsulation) that it's a *partial proxy* for an array.
+Especially, some people note, functions. Functions are values. Functions can be passed as parameters. Functions can be returned from functions. An example, here's a simple array-backed stack with an `undo` function:
 
 {% highlight javascript %}
 var stack = {
@@ -85,7 +85,11 @@ Functions-as-values is a powerful idea. And people often look at the idea of fun
 
 Objects aren't something different. There is no tension between JavaScript the functional language and JavaScript the object-oriented language. When you see Javascript the everything-is-a-value language, you see that objects are a natural growth of the idea that everything can be made into an explicit value, even things with behaviour.
 
-One example we'll discuss later concerns [state machines](#state-machines). We *could* implement a cell in [Conway's Game of Life][gol] using `if` statements and a boolean property to determine whether the cell was alive or dead:
+One example concerns [state machines][ssm]. We *could* implement a cell in [Conway's Game of Life][gol] using `if` statements and a boolean property to determine whether the cell was alive or dead:[^4r]
+
+[ssm]: https://en.wikipedia.org/wiki/Finite-state_machine
+[^4r]: This exercise was snarfed from [The Four Rules of Simple Design](https://leanpub.com/4rulesofsimpledesign)
+[gol]: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
 {% highlight javascript %}
 var Universe = {
