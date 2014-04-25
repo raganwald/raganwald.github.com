@@ -83,7 +83,9 @@ stack.pop();
 
 Functions-as-values is a powerful idea. And people often look at the idea of functions-as-values and think, "Oh, JavaScript is a functional programming language." No. JavaScript is an everything-is-a-value language. So instead of passing some boolean around and then writing some code saying "if true, do this, if false, do that," you just pass a function that does *this*, or you pass a function that does *that*.
 
-Objects aren't something different. There is no tension between JavaScript the functional language and JavaScript the object-oriented language. When you see Javascript the everything-is-a-value language, you see that objects are a natural growth of the idea that everything can be made into an explicit value, even things with behaviour.
+> Objects aren't some different paradigm. There is no tension between JavaScript the functional language and JavaScript the object-oriented language
+
+Objects aren't some different paradigm. There is no tension between JavaScript the functional language and JavaScript the object-oriented language. When you see JavaScript the everything-is-a-value language, you see that objects are a natural growth of the idea that everything can be made into an explicit value, even things with behaviour.
 
 One example concerns [state machines][ssm]. We *could* implement a cell in [Conway's Game of Life][gol] using `if` statements and a boolean property to determine whether the cell was alive or dead:[^4r]
 
