@@ -94,6 +94,29 @@ One example concerns [state machines][ssm]. We *could* implement a cell in [Conw
 [gol]: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
 {% highlight javascript %}
+var __slice = [].slice;
+
+function extend () {
+  var consumer = arguments[0],
+      providers = __slice.call(arguments, 1),
+      key,
+      i,
+      provider,
+      except;
+
+  for (i = 0; i < providers.length; ++i) {
+    provider = providers[i];
+    except = provider['except'] || [];
+    except.push('except');
+    for (key in provider) {
+      if (except.indexOf(key) < 0 && provider.hasOwnProperty(key)) {
+        consumer[key] = provider[key];
+      };
+    };
+  };
+  return consumer;
+};
+
 var Universe = {
   // ...
   numberOfNeighbours: function (location) {
@@ -337,28 +360,7 @@ And again, this is not some "different thing," composing mixins into prototypes 
 A function for composing mixins over partial proxies:
 
 {% highlight javascript %}
-var __slice = [].slice;
-
-function extend () {
-  var consumer = arguments[0],
-      providers = __slice.call(arguments, 1),
-      key,
-      i,
-      provider,
-      except;
-
-  for (i = 0; i < providers.length; ++i) {
-    provider = providers[i];
-    except = provider['except'] || [];
-    except.push('except');
-    for (key in provider) {
-      if (except.indexOf(key) < 0 && provider.hasOwnProperty(key)) {
-        consumer[key] = provider[key];
-      };
-    };
-  };
-  return consumer;
-};
+// policies for resolving methods
 
 var policies = {
   overwrite: function overwrite (fn1, fn2) {
@@ -387,6 +389,8 @@ var policies = {
   }
 };
 
+// helper for writing resolvable mixins
+
 function resolve(mixin, policySpecification) {
   var result = extend(Object.create(null), mixin);
 
@@ -401,6 +405,8 @@ function resolve(mixin, policySpecification) {
 
   return result;
 }
+
+// composing mixins
 
 function composeMixins () {
   var mixins = __slice.call(arguments, 0),
