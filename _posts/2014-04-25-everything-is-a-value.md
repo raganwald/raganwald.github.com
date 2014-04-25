@@ -91,6 +91,8 @@ Objects aren't some different paradigm. There is no tension between JavaScript t
 
 [![Handshake, Glider, Boat, Box, R-Pentomino, Loaf, Beehive, and Clock by Ben Sisko](/assets/images/sisko.jpg)](https://www.flickr.com/photos/bensisto/4193046623)
 
+### states as values
+
 One example concerns [state machines][ssm]. We *could* implement a cell in [Conway's Game of Life][gol] using `if` statements and a boolean property to determine whether the cell was alive or dead:[^4r]
 
 [ssm]: https://en.wikipedia.org/wiki/Finite-state_machine
@@ -273,6 +275,8 @@ function after (a, b) {
 When you have a bunch of functions that do things in your problem domain (like `writeLedger` and `withdrawFunds`), and you have functions for transforming (like `memoize`) or composing (like `before`) your domain functions, you have a little algebra for taking *values* and computing new values from them.
 
 Just as we can write `1 + 1 = 2`, we can also write `writeLedger + withdrawFunds = transaction`.
+
+### objects as values
 
 being able to compute values from values seems so obvious and basic, we do it with numbers, strings, arrays, and functions. But that isn't some special property of "functional programing," it's a special property of everything-is-a-value.
 
