@@ -1,5 +1,7 @@
 ---
 layout: default
+title: "Everything is a Value"
+tags: [spessore, allonge]
 ---
 
 > 'Functional programming’ is something of a misnomer, in that it leads a lot of people to think of it as meaning 'programming with functions’, as opposed to programming with objects. But if object-oriented programming treats everything as an object, functional programming treats everything as a value – not just functions, but everything.
