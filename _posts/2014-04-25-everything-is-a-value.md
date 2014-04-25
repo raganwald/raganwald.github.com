@@ -441,6 +441,52 @@ function composeMixins () {
   }, {});
 }
 
+// disjoint composition
+
+var HasName = {
+  name: function () {
+    return this.name;
+  },
+  setName: function (name) {
+    this.name = name;
+    return this;
+  }
+};
+
+var HasCareer = {
+  career: function () {
+    return this.name;
+  },
+  setCareer: function (name) {
+    this.name = name;
+    return this;
+  }
+};
+
+var NameAndCareer = composeMixins(
+  HasName,
+  HasCareer
+);
+
+// stacking mixins
+
+var IsSelfDescribing = {
+  name: undefined,
+  career: undefined,
+
+  description: function () {
+    return this.name() + ' is a ' + this.career();
+  }
+};
+
+var NameAndCareerTwo = composeMixins(
+  HasName,
+  HasCareer,
+  IsSelfDescribing
+);
+
+// resolving conflict
+
 var HasChildren = {
   initialize: function () {
     this._children = [];
@@ -469,14 +515,8 @@ var IsAuthor = {
   }
 };
 
-composeMixins(
+var WritesABoutParenting = composeMixins(
   HasChildren,
   resolve(IsAuthor, { after: ['initialize'] })
-)
-  //=>
-    { initialize: [Function],
-      addChild: [Function],
-      numberOfChildren: [Function],
-      addBook: [Function],
-      books: [Function] }
+);
 {% endhighlight %}
