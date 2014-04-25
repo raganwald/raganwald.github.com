@@ -89,6 +89,8 @@ Functions-as-values is a powerful idea. And people often look at the idea of fun
 
 Objects aren't some different paradigm. There is no tension between JavaScript the functional language and JavaScript the object-oriented language. When you see JavaScript the everything-is-a-value language, you see that objects are a natural growth of the idea that everything can be made into an explicit value, even things with behaviour.
 
+[![Handshake, Glider, Boat, Box, R-Pentomino, Loaf, Beehive, and Clock by Ben Sisko](/assets/images/sisko.jpg)](https://www.flickr.com/photos/bensisto/4193046623)
+
 One example concerns [state machines][ssm]. We *could* implement a cell in [Conway's Game of Life][gol] using `if` statements and a boolean property to determine whether the cell was alive or dead:[^4r]
 
 [ssm]: https://en.wikipedia.org/wiki/Finite-state_machine
@@ -356,6 +358,8 @@ And again, this is not some "different thing," composing mixins into prototypes 
 (discuss on [reddit](http://www.reddit.com/r/javascript/comments/23zd35/everything_is_a_value/))
 
 ---
+
+[![Harpo Marx and three of his children](/assets/images/harpo.jpg)](http://en.wikipedia.org/wiki/Harpo_Marx)
 
 ### appendix
 
