@@ -9,42 +9,9 @@ As many people and [books][ja] point out, one of JavaScript's defining character
 
 [ja]: https://leanpub.com/javascript-allonge "JavaScript Allongé"
 
-[^reference]: As you probably know, JavaScript does not actually pass functions or any other kind of object round, it passes references to functions and other objects around. But it's awkward to describe `var I = function (a) { return a; }` as binding a reference to a function to the variable `I`, so we often take an intellectually lazy shortcut, and say the function is bound to the variable `I`. This is much the same shorthand as saying that somebody added me to the schedule for an upcoming conference: They really added my name to the list, which is a kind of reference to me.
+[^reference]: As you probably know, JavaScript does not actually pass functions or any other kind of object around, it passes references to functions and other objects around. But it's awkward to describe `var I = function (a) { return a; }` as binding a reference to a function to the variable `I`, so we often take an intellectually lazy shortcut, and say the function is bound to the variable `I`. This is much the same shorthand as saying that somebody added me to the schedule for an upcoming conference: They really added my name to the list, which is a kind of reference to me.
 
-Here's an example of passing a (reference to a) function around. This simple array-backed stack has an `undo` function. It works by creating a function representing the action of undoing the last update and then binding that to a property of the stack:
-
-{% highlight javascript %}
-var stack = {
-  array: [],
-  undo: null,
-  push: function (value) {
-    this.undo = function () {
-      this.array.pop();
-      this.undo = null;
-    };
-    return this.array.push(value);
-  },
-  pop: function () {
-    var popped = this.array.pop();
-    this.undo = function () {
-      this.array.push(popped);
-      this.undo = null;
-    };
-    return popped;
-  },
-  isEmpty: function () {
-    return array.length === 0;
-  }
-};
-
-stack.push('hello');
-stack.push('there');
-stack.undo();
-stack.pop();
-  //=> 'hello'
-{% endhighlight %}
-
-We could stick functions into an array if we wanted (well, *references to functions*):
+Here's an example of passing a reference to a function around. This simple array-backed stack has an `undo` function. It works by creating a function representing the action of undoing the last update, and then pushing that onto a stack of actions to be undone:
 
 {% highlight javascript %}
 var stack = {
