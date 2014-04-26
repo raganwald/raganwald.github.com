@@ -193,11 +193,11 @@ In this design, `delegateToOwn` delegates the methods `alive` and `stateInNextGe
 
 So when we write `someCell.state = Alive`, then the `Alive` object will handle `someCell.alive` and `someCell.aliveInNextGeneration`. And when we write `someCell.state = Dead`, then the `Dead` object will handle `someCell.alive` and `someCell.aliveInNextGeneration`.
 
-Now we've taken the implicit states of being alive or dead and transformed them into the first-class values `Alive` and `Dead`. Not a boolean that is used implicitly in some other code, but the actual "stuff that matters about aliveness and deadness."
+Now we've taken the implicit states of being alive or dead and transformed them into the first-class values `Alive` and `Dead`. Not a string that is used implicitly in some other code, but the actual "stuff that matters about aliveness and deadness."
 
 This is not different than the example of passing functions around: They're both the same thing, taking something would be *implicit* in another design and/or another language, and making it *explicit*, making it a value. And making the whole thing a value, not just a boolean or a string, the complete entity.
 
-This is the key point: This example is the same thing as the example of a stack that handles undo with a function dynamically assigned to a property (or placed on a stack): *Behaviour* is treated as a first-class value, whether it be a single function or an object with multiple methods.
+This is the key point: This example is the same thing as the example of a stack that handles undo with a stack of functions: *Behaviour* is treated as a first-class value, whether it be a single function or an object with multiple methods.
 
 ### an algebra of functions
 
