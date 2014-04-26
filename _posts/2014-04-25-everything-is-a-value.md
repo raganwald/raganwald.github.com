@@ -361,7 +361,7 @@ Objects are certainly about classes and prototype chains and methods, but they'r
 
 And again, this is not some "different thing," composing mixins into prototypes is the same thing as composing functions, which is the same thing as adding one and one to get two: It's everything-as-a-value, just on a larger scale.
 
-(discuss on [reddit](http://www.reddit.com/r/programming/comments/23zlqt/everything_in_javascript_is_a_value/))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=7649700) and [reddit](http://www.reddit.com/r/programming/comments/23zlqt/everything_in_javascript_is_a_value/))
 
 ---
 
