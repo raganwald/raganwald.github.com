@@ -259,7 +259,7 @@ Just as we can write `1 + 1 = 2`, we can also write `writeLedger + withdrawFunds
 
 ### an algebra of values
 
-Functions that transform functions into other functions is very powerful, but it does not stop there.
+Functions that transform functions into other functions are very powerful, but it does not stop there.
 
 It's obvious that functions can take objects as arguments and return objects. Functions (or methods) that take an object representing a client and return an object representing and account balance are a necessary and important part of software.
 
