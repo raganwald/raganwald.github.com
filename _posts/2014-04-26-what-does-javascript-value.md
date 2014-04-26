@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "What Does JavaScript Value?"
+title: "JavaScript Values Algebra"
 tags: [spessore, allonge]
 published: true
 ---
