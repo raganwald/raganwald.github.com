@@ -2,6 +2,7 @@
 layout: default
 title: "Everything is a Value"
 tags: [spessore, allonge]
+published: false
 ---
 
 > 'Functional programming’ is something of a misnomer, in that it leads a lot of people to think of it as meaning 'programming with functions’, as opposed to programming with objects. But if object-oriented programming treats everything as an object, functional programming treats everything as a value – not just functions, but everything.
@@ -360,10 +361,6 @@ var PersonWithCareer = meld(Person, HasCareer);
 Objects are certainly about classes and prototype chains and methods, but they're values, and that means that we can write algebras for them. `meld` is a very simple, naïve example, but you can build up form there to composing traits over partial proxies with conflict resolution policies.
 
 And again, this is not some "different thing," composing mixins into prototypes is the same thing as composing functions, which is the same thing as adding one and one to get two: It's everything-as-a-value, just on a larger scale.
-
-[![Harpo Marx and three of his children](/assets/images/harpo.jpg)](http://en.wikipedia.org/wiki/Harpo_Marx)
-
-(discuss on [hacker news](https://news.ycombinator.com/item?id=7649700) and [reddit](http://www.reddit.com/r/programming/comments/23zlqt/everything_in_javascript_is_a_value/))
 
 ---
 
