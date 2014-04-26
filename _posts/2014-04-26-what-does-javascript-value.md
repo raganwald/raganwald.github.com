@@ -51,7 +51,7 @@ Functions-as-values is a powerful idea. And people often look at the idea of fun
 
 > In computer science, functional programming is a programming paradigm, a style of building the structure and elements of computer programs, that treats computation as the evaluation of mathematical functions and avoids state and mutable data.--[Wikipedia](https://en.wikipedia.org/wiki/Functional_programming)
 
-Functional programming might have meant "functions as first-class values" in the 1960s when Lisp was young. But time marches on, and we must march alongside it. JavaScript does not avoid state, and JavaScript embraces mutable data, so JavaScript is does not value "functional programming."
+Functional programming might have meant "functions as first-class values" in the 1960s when Lisp was young. But time marches on, and we must march alongside it. JavaScript does not avoid state, and JavaScript embraces mutable data, so JavaScript does not value "functional programming."
 
 [![Handshake, Glider, Boat, Box, R-Pentomino, Loaf, Beehive, and Clock by Ben Sisko](/assets/images/sisko.jpg)](https://www.flickr.com/photos/bensisto/4193046623)
 
