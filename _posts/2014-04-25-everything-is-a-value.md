@@ -12,7 +12,9 @@ tags: [spessore, allonge]
 
 [^cite]: [Callbacks are imperative, promises are functional](https://blog.jcoglan.com/2013/03/30/callbacks-are-imperative-promises-are-functional-nodes-biggest-missed-opportunity/)
 
-As James pointed out, one of JavaScript's defining characteristics is that *everything is a value*. Everything can be stored in an array or as the property of an object. Everything can be passed to a function or method as a parameter. Everything can be returned from a method or parameter. You can use `===` and `!==` on everything.
+As James pointed out, one of JavaScript's defining characteristics is that *everything is a value*.[^disclaimer] Everything can be stored in an array or as the property of an object. Everything can be passed to a function or method as a parameter. Everything can be returned from a method or parameter. You can use `===` and `!==` on everything.
+
+[^disclaimer]: Well, not *everything*. Operators like `+` aren't values. Unlike CoffeeScript and Ruby, statements don't evaluate to values, and unlike Smalltalk, blocks aren't values. But "everything is a value" is a phrase that works well enough for the purpose of this post, so put aside your pedantry and read on.
 
 Especially, some people note, functions. Functions are values. Functions can be passed as parameters. Functions can be returned from functions. An example, here's a simple array-backed stack with an `undo` function:
 
