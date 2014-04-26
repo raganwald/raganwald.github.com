@@ -1,23 +1,17 @@
 ---
 layout: default
-title: "Everything is a Value"
+title: "What Does JavaScript Value?"
 tags: [spessore, allonge]
 published: false
 ---
 
-> 'Functional programming’ is something of a misnomer, in that it leads a lot of people to think of it as meaning 'programming with functions’, as opposed to programming with objects. But if object-oriented programming treats everything as an object, functional programming treats everything as a value – not just functions, but everything.
+As many people and [books][ja] point out, one of JavaScript's defining characteristics is its treatment of functions as first-class values. Like numbers, strings, and other kinds of objects, references to functions can be passed as arguments to functions, returned as the result from functions, bound to variables, and generally treated like any other value.[^reference]
 
-> This of course includes obvious things like numbers, strings, lists, and other data, but also other things we OOP fans don’t typically think of as values: IO operations and other side effects, GUI event streams, null checks, even the notion of sequencing function calls.
+[ja]: https://leanpub.com/javascript-allonge "JavaScript Allongé"
 
-> If you’ve ever heard the phrase 'programmable semicolons’ you’ll know what I’m getting at.--James Coglan[^cite]
+[^reference]: As you probably know, JavaScript does not actually pass functions or any other kind of object round, it passes references to functions and other objects around. But it's awkward to describe `var I = function (a) { return a; }` as binding a reference to a function to the variable `I`, so we often take an intellectually lazy shortcut, and say the function is bound to the variable `I`. This is much the same shorthand as saying that somebody added me to the schedule for an upcoming conference: They really added my name to the list, which is a kind of reference to me.
 
-[^cite]: [Callbacks are imperative, promises are functional](https://blog.jcoglan.com/2013/03/30/callbacks-are-imperative-promises-are-functional-nodes-biggest-missed-opportunity/)
-
-As James pointed out, one of JavaScript's defining characteristics is that *everything is a value*.[^disclaimer] Everything can be stored in an array or as the property of an object. Everything can be passed to a function or method as a parameter. Everything can be returned from a method or parameter. You can use `===` and `!==` on everything.
-
-[^disclaimer]: Well, not *everything*. Operators like `+` aren't values. Unlike CoffeeScript and Ruby, statements don't evaluate to values, and unlike Smalltalk, blocks aren't values. Furthermore, most things aren't "values" in the sense that a C++ programmer would talk about a value. JavaScript has [call-by-sharing semantics](https://en.wikipedia.org/wiki/Call_by_sharing#Call_by_sharing), not call-by-value. But still, "everything is a value" is a phrase that works well enough for the purpose of this post, so put aside your pedantry and read on.
-
-Especially, some people note, functions. Functions are values. Functions can be passed as parameters. Functions can be returned from functions. An example, here's a simple array-backed stack with an `undo` function:
+Here's an example of passing a (reference to a) function around. This simple array-backed stack has an `undo` function. It works by creating a function representing the action of undoing the last update and then binding that to a property of the stack:
 
 {% highlight javascript %}
 var stack = {
@@ -50,7 +44,7 @@ stack.pop();
   //=> 'hello'
 {% endhighlight %}
 
-We're treating the `undo` function like any other value and putting it in a property. We could stick functions into an array if we wanted:
+We could stick functions into an array if we wanted (well, *references to functions*):
 
 {% highlight javascript %}
 var stack = {
@@ -86,15 +80,23 @@ stack.pop();
   //=> 'hello'
 {% endhighlight %}
 
-Functions-as-values is a powerful idea. And people often look at the idea of functions-as-values and think, "Oh, JavaScript is a functional programming language." No. JavaScript is an everything-is-a-value language. So instead of passing some boolean around and then writing some code saying "if true, do this, if false, do that," you just pass a function that does *this*, or you pass a function that does *that*.
+Functions-as-values is a powerful idea. And people often look at the idea of functions-as-values and think, "Oh, JavaScript is a functional programming language." No.
 
-> Objects aren't some different paradigm. There is no tension between JavaScript the functional language and JavaScript the object-oriented language
+Functional programming might have meant "functions as first-class values" in the 1960s when Lisp was young. But time marches on, and we must march alongside it.
 
-Objects aren't some different paradigm. There is no tension between JavaScript the functional language and JavaScript the object-oriented language. When you see JavaScript the everything-is-a-value language, you see that objects are a natural growth of the idea that everything can be made into an explicit value, even things with behaviour.
+> In computer science, functional programming is a programming paradigm, a style of building the structure and elements of computer programs, that treats computation as the evaluation of mathematical functions and avoids state and mutable data.--[Wikipedia](https://en.wikipedia.org/wiki/Functional_programming)
+
+By this definition, JavaScript is not and never will be functional programming, because JavaScript does not avoid state, and JavaScript embraces mutable data. So "functional programming" isn't JavaScript's "Big Idea."
 
 [![Handshake, Glider, Boat, Box, R-Pentomino, Loaf, Beehive, and Clock by Ben Sisko](/assets/images/sisko.jpg)](https://www.flickr.com/photos/bensisto/4193046623)
 
-### states as values
+### objects
+
+JavaScript's other characteristic is its support for objects. Although JavaScript seems paltry compared to rich OO languages like Scala, its extreme minimalism means that you can actually build almost any OO paradigm up from basic pieces.
+
+Now, people often hear the word "objects" and think [kingdom of nouns][kon]. But objects are not necessarily nouns, or at least, not models for obvious, tangible entities in the real world.
+
+[kon]: http://steve-yegge.blogspot.ca/2006/03/execution-in-kingdom-of-nouns.html
 
 One example concerns [state machines][ssm]. We *could* implement a cell in [Conway's Game of Life][gol] using `if` statements and a boolean property to determine whether the cell was alive or dead:[^4r]
 
@@ -133,29 +135,36 @@ var Universe = {
   }
 };
 
+var Alive = 'alive',
+    Dead  = 'dead';
+
 var Cell = {
   numberOfNeighbours: function () {
     return Universe.numberOfNeighbours(this.location);
   },
-  aliveInNextGeneration: function () {
-    if (this.alive) {
-      return (this.numberOfNeighbours() === 3);
+  stateInNextGeneration: function () {
+    if (this.state === Alive) {
+      return (this.numberOfNeighbours() === 3)
+             ? Alive
+             : Dead;
     }
     else {
-      return (this.numberOfNeighbours() === 2 || this.numberOfNeighbours() === 3);
+      return (this.numberOfNeighbours() === 2 || this.numberOfNeighbours() === 3)
+             ? Alive
+             : Dead;
     }
   }
 };
 
 var someCell = extend({
-  alive: true,
+  state: Alive,
   location: {x: -15, y: 12}
 }, Cell);
 {% endhighlight %}
 
-You could say that the "state" of the cell is the boolean value `true` for alive or `false` for dead. But that isn't really making the state a value. The "state" in a state machine includes the behaviour of the object that depends on the state.
+You could say that the "state" of the cell is represented by the primitive value `alive` for alive, or `dead` for dead. But that isn't modeling the state in any way, that's just a name. The true state of the object is *implicit* in the object's behaviour, not *explicit* in the value of the `.state` property.
 
-In the design above, the true state of the object is *implicit* in the object's behaviour, but it isn't a value. Here's a design where we make the state a value:
+Here's a design where we make the state explicit instead of implicit:
 
 {% highlight javascript %}
 function delegateToOwn (receiver, propertyName, methods) {
@@ -181,8 +190,10 @@ var Alive = {
   alive: function () {
     return true;
   },
-  aliveInNextGeneration: function () {
-    return (this.numberOfNeighbours() === 3);
+  stateInNextGeneration: function () {
+    return (this.numberOfNeighbours() === 3)
+             ? Alive
+             : Dead;
   }
 };
 
@@ -190,8 +201,10 @@ var Dead = {
   alive: function () {
     return false;
   },
-  aliveInNextGeneration: function () {
-    return (this.numberOfNeighbours() === 2 || this.numberOfNeighbours() === 3);
+  stateInNextGeneration: function () {
+    return (this.numberOfNeighbours() === 2 || this.numberOfNeighbours() === 3)
+             ? Alive
+             : Dead;
   }
 };
 
@@ -209,7 +222,7 @@ var someCell = extend({
 }, Cell);
 {% endhighlight %}
 
-`delegateToOwn` delegates the methods `alive` and `aliveInNextGeneration` to whatever object is the value of a `Cell`'s `state` property.
+In this design, `delegateToOwn` delegates the methods `alive` and `stateInNextGeneration` to whatever object is the value of a `Cell`'s `state` property.
 
 So when we write `someCell.state = Alive`, then the `Alive` object will handle `someCell.alive` and `someCell.aliveInNextGeneration`. And when we write `someCell.state = Dead`, then the `Dead` object will handle `someCell.alive` and `someCell.aliveInNextGeneration`.
 
@@ -217,73 +230,75 @@ Now we've taken the implicit states of being alive or dead and transformed them 
 
 This is not different than the example of passing functions around: They're both the same thing, taking something would be *implicit* in another design and/or another language, and making it *explicit*, making it a value. And making the whole thing a value, not just a boolean or a string, the complete entity.
 
-### an algebra of values
+This is the key point: This example is the same thing as the example of a stack that handles undo with a function dynamically assigned to a property (or placed on a stack): *Behaviour* is treated as a first-class value, whether it be a single function or an object with multiple methods.
 
-> In computer science, functional programming is a programming paradigm, a style of building the structure and elements of computer programs, that treats computation as the evaluation of mathematical functions and avoids state and mutable data.--[Wikipedia](https://en.wikipedia.org/wiki/Functional_programming)
+### an algebra of functions
 
-By this definition, JavaScript is not and never will be functional programming, because it does not avoid state and it embraces mutable data. But what it has in common with functional programming is an *algebraic approach to values*.
+If we left it at that, we could come away with an idea that a function is a small, single-purposed object. We would be forgiven for thinking that there's nothing special about functions, they're values representing behaviour.
 
-Consider this function, `memoize`:
+But functions have another, very important purpose. The form the basis for an *algebra of values*.
 
-{% highlight javascript %}
-function memoize (fn) {
-  var unmemo = {},
-      memo = unmemo;
-
-  return function () {
-    if (memo === unmemo) {
-      memo = fn.apply(this, arguments);
-    }
-    return memo;
-  }
-}
-{% endhighlight %}
-
-`memoize` transforms a function into another function, but one that has the same "signature." Languages like Haskell have type systems that make this clearer, but the idea is simple to grasp for now. `memoize` takes one function as input, and returns a function as output that acts like the function it took as input. Only there's a twist, it's [memoized].
-
-[memoized]: https://en.wikipedia.org/wiki/Memoization
-
-Functions can also *compose* other functions. Hand-waving over context, we can write:
-
-{% highlight javascript %}
-function compose (a, b) {
-  return function (c) {
-    return a(b(c));
-  }
-}
-{% endhighlight %}
-
-But `compose` isn't the only function that takes two functions and returns another similar function. Here are two other examples (there are infinitely many examples, but only so much space in a blog):
-
-{% highlight javascript %}
-function before (a, b) {
-  return function () {
-    a.apply(this, arguments);
-    return b.apply(this, arguments);
-  }
-}
-
-function after (a, b) {
-  return function () {
-    b.apply(this, arguments);
-    return a.apply(this, arguments);
-  }
-}
-{% endhighlight %}
-
-`before` and `after` are very handy for writing [function advice][advice], and again they speak to the idea of transforming functions into other functions that have similar "signatures" or "types."
+Consider these functions, `begin1` and `begin`. They're handy for writing [function advice][advice], for creating sequences of functions to be evaluated for side effects, and for resolving method conflicts when composing mxins:
 
 [advice]: https://en.wikipedia.org/wiki/Advice_(programming)
 
+{% highlight javascript %}
+var __slice = [].slice;
+
+function begin1 () {
+  var fns = __slice.call(arguments, 0);
+
+  return function () {
+    var args = arguments,
+        values = fns.map(function (fn) {
+          return fn.apply(this, args);
+        }, this),
+        concretes = values.filter(function (value) {
+          return value !== void 0;
+        });
+
+    if (concretes.length > 0) {
+      return concretes[0];
+    }
+  }
+}
+
+function begin () {
+  var fns = __slice.call(arguments, 0);
+
+  return function () {
+    var args = arguments,
+        values = fns.map(function (fn) {
+          return fn.apply(this, args);
+        }, this),
+        concretes = values.filter(function (value) {
+          return value !== void 0;
+        });
+
+    if (concretes.length > 0) {
+      return concretes[concretes.length - 1];
+    }
+  }
+}
+{% endhighlight %}
+
+Both `begin1` and `begin` take one or more functions, and turn them into a third function. This is much the same as `+` taking two numbers, and turning them into a third number.[^exercise]
+
+[^exercise]: Exercise for the reader: Given either `begin1` or `begin`, why are the functions `function () {}` and `function (fn) { return fn; }` considered important?
+
 When you have a bunch of functions that do things in your problem domain (like `writeLedger` and `withdrawFunds`), and you have functions for transforming (like `memoize`) or composing (like `before`) your domain functions, you have a little algebra for taking *values* and computing new values from them.
 
-Just as we can write `1 + 1 = 2`, we can also write `writeLedger + withdrawFunds = transaction`.
+Just as we can write `1 + 1 = 2`, we can also write `writeLedger + withdrawFunds = transaction`. We have created a very small *algebra of functions*. We can write functions that transform functions into other functions.
 
-### objects as values
+### an algebra of values
 
-being able to compute values from values seems so obvious and basic, we do it with numbers, strings, arrays, and functions. But that isn't some special property of "functional programing," it's a special property of everything-is-a-value.
+Functions that transform functions into other functions is very powerful, but it does not stop there.
 
-If you have objects as values, you can write an algebra of objects. Here's a function that transforms an object into a proxy for that object:
+It's obvious that functions can take objects as arguments and return objects. Functions (or methods) that take an object representing a client and return an object representing and account balance are a necessary and important part of software.
+
+But just as we created an algebra of functions, we can write an algebra of objects. Meaning, we can write functions that take objects and return other objects that represent a *transformation* of their arguments.
+
+Here's a function that transforms an object into a proxy for that object:
 
 {% highlight javascript %}
 function proxy (baseObject, optionalPrototype) {
@@ -358,15 +373,17 @@ var HasCareer = {
 var PersonWithCareer = meld(Person, HasCareer);
 {% endhighlight %}
 
-Objects are certainly about classes and prototype chains and methods, but they're values, and that means that we can write algebras for them. `meld` is a very simple, naïve example, but you can build up form there to composing traits over partial proxies with conflict resolution policies.
+Functions that transform objects or compose objects act at a higher level than functions that query objects or update objects. They form an algebra that allows us to build objects by transformation and composition, just as we can use functions like `begin` to build functions by composition.
 
-And again, this is not some "different thing," composing mixins into prototypes is the same thing as composing functions, which is the same thing as adding one and one to get two: It's everything-as-a-value, just on a larger scale.
+### what javascript values
+
+JavaScript treats functions and objects as first-class values. And the power arising from this is the ability to write functions that transform and compose first-class values, creating an *algebra of values*.
+
+This applies to transforming and composing functions, and it also applies to transforming and composing objects.
 
 ---
 
-### appendix
-
-A function for composing mixins over partial proxies:
+### appendix: a function for composing behaviour
 
 {% highlight javascript %}
 // policies for resolving methods
@@ -558,6 +575,88 @@ var WritesABoutParenting = composeMixins(
   HasChildren,
   resolve(IsAuthor, { after: ['initialize'] })
 );
+{% endhighlight %}
+
+### appendix: a function for mixing behaviour into a prototype
+
+{% highlight javascript %}
+function partialProxy (baseObject, methods, optionalPrototype) {
+  var proxyObject = Object.create(optionalPrototype || null);
+
+  methods.forEach(function (methodName) {
+    proxyObject[methodName] = function () {
+      var result = baseObject[methodName].apply(baseObject, arguments);
+      return (result === baseObject)
+             ? proxyObject
+             : result;
+    }
+  });
+  return proxyObject;
+}
+
+var number = 0;
+
+function methodsOfType (behaviour, type) {
+  var methods = [],
+      methodName;
+
+  for (methodName in behaviour) {
+    if (typeof(behaviour[methodName]) === type) {
+      methods.push(methodName);
+    }
+  };
+  return methods;
+}
+
+function extendWithProxy (prototype, behaviour) {
+  var safekeepingName = "__" + ++number + "__",
+      definedMethods = methodsOfType(behaviour, 'function'),
+      undefinedMethods = methodsOfType(behaviour, 'undefined'),
+      methodName;
+
+  definedMethods.forEach(function (methodName) {
+    prototype[methodName] = function () {
+      var context = this[safekeepingName],
+          result;
+      if (context == null) {
+        context = partialProxy(this, undefinedMethods);
+        Object.defineProperty(this, safekeepingName, {
+          enumerable: false,
+          writable: false,
+          value: context
+        });
+      }
+      result = behaviour[methodName].apply(context, arguments);
+      return (result === context) ? this : result;
+    };
+  });
+
+  return prototype;
+}
+
+// the prototype
+var Careerist = {};
+
+// mix in behaviour
+extendWithProxy(Careerist, HasName);
+extendWithProxy(Careerist, HasCareer);
+extendWithProxy(Careerist, IsSelfDescribing);
+
+// create objects with it
+var michael    = Object.create(Careerist),
+    bewitched = Object.create(Careerist);
+
+michael.setName('Michael Sam');
+bewitched.setName('Samantha Stephens');
+
+michael.setCareer('Athlete');
+bewitched.setCareer('Thaumaturge');
+
+michael.description()
+  //=> 'Michael Sam is a Athlete'
+bewitched.description()
+  //=> 'Samantha Stephens is a Thaumaturge'
+
 {% endhighlight %}
 
 ---
