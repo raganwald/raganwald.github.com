@@ -3,6 +3,8 @@ title: Reginald Braithwaite
 layout: default
 ---
 
+> Reginald "Raganwald" Braithwaite is proof that somewhere, a village is missing its idiot. Either that, or a combinatory forest is missing its Idiot Bird, nobody is really sure. His interests include constructing surreal numbers, deconstructing hopelessly egocentric nulls, and celebrating the joy of programming.
+
 Technical essays by Reginald "raganwald" Braithwaite, author of:
 
 * [JavaScript Spessore](http://leanpub.com/javascript-spessore)
@@ -20,11 +22,11 @@ And host of:
 
 Other links:
 
-* email: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
-* github: <a href="https://github.com/raganwald">https://github.com/raganwald</a>
-* lanyrd: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
+* code: <a href="https://github.com/raganwald">https://github.com/raganwald</a>
+* contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
+* conferences: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
 
-### essays
+### words
 
 <div class="related">
   <ul>
@@ -38,7 +40,7 @@ Other links:
   </ul>
 </div>
 
-### selected reposts of earlier works
+### older words
 
 <div class="related">
   <ul>
@@ -64,10 +66,6 @@ Other links:
   </ul>
 </div>
 
-### conference bio
-
-> Reginald "Raganwald" Braithwaite is proof that somewhere, a village is missing its idiot. Either that, or a combinatory forest is missing its Idiot Bird, nobody is really sure. His interests include constructing surreal numbers, deconstructing hopelessly egocentric nulls, and celebrating the joy of programming.
-
-### disclaimer
-
 Nothing written here represents the opinions of any person, group, or organization, except by coïncidence. These essays may represent actual experience, speculation, or even a vigorous advocacy of a position opposite to the author's beliefs and experience.
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
