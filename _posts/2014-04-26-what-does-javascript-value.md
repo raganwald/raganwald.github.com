@@ -342,7 +342,7 @@ var PersonWithCareer = meld(Person, HasCareer);
 
 Functions that transform objects or compose objects act at a higher level than functions that query objects or update objects. They form an algebra that allows us to build objects by transformation and composition, just as we can use functions like `begin` to build functions by composition.
 
-### what javascript values
+### javascript values algebra
 
 JavaScript treats functions and objects as first-class values. And the power arising from this is the ability to write functions that transform and compose first-class values, creating an *algebra of values*.
 
@@ -350,7 +350,7 @@ This applies to transforming and composing functions, and it also applies to tra
 
 ---
 
-### appendix: a function for composing behaviour
+### appendix 1: a function for composing behaviour
 
 {% highlight javascript %}
 // policies for resolving methods
@@ -544,7 +544,7 @@ var WritesABoutParenting = composeMixins(
 );
 {% endhighlight %}
 
-### appendix: a function for mixing behaviour into a prototype
+### appendix 2: a function for mixing behaviour into a prototype
 
 {% highlight javascript %}
 function partialProxy (baseObject, methods, optionalPrototype) {
