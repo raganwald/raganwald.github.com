@@ -5,7 +5,7 @@ tags: [spessore, allonge]
 published: true
 ---
 
-As many people and [books][ja] point out, one of JavaScript's defining characteristics is its treatment of functions as first-class values. Like numbers, strings, and other kinds of objects, references to functions can be passed as arguments to functions, returned as the result from functions, bound to variables, and generally treated like any other value.[^reference]
+One of JavaScript's defining characteristics is its treatment of functions as first-class values. Like numbers, strings, and other kinds of objects, references to functions can be passed as arguments to functions, returned as the result from functions, bound to variables, and generally treated like any other value.[^reference]
 
 [ja]: https://leanpub.com/javascript-allonge "JavaScript Allongé"
 
