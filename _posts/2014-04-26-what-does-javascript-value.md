@@ -138,7 +138,7 @@ function delegateToOwn (receiver, propertyName, methods) {
   if (methods == null) {
     temporaryMetaobject = receiver[propertyName];
     methods = Object.keys(temporaryMetaobject).filter(function (methodName) {
-      return typeof(temporaryMetaobject[methodName]) == 'function';
+      return typeof(temporaryMetaobject[methodName]) === 'function';
     });
   }
   methods.forEach(function (methodName) {
@@ -371,7 +371,153 @@ This applies to transforming and composing functions, and it also applies to tra
 
 ---
 
-### appendix 1: a function for composing behaviour
+### appendix 1: a function for mixing behaviour into a prototype
+
+{% highlight javascript %}
+function partialProxy (baseObject, methods, optionalPrivateProperties) {
+  var proxyObject = Object.create(null);
+
+  if (optionalPrivateProperties) {
+    optionalPrivateProperties.forEach(function (privatePropertyName) {
+      proxyObject[privatePropertyName] = null;
+    });
+  }
+
+  methods.forEach(function (methodName) {
+    proxyObject[methodName] = function () {
+      var result = baseObject[methodName].apply(baseObject, arguments);
+      return (result === baseObject)
+             ? proxyObject
+             : result;
+    }
+  });
+
+  Object.preventExtensions(proxyObject);
+
+  return proxyObject;
+}
+
+var number = 0;
+
+function methodsOfType (behaviour, type) {
+  var methods = [],
+      methodName;
+
+  for (methodName in behaviour) {
+    if (typeof(behaviour[methodName]) === type) {
+      methods.push(methodName);
+    }
+  };
+  return methods;
+}
+
+function propertyFlags (behaviour) {
+  var properties = [],
+      propertyName;
+
+  for (propertyName in behaviour) {
+    if (behaviour[propertyName] === null) {
+      properties.push(propertyName);
+    }
+  }
+
+  return properties;
+}
+
+function extendWithProxy (baseObject, behaviour) {
+  var safekeepingName = "__" + ++number + "__",
+      definedMethods = methodsOfType(behaviour, 'function'),
+      dependencies = methodsOfType(behaviour, 'undefined'),
+      properties = propertyFlags(behaviour),
+      methodName;
+
+  definedMethods.forEach(function (methodName) {
+    baseObject[methodName] = function () {
+      var context = this[safekeepingName],
+          result;
+      if (context == null) {
+        context = partialProxy(this, definedMethods.concat(dependencies), properties);
+        properties.forEach(function (propertyName) {
+          context[propertyName] = behaviour[propertyName];
+        });
+        Object.defineProperty(this, safekeepingName, {
+          enumerable: false,
+          writable: false,
+          value: context
+        });
+      }
+      result = behaviour[methodName].apply(context, arguments);
+      return (result === context) ? this : result;
+    };
+  });
+
+  return baseObject;
+}
+
+var HasName = {
+  // private property, initialized to null
+  _name: null,
+
+  // methods
+  name: function () {
+    return this._name;
+  },
+  setName: function (name) {
+    this._name = name;
+    return this;
+  }
+};
+
+var HasCareer = {
+  // private property, initialized to null
+  _career: null,
+
+  // methods
+  career: function () {
+    return this._career;
+  },
+  setCareer: function (career) {
+    this._career = career;
+    return this;
+  }
+};
+
+var IsSelfDescribing = {
+  // dependencies, "undefined in this mixin"
+  name: undefined,
+  career: undefined,
+
+  // method
+  description: function () {
+    return this.name() + ' is a ' + this.career();
+  }
+};
+
+// the prototype
+var Careerist = {};
+
+// mix in behaviour
+extendWithProxy(Careerist, HasName);
+extendWithProxy(Careerist, HasCareer);
+extendWithProxy(Careerist, IsSelfDescribing);
+
+// create objects with it
+var michael    = Object.create(Careerist),
+    bewitched = Object.create(Careerist);
+
+michael.setName('Michael Sam');
+bewitched.setName('Samantha Stephens');
+
+michael.setCareer('Athlete');
+bewitched.setCareer('Thaumaturge');
+
+michael.description()
+  //=> 'Michael Sam is a Athlete'
+bewitched.description()
+  //=> 'Samantha Stephens is a Thaumaturge'
+{% endhighlight %}
+
+### appendix 2: a function for safely composing behaviour
 
 {% highlight javascript %}
 // policies for resolving methods
@@ -430,87 +576,99 @@ function composeMixins () {
     return Object.keys(mixin).reduce(function (result, methodName) {
       var bDefinition = mixin[methodName],
           bType       = typeof(bDefinition),
-          aFunc,
+          aDefinition,
           aType,
           bResolverKey,
-          bFunc;
+          bDefinition;
 
       if (result.hasOwnProperty(methodName)) {
-        aFunc = result[methodName];
-        aType = typeof(aFunc);
+        aDefinition = result[methodName];
+        aType = typeof(aDefinition);
 
-        if (aType ===  'undefined') {
+        if (aDefinition === null && bDefinition === null) {
+          throw "'" + methodName + "' cannot be private to multiple mixins."
+        }
+        else if (aDefinition === null || bDefinition === null) {
+          throw "'" + methodName + "' cannot be a method and a property."
+        }
+        else if (aType ===  'undefined') {
           if (bType === 'function' || bType === 'undefined') {
             result[methodName] = bDefinition;
           }
-          else if (bType == 'object') {
+          else if (bType === 'object') {
             bResolverKey = Object.keys(bDefinition)[0];
-            bFunc = bDefinition[bResolverKey];
+            bDefinition = bDefinition[bResolverKey];
             if (bResolverKey === 'around') {
               result[methodName] = function () {
-                return bFunc.apply(this, [dummy] + __slice.call(0, arguments));
+                return bDefinition.apply(this, [dummy] + __slice.call(0, arguments));
               }
             }
-            else result[methodName] = bFunc;
+            else result[methodName] = bDefinition;
           }
-          else throw 'unimplemented';
+          else throw aType + " cannot be mixed in as '" + methodName + "'";
         }
         else if (bType === 'object') {
           bResolverKey = Object.keys(bDefinition)[0];
-          bFunc = bDefinition[bResolverKey];
-          result[methodName] = policies[bResolverKey](aFunc, bFunc);
+          bDefinition = bDefinition[bResolverKey];
+          result[methodName] = policies[bResolverKey](aDefinition, bDefinition);
         }
         else if (bType === 'undefined') {
           // do nothing
         }
-        else throw 'unimplemented'
+        else throw "unresolved method conflict for '" + methodName + "'";
+      }
+      else if (bDefinition === null) {
+        result[methodName] = null;
       }
       else if (bType === 'function' || bType === 'undefined') {
         result[methodName] = bDefinition;
       }
-      else if (bType == 'object') {
+      else if (bType === 'object') {
         bResolverKey = Object.keys(bDefinition)[0];
-        bFunc = bDefinition[bResolverKey];
+        bDefinition = bDefinition[bResolverKey];
         if (bResolverKey === 'around') {
           result[methodName] = function () {
-            return bFunc.apply(this, [dummy] + __slice.call(0, arguments));
+            return bDefinition.apply(this, [dummy] + __slice.call(0, arguments));
           }
         }
-        else result[methodName] = bFunc;
+        else result[methodName] = bDefinition;
       }
-      else throw 'unimplemented';
+      else bType + " cannot be used for '" + methodName + "'";
 
       return result;
     }, acc1);
   }, {});
 }
 
-// disjoint composition
+// composes compatible mixins
 
-var HasName = {
-  name: function () {
-    return this.name;
-  },
-  setName: function (name) {
-    this.name = name;
-    return this;
-  }
-};
-
-var HasCareer = {
-  career: function () {
-    return this.name;
-  },
-  setCareer: function (name) {
-    this.name = name;
-    return this;
-  }
-};
-
-var NameAndCareer = composeMixins(
+composeMixins(
   HasName,
   HasCareer
 );
+
+// rejects incompatible mixins
+
+var HasEmployer = {
+  // private property, initialized to null
+  _name: null,
+
+  // methods
+  employer: function () {
+    return this._name;
+  },
+  setEmployer: function (name) {
+    this._name = name;
+    return this;
+  }
+};
+
+composeMixins(
+  HasName,
+  HasEmployer,
+  HasCareer
+);
+  //=> '_name' cannot be private to multiple mixins.
 
 // stacking mixins
 
@@ -523,128 +681,72 @@ var IsSelfDescribing = {
   }
 };
 
-var NameAndCareerTwo = composeMixins(
+var NameAndCareer = composeMixins(
   HasName,
   HasCareer,
   IsSelfDescribing
 );
 
-// resolving conflict
+var Careerist = extendWithProxy({}, NameAndCareer);
 
-var HasChildren = {
+var adolphe = Object.create(Careerist);
+adolphe.setName('Adolphe Samuel');
+adolphe.setCareer('Composer');
+adolphe.description()
+  //=> 'Adolphe Samuel is a Composer'
+
+// resolving method conflict
+
+var SingsSongs = {
+  _songs: null,
+
   initialize: function () {
-    this._children = [];
+    this._songs = [];
     return this;
   },
-  addChild: function (name) {
-    this._children.push(name);
+  addSong: function (name) {
+    this._songs.push(name);
     return this;
   },
-  numberOfChildren: function () {
-    return this._children.length;
+  songs: function () {
+    return this._songs;
   }
 };
 
-var IsAuthor = {
+var HasAwards = {
+  _awards: null,
+
   initialize: function () {
-    this._books = [];
+    this._awards = [];
     return this;
   },
-  addBook: function (name) {
-    this._books.push(name);
+  addAward: function (name) {
+    this._awards.push(name);
     return this;
   },
-  books: function () {
-    return this._books;
+  awards: function () {
+    return this._awards;
   }
 };
 
-var WritesABoutParenting = composeMixins(
-  HasChildren,
-  resolve(IsAuthor, { after: ['initialize'] })
+composeMixins(SingsSongs, HasAwards);
+  //=> "unresolved method conflict for 'initialize'"
+
+// plays well with prototypes
+
+var Musician = extendWithProxy(
+  Object.create(Careerist),
+  composeMixins(
+    SingsSongs,
+    resolve(HasAwards, { after: ['initialize'] })
+  )
 );
-{% endhighlight %}
 
-### appendix 2: a function for mixing behaviour into a prototype
-
-{% highlight javascript %}
-function partialProxy (baseObject, methods, optionalPrototype) {
-  var proxyObject = Object.create(optionalPrototype || null);
-
-  methods.forEach(function (methodName) {
-    proxyObject[methodName] = function () {
-      var result = baseObject[methodName].apply(baseObject, arguments);
-      return (result === baseObject)
-             ? proxyObject
-             : result;
-    }
-  });
-  return proxyObject;
-}
-
-var number = 0;
-
-function methodsOfType (behaviour, type) {
-  var methods = [],
-      methodName;
-
-  for (methodName in behaviour) {
-    if (typeof(behaviour[methodName]) === type) {
-      methods.push(methodName);
-    }
-  };
-  return methods;
-}
-
-function extendWithProxy (prototype, behaviour) {
-  var safekeepingName = "__" + ++number + "__",
-      definedMethods = methodsOfType(behaviour, 'function'),
-      undefinedMethods = methodsOfType(behaviour, 'undefined'),
-      methodName;
-
-  definedMethods.forEach(function (methodName) {
-    prototype[methodName] = function () {
-      var context = this[safekeepingName],
-          result;
-      if (context == null) {
-        context = partialProxy(this, undefinedMethods);
-        Object.defineProperty(this, safekeepingName, {
-          enumerable: false,
-          writable: false,
-          value: context
-        });
-      }
-      result = behaviour[methodName].apply(context, arguments);
-      return (result === context) ? this : result;
-    };
-  });
-
-  return prototype;
-}
-
-// the prototype
-var Careerist = {};
-
-// mix in behaviour
-extendWithProxy(Careerist, HasName);
-extendWithProxy(Careerist, HasCareer);
-extendWithProxy(Careerist, IsSelfDescribing);
-
-// create objects with it
-var michael    = Object.create(Careerist),
-    bewitched = Object.create(Careerist);
-
-michael.setName('Michael Sam');
-bewitched.setName('Samantha Stephens');
-
-michael.setCareer('Athlete');
-bewitched.setCareer('Thaumaturge');
-
-michael.description()
-  //=> 'Michael Sam is a Athlete'
-bewitched.description()
-  //=> 'Samantha Stephens is a Thaumaturge'
-
+var henry = Object.create(Musician).initialize();
+henry.setName('Seal Henry Samuel');
+henry.setCareer('Singer');
+henry.addSong('Kiss from a Rose');
+henry.addAward('Best British Male');
 {% endhighlight %}
 
 ---
