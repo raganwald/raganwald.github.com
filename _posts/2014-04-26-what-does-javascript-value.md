@@ -77,15 +77,12 @@ function extend () {
       providers = __slice.call(arguments, 1),
       key,
       i,
-      provider,
-      except;
+      provider;
 
   for (i = 0; i < providers.length; ++i) {
     provider = providers[i];
-    except = provider['except'] || [];
-    except.push('except');
     for (key in provider) {
-      if (except.indexOf(key) < 0 && provider.hasOwnProperty(key)) {
+      if (provider.hasOwnProperty(key)) {
         consumer[key] = provider[key];
       };
     };
@@ -371,9 +368,29 @@ This applies to transforming and composing functions, and it also applies to tra
 
 ---
 
-### appendix 1: a function for mixing behaviour into a prototype
+### appendix 1: a function for composing prototypes out of mixins
 
 {% highlight javascript %}
+var __slice = [].slice;
+
+function extend () {
+  var consumer = arguments[0],
+      providers = __slice.call(arguments, 1),
+      key,
+      i,
+      provider;
+
+  for (i = 0; i < providers.length; ++i) {
+    provider = providers[i];
+    for (key in provider) {
+      if (provider.hasOwnProperty(key)) {
+        consumer[key] = provider[key];
+      };
+    };
+  };
+  return consumer;
+};
+
 function partialProxy (baseObject, methods, optionalPrivateProperties) {
   var proxyObject = Object.create(null);
 
@@ -454,6 +471,16 @@ function extendWithProxy (baseObject, behaviour) {
   return baseObject;
 }
 
+function createPrototype () {
+  var superPrototype = arguments[0],
+      baseObject = Object.create(superPrototype),
+      behaviours = __slice.call(arguments, 1);
+
+  return behaviours.reduce(function (prototype, behaviour) {
+    return extendWithProxy(prototype, behaviour);
+  }, baseObject);
+}
+
 var HasName = {
   // private property, initialized to null
   _name: null,
@@ -494,12 +521,7 @@ var IsSelfDescribing = {
 };
 
 // the prototype
-var Careerist = {};
-
-// mix in behaviour
-extendWithProxy(Careerist, HasName);
-extendWithProxy(Careerist, HasCareer);
-extendWithProxy(Careerist, IsSelfDescribing);
+var Careerist = createPrototype(HasName, HasCareer, IsSelfDescribing);
 
 // create objects with it
 var michael    = Object.create(Careerist),
@@ -568,7 +590,7 @@ function resolve(mixin, policySpecification) {
 
 // composing mixins
 
-function composeMixins () {
+function composeBehaviour () {
   var mixins = __slice.call(arguments, 0),
       dummy  = function () {};
 
@@ -642,7 +664,7 @@ function composeMixins () {
 
 // composes compatible mixins
 
-composeMixins(
+composeBehaviour(
   HasName,
   HasCareer
 );
@@ -663,7 +685,7 @@ var HasEmployer = {
   }
 };
 
-composeMixins(
+composeBehaviour(
   HasName,
   HasEmployer,
   HasCareer
@@ -681,13 +703,13 @@ var IsSelfDescribing = {
   }
 };
 
-var NameAndCareer = composeMixins(
+var NameAndCareer = composeBehaviour(
   HasName,
   HasCareer,
   IsSelfDescribing
 );
 
-var Careerist = extendWithProxy({}, NameAndCareer);
+var Careerist = createPrototype(null, NameAndCareer);
 
 var adolphe = Object.create(Careerist);
 adolphe.setName('Adolphe Samuel');
@@ -729,18 +751,17 @@ var HasAwards = {
   }
 };
 
-composeMixins(SingsSongs, HasAwards);
+composeBehaviour(SingsSongs, HasAwards);
   //=> "unresolved method conflict for 'initialize'"
 
 // plays well with prototypes
 
-var Musician = extendWithProxy(
-  Object.create(Careerist),
-  composeMixins(
-    SingsSongs,
-    resolve(HasAwards, { after: ['initialize'] })
-  )
+var AwardWinningMusician = composeBehaviour(
+  SingsSongs,
+  resolve(HasAwards, { after: ['initialize'] })
 );
+
+var Musician = createPrototype(Careerist, AwardWinningMusician);
 
 var henry = Object.create(Musician).initialize();
 henry.setName('Seal Henry Samuel');
