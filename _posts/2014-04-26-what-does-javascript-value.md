@@ -127,7 +127,7 @@ var someCell = extend({
 }, Cell);
 {% endhighlight %}
 
-You could say that the "state" of the cell is represented by the primitive value `alive` for alive, or `dead` for dead. But that isn't modeling the state in any way, that's just a name. The true state of the object is *implicit* in the object's behaviour, not *explicit* in the value of the `.state` property.
+You could say that the "state" of the cell is represented by the primitive value `'alive'` for alive, or `'dead'` for dead. But that isn't modeling the state in any way, that's just a name. The true state of the object is *implicit* in the object's behaviour, not *explicit* in the value of the `.state` property.
 
 Here's a design where we make the state explicit instead of implicit:
 
@@ -187,15 +187,15 @@ var someCell = extend({
 }, Cell);
 {% endhighlight %}
 
-In this design, `delegateToOwn` delegates the methods `alive` and `stateInNextGeneration` to whatever object is the value of a `Cell`'s `state` property.
+In this design, `delegateToOwn` delegates the methods `.alive` and `.stateInNextGeneration` to whatever object is the value of a `Cell`'s `state` property.
 
 So when we write `someCell.state = Alive`, then the `Alive` object will handle `someCell.alive` and `someCell.aliveInNextGeneration`. And when we write `someCell.state = Dead`, then the `Dead` object will handle `someCell.alive` and `someCell.aliveInNextGeneration`.
 
-Now we've taken the implicit states of being alive or dead and transformed them into the first-class values `Alive` and `Dead`. Not a string that is used implicitly in some other code, but the actual "stuff that matters about aliveness and deadness."
+Now we've taken the implicit states of being alive or dead and transformed them into the first-class values `Alive` and `Dead`. Not a string that is used implicitly in some other code, but all of "The stuff that matters about aliveness and deadness."
 
 This is not different than the example of passing functions around: They're both the same thing, taking something would be *implicit* in another design and/or another language, and making it *explicit*, making it a value. And making the whole thing a value, not just a boolean or a string, the complete entity.
 
-This is the key point: This example is the same thing as the example of a stack that handles undo with a stack of functions: *Behaviour* is treated as a first-class value, whether it be a single function or an object with multiple methods.
+This example is the same thing as the example of a stack that handles undo with a stack of functions: *Behaviour* is treated as a first-class value, whether it be a single function or an object with multiple methods.
 
 ### an algebra of functions
 
@@ -251,7 +251,7 @@ Both `begin1` and `begin` take one or more functions, and turn them into a third
 
 [^exercise]: Exercise for the reader: Given either `begin1` or `begin`, why are the functions `function () {}` and `function (fn) { return fn; }` considered important?
 
-When you have a bunch of functions that do things in your problem domain (like `writeLedger` and `withdrawFunds`), and you have functions for transforming (like `memoize`) or composing (like `before`) your domain functions, you have a little algebra for taking *values* and computing new values from them.
+When you have a bunch of functions that do things in your problem domain (like `writeLedger` and `withdrawFunds`), and you have a way to compose your domain functions, you have a little algebra for taking *values* and computing new values from them.
 
 Just as we can write `1 + 1 = 2`, we can also write `writeLedger + withdrawFunds = transaction`. We have created a very small *algebra of functions*. We can write functions that transform functions into other functions.
 
@@ -285,9 +285,26 @@ function proxy (baseObject, optionalPrototype) {
 }
 {% endhighlight %}
 
-Have you ever wanted to make an object's properties private while making its methods public? You wanted a proxy for the object.
+Have you ever wanted to make an object's properties private while making its methods public? You wanted a proxy for the object:
 
-And here's a function that composes two or more objects:
+{% highlight javascript %}
+var stackWithPrivateState = proxy(stack);
+
+stack.array
+  //=> []
+stackWithPrivateState.array
+  //=> undefined
+
+stackWithPrivateState.push('hello');
+stackWithPrivateState.push('there');
+stackWithPrivateState.push('javascript');
+stackWithPrivateState.undo();
+stackWithPrivateState.undo();
+stackWithPrivateState.pop();
+  //=> 'hello'
+{% endhighlight %}
+
+The `proxy` function transforms an object into another object with a similar purpose. Functions can compose objects as well, here's one of the simplest examples:
 
 {% highlight javascript %}
 var __slice = [].slice;
@@ -336,6 +353,12 @@ var HasCareer = {
 };
 
 var PersonWithCareer = meld(Person, HasCareer);
+  //=>
+    { fullName: [Function],
+      rename: [Function],
+      career: [Function],
+      setCareer: [Function],
+      describe: [Function] }
 {% endhighlight %}
 
 Functions that transform objects or compose objects act at a higher level than functions that query objects or update objects. They form an algebra that allows us to build objects by transformation and composition, just as we can use functions like `begin` to build functions by composition.
