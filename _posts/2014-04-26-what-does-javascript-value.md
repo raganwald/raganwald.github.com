@@ -613,6 +613,8 @@ function resolve(mixin, policySpecification) {
 
 The `Prototype` function above can mix more than one behaviour into a prototype, but sometimes you want to make a new behaviour out of two or more existing behaviours without turning them into a prototype. `composeBehaviour` does that.
 
+It is involved because it must check for conflicts and resolve them at the time of composition. The `Prototype` method above is simpler because the individual behaviours each get their own proxy with private state. `composeBehaviour` wires behaviours up so they can share a proxy.
+
 {% highlight javascript %}
 function composeBehaviour () {
   var mixins = __slice.call(arguments, 0),
