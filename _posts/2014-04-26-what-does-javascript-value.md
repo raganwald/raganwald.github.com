@@ -370,8 +370,12 @@ This applies to transforming and composing functions, and it also applies to tra
 
 ### appendix 1: a function for composing prototypes out of mixins
 
+First, some helper functions:
+
 {% highlight javascript %}
 var __slice = [].slice;
+
+// extend
 
 function extend () {
   var consumer = arguments[0],
@@ -391,11 +395,14 @@ function extend () {
   return consumer;
 };
 
-function partialProxy (baseObject, methods, optionalPrivateProperties) {
+// partialProxy is like "proxy," but it proxies a subset of an
+// object's methods and it also has a fixed set of mutable properties
+
+function partialProxy (baseObject, methods, mutableProperties) {
   var proxyObject = Object.create(null);
 
-  if (optionalPrivateProperties) {
-    optionalPrivateProperties.forEach(function (privatePropertyName) {
+  if (mutableProperties) {
+    mutableProperties.forEach(function (privatePropertyName) {
       proxyObject[privatePropertyName] = null;
     });
   }
@@ -413,6 +420,11 @@ function partialProxy (baseObject, methods, optionalPrivateProperties) {
 
   return proxyObject;
 }
+
+// extendWith Proxy extends an object with behaviour, but restricts
+// the behaviour to interact with a proxy to the object. This
+// encapsulates each set of behaviour from the object and from each
+// other, reducing coupling.
 
 var number = 0;
 
@@ -470,8 +482,12 @@ function extendWithProxy (baseObject, behaviour) {
 
   return baseObject;
 }
+{% endhighlight %}
 
-function createPrototype () {
+The `Prototype` function builds prototypes out of an optional super-prototype (or `null`) and one or more behaviours, objects with functions to mix in.
+
+{% highlight javascript %}
+function Prototype () {
   var superPrototype = arguments[0],
       baseObject = Object.create(superPrototype),
       behaviours = __slice.call(arguments, 1);
@@ -480,7 +496,11 @@ function createPrototype () {
     return extendWithProxy(prototype, behaviour);
   }, baseObject);
 }
+{% endhighlight %}
 
+Examples:
+
+{% highlight javascript %}
 var HasName = {
   // private property, initialized to null
   _name: null,
@@ -521,7 +541,7 @@ var IsSelfDescribing = {
 };
 
 // the prototype
-var Careerist = createPrototype(HasName, HasCareer, IsSelfDescribing);
+var Careerist = Prototype(HasName, HasCareer, IsSelfDescribing);
 
 // create objects with it
 var michael    = Object.create(Careerist),
@@ -540,6 +560,8 @@ bewitched.description()
 {% endhighlight %}
 
 ### appendix 2: a function for safely composing behaviour
+
+Helpers:
 
 {% highlight javascript %}
 // policies for resolving methods
@@ -587,9 +609,11 @@ function resolve(mixin, policySpecification) {
 
   return result;
 }
+{% endhighlight %}
 
-// composing mixins
+The `Prototype` function above can mix more than one behaviour into a prototype, but sometimes you want to make a new behaviour out of two or more existing behaviours without turning them into a prototype. `composeBehaviour` does that.
 
+{% highlight javascript %}
 function composeBehaviour () {
   var mixins = __slice.call(arguments, 0),
       dummy  = function () {};
@@ -661,8 +685,12 @@ function composeBehaviour () {
     }, acc1);
   }, {});
 }
+{% endhighlight %}
 
-// composes compatible mixins
+Examples:
+
+{% highlight javascript %}
+// composing compatible mixins
 
 composeBehaviour(
   HasName,
@@ -709,7 +737,7 @@ var NameAndCareer = composeBehaviour(
   IsSelfDescribing
 );
 
-var Careerist = createPrototype(null, NameAndCareer);
+var Careerist = Prototype(null, NameAndCareer);
 
 var adolphe = Object.create(Careerist);
 adolphe.setName('Adolphe Samuel');
@@ -761,7 +789,7 @@ var AwardWinningMusician = composeBehaviour(
   resolve(HasAwards, { after: ['initialize'] })
 );
 
-var Musician = createPrototype(Careerist, AwardWinningMusician);
+var Musician = Prototype(Careerist, AwardWinningMusician);
 
 var henry = Object.create(Musician).initialize();
 henry.setName('Seal Henry Samuel');
