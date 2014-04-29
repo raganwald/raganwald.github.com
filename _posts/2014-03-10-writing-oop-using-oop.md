@@ -169,80 +169,81 @@ p.s. A few people have pointed out that if you want a subset of classes to share
 
 ---
 
-    var MetaObjectPrototype = {
-      create: function () {
-        var instance = Object.create(this.prototype);
-        Object.defineProperty(instance, 'constructor', {
-          value: this
-        });
-        if (instance.initialize) {
-          instance.initialize.apply(instance, arguments);
-        }
-        return instance;
-      },
-      defineMethod: function (name, body) {
-        this.prototype[name] = body;
-        return this;
-      },
-      initialize: function (superclass) {
-        if (superclass != null && superclass.prototype != null) {
-          this.prototype = Object.create(superclass.prototype);
-        }
-        else this.prototype = Object.create(null);
+{% highlight javascript %}
+var MetaObjectPrototype = {
+  create: function () {
+    var instance = Object.create(this.prototype);
+    Object.defineProperty(instance, 'constructor', {
+      value: this
+    });
+    if (instance.initialize) {
+      instance.initialize.apply(instance, arguments);
+    }
+    return instance;
+  },
+  defineMethod: function (name, body) {
+    this.prototype[name] = body;
+    return this;
+  },
+  initialize: function (superclass) {
+    if (superclass != null && superclass.prototype != null) {
+      this.prototype = Object.create(superclass.prototype);
+    }
+    else this.prototype = Object.create(null);
+  }
+};
+
+var MetaClass = {
+  create: function () {
+    var klass = Object.create(this.prototype);
+    Object.defineProperty(klass, 'constructor', {
+      value: this
+    });
+    if (klass.initialize) {
+      klass.initialize.apply(klass, arguments);
+    }
+    return klass;
+  },
+  prototype: MetaObjectPrototype
+};
+
+var Class = MetaClass.create(MetaClass);
+
+var QuadTree = Class.create();
+QuadTree
+  .defineMethod('initialize', function (nw, ne, se, sw) {
+    this._nw = nw;
+    this._ne = ne;
+    this._se = se;
+    this._sw = sw;
+  })
+  .defineMethod('population', function () {
+    return this._nw.population() +
+           this._ne.population() +
+           this._se.population() +
+           this._sw.population();
+  });
+
+var Cell = Class.create();
+Cell
+  .defineMethod('population', function () {
+    return this._population;
+  });
+
+var SelfBindingClass = Class.create(Class);
+SelfBindingClass
+  .defineMethod( 'defineMethod', function (name, body) {
+    Object.defineProperty(this.prototype, name, {
+      get: function () {
+        return body.bind(this);
       }
-    };
+    });
+    return this;
+  });
 
-    var MetaClass = {
-      create: function () {
-        var klass = Object.create(this.prototype);
-        Object.defineProperty(klass, 'constructor', {
-          value: this
-        });
-        if (klass.initialize) {
-          klass.initialize.apply(klass, arguments);
-        }
-        return klass;
-      },
-      prototype: MetaObjectPrototype
-    };
-
-    var Class = MetaClass.create(MetaClass);
-
-    var QuadTree = Class.create();
-    QuadTree
-      .defineMethod('initialize', function (nw, ne, se, sw) {
-        this._nw = nw;
-        this._ne = ne;
-        this._se = se;
-        this._sw = sw;
-      })
-      .defineMethod('population', function () {
-        return this._nw.population() +
-               this._ne.population() +
-               this._se.population() +
-               this._sw.population();
-      });
-
-    var Cell = Class.create();
-    Cell
-      .defineMethod('population', function () {
-        return this._population;
-      });
-
-    var SelfBindingClass = Class.create(Class);
-    SelfBindingClass
-      .defineMethod( 'defineMethod', function (name, body) {
-        Object.defineProperty(this.prototype, name, {
-          get: function () {
-            return body.bind(this);
-          }
-        });
-        return this;
-      });
-
-    var Counter = SelfBindingClass.create();
-    Counter
-      .defineMethod('initialize', function () { this._count = 0; })
-      .defineMethod('increment', function () { ++this._count; })
-      .defineMethod('count', function () { return this._count; });
-
+var Counter = SelfBindingClass.create();
+Counter
+  .defineMethod('initialize', function () { this._count = 0; })
+  .defineMethod('increment', function () { ++this._count; })
+  .defineMethod('count', function () { return this._count; });
+{% endhighlight %}
