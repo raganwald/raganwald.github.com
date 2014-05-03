@@ -200,7 +200,7 @@ If we left it at that, we could come away with an idea that a function is a smal
 
 But functions have another, very important purpose. The form the basis for an *algebra of values*.
 
-Consider these functions, `begin1` and `begin`. They're handy for writing [function advice][advice], for creating sequences of functions to be evaluated for side effects, and for resolving method conflicts when composing mxins:
+Consider these functions, `begin1` and `begin`. They're handy for writing [function advice][advice], for creating sequences of functions to be evaluated for side effects, and for resolving method conflicts when composing mixins:
 
 [advice]: https://en.wikipedia.org/wiki/Advice_(programming)
 
