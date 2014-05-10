@@ -614,7 +614,7 @@ var FsmCell = {
   }
 }
 
-delegateToOwn(Cell, ['alive', 'aliveInNextGeneration'], '_state');
+delegateToOwn(FsmCell, ['alive', 'aliveInNextGeneration'], '_state');
 
 var someFsmCell = extend({
   _state: Alive,
