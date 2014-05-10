@@ -313,7 +313,7 @@ function forward (receiver, methods, toProvider) {
 
 This function *forwards* methods to another object. Any other object, it could be a metaobject specifically designed to define behaviour, or it could be a domain object that has other responsibilities.
 
-Dispensing with a lot of mixins, here is a very simple example example. We start with some kind of investment portfolio object that has a `netWorth` method:
+Dispensing with a lot of mixins, here is a very simple example. We start with some kind of investment portfolio object that has a `netWorth` method:
 
 {% highlight javascript %}
 var portfolio = {
