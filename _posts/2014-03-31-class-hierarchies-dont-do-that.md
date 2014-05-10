@@ -91,7 +91,7 @@ Class hierarchies are a problem, even if all we want to do is use them to implem
 2. Programs must be easy to understand;
 3. Programs must be easy to change.
 
-Classes have tradeoffs for all three of these use cases, but class hierarchies are harmful with respect to understanding and changing programs, because they way they work creates an *encapsulation problem.*
+Classes have tradeoffs for all three of these use cases, but class hierarchies are harmful with respect to understanding and changing programs, because the way they work creates an *encapsulation problem.*
 
 [fbc]: https://en.wikipedia.org/wiki/Fragile_base_class
 
