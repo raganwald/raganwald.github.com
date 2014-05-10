@@ -463,7 +463,7 @@ We are mixing `Incrementor` into `counter`. At some point later, we encounter:
 counter.value(42);
 {% endhighlight %}
 
-What function handles the invocation of `.value`? because we mixed `Incrementor` into `counter`, it's the same function as `Incrementor.counter`. We don't look that up when `counter.value(42)` is evaluated, because that was bound to `counter.value` when we extended `counter`. This is early binding.
+What function handles the invocation of `.value`? because we mixed `Incrementor` into `counter`, it's the same function as `Incrementor.value`. We don't look that up when `counter.value(42)` is evaluated, because that was bound to `counter.value` when we extended `counter`. This is early binding.
 
 However, given:
 
