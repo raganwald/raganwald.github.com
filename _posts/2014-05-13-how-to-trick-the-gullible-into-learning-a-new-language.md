@@ -28,13 +28,13 @@ You want to avoid people actively hostile to your idea, and you also want to avo
 
 Think about people complaining that JavaScript promises are more "complicated" than callbacks, or that immutable data structures in ClojureScript are harder to understand than programming with mutable state. They aren't wrong from their point of view, but the whole point of a new idea is to have a new point of view!
 
-The very best thing is that the first few folks to try your idea have a very high willingness to adopt a new point of view. You're looking for people who are a little like the Nigerian 419 victims. They should be trusting, be open-minded, and be greedy. You dont want people trying to save themselves from extinction, you don't want people trying to be 1% better, you want people greedy enough to hope your idea makes them an order of magnitude better.
+The very best thing is that the first few folks to try your idea have a very high willingness to adopt a new point of view. You're looking for people who are a little like the Nigerian 419 victims. They should be trusting, be open-minded, and be greedy. You don't want people trying to save themselves from extinction, you don't want people trying to be 1% better, you want people greedy enough to hope your idea makes them an order of magnitude better.
 
 You know... programmers too lazy to keep struggling with the old tech and with the hubris to believe they can adopt entirely new tech.
 
 ### seeking hubris
 
-So how do you find these lazy programmers with insanely optimistic hubris? Act like the 419 scammer. Be florid. Make impossibly bold claims! Use linkbait blog posts. And especially, design your new idea or language around something so insanely different that it weeds out the dilettantes at a glance.
+So how do you find these lazy programmers with insanely optimistic hubris? Act like the 419 scammer. Be florid. Make impossibly bold claims! Use linkbait blog posts. And especially, *design your new idea or language around something so insanely different that it weeds out the dilettantes at a glance*.
 
 For example, CoffeeScript gets this right. It's "JavaScript, the Good Parts," but it's also significant whitespace. I don't think CoffeeScript would have gotten anywhere without significant whitespace. Not that indentation matters a damn to anyone's productivity... But it matters a damn to making sure that the only people who would bother to try it were people willing to throw themselves into something very different.
 
