@@ -32,6 +32,8 @@ The very best thing is that the first few folks to try your idea have a very hig
 
 You know... programmers too lazy to keep struggling with the old tech and with the hubris to believe they can adopt entirely new tech.
 
+> Be anything you like, be madmen, drunks, and bastards of every shape and form, but at all costs avoid one thing: **success**.--Thomas Merton
+
 ### seeking hubris
 
 So how do you find these lazy programmers with insanely optimistic hubris? Act like the 419 scammer. Be florid. Make impossibly bold claims! Use linkbait blog posts. And especially, *design your new idea or language around something so insanely different that it weeds out the dilettantes at a glance*.
