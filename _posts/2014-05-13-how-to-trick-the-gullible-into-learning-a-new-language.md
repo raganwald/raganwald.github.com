@@ -20,7 +20,7 @@ This reminds me of programming languages and frameworks. The most important fact
 
 But if all other things are equal, is there any similarity between a new programming language and a 419 scam? Sure there is.
 
-![The Central Bank of Nigeria](/assets/images/central_bank_nigeria.jpg)
+[![The Central Bank of Nigeria](/assets/images/central_bank_nigeria.jpg)](http://www.cenbank.org)
 
 ### why a new language is like ten million dollars in a nigerian bank
 
