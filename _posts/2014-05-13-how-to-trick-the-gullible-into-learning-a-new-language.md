@@ -20,7 +20,9 @@ This reminds me of programming languages and frameworks. The most important fact
 
 But if all other things are equal is there any similarity between a new programming language and a 419 scam? Sure there is.
 
-When you're promoting a new idea, early adopters are gold. But early doubters are poison. When you're launching, you're vulnerable. A single "I tried Raganwald-C, and Here's Why It Sucks Sweaty Goat Testes" blog post on the front page of Hacker News can sink you.
+### why a new language is like ten million dollars in a nigerian bank
+
+When you're promoting a new idea, early adopters are gold. But early doubters are poison. When you're launching, you're vulnerable. A single "I tried Raganwald-C, and Here's Why It Sucks Sweaty Goat Testes" blog post on the front page of Hacker News can sink you. *False positves suck for new programming ideas just as much as for 419 scams.*
 
 You want to avoid people actively hostile to your idea, and you also want to avoid shallow dilettantes. An apathetic user won't write such vituperative blog posts, but they also won't take the trouble to really understand your language's "big idea," and they will complain that your new language isn't very good at doing the thing they've always done, the way they've always done it.
 
