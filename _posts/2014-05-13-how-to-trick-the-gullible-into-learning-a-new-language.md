@@ -4,13 +4,13 @@ layout: default
 tags: javascript
 ---
 
-Yesterday, I read a middling article, [How to Trick the Guilty and Gullible into Revealing Themselves][1]. I wasn't entirely fascinated by the stories about plunging arms in boiling water or of brown M&Ms until the author revealed why Nigerian 419 scammers use such blatantly ridiculous letters to troll for victims:
+Yesterday, I read a middling article, [How to Trick the Guilty and Gullible into Revealing Themselves][1]. I wasn't entirely fascinated by the stories about plunging arms into boiling water, or of brown M&Ms and concert venues. But then the author revealed why Nigerian 419 scammers use such blatantly ridiculous letters to troll for victims:
 
 [1]: http://online.wsj.com/articles/how-to-trick-the-guilty-and-gullible-into-revealing-themselves-1399680248
 
 > If the Nigerian scam is so famous, why would a Nigerian scammer ever admit he is from Nigeria?
 
-Why indeed? And why do their letters have obvious spelling mistakes and impossibly florid prose? The answer is economic. While sending the letters is essentially free, talking to prospects is expensive, and the scammer's time is limited.
+This is a fascinating question. Why do their letters have obvious spelling mistakes and impossibly florid prose? The answer is economic. While sending the letters is essentially free, talking to prospects is expensive, and the scammer's time is limited.
 
 So the scammer is not concerned with the response rate, but instead is concerned with the conversion rate for those prospects who respond. In other words, **false positives suck.**
 
