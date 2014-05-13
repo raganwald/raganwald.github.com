@@ -32,7 +32,8 @@ The very best thing is that the first few folks to try your idea have a very hig
 
 You know... programmers too lazy to keep struggling with the old tech and with the hubris to believe they can adopt entirely new tech.
 
-> Be anything you like, be madmen, drunks, and bastards of every shape and form, but at all costs avoid one thing: **success**.--Thomas Merton
+> Be anything you like, be madmen, drunks, and bastards of every shape and form, but at all costs avoid one thing: **success**.
+> --Thomas Merton
 
 ### seeking hubris
 
