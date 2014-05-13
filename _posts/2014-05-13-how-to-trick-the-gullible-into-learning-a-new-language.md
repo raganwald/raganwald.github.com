@@ -18,7 +18,7 @@ The ridiculously obvious letters help: Only the must trusting, greedy, and gulli
 
 This reminds me of programming languages and frameworks. The most important factor for success in a language is that it be the scripting language for a new platform that disrupts the old. C for Unix, Objective C for iOS, Java, JavaScript, and Ruby for HTML. This insight, unfortunately, is like saying that the most important criterium for personal wealth is to belong to the lucky zygote club.
 
-But if all other things are equal is there any similarity between a new programming language and a 419 scam? Sure there is.
+But if all other things are equal, is there any similarity between a new programming language and a 419 scam? Sure there is.
 
 ### why a new language is like ten million dollars in a nigerian bank
 
