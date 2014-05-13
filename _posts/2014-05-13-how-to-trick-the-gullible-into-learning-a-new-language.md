@@ -20,6 +20,8 @@ This reminds me of programming languages and frameworks. The most important fact
 
 But if all other things are equal, is there any similarity between a new programming language and a 419 scam? Sure there is.
 
+![The Central Bank of Nigeria](/assets/images/central_bank_nigeria.jpg)
+
 ### why a new language is like ten million dollars in a nigerian bank
 
 When you're promoting a new idea, early adopters are gold. But early doubters are poison. When you're launching, you're vulnerable. A single "I tried Raganwald-C, and Here's Why It Sucks Sweaty Goat Testes" blog post on the front page of Hacker News can sink you. *False positves suck for new programming ideas just as much as for 419 scams.*
