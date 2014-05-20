@@ -57,3 +57,7 @@ What the language needs is people using ClojureScript to write Clojure in the br
 My thesis is that in early days, you need to select for people willing to invest in a new point of view, and having a glaringly self-indulgent features--like funny syntax or a completely new model for managing asynchronicity--is helpful to keeping the concentration of early "wows" to early "meh's" high.
 
 Which leaves me offering some free advice: There's plenty of room for new programming editors. If you're going to do it, don't be afraid to ignore "vi" and "emacs" compatibility modes.
+
+![Harpo Marx and three of his children](/assets/images/harpo.jpg)
+
+(discuss on [reddit](http://www.reddit.com/r/programming/comments/261cu6/how_to_trick_the_gullible_into_learning_a_new/))
