@@ -14,7 +14,7 @@ This is a fascinating question. Why do their letters have obvious spelling mista
 
 So the scammer is not concerned with the response rate, but instead is concerned with the conversion rate for those prospects who respond. In other words, **false positives suck.**
 
-The ridiculously obvious letters help: Only the must trusting, greedy, and gullible people will respond to such insanely obvious letters, and there is a good chance of extracting money from such people. If the scammer used a more plausible pitch, people like you and I might respond and then back out of the scam later, after the scammer had spent valuable time wooing us.
+The ridiculously obvious letters help: Only the most trusting, greedy, and gullible people will respond to such insanely obvious letters, and there is a good chance of extracting money from such people. If the scammer used a more plausible pitch, people like you and I might respond and then back out of the scam later, after the scammer had spent valuable time wooing us.
 
 This reminds me of programming languages and frameworks. The most important factor for success in a language is that it be the scripting language for a new platform that disrupts the old. C for Unix, Objective C for iOS, Java, JavaScript, and Ruby for HTML. This insight, unfortunately, is like saying that the most important criterium for personal wealth is to belong to the lucky zygote club.
 
