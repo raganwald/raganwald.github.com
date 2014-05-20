@@ -34,9 +34,9 @@ The very best thing is that the first few folks to try your idea have a very hig
 
 You know... programmers too lazy to keep struggling with the old tech and with the hubris to believe they can adopt entirely new tech.
 
-> Be anything you like, be madmen, drunks, and bastards of every shape and form, but at all costs avoid one thing: **success**.
+> We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris.
 >
-> --Thomas Merton
+> --Larry Wall, Programming Perl (1st edition)
 
 ### seeking hubris
 
