@@ -6,39 +6,43 @@ tags: spessore
 
 *In theory*, JavaScript does not have classes. *In practice*, the following snippet of code is widely considered to be an example of a "class" in JavaScript:
 
-    function Account () {
-      this._currentBalance = 0;
-    }
+{% highlight javascript %}
+function Account () {
+  this._currentBalance = 0;
+}
 
-    Account.prototype.balance = function () {
-      return this._currentBalance;
-    }
+Account.prototype.balance = function () {
+  return this._currentBalance;
+}
 
-    Account.prototype.deposit = function (howMuch) {
-      this._currentBalance = this._currentBalance + howMuch;
-      return this;
-    }
+Account.prototype.deposit = function (howMuch) {
+  this._currentBalance = this._currentBalance + howMuch;
+  return this;
+}
 
-    // ...
+// ...
 
-    var account = new Account();
+var account = new Account();
+{% endhighlight %}
 
 The pattern can be extended to provide the notion of subclassing:
 
-    function ChequingAccount () {
-      Account.call(this);
-    }
+{% highlight javascript %}
+function ChequingAccount () {
+  Account.call(this);
+}
 
-    ChequingAccount.prototype = Object.create(Account.prototype);
+ChequingAccount.prototype = Object.create(Account.prototype);
 
-    ChequingAccount.prototype.sufficientFunds = function (cheque) {
-      return this._currentBalance >= cheque.amount();
-    }
+ChequingAccount.prototype.sufficientFunds = function (cheque) {
+  return this._currentBalance >= cheque.amount();
+}
 
-    ChequingAccount.prototype.process = function (cheque) {
-      this._currentBalance = this._currentBalance - cheque.amount();
-      return this;
-    }
+ChequingAccount.prototype.process = function (cheque) {
+  this._currentBalance = this._currentBalance - cheque.amount();
+  return this;
+}
+{% endhighlight %}
 
 These classes and subclasses provide most of the features of classes we find in languages like [Smalltalk]:
 
