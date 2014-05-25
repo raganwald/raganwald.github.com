@@ -34,35 +34,35 @@ Although Williams' style seemed contemporary, it was his heterodox practices tha
 
 However, once Williams delivered a feature, he liked to move on to the next feature and leave the code for existing features unchanged as much as possible. For example, if he delivered a wall post feature, it might include an ActiveRecord model class:
 
-```ruby
+{% highlight ruby %}
 # wall_post.rb
 
 class WallPost < ActiveRecord::Model
 	# ...
 end
-```
+{% endhighlight %}
 
 Once the Wall Posts were delivered with tests, he might work on comments. But instead of changing `wall_post.rb` to read:
 
-```ruby
+{% highlight ruby %}
 # wall_post.rb
 
 class WallPost < ActiveRecord::Model
 	has_many :comments
 	# ...
 end
-```
+{% endhighlight %}
 
 Williams would isolate all of the code for comments into a module or plugin, and "monkey patch" the `WallPost` class:
 
-```ruby
+{% highlight ruby %}
 # vendor/plugins/comments/lib/railtie.rb
 
 WallPost.class_eval do
 	has_many :comments
 	# ...
 end
-```
+{% endhighlight %}
 
 Since none of the code written so far needed to know that a wall post could have comments, he saw no value in cluttering up those files with comment-handling code. Instead, he put the relationship between wall posts and comments in the code that was responsible for doing something with comments. His code was uniformly organized so that the code dependencies were exactly isomorphic to the feature dependencies.
 
@@ -72,7 +72,7 @@ Williams used every decoupling technique in the book and several he invented him
 
 Features are fairly coarse-grained, so after getting over the shock of Williams's style, most developers could adjust. However, Williams also used these decoupling techniques for fine-grained cross-cutting concerns as well. So instead of writing:
 
-```ruby
+{% highlight ruby %}
 # wall_post.rb
 
 class WallPost < ActiveRecord::Model
@@ -84,11 +84,11 @@ class WallPost < ActiveRecord::Model
 	end
 
 end
-```
+{% endhighlight %}
 
 Williams would write:
 
-```ruby
+{% highlight ruby %}
 # wall_post.rb
 
 class WallPost < ActiveRecord::Model
@@ -98,11 +98,11 @@ class WallPost < ActiveRecord::Model
 	end
 
 end
-```
+{% endhighlight %}
 
 And:
 
-```ruby
+{% highlight ruby %}
 # wall_post_persistence.rb
 
 WallPost.class_eval do
@@ -116,7 +116,7 @@ WallPost.class_eval do
 	alias_method_chain :do_something, :db_transaction
 
 end
-```
+{% endhighlight %}
 
 The net result was that his models were always small and directly concerned with business logic, while implementation details like error handling and persistence were moved out into separate modules and plugins.
 
