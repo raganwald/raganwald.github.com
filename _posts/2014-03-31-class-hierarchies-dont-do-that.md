@@ -103,38 +103,42 @@ Obviously, code will have dependencies. `A` will depend on `B`, and `B` will dep
 
 So far so good. or at least, it is if `A`, `B` and `C` are objects and/or functions. For example:
 
-    function depositAndReturnBalance(account, amount) {
-      return account.deposit(amount).balance();
-    }
+{% highlight javascript %}
+function depositAndReturnBalance(account, amount) {
+  return account.deposit(amount).balance();
+}
 
-    var account = new Account();
-    depositAndReturnBalance(account, 100)
-      //=> 100
+var account = new Account();
+depositAndReturnBalance(account, 100)
+  //=> 100
+{% endhighlight %}
 
 `depositAndReturnBalance` obviously depends on passing in an object that implements both the `.deposit` and `.balance` methods. But it doesn't depend on how those methods are implemented: we could write this for `Account` and get the same behaviour:
 
-    function Account () {
-      this._transactionHistory = [];
-    }
+{% highlight javascript %}
+function Account () {
+  this._transactionHistory = [];
+}
 
-    Account.prototype.balance = function () {
-      return this._transactionHistory.reduce(function (acc, transaction) {
-        return acc + transaction;
-      }, 0);
-    }
+Account.prototype.balance = function () {
+  return this._transactionHistory.reduce(function (acc, transaction) {
+    return acc + transaction;
+  }, 0);
+}
 
-    Account.prototype.deposit = function (howMuch) {
-      this._transactionHistory.unshift(howMuch)
-      return this;
-    }
+Account.prototype.deposit = function (howMuch) {
+  this._transactionHistory.unshift(howMuch)
+  return this;
+}
 
-    function depositAndReturnBalance(account, amount) {
-      return account.deposit(amount).balance();
-    }
+function depositAndReturnBalance(account, amount) {
+  return account.deposit(amount).balance();
+}
 
-    var account = new Account();
-    depositAndReturnBalance(account, 100)
-      //=> 100
+var account = new Account();
+depositAndReturnBalance(account, 100)
+  //=> 100
+{% endhighlight %}
 
 Completely different implementation of `.deposit` and `.balance`, but `depositAndReturnBalance` does not depend upon the implementation.
 
@@ -148,10 +152,12 @@ It turns out, the relationship between classes in a hierarchy is *not* encapsula
 
 Here's the way our `ChequingAccount` subclass implements the `.process` method:
 
-    ChequingAccount.prototype.process = function (cheque) {
-      this._currentBalance = this._currentBalance - cheque.amount();
-      return this;
-    }
+{% highlight javascript %}
+ChequingAccount.prototype.process = function (cheque) {
+  this._currentBalance = this._currentBalance - cheque.amount();
+  return this;
+}
+{% endhighlight %}
 
 If we rewrite the `Account` class to use a transaction history instead of a current balance, it breaks the code in `ChequingAccount`. In JavaScript (and other languages in the same family), classes and subclasses share access to the object's private properties. It is not possible to change an implementation detail for `Account` without carefully checking every single subclass and the code depending on those subclasses to see if our internal, "private" change will break them.
 
