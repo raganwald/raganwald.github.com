@@ -14,7 +14,7 @@ However, Williams was unique. Most veterans cling to whatever beliefs about soft
 
 He had long ago accepted that the rest of the world was not about to change to do things the "right way," but he likewise refused to submit to fashion, no matter what the costs to his reputation or career. So he bounced from job to job, constantly being let go for "lack of fit with the team," until he wound up at ThinkWare, a contracting firm. The partners at ThinkWare specialized in finding ways for square pegs to write software that fit in round holes, and they carefully walled Williams off so that he could write software his own way with very little interference from anyone else.
 
-Williams had a style that ThinkWare described as "unorthodox, but effective." 
+Williams had a style that ThinkWare described as "unorthodox, but effective."
 
 ### I'll take you, darling. And you. And you. And. You.
 
@@ -34,29 +34,35 @@ Although Williams' style seemed contemporary, it was his heterodox practices tha
 
 However, once Williams delivered a feature, he liked to move on to the next feature and leave the code for existing features unchanged as much as possible. For example, if he delivered a wall post feature, it might include an ActiveRecord model class:
 
-		# wall_post.rb
+```ruby
+# wall_post.rb
 
-		class WallPost < ActiveRecord::Model
-			# ...
-		end
+class WallPost < ActiveRecord::Model
+	# ...
+end
+```
 
 Once the Wall Posts were delivered with tests, he might work on comments. But instead of changing `wall_post.rb` to read:
 
-		# wall_post.rb
+```ruby
+# wall_post.rb
 
-		class WallPost < ActiveRecord::Model
-			has_many :comments
-			# ...
-		end
+class WallPost < ActiveRecord::Model
+	has_many :comments
+	# ...
+end
+```
 
 Williams would isolate all of the code for comments into a module or plugin, and "monkey patch" the `WallPost` class:
 
-		# vendor/plugins/comments/lib/railtie.rb
+```ruby
+# vendor/plugins/comments/lib/railtie.rb
 
-		WallPost.class_eval do
-			has_many :comments
-			# ...
-		end
+WallPost.class_eval do
+	has_many :comments
+	# ...
+end
+```
 
 Since none of the code written so far needed to know that a wall post could have comments, he saw no value in cluttering up those files with comment-handling code. Instead, he put the relationship between wall posts and comments in the code that was responsible for doing something with comments. His code was uniformly organized so that the code dependencies were exactly isomorphic to the feature dependencies.
 
@@ -66,45 +72,51 @@ Williams used every decoupling technique in the book and several he invented him
 
 Features are fairly coarse-grained, so after getting over the shock of Williams's style, most developers could adjust. However, Williams also used these decoupling techniques for fine-grained cross-cutting concerns as well. So instead of writing:
 
-		# wall_post.rb
+```ruby
+# wall_post.rb
 
-		class WallPost < ActiveRecord::Model
+class WallPost < ActiveRecord::Model
 
-			def doSomething
-				WallPost.transaction do
-					# ...
-				end
-			end
+	def doSomething
+		WallPost.transaction do
+			# ...
+		end
+	end
 
- 		end
+end
+```
 
 Williams would write:
 
-		# wall_post.rb
+```ruby
+# wall_post.rb
 
-		class WallPost < ActiveRecord::Model
+class WallPost < ActiveRecord::Model
 
-			def do_something
-				# ...
-			end
+	def do_something
+		# ...
+	end
 
- 		end
+end
+```
 
 And:
 
-		# wall_post_persistence.rb
+```ruby
+# wall_post_persistence.rb
 
-		WallPost.class_eval do
+WallPost.class_eval do
 
-			def do_something_with_db_transaction
-				WallPost.transaction do
-					do_something_without_db_transaction
-				end
-			end
-
-			alias_method_chain :do_something, :db_transaction
-
+	def do_something_with_db_transaction
+		WallPost.transaction do
+			do_something_without_db_transaction
 		end
+	end
+
+	alias_method_chain :do_something, :db_transaction
+
+end
+```
 
 The net result was that his models were always small and directly concerned with business logic, while implementation details like error handling and persistence were moved out into separate modules and plugins.
 
