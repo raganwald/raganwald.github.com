@@ -139,6 +139,8 @@ What *is* obvious is that JavaScript is a functional language, and the more ways
 
 p.s. Captain Obvious would not write such excellently plain-as-the-nose-on-his-face posts without the help of people like [@jcoglan](https://twitter.com/#!/jcoglan), [@CrypticSwarm](https://twitter.com/#!/CrypticSwarm), [@notmatt](https://twitter.com/#!/notmatt), [@cammerman](https://twitter.com/#!/cammerman), [Skyhighatrist](http://www.reddit.com/user/Skyhighatrist), and [@BrendanEich](https://twitter.com/#!/BrendanEich).
 
+p.p.s. This post first appeared in January of 2012, on my old blog. I may repost other technical material, if and when time permits.
+
 [pi]: https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/parseInt
 [pf]: https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/parseFloat
 [vnl]: http://crypticswarm.com/variables-now-and-later
