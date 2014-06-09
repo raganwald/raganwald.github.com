@@ -5,6 +5,12 @@ layout: default
 
 > Reginald "Raganwald" Braithwaite is proof that somewhere, a village is missing its idiot. Either that, or a combinatory forest is missing its Idiot Bird, nobody is really sure. His interests include constructing surreal numbers, deconstructing hopelessly egocentric nulls, and celebrating the joy of programming.
 
+### elsewhere
+
+* code: <a href="https://github.com/raganwald">https://github.com/raganwald</a>
+* contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
+* conferences: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
+
 ### featured books
 
 <table>
@@ -24,12 +30,6 @@ layout: default
 <script async class="speakerdeck-embed" data-id="d33dabc0cec70131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
 
 [w]: ./2011/11/01/williams-master-of-the-comefrom.html
-
-Other links:
-
-* code: <a href="https://github.com/raganwald">https://github.com/raganwald</a>
-* contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
-* conferences: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
 
 ### words
 
