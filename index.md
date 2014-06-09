@@ -26,6 +26,10 @@ Other links:
 * contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
 * conferences: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
 
+### videos
+
+|<script async class="speakerdeck-embed" data-id="90e12450cecb0131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>|https://speakerdeck.com/raganwald/javascript-combinators|https://speakerdeck.com/raganwald/invent-the-future-dont-recreate-the-past|
+
 ### words
 
 <div class="related">
