@@ -11,6 +11,12 @@ layout: default
 * contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
 * conferences: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
 
+### featured presentation
+
+<script async class="speakerdeck-embed" data-id="d33dabc0cec70131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
+
+<p>&nbsp;</p>
+
 ### featured books
 
 <table>
@@ -25,9 +31,7 @@ layout: default
 
 <iframe src="//player.vimeo.com/video/76141334" width="500" height="275" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
-### featured presentation
-
-<script async class="speakerdeck-embed" data-id="d33dabc0cec70131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
+<p>&nbsp;</p>
 
 [w]: ./2011/11/01/williams-master-of-the-comefrom.html
 
