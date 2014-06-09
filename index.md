@@ -5,18 +5,26 @@ layout: default
 
 > Reginald "Raganwald" Braithwaite is proof that somewhere, a village is missing its idiot. Either that, or a combinatory forest is missing its Idiot Bird, nobody is really sure. His interests include constructing surreal numbers, deconstructing hopelessly egocentric nulls, and celebrating the joy of programming.
 
-Author of:
+### books
 
-* [JavaScript Spessore](http://leanpub.com/javascript-spessore)
-* [JavaScript Allongé](http://leanpub.com/javascript-allonge)
-* [CoffeeScript Ristretto](http://leanpub.com/coffeescript-ristretto)
-* [Kestrels, Quirky Birds, and Hopeless Egocentricity](http://leanpub.com/combinators)
+<table>
+  <tr>
+    <td><iframe width="160" height="400" src="https://leanpub.com/javascript-spessore/embed" frameborder="0" allowtransparency="true"></iframe></td>
+    <td><iframe width="160" height="400" src="https://leanpub.com/javascript-allonge/embed" frameborder="0" allowtransparency="true"></iframe></td>
+    <td><iframe width="160" height="400" src="https://leanpub.com/coffeescript-ristretto/embed" frameborder="0" allowtransparency="true"></iframe></td>
+  </tr>
+</table>
 
-And host of:
+### videos
 
-* [allong.es](http://allong.es): Functional Utility Belt for JavaScript/CoffeeScript.
-* [recursiveuniver.se](recursiveuniver.se): HashLife implementation of Conway's Game of Life.
-* [oscin.es](oscin.es): Combinatory Logic in JavaScript.
+<table>
+  <tr>
+    <td><script async class="speakerdeck-embed" data-id="90e12450cecb0131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script></td>
+    <td><script async class="speakerdeck-embed" data-id="d33dabc0cec70131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script></td>
+    <td><script async class="speakerdeck-embed" data-id="55636200d24c0131749d3a7e56df2bd7" data-ratio="0.707182320441989" src="//speakerdeck.com/assets/embed.js"></script></td>
+  </tr>
+  <tr><td></td><td></td><td></td></tr>
+</table>
 
 [w]: ./2011/11/01/williams-master-of-the-comefrom.html
 
@@ -25,10 +33,6 @@ Other links:
 * code: <a href="https://github.com/raganwald">https://github.com/raganwald</a>
 * contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
 * conferences: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
-
-### videos
-
-|<script async class="speakerdeck-embed" data-id="90e12450cecb0131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>|https://speakerdeck.com/raganwald/javascript-combinators|https://speakerdeck.com/raganwald/invent-the-future-dont-recreate-the-past|
 
 ### words
 
