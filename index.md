@@ -23,7 +23,7 @@ layout: default
 
 ### featured video
 
-<iframe src="//player.vimeo.com/video/76141334" width="500" height="275" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="http://vimeo.com/76141334">I have a good feeling about this - Why tooling is poised to make the jump to hyperspace by Reginald Braithwaite</a> from <a href="http://vimeo.com/webrebels">Web Rebels Conference</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+<iframe src="//player.vimeo.com/video/76141334" width="500" height="275" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 ### featured presentation
 
