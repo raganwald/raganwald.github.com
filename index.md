@@ -5,7 +5,7 @@ layout: default
 
 > Reginald "Raganwald" Braithwaite is proof that somewhere, a village is missing its idiot. Either that, or a combinatory forest is missing its Idiot Bird, nobody is really sure. His interests include constructing surreal numbers, deconstructing hopelessly egocentric nulls, and celebrating the joy of programming.
 
-### books
+### featured books
 
 <table>
   <tr>
@@ -15,16 +15,13 @@ layout: default
   </tr>
 </table>
 
-### videos
+### featured video
 
-<table>
-  <tr>
-    <td><script async class="speakerdeck-embed" data-id="90e12450cecb0131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script></td>
-    <td><script async class="speakerdeck-embed" data-id="d33dabc0cec70131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script></td>
-    <td><script async class="speakerdeck-embed" data-id="55636200d24c0131749d3a7e56df2bd7" data-ratio="0.707182320441989" src="//speakerdeck.com/assets/embed.js"></script></td>
-  </tr>
-  <tr><td></td><td></td><td></td></tr>
-</table>
+<iframe src="//player.vimeo.com/video/76141334" width="500" height="275" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="http://vimeo.com/76141334">I have a good feeling about this - Why tooling is poised to make the jump to hyperspace by Reginald Braithwaite</a> from <a href="http://vimeo.com/webrebels">Web Rebels Conference</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+
+### featured presentation
+
+<script async class="speakerdeck-embed" data-id="d33dabc0cec70131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
 
 [w]: ./2011/11/01/williams-master-of-the-comefrom.html
 
