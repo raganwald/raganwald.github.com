@@ -26,6 +26,18 @@ Object.defineProperty(rentAmount, 'cents', {
 rentAmount.dollars
   //=> 420
 
+
+// Strict Mode:
+
+!function () {
+  "use strict"
+
+  rentAmount.dollars = 600;
+}();
+  //=> TypeError: Cannot assign to read only property 'dollars' of #<Object>
+
+// Beware: Non-Strict Mode
+
 rentAmount.dollars = 600;
   //=> 600
 
@@ -154,7 +166,9 @@ copyAmount(immutableRent, rentAmount);
   //=> TypeError: Cannot assign to read only property 'dollars' of #<Struct>
 {% endhighlight %}
 
-Structs and Immutable Structs are a handy way to prevent inadvertent errors and to explicitly communicate that an object is intended to be used as a struct and not as a dictionary.
+Structs and Immutable Structs are a handy way to prevent inadvertent errors and to explicitly communicate that an object is intended to be used as a struct and not as a dictionary.[^freeze]
+
+[^freeze]: JavaScript also provides a single method that can close an objetc for modification, extension, and configuration at the same time: `Object.freeze(...)`.
 
 ### structural vs. semantic typing
 
