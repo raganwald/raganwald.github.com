@@ -386,5 +386,9 @@ Funny we should mention that. The Clojure and ClojureScript people have systemat
 
 Have a look at Mori. Then consider whether immutable structs could be useful in your code.
 
+---
+
+([discuss](http://www.reddit.com/r/javascript/comments/28gycg/structs_and_immutablestructs/))
+
 [copy-on-write]: https://en.wikipedia.org/wiki/Copy-on-write
 [Mori]: http://swannodette.github.io/mori/
