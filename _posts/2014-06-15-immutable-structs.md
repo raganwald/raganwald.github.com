@@ -390,7 +390,7 @@ If we subscribe to this philosophy about only reducing flexibility when it enabl
 
 ### are immutable structs worthwhile?
 
-Taking this same reasoning to immutable structures, some would argue that the extra infrastructure required to create immutable structs is not warranted is the sole objective to to prevent inadvertent errors.
+Taking this same reasoning to immutable structures, some would argue that the extra infrastructure required to create immutable structs is not warranted if the sole objective is to prevent inadvertent errors.
 
 To be of benefit, immutable data structures (like immutable structs) are only of benefit is we can "turn them up to eleven" and realize some new benefit, if we incorporate paradigms like [copy-on-write] and build high-performance and high-reliability code around immutable data.
 
