@@ -156,7 +156,7 @@ copyAmount(immutableRent, rentAmount);
   //=> TypeError: Cannot assign to read only property 'dollars' of #<Struct>
 {% endhighlight %}
 
-Structs and Immutable Structs are a handy way to prevent inadvertent errors and to explicitly communicate that an object is intended to be used as a struct and not as a dictionary. We'll return to structs later when we discuss reflection and classes.
+Structs and Immutable Structs are a handy way to prevent inadvertent errors and to explicitly communicate that an object is intended to be used as a struct and not as a dictionary.
 
 ### structural vs. semantic typing
 
