@@ -11,9 +11,11 @@ layout: default
 * contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
 * conferences: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
 
-### featured presentation
+### featured video
 
-<script async class="speakerdeck-embed" data-id="d33dabc0cec70131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
+<!-- <iframe src="//player.vimeo.com/video/97408202" width="700" height="393" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="http://vimeo.com/97408202">Javascript Combinators</a> from <a href="http://vimeo.com/ndcoslo">NDC Conferences</a> on <a href="https://vimeo.com">Vimeo</a>.</p> -->
+
+<iframe src="//player.vimeo.com/video/76141334" width="700" height="385" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 <p>&nbsp;</p>
 
@@ -27,11 +29,11 @@ layout: default
   </tr>
 </table>
 
-### featured video
+<p>&nbsp;</p>
 
-<iframe src="//player.vimeo.com/video/97408202" width="700" height="393" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="http://vimeo.com/97408202">Javascript Combinators</a> from <a href="http://vimeo.com/ndcoslo">NDC Conferences</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+### featured presentation
 
-<!-- <iframe src="//player.vimeo.com/video/76141334" width="500" height="275" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> -->
+<script async class="speakerdeck-embed" data-id="d33dabc0cec70131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
 
 <p>&nbsp;</p>
 
