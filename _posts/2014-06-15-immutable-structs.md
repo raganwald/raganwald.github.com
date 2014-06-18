@@ -6,7 +6,7 @@ tags: spessore
 
 Sometimes we want to share objects by reference for performance and space reasons, but we don't want them to be mutable. One motivation is when we want many objects to be able to share a common entity without worrying that one of them may inadvertently change the common entity.
 
-JavaScript provides a way to make properties immutable:
+JavaScript provides a way to make properties *immutable*:
 
 {% highlight javascript %}
 "use strict";
