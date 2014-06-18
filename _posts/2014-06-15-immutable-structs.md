@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Structs and ImmutabeStructs"
+title: "Structs and ImmutableStructs"
 tags: spessore
 ---
 
