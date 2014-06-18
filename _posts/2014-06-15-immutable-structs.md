@@ -33,6 +33,7 @@ rentAmount.dollars = 600;
 
 rentAmount.dollars
   //=> 420
+{% endhighlight %}
 
 `Object.defineProperty` is a general-purpose method for providing fine-grained control over the properties of any object. When we make a property `enumerable`, it shows up whenever we list the object's properties or iterate over them. When we make it writable, assignments to the property change its value. If the property isn't writable, assignments are ignored.
 
