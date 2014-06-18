@@ -9,8 +9,6 @@ Sometimes we want to share objects by reference for performance and space reason
 JavaScript provides a way to make properties *immutable*:
 
 {% highlight javascript %}
-"use strict";
-
 var rentAmount = {};
 
 Object.defineProperty(rentAmount, 'dollars', {
