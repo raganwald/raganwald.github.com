@@ -341,30 +341,16 @@ Javascript cannot do true multiple dispatch without some ridiculous greenspunnin
 
 We start with the same convention: Methods and functions must return *something* if they successfully hand a method invocation, or raise an exception if they catastrophically fail. They cannot return `undefined` (which in JavaScript, also includes not explicitly returning something).
 
-Recall that this allowed us to write the `Match` function that took a serious of *guards*, functions that checked to see if the value of arguments was correct for each case. We can write ourself a guard that checks types, and fails if the types don't match:
+Recall that this allowed us to write the `Match` function that took a serious of *guards*, functions that checked to see if the value of arguments was correct for each case. Our general-purpose guard, `when`, took all of the arguments as parameters.
+
+What we want is to write guards for each argument. So we'll write `whenArgsAre`, a guard that takes predicates for each argument as well as the body of the function case:
 
 {% highlight javascript %}
-function isOfType (type) {
-  return function (arg) {
-    return typeof(arg) === type;
-  };
-}
-
-function instanceOf (clazz) {
-  return function (arg) {
-    return arg instanceof clazz;
-  };
-}
-
-function isPrototypeOf (proto) {
-  return Object.prototype.isPrototypeOf.bind(proto);
-}
-
-function MatchTypes () {
+function whenArgsAre () {
   var matchers = [].slice.call(arguments, 0, arguments.length - 1),
       body     = arguments[arguments.length - 1];
 
-  function typeChecked () {
+  return function () {
     var i,
         arg,
         value;
@@ -378,34 +364,49 @@ function MatchTypes () {
     return value === undefined
            ? null
            : value;
-  }
+  };
+}
 
-  return imitate(body, typeChecked);
+// handy predicates for testing the "type" of arguments
+function instanceOf (clazz) {
+  return function (arg) {
+    return arg instanceof clazz;
+  };
+}
+
+function isOfType (type) {
+  return function (arg) {
+    return typeof(arg) === type;
+  };
+}
+
+function isPrototypeOf (proto) {
+  return Object.prototype.isPrototypeOf.bind(proto);
 }
 
 function Fighter () {};
 function Meteor () {};
 
 var handlesManyCases = Match(
-  MatchTypes(
+  whenArgsAre(
     instanceOf(Fighter), instanceOf(Meteor),
     function (fighter, meteor) {
       return "a fighter has hit a meteor";
     }
   ),
-  MatchTypes(
+  whenArgsAre(
     instanceOf(Fighter), instanceOf(Fighter),
     function (fighter, fighter) {
       return "a fighter has hit another fighter";
     }
   ),
-  MatchTypes(
+  whenArgsAre(
     instanceOf(Meteor), instanceOf(Fighter),
     function (meteor, fighters) {
       return "a meteor has hit a fighter";
     }
   ),
-  MatchTypes(
+  whenArgsAre(
     instanceOf(Meteor), instanceOf(Meteor),
     function (meteor, meteor) {
       return "a meteor has hit another meteor";
@@ -426,13 +427,13 @@ var FighterPrototype = {},
     MeteorPrototype  = {};
 
 FighterPrototype.crashInto = Match(
-  MatchTypes(
+  whenArgsAre(
     isPrototypeOf(FighterPrototype),
     function (fighter) {
       return "fighter(fighter)";
     }
   ),
-  MatchTypes(
+  whenArgsAre(
     isPrototypeOf(MeteorPrototype),
     function (fighter) {
       return "fighter(meteor)";
@@ -441,13 +442,13 @@ FighterPrototype.crashInto = Match(
 );
 
 MeteorPrototype.crashInto = Match(
-  MatchTypes(
+  whenArgsAre(
     isPrototypeOf(FighterPrototype),
     function (fighter) {
       return "meteor(fighter)";
     }
   ),
-  MatchTypes(
+  whenArgsAre(
     isPrototypeOf(MeteorPrototype),
     function (meteor) {
       return "meteor(meteor)";
@@ -474,7 +475,7 @@ It's useful to be able to write something like this:
 var ArmoredFighterPrototype = Object.create(FighterPrototype);
 
 ArmoredFighterPrototype.crashInto = Match(
-  MatchTypes(
+  whenArgsAre(
     isPrototypeOf(FighterPrototype),
     function (fighter) {
       return "armored-fighter(fighter)";
@@ -608,6 +609,29 @@ factorial.name;
   //=> 'factorial'
 factorial.length;
   //=> 1
+
+function whenArgsAre () {
+  var matchers = [].slice.call(arguments, 0, arguments.length - 1),
+      body     = arguments[arguments.length - 1];
+
+  function typeChecked () {
+    var i,
+        arg,
+        value;
+
+    if (arguments.length != matchers.length) return;
+    for (i in arguments) {
+      arg = arguments[i];
+      if (!matchers[i].call(this, arg)) return;
+    }
+    value = body.apply(this, arguments);
+    return value === undefined
+           ? null
+           : value;
+  }
+
+  return imitate(body, typeChecked);
+}
 {% endhighlight %}
 
 [reddit]: http://www.reddit.com/r/javascript/comments/28ww6n/patternmatching_and_multiple_dispatch/
