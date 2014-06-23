@@ -64,32 +64,12 @@ function logToConsole () {
 We can write ourself a simple method decorator that *guards* a method, and fails if the guard function fails on the arguments provided. It's self-currying to facilitate writing utility guards:
 
 {% highlight javascript %}
-// "nameAndLength" and "imitate" are not strictly necessary to understand what we're
-// doing, but they do help us write functions that preserve the name and arity
-// of functions we work with. This is very helpful if we combine these techniques
-// with other utilities that performa partial application and/or currying.
-
-function nameAndLength(name, length, body) {
-  var abcs = [ 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
-               'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
-               'z', 'x', 'c', 'v', 'b', 'n', 'm' ],
-      pars = abcs.slice(0, length),
-      src  = "(function " + name + " (" + pars.join(',') + ") { return body.apply(this, arguments); })";
-
-  return eval(src);
-}
-
-function imitate(exemplar, body) {
-  return nameAndLength(exemplar.name, exemplar.length, body);
-}
-
-// "when" is our guard function
 function when (guardFn, optionalFn) {
   function guarded (fn) {
-    return imitate(fn, function () {
+    return function () {
       if (guardFn.apply(this, arguments))
         return fn.apply(this, arguments);
-    });
+    };
   }
   return optionalFn == null
          ? guarded
@@ -106,47 +86,10 @@ when(function (x) {return x != null; })(function () { return "hello world"; })(1
 Now we can write our pattern matcher. What it does is take a list of methods, and apply them in order, stopping when one of the methods returns a value that is not `undefined`.
 
 {% highlight javascript %}
-// "getWith," "mapWith," and "pluckWith" can all be found in the allong.es
-// library, http://allong.es
-function getWith (prop, obj) {
-  function gets (obj) {
-    return obj[prop];
-  }
-
-  return obj === undefined
-         ? gets
-         : gets(obj);
-}
-
-function mapWith (fn, mappable) {
-  function maps (collection) {
-    return collection.map(fn);
-  }
-
-  return mappable === undefined
-         ? maps
-         : maps(collection);
-}
-
-function pluckWith (prop, collection) {
-  var plucker = mapWith(getWith(prop));
-
-  return collection === undefined
-         ? plucker
-         : plucker(collection);
-}
-
-// Our pattern-matching function
 function Match () {
-  var fns     = [].slice.call(arguments, 0),
-      lengths = pluckWith('length', fns),
-      length  = Math.min.apply(null, lengths),
-      names   = pluckWith('name', fns).filter(function (name) { return name !== ''; }),
-      name    = names.length === 0
-                ? ''
-                : names[0];
+  var fns = [].slice.call(arguments, 0);
 
-  return nameAndLength(name, length, function () {
+  return function () {
     var i,
         value;
 
@@ -155,7 +98,7 @@ function Match () {
 
       if (value !== undefined) return value;
     }
-  });
+  };
 }
 
 // Some predicates to make it easy to write patterns
@@ -172,7 +115,7 @@ var factorial = Match(
   when(greaterThan(1), function (n) { return n * factorial(n-1); })
 );
 
-factorial(5)
+factorial(5);
   //=> 120
 {% endhighlight %}
 
@@ -549,5 +492,122 @@ We have a slightly different problem if we compose two metaobjects that both hav
 Our encapsulated metaobjects and our composition protocol both encourage the creation of a broad, shallow prototype hierarchy with as little chaining as possible. But for those times when we intentionally chain prototypes, we must be fully aware of the effect that overriding will have on our dispatched methods.
 
 (discuss on [reddit])
+
+---
+
+### post-scriptum
+
+Our `Match` function is fairly simple, but it has a drawback: The functions it creates have no name and length. This means that it will not compose nicely with other JavaScript functional techniques such as creating variadic functions or currying.
+
+To fix that, we can add some extra bits that extract the name and length from the cases we provide:
+
+{% highlight javascript %}
+// "nameAndLength" and "imitate" are not strictly necessary to understand what we're
+// doing, but they do help us write functions that preserve the name and arity
+// of functions we work with. This is very helpful if we combine these techniques
+// with other utilities that performa partial application and/or currying.
+
+function nameAndLength(name, length, body) {
+  var abcs = [ 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
+               'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
+               'z', 'x', 'c', 'v', 'b', 'n', 'm' ],
+      pars = abcs.slice(0, length),
+      src  = "(function " + name + " (" + pars.join(',') + ") { return body.apply(this, arguments); })";
+
+  return eval(src);
+}
+
+function imitate(exemplar, body) {
+  return nameAndLength(exemplar.name, exemplar.length, body);
+}
+
+// "when" is our guard function
+function when (guardFn, optionalFn) {
+  function guarded (fn) {
+    return imitate(fn, function () {
+      if (guardFn.apply(this, arguments))
+        return fn.apply(this, arguments);
+    });
+  }
+  return optionalFn == null
+         ? guarded
+         : guarded(optionalFn);
+}
+
+// "getWith," "mapWith," and "pluckWith" can all be found in the allong.es
+// library, http://allong.es
+function getWith (prop, obj) {
+  function gets (obj) {
+    return obj[prop];
+  }
+
+  return obj === undefined
+         ? gets
+         : gets(obj);
+}
+
+function mapWith (fn, mappable) {
+  function maps (collection) {
+    return collection.map(fn);
+  }
+
+  return mappable === undefined
+         ? maps
+         : maps(collection);
+}
+
+function pluckWith (prop, collection) {
+  var plucker = mapWith(getWith(prop));
+
+  return collection === undefined
+         ? plucker
+         : plucker(collection);
+}
+
+// Our pattern-matching function
+function Match () {
+  var fns     = [].slice.call(arguments, 0),
+      lengths = pluckWith('length', fns),
+      length  = Math.min.apply(null, lengths),
+      names   = pluckWith('name', fns).filter(function (name) { return name !== ''; }),
+      name    = names.length === 0
+                ? ''
+                : names[0];
+
+  console.log(names)
+
+  return nameAndLength(name, length, function () {
+    var i,
+        value;
+
+    for (i in fns) {
+      value = fns[i].apply(this, arguments);
+
+      if (value !== undefined) return value;
+    }
+  });
+}
+
+// Some predicates to make it easy to write patterns
+function equals (x) {
+  return function eq (y) { return (x === y); };
+}
+
+function greaterThan (x) {
+  return function gt (y) { return (y > x); };
+}
+
+var factorial = Match(
+  when(equals(1),      function factorial (n) { return 1; }),
+  when(greaterThan(1), function           (n) { return n * factorial(n-1); })
+);
+
+factorial(5);
+  //=> 120
+factorial.name;
+  //=> 'factorial'
+factorial.length;
+  //=> 1
+{% endhighlight %}
 
 [reddit]: http://www.reddit.com/r/javascript/comments/28ww6n/patternmatching_and_multiple_dispatch/
