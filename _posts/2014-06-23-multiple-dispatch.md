@@ -555,3 +555,7 @@ Logically, we can understand what's happening if we hold a little model of how J
 We have a slightly different problem if we compose two metaobjects that both have patterns for the same method, they may not compose exactly as we expect from a semantic perspective.
 
 Our encapsulated metaobjects and our composition protocol both encourage the creation of a broad, shallow prototype hierarchy with as little chaining as possible. But for those times when we intentionally chain prototypes, we must be fully aware of the effect that overriding will have on our dispatched methods.
+
+(discuss on [reddit])
+
+[reddit]: http://www.reddit.com/r/javascript/comments/28ww6n/patternmatching_and_multiple_dispatch/
