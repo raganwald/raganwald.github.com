@@ -22,13 +22,13 @@ function factorial (n > 1) {
 }
 {% endhighlight %}
 
-This can be done with an `if` statement, of course, but the benefit of breaking problems down by cases is that once again, we are finding a way to combine small pieces of code in a way that does not tightly couple them.
+This can be done with an `if` statement, of course, but the benefit of breaking problems down by cases is that we can combine small pieces of code in a way that does not tightly couple them.
 
 We can implement a simple form of pattern matching in JavaScript, and we'll see later that it will be very useful for implementing multiple dispatch.
 
 ### prelude: return values
 
-Let's start with a convention: Methods and functions must return *something* if they successfully hand a method invocation, or raise an exception if they catastrophically fail. They cannot return `undefined` (which in JavaScript, also includes not explicitly returning something).
+Let's start with a convention: Methods and functions must return *something* if they successfully handle a method invocation, or raise an exception if they catastrophically fail. They cannot return `undefined` (which in JavaScript, also includes not explicitly returning something).
 
 For example:
 
@@ -64,6 +64,11 @@ function logToConsole () {
 We can write ourself a simple method decorator that *guards* a method, and fails if the guard function fails on the arguments provided. It's self-currying to facilitate writing utility guards:
 
 {% highlight javascript %}
+// "nameAndLength" and "imitate" are not strictly necessary to understand what we're
+// doing, but they do help us write functions that preserve the name and arity
+// of functions we work with. This is very helpful if we combine these techniques
+// with other utilities that performa partial application and/or currying.
+
 function nameAndLength(name, length, body) {
   var abcs = [ 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
                'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
@@ -78,6 +83,7 @@ function imitate(exemplar, body) {
   return nameAndLength(exemplar.name, exemplar.length, body);
 }
 
+// "when" is our guard function
 function when (guardFn, optionalFn) {
   function guarded (fn) {
     return imitate(fn, function () {
@@ -90,16 +96,18 @@ function when (guardFn, optionalFn) {
          : guarded(optionalFn);
 }
 
-Guard(function (x) {return x != null; })(function () { return "hello world"; })();
+when(function (x) {return x != null; })(function () { return "hello world"; })();
   //=> undefined
 
-Guard(function (x) {return x != null; })(function () { return "hello world"; })(1);
+when(function (x) {return x != null; })(function () { return "hello world"; })(1);
   //=> 'hello world'
 {% endhighlight %}
 
 Now we can write our pattern matcher. What it does is take a list of methods, and apply them in order, stopping when one of the methods returns a value that is not `undefined`.
 
 {% highlight javascript %}
+// "getWith," "mapWith," and "pluckWith" can all be found in the allong.es
+// library, http://allong.es
 function getWith (prop, obj) {
   function gets (obj) {
     return obj[prop];
@@ -128,6 +136,7 @@ function pluckWith (prop, collection) {
          : plucker(collection);
 }
 
+// Our pattern-matching function
 function Match () {
   var fns     = [].slice.call(arguments, 0),
       lengths = pluckWith('length', fns),
@@ -149,37 +158,22 @@ function Match () {
   });
 }
 
+// Some predicates to make it easy to write patterns
 function equals (x) {
   return function eq (y) { return (x === y); };
 }
 
-function not (fn) {
-  var name = fn.name === ''
-             ? "not"
-             : "not_" + fn.name;
-
-  return nameAndLength(name, fn.length, function () {
-    return !fn.apply(this, arguments)
-  });
+function greaterThan (x) {
+  return function gt (y) { return (y > x); };
 }
 
-var worstPossibleTestForEven = Match(
-  when(equals(0), function (n) { return true; }),
-  when(equals(1), function (n) { return false; }),
-  function (n) { return worstPossibleTestForOdd(n - 1)}
-)
+var factorial = Match(
+  when(equals(1),      function (n) { return 1; }),
+  when(greaterThan(1), function (n) { return n * factorial(n-1); })
+);
 
-var worstPossibleTestForOdd = Match(
-  when(equals(0), function (n) { return false; }),
-  when(equals(1), function (n) { return true; }),
-  function (n) { return worstPossibleTestForEven(n - 1)}
-)
-
-worstPossibleTestForEven(6)
-  //=> true
-
-worstPossibleTestForOdd(42)
-  //=> false
+factorial(5)
+  //=> 120
 {% endhighlight %}
 
 This style of writing functions declutters individual cases and will later serve as the basis for emulating multiple dispatch. But more importantly, it makes it easy to compose functions and methods from smaller, simpler components that are decoupled from each other.
