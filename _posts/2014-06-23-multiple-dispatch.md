@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Greenspunning Pattern-Matching and Multiple Dispatch in JavaScript"
+title: "Greenspunning Predicate and Multiple Dispatch in JavaScript"
 tags: ["allonge", "spessore"]
 ---
 
@@ -24,7 +24,7 @@ function factorial (n > 1) {
 
 This can be done with an `if` statement, of course, but the benefit of breaking problems down by cases is that we can combine small pieces of code in a way that does not tightly couple them.
 
-We can implement a simple form of pattern matching in JavaScript, and we'll see later that it will be very useful for implementing multiple dispatch.
+We can fake a simple form of pattern matching in JavaScript, and we'll see later that it will be very useful for implementing multiple dispatch.
 
 ### prelude: return values
 
@@ -83,7 +83,7 @@ when(function (x) {return x != null; })(function () { return "hello world"; })(1
   //=> 'hello world'
 {% endhighlight %}
 
-Now we can write our pattern matcher. What it does is take a list of methods, and apply them in order, stopping when one of the methods returns a value that is not `undefined`.
+`when` is useful independently of our work here, and that's a good thing: Whenever possible, we don't just make complicated things out of simpler things, we make them out of *reusable* simpler things. Now we can compose our guarded functions. `Match` takes a list of methods, and apply them in order, stopping when one of the methods returns a value that is not `undefined`.
 
 {% highlight javascript %}
 function Match () {
@@ -119,7 +119,9 @@ factorial(5);
   //=> 120
 {% endhighlight %}
 
-This style of writing functions declutters individual cases and will later serve as the basis for emulating multiple dispatch. But more importantly, it makes it easy to compose functions and methods from smaller, simpler components that are decoupled from each other.
+This is called [predicate dispatch], we're dispatching a function call to another function based on a series of predicates we apply to the arguments. Predicate dispatch declutters individual cases and composes functions and methods from smaller, simpler components that are decoupled from each other.
+
+[predicate dispatch]: https://en.wikipedia.org/wiki/Predicate_dispatch
 
 ## The Expression Problem {#expression-problem}
 
@@ -337,7 +339,7 @@ Java may have type signatures to specialize methods, but it is still *single dis
 
 ### emulating multiple dispatch
 
-Javascript cannot do true multiple dispatch without some ridiculous greenspunning of method invocations. But we can fake it pretty reasonably using the same technique we used for emulating pattern matching.
+Javascript cannot do true multiple dispatch without some ridiculous greenspunning of method invocations. But we can fake it pretty reasonably using predicate dispatch.
 
 We start with the same convention: Methods and functions must return *something* if they successfully hand a method invocation, or raise an exception if they catastrophically fail. They cannot return `undefined` (which in JavaScript, also includes not explicitly returning something).
 
@@ -463,13 +465,13 @@ someFighter.crashInto(someMeteor);
   //=> 'fighter(meteor)'
 {% endhighlight %}
 
-We now have usable dynamic multiple dispatch for generic functions and for methods. It's built on [pattern matching](#pattern-matching), so it can be extended to handle other forms of guarding.
+We now have usable dynamic multiple dispatch for generic functions and for methods. It's built on predicate dispatch, so it plays well with other kinds of predicates for each argument.
 
-### two caveats
+### caveat
 
-This type of pattern matching works with semantic types, but methods we build with it are ignorant of their own inheritance chain. For example, we could incorporate an `ArmoredFighter` that behaves just like a regular fighter, only when it strikes another fighter it has some special behaviour.
+Consider the following problem:
 
-It's useful to be able to write something like this:
+We wish to create a specialized entity, an `ArmoredFighter` that behaves just like a regular fighter, only when it strikes another fighter it has some special behaviour.
 
 {% highlight javascript %}
 var ArmoredFighterPrototype = Object.create(FighterPrototype);
@@ -484,13 +486,28 @@ ArmoredFighterPrototype.crashInto = Match(
 );
 {% endhighlight %}
 
-The way prototypes work, objects that delegate to `ArmoredFighterPrototype` would get this `crashInto` behaviour, and thus could handle crashes between armored fighters and fighters of any description. But they would not get any behaviour to handle crashes between armored fighters and meteors, as this function "overrides" the behaviour in `FighterPrototype.crashInto`.
+Our thought is that we are "overriding" the behaviour of `crashInto` when an armored fighter crashes into any other kind of fighter. But we wish to retain the behaviour we have already designed when an armored fighter crashes into a meteor.
 
-Logically, we can understand what's happening if we hold a little model of how JavaScript implements prototypical delegation in our head. But semantically, this seems wrong. If we override just one method signature in Java, the others are unaffected.
+This is not going to work. Although we have written our code such that the various cases and predicates are laid out separately, at run time they are composed opaquely into functions. As far as JavaScript is concerned, we've written:
 
-We have a slightly different problem if we compose two metaobjects that both have patterns for the same method, they may not compose exactly as we expect from a semantic perspective.
+{% highlight javascript %}
 
-Our encapsulated metaobjects and our composition protocol both encourage the creation of a broad, shallow prototype hierarchy with as little chaining as possible. But for those times when we intentionally chain prototypes, we must be fully aware of the effect that overriding will have on our dispatched methods.
+var FighterPrototype = {};
+
+FighterPrototype.crashInto = function (q) {
+  // black box
+};
+
+var ArmoredFighterPrototype = Object.create(FighterPrototype);
+
+ArmoredFighterPrototype.crashInto = function (q) {
+  // black box
+};
+{% endhighlight %}
+
+We've written code that composes, but it doesn't *decompose*. We've made it easy to manually take the code for these functions apart, inspect their contents, and put them back together in new ways, but it's impossible for us to write code that inspects and decomposes the code.
+
+A better design might incorporate reflection and decomposition at run time.
 
 (discuss on [reddit])
 
