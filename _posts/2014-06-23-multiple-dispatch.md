@@ -1,7 +1,7 @@
 ---
 layout: default
-title: "Pattern-Matching and Multiple Dispatch in JavaScript"
-tags: spessore
+title: "Greenspunning Pattern-Matching and Multiple Dispatch in JavaScript"
+tags: ["allonge", "spessore"]
 ---
 
 Pattern matching is a feature found (with considerable rigor) in functional languages like Erlang and Haskell. In mathematics, algorithms and problems can often be solved by breaking them down into simple cases. Sometimes, those cases are reductions of the original problem.
