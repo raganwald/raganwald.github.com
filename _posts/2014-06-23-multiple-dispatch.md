@@ -634,4 +634,4 @@ function whenArgsAre () {
 }
 {% endhighlight %}
 
-[reddit]: http://www.reddit.com/r/javascript/comments/28ww6n/patternmatching_and_multiple_dispatch/
+[reddit]: http://www.reddit.com/r/programming/comments/28wwab/greenspunning_patternmatching_and_multiple/
