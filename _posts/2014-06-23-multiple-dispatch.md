@@ -493,7 +493,6 @@ Our thought is that we are "overriding" the behaviour of `crashInto` when an arm
 This is not going to work. Although we have written our code such that the various cases and predicates are laid out separately, at run time they are composed opaquely into functions. As far as JavaScript is concerned, we've written:
 
 {% highlight javascript %}
-
 var FighterPrototype = {};
 
 FighterPrototype.crashInto = function (q) {
