@@ -61,7 +61,9 @@ function logToConsole () {
 }
 {% endhighlight %}
 
-We can write ourself a simple method decorator that *guards* a method, and fails if the guard function fails on the arguments provided. It's self-currying to facilitate writing utility guards:
+### guarded functions
+
+We can write ourself a simple method decorator that *guards* a function or method, and fails if the guard function fails on the arguments provided. It's self-currying to facilitate writing utility guards:
 
 {% highlight javascript %}
 function when (guardFn, optionalFn) {
