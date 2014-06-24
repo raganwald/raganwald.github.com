@@ -123,6 +123,10 @@ This style of writing functions declutters individual cases and will later serve
 
 ## The Expression Problem {#expression-problem}
 
+> The expression problem originated as follows: Given a set of entities and a set of operations on those entities, how do we add new entities and new operations, without recompiling, without unsafe operations like casts, and while maintaining type safety?
+>
+> The general form of the problem does not concern type safety, but does concern the elegance of the design.
+
 The [Expression Problem] is a programming design challenge: Given two orthogonal concerns of equal importance, how do we express our programming solution in such a way that neither concern becomes secondary?
 
 [Expression Problem]: https://en.wikipedia.org/wiki/Expression_problem
@@ -184,10 +188,6 @@ Both of these operations make one thing a first-class citizen and the the other 
 
 1. If we add a new shape (e.f. `Triangle`), it's easy with the object solution: Everything you need to know about a triangle goes in one place. But it's hard with the function solution: We have to carefully add a case to each function covering triangles.
 1. If we add a new operation, (e.g. `boundingBox` returns the smallest square that encloses the shape), it's easy with the function solution: we add a new function and make sure it has a case for each kind of shape. But it's hard with the object solution: We have to make sure that we add a new method to each object.
-
-> The expression problem originated as follows: Given a set of entities and a set of operations on those entities, how do we add new entities and new operations, without recompiling, without unsafe operations like casts, and while maintaining type safety?
->
-> The general form of the problem does not concern type safety, but does concern the elegance of the design.
 
 [c2 wiki]: http://c2.com/cgi/wiki?ExpressionProblem
 
