@@ -90,13 +90,7 @@ function Fubar (foo, bar) {
     this._foo = foo;
     this._bar = bar;
   }
-  else {
-    obj = new Fubar();
-    ret = Fubar.apply(obj, arguments);
-    return ret === undefined
-           ? obj
-           : ret;
-  }
+  else return new Fubar(foo, bar);
 }
 
 Fubar("Situation Normal", "All Fsked Up");
@@ -107,9 +101,7 @@ Fubar("Situation Normal", "All Fsked Up");
 
 [Effective JavaScript]: http://effectivejs.com
 
-This works provided that we carefully write our constructor such that (a) it does something sensible when called without arguments, and (b) does something sensible when called twice. It's a bit of a hack necessitated by the fact that we can't write something like `return new Fubar(arguments...)` in EcmaScript-5.
-
-Why bother? The main problem is that `new Fubar(...)` does not *compose*. Consider:
+Why bother making it work without `new`? One problem this solves is that `new Fubar(...)` does not *compose*. Consider:
 
 {% highlight javascript %}
 function logsArguments (fn) {
