@@ -107,7 +107,7 @@ Fubar("Situation Normal", "All Fsked Up");
 
 [Effective JavaScript]: http://effectivejs.com
 
-This work provided that we carefully write our constructor such that (a) it does something sensible when called without arguments, and (b) does something sensible when called twice. It's a bit of a hack necessitated by the fact that we can't write something like `return new Fubar(arguments...)` in EcmaScript-5.
+This works provided that we carefully write our constructor such that (a) it does something sensible when called without arguments, and (b) does something sensible when called twice. It's a bit of a hack necessitated by the fact that we can't write something like `return new Fubar(arguments...)` in EcmaScript-5.
 
 Why bother? The main problem is that `new Fubar(...)` does not *compose*. Consider:
 
