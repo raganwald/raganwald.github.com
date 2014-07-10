@@ -253,4 +253,4 @@ var arrayOfSevereProblems = problems.filter(Fubar.is);
 
 There you have it: Constructors that fail when called without `new` are a potential problem, and three solutions we can use are, respectively, auto-instantiation, overloading the constructor, or killing such calls with fire.
 
-(discuss on [reddit](http://raganwald.com/2014/07/09/javascript-constructor-problem.html))
+(discuss on [reddit](http://www.reddit.com/r/javascript/comments/2acr9f/a_javascript_constructor_problem_and_three/))
