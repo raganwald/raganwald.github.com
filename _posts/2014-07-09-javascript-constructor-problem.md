@@ -41,7 +41,7 @@ snafu instanceof Fubar
 
 ### the problem
 
-What happens if we call the constructor, but accidentally omit the `new` function?
+What happens if we call the constructor, but accidentally omit the `new` keyword?
 
 {% highlight javascript %}
 var fubar = Fubar("Fsked Up", "Beyond All Recognition");
