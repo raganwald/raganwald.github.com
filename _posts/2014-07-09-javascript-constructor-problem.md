@@ -177,7 +177,7 @@ snafu.concatenated()
   //=> 'Situation Normal All Fsked Up'
 {% endhighlight %}
 
-Now it works, but of course `snafu` is an instance of `Fubar`, not of `LoggingFubar`. Is that what you want? Who knows!? This isn't a justification for the pattern, as much as an explanation that it is a useful, but leaky abstraction. It's doesn't "just work," but it can make certain things possible (like decorating constructors) that are otherwise even more awkward to implement.
+Now it works, but of course `snafu` is an instance of `Fubar`, not of `LoggingFubar`. Is that what you want? Who knows!? This isn't a justification for the pattern, as much as an explanation that it is a useful, but leaky abstraction. It doesn't "just work," but it can make certain things possible (like decorating constructors) that are otherwise even more awkward to implement.
 
 ### solution: overload its meaning
 
