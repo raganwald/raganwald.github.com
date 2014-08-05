@@ -28,6 +28,8 @@ I was a little brusque: "Hang on, Sarah, last week we talked about your business
 
 "There's on one answer to the motivation problem. It may be finding someone who's a little evangelistic, who wants to be consultative and work more closely with customers. Or helping someone grow into marketing or product development. It may be finding someone who's already fascinated by the problems your business solves. And it may be different for each person. But you certainly can't expect good people to sign up just because you find some talent and are willing to pay."
 
+### solving my problem
+
 I finished scribbling notes. "So, Sarah, it comes down to this: Good salespeople don't want to come on board because:"
 
 1. Their success is gated by risks they can't control;
