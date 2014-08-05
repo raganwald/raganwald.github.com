@@ -11,6 +11,8 @@ I was a little brusque: "Hang on, Sarah, last week we talked about your business
 
 "I can't find good salespeople! They simply can't be found anywhere, and I've tried." I went on for a few minutes, and then Sarah gently recited the facts of business life to me:
 
+### why i can't find good salespeople
+
 "Reg, you believe in your product, and I believe in you, but to a salesperson the whole setup is very high risk. You're offering a generous commission, but with a start-up, the salespeople have to convince customers they have a need AND convince them you can satisfy the need AND close them on satisfying the need now. Or they starve."
 
 "Salespeople are willing to take risks, but only on the things they can control. Your development schedule, your PR, the receptivity of the market to your innovation... Salespeople have no control over that. Generous commissions can't compensate for risks they can't mitigate with their skill and experience."
@@ -33,4 +35,8 @@ I finished scribbling notes. "So, Sarah, it comes down to this: Good salespeople
 2. Ditch the compensation package that offloads risks they can't control onto their shoulders;
 3. Pay above-market for experienced people to compensate for the possibility this won't be a feather in their cap.
 
-"Got it, thanks. Now, Sarah, what exactly were you asking about hiring good programmers to work in a startup for a non-technical founder?"
+"Got it, thanks."
+
+### solving sarah's problem
+
+I finished my coffee. "Now, Sarah, what exactly were you asking about hiring good programmers to work in a startup for a non-technical founder?"
