@@ -17,7 +17,7 @@ I was a little brusque: "Hang on, Sarah, last week we talked about your business
 
 "Salespeople are willing to take risks, but only on the things they can control. Your development schedule, your PR, the receptivity of the market to your innovation... Salespeople have no control over that. Generous commissions can't compensate for risks they can't mitigate with their skill and experience."
 
-"Furthermore, the fact that you aren't a sales manager with your own track record of success is a red flag to them: There's no *social proof* that someone who knows sales thinks this is a great opportunity. And if things aren;t going well, they can't count on your sales management experience to know how to fix the problem. You are a great guy, you talk at programming conferences, but you have zero credibility as a VP-Sales when you pitch a job selling your product."
+"Furthermore, the fact that you aren't a sales manager with your own track record of success is a red flag to them: There's no *social proof* that someone who knows sales thinks this is a great opportunity. And if things aren't going well, they can't count on your sales management experience to know how to fix the problem. You are a great guy, you talk at programming conferences, but you have zero credibility as a VP-Sales when you pitch a job selling your product."
 
 "So, you have to pony up a sensible guaranteed compensation package. And even then, if someone comes to your business for a year and the business flames out, their resumé has a big red flag on it, prospective employers may think they couldn't sell."
 
