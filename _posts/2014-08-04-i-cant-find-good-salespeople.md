@@ -1,5 +1,5 @@
 ---
-title: "I can't Find Good Salespeople"
+title: "I Can't Find Good Salespeople"
 layout: default
 ---
 
