@@ -40,3 +40,7 @@ I finished scribbling notes. "So, Sarah, it comes down to this: Good salespeople
 ### solving sarah's problem
 
 I finished my coffee. "Now, Sarah, what exactly were you asking about hiring good programmers to work in a startup for a non-technical founder?"
+
+([discuss][1])
+
+[1]: https://news.ycombinator.com/item?id=8134984
