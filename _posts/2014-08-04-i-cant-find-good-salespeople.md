@@ -19,21 +19,23 @@ I was a little brusque: "Hang on, Sarah, last week we talked about your business
 
 "Furthermore, the fact that you aren't a sales manager with your own track record of success is a red flag to them: There's no *social proof* that someone who knows sales thinks this is a great opportunity. And if things aren't going well, they can't count on your sales management experience to know how to fix the problem. You are a great guy, you talk at programming conferences, but you have zero credibility as a VP-Sales when you pitch a job selling your product."
 
-"So, you have to pony up a sensible guaranteed compensation package. And even then, if someone comes to your business for a year and the business flames out, their resumé has a big red flag on it, prospective employers may think they couldn't sell."
+"So, you have to pony up a sensible guaranteed compensation package. And even then, if someone comes to your business for a year and the business flames out, their resumé has a big red flag on it, prospective employers may think they couldn't sell. That doesn't matter for inexperienced people, they're happy just to get a paycheque and say they've worked in sales for x number of years."
 
-"So the more experienced people, the ones with track records, aren't going to want to join. If they're any good, they're not chasing another gold rolex, they're chasing success and bragging rights. If there's a risk that they'll have to tell people the company failed, you'll have to pay heavily to make it worthwhile."
+"But the more experienced people, the ones with track records, don't need another year or five of experience. If they're any good, they're not chasing another gold rolex, they're chasing success, bragging rights, or a chance to say they made a difference. Given their perception that they may have to tell people the company failed, you'll have to find another motivation to get them interested."
+
+"There's on one answer to the motivation problem. It may be finding someone who's a little evangelistic, who wants to be consultative and work more closely with customers. Or helping someone grow into marketing or product development. It may be finding someone who's already fascinated by the problems your business solves. And it may be different for each person. But you certainly can't expect good people to sign up just because you find some talent and are willing to pay."
 
 I finished scribbling notes. "So, Sarah, it comes down to this: Good salespeople don't want to come on board because:"
 
 1. Their success is gated by risks they can't control;
 2. My lack of management experience in their domain;
-3. The likelihood that they'll end up with a failure on their resumé.
+3. Experienced people don't need money or another couple of years on their resumé.
 
 "So if I want good people, I have to:"
 
-1. Hire a VP Sales with credibility;
+1. Hire a leader with credibility in their domain;
 2. Ditch the compensation package that offloads risks they can't control onto their shoulders;
-3. Pay above-market for experienced people to compensate for the possibility this won't be a feather in their cap.
+3. Work with experienced people to tailor the job to their motivation.
 
 "Got it, thanks."
 
