@@ -26,7 +26,7 @@ I was a little brusque: "Hang on, Sarah, last week we talked about your business
 
 "Let's think about the more experienced people, the ones with track records. They don't need another year or five of experience. If they're any good, they're not chasing another gold rolex, they're chasing success, bragging rights, or a chance to say they made a difference. Given their perception that they may have to tell people the company failed, you'll have to find another motivation to get them interested."
 
-"There's on one answer to the motivation problem. It may be finding someone who's a little evangelistic, who wants to be consultative and work more closely with customers. Or helping someone grow into marketing or product development. It may be finding someone who's already fascinated by the problems your business solves. And it may be different for each person. But you certainly can't expect good people to sign up just because you find some talent and are willing to pay."
+"There's no single answer to the motivation problem. It may be finding someone who's a little evangelistic, who wants to be consultative and work more closely with customers. Or helping someone grow into marketing or product development. It may be finding someone who's already fascinated by the problems your business solves. And it may be different for each person. But you certainly can't expect good people to sign up just because you find some talent and are willing to pay."
 
 ### solving my problem
 
