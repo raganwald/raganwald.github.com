@@ -38,8 +38,8 @@ I finished scribbling notes. "So, Sarah, it comes down to this: Good salespeople
 
 "So if I want good people, I have to:"
 
-1. Hire a leader with credibility in their domain;
-2. Base their compensation on risks they can control;
+1. Base their compensation on risks they can control;
+2. Hire a leader with credibility in their domain;
 3. Work with experienced people to tailor the job to their motivation.
 
 "Got it, thanks."
