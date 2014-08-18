@@ -392,7 +392,7 @@ If we subscribe to this philosophy about only reducing flexibility when it enabl
 
 Taking this same reasoning to immutable structures, some would argue that the extra infrastructure required to create immutable structs is not warranted if the sole objective is to prevent inadvertent errors.
 
-To be of benefit, immutable data structures (like immutable structs) are only of benefit is we can "turn them up to eleven" and realize some new benefit, if we incorporate paradigms like [copy-on-write] and build high-performance and high-reliability code around immutable data.
+Immutable data structures (like immutable structs) are only of benefit if we can "turn them up to eleven" and realize some new benefit, if we incorporate paradigms like [copy-on-write] and build high-performance and high-reliability code around immutable data.
 
 Funny we should mention that. The Clojure and ClojureScript people have systematized the use of immutable data. And we can incorporate their libraries in our JavaScript code using the [Mori] Javascript library.
 
