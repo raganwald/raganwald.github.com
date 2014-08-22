@@ -20,9 +20,9 @@ Paul Graham tweeted something [interesting][1], and worth discussing. But first,
 
 The story is usually told to illustrate the effects that differening levels of commitment have on stakeholders in a project. When writing departmental software, the manager of the department, who is accountable for its productivity, is a pig. The company's IT manager, on the other hand, is usually a chicken.
 
-This manifests itself in behaviour such as the IT manager demanding compatibility with legacy systems such as SharePoint, becuase that drives something the IT Manager is accountable for, such as the overall budget.
+This manifests itself in behaviour such as the IT manager demanding SharePoint compatibility, because they're accountable for the ops personnel training budget.
 
-Such a decision might make the software unusable for the department, but the IT Manager is not responsible for the department's productivity, and this produces a natural tension between the two managers.
+Such a decision might make the software less usable for the department, but the IT Manager is not responsible for the department's productivity, and this produces a natural tension between the two managers.
 
 But what about the tweet?
 
