@@ -8,10 +8,14 @@ Paul Graham tweeted something [interesting][1], and worth discussing. But first,
 [1]: https://twitter.com/paulg/status/502819403948249088
 [2]: https://en.wikipedia.org/wiki/The_Chicken_and_the_Pig
 
-> A Pig and a Chicken are walking down the road.  
-> The Chicken says: "Hey Pig, I was thinking we should open a restaurant!"  
-> Pig replies: "Hm, maybe, what would we call it?"  
-> The Chicken responds: "How about 'ham-n-eggs'?"  
+> A Pig and a Chicken are walking down the road.
+>
+> The Chicken says: "Hey Pig, I was thinking we should open a restaurant!"
+>
+> Pig replies: "Hm, maybe, what would we call it?"
+>
+> The Chicken responds: "How about 'ham-n-eggs'?"
+>
 > The Pig thinks for a moment and says: "No thanks. I'd be committed, but you'd only be involved!"
 
 The story is usually told to illustrate the effects that differening levels of commitment have on stakeholders in a project. For example, when writing departmental software, the manager of the department, who is accountable for its productivity, is a pig. The company's IT manager, on the other hand, is usually a chicken.
