@@ -40,8 +40,8 @@ Regardless of what we do or do not do with textbooks, we should always pay atten
 
 Which also means, wherever you find it, there are opportunities to make money *and* to make people's lives better. If you figure out how to disrupt textbooks, you're cracking a billion dollar market, *and* helping people get an affordable education. If you figure out how to help enterprise software developers work together, better, you're cracking another billion dollar market and again making people happy doing something they love.
 
-So in conlusion... Textbooks are an example of the chicken and egg dynamic. It's an important dynamic to understand, because it is very common, *and* if you can crack it, you cand make money while making people's lives better.
+So in conlusion... Textbooks are an example of the chicken and egg dynamic. It's an important dynamic to understand, because it is very common, *and* if you can crack it, you can make money while making people's lives better.
 
-Which reminds me of another thing I read:
+Which reminds me of another thing I once read:
 
 > "Where there's muck, there's brass."—Paul Graham
