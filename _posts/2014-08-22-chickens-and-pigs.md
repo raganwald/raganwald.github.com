@@ -14,9 +14,9 @@ Paul Graham tweeted something [interesting][1], and worth discussing. But first,
 > The Chicken responds: "How about 'ham-n-eggs'?"  
 > The Pig thinks for a moment and says: "No thanks. I'd be committed, but you'd only be involved!"
 
-The story is usually told to illustrate the effects that differening levels of commitment have on stakeholders in a project. For example, when writing departmental software, the manager of the department, who is accountable for its productivity, is a pig. The company's IT manager, on teh other hand, is usually a chicken. This manifests itself in behaviour sucha s the IT manager demanding compatibility with legacy systems such as SharePoint, becuase that drives something the IT Manager is accountable for, such as the overall budget.
+The story is usually told to illustrate the effects that differening levels of commitment have on stakeholders in a project. For example, when writing departmental software, the manager of the department, who is accountable for its productivity, is a pig. The company's IT manager, on the other hand, is usually a chicken.
 
-Such a decision might make the software unusable for the department, but the IT Manager is not responsible for the department's productivity, and this produces a natural tension between the two managers.
+This manifests itself in behaviour such as the IT manager demanding compatibility with legacy systems such as SharePoint, becuase that drives something the IT Manager is accountable for, such as the overall budget. Such a decision might make the software unusable for the department, but the IT Manager is not responsible for the department's productivity, and this produces a natural tension between the two managers.
 
 But what about the tweet?
 
@@ -26,7 +26,7 @@ Textbooks are not just expensive, they're usualy terrible. If they were great, t
 
 The mechanism behind terrible textbooks is the same mechanism behind terrible enterprise software. In my experience, Enterprise Software can be effective when selected by people who don't have to use it. The key is whether it is selected by pigs. People who have to use it are one kind of pig. People accountable for the productivity it deleivers are another kind of pig. As long as an Enterprise Software project is driven by pigs and the chickens are restricted to an advisory capacity, you can have effective software.
 
-But even one chicken with direct management authority or veto power can ruin an enterprise project: They tack on a bnch of requirements that suit their own objectives at teh expense of the project's success, and you end up with nonsense. (This happens everywhere. Microsoft is suffering now because its "cash cows," Windows and Office, behaved like chickens on steriods for decades, making almost every other division and department subordinate to their goals.)
+But even one chicken with direct management authority or veto power can ruin an enterprise project: They tack on a bnch of requirements that suit their own objectives at the expense of the project's success, and you end up with nonsense. (This happens everywhere. Microsoft is suffering now because its "cash cows," Windows and Office, behaved like chickens on steriods for decades, making almost every other division and department subordinate to their goals.)
 
 So about textbooks. It's fairly obvious that the problem with textbook quality and price is that the students are pigs and everyone else--faculty, adminsitartion, publishers--are chickens with authority. Fixing this problem could be done by routing around the whole system. For example, make universities irrelevant.
 
