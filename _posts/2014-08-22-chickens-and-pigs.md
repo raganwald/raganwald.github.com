@@ -18,7 +18,7 @@ Paul Graham tweeted something [interesting][1], and worth discussing. But first,
 >
 > The Pig thinks for a moment and says: "No thanks. I'd be committed, but you'd only be involved!"
 
-The story is usually told to illustrate the effects that differening levels of commitment have on stakeholders in a project. For example, when writing departmental software, the manager of the department, who is accountable for its productivity, is a pig. The company's IT manager, on the other hand, is usually a chicken.
+The story is usually told to illustrate the effects that differening levels of commitment have on stakeholders in a project. When writing departmental software, the manager of the department, who is accountable for its productivity, is a pig. The company's IT manager, on the other hand, is usually a chicken.
 
 This manifests itself in behaviour such as the IT manager demanding compatibility with legacy systems such as SharePoint, becuase that drives something the IT Manager is accountable for, such as the overall budget.
 
