@@ -28,7 +28,7 @@ But what about the tweet?
 
 ![Textbooks](/assets/images/textbooks.png)
 
-Textbooks are not just expensive, they're usualy terrible. If they were great, the cost would be a minor concern. But when you have a medicore product, it's natural to resent being forced to pay through the nose to own it.
+Textbooks are not just expensive, they're usually terrible. If they were great, the cost would be a minor concern. But when you have a medicore product, it's natural to resent being forced to pay through the nose to own it.
 
 ### terrible textbooks
 
