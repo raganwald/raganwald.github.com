@@ -1,0 +1,65 @@
+==================================================================
+https://keybase.io/raganwald
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://raganwald.com
+  * I am raganwald (https://keybase.io/raganwald) on keybase.
+  * I have a public key with fingerprint EE3E ACF3 8CA5 C802 06D8  6267 D0F0 5DF6 75DD 151D
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "fingerprint": "ee3eacf38ca5c80206d86267d0f05df675dd151d",
+            "host": "keybase.io",
+            "key_id": "d0f05df675dd151d",
+            "uid": "8e367479ba83ce566d18282ad9d9ef00",
+            "username": "raganwald"
+        },
+        "service": {
+            "hostname": "raganwald.com",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1411223203,
+    "expire_in": 157680000,
+    "prev": "71b8cc1f8a2046b7c8709ba7e0debbf96efc8fd1893be34077349921e46ffa0e",
+    "seqno": 3,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v1.0.5
+Comment: https://keybase.io/crypto
+
+yMHmAnicbZFdSBRRGIZndTNd+xEUxAvDJlLC1eZnd34WwS7qQjKs6I9It5k5Z3an
+XWe2mXFVVFI0U0kr0ASTDCKsLBHZCymVbSukTDIqwwqzWrwJwpLoSuqM1E10bg7n
++573/c7L92hjIuawtToT387Yurtt09GVKuxQdtf1OlzUQC3uqcMDcO2SFdUH9ZCu
+qCbuwSGkoSDJNCcJbokjKIIBHEMxLCBkwg1khnUDQLpJgDtxv2ZYCmQjCgYsVDRU
+Qw+vAlD1P3zVWoODNMO6WF4UOFqCboYBJEdxlAB4wEOZICzQgLoqVEJE64JPUKuF
+IMAbnDgqhxUJWp+2Zv+LFEpaJVKHdM3UJC2IWn7TDHkspVkbstBqKHr/mHhFRQUo
+ORKEoW4omop7SERKpmK5ki6SpCiaImgnDmtCig69ikW4WYYj0LHGwDCyZEmRkyRS
+5gSKcDEiK3EsgbKxkABQFGWegbLEySgjT4uQdhEsS7t4niKhi5FlgYC4Feu0quEe
+NMkUfMjSUHyqYFbpEG+IRU/YMZsDS1qXYO0Oc6Sk/d3oxJZkrONweyQncnPg9Wq0
+fqFoU2p/7+Jg+cjFjO32nj1J33fKs0Pvxn8e+ZrfUrLfn/bwQbty9nnJ3cZ9H5jg
+43hz3rnSzUt92w5A72wPWJ5a9pR+nnlzT+a7htvnciZvH7x2JuBMCHRUTL8MLsWy
+Lxf2ZV4om0sfSSjIvRQrZztzh1anRtm2yOKiodbMB6qb4r+udiY2H699Old6Y6xl
+9In9fda8+5aDC7M/no27AsNb/cXfJsbplWNZC0nny5TJ+pPJ1xZ2pRQUfbTH2yrs
+Ta2RF+vT0nefGiOvDHQ0N/bWUEa84GjqzMqOOxnznzb05RW/Ksbu85k9/cn5X1pi
+/ujewd9/VxPM
+=u+Em
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/raganwald
+
+==================================================================
