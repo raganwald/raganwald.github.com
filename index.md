@@ -31,7 +31,7 @@ layout: default
 
 ### featured presentation
 
-<script async class="speakerdeck-embed" data-id="d33dabc0cec70131a8cd564ad4407ede" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
+<script async class="speakerdeck-embed" data-id="20a98ac01cff01321db1664d3453dee6" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
 
 <p>&nbsp;</p>
 
