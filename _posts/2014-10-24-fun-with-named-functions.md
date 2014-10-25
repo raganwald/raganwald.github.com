@@ -118,7 +118,7 @@ officer()
   //=> 'Captain Reginald Thistleton'
 {% endhighlight %}
 
-We've used `function family () { return "Thistleton"; ` as an expression here, and bound the value to the name `surname` just as we did with an anonymous function. It's a *named function expression*, and it is very interesting.
+We've used `function family () { return "Thistleton"; }` as an expression here, and bound the value to the name `surname` just as we did with an anonymous function. It's a *named function expression*, and it is very interesting.
 
 ### trace elements
 
