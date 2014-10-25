@@ -1,5 +1,6 @@
 ---
 layout: default
+title: Fun with Named Functions in JavaScript
 tags: [javascript]
 ---
 
