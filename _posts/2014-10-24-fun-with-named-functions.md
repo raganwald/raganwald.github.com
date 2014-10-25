@@ -307,6 +307,8 @@ In the end, closures and properties belonging to functions serve different purpo
 
 ### in closing
 
-The bottom line is that named functions can be either declared *or* used in an expression. Either way, the name of the function is bound inside its body, and that can be useful. We can use the name to have a function invoke itself or to access its properties like any other object.
+The bottom line is that named functions can be either declared *or* used in an expression. Either way, the name of the function is bound inside its body, and that can be useful. We can use the name to have a function invoke itself or to access its properties like any other object. beyond all other reasons, naming all of our functions helps us create readable stack traces. That's a big win all by itself.
+
+---
 
 Happy trails, and if you find functions interesting, you'll love my book [JavaScript Allongé](https://leanpub.com/javascript-allonge). It's free to read online and free as in speech!
