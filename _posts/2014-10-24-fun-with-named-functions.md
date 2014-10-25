@@ -84,7 +84,7 @@ officer()
 
 So, this is a named function: `function rank () { return "Captain"; }`, and this is an anonymous function: `function () { return "Captain"; }`. Pop quiz:
 
-1. Is `function () { return "Reginald"; }` an expression or a declaration?<br/><br/>
+1. Is `function () { return "Reginald"; }` an expression or a declaration?
 1. Is `function surname () { return "Thistleton"; }` an expression or a declaration?
 
 The answers are 1: `function () { return "Reginald"; }` is always an expression, but 2: `function surname () { return "Thistleton"; }` can be an expression or a declaration, depending on how you use it. For example:
