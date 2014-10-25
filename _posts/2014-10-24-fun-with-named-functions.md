@@ -303,7 +303,7 @@ We won't say this is *worse* or *better*, but it's not the same. First, as elega
 
 Second, the `defaultHeight` and `defaultWidth` variables are only visible to `function Board`. So given the code we've written, we can't change our minds and write `SmallGo.defaultHeight = SmallGo.defaultWidth = 11`.
 
-In the end, closures and properties belonging to functions serve different purposes, and we enjoy having bth in our toolbox.
+In the end, closures and properties belonging to functions serve different purposes, and we enjoy having both tools in our toolbox.
 
 ### in closing
 
