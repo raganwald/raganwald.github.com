@@ -7,12 +7,10 @@ tags: [javascript]
 In JavaScript, you make a named function like this:
 
 {% highlight javascript %}
-function rank () {
-  return "Captain";
-}
+function rank () { return "Captain"; }
 {% endhighlight %}
 
-Interestingly, that can be a *function declaration* if it appears inline by itself. For example:
+A named function is a *function declaration* if it appears as a statement. For example:
 
 {% highlight javascript %}
 function officer () {
@@ -25,7 +23,7 @@ officer()
   //=> 'Captain Reginald Thistleton'
 {% endhighlight %}
 
-![Captain Reginald Thistleton](/assets/images/reginaldthistleton.png)
+[![Captain Reginald Thistleton](/assets/images/reginaldthistleton.png)](http://archer.wikia.com/wiki/Reggie_Thistleton)
 
 The function `rank` is defined in the function declaration `function rank () { return "Captain"; }`. We use the function `rank` in the statement `return rank() + " Reginald Thistleton";`. We can deduce two things from this:
 
