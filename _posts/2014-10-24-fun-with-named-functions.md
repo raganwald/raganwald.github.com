@@ -307,7 +307,7 @@ Closures and function properties serve different purposes, and both tools belong
 
 ### in closing
 
-Named functions can be either declared in a statement *or* used in an expression. Named function expressions creates readable stack traces. The name of the function is bound inside its body, and that can be useful. And we can use the name to have a function invoke itself, or to access its properties like any other object.
+Named functions can be either declared in a statement *or* used in an expression. Named function expressions create readable stack traces. The name of the function is bound inside its body, and that can be useful. And we can use the name to have a function invoke itself, or to access its properties like any other object.
 
 ---
 
