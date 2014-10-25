@@ -29,7 +29,7 @@ officer()
 
 The function `rank` is defined in the function declaration `function rank () { return "Captain"; }`. We use the function `rank` in the statement `return rank() + " Reginald Thistleton";`. We can deduce two things from this:
 
-1. Declaring a named function binds the function to the name in its surrounding environment. That's why we can use the function `rank` within the function `officer`. Likewise, `officer` is declared in the global environment, and that's why we can use it on the Node command line (or wherever we're testing this code).
+1. Declaring a named function binds the function to the name in its surrounding environment. That's why we can use the function `rank` within the function `officer`. Likewise, `officer` is declared in the global environment, and that's why we can use it on the Node command line (or wherever we're testing this code).<br/><br/>
 1. We can declare a named function anywhere and its binding can be used *everywhere*. That's why we can declare `rank` at the bottom of the function, but use it at the top.
 
 That's a function declaration. What about function *expressions*? As we know, we can declare a function in an expression, meaning we can use it anywhere, like this:
