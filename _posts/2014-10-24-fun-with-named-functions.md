@@ -312,3 +312,5 @@ Named functions can be either declared in a statement *or* used in an expression
 ---
 
 Happy trails, and if you find functions interesting, you'll love my book [JavaScript Allongé](https://leanpub.com/javascript-allonge). It's free to read online and free as in speech!
+
+([discuss](http://www.reddit.com/r/javascript/comments/2kaujt/fun_with_named_functions_in_javascript_selfpost/) on reddit)
