@@ -122,6 +122,87 @@ officer()
 
 We've used `function family () { return "Thistleton"; ` as an expression here, and bound the value to the name `surname` just as we did with an anonymous function. It's a *named function expression*, and it is very interesting.
 
+### trace elements
+
+In most environments, there is some way of inspecting the call stack for debugging or documentation purposes. For example:
+
+{% highlight javascript %}
+function officer () {
+  return rank() + " " + given() + " Thistleton";
+  
+  var given = function () { return "Reginald"; };
+  
+  function rank () { return "Captain"; }
+}
+
+officer()
+  //=> TypeError: undefined is not a function
+         at officer (repl:5:39)
+{% endhighlight %}
+
+Note the second line: `at officer (repl:5:39)`. We know that the `TypeError` occurred within the `officer` function. How does the environment know it's the officer function? Because we named it in the declaration.
+
+If we used an anonymous function bound to a name, Node can deduce the name of the function:
+
+{% highlight javascript %}
+var officer = function () {
+  return rank() + " " + given() + " Thistleton";
+  
+  var given = function () { return "Reginald"; };
+  
+  function rank () { return "Captain"; }
+}
+
+officer()
+  //=> TypeError: undefined is not a function
+         at officer (repl:5:39)
+{% endhighlight %}
+
+But not all functions are so easily deduced. Callbacks in Node, event handlers in the browser, and functions passed to higher-order functions and methods are all often anonymous:
+
+{% highlight javascript %}
+[1962, 6, 14].filter(function (n) { return n <= 12; })
+  //=> [ 6 ]
+{% endhighlight %}
+
+Sometimes, such functions go wrong:
+
+{% highlight javascript %}
+function factorial (n) {
+  system.out.println(n);
+  
+  return n < 2 ? n : n * factorial(n-1);
+}
+
+[1962, 6, 14].filter(function (n) { return factorial(n) % 2 == 1; })
+  //=> ReferenceError: system is not defined
+          at factorial (repl:2:1)
+          at repl:1:45
+          at Array.filter (native)
+{% endhighlight %}
+
+We seem to have confused "JavaScript" with "Java," and looking at the stack trace, we can see it happens within `factorial`, but what calls it? `repl:1:45` is not very helpful. This case is trivial enough to work it out, but lots of stack traces are much deeper and contain multiple anonymous functions.
+
+But we know that a function expression doesn't need to be anonymous:
+
+{% highlight javascript %}
+function factorial (n) {
+  system.out.println(n);
+  
+  return n < 2 ? n : n * factorial(n-1);
+}
+
+[1962, 6, 14].filter(function numbersWithOddFactorials (n) { return factorial(n) % 2 == 1; })
+  //=> ReferenceError: system is not defined
+          at factorial (repl:2:1)
+          at numbersWithOddFactorials (repl:1:70)
+          at Array.filter (native)
+{% endhighlight %}
+
+Naming functions is extremely useful for debugging purposes. There are very few reasons *not* to name functions. Where by "very few", we mean "probably zero."
+
+Are there any other benefits? Yes.
+
 ### scope
 
 When we use a named function expression (not a declaration, but an expression), the name of the function is **not** bound in its enclosing environment:
