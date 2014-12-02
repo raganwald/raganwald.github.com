@@ -3,7 +3,6 @@ layout: default
 title: Type-Fu Fighting
 ---
 
-```
 Everybody was type-fu fighting
 Compiling fast as lightning
 In fact it was a little bit frightening
@@ -29,8 +28,9 @@ Compiling fast as lightning
 In fact it was a little bit frightening
 But their code had early binding
 
-(repeat)..make sure you have early binding
+(repeat)...
+Make sure you have early binding
 Type-fu fighting, compiling fast as lightning
-```
+
 
 (inspiration courtesy of [hypstr](http://www.reddit.com/r/programming/comments/1t8y6g/why_rust_ditched_pure_functions/ce5m1ju))
