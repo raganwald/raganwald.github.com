@@ -1,6 +1,5 @@
 ---
 layout: default
-indexed: false
 ---
 
 (*This was originally posted on Sunday, March 11, 2007*)
