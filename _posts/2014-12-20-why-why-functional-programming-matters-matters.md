@@ -4,7 +4,7 @@ layout: default
 
 (*This was originally posted on Sunday, March 11, 2007*)
 
-I recently re-read the amazing paper [Why Functional Programming Matters](http://www.math.chalmers.se/~rjmh/Papers/whyfp.html) (&#8220;WhyFP&#8221;). Although I thought that I understood WhyFP when I first read it a few years ago, when I had another look last weekend I suddenly understood that I had missed an important message.<sup>1</sup>
+I recently re-read the amazing paper [Why Functional Programming Matters](http://www.math.chalmers.se/~rjmh/Papers/whyfp.html) (&#8220;WhyFP&#8221;). Although I thought that I understood WhyFP when I first read it a few years ago, when I had another look last weekend I suddenly understood that I had missed an important message.[^1]
 
 Now obviously (can you guess from the title?) the paper is about the importance of one particular style of programming, functional programming. And when I first read the paper, I took it at face value: I thought, &#8220;Here are some reasons why functional programming languages matter.&#8221;
 
@@ -17,7 +17,7 @@ In a very real sense, the design of a programming language is a strong expressio
 > It is a logical impossibility to make a language more powerful by omitting features, no matter how bad they may be.
 Is this obvious? So how do we explain that one reason Java is considered &#8220;better than C++&#8221; is because it omits manual memory management? And one reason many people consider Java &#8220;better than Ruby&#8221; is because you cannot open base classes like `String` in Java? So no, it is not obvious. Why not?
 
-The key is the word _better_. It&#8217;s not the same as the phrase _more powerful_.<sup>2</sup> The removal or deliberate omission of these features is an expression about the idea that programs which do not use these features are better than programs which do. Any feature (or removal of a feature) which makes the programs written in the language better makes the language better. Thus, it _is_ possible to make a language &#8220;better&#8221; by removing features that are considered harmful,<sup>3</sup> if by doing so it makes programs in the language better programs.
+The key is the word _better_. It&#8217;s not the same as the phrase _more powerful_.[^2] The removal or deliberate omission of these features is an expression about the idea that programs which do not use these features are better than programs which do. Any feature (or removal of a feature) which makes the programs written in the language better makes the language better. Thus, it _is_ possible to make a language &#8220;better&#8221; by removing features that are considered harmful,[^3] if by doing so it makes programs in the language better programs.
 
 In the opinion of the designers of Java, programs that do not use `malloc` and `free` are safer than those that do. And the opinion of the designers of Java is that programs that do not modify base classes like `String` are safer than those that do. The Java language design emphasizes a certain kind of safety, and to a Java language designer, safer programs are better programs.
 
@@ -26,13 +26,14 @@ In the opinion of the designers of Java, programs that do not use `malloc` and `
 WhyFP asserts that you cannot make a language more powerful through the removal of features. To paraphrase an argument from the paper, _if removing harmful features was useful by itself, C and C++ programmers would simply have stopped using_ `malloc` _and_ `free` _twenty years ago_. Improving on C/C++ was not just a matter of removing `malloc` and `free`, it was also a matter of adding automatic garbage collection.
 
 > This space, wherein the essay ought to argue that Java compensates for its closed base classes by providing a more powerful substitute feature, left intentionally blank.
+
 At the same time, there is room for arguing that some languages are improved by the removal of harmful features. To understand why they may be improved but not more powerful, we need a more objective definition of what it means for a language to be &#8220;more powerful.&#8221; Specifically, what quality does a more powerful programming language permit or encourage in programs?
 
 When we understand what makes a program &#8220;better&#8221; in the mind of a language designer, we can understand the choices behind the language.
 
 ### Factoring
 
-Factoring a program is the act of dividing it into units that are composed to produce the working software.<sup>4</sup> Factoring happens as part of the design. (_Re_-factoring is the act of rearranging an existing program to be factored in a different way). If you want to compare this to factoring in number theory, a well designed program has lots of factors, like the number `3,628,800` (`10!`). A [Big Ball of Mud](http://www.laputan.org/mud/) is like the number `3,628,811`, a prime.
+Factoring a program is the act of dividing it into units that are composed to produce the working software.[^4] Factoring happens as part of the design. (_Re_-factoring is the act of rearranging an existing program to be factored in a different way). If you want to compare this to factoring in number theory, a well designed program has lots of factors, like the number `3,628,800` (`10!`). A [Big Ball of Mud](http://www.laputan.org/mud/) is like the number `3,628,811`, a prime.
 
 Composition is the construction of programs from smaller programs. So factoring is to composition as division is to multiplication.
 
@@ -51,15 +52,9 @@ Programs that separate their concerns are well-factored. There&#8217;s a princip
 
 This is the separation of concerns again. Each component of a program having one clearly defined responsibility means each concern is addressed in one clearly defined place.
 
-> Let’s ask a question about Monopoly (and Enterprise software). Where do the rules live? In a noun-oriented design, the rules are smooshed and smeared across the design, because every single object is responsible for knowing everything about everything that it can ‘do’. All the verbs are glued to the nouns as methods.<div>&#8212;[My favourite interview question](http://raganwald.github.com/2006/06/my-favourite-interview-question.html)</div>
+> Let’s ask a question about Monopoly (and Enterprise software). Where do the rules live? In a noun-oriented design, the rules are smooshed and smeared across the design, because every single object is responsible for knowing everything about everything that it can ‘do’. All the verbs are glued to the nouns as methods.&#8212;[My favourite interview question](http://raganwald.github.com/2006/06/my-favourite-interview-question.html)
 
 In a game design where you have important information about a rule smeared all over the object hierarchy, you have very poor separation of concerns. It looks at first like there&#8217;s a clear factoring &#8220;Baltic Avenue has a method called `isUpgradableToHotel`,&#8221; but when you look more closely you realize that every object representing a property is burdened with knowing almost all of the rules of the game.
-
-<div class="book">[![](http://raganwald.github.com/assets/images/old//seasoned_schemer.jpg)](http://www.amazon.com/gp/product/026256100X?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=026256100X)![](http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=026256100X)
-
-[The Seasoned Schemer](http://www.amazon.com/gp/product/026256100X?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=026256100X)![](http://www.assoc-amazon.com/e/ir?t=raganwald001-20&l=as2&o=1&a=026256100X) is devoted to the myriad uses of first class functions. This book is approachable and a delight to read, but the ideas are provocative and when you close the back cover you will be able to compose programs from functions in powerful new ways.
-
-</div>
 
 The concerns are not clearly separated: there&#8217;s no one place to look and understand the behaviour of the game.
 
@@ -81,18 +76,18 @@ Structured Pascal programming is straightforward both in theory and in practice.
 
 Consider this snippet of iterative code:
 
-<pre class="textmate-source sunburst">
-<span class="source source_java"><span class="storage storage_type storage_type_java">int</span> numberOfOldTimers = <span class="constant constant_numeric constant_numeric_java">0</span>;
-<span class="meta meta_definition meta_definition_constructor meta_definition_constructor_java"><span class="entity entity_name entity_name_function entity_name_function_constructor entity_name_function_constructor_java">for</span> <span class="meta meta_definition meta_definition_param-list meta_definition_param-list_java">(<span class="storage storage_type storage_type_java">Employee</span> emp: employeeList</span>) </span>{
-<span class="meta meta_definition meta_definition_constructor meta_definition_constructor_java">    <span class="entity entity_name entity_name_function entity_name_function_constructor entity_name_function_constructor_java">for</span> <span class="meta meta_definition meta_definition_param-list meta_definition_param-list_java">(<span class="storage storage_type storage_type_java">Department</span> dept: departmentsInCompany</span>) </span>{
-        <span class="keyword keyword_control keyword_control_java">if</span> (emp.getDepartmentId() <span class="keyword keyword_operator keyword_operator_comparison keyword_operator_comparison_java">==</span> dept.getId() <span class="keyword keyword_operator keyword_operator_logical keyword_operator_logical_java">&amp;&amp;</span> emp.getYearsOfService() <span class="keyword keyword_operator keyword_operator_comparison keyword_operator_comparison_java">&gt;</span> dept.getAge()) {
-            <span class="keyword keyword_operator keyword_operator_increment-decrement keyword_operator_increment-decrement_java">++</span>numberOfOldTimers;
+{% highlight java %}
+int numberOfOldTimers = 0;
+for (Employee emp: employeeList) {
+    for (Department dept: departmentsInCompany) {
+        if (emp.getDepartmentId() == dept.getId() && emp.getYearsOfService() > dept.getAge()) {
+            ++numberOfOldTimers;
         }
     }
 }
-</span>
-</pre>
-This is an improvement on older practices.<sup>5, 6</sup> For one thing, the `for` loops hide the implementation details of iterating over `employeeList` and `departmentsInCompany`. Is this better because you have less to type? Yes. Is it better because you eliminate the fence-post errors associated with loop variables? Of course.
+{% endhighlight %}
+
+This is an improvement on older practices.[^5] [^6] For one thing, the `for` loops hide the implementation details of iterating over `employeeList` and `departmentsInCompany`. Is this better because you have less to type? Yes. Is it better because you eliminate the fence-post errors associated with loop variables? Of course.
 
 But most interestingly, you have the beginnings of a _separation of concerns_: how to iterate over a single list is separate from what you do in the iteration.
 
@@ -103,20 +98,16 @@ No, we say, &#8220;We want to count the number of employees that have been with 
 
 In this case, a limitation of our tool has caused our concerns to intermingle again. The concern of &#8220;How to find the employees that have been with the company longer than their departments have existed&#8221; is intertwined with the concern of &#8220;count them.&#8221; Let&#8217;s try a different notation that separates the details of _how to find_ from the detail of _counting what we&#8217;ve found_:
 
-<pre class="textmate-source sunburst">
-<span class="source source_ruby">old_timers = (employees * departments).select <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|emp, dept|
-  emp.department_id == dept.id &amp;&amp; emp.years_of_service &gt; dept.age
-<span class="keyword keyword_control keyword_control_ruby">end</span>
+{% highlight ruby %}
+old_timers = (employees * departments).select do |emp, dept|
+  emp.department_id == dept.id && emp.years_of_service > dept.age
+end
 number_of_old_timers = old_timers.size
-</span>
-</pre>
+{% endhighlight %}
+
 Now we have separated the concern of finding from counting. And we have hidden the nesting by using the `*` operator to create a Cartesian product of the two lists. Now let&#8217;s look at what we used to filter the combined list, `select`. The difference is more than just semantics, or counting characters, or the alleged pleasure of fooling around with closures.
 
-<div class="book">
-  [![](http://raganwald.github.com/assets/images/old//haskell_school_of_expression.jpg)](http://www.amazon.com/gp/product/0521644089?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521644089)![](http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;amp;amp;o=1&amp;a=0521644089)
-I’m not a Haskell user (yet), but [The Haskell School of Expression: Learning Functional Programming through Multimedia](http://www.amazon.com/gp/product/0521644089?ie=UTF8&amp;tag=raganwald001-20&amp;link_code=as3&amp;amp;camp=211189&amp;creative=373489&amp;creativeASIN=0521644089)![](http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;amp;amp;o=1&amp;a=0521644089) has received rave reviews and comes with solid recommendations. It’s on my [wish list](http://www.amazon.com/gp/registry/wishlist/3A2XEHODQK2WP/ref=wl_web/) if you’re feeling generous!
-
-</div>`*` and `select` facilitates separating the concerns of how to filter things (like iterate over them applying a test) from the concern of what we want to filter. So languages that make this easy are more powerful than languages that do not. In the sense that they facilitate additional axes of factoring.
+`*` and `select` facilitates separating the concerns of how to filter things (like iterate over them applying a test) from the concern of what we want to filter. So languages that make this easy are more powerful than languages that do not. In the sense that they facilitate additional axes of factoring.
 
 ### The Telephone Test
 
@@ -128,34 +119,34 @@ But sometimes you have to write the _how_ as well as the _what_. It isn&#8217;t 
 
 I recently separated the concern of describing &#8220;how to generate sample curves for some data mining&#8221; from the concern of &#8220;managing memory when generating the curves.&#8221; I did so by writing my own lazy evaluation code (Both the [story](http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html) and the [code](http://raganwald.com/assets/media/source/lazy_lists.html) are on line). Here&#8217;s the key &#8220;what&#8221; code that generates an infinite list of parameters for sample bezi&eacute;r curves:
 
-<pre class="textmate-source sunburst">
-<span class="source source_ruby"><span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">magnitudes</span></span>
-  <span class="support support_class support_class_ruby">LazyList</span>.binary_search(<span class="constant constant_numeric constant_numeric_ruby">0.0</span>, <span class="constant constant_numeric constant_numeric_ruby">1.0</span>)
-<span class="keyword keyword_control keyword_control_ruby">end</span>
+{% highlight ruby %}
+def magnitudes
+  LazyList.binary_search(0.0, 1.0)
+end
 
-<span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">control_points</span></span>
-  <span class="support support_class support_class_ruby">LazyList</span>.cartesian_product(magnitudes, magnitudes) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|x, y|
-    <span class="support support_class support_class_ruby">Dictionary</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>( <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; x, <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span> =&gt; y )
-  <span class="keyword keyword_control keyword_control_ruby">end</span>
-<span class="keyword keyword_control keyword_control_ruby">end</span>
+def control_points
+  LazyList.cartesian_product(magnitudes, magnitudes) do |x, y|
+    Dictionary.new( :x => x, :y => y )
+  end
+end
 
-<span class="meta meta_function meta_function_method meta_function_method_without-arguments meta_function_method_without-arguments_ruby"><span class="keyword keyword_control keyword_control_def keyword_control_def_ruby">def</span> <span class="entity entity_name entity_name_function entity_name_function_ruby">order_one_flows</span></span> args = {}
-  height, width = (args[<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>height</span>] || <span class="constant constant_numeric constant_numeric_ruby">100.0</span>), (args[<span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>width</span>] || <span class="constant constant_numeric constant_numeric_ruby">100.0</span>)
-  <span class="support support_class support_class_ruby">LazyList</span>.cartesian_product(
+def order_one_flows args = {}
+  height, width = (args[:height] || 100.0), (args[:width] || 100.0)
+  LazyList.cartesian_product(
       magnitudes, control_points, control_points, magnitudes
-  ) <span class="keyword keyword_control keyword_control_ruby keyword_control_ruby_start-block">do </span>|initial_y, p1, p2, final_y|
-    <span class="support support_class support_class_ruby">FlowParams</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(
+  ) do |initial_y, p1, p2, final_y|
+    FlowParams.new(
       height, width, initial_y * height,
-      <span class="support support_class support_class_ruby">CubicBezierParams</span>.<span class="keyword keyword_other keyword_other_special-method keyword_other_special-method_ruby">new</span>(
-        <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x</span> =&gt; width,          <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y</span> =&gt; final_y * height,
-        <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x1</span> =&gt; p1.x * width,  <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y1</span> =&gt; p1.y * height,
-        <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>x2</span> =&gt; p2.x * width,  <span class="constant constant_other constant_other_symbol constant_other_symbol_ruby"><span class="punctuation punctuation_definition punctuation_definition_constant punctuation_definition_constant_ruby">:</span>y2</span> =&gt; p2.y * height
+      CubicBezierParams.new(
+        :x => width,          :y => final_y * height,
+        :x1 => p1.x * width,  :y1 => p1.y * height,
+        :x2 => p2.x * width,  :y2 => p2.y * height
       )
     )
-  <span class="keyword keyword_control keyword_control_ruby">end</span>
-<span class="keyword keyword_control keyword_control_ruby">end</span>
-</span>
-</pre>
+  end
+end
+{% endhighlight %}
+
 That&#8217;s it. Just as I might tell you on the phone: &#8220;Magnitudes&#8221; is a list of numbers between zero and one created by repeatedly dividing the intervals in half, like a binary search. &#8220;Control Points&#8221; is a list of the Cartesian product of magnitudes with itself, with one magnitude assigned to `x` and the other to `y`. And so forth.
 
 I will not say that the sum of this code and the code that actually implements infinite lists is shorter than imperative code that would intermingle loops and control structures, [entangling](http://www.amazon.com/gp/product/B000002J27?ie=UTF8&amp;tag=raganwald001-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=B000002J27 "A Trick of the Tail by Genesis, Track 2, Entangled")![](http://www.assoc-amazon.com/e/ir?t=raganwald001-20&amp;l=as2&amp;o=1&amp;a=B000002J27) _what_ with _how_. I will say that it separates the concerns of what and how, and it separates them in a different way than `select` separated the concerns of what and how.
@@ -172,8 +163,14 @@ That&rsquo;s why [Why Functional Programming Matters](http://www.math.chalmers.s
 
 ---
 
-1.  And now I&#8217;m worried: what am I _still_ missing?
-2.  Please let&#8217;s not have a discussion about [Turing Equivalence](http://en.wikipedia.org/wiki/Turing-complete). Computer Science &#8220;Theory&#8221; tells us &#8220;there&#8217;s no such thing as more powerful.&#8221; Perhaps we share the belief that _In theory, there&#8217;s no difference between theory and practice. But in practice, there is_.
-3.  I am not making the claim that _I_ consider memory management or unsealed base classes harmful, but I argue that there exists at least one person who does.
-4.  The word &#8220;factor&#8221; has been a little out of vogue in recent times. But thanks to an excellent [post on reddit](http://programming.reddit.com/info/18td4/comments), it could make a comeback.
-5.  So much so that we won&#8217;t even bother to show what loops looked like in the days of `for (int i = 0; i < employeeList.size(); ++i)`.6.  Another organization might merge employees and departments, or have each department &ldquo;own&rdquo; a collection of employees. This makes our example easier, but now the _data_ doesn&rsquo;t factor well. Everything we&rsquo;ve learned from databases in the last forty years tells us that we often need to find new ways to compose our data. The relational model factors well. The network model factors poorly.<div style="clear:both; padding-bottom:0.25em"></div>
+[^1]: And now I&#8217;m worried: what am I _still_ missing?
+
+[^2]: Please let&#8217;s not have a discussion about [Turing Equivalence](http://en.wikipedia.org/wiki/Turing-complete). Computer Science &#8220;Theory&#8221; tells us &#8220;there&#8217;s no such thing as more powerful.&#8221; Perhaps we share the belief that _In theory, there&#8217;s no difference between theory and practice. But in practice, there is_.
+
+[^3]: I am not making the claim that _I_ consider memory management or unsealed base classes harmful, but I argue that there exists at least one person who does.
+
+[^4]: The word &#8220;factor&#8221; has been a little out of vogue in recent times. But thanks to an excellent [post on reddit](http://programming.reddit.com/info/18td4/comments), it could make a comeback.
+
+[^5]: So much so that we won&#8217;t even bother to show what loops looked like in the days of `for (int i = 0; i < employeeList.size(); ++i)`.
+
+[^6]: Another organization might merge employees and departments, or have each department &ldquo;own&rdquo; a collection of employees. This makes our example easier, but now the _data_ doesn&rsquo;t factor well. Everything we&rsquo;ve learned from databases in the last forty years tells us that we often need to find new ways to compose our data. The relational model factors well. The network model factors poorly.
