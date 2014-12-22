@@ -4,7 +4,7 @@ layout: default
 
 (*This was originally posted on Sunday, March 11, 2007*)
 
-I recently re-read the amazing paper [Why Functional Programming Matters](http://www.math.chalmers.se/~rjmh/Papers/whyfp.html) (&#8220;WhyFP&#8221;). Although I thought that I understood WhyFP when I first read it a few years ago, when I had another look last weekend I suddenly understood that I had missed an important message.[^1]
+I recently re-read the amazing paper [Why Functional Programming Matters](http://www.cse.chalmers.se/~rjmh/Papers/whyfp.html) (&#8220;WhyFP&#8221;). Although I thought that I understood WhyFP when I first read it a few years ago, when I had another look last weekend I suddenly understood that I had missed an important message.[^1]
 
 Now obviously (can you guess from the title?) the paper is about the importance of one particular style of programming, functional programming. And when I first read the paper, I took it at face value: I thought, &#8220;Here are some reasons why functional programming languages matter.&#8221;
 
@@ -159,7 +159,7 @@ WhyFP illustrates this point beautifully with the same examples I just gave: [fi
 
 WhyFP&#8217;s value is that it expresses an opinion about what makes programs better. It backs this opinion up with reasons why modern functional programming languages are more powerful than imperative programming languages. But even if you don&#8217;t plan to try functional programming tomorrow, the lessons about better programs are valuable for your work in _any_ language today.
 
-That&rsquo;s why [Why Functional Programming Matters](http://www.math.chalmers.se/~rjmh/Papers/whyfp.html) matters.
+That&rsquo;s why [Why Functional Programming Matters](http://www.cse.chalmers.se/~rjmh/Papers/whyfp.html) matters.
 
 ---
 
