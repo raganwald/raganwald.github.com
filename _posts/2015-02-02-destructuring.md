@@ -305,13 +305,19 @@ Armed with our definition of an empty list and with what we've already learned, 
 First, we pick what we call a *terminal case*. What is the length of an empty array? `0`. So let's start our function with the observation that if an array is empty, the length is `0`:
 
 {% highlight javascript %}
-const length = ([first, ...rest]) => first === undefined ? 0 : // ???
+const length = ([first, ...rest]) =>
+  first === undefined
+    ? 0
+    : // ???
 {% endhighlight %}
       
 We need something for when the array isn't empty. If an array is not empty, and we break it into two pieces, `first` and `y`, the length of our array is going to be `length(first) + length(y)`. Well, the length of `first` is `1`, there's just one element at the front. But we don't know the length of `y`. If only there was a function we could call... Like `length`!
 
 {% highlight javascript %}
-const length = ([first, ...rest]) => first === undefined ? 0 : 1 + length(rest);
+const length = ([first, ...rest]) =>
+  first === undefined
+    ? 0
+    : 1 + length(rest);
 {% endhighlight %}
     
 Let's try it!
