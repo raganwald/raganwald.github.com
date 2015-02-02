@@ -228,7 +228,7 @@ headAndTail(1, 2, 3, 4, 5)
       
 Gathering works with parameters! This is very useful indeed, and we'll see more of it in a moment.[^rest]
 
-[^rest]: Gathering in parameters has a long history, and the usual terms are to call gathering "pattern matching" and to call a name that is bound to gathered values a "rest parameter." The term "rest" is perfectly compatible with "gather:" "Rest" is the noun, and "gather" is the verb. We *gather* the *rest* of the parameters.
+[^rest]: Gathering in parameters has a long history, and the usual terms are to call gathering "pattern matching" and to call a name that is bound to gathered values a "rest parameter." The term "rest" is perfectly compatible with gather: "Rest" is the noun, and "gather" is the verb. We *gather* the *rest* of the parameters.
 
 [![Stacked Cups](/assets/images/stacked-cups.jpg)](https://www.flickr.com/photos/sankarshan/5165312159)
 
