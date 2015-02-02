@@ -392,9 +392,10 @@ Another common problem is applying a function to every element of an array. Java
 If we want to square each number in a list, we could write:
 
 {% highlight javascript %}
-const squareAll = ([first, ...rest]) => first === undefined
-                                            ? []
-                                            : [first * first, ...squareAll(rest)];
+const squareAll = ([first, ...rest]) =>
+  first === undefined
+  ? []
+  : [first * first, ...squareAll(rest)];
                                             
 squareAll([1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
@@ -403,9 +404,10 @@ squareAll([1, 2, 3, 4, 5])
 And if we wanted to "truthify" each element in a list, we could write:
 
 {% highlight javascript %}
-const truthyAll = ([first, ...rest]) => first === undefined
-                                            ? []
-                                            : [!!first, ...truthyAll(rest)];
+const truthyAll = ([first, ...rest]) =>
+  first === undefined
+    ? []
+    : [!!first, ...truthyAll(rest)];
 
 truthyAll([null, true, 25, false, "foo"])
   //=> [false,true,true,false,true]
@@ -422,9 +424,10 @@ const mapWith = (fn, array) => // ...
 We can write it out using a ternary operator. Even in this small function, we can identify the terminal condition, the piece being broken off, and recomposing the solution.
 
 {% highlight javascript %}
-const mapWith = (fn, [first, ...rest]) => first === undefined
-                                              ? []
-                                              : [fn(first), ...mapWith(fn, rest)];
+const mapWith = (fn, [first, ...rest]) => 
+  first === undefined
+    ? []
+    : [fn(first), ...mapWith(fn, rest)];
                                               
 mapWith((x) => x * x, [1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
@@ -438,9 +441,10 @@ mapWith((x) => !!x, [null, true, 25, false, "foo"])
 With the exception of the `length` example at the beginning, our examples so far all involve rebuilding a solution using splats.  But they needn't. A function to compute the sum of the squares of a list of numbers might look like this:
 
 {% highlight javascript %}
-const sumSquares = ([first, ...rest]) => first === undefined
-                                         ? 0
-                                         : first * first + sumSquares(rest);
+const sumSquares = ([first, ...rest]) =>
+  first === undefined
+    ? 0
+    : first * first + sumSquares(rest);
                                          
 sumSquares([1, 2, 3, 4, 5])
   //=> 55
@@ -454,22 +458,25 @@ There are two differences between `sumSquares` and our maps above:
 Let's rewrite `mapWith` so that we can use it to sum squares.
 
 {% highlight javascript %}
-const foldWith = (fn, terminalValue, [first, ...rest]) => first === undefined
-                                                          ? terminalValue
-                                                          : fn(first, foldWith(fn, terminalValue, rest));
+const foldWith = (fn, terminalValue, [first, ...rest]) =>
+  first === undefined
+    ? terminalValue
+    : fn(first, foldWith(fn, terminalValue, rest));
 {% endhighlight %}
                                                            
 And now we supply a function that does slightly more than our mapping functions:
 
 {% highlight javascript %}
-foldWith((number, rest) => number * number + rest, 0, [1, 2, 3, 4, 5])
+foldWith((number, rest) =>
+  number * number + rest, 0, [1, 2, 3, 4, 5])
   //=> 55
 {% endhighlight %}
 
 Our `foldWith` function is a generalization of our `mapWith` function. We can represent a map as a fold, we just need to supply the array rebuilding code:
 
 {% highlight javascript %}
-const squareAll = (array) => foldWith((first, rest) => [first * first, ...rest], [], array);
+const squareAll = (array) =>
+  foldWith((first, rest) => [first * first, ...rest], [], array);
 
 squareAll([1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
@@ -478,8 +485,9 @@ squareAll([1, 2, 3, 4, 5])
 And if we like, we can write `mapWith` using `foldWith`:
 
 {% highlight javascript %}
-const mapWith = (fn, array) => foldWith((first, rest) => [fn(first), ...rest], [], array),
-      squareAll = (array) => mapWith((x) => x * x, array);
+const mapWith = (fn, array) =>
+  foldWith((first, rest) => [fn(first), ...rest], [], array);
+const squareAll = (array) => mapWith((x) => x * x, array);
 
 squareAll([1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
@@ -488,7 +496,8 @@ squareAll([1, 2, 3, 4, 5])
 And to return to our first example, our version of `length` can be written as a fold:
 
 {% highlight javascript %}
-const length = (array) => foldWith((first, rest) => 1 + rest, 0, array);
+const length = (array) =>
+  foldWith((first, rest) => 1 + rest, 0, array);
 
 length([1, 2, 3, 4, 5])
   //=> 5
