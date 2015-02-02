@@ -521,7 +521,11 @@ Some data structures, like lists, have a can be defined as self-similar. When wo
 
 Linear recursion is a basic building block of algorithms. Its basic form parallels the way linear data structures like lists are constructed: This helps make it understandable. Its specialized cases of mapping and folding are especially useful and can be used to build other functions. And finally, while folding is a special case of linear recursion, mapping is a special case of folding.
 
-And last but certainly not least, destructuring, spreads, and rests make this very natural to express in JavaScript ES-6.
+And last but certainly not least, destructuring, spreading, and gathering make this very natural to express in JavaScript ES-6.
+
+> This post was extracted from my in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. Your feedback helps everyone, so please, join the discussion or submit an edit directly. Thank you!—Reg "raganwald" Braithwaite
+
+[ja6]: https://leanpub.com/javascriptallongesix
 
 [reddit](http://www.reddit.com/r/javascript/comments/2uirec/destructuring_and_recursion_in_es6/) | [hacker news](https://news.ycombinator.com/item?id=8984508) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-02-destructuring.md)
 
