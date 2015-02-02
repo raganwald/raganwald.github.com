@@ -425,5 +425,7 @@ Linear recursion is a basic building block of algorithms. Its basic form paralle
 
 And last but certainly not least, destructuring, spreads, and rests make this very natural to express in JavaScript ES-6.
 
+([Edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-02-destructuring.md))
+
 ---
     
