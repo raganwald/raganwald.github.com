@@ -134,7 +134,7 @@ description([["Reginald", "Braithwaite"], "programmer"])
       
 ### rest
 
-Sometimes wee need to extract arrays from arrays. Here is the most common pattern: Extracting the head and everything but the head from an array:
+Sometimes we need to extract arrays from arrays. Here is the most common pattern: Extracting the head and everything but the head from an array:
 
 {% highlight javascript %}
 const [car, ...cdr] = [1, 2, 3, 4, 5];
