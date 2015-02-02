@@ -113,7 +113,7 @@ const surname = (name) => {
   return last;
 }
 
-last(["Reginald", "Braithwaite"])
+surname(["Reginald", "Braithwaite"])
   //=> "Braithwaite"
 {% endhighlight %}
       
