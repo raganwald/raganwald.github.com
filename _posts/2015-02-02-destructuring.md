@@ -158,6 +158,12 @@ const [...butLast, last] = [1, 2, 3, 4, 5];
 const [first, ..., last] = [1, 2, 3, 4, 5];
   //=> ERROR
 {% endhighlight %}
+
+Also it's important to note that the `...` can be at the beginning, for example in case of constructors like:
+
+{% highlight javascript %}
+const date = new Date(...[2015, 1, 1]);
+{% endhighlight %}
       
 Now, when we introduced destructuring, we saw that it is kind-of-sort-of the reverse of array literals. So if
 
