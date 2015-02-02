@@ -8,7 +8,7 @@ tags: [allonge]
 
 ### array literals
 
-Arrays are JavaScript's "native" representation of lists. Strings are important because they represent writing. Lists are important because they represent ordered collections of things, and ordered collections are a fundamental abstraction for making sense of reality.
+Arrays are JavaScript's "native" representation of lists. Lists are important because they represent ordered collections of things, and ordered collections are a fundamental abstraction for making sense of reality.
 
 JavaScript has a literal syntax for creating an array: The `[` and `]` characters. We can create an empty array:
 
