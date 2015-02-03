@@ -42,7 +42,7 @@ Including an expression denoting another array:
 [[[[[]]]]]
 {% endhighlight %}
     
-This is an array with one element that is an array array with one element this an array with one element that is an array with one element that is an empty array. Although that seems like something nobody would ever construct, many students have worked with almost the exact same thing when they explored various means of constructing arithmetic from Set Theory.
+This is an array with one element that is an array array with one element that is an array with one element that is an array with one element that is an empty array. Although that seems like something nobody would ever construct, many students have worked with almost the exact same thing when they explored various means of constructing arithmetic from Set Theory.
 
 Any expression will do, including names:
 
@@ -523,7 +523,7 @@ length([1, 2, 3, 4, 5])
     
 ### what does it all mean?
 
-Some data structures, like lists, have a can be defined as self-similar. When working with a self-similar data structure, a recursive algorithm parallels the data's self-similarity.
+Some data structures, like lists, can be defined as self-similar. When working with a self-similar data structure, a recursive algorithm parallels the data's self-similarity.
 
 Linear recursion is a basic building block of algorithms. Its basic form parallels the way linear data structures like lists are constructed: This helps make it understandable. Its specialized cases of mapping and folding are especially useful and can be used to build other functions. And finally, while folding is a special case of linear recursion, mapping is a special case of folding.
 
