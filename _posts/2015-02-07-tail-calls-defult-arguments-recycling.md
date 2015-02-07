@@ -395,6 +395,6 @@ So FORTRAN used arrays, and in time Lisp added vectors that work like arrays, an
 
 Although we showed how to use tail calls to map and fold over arrays with `[first, ...rest]`, in reality this is not how it ought to be done. But it is an extremely simple illustration of how recursion works when you have a self-similar means of constructing a data structure.
 
-[edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-07-tail-calls-defult-arguments-recycling.md)
+[reddit](http://www.reddit.com/r/javascript/comments/2v4mcd/tail_calls_default_arguments_and_excessive/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-07-tail-calls-defult-arguments-recycling.md)
 
 ---
