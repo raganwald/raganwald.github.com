@@ -398,3 +398,7 @@ Although we showed how to use tail calls to map and fold over arrays with `[firs
 [reddit](http://www.reddit.com/r/javascript/comments/2v4moc/tail_calls_default_arguments_and_excessive/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-07-tail-calls-defult-arguments-recycling.md)
 
 ---
+
+*This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. Your feedback helps everyone, so please, join the discussion or submit an edit directly. Thank you!*—Reg "raganwald" Braithwaite
+
+---
