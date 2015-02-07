@@ -387,11 +387,13 @@ cdr(oneToFive)
       
 Again, it's just extracting a reference from a cons cell, it's very fast. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed.
 
-Thus, an operation like `[first, ...rest] = someArray`  that can be very slow with JavaScript is lightning-fast in Lisp, because `[first, ...rest]` is really a `car` and a `cdr` if we're making lists our of cons cells. Likewise, an operation like `someArray = [something, ...moreElements]` is lightning-fast in Lisp because we're only creating one new cons cell, we aren't duplicating the entire array.
+Thus, an operation like `[first, ...rest] = someArray`  that can be very slow with JavaScript is lightning-fast in Lisp, because `[first, ...rest]` is really a `car` and a `cdr` if our lists are chains of cons cells. Likewise, an operation like `someArray = [something, ...moreElements]` is lightning-fast in Lisp because we're only creating one new cons cell with a single CPU instruction, we aren't duplicating the entire array.
 
-Alas, although lists made out of cons cells are very fast for prepending elements and "shifting" elements off the front, they are slow for iterating over elements because the computer has to "pointer chase" through memory, it's much faster to increment a register and fetch the next item. And it's excruciating to attempt to access an arbitrary item, you have to iterate from the beginning, every time.
+Alas, although lists made out of cons cells are very fast for prepending elements and "shifting" elements off the front, they are slow for iterating over elements because the computer has to "pointer chase" through memory. It's much faster to increment a register and fetch the next item. And it's excruciating to attempt to access an arbitrary item, you have to iterate from the beginning, every time.
 
-So FORTRAN used arrays, and in time Lisp added vectors that work like arrays, and with a new data structure came new algorithms. And so it is today that languages like JavaScript have arrays that are slow to split into a `car`/`cdr` pair, but are lightning fast to access any one item given an index.
+The designers of FORTRAN wanted to optimize for scientific calculations involving matrix math and other operations that benefitted from random access, so they used vectors rather than cons cells. In time, Lisp also added vectors that work like JavaScript arrays, and with a new data structure came new algorithms.
+
+And so it is today that languages like JavaScript have arrays that are slow to split into a `car`/`cdr` pair, but are lightning fast to access any one item given an index. But instructional examples of recursive programs still have echoes of their Lisp origins.
 
 ### summary
 
