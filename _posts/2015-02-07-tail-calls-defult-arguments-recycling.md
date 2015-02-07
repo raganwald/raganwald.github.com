@@ -401,4 +401,6 @@ Although we showed how to use tail calls to map and fold over arrays with `[firs
 
 *This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. Your feedback helps everyone, so please, join the discussion or submit an edit directly. Thank you!*—Reg "raganwald" Braithwaite
 
+[ja6]: https://leanpub.com/javascriptallongesix
+
 ---
