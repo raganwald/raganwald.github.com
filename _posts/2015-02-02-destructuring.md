@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Destructuring and Recursion in ES6
+title: Destructuring and Recursion in ES-6
 tags: [allonge]
 ---
 
@@ -14,7 +14,8 @@ JavaScript has a literal syntax for creating an array: The `[` and `]` character
 
 {% highlight javascript %}
 []
-  //=> []{% endhighlight %}
+  //=> []
+{% endhighlight %}
       
 We can create an array with one or more *elements* by placing them between the brackets and separating the items with commas. Whitespace is optional:
 
