@@ -124,7 +124,7 @@ lengthDelaysWork(["foo", "bar", "baz"], 0)
   //=> 3
 {% endhighlight %}
       
-This `lengthDelaysWork` function calls itself in tail position. The `1 +` work is done before calling itself, and by the time it reaches the terminal position, it has the answer. Now that we've seen how it works, we can clean up the `0 + numberToBeAdded` business. But while we're doing that, it's annoying to remember to call it with a zero. Let's fix that with `callLast`:
+This `lengthDelaysWork` function calls itself in tail position. The `1 +` work is done before calling itself, and by the time it reaches the terminal position, it has the answer. Now that we've seen how it works, we can clean up the `0 + numberToBeAdded` business. But while we're doing that, it's annoying to remember to call it with a zero. Let's fix that:
 
 {% highlight javascript %}
 const lengthDelaysWork = ([first, ...rest], numberToBeAdded) =>
@@ -309,7 +309,7 @@ Now we don't need to use two functions. A default argument is concise and readab
 
 ![Garbage Day](/assets/images/garbage.jpg)
     
-In our discussion of [Destructuring and Recursion in ES6](2015-02-02-destructuring.md), we looked at an implementation of `mapWith` for arrays that used array literals and destructuring. We now seen how to use [Tail Calls](#tail) to execute it in constant space:
+We have now seen how to use [Tail Calls](#tail) to execute `mapWith` in constant space:
 
 {% highlight javascript %}
 const mapWith = (fn, [first, ...rest], prepend = []) =>
@@ -323,7 +323,7 @@ mapWith((x) => x * x, [1, 2, 3, 4, 5])
 
 But when we try it on very large arrays, we discover that it is *still* very slow. Much slower than the built-in `.map` method for arrays. The right tool to discover why it's still slow is a memory profiler, but a simple inspection of the program will reveal the following:
 
-Ever time we call `mapWithDelaysWork`, we're calling `[...prepend, fn(first)]`. To do that, we take the array in `prepend` and push `fn(first)` onto the end, creating a new array that will be passed to the next invocation of `mapWithDelaysWork`.
+Every time we call `mapWith`, we're calling `[...prepend, fn(first)]`. To do that, we take the array in `prepend` and push `fn(first)` onto the end, creating a new array that will be passed to the next invocation of `mapWith`.
 
 Worse, the JavaScript Engine actually copies the elements from `prepend` into the new array one at a time. That is very laborious.[^cow]
 
@@ -346,9 +346,9 @@ Once upon a time, there was a programming language called [Lisp], an acronym for
 
 The 704 had a 36-bit word, meaning that it was very fast to store and retrieve 36-bit values. The CPU's instruction set featured two important macros: `CAR` would fetch 15 bits representing the Contents of the Address part of the Register, while `CDR` would fetch the Contents of the Decrement part of the register. In broad terms, this means that a single 36-bit word could store two separate 15-bit values and it was very fast to save and retrieve pairs of values. If you had two 15-bit values and wished to write them to the register, the `CONS` macro would take the values and write them to a 36-bit word.
 
-Thus, `CONS` put two values together, `CAR` extracted one, and `CDR` extracted the other. Lisp's basic data type is often said to be the list, but in actuality it was the "cons cell," the term used to describe two 15-bit values stored in one word. The 15-bit values were used as pointers that could refer to a location in memory, so in effect, a Cons Cell was a little data structure with two pointers to other Cons Cells.
+Thus, `CONS` put two values together, `CAR` extracted one, and `CDR` extracted the other. Lisp's basic data type is often said to be the list, but in actuality it was the "cons cell," the term used to describe two 15-bit values stored in one word. The 15-bit values were used as pointers that could refer to a location in memory, so in effect, a cons cell was a little data structure with two pointers to other cons cells.
 
-Lists were represented as linked lists of Cons Cells, with each cell's head pointing to an element and the tail pointing to another Cons Cell.
+Lists were represented as linked lists of cons cells, with each cell's head pointing to an element and the tail pointing to another cons cell.
 
 Here's the scheme in JavaScript, using two-element arrays to represent cons cells:
 
@@ -394,3 +394,7 @@ So FORTRAN used arrays, and in time Lisp added vectors that work like arrays, an
 ### summary
 
 Although we showed how to use tail calls to map and fold over arrays with `[first, ...rest]`, in reality this is not how it ought to be done. But it is an extremely simple illustration of how recursion works when you have a self-similar means of constructing a data structure.
+
+[edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-07-tail-calls-defult-arguments-recycling.md)
+
+---
