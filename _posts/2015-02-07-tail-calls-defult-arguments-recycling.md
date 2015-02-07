@@ -76,7 +76,7 @@ Is there a better way? Several, in fact, fast algorithms is a very highly studie
 
 ### tail-call optimization
 
-A "tail-call" occurs when a function's last act is to invoke another function, and then return whatever the other function returns. For example, consider the `maybe` function decorator we saw earlier:
+A "tail-call" occurs when a function's last act is to invoke another function, and then return whatever the other function returns. For example, consider the `maybe` function decorator:
 
 {% highlight javascript %}
 const maybe = (fn) =>
