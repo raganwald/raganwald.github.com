@@ -200,7 +200,7 @@ Introductions to recursion often mention calculating factorials:
 5! = 5  x  4  x  3  x  2  x  1 = 120.
 {% endhighlight %}
 
-The naïve function for calcuating the factorial of a positive integer follows directly from the definition:
+The naïve function for calculating the factorial of a positive integer follows directly from the definition:
 
 {% highlight javascript %}
 const factorial = (n) =>
