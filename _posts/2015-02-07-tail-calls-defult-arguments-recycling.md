@@ -341,12 +341,15 @@ If this is so bad, why do some examples of "functional" algorithms work this exa
 
 ### some history
 
-Once upon a time, there was a programming language called [Lisp], an acronym for LISt Processing. Lisp was one of the very first high-level languages. As mentioned previously, the very first implementation was written for the [IBM 704] computer. (The very first FORTRAN implementation was also written for the 704).
+Once upon a time, there was a programming language called [Lisp], an acronym for LISt Processing.[^lisp] Lisp was one of the very first high-level languages, the very first implementation was written for the [IBM 704] computer. (The very first FORTRAN implementation was also written for the 704).
 
 [Lisp]: https://en.wikipedia.org/wiki/Lisp_(programming_language)
 [IBM 704]: https://en.wikipedia.org/wiki/IBM_704
+[^lisp]: Lisp is still very much alive, and one of the most interesting and exciting programming languages in use today is [Clojure](http://clojure.org/), a Lisp dialect that runs on the JVM, along with its sibling [ClojureScript](https://github.com/clojure/clojurescript), Clojure that transpiles to JavaScript.
 
-The 704 had a 36-bit word, meaning that it was very fast to store and retrieve 36-bit values. The CPU's instruction set featured two important macros: `CAR` would fetch 15 bits representing the Contents of the Address part of the Register, while `CDR` would fetch the Contents of the Decrement part of the register. In broad terms, this means that a single 36-bit word could store two separate 15-bit values and it was very fast to save and retrieve pairs of values. If you had two 15-bit values and wished to write them to the register, the `CONS` macro would take the values and write them to a 36-bit word.
+The 704 had a 36-bit word, meaning that it was very fast to store and retrieve 36-bit values. The CPU's instruction set featured two important macros: `CAR` would fetch 15 bits representing the Contents of the Address part of the Register, while `CDR` would fetch the Contents of the Decrement part of the Register.
+
+In broad terms, this means that a single 36-bit word could store two separate 15-bit values and it was very fast to save and retrieve pairs of values. If you had two 15-bit values and wished to write them to the register, the `CONS` macro would take the values and write them to a 36-bit word.
 
 Thus, `CONS` put two values together, `CAR` extracted one, and `CDR` extracted the other. Lisp's basic data type is often said to be the list, but in actuality it was the "cons cell," the term used to describe two 15-bit values stored in one word. The 15-bit values were used as pointers that could refer to a location in memory, so in effect, a cons cell was a little data structure with two pointers to other cons cells.
 
@@ -387,7 +390,7 @@ cdr(oneToFive)
       
 Again, it's just extracting a reference from a cons cell, it's very fast. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed.
 
-Thus, an operation like `[first, ...rest] = someArray`  that can be very slow with JavaScript is lightning-fast in Lisp, because `[first, ...rest]` is really a `car` and a `cdr` if our lists are chains of cons cells. Likewise, an operation like `someArray = [something, ...moreElements]` is lightning-fast in Lisp because we're only creating one new cons cell with a single CPU instruction, we aren't duplicating the entire array.
+Thus, an operation like `[first, ...rest] = someArray` that can be very slow with JavaScript is lightning-fast in Lisp, because `[first, ...rest]` is really a `car` and a `cdr` if our lists are chains of cons cells. Likewise, an operation like `someArray = [something, ...moreElements]` is also lightning-fast because we're only creating one new cons cell with a single CPU instruction: We aren't duplicating the entire array.
 
 Alas, although lists made out of cons cells are very fast for prepending elements and "shifting" elements off the front, they are slow for iterating over elements because the computer has to "pointer chase" through memory. It's much faster to increment a register and fetch the next item. And it's excruciating to attempt to access an arbitrary item, you have to iterate from the beginning, every time.
 
