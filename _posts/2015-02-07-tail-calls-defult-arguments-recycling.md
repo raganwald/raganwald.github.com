@@ -331,11 +331,13 @@ Worse, the JavaScript Engine actually copies the elements from `prepend` into th
 
 [^cow]: It needn't always be so: Programmers have developed specialized data structures that make operations like this cheap, often by arranging for structures to share common elements by default, and only making copies when changes are made. But this is not how JavaScript's built-in arrays work.
 
-The array we had in `prepend` is no longer used. In GC environments, it is marked as no longer being used, and eventually the garbage collector recycles the meory it is using. Lather, rinise, repeat: Ever time we call `mapWithDelaysWork`, we're throwing an existing array away and creating a new one.
+The array we had in `prepend` is no longer used. In GC environments, it is marked as no longer being used, and eventually the garbage collector recycles the memory it is using. Lather, rinse, repeat: Ever time we call `mapWithDelaysWork`, we're creating a new array, copying all the elements from `prepend` into the new array, and then we no longer use `prepend`.
 
-We may not be creating 3,000 stack frames, but we are creating an empty array, an array with one element, and array with two elements, an array with three elements, and so on up to an array with three thousand elements that we eventually use. Although the maximum amount of memory does not grow, the thrashing as we create short-lived arrays is very bad, and we do a lot of work copying elements from one array to another.
+We may not be creating 3,000 stack frames, but we are creating three thousand new arrays and copying elements into each and every one of them. Although the maximum amount of memory does not grow, the thrashing as we create short-lived arrays is very bad, and we do a lot of work copying elements from one array to another.
 
-If this is so bad, why do some examples of "functional" algorithms work this exact way?
+K> **Key Point**: Our `[first, ...rest]` approach to recursion is slow because that it creates a lot of temporary arrays, and it spends an enormous amount of time copying elements into arrays that end up being discarded. 
+
+So here's a question: If this is such a slow approach, why do some examples of "functional" algorithms work this exact way?
 
 ![The IBM 704](/assets/images/IBM704.jpg)
 
@@ -355,6 +357,8 @@ Thus, `CONS` put two values together, `CAR` extracted one, and `CDR` extracted t
 
 Lists were represented as linked lists of cons cells, with each cell's head pointing to an element and the tail pointing to another cons cell.
 
+A> Having these instructions be very fast was important to those early designers: They were working on one of the first high-level languages (COBOL and FORTRAN being the others), and computers in the late 1950s were extremely small and slow by today's standards. Although the 704 used core memory, it still used vacuum tubes for its logic. Thus, the design of programming languages and algorithms was driven by what could be accomplished with limited memory and performance.
+
 Here's the scheme in JavaScript, using two-element arrays to represent cons cells:
 
 {% highlight javascript %}
@@ -372,7 +376,19 @@ oneToFive
   //=> [1,[2,[3,[4,[5,null]]]]]
 {% endhighlight %}
 
-Here's where things get interesting. If we want the head of a list, we call `car` on it:
+Notice that though JavaScript displays our list as if it is composed of arrays nested within each other like Russian Dolls, in reality the arrays refer to each other with references, so `[1,[2,[3,[4,[5,null]]]]]` is actually more like:
+
+{% highlight javascript %}
+const node5 = [5,null],
+      node4 = [4, node5],
+      node3 = [3, node4],
+      node2 = [2, node3],
+      node1 = [1, node2];
+    
+const oneToFive = node1;
+{% endhighlight %}
+
+This is a [Linked List](https://en.wikipedia.org/wiki/Linked_list), it's just that those early Lispers used the names `car` and `cdr` after the hardware instructions, whereas today we use words like `data` and `reference`. But it works the same way: If we want the head of a list, we call `car` on it:
 
 {% highlight javascript %}
 car(oneToFive)
@@ -388,15 +404,25 @@ cdr(oneToFive)
   //=> [2,[3,[4,[5,null]]]]
 {% endhighlight %}
       
-Again, it's just extracting a reference from a cons cell, it's very fast. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed.
+Again, it's just extracting a reference from a cons cell, it's very fast. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed. In JavaScript, it's still much, much, much faster to get all the elements except the head from a linked list than from an array. Getting one reference to a structure that already exists is faster than copying a bunch of elements.
 
-Thus, an operation like `[first, ...rest] = someArray` that can be very slow with JavaScript is lightning-fast in Lisp, because `[first, ...rest]` is really a `car` and a `cdr` if our lists are chains of cons cells. Likewise, an operation like `someArray = [something, ...moreElements]` is also lightning-fast because we're only creating one new cons cell with a single CPU instruction: We aren't duplicating the entire array.
+So now we understand that in Lisp, a lot of things use linked lists, and they do that in part because it was what the hardware made possible.
 
-Alas, although lists made out of cons cells are very fast for prepending elements and "shifting" elements off the front, they are slow for iterating over elements because the computer has to "pointer chase" through memory. It's much faster to increment a register and fetch the next item. And it's excruciating to attempt to access an arbitrary item, you have to iterate from the beginning, every time.
+Getting back to JavaScript now, when we write `[first, ...rest]` to gather or spread arrays, we're emulating the semantics of `car` and `cdr`, but not the implementation. We're doing something laborious and memory-inefficient compared to using a linked list as Lisp did and as we can still do if we choose.
 
-The designers of FORTRAN wanted to optimize for scientific calculations involving matrix math and other operations that benefitted from random access, so they used vectors rather than cons cells. In time, Lisp also added vectors that work like JavaScript arrays, and with a new data structure came new algorithms.
+That being said, it is easy to understand and helps us grasp how literals and destructuring works, and how recursive algorithms ought to mirror the self-similarity of the data structures they manipulate. And so it is today that languages like JavaScript have arrays that are slow to split into the equivalent of a `car`/`cdr` pair, but instructional examples of recursive programs still have echoes of their Lisp origins.
 
-And so it is today that languages like JavaScript have arrays that are slow to split into a `car`/`cdr` pair, but are lightning fast to access any one item given an index. But instructional examples of recursive programs still have echoes of their Lisp origins.
+### so why arrays
+
+If `[first, ...rest]` is so slow, why does JavaScript use arrays instead of making everything a linked list?
+
+Well, linked lists are fast for a few things, like taking the front element off a list, and taking the remainder of a list. But not for iterating over a list or taking an arbitrary element of a list: Pointer chasing through memory is quite a bit slower than incrementing an index. In addition to the extra fetches to dereference pointers, pointer chasing suffers from cache misses.
+
+We also have avoided discussing rebinding and mutating values, but if we want to change elements of our lists, the naïve linked list implementation suffers as well: When we take the `cdr` of a linked list, we are sharing the elements. If we make any change other than cons-ing a new element to the front, we are changing both the new list and the old list.
+
+Arrays avoid this problem by pessimistically copying all the references whenever we extract an element or sequence of elements from them.
+
+For these and other reasons, almost all languages today make it possible to use a fast array or vector type that is optimized for iteration, and even Lisp now has a variety of data structures that are optimized for specific use cases.
 
 ### summary
 
