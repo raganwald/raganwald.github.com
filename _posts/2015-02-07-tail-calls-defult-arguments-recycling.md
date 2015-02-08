@@ -335,7 +335,7 @@ The array we had in `prepend` is no longer used. In GC environments, it is marke
 
 We may not be creating 3,000 stack frames, but we are creating three thousand new arrays and copying elements into each and every one of them. Although the maximum amount of memory does not grow, the thrashing as we create short-lived arrays is very bad, and we do a lot of work copying elements from one array to another.
 
-K> **Key Point**: Our `[first, ...rest]` approach to recursion is slow because that it creates a lot of temporary arrays, and it spends an enormous amount of time copying elements into arrays that end up being discarded. 
+> **Key Point**: Our `[first, ...rest]` approach to recursion is slow because that it creates a lot of temporary arrays, and it spends an enormous amount of time copying elements into arrays that end up being discarded. 
 
 So here's a question: If this is such a slow approach, why do some examples of "functional" algorithms work this exact way?
 
@@ -357,7 +357,7 @@ Thus, `CONS` put two values together, `CAR` extracted one, and `CDR` extracted t
 
 Lists were represented as linked lists of cons cells, with each cell's head pointing to an element and the tail pointing to another cons cell.
 
-A> Having these instructions be very fast was important to those early designers: They were working on one of the first high-level languages (COBOL and FORTRAN being the others), and computers in the late 1950s were extremely small and slow by today's standards. Although the 704 used core memory, it still used vacuum tubes for its logic. Thus, the design of programming languages and algorithms was driven by what could be accomplished with limited memory and performance.
+> Having these instructions be very fast was important to those early designers: They were working on one of the first high-level languages (COBOL and FORTRAN being the others), and computers in the late 1950s were extremely small and slow by today's standards. Although the 704 used core memory, it still used vacuum tubes for its logic. Thus, the design of programming languages and algorithms was driven by what could be accomplished with limited memory and performance.
 
 Here's the scheme in JavaScript, using two-element arrays to represent cons cells:
 
