@@ -17,7 +17,7 @@ mapWith((x) => x * x, [1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
 {% endhighlight %}
 
-Let's step through its execution. First, `mapWith((x) => x * x, [1, 2, 3, 4, 5])` is invoked. `first` is not `undefined`, so it evaluates [fn(first), ...mapWith(fn, rest)]. To do that, it has to evaluate `fn(first)` and `mapWith(fn, rest)`, then evaluate [fn(first), ...mapWith(fn, rest)].
+Let's step through its execution. First, `mapWith((x) => x * x, [1, 2, 3, 4, 5])` is invoked. `first` is not `undefined`, so it evaluates [fn(first), ...mapWith(fn, rest)]. To do that, it has to evaluate `fn(first)` and `mapWith(fn, rest)`, then evaluate `[fn(first), ...mapWith(fn, rest)]`.
 
 This is roughly equivalent to writing:
 
