@@ -428,7 +428,7 @@ For these and other reasons, almost all languages today make it possible to use 
 
 Although we showed how to use tail calls to map and fold over arrays with `[first, ...rest]`, in reality this is not how it ought to be done. But it is an extremely simple illustration of how recursion works when you have a self-similar means of constructing a data structure.
 
-[reddit](http://www.reddit.com/r/javascript/comments/2v4moc/tail_calls_default_arguments_and_excessive/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-07-tail-calls-defult-arguments-recycling.md)
+[hacker news](https://news.ycombinator.com/item?id=9019554) | [reddit](http://www.reddit.com/r/javascript/comments/2v4moc/tail_calls_default_arguments_and_excessive/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-07-tail-calls-defult-arguments-recycling.md)
 
 ---
 
