@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "The Quantum Electrodynamics of Functional JavaScript"
-tags: [allonge, computation]
+tags: [allonge computation]
 ---
 
 ![Coffee served at the CERN particle accelerator](/assets/images/cern-coffee.jpg)
@@ -36,7 +36,9 @@ A very long time ago, mathematicians like Alonzo Church, Moses Schönfinkel, and
 
 They established that arbitrary computations could be represented with radically simple sets of tools. For example, we don't need arrays to represent lists, or even POJOs to represent nodes in a linked list. We can model lists just using functions.
 
-> [To Mock a Mockingbird](http://www.amazon.com/gp/product/0192801422/ref=as_li_ss_tl?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0192801422) established the metaphor of songbirds for the combinators, and ever since then logicians have called the K combinator a "kestrel," the B combinator a "bluebird," and so forth. The [osin.es] library contains code for all of the standard combinators and for experimenting using the standard notation.
+> [To Mock a Mockingbird](http://www.amazon.com/gp/product/0192801422/ref=as_li_ss_tl?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0192801422) established the metaphor of songbirds for the combinators, and ever since then logicians have called the K combinator a "kestrel," the B combinator a "bluebird," and so forth. 
+
+> The [osin.es] library contains code for all of the standard combinators and for experimenting using the standard notation.
 
 [To Mock a Mockingbird]: http://www.amazon.com/gp/product/0192801422/ref=as_li_ss_tl?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0192801422
 [osin.es]: http://oscin.es
