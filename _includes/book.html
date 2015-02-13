@@ -10,7 +10,6 @@
     {% assign leanpub = '/combinators' %}
   {% elsif tag == "computation" %}
     {% assign amazon = '1449329276' %}
-    {% assign leanpub = '/b/buy-allonge-get-thesixedition-free' %}
   {% elsif tag == "gameoflife" %}
     {% assign amazon = '048649098X' %}
   {% elsif tag == "surrealnumbers" %}
@@ -46,10 +45,6 @@
   {% if leanpub != '' %}
     <iframe style="position:relative;float:right;left:180px;top:{{ top }}px;margin-left:-160px;" width="160" height="430" src="https://leanpub.com{{ leanpub }}/embed" frameborder="0" allowtransparency="true"></iframe>
     {% capture top %}{{ top | plus:450 }}{% endcapture %}
-  {% endif %}
-  {% if amazon != '' %}
-    <iframe src="http://rcm.amazon.com/e/cm?lt1=_blank&bc1=000000&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=raganwald001-20&o=1&p=8&l=as4&m=amazon&f=ifr&ref=ss_til&asins={{ amazon }}" style="position:relative;float:right;left:180px;top:{{ top }}px;margin-left:-160px;width:120px;height:240px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
-    {% capture top %}{{ top | plus:260 }}{% endcapture %}
   {% endif %}
 
 {% endfor %}
