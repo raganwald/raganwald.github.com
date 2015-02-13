@@ -32,7 +32,7 @@ length(OneTwoThree)
   //=> 3
 {% endhighlight %}
 
-A very long time ago, mathematicians like Alonzo Church, Moses Schönfinkel, and Alan Turning, and Haskell Curry and asked themselves if we really needed all these features to perform computations. They searched for a radically simpler set of tools that could accomplish all of the same things.
+A very long time ago, mathematicians like Alonzo Church, Moses Schönfinkel, Alan Turning, and Haskell Curry and asked themselves if we really needed all these features to perform computations. They searched for a radically simpler set of tools that could accomplish all of the same things.
 
 They established that arbitrary computations could be represented with radically simple sets of tools. For example, we don't need arrays to represent lists, or even POJOs to represent nodes in a linked list. We can model lists just using functions.
 
@@ -454,7 +454,7 @@ Knowing how to make a list our of just functions is a little like knowing that q
 
 So what *is* interesting about this? What nags at our brain as we're falling asleep after working our way through this?
 
-### backwardness
+### return to backward thinking
 
 To make tuples work, we did things *backwards*, we passed the `first` and `rest` functions to the tuple, and the tuple called our function. As it happened, the tuple was composed by the vireo (or V combinator): `(x) => (y) => (z) => z(x)(y)`.
 
