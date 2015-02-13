@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "The Quantum Electrodynamics of Functional JavaScript"
-tags: [computation]
+tags: [allonge]
 ---
 
 ![Coffee served at the CERN particle accelerator](/assets/images/cern-coffee.jpg)
