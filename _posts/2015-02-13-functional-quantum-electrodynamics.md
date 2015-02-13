@@ -78,7 +78,7 @@ K(6)(7)
   //=> 6
   
 K(12)(24)
-  //=> 6
+  //=> 12
 {% endhighlight %}
 
 This is very interesting. Given two values, we can say that `K` always returns the *first* value: `K(x)(y) => x` (that's not valid JavaScript, but it's essentially how it works).
