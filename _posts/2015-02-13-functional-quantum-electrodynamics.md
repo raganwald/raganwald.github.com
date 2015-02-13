@@ -511,12 +511,10 @@ There are many tools for hiding implementation information, and we have now seen
 * Instead of directly manipulating part of an entity, pass it a function and have it call our function with the part we want.
 * And instead of testing some property of an entity and making a choice of our own with `?:` (or `if`), pass the entity the work we want done for each case and let it test itself.
 
-[ja6]: https://leanpub.com/javascriptallongesix
+[ja6]: https://leanpub.com/b/buy-allonge-get-thesixedition-free
 
 [reddit](http://www.reddit.com/r/javascript/comments/2vs2u8/the_quantum_electrodynamics_of_functional/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-13-functional-quantum-electrodynamics.md)
 
 ---
 
 *This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. Your feedback helps everyone, so please, join the discussion or submit an edit directly. Thank you!*—Reg "raganwald" Braithwaite
-
----
