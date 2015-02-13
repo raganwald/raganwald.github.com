@@ -43,13 +43,15 @@ They established that arbitrary computations could be represented with radically
 [To Mock a Mockingbird]: http://www.amazon.com/gp/product/0192801422/ref=as_li_ss_tl?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0192801422
 [osin.es]: http://oscin.es
 
-Let's start with some of the building blocks of combinatory logic, the K, I, and V combinators, nicknamed the "Kestrel", "Idiot Bird", and the "Vireo:"
+Let's start with some of the building blocks of combinatory logic, the K, I, and V combinators, nicknamed the "Kestrel", the "Idiot Bird", and the "Vireo:"
 
 {% highlight javascript %}
 const K = (x) => (y) => x;
 const I = (x) => (x);
 const V = (x) => (y) => (z) => z(x)(y);
 {% endhighlight %}
+
+> This is very interesting. Given two values, we can say that `K` always returns the *first* value, and given two values, `K(I)` always returns the *second* value.
 
 ### the kestrel and the idiot
 
