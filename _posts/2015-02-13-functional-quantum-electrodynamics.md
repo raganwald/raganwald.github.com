@@ -442,17 +442,24 @@ print(mapWith(x => x * x, reverse(l123)))
   //=> 941
 {% endhighlight %}
 
-We have managed to provide the exact same functionality that `===` and `?:` provided, but using  functions only.
+We have managed to provide the exact same functionality that `===` and `?:` provided, but using functions and nothing else.
 
 ### functions are not the real point
 
-There are lots of similar texts explaining how to construct complex semantics out of functions. The superficial conclusion reads something like this:
+There are lots of similar texts explaining how to construct complex semantics out of functions. You can establish that `K` and `K(I)` can represent `true` and `false`, model magnitudes with [Church Numerals] or [Surreal Numbers], and build your way up to printing FizzBuzz.
 
-> Functions are a fundamental building block of computation. They are "axioms" of combinatory logic, and can be used to compute anything that JavaScript can compute. We've taken a cursory look at how this can be done by using functions to represent linked lists and some of the operations on them.
+The superficial conclusion reads something like this:
 
-However, that is not the interesting thing to note here. Practically speaking, languages like JavaScript do provide arrays with mapping and folding methods, choice operations, and other rich constructs. Knowing how to make a linked list out of functions is not really necessary for the working programmer. (Knowing that it can be done, on the other hand, is very important to understanding computer science.)
+[Church Numerals]: https://en.wikipedia.org/wiki/Church_encoding
+[Surreal Numbers]: https://en.wikipedia.org/wiki/Surreal_number
 
-Knowing how to make a list our of just functions is a little like knowing that quarks combine in quark-antiquark pairs or in complementary triplets. It's the QED of physics that underpins the Maxwell's Equations of programming. Deeply important, but not practical when you're building a bridge.
+> Functions are a fundamental building block of computation. They are "axioms" of combinatory logic, and can be used to compute anything that JavaScript can compute.
+
+However, that is not the interesting thing to note here. Practically speaking, languages like JavaScript already provide arrays with mapping and folding methods, choice operations, and other rich constructs. Knowing how to make a linked list out of functions is not really necessary for the working programmer. (Knowing that it can be done, on the other hand, is very important to understanding computer science.)
+
+Knowing how to make a list out of just functions is a little like knowing that photons are the [Gauge Bosons] of the electromagnetic force. It's the QED of physics that underpins the Maxwell's Equations of programming. Deeply important, but not practical when you're building a bridge.
+
+[Gauge Bosons]: https://en.wikipedia.org/wiki/Gauge_boson
 
 So what *is* interesting about this? What nags at our brain as we're falling asleep after working our way through this?
 
@@ -512,6 +519,8 @@ There are many tools for hiding implementation information, and we have now seen
 
 * Instead of directly manipulating part of an entity, pass it a function and have it call our function with the part we want.
 * And instead of testing some property of an entity and making a choice of our own with `?:` (or `if`), pass the entity the work we want done for each case and let it test itself.
+
+postscript: If you speak Ruby, Tom Stuart's *Programming with Nothing* is a [must-watch](http://rubymanor.org/3/videos/programming_with_nothing/) and a [must-read](http://codon.com/programming-with-nothing).
 
 [ja6]: https://leanpub.com/b/buy-allonge-get-thesixedition-free
 
