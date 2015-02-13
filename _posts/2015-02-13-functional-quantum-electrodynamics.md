@@ -254,7 +254,7 @@ We can write `length` and `mapWith` functions over it:
 {% highlight javascript %}
 const length = (aTuple) =>
   aTuple === EMPTY
-    ? delayed
+    ? 0
     : 1 + length(rest(aTuple));
 
 length(l123)
@@ -354,8 +354,8 @@ We can reverse this: Instead of asking a tuple if it is empty and then deciding 
 {% highlight javascript %}
 const length = (aTuple) =>
   aTuple === EMPTY
-    ? delayed
-    : 1 + length(rest(aTuple));
+    ? 0
+    : 1 + length(aTuple(rest));
 {% endhighlight %}
 
 Let's presume we are working with a slightly higher abstraction, we'll call it a `list`. Instead of writing `length(list)` and examining a list, we'll write something like:
