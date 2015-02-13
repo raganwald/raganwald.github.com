@@ -520,7 +520,7 @@ There are many tools for hiding implementation information, and we have now seen
 * Instead of directly manipulating part of an entity, pass it a function and have it call our function with the part we want.
 * And instead of testing some property of an entity and making a choice of our own with `?:` (or `if`), pass the entity the work we want done for each case and let it test itself.
 
-postscript: If you speak Ruby, Tom Stuart's *Programming with Nothing* is a [must-watch](http://rubymanor.org/3/videos/programming_with_nothing/) and a [must-read](http://codon.com/programming-with-nothing).
+---
 
 [ja6]: https://leanpub.com/b/buy-allonge-get-thesixedition-free
 
@@ -528,4 +528,4 @@ postscript: If you speak Ruby, Tom Stuart's *Programming with Nothing* is a [mus
 
 ---
 
-*This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. Your feedback helps everyone, so please, join the discussion or submit an edit directly. Thank you!*—Reg "raganwald" Braithwaite
+postscript: If you speak Ruby, Tom Stuart's *Programming with Nothing* is a [must-watch](http://rubymanor.org/3/videos/programming_with_nothing/) and a [must-read](http://codon.com/programming-with-nothing). *This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. Your feedback helps everyone, so please, join the discussion or submit an edit directly. Thank you!*—Reg "raganwald" Braithwaite
