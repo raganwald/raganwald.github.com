@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Functional Quantum Electrodynamics in JavaScript"
+title: "The Quantum Electrodynamics of Functional JavaScript"
 tags: [allonge, computation]
 ---
 
