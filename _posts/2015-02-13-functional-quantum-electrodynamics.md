@@ -454,7 +454,7 @@ Knowing how to make a list our of just functions is a little like knowing that q
 
 So what *is* interesting about this? What nags at our brain as we're falling asleep after working our way through this?
 
-### return to backward thinking
+### a return to backward thinking
 
 To make tuples work, we did things *backwards*, we passed the `first` and `rest` functions to the tuple, and the tuple called our function. As it happened, the tuple was composed by the vireo (or V combinator): `(x) => (y) => (z) => z(x)(y)`.
 
