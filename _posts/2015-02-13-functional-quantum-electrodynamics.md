@@ -4,7 +4,7 @@ title: "Functional Quantum Electrodynamics in JavaScript"
 tags: [allonge, computation]
 ---
 
-![Coffee served at the CERN particle accelerator](images/cern-coffee.jpg)
+![Coffee served at the CERN particle accelerator](/assets/images/cern-coffee.jpg)
 
 In our code so far ([Destructuring and Recursion in ES-6](http://raganwald.com/2015/02/02/destructuring.html) and [Tail Calls, Default Arguments, and Excessive Recycling in ES-6](http://raganwald.com/2015/02/07/tail-calls-defult-arguments-recycling.html)), we have used arrays and objects to represent the structure of data, and we have extensively used the ternary operator to write algorithms that terminate when we reach a base case.
 
@@ -540,6 +540,8 @@ There are many tools for hiding implementation information, and we have now seen
 * And instead of testing some property of an entity and making a choice of our own with `?:` (or `if`), pass the entity the work we want done for each case and let it test itself.
 
 [ja6]: https://leanpub.com/javascriptallongesix
+
+[edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-13-functional-quantum-electrodynamics.md)
 
 ---
 
