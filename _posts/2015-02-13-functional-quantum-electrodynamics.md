@@ -191,14 +191,14 @@ For consistency with the way combinators are written as functions taking just on
 
 [curry]: https://en.wikipedia.org/wiki/Currying
 
-Let's try it, we'll use the word `tuple` for the function that makes data (When we need to refer to a specific tuple, we'll use the name `aTuple` by default):
+Let's try it, we'll use the word `pair` for the function that makes data (When we need to refer to a specific pair, we'll use the name `aPair` by default):
 
 {% highlight javascript %}
 const first = K,
       second = K(I),
-      tuple = (first) => (second) => (selector) => selector(first)(second);
+      pair = (first) => (second) => (selector) => selector(first)(second);
 
-const latin = tuple("primus")("secundus");
+const latin = pair("primus")("secundus");
 
 latin(first)
   //=> "primus"
@@ -212,9 +212,9 @@ It works! Now what is this `node` function? If we change the names to `x`, `y`, 
 {% highlight javascript %}
 const first = K,
       second = K(I),
-      tuple = V;
+      pair = V;
 
-const latin = tuple("primus")("secundus");
+const latin = pair("primus")("secundus");
 
 latin(first)
   //=> "primus"
@@ -234,10 +234,10 @@ Here's another look at linked lists using POJOs. We use the term `rest` instead 
 {% highlight javascript %}
 const first = ({first, rest}) => first,
       rest  = ({first, rest}) => rest,
-      tuple = (first, rest) => ({first, rest}),
+      pair = (first, rest) => ({first, rest}),
       EMPTY = ({});
       
-const l123 = tuple(1, tuple(2, tuple(3, EMPTY)));
+const l123 = pair(1, pair(2, pair(3, EMPTY)));
 
 first(l123)
   //=> 1
@@ -252,23 +252,23 @@ first(rest(rest(l123)))
 We can write `length` and `mapWith` functions over it:
 
 {% highlight javascript %}
-const length = (aTuple) =>
-  aTuple === EMPTY
+const length = (aPair) =>
+  aPair === EMPTY
     ? 0
-    : 1 + length(rest(aTuple));
+    : 1 + length(rest(aPair));
 
 length(l123)
   //=> 3
 
-const reverse = (aTuple, delayed = EMPTY) =>
-  aTuple === EMPTY
+const reverse = (aPair, delayed = EMPTY) =>
+  aPair === EMPTY
     ? delayed
-    : reverse(rest(aTuple), tuple(first(aTuple), delayed));
+    : reverse(rest(aPair), pair(first(aPair), delayed));
 
-const mapWith = (fn, aTuple, delayed = EMPTY) =>
-  aTuple === EMPTY
+const mapWith = (fn, aPair, delayed = EMPTY) =>
+  aPair === EMPTY
     ? reverse(delayed)
-    : mapWith(fn, rest(aTuple), tuple(fn(first(aTuple)), delayed));
+    : mapWith(fn, rest(aPair), pair(fn(first(aPair)), delayed));
     
 const doubled = mapWith((x) => x * 2, l123);
 
@@ -287,10 +287,10 @@ Can we do the same with the linked lists we build out of functions? Yes:
 {% highlight javascript %}
 const first = K,
       rest  = K(I),
-      tuple = V,
+      pair = V,
       EMPTY = (() => {});
       
-const l123 = tuple(1)(tuple(2)(tuple(3)(EMPTY)));
+const l123 = pair(1)(pair(2)(pair(3)(EMPTY)));
 
 l123(first)
   //=> 1
@@ -305,10 +305,10 @@ return l123(rest)(rest)(first)
 We write them in a backwards way, but they seem to work. How about `length`?
 
 {% highlight javascript %}
-const length = (aTuple) =>
-  aTuple === EMPTY
+const length = (aPair) =>
+  aPair === EMPTY
     ? 0
-    : 1 + length(aTuple(rest));
+    : 1 + length(aPair(rest));
     
 length(l123)
   //=> 3
@@ -317,15 +317,15 @@ length(l123)
 And `mapWith`?
 
 {% highlight javascript %}
-const reverse = (aTuple, delayed = EMPTY) =>
-  aTuple === EMPTY
+const reverse = (aPair, delayed = EMPTY) =>
+  aPair === EMPTY
     ? delayed
-    : reverse(aTuple(rest), tuple(aTuple(first))(delayed));
+    : reverse(aPair(rest), pair(aPair(first))(delayed));
 
-const mapWith = (fn, aTuple, delayed = EMPTY) =>
-  aTuple === EMPTY
+const mapWith = (fn, aPair, delayed = EMPTY) =>
+  aPair === EMPTY
     ? reverse(delayed)
-    : mapWith(fn, aTuple(rest), tuple(fn(aTuple(first)))(delayed));
+    : mapWith(fn, aPair(rest), pair(fn(aPair(first)))(delayed));
     
 const doubled = mapWith((x) => x * 2, l123)
 
@@ -347,15 +347,15 @@ We used functions to replace arrays and POJOs, but we still use JavaScript's bui
 
 ### say "please"
 
-We keep using the same pattern in our functions: `aTuple === EMPTY ? doSomething : doSomethingElse`. This follows the philosophy we used with data structures: The function doing the work inspects the data structure.
+We keep using the same pattern in our functions: `aPair === EMPTY ? doSomething : doSomethingElse`. This follows the philosophy we used with data structures: The function doing the work inspects the data structure.
 
-We can reverse this: Instead of asking a tuple if it is empty and then deciding what to do, we can ask the tuple to do it for us. Here's `length` again:
+We can reverse this: Instead of asking a pair if it is empty and then deciding what to do, we can ask the pair to do it for us. Here's `length` again:
 
 {% highlight javascript %}
-const length = (aTuple) =>
-  aTuple === EMPTY
+const length = (aPair) =>
+  aPair === EMPTY
     ? 0
-    : 1 + length(aTuple(rest));
+    : 1 + length(aPair(rest));
 {% endhighlight %}
 
 Let's presume we are working with a slightly higher abstraction, we'll call it a `list`. Instead of writing `length(list)` and examining a list, we'll write something like:
@@ -363,30 +363,30 @@ Let's presume we are working with a slightly higher abstraction, we'll call it a
 {% highlight javascript %}
 const length = (list) => list(
   () => 0,
-  (aTuple) => 1 + length(aTuple(rest)))
+  (aPair) => 1 + length(aPair(rest)))
 );
 {% endhighlight %}
 
-Now we'll need to write `first` and `rest` functions for a list, and those names will collide with the `first` and `rest` we wrote for tuples. So let's disambiguate our names:
+Now we'll need to write `first` and `rest` functions for a list, and those names will collide with the `first` and `rest` we wrote for pairs. So let's disambiguate our names:
 
 {% highlight javascript %}
-const tupleFirst = K,
-      tupleRest  = K(I),
-      tuple = V;
+const pairFirst = K,
+      pairRest  = K(I),
+      pair = V;
       
 const first = (list) => list(
     () => "ERROR: Can't take first of an empty list",
-    (aTuple) => aTuple(tupleFirst)
+    (aPair) => aPair(pairFirst)
   );
       
 const rest = (list) => list(
     () => "ERROR: Can't take first of an empty list",
-    (aTuple) => aTuple(tupleRest)
+    (aPair) => aPair(pairRest)
   );
 
 const length = (list) => list(
     () => 0,
-    (aTuple) => 1 + length(aTuple(tupleRest)))
+    (aPair) => 1 + length(aPair(pairRest)))
   );
 {% endhighlight %}
 
@@ -395,7 +395,7 @@ We'll also write a handy list printer:
 {% highlight javascript %}
 const print = (list) => list(
     () => "",
-    (aTuple) => `${aTuple(tupleFirst)} ${print(aTuple(tupleRest))}`
+    (aPair) => `${aPair(pairFirst)} ${print(aPair(pairRest))}`
   );
 {% endhighlight %}
 
@@ -409,7 +409,7 @@ And what is a node of a list?
 
 {% highlight javascript %}
 const node = (x) => (y) =>
-  (whenEmpty, unlessEmpty) => unlessEmpty(tuple(x)(y));
+  (whenEmpty, unlessEmpty) => unlessEmpty(pair(x)(y));
 {% endhighlight %}
 
 Let's try it:
@@ -426,7 +426,7 @@ We can write `reverse` and `mapWith` as well. We aren't being super-strict about
 {% highlight javascript %}
 const reverse = (list, delayed = EMPTYLIST) => list(
   () => delayed,
-  (aTuple) => reverse(aTuple(tupleRest), node(aTuple(tupleFirst))(delayed))
+  (aPair) => reverse(aPair(pairRest), node(aPair(pairFirst))(delayed))
 );
 
 print(reverse(l123));
@@ -435,7 +435,7 @@ print(reverse(l123));
 const mapWith = (fn, list, delayed = EMPTYLIST) =>
   list(
     () => reverse(delayed),
-    (aTuple) => mapWith(fn, aTuple(tupleRest), node(fn(aTuple(tupleFirst)))(delayed))
+    (aPair) => mapWith(fn, aPair(pairRest), node(fn(aPair(pairFirst)))(delayed))
   );
   
 print(mapWith(x => x * x, reverse(l123)))
@@ -465,22 +465,22 @@ So what *is* interesting about this? What nags at our brain as we're falling asl
 
 ### a return to backward thinking
 
-To make tuples work, we did things *backwards*, we passed the `first` and `rest` functions to the tuple, and the tuple called our function. As it happened, the tuple was composed by the vireo (or V combinator): `(x) => (y) => (z) => z(x)(y)`.
+To make pairs work, we did things *backwards*, we passed the `first` and `rest` functions to the pair, and the pair called our function. As it happened, the pair was composed by the vireo (or V combinator): `(x) => (y) => (z) => z(x)(y)`.
 
-But we could have done something completely different. We could have written a tuple that stored its elements in an array, or a tuple that stored its elements in a POJO. All we know is that we can pass the tuple function a function of our own, at it will be called with the elements of the tuple.
+But we could have done something completely different. We could have written a pair that stored its elements in an array, or a pair that stored its elements in a POJO. All we know is that we can pass the pair function a function of our own, at it will be called with the elements of the pair.
 
-The exact implementation of a tuple is hidden from the code that uses a tuple. Here, we'll prove it:
+The exact implementation of a pair is hidden from the code that uses a pair. Here, we'll prove it:
 
 {% highlight javascript %}
 const first = K,
       second = K(I),
-      tuple = (first) => (second) => {
+      pair = (first) => (second) => {
         const pojo = {first, second};
         
         return (selector) => selector(pojo.first)(pojo.second);
       };
 
-const latin = tuple("primus")("secundus");
+const latin = pair("primus")("secundus");
 
 latin(first)
   //=> "primus"
@@ -496,7 +496,7 @@ The same thing happens with our lists. Here's `length` for lists:
 {% highlight javascript %}
 const length = (list) => list(
     () => 0,
-    (aTuple) => 1 + length(aTuple(tupleRest)))
+    (aPair) => 1 + length(aPair(pairRest)))
   );
 {% endhighlight %}
 
