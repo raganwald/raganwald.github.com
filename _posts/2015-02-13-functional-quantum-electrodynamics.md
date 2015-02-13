@@ -171,7 +171,7 @@ latin(second)
   //=> "secundus"
 {% endhighlight %}
 
-Our `latin` data structure is no longer a dumb data structure, its a function. And instead of passing `latin` to `first` or `second`, we pass `first` or `second` to `latin`. It's *exactly backwards* of the way we write functions that operate on data.
+Our `latin` data structure is no longer a dumb data structure, it's a function. And instead of passing `latin` to `first` or `second`, we pass `first` or `second` to `latin`. It's *exactly backwards* of the way we write functions that operate on data.
 
 ### the vireo
 
