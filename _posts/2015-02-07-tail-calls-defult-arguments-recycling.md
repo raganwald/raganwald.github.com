@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "Tail Calls, Default Arguments, and Excessive Recycling in ES-6"
+tags: [allonge]
 ---
 
 The `mapWith` and `foldWith` functions we wrote in [Destructuring and Recursion in ES6](/2015/02/02/destructuring.html) are useful for illustrating the basic principles behind using recursion to work with self-similar data structures, but they are not "production-ready" implementations. One of the reasons they are not production-ready is that they consume memory proportional to the size of the array being folded.
