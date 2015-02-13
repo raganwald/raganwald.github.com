@@ -51,7 +51,7 @@ const I = (x) => (x);
 const V = (x) => (y) => (z) => z(x)(y);
 {% endhighlight %}
 
-> This is very interesting. Given two values, we can say that `K` always returns the *first* value, and given two values, `K(I)` always returns the *second* value.
+> This is very interesting. Given two values, we can say that `K` always returns the *first* value, and Given two values, `K(I)` always returns the *second* value.
 
 ### the kestrel and the idiot
 
@@ -119,6 +119,8 @@ first("primus")("secundus")
 second("primus")("secundus")
   //=> "secundus"
 {% endhighlight %}
+
+> This is very interesting. Given two values, we can say that `K` always returns the *first* value, and given two values, `K(I)` always returns the *second* value.
 
 ### backwardness
 
@@ -222,6 +224,8 @@ latin(first)
 latin(second)
   //=> "secundus"
 {% endhighlight %}
+
+> As an aside, the Vireo is a little like JavaScript's `.apply` function. It says, "take these two values and apply them to this function." There are other, similar combinators that apply values to functions. One notable iexample is the "thrush" or T combinator: It takes one value and applies it to a function. It is known to most programmers as `.tap`.
 
 Armed with nothing more than `K`, `I`, and `V`, we can make a little data structure that holds two values, the `cons` cell of Lisp and the node of a linked list. Without arrays, and without objects, just with functions. We'd better try it out to check.
 
