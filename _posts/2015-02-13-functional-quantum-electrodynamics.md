@@ -528,7 +528,7 @@ There are many tools for hiding implementation information, and we have now seen
 
 ---
 
-postscript:
+*postscript*:
 
 If you speak Ruby, Tom Stuart's *Programming with Nothing* is a [must-watch](http://rubymanor.org/3/videos/programming_with_nothing/) and a [must-read](http://codon.com/programming-with-nothing).
 
