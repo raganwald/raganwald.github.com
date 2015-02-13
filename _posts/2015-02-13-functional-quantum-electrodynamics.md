@@ -45,8 +45,7 @@ They established that arbitrary computations could be represented with radically
 
 Let's start with some of the building blocks of combinatory logic, the K, I, and V combinators, nicknamed the "Kestrel", "Idiot Bird", and the "Vireo:"
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const K = (x) => (y) => x;
 const I = (x) => (x);
 const V = (x) => (y) => (z) => z(x)(y);
@@ -58,8 +57,7 @@ A *constant function* is a function that always returns the same thing, no matte
 
 For example:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const K = (x) => (y) => x;
 
 const fortyTwo = K(42);
@@ -75,8 +73,7 @@ The *identity function* is a function that evaluates to whatever parameter you p
 
 Like so:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 K(6)(7)
   //=> 6
   
@@ -90,8 +87,7 @@ Now, an interesting thing happens when we pass functions to each other. Consider
 
 Therefore, `K(I)(x)(y) => y`:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 K(I)(6)(7)
   //=> 7
   
@@ -101,8 +97,7 @@ K(I)(12)(24)
 
 Aha! Given two values, `K(I)` always returns the *second* value.
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 K("primus")("secundus")
   //=> "primus"
   
@@ -112,8 +107,7 @@ K(I)("primus")("secundus")
 
 If we are not feeling particularly academic, we can name our functions:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const first = K,
       second = K(I);
       
@@ -128,8 +122,7 @@ second("primus")("secundus")
 
 Our `first` and `second` functions are a little different than what most people are used to when we talk about functions that access data. If we represented a pair of values as an array, we'd write them like this:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const first = ([first, second]) => first,
       second = ([first, second]) => second;
       
@@ -144,8 +137,7 @@ second(latin)
 
 Or if we were using a POJO, we'd write them like this:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const first = ({first, second}) => first,
       second = ({first, second}) => second;
       
@@ -164,8 +156,7 @@ But the `first` and `second` we built out of `K` and `I` don't work that way. Yo
 
 Here's the first cut:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const first = K,
       second = K(I);
       
@@ -186,15 +177,13 @@ Given that our `latin` data is represented as the function `(selector) => select
 
 For "data" we access with `K` and `K(I)`, our "structure" is the function `(selector) => selector("primus")("secundus")`. Let's extract those into parameters:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 (first, second) => (selector) => selector(first)(second)
 {% endhighlight %}
 
 For consistency with the way combinators are written as functions taking just one parameter, we'll [curry] the function:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 (first) => (second) => (selector) => selector(first)(second)
 {% endhighlight %}
 
@@ -202,8 +191,7 @@ For consistency with the way combinators are written as functions taking just on
 
 Let's try it, we'll use the word `tuple` for the function that makes data (When we need to refer to a specific tuple, we'll use the name `aTuple` by default):
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const first = K,
       second = K(I),
       tuple = (first) => (second) => (selector) => selector(first)(second);
@@ -219,8 +207,7 @@ latin(second)
 
 It works! Now what is this `node` function? If we change the names to `x`, `y`, and `z`, we get: `(x) => (y) => (z) => z(x)(y)`. That's the V combinator, the Vireo! So we can write:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const first = K,
       second = K(I),
       tuple = V;
@@ -240,8 +227,7 @@ Armed with nothing more than `K`, `I`, and `V`, we can make a little data struct
 
 Here's another look at linked lists using POJOs. We use the term `rest` instead of `second`, but it's otherwise identical to what we have above:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const first = ({first, rest}) => first,
       rest  = ({first, rest}) => rest,
       tuple = (first, rest) => ({first, rest}),
@@ -261,8 +247,7 @@ first(rest(rest(l123)))
 
 We can write `length` and `mapWith` functions over it:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const length = (aTuple) =>
   aTuple === EMPTY
     ? delayed
@@ -295,8 +280,7 @@ first(rest(rest(doubled)))
 
 Can we do the same with the linked lists we build out of functions? Yes:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const first = K,
       rest  = K(I),
       tuple = V,
@@ -316,8 +300,7 @@ return l123(rest)(rest)(first)
 
 We write them in a backwards way, but they seem to work. How about `length`?
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const length = (aTuple) =>
   aTuple === EMPTY
     ? 0
@@ -329,8 +312,7 @@ length(l123)
 
 And `mapWith`?
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const reverse = (aTuple, delayed = EMPTY) =>
   aTuple === EMPTY
     ? delayed
@@ -367,8 +349,7 @@ We keep using the same pattern in our functions: `aTuple === EMPTY ? doSomething
 
 We can reverse this: Instead of asking a tuple if it is empty and then deciding what to do, we can ask the tuple to do it for us. Here's `length` again:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const length = (aTuple) =>
   aTuple === EMPTY
     ? delayed
@@ -377,8 +358,7 @@ const length = (aTuple) =>
 
 Let's presume we are working with a slightly higher abstraction, we'll call it a `list`. Instead of writing `length(list)` and examining a list, we'll write something like:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const length = (list) => list(
   () => 0,
   (aTuple) => 1 + length(aTuple(rest)))
@@ -387,8 +367,7 @@ const length = (list) => list(
 
 Now we'll need to write `first` and `rest` functions for a list, and those names will collide with the `first` and `rest` we wrote for tuples. So let's disambiguate our names:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const tupleFirst = K,
       tupleRest  = K(I),
       tuple = V;
@@ -411,8 +390,7 @@ const length = (list) => list(
 
 We'll also write a handy list printer:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const print = (list) => list(
     () => "",
     (aTuple) => `${aTuple(tupleFirst)} ${print(aTuple(tupleRest))}`
@@ -421,23 +399,20 @@ const print = (list) => list(
 
 How would all this work? Let's start with the obvious. What is an empty list?
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const EMPTYLIST = (whenEmpty, unlessEmpty) => whenEmpty()
 {% endhighlight %}
 
 And what is a node of a list?
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const node = (x) => (y) =>
   (whenEmpty, unlessEmpty) => unlessEmpty(tuple(x)(y));
 {% endhighlight %}
 
 Let's try it:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const l123 = node(1)(node(2)(node(3)(EMPTYLIST)));
 
 print(l123)
@@ -446,8 +421,7 @@ print(l123)
 
 We can write `reverse` and `mapWith` as well. We aren't being super-strict about emulating combinatory logic, we'll use default parameters:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const reverse = (list, delayed = EMPTYLIST) => list(
   () => delayed,
   (aTuple) => reverse(aTuple(tupleRest), node(aTuple(tupleFirst))(delayed))
@@ -488,8 +462,7 @@ But we could have done something completely different. We could have written a t
 
 The exact implementation of a tuple is hidden from the code that uses a tuple. Here, we'll prove it:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const first = K,
       second = K(I),
       tuple = (first) => (second) => {
@@ -511,8 +484,7 @@ This is a little gratuitous, but it makes the point: The code that uses the data
 
 The same thing happens with our lists. Here's `length` for lists:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const length = (list) => list(
     () => 0,
     (aTuple) => 1 + length(aTuple(tupleRest)))
@@ -523,8 +495,7 @@ We're passing `list` what we want done with an empty list, and what we want done
 
 We won't bother here, but it's easy to see how to swap our functions out and replace them with an array. Or a column in a database. This is fundamentally *not* the same thing as this code for the length of a linked list:
 
-{:lang="javascript"}
-{% endhighlight %}
+{% highlight javascript %}
 const length = (node, delayed = 0) =>
   node === EMPTY
     ? delayed
