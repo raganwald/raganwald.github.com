@@ -380,7 +380,7 @@ const first = (list) => list(
   );
       
 const rest = (list) => list(
-    () => "ERROR: Can't take first of an empty list",
+    () => "ERROR: Can't take rest of an empty list",
     (aPair) => aPair(pairRest)
   );
 
