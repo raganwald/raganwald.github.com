@@ -524,7 +524,8 @@ There are many tools for hiding implementation information, and we have now seen
 
 [ja6]: https://leanpub.com/b/buy-allonge-get-thesixedition-free
 
-[reddit](http://www.reddit.com/r/javascript/comments/2vs2u8/the_quantum_electrodynamics_of_functional/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-13-functional-quantum-electrodynamics.md)
+|---|---|---|
+[hacker news](http://raganwald.com/2015/02/13/functional-quantum-electrodynamics.html) | [reddit](http://www.reddit.com/r/javascript/comments/2vs2u8/the_quantum_electrodynamics_of_functional/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-13-functional-quantum-electrodynamics.md)
 
 ---
 
