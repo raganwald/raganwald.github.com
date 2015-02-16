@@ -35,6 +35,7 @@ ol, ul {
 }
 blockquote, q {
 	quotes: none;
+	color: #6d6d6d;
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
