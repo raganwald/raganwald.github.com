@@ -276,7 +276,7 @@ collectionSum(stack)
   //=> 2015
 {% endhighlight %}
 
-Using [Symbol.iterator] instead of `.iterator` seems like adding an extra moving part for nothing. Do we get anything in return?
+Using `[Symbol.iterator]` instead of `.iterator` seems like adding an extra moving part for nothing. Do we get anything in return?
 
 Indeed we do. Behold the `for...of` loop:
 
@@ -418,7 +418,7 @@ This illustrates the general pattern of working with iterables: An iterable is a
 
 Many operations on iterables return iterables. Our `mapIterableWith` returns an iterable. But the iterable it returns is not the same kind of collection as the iterable it consumes. If we give it a `Stack3`, we don't get a stack back. We just get an iterable. (If we want a specific kind of collection, we have to gather the iterable into a collection. We'll see how to do that below.)
 
-Here are two more operations on iterables, `filterIterableWith` and `until`:
+Here are two more operations on iterables, `filterIterableWith` and `untilIterable`:
 
 {% highlight javascript %}
 const filterIterableWith = (fn, iterable) =>
@@ -437,7 +437,7 @@ const filterIterableWith = (fn, iterable) =>
     }
   });
   
-const until = (fn, iterable) =>
+const untilIterable (fn, iterable) =>
   ({
     [Symbol.iterator]: () => {
       const iterator = iterable[Symbol.iterator]();
@@ -536,7 +536,7 @@ Pair1.from = (iterable) =>
 Now we can go "end to end," If we want to map a linked list of numbers to a linked list of the squares of some numbers, we can do that:
 
 {% highlight javascript %}
-const numberList = Pair1.from(until((x) => x > 10, Numbers));
+const numberList = Pair1.from(untilIterable((x) => x > 10, Numbers));
 
 Pair1.from(squaresOf(numberList))
   //=> {"first":0,
@@ -618,7 +618,7 @@ const filterIterableWith = (fn, iterable) =>
     }
   }, LazyIterable);
 
-const until = (fn, iterable) =>
+const untilIterable = (fn, iterable) =>
   extend({
     [Symbol.iterator]: () => {
       const iterator = iterable[Symbol.iterator]();
@@ -658,7 +658,7 @@ const takeIterable = (numberToTake, iterable) =>
         next: () => {
           let {done, value} = iterator.next();
         
-          done = done || remainingElements-- > 0;
+          done = done || remainingElements-- <= 0;
   
           return ({done, value: done ? undefined : value});
         }
@@ -684,6 +684,9 @@ const LazyIterable = {
    },
    rest: function () {
      return restIterable(this);
+   },
+   until: function (numberToTake) {
+     return untilIterable(numberToTake, this);
    },
    take: function (numberToTake) {
      return takeIterable(numberToTake, this);
@@ -795,7 +798,7 @@ Pair.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 //=> 220
 {% endhighlight %}
 
-### lazy and eager iterables
+### lazy iterables
 
 "Laziness" is a very pejorative word when applied to people. But it can be an excellent strategy for efficiency in algorithms. Let's be precise: *Laziness* is the characteristic of not doing any work until you know you need the result of the work.
 
@@ -891,7 +894,34 @@ If we write the almost identical thing with an array, we get a different behavio
   784
 {% endhighlight %}
 
-Arrays copy-on-read, so every time we perform a map or filter, we get a new array and perform all the computations. This might be expensive. Balanced against that, our "lazy iterables" use structure sharing, so if we pop something off a stack after taking an iterable, we might get an unexpected result.
+Arrays copy-on-read, so every time we perform a map or filter, we get a new array and perform all the computations. This might be expensive.
+
+You recall we briefly touched on the idea of infinite collections? Let's make iterable numbers. They *have* to be lazy, otherwise we couldn't write things like:
+
+{% highlight javascript %}
+const Numbers = extend({
+  [Symbol.iterator]: () => {
+    let n = 0;
+    
+    return {
+      next: () =>
+        ({done: false, value: n++})
+    }
+  }
+}, LazyCollection);
+
+const firstCubeOver1234 =
+  Numbers
+    .map((x) => x * x * x)
+    .filter((x) => x > 1234)
+    .first()
+
+//=> 1331
+{% endhighlight %}
+
+Balanced against their flexibility, our "lazy iterables" use structure sharing. If we mutate a collection after taking an iterable, we might get an unexpected result. This is why "pure" functional languages like Haskell combine lazy semantics with immutable collections, and why even "impure" languages like Clojure emphasize the use of immutable collections.
+
+### eager iterables
 
 Arrays have *eager* semantics for `.map`, `.filter`, `.rest` and `.take`. They return another array, not a lazy iterable. Whereas, the `Stack` and `Pair` collections we wrote have *lazy* semantics: They return a lazy iterable and when we want a true collection, we have to gather the elements into an array or another collection using `.from`:
 
