@@ -835,7 +835,7 @@ Stack.from([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
 
 This expression begins with a stack containing 30 elements. The top two are `29` and `28`. It maps to the squares of all 30 numbers, but our code for mapping an iteration returns an iterable that can iterate over the squares of our numbers, not an array or stack of the squares. Same with `.filter`, we get an iterable that can iterate over the even squares, but not an actual stack or array.
 
-finally, we take the first element of that filtered, squared iterable and now JavaScript actually iterates over the stack's elements, and it only needs to square two of those elements, `29` and `28`, to return the answer.
+Finally, we take the first element of that filtered, squared iterable and now JavaScript actually iterates over the stack's elements, and it only needs to square two of those elements, `29` and `28`, to return the answer.
 
 We can confirm this:
 
@@ -1026,7 +1026,7 @@ Iterators are a JavaScript feature that allow us to separate the concerns of how
 
 Separating concerns with iterators speaks to JavaScript's fundamental nature: It's a language that *wants* to compose functionality out of small, singe-responsibility pieces, whether those pieces are functions or objects built out of functions.
 
---
+---
 
 [reddit](http://www.reddit.com/r/javascript/comments/2w84in/lazy_iterables_in_javascript/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-17-lazy-iteratables-in-javascript.md)
 
