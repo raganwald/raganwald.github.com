@@ -1026,6 +1026,10 @@ Iterators are a JavaScript feature that allow us to separate the concerns of how
 
 Separating concerns with iterators speaks to JavaScript's fundamental nature: It's a language that *wants* to compose functionality out of small, singe-responsibility pieces, whether those pieces are functions or objects built out of functions.
 
+--
+
+[reddit](http://www.reddit.com/r/javascript/comments/2w84in/lazy_iterables_in_javascript/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-17-lazy-iteratables-in-javascript.md)
+
 ---
 
 *postscript*:
