@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "Iterables in JavaScript"
+tags: [allonge]
 ---
 
 ![Coffee Labels at the Saltspring Coffee Processing Facility](/assets/images/coffee-labels.jpg)
@@ -994,3 +995,11 @@ And we can go back and forth between them. For example, if we want a lazy map of
 Iterators are a JavaScript feature that allow us to separate the concerns of how to iterate over a collection from what we want to do with the elements of a collection. *Iterable* collections can be iterated over or gathered into another collection, either lazily or eagerly.
 
 Separating concerns with iterators speaks to JavaScript's fundamental nature: It's a language that *wants* to compose functionality out of small, singe-responsibility pieces, whether those pieces are functions or objects built out of functions.
+
+---
+
+*postscript*:
+
+This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. Your feedback helps everyone, so please, join the discussion or submit an edit directly. Thank you!
+
+[ja6]: https://leanpub.com/b/buy-allonge-get-thesixedition-free
