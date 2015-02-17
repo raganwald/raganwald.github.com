@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Iterables in JavaScript"
+title: "Lazy Iterables in JavaScript"
 tags: [allonge]
 ---
 
