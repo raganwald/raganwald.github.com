@@ -532,4 +532,8 @@ There are many tools for hiding implementation information, and we have now seen
 
 If you speak Ruby, Tom Stuart's *Programming with Nothing* is a [must-watch](http://rubymanor.org/3/videos/programming_with_nothing/) and a [must-read](http://codon.com/programming-with-nothing).
 
-This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. Your feedback helps everyone, so please, join the discussion or submit an edit directly. Thank you!
+*postscript*:
+
+This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. The extracts so far: [Lazy Iterables in JavaScript](http://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html), [The Quantum Electrodynamics of Functional JavaScript](http://raganwald.com/2015/02/13/functional-quantum-electrodynamics.html), [Tail Calls, Default Arguments, and Excessive Recycling in ES-6](http://raganwald.com/2015/02/07/tail-calls-defult-arguments-recycling.html) and [Destructuring and Recursion in ES-6](http://raganwald.com/2015/02/02/destructuring.html). Your [feedback](https://github.com/raganwald/raganwald.github.com/issues/new) improves the book for everyone, thank you!
+
+[ja6]: https://leanpub.com/b/buy-allonge-get-thesixedition-free
