@@ -26,7 +26,7 @@ Christine intoned the question, as if by rote. Which it was, by the time they'd 
 
 "So," The Carpenter asked, "I am to write an algorithm that takes a possibly infinite stream of..."
 
-Christine interrupted. "To save time, we have written a template of the solution for you. Fill in the blank." Christine quickly scribbled on the whiteboard:
+Christine interrupted. "To save time, we have written a template of the solution for you. Fill in the blanks." Christine quickly scribbled on the whiteboard:
 
 {% highlight javascript %}
 const Game = (size =  Math.floor(Math.random() * 8) + 8) => {
@@ -143,7 +143,7 @@ Array.from(takeIterable(10, Game(8)))
   //=> ["↑","←","→","←","→","←","→","←","→","←"]
 {% endhighlight %}
 
-But now to the business. We want to take the arrows and convert them to positions. For that, we'll map the Game iterable stateful to positions. a `statefulMap` is a lazy map that preserves state from iteration to iteration:
+But now to the business. We want to take the arrows and convert them to positions. For that, we'll map the Game iterable to positions. A `statefulMap` is a lazy map that preserves state from iteration to iteration. That's what we need, because we need to know the current position to map each move to the next position:
 
 {% highlight javascript %}
 const statefulMapIterableWith = (fn, seed, iterable) =>
