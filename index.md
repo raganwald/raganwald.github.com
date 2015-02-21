@@ -9,6 +9,7 @@ tags: [allonge]
 ### elsewhere
 
 * code: <a href="https://github.com/raganwald">https://github.com/raganwald</a>
+* books: <a href="https://leanpub.com/u/raganwald/">https://leanpub.com/u/raganwald/</a>
 * contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
 * conferences: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
 
