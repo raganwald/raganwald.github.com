@@ -32,7 +32,7 @@ layout: default
 <div class="related">
   <ul>
     {% for post in site.posts %}
-      {% capture postyear %}{{post.date | date: '%sY'}}{% endcapture %}
+      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex"%}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{postyear}}-{{ post.date | date: "%m-%d" }}</span>)
