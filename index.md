@@ -27,12 +27,14 @@ layout: default
   </tr>
 </table>
 
-### recent-ish words
+### recent words
 
 <div class="related">
   <ul>
     {% for post in site.posts %}
-      {% unless post.tags contains "noindex" or post.tags contains "posterous" or post.tags contains "homoiconic" %}
+      {% capture postyear %}{{post.date | date: '%sY'}}{% endcapture %}
+      {% assign postyear = postyear | plus: 0 %}
+      {% unless post.tags contains "noindex" or post.tags contains "posterous" or post.tags contains "homoiconic" or postyear < 2014> %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y-%m-%d" }}</span>)
         </li>
@@ -53,6 +55,15 @@ layout: default
 
 <div class="related">
   <ul>
+    {% for post in site.posts %}
+      {% capture postyear %}{{post.date | date: '%sY'}}{% endcapture %}
+      {% assign postyear = postyear | plus: 0 %}
+      {% unless post.tags contains "noindex" or post.tags contains "posterous" or post.tags contains "homoiconic" or postyear > 2013> %}
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y-%m-%d" }}</span>)
+        </li>
+      {% endunless %}
+    {% endfor %}
     {% for post in site.tags.homoiconic %}
       {% unless post.tags contains "noindex" %}
         <li>
@@ -60,11 +71,6 @@ layout: default
         </li>
       {% endunless %}
     {% endfor %}
-  </ul>
-</div>
-
-<div class="related">
-  <ul>
     {% for post in site.tags.posterous %}
       {% unless post.tags contains "noindex" %}
         <li>
