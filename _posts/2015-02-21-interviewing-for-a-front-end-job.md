@@ -134,7 +134,8 @@ const takeIterable = (numberToTake, iterable) =>
   });
 
 Array.from(takeIterable(10, Game()))
-  //=> ["↑","←","→","←","→","←","→","←","→","←"]
+  //=>
+    ["↑","←","→","←","→","←","→","←","→","←"]
 {% endhighlight %}
 
 But now to the business. We want to take the arrows and convert them to positions. For that, we'll map the Game iterable to positions. A `statefulMap` is a lazy map that preserves state from iteration to iteration. That's what we need, because we need to know the current position to map each move to the next position:
@@ -161,7 +162,8 @@ const indexed = statefulMapIterableWith(
   ["prince", "of", "darkness"])
 
 Array.from(indexed)
-  //=> [[0,"prince"],[1,"of"],[2,"darkness"]]
+  //=>
+    [[0,"prince"],[1,"of"],[2,"darkness"]]
 {% endhighlight %}
 
 Armed with this, it's straightforward to map an iterable of directions to an iterable of strings representing positions:
@@ -184,10 +186,11 @@ const positionsOf = (game) =>
     game);
 
 Array.from(takeIterable(10, positionsOf(Game())))
-  //=> ["x: -1, y: 0","x: 0, y: 1","x: -1, y: 0",
-        "x: 0, y: -1","x: 0, y: 1","x: 0, y: -1",
-        "x: 0, y: 1","x: 0, y: -1","x: 0, y: 1",
-        "x: 0, y: -1"]
+  //=>
+    ["x: -1, y: 0","x: 0, y: 1","x: -1, y: 0",
+     "x: 0, y: -1","x: 0, y: 1","x: 0, y: -1",
+     "x: 0, y: 1","x: 0, y: -1","x: 0, y: 1",
+     "x: 0, y: -1"]
 {% endhighlight %}
 
 The Carpenter reflected. "Having turned our game loop into an iterable, we can now see that our problem of whether the game terminates is isomorphic to the problem of detecting whether the positions given ever repeat themselves: If the chequer ever returns to a position it has previously visited, it will cycle endlessly."
