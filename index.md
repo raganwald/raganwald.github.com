@@ -4,18 +4,18 @@ layout: default
 tags: [allonge]
 ---
 
+*This is a repository of essays and presentations by [Reginald "raganwald" Braithwaite](http://braythwayt.com)*
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uYcAjr2J_rU" frameborder="0" allowfullscreen></iframe>
 
 <p>&nbsp;</p>
 
-
-> Reginald "Raganwald" Braithwaite is proof that somewhere, a village is missing its idiot. Either that, or a combinatory forest is missing its Idiot Bird, nobody is really sure. His interests include constructing surreal numbers, deconstructing hopelessly egocentric nulls, and celebrating the joy of programming.
-
 ### elsewhere
 
+* about: [Reginald "raganwald" Braithwaite](http://braythwayt.com)
+* contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
 * code: <a href="https://github.com/raganwald">https://github.com/raganwald</a>
 * books: <a href="https://leanpub.com/u/raganwald/">https://leanpub.com/u/raganwald/</a>
-* contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
 * conferences: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
 
 ### 2015 essays
