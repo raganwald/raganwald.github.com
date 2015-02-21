@@ -253,14 +253,16 @@ const tortoiseAndHare = (iterable) => {
 
 ### the aftermath
 
-The Carpenter sat down and waited. This type of solution provided an excellent opportunity to explore lazy versus eager evaluation, the performance of iterators versus native iteration, single responsibility design, and many other rich topics. The Carpenter was sure that although nobdy would write this exact code in production, prospective employers would also recognize that nobody would try to detect whether a chequer game terminates in production, either. It's all just a game designed to start an interesting conversation, right?
+The Carpenter sat down and waited. This type of solution provided an excellent opportunity to explore lazy versus eager evaluation, the performance of iterators versus native iteration, single responsibility design, and many other rich topics.
 
-Chritine looked at the solution on the board, frowned, and glanced at their watch.
+The Carpenter was confident that although nobdy would write this exact code in production, prospective employers would also recognize that nobody would try to detect whether a chequer game terminates in production, either. It's all just a game designed to start an interesting conversation, right?
 
-"Well," Christine said politely, "We at Thing are very grateful you made some time to visit with us, but alas, that is all the time we have today. If we wish to talk to you further, we'll be in touch."
+Chritine looked at the solution on the board, frowned, and glanced at the clock on the wall.
+
+"Well," Christine said politely, "We at the Thing Software company are very grateful you made some time to visit with us, but alas, that is all the time we have today. If we wish to talk to you further, we'll be in touch."
 
 The Carpenter never did hear back from them, but the next day there was an email containing a generous contract from Friends of Ghosts ("FOG"), a codename for a stealth startup doing interesting work, and the Thing interview was forgotten.
 
 Some time later, The Carpenter ran into Bob Plissken at a local technology meetup. "What happened at Thing?" Bob wanted to know, "I asked them what they thought of you, and all they would say was, *writes unreadble code*."
 
-The Carpenter smiled. "I forgot about them. So... They live?"
+The Carpenter smiled. "I forgot about them, it's been a while. So... Do They Live?"
