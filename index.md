@@ -4,6 +4,11 @@ layout: default
 tags: [allonge]
 ---
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uYcAjr2J_rU" frameborder="0" allowfullscreen></iframe>
+
+<p>&nbsp;</p>
+
+
 > Reginald "Raganwald" Braithwaite is proof that somewhere, a village is missing its idiot. Either that, or a combinatory forest is missing its Idiot Bird, nobody is really sure. His interests include constructing surreal numbers, deconstructing hopelessly egocentric nulls, and celebrating the joy of programming.
 
 ### elsewhere
@@ -12,12 +17,6 @@ tags: [allonge]
 * books: <a href="https://leanpub.com/u/raganwald/">https://leanpub.com/u/raganwald/</a>
 * contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
 * conferences: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
-
-### featured video
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/uYcAjr2J_rU" frameborder="0" allowfullscreen></iframe>
-
-<p>&nbsp;</p>
 
 ### 2015 essays
 
@@ -34,13 +33,14 @@ tags: [allonge]
   </ul>
 </div>
 
-### featured presentation
+### talks
 
-<script async class="speakerdeck-embed" data-slide="2" data-id="20a98ac01cff01321db1664d3453dee6" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
-
-<p>&nbsp;</p>
-
-[w]: ./2011/11/01/williams-master-of-the-comefrom.html
+* [Invent the future, don't recreate the past](http://youtu.be/uYcAjr2J_rU) [39:16]
+* [I have a good feeling about this - Why tooling is poised to make the jump to hyperspace](https://vimeo.com/76141334) [43:15]
+* The Art of the JavaScript Metaobject Protocol
+  * [Part I: Combinators](http://vimeo.com/97408202) [54:55]
+  * [Part II: Metaobjects](http://vimeo.com/97408202) [58:06]
+  * [Part III: Adaptors](https://www.youtube.com/watch?v=hp7sgLVepF8) [26:29]
 
 ### older essays
 
