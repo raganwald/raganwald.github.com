@@ -259,9 +259,11 @@ The Carpenter sat down and waited. This type of solution provided an excellent o
 
 The Carpenter was confident that although nobody would write this exact code in production, prospective employers would also recognize that nobody would try to detect whether a chequer game terminates in production, either. It's all just a game designed to start an interesting conversation, right?
 
+[![Time](/assets/images/time.jpg)](https://www.flickr.com/photos/jlhopgood/6795353385)
+
 Christine looked at the solution on the board, frowned, and glanced at the clock on the wall.
 
-"Well," Christine said politely, "We at the Thing Software company are very grateful you made some time to visit with us, but alas, that is all the time we have today. If we wish to talk to you further, we'll be in touch."
+"Well, where has the time gone?" Christine nodded politely, "We at the Thing Software company are very grateful you made some time to visit with us, but alas, that is all the time we have today. If we wish to talk to you further, we'll be in touch."
 
 The Carpenter never did hear back from them, but the next day there was an email containing a generous contract from Friends of Ghosts ("FOG"), a codename for a stealth startup doing interesting work, and the Thing interview was forgotten.
 
