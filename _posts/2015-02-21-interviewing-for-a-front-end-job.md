@@ -4,7 +4,7 @@ title: "Interviewing for a JavaScript Job"
 tags: [allonge]
 ---
 
-"The Carpenter" is a JavaScript programmer, well-known for a meticulous attention to detail and love for hand-crafted, exquisitely joined code. The Carpenter often preferred to work on contract, with clear deliverables and little or no need to sit through reshuffles and reorganizations as the tides of investment and management fashion came in and out in the ocean of tech.
+"The Carpenter" was a JavaScript programmer, well-known for a meticulous attention to detail and love for hand-crafted, exquisitely joined code. The Carpenter often preferred to work on contract, with clear deliverables and little or no need to sit through reshuffles and reorganizations as the tides of investment and management fashion came in and out in the ocean of tech.
 
 The Carpenter normally worked through personal referrals, but from time to time a recruiter would slip through his screen. One such recruiter was Bob Plissken. Plissken lined The Carpenter up with a technical interview with a well-funded startup that made mobile chat software for delivery and logistics companies.
 
@@ -29,7 +29,7 @@ Christine intoned the question, as if by rote. Which it was, by the time they'd 
 Christine interrupted. "To save time, we have written a template of the solution for you. Fill in the blanks." Christine quickly scribbled on the whiteboard:
 
 {% highlight javascript %}
-const Game = (size =  Math.floor(Math.random() * 8) + 8) => {
+const Game = (size = 8) => {
   
   // initialize the board
   const board = [];
@@ -77,7 +77,7 @@ Bob had, in fact, warned The Carpenter that "Thing" liked to ask either or both 
 "Using [babeljs.io](http://babeljs.io), I'll write this in ECMASCript 2015 notation. To begin with, I'll transform a game into an iterable that generates arrows:"
 
 {% highlight javascript %}
-const Game = (size =  Math.floor(Math.random() * 8) + 8) => {
+const Game = (size = 8) => {
   
   // initialize the board
   const board = [];
@@ -133,7 +133,7 @@ const takeIterable = (numberToTake, iterable) =>
     }
   });
 
-Array.from(takeIterable(10, Game(8)))
+Array.from(takeIterable(10, Game()))
   //=> ["↑","←","→","←","→","←","→","←","→","←"]
 {% endhighlight %}
 
@@ -183,7 +183,7 @@ const positionsOf = (game) =>
     [0, 0],
     game);
 
-Array.from(takeIterable(10, positionsOf(Game(4))))
+Array.from(takeIterable(10, positionsOf(Game())))
   //=> ["x: -1, y: 0","x: 0, y: 1","x: -1, y: 0",
         "x: 0, y: -1","x: 0, y: 1","x: 0, y: -1",
         "x: 0, y: 1","x: 0, y: -1","x: 0, y: 1",
@@ -258,7 +258,7 @@ The Carpenter smiled. "I forgot about them, it's been a while. So, do They Live?
 
 ---
 
-<a href="//www.reddit.com/submit" onclick="window.location = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location); return false">reddit</a> | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-21-interviewing-for-a-front-end-job.md)
+[hacker news](https://news.ycombinator.com/item?id=9087398) | <a href="//www.reddit.com/submit" onclick="window.location = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location); return false">reddit</a> | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-21-interviewing-for-a-front-end-job.md)
 
 ---
 
