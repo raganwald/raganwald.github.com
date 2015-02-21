@@ -72,7 +72,9 @@ The Carpenter was not surprised at the problem. Bob Plissken was a crafty, almos
 
 Bob had, in fact, warned The Carpenter that "Thing" liked to ask either or both of two questions: Determine how to detect a loop in a linked list, and determine whether the chequerboard game would halt. To save time, The Carpenter had prepared the same answer for both questions.
 
-"Using [babeljs.io](http://babeljs.io), I'll write this in ECMASCript 2015 notation. To begin with, I'll transform a game into an iterable that generates arrows, using the 'Starman' notation for generators:"
+And just as companies often pick a problem that gives them broad latitude for discussing alternate approaches and determining that depth of a candidate's experience, The Carpenter liked to sketch out solutions that provided an opportunity to judge the interviewer's experience and provide an easy excuse to discuss the company's approach to software design.
+
+The Carpenter coughed softly, then began. "Using [babeljs.io](http://babeljs.io), I'll write this in ECMASCript 2015 notation. To begin with, I'll transform a game into an iterable that generates arrows, using the 'Starman' notation for generators:"
 
 {% highlight javascript %}
 const Game = (size = 8) => {
