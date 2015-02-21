@@ -12,7 +12,9 @@ The Carpenter arrived early for the "Thing Software" interview, and was shown to
 
 ### the problem
 
-After some small talk, Christine explained that they liked to ask candidates to whiteboard some code. Despite his experience and industry longevity, the Carpenter did not mind being asked to demonstrate that he was, in fact, the person described on the resumé. Many companies use whiteboarding code as an excuse to have a technical conversation with a candidate, and The Carpeneter felt that being asked to whiteboard code was an excuse to have a techncial conversation with a future colleague. "Win, win" he thoght to himself.
+After some small talk, Christine explained that they liked to ask candidates to whiteboard some code. Despite his experience and industry longevity, the Carpenter did not mind being asked to demonstrate that he was, in fact, the person described on the resumé.
+
+Many companies use whiteboarding code as an excuse to have a technical conversation with a candidate, and The Carpeneter felt that being asked to whiteboard code was an excuse to have a techncial conversation with a future colleague. "Win, win" he thoght to himself.
 
 [![Chessboard](/assets/images/chessboard.jpg)](https://www.flickr.com/photos/stigrudeholm/6710684795)
 
