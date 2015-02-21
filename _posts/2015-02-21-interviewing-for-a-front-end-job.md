@@ -271,4 +271,8 @@ The Carpenter smiled. "I forgot about them, it's been a while. So... Do They Liv
 
 ---
 
+<a href="//www.reddit.com/submit" onclick="window.location = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location); return false">reddit</a> | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-21-interviewing-for-a-front-end-job.md)
+
+---
+
 p.s. The Carpenter probably cribbed the solution from [The "Drunken Walk" Programming Problem](http://raganwald.com/2013/02/17/a-drunken-walk.html), and [Solving the "Drunken Walk" problem with iterators](http://raganwald.com/2013/02/18/drunken-walk-solution.html).
