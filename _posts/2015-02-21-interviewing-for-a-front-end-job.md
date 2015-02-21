@@ -123,18 +123,12 @@ const Game = (size =  Math.floor(Math.random() * 8) + 8) => {
 {% highlight javascript %}
 const takeIterable = (numberToTake, iterable) =>
   ({
-    [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
+    [Symbol.iterator]: function* () {
       let remainingElements = numberToTake;
-    
-      return {
-        next: () => {
-          let {done, value} = iterator.next();
-        
-          done = done || remainingElements-- <= 0;
-  
-          return ({done, value: done ? undefined : value});
-        }
+      
+      for (let element of iterable) {
+        if (remainingElements-- <= 0) break;
+        yield element;
       }
     }
   });
@@ -148,22 +142,13 @@ But now to the business. We want to take the arrows and convert them to position
 {% highlight javascript %}
 const statefulMapIterableWith = (fn, seed, iterable) =>
   ({
-    [Symbol.iterator]: () => {
-      const iterator = iterable[Symbol.iterator]();
-      let state = seed;
+    [Symbol.iterator]: function* () {
+      let value,
+          state = seed;
       
-      return {
-        next: () => {
-          let {done, value} = iterator.next();
-          
-          if (done) {
-            return {done}
-          }
-          else {
-            [state, value] = fn(state, value);
-            return {value}
-          }
-        }
+      for (let element of iterable) {
+        [state, value] = fn(state, element);
+        yield value;
       }
     }
   });
