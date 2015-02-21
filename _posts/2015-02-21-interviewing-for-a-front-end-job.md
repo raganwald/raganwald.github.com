@@ -6,7 +6,7 @@ tags: [allonge]
 
 "The Carpenter" was a JavaScript programmer, well-known for a meticulous attention to detail and love for hand-crafted, exquisitely joined code. The Carpenter often preferred to work on contract, with clear deliverables and little or no need to sit through reshuffles and reorganizations as the tides of investment and management fashion came in and out in the ocean of tech.
 
-The Carpenter normally worked through personal referrals, but from time to time a recruiter would slip through his screen. One such recruiter was Bob Plissken. Plissken lined The Carpenter up with a technical interview with a well-funded startup that made mobile chat software for delivery and logistics companies.
+The Carpenter normally worked through personal referrals, but from time to time a recruiter would slip through his screen. One such recruiter was Bob Plissken. Plissken lined The Carpenter up with a technical interview with a well-funded startup in San Francisco.
 
 The Carpenter arrived early for the "Thing Software" interview, and was shown to a small conference room, where he was joined by Christine, one of the company's developers.
 
@@ -74,7 +74,7 @@ The Carpenter was not surprised at the problem. Bob Plissken was a crafty, almos
 
 Bob had, in fact, warned The Carpenter that "Thing" liked to ask either or both of two questions: Determine how to detect a loop in a linked list, and determine whether the chequerboard game would halt. To save time, The Carpenter had prepared the same answer for both questions.
 
-"Using [babeljs.io](http://babeljs.io), I'll write this in ECMASCript 2015 notation. To begin with, I'll transform a game into an iterable that generates arrows:"
+"Using [babeljs.io](http://babeljs.io), I'll write this in ECMASCript 2015 notation. To begin with, I'll transform a game into an iterable that generates arrows, using the 'Starman' notation for generators:"
 
 {% highlight javascript %}
 const Game = (size = 8) => {
@@ -158,10 +158,10 @@ const indexed = statefulMapIterableWith(
     return [index + 1, [index, value]]
   },
   0,
-  ["correct", "horse", "battery", "staple"])
+  ["prince", "of", "darkness"])
 
 Array.from(indexed)
-  //=> [[0,"correct"],[1,"horse"],[2,"battery"],[3,"staple"]]
+  //=> [[0,"prince"],[1,"of"],[2,"darkness"]]
 {% endhighlight %}
 
 Armed with this, it's straightforward to map an iterable of directions to an iterable of strings representing positions:
@@ -252,7 +252,7 @@ Christine looked at the solution on the board, frowned, and glanced at the clock
 
 The Carpenter never did hear back from them, but the next day there was an email containing a generous contract from Friends of Ghosts ("FOG"), a codename for a stealth startup doing interesting work, and the Thing interview was forgotten.
 
-Some time later, The Carpenter ran into Bob Plissken at a local technology meet-up. "What happened at Thing?" Bob wanted to know, "I asked them what they thought of you, and all they would say was, *writes unreadable code*."
+Some time later, The Carpenter ran into Bob Plissken at a local technology meet-up. "John! What happened at Thing?" Bob wanted to know, "I asked them what they thought of you, and all they would say was, *Writes unreadable code*. I thought it was a lock! I thought you'd finally make your escape from New York."
 
 The Carpenter smiled. "I forgot about them, it's been a while. So, do They Live?"
 
