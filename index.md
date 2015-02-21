@@ -25,7 +25,7 @@ tags: [allonge]
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != "2014" %}
+      {% unless post.tags contains "noindex" or postyear != "2015" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y-%m-%d" }}</span>)
         </li>
