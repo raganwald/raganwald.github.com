@@ -13,9 +13,7 @@ layout: default
 
 ### featured video
 
-<!-- <iframe src="//player.vimeo.com/video/97408202" width="618" height="340" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="http://vimeo.com/97408202">Javascript Combinators</a> from <a href="http://vimeo.com/ndcoslo">NDC Conferences</a> on <a href="https://vimeo.com">Vimeo</a>.</p> -->
-
-<iframe src="//player.vimeo.com/video/76141334" width="618" height="340" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uYcAjr2J_rU" frameborder="0" allowfullscreen></iframe>
 
 <p>&nbsp;</p>
 
@@ -29,15 +27,7 @@ layout: default
   </tr>
 </table>
 
-### featured presentation
-
-<script async class="speakerdeck-embed" data-slide="2" data-id="20a98ac01cff01321db1664d3453dee6" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
-
-<p>&nbsp;</p>
-
-[w]: ./2011/11/01/williams-master-of-the-comefrom.html
-
-### words
+### recent-ish words
 
 <div class="related">
   <ul>
@@ -50,6 +40,14 @@ layout: default
     {% endfor %}
   </ul>
 </div>
+
+### featured presentation
+
+<script async class="speakerdeck-embed" data-slide="2" data-id="20a98ac01cff01321db1664d3453dee6" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
+
+<p>&nbsp;</p>
+
+[w]: ./2011/11/01/williams-master-of-the-comefrom.html
 
 ### older words
 
