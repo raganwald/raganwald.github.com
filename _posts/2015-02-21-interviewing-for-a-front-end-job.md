@@ -4,9 +4,9 @@ title: "Interviewing for a JavaScript Job"
 tags: [allonge]
 ---
 
-"The Carpenter" was a JavaScript programmer, well-known for a meticulous attention to detail and love for hand-crafted, exquisitely joined code. The Carpenter normally worked through personal referrals, but from time to time a recruiter would slip through his screen. One such recruiter was Bob Plissken. Plissken lined The Carpenter up with a technical interview with a well-funded startup in San Francisco.
+"The Carpenter" was a JavaScript programmer, well-known for a meticulous attention to detail and love for hand-crafted, exquisitely joined code. The Carpenter normally worked through personal referrals, but from time to time a recruiter would slip through his screen. One such recruiter was Bob Plissken. Bob was well-known in the Python community, but his clients often needed experience with other languages.
 
-The Carpenter arrived early for the "Thing Software" interview, and was shown to conference room 13, where he was joined by Christine, one of the company's developers.
+Plissken lined The Carpenter up with a technical interview with a well-funded startup in San Francisco. The Carpenter arrived early for the "Thing Software" interview, and was shown to conference room 13, where he was joined by Christine, one of the company's developers.
 
 ### the problem
 
