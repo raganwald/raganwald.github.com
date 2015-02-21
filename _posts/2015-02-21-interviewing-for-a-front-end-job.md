@@ -4,7 +4,7 @@ title: "Interviewing for a JavaScript Job"
 tags: [allonge]
 ---
 
-"The Carpenter" is a JavaScript programmer, well-known for a meticulous attention to detail and love for hand-crafted, exquisitly joined code. The Carpenter often preferred to work on contract, with clear deliverables and little or no need to sit through reshuffles and reorganizations as the tides of investment and management fashion came in and out in the ocean of tech.
+"The Carpenter" is a JavaScript programmer, well-known for a meticulous attention to detail and love for hand-crafted, exquisitely joined code. The Carpenter often preferred to work on contract, with clear deliverables and little or no need to sit through reshuffles and reorganizations as the tides of investment and management fashion came in and out in the ocean of tech.
 
 The Carpenter normally worked through personal referrals, but from time to time a recruiter would slip through his screen. One such recruiter was Bob Plissken. Plissken lined The Carpenter up with a technical interview with a well-funded startup that made mobile chat software for delivery and logistics companies.
 
@@ -14,7 +14,7 @@ The Carpenter arrived early for the "Thing Software" interview, and was shown to
 
 After some small talk, Christine explained that they liked to ask candidates to whiteboard some code. Despite his experience and industry longevity, the Carpenter did not mind being asked to demonstrate that he was, in fact, the person described on the resumé.
 
-Many companies use whiteboarding code as an excuse to have a technical conversation with a candidate, and The Carpeneter felt that being asked to whiteboard code was an excuse to have a techncial conversation with a future colleague. "Win, win" he thoght to himself.
+Many companies use white-boarding code as an excuse to have a technical conversation with a candidate, and The Carpenter felt that being asked to whiteboard code was an excuse to have a technical conversation with a future colleague. "Win, win" he thought to himself.
 
 [![Chessboard](/assets/images/chessboard.jpg)](https://www.flickr.com/photos/stigrudeholm/6710684795)
 
@@ -70,9 +70,9 @@ const Game = (size =  Math.floor(Math.random() * 8) + 8) => {
 
 ### the carpenter's solution
 
-The Carpenter was not suprised at the problem. Bob Plissken was a crafty, almost reptilian recruiter that traded in information and secrets. Whenever Bob sent a candidate to a job interview, he debriefed them afterwards and got them to disclose what questions were asked in the interview. He then coached subsequent candidadtes to give polished answers to the company's pet technical questions.
+The Carpenter was not surprised at the problem. Bob Plissken was a crafty, almost reptilian recruiter that traded in information and secrets. Whenever Bob sent a candidate to a job interview, he debriefed them afterwards and got them to disclose what questions were asked in the interview. He then coached subsequent candidates to give polished answers to the company's pet technical questions.
 
-Bob had, in fact, warned The Carpenter that "Thing" liked to ask either or both of two questions: Determine how to detect a loop in a linked list, and determine whether the chequerboard game would halt. To save time, The Carpenter had preapred the same answer for both questions.
+Bob had, in fact, warned The Carpenter that "Thing" liked to ask either or both of two questions: Determine how to detect a loop in a linked list, and determine whether the chequerboard game would halt. To save time, The Carpenter had prepared the same answer for both questions.
 
 "Using [babeljs.io](http://babeljs.io), I'll write this in ECMASCript 2015 notation. To begin with, I'll transform a game into an iterable that generates arrows:"
 
@@ -116,7 +116,7 @@ const Game = (size =  Math.floor(Math.random() * 8) + 8) => {
 };
 {% endhighlight %}
 
-"Now that we have an iterable, we can transform the iterable of arrows into an iterable of positions." The Carpeneter sketched quickly. "We'll need some common untilities. You'll find equivalents in a number of JavaScript libraries, but I'll quote those given in [JavaScript Allongé](https://leanpub.com/javascriptallongesix):"
+"Now that we have an iterable, we can transform the iterable of arrows into an iterable of positions." The Carpenter sketched quickly. "We'll need some common utilities. You'll find equivalents in a number of JavaScript libraries, but I'll quote those given in [JavaScript Allongé](https://leanpub.com/javascriptallongesix):"
 
 "For starters, `takeIterable` transforms an iterable into one that yields at most a fixed number of elements. It's handy for debugging. We'll use it to check that our `Game` is working as an iterable:"
 
@@ -143,7 +143,7 @@ Array.from(takeIterable(10, Game(8)))
   //=> ["↑","←","→","←","→","←","→","←","→","←"]
 {% endhighlight %}
 
-But now to the business. We want to take the arrows and convert them to positions. For that, we'll map the Game iterable statefull to positions. a `statefulMap` is a lazy map that preserves state from iteration to iteration:
+But now to the business. We want to take the arrows and convert them to positions. For that, we'll map the Game iterable stateful to positions. a `statefulMap` is a lazy map that preserves state from iteration to iteration:
 
 {% highlight javascript %}
 const statefulMapIterableWith = (fn, seed, iterable) =>
@@ -209,7 +209,7 @@ The Carpenter reflected. "Having turned our game loop into an iterable, we can n
 
 "We could draw positions as nodes in a graph, connected by arcs representing the arrows. Detecting whether the game terminates is equivalent to detecting whether the graph contains a cycle."
 
-![Cycle Dection](/assets/images/cycle.png)
+![Cycle Detection](/assets/images/cycle.png)
 
 "There's an old joke that a mathematician is someone who will take a five-minute problem, then spend an hour proving it is equivalent to another problem they have already solved. I approached this question in that spirit. Now that we have created an iterable of values that can be compared with `===`, I can show you this function:"
 
@@ -257,15 +257,15 @@ const tortoiseAndHare = (iterable) => {
 
 The Carpenter sat down and waited. This type of solution provided an excellent opportunity to explore lazy versus eager evaluation, the performance of iterators versus native iteration, single responsibility design, and many other rich topics.
 
-The Carpenter was confident that although nobdy would write this exact code in production, prospective employers would also recognize that nobody would try to detect whether a chequer game terminates in production, either. It's all just a game designed to start an interesting conversation, right?
+The Carpenter was confident that although nobody would write this exact code in production, prospective employers would also recognize that nobody would try to detect whether a chequer game terminates in production, either. It's all just a game designed to start an interesting conversation, right?
 
-Chritine looked at the solution on the board, frowned, and glanced at the clock on the wall.
+Christine looked at the solution on the board, frowned, and glanced at the clock on the wall.
 
 "Well," Christine said politely, "We at the Thing Software company are very grateful you made some time to visit with us, but alas, that is all the time we have today. If we wish to talk to you further, we'll be in touch."
 
 The Carpenter never did hear back from them, but the next day there was an email containing a generous contract from Friends of Ghosts ("FOG"), a codename for a stealth startup doing interesting work, and the Thing interview was forgotten.
 
-Some time later, The Carpenter ran into Bob Plissken at a local technology meetup. "What happened at Thing?" Bob wanted to know, "I asked them what they thought of you, and all they would say was, *writes unreadble code*."
+Some time later, The Carpenter ran into Bob Plissken at a local technology meet-up. "What happened at Thing?" Bob wanted to know, "I asked them what they thought of you, and all they would say was, *writes unreadable code*."
 
 The Carpenter smiled. "I forgot about them, it's been a while. So... Do They Live?"
 
