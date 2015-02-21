@@ -22,7 +22,7 @@ Christine intoned the question, as if by rote. Which it was, by the time they'd 
 
 > Consider a finite checkerboard. On each square we randomly place an arrow pointing to one of its four sides. A chequer is placed randomly on the checkerboard. Each move consists of moving the chequer one square in the direction of the arrow in the square it occupies. If the arrow should cause the chequer to move off the edge of the board, the game halts.
 
-> The problem is this: The game board is hidden from us. A player moves the chequer, following the rules. As the player moves the chequer, they calls out the direction of movement, e.g. "↑, E, ↑, S, ↑, E..." Write an algorithm that will determine whether the game halts, strictly from the called out directions, in finite time and space.
+> The problem is this: The game board is hidden from us. A player moves the chequer, following the rules. As the player moves the chequer, they calls out the direction of movement, e.g. "↑, →, ↑, ↓, ↑, →..." Write an algorithm that will determine whether the game halts, strictly from the called out directions, in finite time and space.
 
 "So," The Carpenter asked, "I am to write an algorithm that takes a possibly infinite stream of..."
 
