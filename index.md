@@ -36,7 +36,7 @@ tags: [allonge]
 ### talks
 
 * [Invent the future, don't recreate the past](http://youtu.be/uYcAjr2J_rU) [39:16]
-* [I have a good feeling about this - Why tooling is poised to make the jump to hyperspace](https://vimeo.com/76141334) [43:15]
+* [I have a good feeling about this](https://vimeo.com/76141334) [43:15]
 * The Art of the JavaScript Metaobject Protocol
   * [Part I: Combinators](http://vimeo.com/97408202) [54:55]
   * [Part II: Metaobjects](http://vimeo.com/97408202) [58:06]
