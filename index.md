@@ -27,7 +27,7 @@ tags: [allonge]
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex" or postyear != "2015" %}
         <li>
-          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y-%m-%d" }}</span>)
+          <a href="{{ post.url }}">{{ post.title }}</a>
         </li>
       {% endunless %}
     {% endfor %}
@@ -51,7 +51,7 @@ tags: [allonge]
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex" or postyear == "2015" %}
         <li>
-          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y-%m-%d" }}</span>)
+          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>)
         </li>
       {% endunless %}
     {% endfor %}
