@@ -269,7 +269,7 @@ The Carpenter never did hear back from them, but the next day there was an email
 
 Some time later, The Carpenter ran into Bob Plissken at a local technology meet-up. "What happened at Thing?" Bob wanted to know, "I asked them what they thought of you, and all they would say was, *writes unreadable code*."
 
-The Carpenter smiled. "I forgot about them, it's been a while. So... Do They Live?"
+The Carpenter smiled. "I forgot about them, it's been a while. So, do They Live?"
 
 ---
 
