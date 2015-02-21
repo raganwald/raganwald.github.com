@@ -1,6 +1,7 @@
 ---
 title: Reginald Braithwaite
 layout: default
+tags: [allonge]
 ---
 
 > Reginald "Raganwald" Braithwaite is proof that somewhere, a village is missing its idiot. Either that, or a combinatory forest is missing its Idiot Bird, nobody is really sure. His interests include constructing surreal numbers, deconstructing hopelessly egocentric nulls, and celebrating the joy of programming.
@@ -17,17 +18,7 @@ layout: default
 
 <p>&nbsp;</p>
 
-### featured books
-
-<table>
-  <tr>
-    <td><iframe width="160" height="400" src="https://leanpub.com/javascript-spessore/embed" frameborder="0" allowtransparency="true"></iframe></td>
-    <td><iframe width="160" height="400" src="https://leanpub.com/javascript-allonge/embed" frameborder="0" allowtransparency="true"></iframe></td>
-    <td><iframe width="160" height="400" src="https://leanpub.com/coffeescript-ristretto/embed" frameborder="0" allowtransparency="true"></iframe></td>
-  </tr>
-</table>
-
-### recent words
+### 2015 essays
 
 <div class="related">
   <ul>
@@ -50,7 +41,7 @@ layout: default
 
 [w]: ./2011/11/01/williams-master-of-the-comefrom.html
 
-### older words
+### older essays
 
 <div class="related">
   <ul>
