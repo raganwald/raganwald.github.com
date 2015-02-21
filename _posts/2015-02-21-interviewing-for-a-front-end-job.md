@@ -266,3 +266,7 @@ The Carpenter never did hear back from them, but the next day there was an email
 Some time later, The Carpenter ran into Bob Plissken at a local technology meetup. "What happened at Thing?" Bob wanted to know, "I asked them what they thought of you, and all they would say was, *writes unreadble code*."
 
 The Carpenter smiled. "I forgot about them, it's been a while. So... Do They Live?"
+
+---
+
+p.s. The Carpenter probably cribbed the solution from [The "Drunken Walk" Programming Problem](http://raganwald.com/2013/02/17/a-drunken-walk.html), and [Solving the "Drunken Walk" problem with iterators](http://raganwald.com/2013/02/18/drunken-walk-solution.html).
