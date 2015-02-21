@@ -33,11 +33,12 @@ layout: default
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%sY'}}{% endcapture %}
-      {% assign postyear = postyear | plus: 0 %}
-      {% unless post.tags contains "noindex" or post.tags contains "posterous" or post.tags contains "homoiconic" or postyear < 2014 %}
-        <li>
-          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y-%m-%d" }}</span>)
-        </li>
+      {% unless post.tags contains "noindex"%}
+        {% if postyear == "2015" or postyear == "2014" %}
+          <li>
+            <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y-%m-%d" }}</span>)
+          </li>
+        {% endif %}
       {% endunless %}
     {% endfor %}
   </ul>
