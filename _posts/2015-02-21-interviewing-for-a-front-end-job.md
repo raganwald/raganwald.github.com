@@ -16,15 +16,17 @@ Many companies use white-boarding code as an excuse to have a technical conversa
 
 [![Chessboard](/assets/images/chessboard.jpg)](https://www.flickr.com/photos/stigrudeholm/6710684795)
 
-Christine intoned the question, as if by rote. Which it was, by the time they'd reached The Carpenter:
+Christine intoned the question, as if by rote:
 
-> Consider a finite checkerboard. On each square we randomly place an arrow pointing to one of its four sides. A chequer is placed randomly on the checkerboard. Each move consists of moving the chequer one square in the direction of the arrow in the square it occupies. If the arrow should cause the chequer to move off the edge of the board, the game halts.
+> Consider a finite checkerboard of unknown size. On each square, we randomly place an arrow pointing to one of its four sides. A chequer is placed randomly on the checkerboard. Each move consists of moving the chequer one square in the direction of the arrow in the square it occupies. If the arrow should cause the chequer to move off the edge of the board, the game halts.
 
 > The problem is this: The game board is hidden from us. A player moves the chequer, following the rules. As the player moves the chequer, they calls out the direction of movement, e.g. "↑, →, ↑, ↓, ↑, →..." Write an algorithm that will determine whether the game halts, strictly from the called out directions, in finite time and space.
 
 "So," The Carpenter asked, "I am to write an algorithm that takes a possibly infinite stream of..."
 
-Christine interrupted. "To save time, we have written a template of the solution for you. Fill in the blanks." Christine quickly scribbled on the whiteboard:
+Christine interrupted. "To save time, we have written a template of the solution for you in ECMASCript 2015 notation. Fill in the blanks. Your code should not presume anything about the gameboard's size or contents, only that it is given an arrow every time though the while loop. You may use [babeljs.io](http://babeljs.io), or [ES6Fiddle](http://www.es6fiddle.net) to check your work. "
+
+Christine quickly scribbled on the whiteboard:
 
 {% highlight javascript %}
 const Game = (size = 8) => {
@@ -74,7 +76,7 @@ And just as companies often pick a problem that gives them broad latitude for di
 
 Bob had, in fact, warned The Carpenter that "Thing" liked to ask either or both of two questions: Determine how to detect a loop in a linked list, and determine whether the chequerboard game would halt. To save time, The Carpenter had prepared the same answer for both questions.
 
-The Carpenter coughed softly, then began. "Using [babeljs.io](http://babeljs.io), I'll write this in ECMASCript 2015 notation. To begin with, I'll transform a game into an iterable that generates arrows, using the 'Starman' notation for generators."
+The Carpenter coughed softly, then began. "To begin with, I'll transform a game into an iterable that generates arrows, using the 'Starman' notation for generators."
 
 "I will add just five lines of code the `Game` function, and two of those are closing braces:"
 
