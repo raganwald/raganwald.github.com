@@ -206,7 +206,7 @@ const positionsOf = (game) =>
       };
       const [x, y] =  MOVE[direction](position);
       
-      return [position, `x: ${x}, y: ${y}`];
+      return [[x, y], `x: ${x}, y: ${y}`];
     },
     [0, 0],
     game);
