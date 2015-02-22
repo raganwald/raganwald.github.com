@@ -74,7 +74,29 @@ And just as companies often pick a problem that gives them broad latitude for di
 
 Bob had, in fact, warned The Carpenter that "Thing" liked to ask either or both of two questions: Determine how to detect a loop in a linked list, and determine whether the chequerboard game would halt. To save time, The Carpenter had prepared the same answer for both questions.
 
-The Carpenter coughed softly, then began. "Using [babeljs.io](http://babeljs.io), I'll write this in ECMASCript 2015 notation. To begin with, I'll transform a game into an iterable that generates arrows, using the 'Starman' notation for generators:"
+The Carpenter coughed softly, then began. "Using [babeljs.io](http://babeljs.io), I'll write this in ECMASCript 2015 notation. To begin with, I'll transform a game into an iterable that generates arrows, using the 'Starman' notation for generators."
+
+"I will add just five lines of code the `Game` function, and two of those are closing braces:"
+
+{% highlight javascript %}
+  return ({
+    [Symbol.iterator]: function* () {
+{% endhighlight %}
+
+And:
+
+{% highlight javascript %}
+        yield arrow;
+{% endhighlight %}
+
+And:
+
+{% highlight javascript %}
+    }
+  });
+{% endhighlight %}
+
+"The finished function reads:"
 
 {% highlight javascript %}
 const Game = (size = 8) => {
@@ -138,7 +160,11 @@ Array.from(takeIterable(10, Game()))
     ["↑","←","→","←","→","←","→","←","→","←"]
 {% endhighlight %}
 
-But now to the business. We want to take the arrows and convert them to positions. For that, we'll map the Game iterable to positions. A `statefulMap` is a lazy map that preserves state from iteration to iteration. That's what we need, because we need to know the current position to map each move to the next position:
+"This doesn't actually end up in our solution, it's just to check our work as we go along. And you can find it in libraries, it's not something we need to reinvent whenever we work with iterables."
+
+"But now to the business. We want to take the arrows and convert them to positions. For that, we'll map the Game iterable to positions. A `statefulMap` is a lazy map that preserves state from iteration to iteration. That's what we need, because we need to know the current position to map each move to the next position."
+
+"Again, this is a standard idiom we can obtain from libraries, we don't reinvent the wheel. I'll show it here for clarity:"
 
 {% highlight javascript %}
 const statefulMapIterableWith = (fn, seed, iterable) =>
@@ -166,7 +192,7 @@ Array.from(indexed)
     [[0,"prince"],[1,"of"],[2,"darkness"]]
 {% endhighlight %}
 
-Armed with this, it's straightforward to map an iterable of directions to an iterable of strings representing positions:
+"Armed with this, it's straightforward to map an iterable of directions to an iterable of strings representing positions:"
 
 {% highlight javascript %}
 const positionsOf = (game) =>
@@ -240,6 +266,8 @@ const tortoiseAndHare = (iterable) => {
   const terminates = (game) =>
     tortoiseAndHare(positionsOf(game))
 {% endhighlight %}
+
+"This solution makes use of iterables and a single utility function, `statefulMapIterableWith`. It also cleanly separates the mechanics of the game from the algorithm for detecting cycles in a graph."
 
 ### the aftermath
 
