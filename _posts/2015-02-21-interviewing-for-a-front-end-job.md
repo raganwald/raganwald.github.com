@@ -273,7 +273,7 @@ const tortoiseAndHare = (iterable) => {
 
 The Carpenter sat down and waited. This type of solution provided an excellent opportunity to explore lazy versus eager evaluation, the performance of iterators versus native iteration, single responsibility design, and many other rich topics.
 
-The Carpenter was confident that although nobody would write this exact code in production, prospective employers would also recognize that nobody would try to detect whether a chequer game terminates in production, either. It's all just a game designed to start an interesting conversation, right?
+The Carpenter was confident that although nobody would write this exact code in production, prospective employers would also recognize that nobody would try to detect whether a chequer game terminates in production, either. It's all just a pretext for kicking off an interesting conversation, right?
 
 [![Time](/assets/images/time.jpg)](https://www.flickr.com/photos/jlhopgood/6795353385)
 
