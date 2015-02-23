@@ -312,15 +312,23 @@ This is the answer Christine was looking for. A brilliant answer that takes cons
 
 Now that we have gotten the technical aspects out of the way, here are my candid thoughts.
 
-First, I intended for all three participants to be selfish actors, each trying to play the game by themselves. Bob is trying to jam the Carpenter into the job, and coaches him what to expect even though the Carpenter is an experienced programmer. Christine has a preconceived answer in mind and presents what I think is a very poor template for the solution to fill in. It even has information (like the size of the game board) that the solution is not supposed to take advantage of. And the Carpenter is sincerely trying to tell them what he thinks they want to hear, without asking Christine if that is indeed what she wants him to do.
+First, I intended for all three participants to be selfish actors, each trying to play the game by themselves.
+
+- Bob is trying to jam the Carpenter into the job, and coaches him what to expect even though the Carpenter is an experienced programmer.
+- Christine has a preconceived answer in mind and presents what I think is a very poor template for the solution to fill in. It even has information (like the size of the game board) that the solution is not supposed to take advantage of.
+- And the Carpenter is sincerely trying to tell them what he thinks they want to hear, without asking Christine if that is indeed what she wants him to do.
 
 Leaving the recruiter out, an interview is actually supposed to be a coöperative game. Both Christine and the Carpenter lose if Thing would have been a better fit than FOG, and if the Carpenter would have been a better colleague than whomever Thing eventually hired.
 
-As I wrote the story, neither Christine nor the Carpenter really talked to each other.
+As I wrote the story, neither Christine nor the Carpenter really talked to each other. Christine had her pet problem, and in her head, a kind of script for what she would ask the Carpenter once he wrote some obvious bits of code. She was nonplussed when he went "off-script," and that's *really* why she failed him. Meanwhile, the Carpenter had arrived with a solution in his head that would make him (in his mind) stand out from other applicants.
 
 Christine could have and should have made it clear up front whether she just wanted him to FizzBuzz, i.e. to prove he can code anything in JavaScript. And once she realized he was going off into architectural abstractions (what some call "achieving escape velocity"), she could have and should have interrupted him and been more explicit about what she wanted him to demonstrate.
 
-It is also clearly the Carpenter's responsibility to ask Christine what she wants to see in a solution. When asked a programming question, an interviewer might want to see any of the following mutually exclusive things:
+It is also clearly the Carpenter's responsibility to ask Christine what she wants to see in a solution. He was trying to stand out from other applicants, and use what Plissken had told him to do better than expected. But he still could have and should have discussed this with Christine. It would have taken five seconds to say, "Well we could solve this with a Set, but it's isomorphic to a problem of finding cycles in a graph, would you like me to solve it that way?"
+
+### the problem with programming problems
+
+Quite frankly, whiteboard problems in interviews are minefields. When asked a programming question, an interviewer might want to see any of the following mutually exclusive things:
 
 1. Demonstrate that you can put together any old basic thing ("FizBuzzing").
 2. Demonstrate that you understand algorithm fundamentals like space and time requirements, mutability, state, and so forth.
