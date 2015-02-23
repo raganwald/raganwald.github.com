@@ -16,7 +16,7 @@ Let's start with the technical bits, because that's what many commenters fixate 
 
 ### flaws in the solution given
 
-Now, the Carpenter's solution is not correct, not even close. This is partly deliberate, partly accidental. When I wrote the problem, I deliberately inserted a rather obvious flaw. Here's his complete solution:
+The Carpenter's solution is not correct. This is partly deliberate, partly accidental. When I wrote the problem, I deliberately inserted a rather obvious flaw. Here's his complete solution:
 
 {% highlight javascript %}
 const Game = (size = 8) => {
@@ -120,7 +120,9 @@ const terminates = (game) =>
 The obvious flaw is that `tortoiseAndHare` reports `true` when there is a cycle, while the function `terminates` implies that `true` would mean the game's moves have no cycle. IMO, this is an error best solved with naming. The correct function would be:
 
 {% highlight javascript %}
-const containsCycle = (iterable) => {
+// implements Tortoise and Hare cycle
+// detection algorithm.
+const hasCycle = (iterable) => {
   const hare = iterable[Symbol.iterator]();
   let hareResult = (hare.next(), hare.next());
   
@@ -148,10 +150,12 @@ const containsCycle = (iterable) => {
 };
 
 const terminates = (game) =>
-  !containsCycle(positionsOf(game))
+  !hasCycle(positionsOf(game))
 {% endhighlight %}
 
-Now, there is another "flaw" that I deliberately inserted, namely that the Carpenter treats the game as an ordered collection, but the verbal description of the problem presents the directions as a *stream*. Meaning, you should not be able to create two independent iterators over the elements.
+I left that flaw in because I wanted to create the dynamic where Christine dislikes the code for other reasons, but fails him for getting one character wrong.
+
+There is another, more subtle "flaw," namely that the Carpenter treats the game as an ordered collection, but the verbal description of the problem presents the directions as a *stream*. Meaning, you should not be able to create two independent iterators over the elements. This is definitely the fictitious Carpenter's fault.
 
 There is at least one more flaw in the code as presented in the post, but I can say outright that *all other flaws are my fault as an imperfect author*, not the fictitious Carpenter's fault. FWIW, here is how I could clean up the Carpenter's solution, with a little refactoring to make it easier to test:
 
@@ -224,6 +228,8 @@ const positionsOf = (game) =>
     [0, 0],
     game);
 
+// implements Tortoise and Hare cycle
+// detection algorithm.
 const hasCycle = (orderedCollection) => {
   const hare = orderedCollection[Symbol.iterator]();
   let hareResult = (hare.next(), hare.next());
