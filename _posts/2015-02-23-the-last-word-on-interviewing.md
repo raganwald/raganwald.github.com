@@ -304,7 +304,7 @@ Now that we have gotten the technical aspects out of the way, here are my candid
 
 First, I intended for all three participants to be selfish actors, each trying to play the game by themselves. Bob is trying to jam the Carpenter into the job, and coaches him what to expect even though the Carpenter is an experienced programmer. Christine has a preconceived answer in mind and presents what I think is a very poor template for the solution to fill in. It even has information (like the size of the game board) that the solution is not supposed to take advantage of. And the Carpenter is sincerely trying to tell them what he thinks they want to hear, without asking Christine if that is indeed what she wants him to do.
 
-Leaving the recruiter out, an interview is actually supposed to be a coöperative game. Both Christine and the Carpenter lose if Thing would have been a better fit than FOG, and if the Carpenter would have been a better colleague than whomever the eventually hired.
+Leaving the recruiter out, an interview is actually supposed to be a coöperative game. Both Christine and the Carpenter lose if Thing would have been a better fit than FOG, and if the Carpenter would have been a better colleague than whomever Thing eventually hired.
 
 As I wrote the story, neither Christine nor the Carpenter really talked to each other. Christine could have and should have made it clear up front whether she just wanted him to FizzBuzz, i.e. to prove he can code anything in JavaScript. And once she realized he was going off into architectural abstractions (what some call "achieving escape velocity"), she could have and should have interrupted him and been more explicit about what she wanted him to demonstrate.
 
