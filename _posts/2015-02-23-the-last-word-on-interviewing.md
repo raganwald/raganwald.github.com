@@ -339,7 +339,7 @@ You might as well come right out and say, "We're looking for people who think th
 
 ### snap judgments
 
-It's fairly easy to say, "No hire, because X," or, "I wouldn't want to work at Thing, because Y." But really, we have almost no information to go on. In a detective story, we start with very little information, and we decide who the suspect is, and then we gather further information to confirm or refute our hypothesis. Did I say "detective story?" I meant to say, *in science*.
+It's fairly easy to say, "No hire, because X," or, "I wouldn't want to work at Thing, because Y." But really, we have almost no information to go on. In a detective story, we start with very little information, and we decide who the suspect is, and then we gather further information to confirm or refute our hypothesis. Did I say "in a detective story?" I meant to say, *in science*.
 
 In an actual interview, we do not need to get up and walk out if asked to find out whether some hypothetical "game" terminates, not do we need to sit and say nothing while a candidate writes out a long "solution." We can ask questions. We can form a hypothesis, sure, but then we can confirm or refute it by asking questions.
 
@@ -351,11 +351,13 @@ And she is only one person in a company. Why should we make assumptions about th
 
 ### what are we testing?
 
-As I noted, Christine is unlikely to be very good at the job of interviewing, because she doesn't interview people for a living. And for all his experience, the Carpenter doesn't interview for a living. This dynamic is the rule, not the exception. Most technical interviews are conducted by people who are inexperienced with technical interviews.
+As I noted, Christine is unlikely to be very good at the job of interviewing, because she doesn't interview people for a living. And for all his experience, the Carpenter doesn't interview for a living. This dynamic is the rule, not the exception. *Most technical interviews are conducted by people who are inexperienced with technical interviews*.
 
-Therefore, I counsel being charitable: Assume that most people are good at their primary job, and happen to be less than amazing at this part-time necessity of interviewing or being interviewed. because the alternative is to hire people who have a lot of experience going on interviews. And that could be a sign they spend a lot of time being unemployed. Likewise, companies that are amazing at interviewing people might have to hire a lot of people because good people leave.
+Therefore, I counsel being charitable: Assume that most people are good at their primary job, and happen to be less than amazing at this part-time necessity of interviewing or being interviewed.
 
-You don't know any of these things, of course. You have to ask. Which is the point I was trying to make with the original post: The interview was a failure for everyone, simply because they did not communicate with each other.
+The alternative is to hire people who have a lot of experience going on interviews. And that could be a sign they spend a lot of time being unemployed. Likewise, companies that are amazing at interviewing people might have to hire a lot of people because good people leave.
+
+This last bit is obvious if you have spent any amount of time dating people you meet through a dating service or in nightclubs. The people who are "good at dating" are good at dating because they spend a lot of time dating instead of being in a relationship. Being good at dating doesn't say anything about whether someone is good at being in a relationship.
 
 ### the anti-patterns
 
