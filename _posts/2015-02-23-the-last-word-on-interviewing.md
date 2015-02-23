@@ -141,9 +141,9 @@ const terminates = (game) =>
   !containsCycle(positionsOf(game))
 {% endhighlight %}
 
-Now, there is another "flaw" that I deliberately inserted, namely that the Carpenter treats the game as an ordered collection, but the verbal description of the problem presents the directions as a *stream*. meaning, you should not be able to create two independent iterators over the elements.
+Now, there is another "flaw" that I deliberately inserted, namely that the Carpenter treats the game as an ordered collection, but the verbal description of the problem presents the directions as a *stream*. Meaning, you should not be able to create two independent iterators over the elements.
 
-There is at least one more flaw in the code as presented in the post, but I can saw outright that all other flaws are my fault, not the fictitious Carpenter's fault. FWIW, here is how I could clean up the Carpenter's solution, with a little refactoring to make it easier to test:
+There is at least one more flaw in the code as presented in the post, but I can say outright that *all other flaws are my fault as an imperfect author*, not the fictitious Carpenter's fault. FWIW, here is how I could clean up the Carpenter's solution, with a little refactoring to make it easier to test:
 
 {% highlight javascript %}
 const MOVE = {
@@ -261,6 +261,8 @@ terminates(Game({board: test, position: [3, 3]}))
   //=> false
 {% endhighlight %}
 
+Some people would say that there were errors precisely because it's a longer bit of code, and that is correct. But I wouldn't judge that in a vacuum. OOP code is often more convoluted than simple procedural code. Is it unnecessary `AbstractFacadefactoryArchitectureAstronatics`? Or is it separating concerns in a way that makes the code easier to understand and maintain? Sometimes you have to have a conversation to decide.
+
 ### ordered collections and streams
 
 As given in the description, the list of moves are a stream, not an ordered collection. Therefore, this solution sort-of works given the template code, but does not work given the requirements. [Udik](https://news.ycombinator.com/user?id=Udik) on Hacker News was the first person to point this out.
@@ -313,7 +315,7 @@ It is clearly the Carpenter's responsibility to ask Christine what she wants to 
 3. Demonstrate the kind of code you'd write in production for colleagues to understand and maintain.
 4. Demonstrate that you are current and familiar with the latest developments in your toolset, regardless of whether you are employing them in production.
 
-You really can't answer all of these in one code snippet. If the interviewer is just trying to quickly weed out the bullshitters, they don't want you to factor the code and write tests for each piece. But if they want to see how you write code for production, they do. If they want to know that you're keeping up to date, they might want to see you demonstrate your knowledge of some new language features. But again, if they want to see how you solve a day-to-day problem, they don't want to see the solution use ES-6 transpilation or [Mori](https://github.com/swannodette/mori) persistent data structures. Unless they use those, in which case they do want to see them.
+You really can't answer all of these in one code snippet. If the interviewer is just trying to quickly weed out the bullshitters, they don't want you to factor the code and write tests for each piece. But if they want to see how you write code for production, they do. If they want to know that you're keeping up to date, they might want to see you demonstrate your knowledge of some new language features. But again, if they want to see how you solve a day-to-day problem, they don't want to see the solution use ES-6 transpilation or [Mori](http://swannodette.github.io/mori/) persistent data structures. Unless they use those, in which case they do want to see them.
 
 How do you know what to write?
 
