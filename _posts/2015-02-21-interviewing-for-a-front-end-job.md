@@ -265,8 +265,8 @@ const tortoiseAndHare = (iterable) => {
 "Thus, the solution to the game problem is:"
 
 {% highlight javascript %}
-  const terminates = (game) =>
-    tortoiseAndHare(positionsOf(game))
+const terminates = (game) =>
+  tortoiseAndHare(positionsOf(game))
 {% endhighlight %}
 
 "This solution makes use of iterables and a single utility function, `statefulMapIterableWith`. It also cleanly separates the mechanics of the game from the algorithm for detecting cycles in a graph."
