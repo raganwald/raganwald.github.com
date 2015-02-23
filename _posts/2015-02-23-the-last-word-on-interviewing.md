@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "What is Extremely Unlikely to be the Last Word on Interviewing a JavaScript Programmer"
+title: "(unlikely to be) The Last Word on Interviewing for a JavaScript Job"
 tags: [allonge]
 ---
 
-These are my comments on [Interviewing a JavaScript Programmer](interviewing-for-a-front-end-job.md). Let's start with the technical bits, because that's what many commenters fixate upon.
+These are my comments on [Interviewing a JavaScript Programmer](http://raganwald.com/2015/02/21/interviewing-for-a-front-end-job.html). Let's start with the technical bits, because that's what many commenters fixate upon.
 
 The Carpenter's solution is not correct, not even close. This is partly deliberate, partly accidental. When I wrote the problem, I deliberately inserted a rather obvious flaw. Here's his complete solution:
 
