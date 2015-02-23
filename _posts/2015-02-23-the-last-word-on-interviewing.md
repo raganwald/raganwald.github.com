@@ -306,16 +306,20 @@ First, I intended for all three participants to be selfish actors, each trying t
 
 Leaving the recruiter out, an interview is actually supposed to be a coöperative game. Both Christine and the Carpenter lose if Thing would have been a better fit than FOG, and if the Carpenter would have been a better colleague than whomever Thing eventually hired.
 
-As I wrote the story, neither Christine nor the Carpenter really talked to each other. Christine could have and should have made it clear up front whether she just wanted him to FizzBuzz, i.e. to prove he can code anything in JavaScript. And once she realized he was going off into architectural abstractions (what some call "achieving escape velocity"), she could have and should have interrupted him and been more explicit about what she wanted him to demonstrate.
+As I wrote the story, neither Christine nor the Carpenter really talked to each other.
 
-It is clearly the Carpenter's responsibility to ask Christine what she wants to see in a solution. When asked a programming question, an interviewer might want to see any of the following mutually exclusive things:
+Christine could have and should have made it clear up front whether she just wanted him to FizzBuzz, i.e. to prove he can code anything in JavaScript. And once she realized he was going off into architectural abstractions (what some call "achieving escape velocity"), she could have and should have interrupted him and been more explicit about what she wanted him to demonstrate.
+
+It is also clearly the Carpenter's responsibility to ask Christine what she wants to see in a solution. When asked a programming question, an interviewer might want to see any of the following mutually exclusive things:
 
 1. Demonstrate that you can put together any old basic thing ("FizBuzzing").
 2. Demonstrate that you understand algorithm fundamentals like space and time requirements, mutability, state, and so forth.
 3. Demonstrate the kind of code you'd write in production for colleagues to understand and maintain.
 4. Demonstrate that you are current and familiar with the latest developments in your toolset, regardless of whether you are employing them in production.
 
-You really can't answer all of these in one code snippet. If the interviewer is just trying to quickly weed out the bullshitters, they don't want you to factor the code and write tests for each piece. But if they want to see how you write code for production, they do. If they want to know that you're keeping up to date, they might want to see you demonstrate your knowledge of some new language features. But again, if they want to see how you solve a day-to-day problem, they don't want to see the solution use ES-6 transpilation or [Mori](http://swannodette.github.io/mori/) persistent data structures. Unless they use those, in which case they do want to see them.
+You really can't answer all of these in one code snippet. If the interviewer is just trying to quickly weed out the bullshitters, they don't want you to factor the code and write tests for each piece. But if they want to see how you write code for production, they do. If they want to know that you're keeping up to date, they might want to see you demonstrate your knowledge of some new language features.
+
+And, if they want to see how you solve a day-to-day problem, they don't want to see the solution use ES-6 transpilation or [Mori](http://swannodette.github.io/mori/) persistent data structures. Unless they use those, in which case they do want to see them.
 
 How do you know what to write?
 
