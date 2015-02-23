@@ -396,3 +396,7 @@ This is very, very bad behaviour. It's exactly what leads to certain cultural pr
 ### summary
 
 It's just a story, no big deal. But FWIW, I tried to make this about three reasonable humans, none of them awesome or particularly flawed. Each was trying, more-or-less, to do the right thing by themselves, but not trying very hard to really work with the other participants to ensure that the very best interview took place.
+
+---
+
+[reddit](http://www.reddit.com/r/javascript/comments/2wwdi7/unlikely_to_be_the_last_word_on_interviewing_for/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-23-the-last-word-on-interviewing.md)
