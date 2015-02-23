@@ -8,7 +8,7 @@ These are my comments on [Interviewing a JavaScript Programmer](http://raganwald
 
 > Consider a finite checkerboard of unknown size. On each square, we randomly place an arrow pointing to one of its four sides. A chequer is placed randomly on the checkerboard. Each move consists of moving the chequer one square in the direction of the arrow in the square it occupies. If the arrow should cause the chequer to move off the edge of the board, the game halts.
 
-> The problem is this: The game board is hidden from us. A player moves the chequer, following the rules. As the player moves the chequer, they calls out the direction of movement, e.g. “↑, →, ↑, ↓, ↑, →…” Write an algorithm that will determine whether the game halts, **strictly from the called out directions**, in finite time and space.
+> The problem is this: The game board is hidden from us. A player moves the chequer, following the rules. As the player moves the chequer, they calls out the direction of movement, e.g. “↑, →, ↑, ↓, ↑, →…” Write an algorithm that will determine whether the game halts, strictly from the called out directions, in finite time and space.
 
 Meanwhile, the Carpenter had been coached by a headhunter ("Bob Plissken") that the company likes to ask this question and about detecting cycles in a graph. The Carpenter tries to convert the problem into a graph problem, but Christine fails him out of the interview without even giving him a chance to test and polish his first draft.
 
@@ -277,11 +277,11 @@ Some people would say that there were errors precisely because it's a longer bit
 
 As given in the description, the list of moves are a stream, not an ordered collection. Therefore, this solution sort-of works given the template code, but does not work given the requirements. [Udik](https://news.ycombinator.com/user?id=Udik) on Hacker News was the first person to point this out.
 
-> Consider a finite checkerboard of unknown size. On each square, we randomly place an arrow pointing to one of its four sides. A chequer is placed randomly on the checkerboard. Each move consists of moving the chequer one square in the direction of the arrow in the square it occupies. If the arrow should cause the chequer to move off the edge of the board, the game halts.
+To reiterate:
 
-> The problem is this: The game board is hidden from us. A player moves the chequer, following the rules. As the player moves the chequer, they calls out the direction of movement, e.g. “↑, →, ↑, ↓, ↑, →…” Write an algorithm that will determine whether the game halts, **strictly from the called out directions**, in finite time and space.
+> The game board is hidden from us. A player moves the chequer, following the rules. As the player moves the chequer, they calls out the direction of movement, e.g. “↑, →, ↑, ↓, ↑, →…” Write an algorithm that will determine whether the game halts, **strictly from the called out directions**, in **finite** time and space.
 
-I was trying to give the impression that the Carpenter was unnecessarily force-fitting the cycle detection algorithm to the chequerboard game. In the story, he tried to joke about that:
+I was trying to give the impression that the Carpenter was unnecessarily force-fitting the constant-space cycle detection algorithm to the chequerboard game. In the story, he tried to joke about that:
 
 > There’s an old joke that a mathematician is someone who will take a five-minute problem, then spend an hour proving it is equivalent to another problem they have already solved. I approached this question in that spirit.
 
