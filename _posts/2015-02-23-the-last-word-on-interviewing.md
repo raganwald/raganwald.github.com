@@ -6,7 +6,17 @@ tags: [allonge]
 
 These are my comments on [Interviewing a JavaScript Programmer](http://raganwald.com/2015/02/21/interviewing-for-a-front-end-job.html). Let's start with the technical bits, because that's what many commenters fixate upon.
 
-The Carpenter's solution is not correct, not even close. This is partly deliberate, partly accidental. When I wrote the problem, I deliberately inserted a rather obvious flaw. Here's his complete solution:
+The story concerns a job interview, where the interviewer ("Christine") asks the candidate (known as "The Carpenter") to whiteboard JavaScript code solving this problem:
+
+> Consider a finite checkerboard of unknown size. On each square, we randomly place an arrow pointing to one of its four sides. A chequer is placed randomly on the checkerboard. Each move consists of moving the chequer one square in the direction of the arrow in the square it occupies. If the arrow should cause the chequer to move off the edge of the board, the game halts.
+
+> The problem is this: The game board is hidden from us. A player moves the chequer, following the rules. As the player moves the chequer, they calls out the direction of movement, e.g. “↑, →, ↑, ↓, ↑, →…” Write an algorithm that will determine whether the game halts, **strictly from the called out directions**, in finite time and space.
+
+Meanwhile, the Carpenter had been coached by a headhunter ("Bob Plissken") that the company likes to ask this question and about detecting cycles in a graph. The Carpenter tries to convert the problem into a graph problem, but Christine fails him out of the interview without even giving him a chance to test and polish his first draft.
+
+### flaws in the solution given
+
+Now, the Carpenter's solution is not correct, not even close. This is partly deliberate, partly accidental. When I wrote the problem, I deliberately inserted a rather obvious flaw. Here's his complete solution:
 
 {% highlight javascript %}
 const Game = (size = 8) => {
@@ -107,7 +117,7 @@ const terminates = (game) =>
   tortoiseAndHare(positionsOf(game))
 {% endhighlight %}
 
-The obvious flaw is that `tortoiseAndHare` reports `true` is there is a cycle, while the function `terminates` implies that `true` would mean the game's moves have no cycle. IMO, this is an error best solved with naming. The correct function would be:
+The obvious flaw is that `tortoiseAndHare` reports `true` when there is a cycle, while the function `terminates` implies that `true` would mean the game's moves have no cycle. IMO, this is an error best solved with naming. The correct function would be:
 
 {% highlight javascript %}
 const containsCycle = (iterable) => {
