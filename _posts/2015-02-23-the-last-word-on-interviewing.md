@@ -405,4 +405,4 @@ It's just a story, no big deal. But FWIW, I tried to make this about three reaso
 
 ---
 
-[reddit](http://www.reddit.com/r/javascript/comments/2wwdi7/unlikely_to_be_the_last_word_on_interviewing_for/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-23-the-last-word-on-interviewing.md)
+[hacker news](https://news.ycombinator.com/item?id=9097297) | [reddit](http://www.reddit.com/r/javascript/comments/2wwdi7/unlikely_to_be_the_last_word_on_interviewing_for/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-23-the-last-word-on-interviewing.md)
