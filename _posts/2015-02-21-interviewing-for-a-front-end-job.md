@@ -156,10 +156,6 @@ const takeIterable = (numberToTake, iterable) =>
       }
     }
   });
-
-Array.from(takeIterable(10, Game()))
-  //=>
-    ["↑","←","→","←","→","←","→","←","→","←"]
 {% endhighlight %}
 
 "This doesn't actually end up in our solution, it's just to check our work as we go along. And you can find it in libraries, it's not something we need to reinvent whenever we work with iterables."
@@ -181,17 +177,6 @@ const statefulMapIterableWith = (fn, seed, iterable) =>
       }
     }
   });
-  
-const indexed = statefulMapIterableWith(
-  (index, value) => {
-    return [index + 1, [index, value]]
-  },
-  0,
-  ["prince", "of", "darkness"])
-
-Array.from(indexed)
-  //=>
-    [[0,"prince"],[1,"of"],[2,"darkness"]]
 {% endhighlight %}
 
 "Armed with this, it's straightforward to map an iterable of directions to an iterable of strings representing positions:"
@@ -212,13 +197,6 @@ const positionsOf = (game) =>
     },
     [0, 0],
     game);
-
-Array.from(takeIterable(10, positionsOf(Game())))
-  //=>
-    ["x: -1, y: 0","x: 0, y: 1","x: -1, y: 0",
-     "x: 0, y: -1","x: 0, y: 1","x: 0, y: -1",
-     "x: 0, y: 1","x: 0, y: -1","x: 0, y: 1",
-     "x: 0, y: -1"]
 {% endhighlight %}
 
 The Carpenter reflected. "Having turned our game loop into an iterable, we can now see that our problem of whether the game terminates is isomorphic to the problem of detecting whether the positions given ever repeat themselves: If the chequer ever returns to a position it has previously visited, it will cycle endlessly."
