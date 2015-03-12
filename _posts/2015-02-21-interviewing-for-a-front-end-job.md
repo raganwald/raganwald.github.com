@@ -208,11 +208,13 @@ The Carpenter reflected. "Having turned our game loop into an iterable, we can n
 "There's an old joke that a mathematician is someone who will take a five-minute problem, then spend an hour proving it is equivalent to another problem they have already solved. I approached this question in that spirit. Now that we have created an iterable of values that can be compared with `===`, I can show you this function:"
 
 {% highlight javascript %}
-const tortoiseAndHare = (iterable) => {
-  const hare = iterable[Symbol.iterator]();
+// implements Tortoise and Hare cycle
+// detection algorithm.
+const hasCycle = (orderedCollection) => {
+  const hare = orderedCollection[Symbol.iterator]();
   let hareResult = (hare.next(), hare.next());
   
-  for (let tortoiseValue of iterable) {
+  for (let tortoiseValue of orderedCollection) {
     
     hareResult = hare.next();
     
@@ -244,7 +246,7 @@ const tortoiseAndHare = (iterable) => {
 
 {% highlight javascript %}
 const terminates = (game) =>
-  tortoiseAndHare(positionsOf(game))
+  !hasCycle(positionsOf(game))
 {% endhighlight %}
 
 "This solution makes use of iterables and a single utility function, `statefulMapIterableWith`. It also cleanly separates the mechanics of the game from the algorithm for detecting cycles in a graph."
@@ -275,4 +277,4 @@ The Carpenter smiled. "I forgot about them, it's been a while. So, do They Live?
 
 p.s. [(unlikely to be) The Last Word on Interviewing for a JavaScript Job](http://raganwald.com/2015/02/23/the-last-word-on-interviewing.html)
 
-p.s. The Carpenter probably cribbed the solution from [The "Drunken Walk" Programming Problem](http://raganwald.com/2013/02/17/a-drunken-walk.html), and [Solving the "Drunken Walk" problem with iterators](http://raganwald.com/2013/02/18/drunken-walk-solution.html).
+p.p.s. The Carpenter probably cribbed the solution from [The "Drunken Walk" Programming Problem](http://raganwald.com/2013/02/17/a-drunken-walk.html), and [Solving the "Drunken Walk" problem with iterators](http://raganwald.com/2013/02/18/drunken-walk-solution.html).
