@@ -58,7 +58,7 @@ As written, `factorial` cannot be optimized because it doesn't return the result
 
 Lisp programmers in days of yore would rewrite functions like this into "Tail Recursive Form," and that's what we're going to do. What we need to do is take the expression `n * factorial(n - 1)` and push it down into a function so we can just call it with parameters.
 
-Now you have probably jumped directly to how to do this, but I am not so smart and when I first read about it my eyes glazed over and my head hurt for several days. The explanation is this. When a function is called, a *stack frame* is created that contains all the information needed to resume execution with the result. Stackframes hold a kind of pointer to where to carry on evaluating, the function parameters, and other bookkeeping information.[^bookkeeping]
+Now you have probably jumped directly to how to do this, but I am not so smart and when I first read about it my eyes glazed over and my head hurt for several days. The explanation is this. When a function is called, a *stack frame* is created that contains all the information needed to résumé execution with the result. Stackframes hold a kind of pointer to where to carry on evaluating, the function parameters, and other bookkeeping information.[^bookkeeping]
 
 [^bookkeeping]: Did you know that "bookkeeping" is the only word in the English language containing three consecutive letter pairs? You're welcome.
 

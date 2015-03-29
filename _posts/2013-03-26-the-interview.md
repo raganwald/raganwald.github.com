@@ -65,7 +65,7 @@ closed_fib(10000)
 #   	from /Users/williams/.rvm/rubies/ruby-1.9.3-p327/bin/irb:16:in `<main>'
 {% endhighlight %}
 
-"After he left, I emailed his resume to StinkWare, our competition. They deserve each other."
+"After he left, I emailed his résumé to StinkWare, our competition. They deserve each other."
 
 The team had a good laugh about that.
 

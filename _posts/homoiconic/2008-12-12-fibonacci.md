@@ -4,7 +4,7 @@ layout: default
 tags: [homoiconic, ruby]
 ---
 
-Since [I'm looking for a job again](http://braythwayt.com/reginald/RegBraithwaite20120423.pdf "Reginald Braithwaite's Resume") and people often like to ask for a [fizzbuzz](http://raganwald.com/2007/01/dont-overthink-fizzbuzz.html "Don't Overthink FizzBuzz") program to weed out the folks who can't string together a few lines of code, I thought I'd write up a program to compute the *n*th Fibonacci number. There's an intriguing bit of matrix math involved, so I learned something while implementing it.[^closed]
+Since [I'm looking for a job again](http://braythwayt.com/reginald/RegBraithwaite20120423.pdf "Reginald Braithwaite's Résumé") and people often like to ask for a [fizzbuzz](http://raganwald.com/2007/01/dont-overthink-fizzbuzz.html "Don't Overthink FizzBuzz") program to weed out the folks who can't string together a few lines of code, I thought I'd write up a program to compute the *n*th Fibonacci number. There's an intriguing bit of matrix math involved, so I learned something while implementing it.[^closed]
 
 [^closed]: There is a [closed-form solution](http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression) to the function `fib`, but floating point math has some limitations you should be aware of before [using it in an interview](http://raganwald.com/2013/03/26/the-interview.html).
 
