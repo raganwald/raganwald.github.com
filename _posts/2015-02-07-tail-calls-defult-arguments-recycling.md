@@ -443,6 +443,6 @@ This post was extracted from the in-progress book, [JavaScript Allongé, The "Si
 
 Your [feedback](https://github.com/raganwald/raganwald.github.com/issues/new) improves the book for everyone, thank you!
 
-[ja6]: https://leanpub.com/b/buy-allonge-get-thesixedition-free
+[ja6]: https://leanpub.com/b/buyjavascriptallongthesixeditiongetjavascriptallongfree
 
 ---

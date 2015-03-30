@@ -522,7 +522,7 @@ There are many tools for hiding implementation information, and we have now seen
 
 ---
 
-[ja6]: https://leanpub.com/b/buy-allonge-get-thesixedition-free
+[ja6]: https://leanpub.com/b/buyjavascriptallongthesixeditiongetjavascriptallongfree
 
 [hacker news](https://news.ycombinator.com/item?id=9048259) | [lobste.rs](https://lobste.rs/s/d08g21/the_quantum_electrodynamics_of_functional_javascript) |  [reddit](http://www.reddit.com/r/javascript/comments/2vs2u8/the_quantum_electrodynamics_of_functional/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-13-functional-quantum-electrodynamics.md)
 
@@ -542,4 +542,4 @@ This post was extracted from the in-progress book, [JavaScript Allongé, The "Si
 
 Your [feedback](https://github.com/raganwald/raganwald.github.com/issues/new) improves the book for everyone, thank you!
 
-[ja6]: https://leanpub.com/b/buy-allonge-get-thesixedition-free
+[ja6]: https://leanpub.com/b/buyjavascriptallongthesixeditiongetjavascriptallongfree
