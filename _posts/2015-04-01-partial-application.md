@@ -5,7 +5,7 @@ tags: javascript
 published: true
 ---
 
-*Some of this material originally appeared in [What's the difference between Currying and Partial Application?](http://raganwald.com/2013/03/07/currying-and-partial-application.html). Here it is again, in ECMAScript 2015 syntax.*
+*Some of this material originally appeared in [What's the difference between Currying and Partial Application?](http://raganwald.com/2013/03/07/currying-and-partial-application.html) Here it is again, in ECMAScript 2015 syntax.*
 
 ---
  
@@ -297,7 +297,8 @@ So there's good reason to have left-, right-, and arbitrary partial application 
 
 ---
 
-| [reddit](http://www.reddit.com/r/javascript/comments/312kvs/partial_application_in_ecmascript_2015/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-04-01-partial-application.md) |
+- [reddit](http://www.reddit.com/r/javascript/comments/312kvs/partial_application_in_ecmascript_2015/)
+- [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-04-01-partial-application.md)
 
 ---
 
