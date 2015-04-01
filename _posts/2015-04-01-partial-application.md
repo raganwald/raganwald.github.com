@@ -5,13 +5,12 @@ tags: javascript
 published: true
 ---
 
-*Some of this material originally appeared in [What's the difference between Currying and Partial Application][wd]? Here it is again, in ECMAScript 2015 syntax.*
+*Some of this material originally appeared in [What's the difference between Currying and Partial Application?][wd] Here it is again, in ECMAScript 2015 syntax.*
 
 [wd]: http://raganwald.com/2013/03/07/currying-and-partial-application.html
 
 ---
  
-
 What is [Partial Application](https://en.wikipedia.org/wiki/Partial_application)? Good question!
 
 ### arity
@@ -208,7 +207,7 @@ Than to write:
 const map123 = leftPartialApply(map, [1, 2, 3]);
 {% endhighlight %}
 
-But sometime you have `map` but not `mapWith`, or some other analagous situation where you want to apply the values *from the right* rather than the left. No problem:
+But sometime you have `map` but not `mapWith`, or some other analogous situation where you want to apply the values *from the right* rather than the left. No problem:
 
 {% highlight javascript %}
 const rightPartialApply =
@@ -220,7 +219,7 @@ const rightPartialApply =
 
 ### arbitrary partial application
 
-What if you want to apply some, but not all of the arguments, and they may not be neatly lined up at the beginning or end? This is also prossible, provied we define a placeholder of some kind, and then write some code to "fill in the blanks".
+What if you want to apply some, but not all of the arguments, and they may not be neatly lined up at the beginning or end? This is also possible, provided we define a placeholder of some kind, and then write some code to "fill in the blanks".
 
 This implementation takes a "template" of values, you insert placeholder values (traditionally `_`, but anything will do) where you want values to be supplied later.
 
@@ -275,7 +274,7 @@ Math.max()
   //=> null
 {% endhighlight %}
 
-What if we want to have a default arument? For example, what if we want it tor return the largest number greater than or equal to `0`, or `0` if there aren't any? We can do that with `leftPartialApplication`, but we can't with `arbitraryPartialApplication`, because we want to accept an arbitrary number of arguments:
+What if we want to have a default argument? For example, what if we want it tor return the largest number greater than or equal to `0`, or `0` if there aren't any? We can do that with `leftPartialApplication`, but we can't with `arbitraryPartialApplication`, because we want to accept an arbitrary number of arguments:
 
 {% highlight javascript %}
 const maxDefaultZero = leftPartialApply(Math.max, 0);
