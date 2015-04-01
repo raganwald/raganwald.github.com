@@ -5,6 +5,13 @@ tags: javascript
 published: true
 ---
 
+*Some of this material originally appeared in [What's the difference between Currying and Partial Application?][wd]. Here it is again, in ECMAScript 2015 syntax.*
+
+[wd]: http://raganwald.com/2013/03/07/currying-and-partial-application.html
+
+---
+ 
+
 What is [Partial Application](https://en.wikipedia.org/wiki/Partial_application)? Good question!
 
 ### arity
