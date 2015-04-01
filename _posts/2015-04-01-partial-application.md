@@ -295,8 +295,6 @@ So there's good reason to have left-, right-, and arbitrary partial application 
 
 "Partial application is the conversion of a polyadic function into a function taking fewer arguments arguments by providing one or more arguments in advance." JavaScript does not have partial application built into the language (yet), but it is possible to write our own higher-order functions that perform left-, right-, or arbitrary partial application.
 
----
-
 - [reddit](http://www.reddit.com/r/javascript/comments/312kvs/partial_application_in_ecmascript_2015/)
 - [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-04-01-partial-application.md)
 
