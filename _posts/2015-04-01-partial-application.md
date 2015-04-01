@@ -297,6 +297,10 @@ So there's good reason to have left-, right-, and arbitrary partial application 
 
 ---
 
+|[reddit](http://www.reddit.com/r/javascript/comments/312kvs/partial_application_in_ecmascript_2015/)|[edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-04-01-partial-application.md)|
+
+---
+
 This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. The extracts so far:
 
 * [Partial Application in ECMAScript 2015](http://raganwald.com/2015/04/01/partial-application.html),
