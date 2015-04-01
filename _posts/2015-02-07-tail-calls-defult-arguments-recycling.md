@@ -435,6 +435,7 @@ Although we showed how to use tail calls to map and fold over arrays with `[firs
 
 This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. The extracts so far:
 
+* [Partial Application in ECMAScript 2015](http://raganwald.com/2015/04/01/partial-application.html),
 * [The Symmetry of JavaScript Functions](http://raganwald.com/2015/02/02/symmetry.html),
 * [Lazy Iterables in JavaScript](http://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html),
 * [The Quantum Electrodynamics of Functional JavaScript](http://raganwald.com/2015/02/13/functional-quantum-electrodynamics.html),
