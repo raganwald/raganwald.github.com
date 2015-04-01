@@ -2,6 +2,7 @@
 title: What's the difference between Currying and Partial Application in ECMAScript 2015?
 layout: default
 tags: javascript
+published: false
 ---
 
 *[This post was originally written in 2013](http://raganwald.com/2013/03/07/currying-and-partial-application.html). Here it is again, in ECMAScript 2015 syntax.*
