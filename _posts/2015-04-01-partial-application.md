@@ -290,30 +290,3 @@ maxDefaultZero()
 {% endhighlight %}
 
 So there's good reason to have left-, right-, and arbitrary partial application functions in our toolbox.
-
-### so… what's partial application again?
-
-"Partial application is the conversion of a polyadic function into a function taking fewer arguments arguments by providing one or more arguments in advance." JavaScript does not have partial application built into the language (yet), but it is possible to write our own higher-order functions that perform left-, right-, or arbitrary partial application.
-
-[reddit](http://www.reddit.com/r/javascript/comments/312kvs/partial_application_in_ecmascript_2015/)
-
-foo.
-
-[edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-04-01-partial-application.md)
-
-bar.
-
----
-
-This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. The extracts so far:
-
-* [Partial Application in ECMAScript 2015](http://raganwald.com/2015/04/01/partial-application.html),
-* [The Symmetry of JavaScript Functions](http://raganwald.com/2015/03/12/symmetry.html),
-* [Lazy Iterables in JavaScript](http://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html),
-* [The Quantum Electrodynamics of Functional JavaScript](http://raganwald.com/2015/02/13/functional-quantum-electrodynamics.html),
-* [Tail Calls, Default Arguments, and Excessive Recycling in ES-6](http://raganwald.com/2015/02/07/tail-calls-defult-arguments-recycling.html), and:
-* [Destructuring and Recursion in ES-6](http://raganwald.com/2015/02/02/destructuring.html).
-
-Your [feedback](https://github.com/raganwald/raganwald.github.com/issues/new) improves the book for everyone, thank you!
-
-[ja6]: https://leanpub.com/b/buyjavascriptallongthesixeditiongetjavascriptallongfree
