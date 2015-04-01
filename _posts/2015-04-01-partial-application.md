@@ -5,7 +5,13 @@ tags: javascript
 published: true
 ---
 
+What is [Partial Application](https://en.wikipedia.org/wiki/Partial_application)? Good question!
 
+### arity
+
+Before we jump in, let's get some terminology straight. Functions have *arity*, meaning the number of arguments they accept. A "unary" function accepts one argument, a "polyadic" function takes more than one argument. There are specialized terms we can use: A "binary" function accepts two, a "ternary" function accepts three, and you can rustle about with greek or latin words and invent names for functions that accept more than three arguments.
+
+(Some functions accept a variable number of arguments, we call them *variadic*, although variadic functions and functions taking no arguments aren't our primary focus in this essay.)
 
 ### partial application
 
