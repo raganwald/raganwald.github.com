@@ -230,9 +230,9 @@ const div = (verbed, numerator, denominator) =>
 div('divided by', 1, 3)
   //=> 1 divided by 3 is 0.3333333333333333
   
-const arbitraryPartialApplication = (() => {
+const arbitraryPartialApply = (() => {
   const placeholder = {},
-        arbitraryPartialApplication = (fn, ...template) => {
+        arbitraryPartialApply = (fn, ...template) => {
           let remainingArgIndex = 0;
           const mapper = template.map((templateArg) =>
                            templateArg === placeholder
@@ -247,13 +247,14 @@ const arbitraryPartialApplication = (() => {
           
         };
         
-  arbitraryPartialApplication._ = placeholder;
-  return arbitraryPartialApplication;
+  arbitraryPartialApply._ = placeholder;
+  return arbitraryPartialApply;
 })();
 
-const _ = arbitraryPartialApplication._;
+const _ = arbitraryPartialApply._;
 
-const dividedByThree = arbitraryPartialApplication(div, 'divided by', _, 3);
+const dividedByThree =
+  arbitraryPartialApply(div, 'divided by', _, 3);
 
 dividedByThree(2)
   //=> 2 divided by 3 is 0.6666666666666666
@@ -274,7 +275,7 @@ Math.max()
   //=> null
 {% endhighlight %}
 
-What if we want to have a default argument? For example, what if we want it tor return the largest number greater than or equal to `0`, or `0` if there aren't any? We can do that with `leftPartialApplication`, but we can't with `arbitraryPartialApplication`, because we want to accept an arbitrary number of arguments:
+What if we want to have a default argument? For example, what if we want it tor return the largest number greater than or equal to `0`, or `0` if there aren't any? We can do that with `leftPartialApplication`, but we can't with `arbitraryPartialApply`, because we want to accept an arbitrary number of arguments:
 
 {% highlight javascript %}
 const maxDefaultZero = leftPartialApply(Math.max, 0);
