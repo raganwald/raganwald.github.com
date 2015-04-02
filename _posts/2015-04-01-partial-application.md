@@ -298,7 +298,7 @@ So there's good reason to have left-, right-, and arbitrary partial application 
 
 ---
 
-| [reddit](http://www.reddit.com/r/javascript/comments/312kvs/partial_application_in_ecmascript_2015/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-04-01-partial-application.md) |
+| [reddit](http://www.reddit.com/r/javascript/comments/312kvs/partial_application_in_ecmascript_2015/) | [hacker news](https://news.ycombinator.com/item?id=9307444) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-04-01-partial-application.md) |
 
 ---
 
