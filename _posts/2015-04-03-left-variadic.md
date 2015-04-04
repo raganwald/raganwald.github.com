@@ -117,13 +117,8 @@ We sure can, by using the techniques from `rightVariadic`. Mind you, we can take
 
 {% highlight javascript %}
 const leftVaridic = (fn) => {
-  if (fn.length === 0) {
+  if (fn.length < 1) {
     return fn;
-  }
-  else if (fn.length === 1) {
-    return function (...args) {
-      return fn.call(this, args);
-    }
   }
   else {
     return function (...args) {
