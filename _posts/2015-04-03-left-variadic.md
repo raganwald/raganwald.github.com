@@ -172,7 +172,9 @@ But we can write our own left-gathering function utility using the same principl
 {% highlight javascript %}
 const leftGather = (outputArrayLength) => {
   return function (inputArray) {
-    return [inputArray.slice(0, inputArray.length - outputArrayLength + 1)].concat(inputArray.slice(inputArray.length - outputArrayLength + 1))
+    return [inputArray.slice(0, inputArray.length - outputArrayLength + 1)].concat(
+      inputArray.slice(inputArray.length - outputArrayLength + 1)
+    )
   }
 };
 
@@ -186,3 +188,7 @@ last
 {% endhighlight %}
 
 With `leftGather`, we have to supply the length of the array we wish to use as the result, and it gathers excess arguments into it from the left, just like `leftVariadic` gathers excess parameters for a function.
+
+### summary
+
+ECMAScript 2015 makes it easy to gather parameters or array elements from the right. If we want to gether them from the left, we can roll our own left-variadic decorator for functions, or left-gatherer for destucturing arrays.
