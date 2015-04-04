@@ -116,7 +116,7 @@ That's a *left-variadic function*. All left-variadic functions have one or more 
 We sure can, by using the techniques from `rightVariadic`. Mind you, we can take advantage of modern JavaScript to simplify the code:
 
 {% highlight javascript %}
-const leftVaridic = (fn) => {
+const leftVariadic = (fn) => {
   if (fn.length < 1) {
     return fn;
   }
@@ -127,8 +127,62 @@ const leftVaridic = (fn) => {
   }
 };
 
-const butLastAndLast = leftVaridic((butLast, last) => [butLast, last]);
+const butLastAndLast = leftVariadic((butLast, last) => [butLast, last]);
 
 butLastAndLast('why', 'hello', 'there', 'little', 'droid')
   //=> [["why","hello","there","little"],"droid"]
 {% endhighlight %}
+
+Our `leftVariadic` function is a decorator that turns any function into a function that gathers parameters *from the left*, instead of from the right.
+
+### left-variadic destructuring
+
+Gathering arguments for functions is one of the ways JavaScript can *destructure* arrays. Another way is when assigning variables, like this:
+
+{% highlight javascript %}
+const [first, ...butFirst] = ['why', 'hello', 'there', 'little', 'droid'];
+
+first
+  //=> 'why'
+butFirst
+  //=> ["hello","there","little","droid"]
+{% endhighlight %}
+
+As with parameters, we can't gather values from the left when destructuring an array:
+
+{% highlight javascript %}
+const [...butLast, last] = ['why', 'hello', 'there', 'little', 'droid'];
+  //=> Unexpected token
+{% endhighlight %}
+
+We could use `leftVariadic` the hard way:
+
+{% highlight javascript %}
+const [butLast, last] = leftVariadic((butLast, last) => [butLast, last])(...['why', 'hello', 'there', 'little', 'droid']);
+
+butLast
+  //=> ['why', 'hello', 'there', 'little']
+
+last
+  //=> 'droid'
+{% endhighlight %}
+
+But we can write our own left-gathering function utility using the same principles without all the tedium:
+
+{% highlight javascript %}
+const leftGather = (outputArrayLength) => {
+  return function (inputArray) {
+    return [inputArray.slice(0, inputArray.length - outputArrayLength + 1)].concat(inputArray.slice(inputArray.length - outputArrayLength + 1))
+  }
+};
+
+const [butLast, last] = leftGather(2)(['why', 'hello', 'there', 'little', 'droid']);
+  
+butLast
+  //=> ['why', 'hello', 'there', 'little']
+
+last
+  //=> 'droid'
+{% endhighlight %}
+
+With `leftGather`, we have to supply the length of the array we wish to use as the result, and it gathers excess arguments into it from the left, just like `leftVariadic` gathers excess parameters for a function.
