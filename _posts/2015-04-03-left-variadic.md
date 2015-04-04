@@ -4,7 +4,7 @@ title: Left-Variadic Functions in JavaScript
 tags: JavaScript, noindex
 ---
 
-A *Variadic* function is a function that is designed to accept a variable number of arguments. (English is about as inconsistent as JavaScript: Functions with a fixed number of arguments can be unary, binary, ternary, and so forth. But can they be "variary?" No! They have to be "variadic.")
+A *variadic function* is a function that is designed to accept a variable number of arguments. (English is about as inconsistent as JavaScript: Functions with a fixed number of arguments can be unary, binary, ternary, and so forth. But can they be "variary?" No! They have to be "variadic.")
 
 In JavaScript, you can make a right-variadic function by gathering parameters. For example:
 
