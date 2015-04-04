@@ -4,11 +4,11 @@ title: Left-Variadic Functions in JavaScript
 tags: JavaScript, noindex
 ---
 
-A *variadic function* is a function that is designed to accept a variable number of arguments. (English is about as inconsistent as JavaScript: Functions with a fixed number of arguments can be unary, binary, ternary, and so forth. But can they be "variary?" No! They have to be "variadic.")
+A *variadic function* is a function that is designed to accept a variable number of arguments.[^eng] In JavaScript, you can make a variadic function by gathering parameters. For example:
 
-In JavaScript, you can make a right-variadic function by gathering parameters. For example:
+[^eng]: English is about as inconsistent as JavaScript: Functions with a fixed number of arguments can be unary, binary, ternary, and so forth. But can they be "variary?" No! They have to be "variadic."
 
-```javascript
+{% highlight javascript %}
 const abccc = (a, b, ...c) => {
   console.log(a);
   console.log(b);
@@ -19,11 +19,11 @@ abccc(1, 2, 3, 4, 5)
   1
   2
   [3,4,5]
-```
+{% endhighlight %}
 
 This can be useful when writing certain kinds of destructuring algorithms. For example, we might want to have a function that builds some kind of team record. It accepts a coach, a captain, and an arbitrary number of players. Easy in ECMAScript 2015:
 
-```javascript
+{% highlight javascript %}
 function team(coach, captain, ...players) {
   console.log(`${captain} (captain)`);
   for (let player of players) {
@@ -39,11 +39,11 @@ team('Luis Enrique', 'Xavi Hernández', 'Marc-André ter Stegen', 'Martín Monto
     Martín Montoya
     Gerard Piqué
     squad coached by Luis Enrique
-```
+{% endhighlight %}
 
 But we can't go the other way around:
 
-```javascript
+{% highlight javascript %}
 function team2(...players, captain, coach) {
   console.log(`${captain} (captain)`);
   for (let player of players) {
@@ -52,7 +52,7 @@ function team2(...players, captain, coach) {
   console.log(`squad coached by ${coach}`);
 }
 //=> Unexpected token
-```
+{% endhighlight %}
 
 ECMAScript 2015 only permits gathering parameters from the *end* of the parameter list. Not the beginning. What to do?
 
