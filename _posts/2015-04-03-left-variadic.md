@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Left-Variadic Functions in JavaScript
-tags: JavaScript
+tags: allonge
 ---
 
 [![Football at Fenway](/assets/images/football-at-fenway.jpg)](https://www.flickr.com/photos/ekilby/7651165338 "Football at Fenway Pregame Lineups (c) 2012 Eric Kilby")
