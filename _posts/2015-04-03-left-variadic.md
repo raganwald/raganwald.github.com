@@ -197,7 +197,7 @@ ECMAScript 2015 makes it easy to gather parameters or array elements from the ri
 
 ---
 
-| [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-04-03-left-variadic.md) |
+| [reddit](http://www.reddit.com/r/javascript/comments/31qsme/leftvariadic_functions_in_javascript/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-04-03-left-variadic.md) |
 
 ---
 
