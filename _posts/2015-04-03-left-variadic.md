@@ -60,7 +60,7 @@ ECMAScript 2015 only permits gathering parameters from the *end* of the paramete
 
 ### a history lesson
 
-In "Ye Olde Days,"[^ye] JavaScript could not gather parameters, and we had to either do backflips with `arguments` and `.slice`, or we wrote ourselves a `variadic` decorator that could gather arguments into the last declared parameter. Here it is:
+In "Ye Olde Days,"[^ye] JavaScript could not gather parameters, and we had to either do backflips with `arguments` and `.slice`, or we wrote ourselves a `variadic` decorator that could gather arguments into the last declared parameter. Here it is in all of its ECMAScript-5 glory:
 
 [^ye]: Another history lesson. "Ye" in "Ye Olde," was not actually spelled with a "Y" in days of old, it was spelled with a [thorn](https://en.wikipedia.org/wiki/Thorn_(letter)), and is pronounced "the." Another word, "Ye" in "Ye of little programming faith," is pronounced "ye," but it's a different word altogether.
 
@@ -92,15 +92,17 @@ firstAndButFirst('why', 'hello', 'there', 'little', 'droid')
 We don't need `rightVariadic` any more, because instead of:
 
 {% highlight javascript %}
-var firstAndButFirst = rightVariadic(function test (first, butFirst) {
-  return [first, butFirst]
-});
+var firstAndButFirst = rightVariadic(
+  function test (first, butFirst) {
+    return [first, butFirst]
+  });
 {% endhighlight %}
 
 We now simply write:
 
 {% highlight javascript %}
-const firstAndButFirst = (first, ...butFirst) => [first, butFirst];
+const firstAndButFirst = (first, ...butFirst) =>
+  [first, butFirst];
 {% endhighlight %}
 
 This is a *right-variadic function*, meaning that it has one or more fixed arguments, and the rest are gathered into the rightmost argument.
@@ -110,7 +112,8 @@ This is a *right-variadic function*, meaning that it has one or more fixed argum
 It's nice to have progress. But as noted above, we can't write:
 
 {% highlight javascript %}
-const butLastAndLast = (...butLast, last) => [butLast, last];
+const butLastAndLast = (...butLast, last) =>
+  [butLast, last];
 {% endhighlight %}
 
 That's a *left-variadic function*. All left-variadic functions have one or more fixed arguments, and the rest are gathered into the leftmost argument. JavaScript doesn't do this. But if we wanted to write left-variadic functions, could we make ourselves a `leftVariadic` decorator to turn a function with one or more arguments into a left-variadic function?
@@ -124,12 +127,18 @@ const leftVariadic = (fn) => {
   }
   else {
     return function (...args) {
-      return fn.apply(this, [args.slice(0, args.length - fn.length + 1)].concat(args.slice(args.length - fn.length + 1)))
+      const gathered = args.slice(0, args.length - fn.length + 1),
+            spread   = args.slice(args.length - fn.length + 1);
+            
+      return fn.apply(
+        this, [gathered].concat(spread)
+      );
     }
   }
 };
 
-const butLastAndLast = leftVariadic((butLast, last) => [butLast, last]);
+const butLastAndLast = leftVariadic((butLast, last) =>
+  [butLast, last]);
 
 butLastAndLast('why', 'hello', 'there', 'little', 'droid')
   //=> [["why","hello","there","little"],"droid"]
@@ -160,7 +169,8 @@ const [...butLast, last] = ['why', 'hello', 'there', 'little', 'droid'];
 We could use `leftVariadic` the hard way:
 
 {% highlight javascript %}
-const [butLast, last] = leftVariadic((butLast, last) => [butLast, last])(...['why', 'hello', 'there', 'little', 'droid']);
+const [butLast, last] = leftVariadic((butLast, last) =>
+  [butLast, last])(...['why', 'hello', 'there', 'little', 'droid']);
 
 butLast
   //=> ['why', 'hello', 'there', 'little']
@@ -174,9 +184,10 @@ But we can write our own left-gathering function utility using the same principl
 {% highlight javascript %}
 const leftGather = (outputArrayLength) => {
   return function (inputArray) {
-    return [inputArray.slice(0, inputArray.length - outputArrayLength + 1)].concat(
-      inputArray.slice(inputArray.length - outputArrayLength + 1)
-    )
+    const gathered = inputArray.slice(0, inputArray.length - outputArrayLength + 1),
+          spread = inputArray.slice(inputArray.length - outputArrayLength + 1);
+          
+    return [gathered].concat(spread);
   }
 };
 
