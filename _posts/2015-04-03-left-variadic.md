@@ -6,7 +6,7 @@ tags: JavaScript
 
 [![Football at Fenway](/assets/images/football-at-fenway.jpg)](https://www.flickr.com/photos/ekilby/7651165338 "Football at Fenway Pregame Lineups (c) 2012 Eric Kilby")
 
-A *variadic function* is a function that is designed to accept a variable number of arguments.[^eng] In JavaScript, you can make a variadic function by gathering parameters. For example:
+A **variadic function** is designed to accept a variable number of arguments.[^eng] In JavaScript, you can make a variadic function by gathering parameters. For example:
 
 [^eng]: English is about as inconsistent as JavaScript: Functions with a fixed number of arguments can be unary, binary, ternary, and so forth. But can they be "variary?" No! They have to be "variadic."
 
@@ -194,3 +194,23 @@ With `leftGather`, we have to supply the length of the array we wish to use as t
 ### summary
 
 ECMAScript 2015 makes it easy to gather parameters or array elements from the right. If we want to gather them from the left, we can roll our own left-variadic decorator for functions, or left-gatherer for destructuring arrays.
+
+---
+
+| [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-04-03-left-variadic.md) |
+
+---
+
+This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. The extracts so far:
+
+* [Left-Variadic Functions in JavaScript](http://raganwald.com/2015/04/03/left-variadic.html),
+* [Partial Application in ECMAScript 2015](http://raganwald.com/2015/04/01/partial-application.html),
+* [The Symmetry of JavaScript Functions](http://raganwald.com/2015/03/12/symmetry.html),
+* [Lazy Iterables in JavaScript](http://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html),
+* [The Quantum Electrodynamics of Functional JavaScript](http://raganwald.com/2015/02/13/functional-quantum-electrodynamics.html),
+* [Tail Calls, Default Arguments, and Excessive Recycling in ES-6](http://raganwald.com/2015/02/07/tail-calls-defult-arguments-recycling.html), and:
+* [Destructuring and Recursion in ES-6](http://raganwald.com/2015/02/02/destructuring.html).
+
+Your [feedback](https://github.com/raganwald/raganwald.github.com/issues/new) improves the book for everyone, thank you!
+
+[ja6]: https://leanpub.com/b/buyjavascriptallongthesixeditiongetjavascriptallongfree
