@@ -4,6 +4,8 @@ title: Left-Variadic Functions in JavaScript
 tags: JavaScript, noindex
 ---
 
+[![Football at Fenway](/assets/images/football-at-fenway.jpg)](https://www.flickr.com/photos/ekilby/7651165338 "Football at Fenway Pregame Lineups (c) 2012 Eric Kilby")
+
 A *variadic function* is a function that is designed to accept a variable number of arguments.[^eng] In JavaScript, you can make a variadic function by gathering parameters. For example:
 
 [^eng]: English is about as inconsistent as JavaScript: Functions with a fixed number of arguments can be unary, binary, ternary, and so forth. But can they be "variary?" No! They have to be "variadic."
@@ -191,4 +193,4 @@ With `leftGather`, we have to supply the length of the array we wish to use as t
 
 ### summary
 
-ECMAScript 2015 makes it easy to gather parameters or array elements from the right. If we want to gether them from the left, we can roll our own left-variadic decorator for functions, or left-gatherer for destucturing arrays.
+ECMAScript 2015 makes it easy to gather parameters or array elements from the right. If we want to gather them from the left, we can roll our own left-variadic decorator for functions, or left-gatherer for destructuring arrays.
