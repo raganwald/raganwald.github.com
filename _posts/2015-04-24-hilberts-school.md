@@ -4,7 +4,7 @@ layout: default
 tags: javascript
 ---
 
-(*This material originally appeared, using ECMASCript-5 semantics, in [2013](http://raganwald.com/2013/02/21/hilberts-school.html).*)
+(*This material originally appeared, using ECMAScript-5 semantics, in [2013](http://raganwald.com/2013/02/21/hilberts-school.html).*)
 
 ---
 
@@ -47,7 +47,7 @@ He simply calls out the numbers as they are printed, and the students file into 
 
 Avoiding the well-travelled road of explaining "this," "closures," or "monads," he decides to explain  the difference between functional iterators and iterables.[^lazy] People are scratching their heads, but on the second day, all of the students from the first day return. So it must have been a decent lecture.
 
-[^lazy]: [Lazy Iterables in JavaScript](http://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html)
+[^lazy]: [Lazy Iterables in JavaScript](http://raganwald.com/2015/02/17/lazy-iterables-in-javascript.html)
 
 ### day two
 
@@ -74,9 +74,9 @@ const zipIterables = (...iterables) =>
 
 const oldSeats = Numbers(0),
       newSeats = Numbers(1000000),
-      correspondance = zipIterables(oldSeats, newSeats);
+      correspondence = zipIterables(oldSeats, newSeats);
 
-for (let pair of correspondance) {
+for (let pair of correspondence) {
   const [from, to] = pair;
   console.log(`${from} -> ${to}`);
 }
@@ -89,7 +89,7 @@ for (let pair of correspondance) {
   ...
 {% endhighlight %}
 
-He's constructed an iteratable with instructions for moving seats. Bertie tells the first person to move from seat zero to seat one million, the second from one to one million and one, and so forth. This means that seats 0 through 999,999 become vacant, so the 1,000,000 new students have a place to sit. Day Two goes well, and he is very pleased with his venture.
+He's constructed an iterable with instructions for moving seats. Bertie tells the first person to move from seat zero to seat one million, the second from one to one million and one, and so forth. This means that seats 0 through 999,999 become vacant, so the 1,000,000 new students have a place to sit. Day Two goes well, and he is very pleased with his venture.
 
 ### day three
 
@@ -109,9 +109,9 @@ const mapIterableWith = (fn, iterable) =>
 
 const oldSeats = Numbers(0),
       newSeats = mapIterableWith(n => n * 2, Numbers(0)),
-      correspondance = zipIterables(oldSeats, newSeats);
+      correspondence = zipIterables(oldSeats, newSeats);
 
-for (let pair of correspondance) {
+for (let pair of correspondence) {
   const [from, to] = pair;
   console.log(`${from} -> ${to}`);
 }
@@ -132,9 +132,9 @@ Now all the existing students are in the even numbered seats, so he's ready to s
 
 const oldSeats = Numbers(0),
       newSeats = mapIterableWith(n => n * 2 + 1, Numbers(0)),
-      correspondance = zipIterables(oldSeats, newSeats);
+      correspondence = zipIterables(oldSeats, newSeats);
 
-for (let pair of correspondance) {
+for (let pair of correspondence) {
   const [from, to] = pair;
   console.log(`${from} -> ${to}`);
 }
@@ -167,7 +167,7 @@ But the excitement has a downside: Reddit hears about what's going on and an inf
 
 Bertie has to seat an infinite number of infinite groups of people, in an infinite auditorium that is already full! Now what? Out comes the bullhorn and yesterday's program, and he quickly moves all of his existing students into the even-numbered seats, leaving an infinite number of odd seats available for newcomers.
 
-He starts with the obvious: If you have three buses with three seats each, you can put the students into a one-to-one correspondance with the odd numbers by nesting iterators, like this:
+He starts with the obvious: If you have three buses with three seats each, you can put the students into a one-to-one correspondence with the odd numbers by nesting iterators, like this:
 
 {% highlight javascript %}
 function * seatsOnBuses(buses, seats) {
@@ -184,9 +184,9 @@ He writes a quick test:
 {% highlight javascript %}
 const seatAndBus = seatsOnBuses([0, 1, 2], [0, 1, 2]),
       newSeats = mapIterableWith(n => n * 2 + 1, Numbers(0)),
-      correspondance = zipIterables(seatAndBus, newSeats);
+      correspondence = zipIterables(seatAndBus, newSeats);
 
-for (let pair of correspondance) {
+for (let pair of correspondence) {
   const [[bus, seat], to] = pair;
   console.log(`bus ${bus}, seat ${seat} -> seat ${to}`);
 }
@@ -208,9 +208,9 @@ Looks good, he grabs the bullhorn and writes:
 {% highlight javascript %}
 const seatAndBus = seatsOnBuses(Numbers(), Numbers()),
       newSeats = mapIterableWith(n => n * 2 + 1, Numbers(0)),
-      correspondance = zipIterables(seatAndBus, newSeats);
+      correspondence = zipIterables(seatAndBus, newSeats);
 
-for (let pair of correspondance) {
+for (let pair of correspondence) {
   const [[bus, seat], to] = pair;
   console.log(`bus ${bus}, seat ${seat} -> seat ${to}`);
 }
@@ -229,7 +229,7 @@ for (let pair of correspondance) {
   ...
 {% endhighlight %}
 
-After he has been seating people from bus `0` for a good long while, people from the other buses get restless. When will they be seated? What seat will they have? Bertie realizes that although there are infinite numbers of people involved, up to this point, he could point to any one student and tell them exactly where they woudl end up being seated.
+After he has been seating people from bus `0` for a good long while, people from the other buses get restless. When will they be seated? What seat will they have? Bertie realizes that although there are infinite numbers of people involved, up to this point, he could point to any one student and tell them exactly where they would end up being seated.
 
 But with this scheme, he can't really put anyone from any of the other buses into a particular seat. He calls for order, and tries again:
 
@@ -244,9 +244,9 @@ function * Diagonals () {
 
 const seatAndBus = Diagonals(),
       newSeats = mapIterableWith(n => n * 2 + 1, Numbers(0)),
-      correspondance = zipIterables(seatAndBus, newSeats);
+      correspondence = zipIterables(seatAndBus, newSeats);
 
-for (let pair of correspondance) {
+for (let pair of correspondence) {
   const [[bus, seat], to] = pair;
   console.log(`bus ${bus}, seat ${seat} -> seat ${to}`);
 }
