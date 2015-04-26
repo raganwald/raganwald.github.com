@@ -301,7 +301,7 @@ Bertie goes home, exhausted, and dreams that having graduated everyone at the en
 
 He awakens and reasons that what he is dealing with are *powers of infinity*. A simple infinity is infinity to the first power. Two infinities (buses and students) is infinity to the second power. Three infinities (aircraft carriers, buses, and students) is infinity to the third power. And so forth up to galactic superclusters, infinity to the eighth power.
 
-He quickly observes that no matter what power he chooses, he can put the total number of students into a one-to-one correspondence with the countable number of seats in his auditorium. But then he wonders... What if he has *infinity raised to the power of infinity?*
+He quickly observes that no matter what finite power he chooses, he can put the total number of students into a one-to-one correspondence with the countable number of seats in his auditorium. But then he wonders... What if he has *infinity raised to the power of infinity?*
 
 He imagines some kind of crazy infinite series of ever-greater cosmological containers, universes contained within the atoms of other universes, time and space folding over unto itself. In such a crazy circumstance, can all the students be accommodated?
 
