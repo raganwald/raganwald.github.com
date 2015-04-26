@@ -287,7 +287,25 @@ On Day Five, everyone is back and he announces that there will be a test: *"Outs
 
 *"Write a JavaScript program to seat them all in our lecture hall. If your program works, you may come up to the front and receive your signed diploma. If you can prove that no program works, you will also receive your diploma. Good luck!"*
 
-In other words, Bertie wants his students to use JavaScript to figure out whether infinity cubed is countable. Is it?
+Before long, the students have figured out that yes, the school can accommodate a countably infinite number of aircraft carriers, each carrying a countably infinite number of buses, each carrying a countably infinite number of students.
+
+The simplest way to infer that this is true is to observe that each aircraft carrier contains a countably infinite number of buses, each carrying a countably infinite number of students. We already know how to put that into a one-to-one correspondence with a countably infinite set of numbers using the diagonalization above. So step one is to take each aircraft carrier's students and put them into a one-to-one correspondence with the numbers counting from zero.
+
+Now that we have done this, we have an infinite number of aircraft carriers, each containing a countably infinite number of students. We can put this into a one-to-one correspondence with the seat numbers using diagonalization, so now we have all the students in seats.
+
+But as an exercise, it is valuable to try writing a singe diagonalization that operates directly on three iterators (aircraft carriers, buses, and seats). You may use the [Babel REPL](http://babeljs.io/repl/) online, or make an [ES-6 Fiddle](http://www.es6fiddle.net) you can share.
+
+### day six
+
+Bertie goes home, exhausted, and dreams that having graduated everyone at the end of Day Five, things are busier than ever. In his dreams he imagines an infinite number of galactic superclusters, each containing an infinite number of galaxies, each containing an infinite number of stars, each containing an infinite number of worlds, each containing an infinite number of oceans, each containing an infinite number of aircraft carriers, each containing an infinite number of buses, each containing an infinite number of students.
+
+He awakens and reasons that what he is dealing with are *powers of infinity*. A simple infinity is infinity to the first power. Two infinities (buses and students) is infinity to the second power. Three infinities (aircraft carriers, buses, and students) is infinity to the third power. And so forth up to galactic superclusters, infinity to the eighth power.
+
+He quickly observes that no matter what power he chooses, he can put the total number of students into a one-to-one correspondence with the countable number of seats in his auditorium. But then he wonders... What if he has *infinity raised to the power of infinity?*
+
+He imagines some kind of crazy infinite series of ever-greater cosmological containers, universes contained within the atoms of other universes, time and space folding over unto itself. In such a crazy circumstance, can all the students be accommodated?
+
+[read his answer here](https://gist.github.com/raganwald/0880ccce85eafd60d38f)
 
 ---
 
