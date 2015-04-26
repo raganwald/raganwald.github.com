@@ -311,4 +311,4 @@ He imagines some kind of crazy infinite series of ever-greater cosmological cont
 
 | [reddit](http://www.reddit.com/r/javascript/comments/33vcbq/hilberts_grand_javascript_school_2015_edition/) | [hacker news](https://news.ycombinator.com/item?id=9439479) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-04-24-hilberts-school.md) |
 
-### end notes
+---
