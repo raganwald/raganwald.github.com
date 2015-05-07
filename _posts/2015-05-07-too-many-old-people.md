@@ -14,7 +14,7 @@ I was a little brusque: "Hang on, Sarah, last week we talked about your business
 
 ### why i can't find good salespeople
 
-"Robin, you believe in your product, and I believe in you, but to a salesperson the whole setup is very high risk. You're offering a generous commission, but with a start-up, the salespeople have to convince customers they have a need AND convince them you can satisfy the need AND close them on satisfying the need now. Or they starve."
+"Reg, you believe in your product, and I believe in you, but to a salesperson the whole setup is very high risk. You're offering a generous commission, but with a start-up, the salespeople have to convince customers they have a need AND convince them you can satisfy the need AND close them on satisfying the need now. Or they starve."
 
 "Salespeople are willing to take risks, but only on the things they can control. Your development schedule, your PR, the receptivity of the market to your innovation... Salespeople have no control over that. Generous commissions can't compensate for risks they can't mitigate with their skill and experience."
 
