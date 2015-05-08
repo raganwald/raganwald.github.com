@@ -25,7 +25,7 @@ So what is the problem? Well, the problem is that **there are too many ways to s
 
 For starters, you can generate all of the possible strings (e.g. `123456789`, `12345678-9`, `12345678+9`, `1234567-89`, `1234567-8-9`, `1234567-8+9`, `1234567+89`, `1234567+8-9`, `1234567+8+9`, ...), then use `eval` to compute the answer, and select those that evaluate to `100`.
 
-Here's the worst possible solution:
+Here's the most naïve code I can think of:
 
 ```javascript
 for (let o1 of ["", "+", "-"]) {
