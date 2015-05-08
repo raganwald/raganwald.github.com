@@ -1,12 +1,11 @@
 ---
 layout: default
+title: "Carnac the Magnificent"
 ---
 
 Programmers love to discuss interviewing programmers. And hate to discuss it. Interviewing touches the very heart of human social interaction: It's a process for picking "winners" and "losers," for determining who's "in" and who's "out."
 
 Today I'd like to discuss and anti-pattern, **Carnac the Magnificent**.
-
-<iframe width="420" height="315" src="https://www.youtube.com/embed/76wzA2A2T1Q" frameborder="0" allowfullscreen></iframe>
 
 > Carnac the Magnificent was a recurring comedic role played by Johnny Carson on The Tonight Show Starring Johnny Carson. One of Carson's most well known characters, Carnac was a "mystic from the East" who could psychically "divine" unknown answers to unseen questions.--[wikipedia](https://en.wikipedia.org/wiki/Carnac_the_Magnificent)
 
@@ -17,6 +16,8 @@ The "Carnac the Magnificent" anti-pattern is setting up a situation where the on
 According to [TFA], this question is a "filter," designed to separate those who have no hope of being a programmer from those who have the basic qualifications to write software for a living.
 
 [TFA]: http://www.urbandictionary.com/define.php?term=TFA
+
+<iframe width="420" height="315" src="https://www.youtube.com/embed/76wzA2A2T1Q" frameborder="0" allowfullscreen></iframe>
 
 ### the problem with the problem
 
