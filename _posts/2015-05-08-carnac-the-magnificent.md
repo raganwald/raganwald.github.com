@@ -71,7 +71,7 @@ Perhaps they were hired with this exact same question, they wrote out an answer 
 
 You need to have experience with interviews and experience working with a variety of programmers to appreciate how a "simple" technical question might actually have hidden pitfalls. Sometimes that's a pitfall in itself! Imagine a 22 year-old extremely smart programmer interviewing a 52 year-old veteran. Why is the veteran thinking so hard about this problem? Their brain must have fossilized. NO HIRE.
 
-<iframe width="420" height="315" src="https://www.youtube.com/embed/76wzA2A2T1Q" frameborder="0" allowfullscreen></iframe>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/76wzA2A2T1Q" frameborder="0" allowfullscreen></iframe><br/>
 
 ### tl;dr
 
