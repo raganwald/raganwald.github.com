@@ -84,3 +84,5 @@ If you're interviewing candidates, it's your responsibility to figure out that t
 So if you are interviewing programmers, here's your homework: Go through all of your interview questions, whether technical or otherwise, and ask yourself if there are any hidden assumptions about what you expect. Then ask yourself if your process would be even better if you made those implicit requirements explicit.
 
 I think you'll find that eliminating Carnac the Magnificent from your interviewing process will make it better.
+
+(discuss on [reddit](http://www.reddit.com/r/programming/comments/35afm0/carnac_the_magnificent/))
