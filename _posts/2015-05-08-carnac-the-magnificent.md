@@ -65,7 +65,7 @@ Or encourage the candidate to ask questions:
 
 ### simple, right?
 
-That's simple, right? So why do people do this to interviewers? My theory is *They don't know they are asking a Carnac the Magnificent problem*. Interviewers often have a huge blind spot about how it feels to be on the other side of the table.
+That's simple, right? So why do people do this? My theory is *They don't know they are asking a Carnac the Magnificent problem*. Interviewers often have a huge blind spot about how it feels to be on the other side of the table.
 
 Perhaps they were hired with this exact same question, they wrote out an answer without asking any questions, they were hired, what's the problem? Or they asked a few questions, they weren't failed for wasting time, why do some candidates charge ahead without asking questions?
 
