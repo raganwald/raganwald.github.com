@@ -41,7 +41,7 @@ And if you solve it without recursion, you don't grasp elegance. And if you do s
 
 Here's the most naïve code I can think of:
 
-```javascript
+{% highlight language=javascript %}
 for (let o1 of ["", "+", "-"]) {
   for (let o2 of ["", "+", "-"]) {
     for (let o3 of ["", "+", "-"]) {
@@ -63,7 +63,7 @@ for (let o1 of ["", "+", "-"]) {
     }
   }
 }
-```
+{% endhighlight %}
 
 ([es6fiddle](http://www.es6fiddle.net/i9fp5ur2/))
 
