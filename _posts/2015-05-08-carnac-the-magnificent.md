@@ -17,8 +17,6 @@ According to [TFA], this question is a "filter," designed to separate those who 
 
 [TFA]: http://www.urbandictionary.com/define.php?term=TFA
 
-<iframe width="420" height="315" src="https://www.youtube.com/embed/76wzA2A2T1Q" frameborder="0" allowfullscreen></iframe>
-
 ### the problem with the problem
 
 So what is the problem? Well, the problem is that **there are too many ways to solve the problem**.
@@ -72,6 +70,8 @@ That's simple, right? So why do people do this to interviewers? My theory is *Th
 Perhaps they were hired with this exact same question, they wrote out an answer without asking any questions, they were hired, what's the problem? Or they asked a few questions, they weren't failed for wasting time, why do some candidates charge ahead without asking questions?
 
 You need to have experience with interviews and experience working with a variety of programmers to appreciate how a "simple" technical question might actually have hidden pitfalls. Sometimes that's a pitfall in itself! Imagine a 22 year-old extremely smart programmer interviewing a 52 year-old veteran. Why is the veteran thinking so hard about this problem? Their brain must have fossilized. NO HIRE.
+
+<iframe width="420" height="315" src="https://www.youtube.com/embed/76wzA2A2T1Q" frameborder="0" allowfullscreen></iframe>
 
 ### tl;dr
 
