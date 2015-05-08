@@ -86,3 +86,7 @@ So if you are interviewing programmers, here's your homework: Go through all of 
 I think you'll find that eliminating Carnac the Magnificent from your interviewing process will make it better.
 
 (discuss on [reddit](http://www.reddit.com/r/programming/comments/35afm0/carnac_the_magnificent/))
+
+*post scriptum*:
+
+> Maybe the central problem in software is that not enough devs are old enough to remember Carnac.—[Eric Sink](https://twitter.com/eric_sink/status/596671692367372289)
