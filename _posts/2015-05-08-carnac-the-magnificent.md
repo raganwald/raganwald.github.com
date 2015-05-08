@@ -21,7 +21,9 @@ According to [TFA], this question is a "filter," designed to separate those who 
 
 ### the problem with the problem
 
-So what is the problem? Well, the problem is that there are too many ways to solve it: For starters, you can generate all of the possible strings (e.g. `123456789`, `12345678-9`, `12345678+9`, `1234567-89`, `1234567-8-9`, `1234567-8+9`, `1234567+89`, `1234567+8-9`, `1234567+8+9`, ...), then use `eval` to compute the answer, and select those that evaluate to `100`.
+So what is the problem? Well, the problem is that **there are too many ways to solve the problem**.
+
+For starters, you can generate all of the possible strings (e.g. `123456789`, `12345678-9`, `12345678+9`, `1234567-89`, `1234567-8-9`, `1234567-8+9`, `1234567+89`, `1234567+8-9`, `1234567+8+9`, ...), then use `eval` to compute the answer, and select those that evaluate to `100`.
 
 Or you could do the same thing, but avoid `eval` and bake in a little of your own computation. Because `eval` is know to be "bad."
 
@@ -31,7 +33,9 @@ And should you solve this recursively or iteratively? One is fast, the other rev
 
 ### no hire!
 
-So there are a bunch of ways forward (many more than these four considerations, in fact). And you can easily imagine a sadistic interviewer failing a candidate for getting the correct answer the wrong way. If you use `eval`, you're a bozo. And if you write your way around `eval`, you're a "theorist" who doesn't know when to use the right tool for the job. If you don't optimize, you don't value scale. And if you do optimize, you're wasting time that could be better used for another part of the interview.
+There are a bunch of ways forward (many more than these four considerations, in fact).
+
+And you can easily imagine a sadistic interviewer failing a candidate for getting the correct answer the wrong way. If you use `eval`, you're a bozo. And if you write your way around `eval`, you're a "theorist" who doesn't know when to use the right tool for the job. If you don't optimize, you don't value scale. And if you do optimize, you're wasting time that could be better used for another part of the interview.
 
 And if you solve it without recursion, you don't grasp elegance. And if you do solve it with recursion, sorry, but we use JavaScript here, Lisp jobs are down the hall.
 
