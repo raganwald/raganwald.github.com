@@ -77,7 +77,9 @@ You need to have experience with interviews and experience working with a variet
 
 It's so easy to get good results from questions like this: Be clear about what you want from the candidate. And let me be brutally frank:
 
-Part of the job of being a software developer is to understand the ways in which things that appear simple—like code, user experiences, security protocols, and almost everything else we touch—are not actually simple. And it is our job to either make them simple, or make it very clear that they aren't that simple and document the way in which they aren't simple.
+**Part of the job of being a software developer is to understand the ways in which things that appear simple—like code, user experiences, security protocols, and almost everything else we touch—are not actually simple**. And it is our job to either make them simple, or make it very clear that they aren't that simple and document the way in which they aren't simple.
+
+If you're interviewing candidates, it's your responsibility to figure out that the interviewing process, including the questions you ask, isn't as simple as it appears, and then to **make it simple**. Ask hard questions, fine, but don't make the process hard.
 
 So if you are interviewing programmers, here's your homework: Go through all of your interview questions, whether technical or otherwise, and ask yourself if there are any hidden assumptions about what you expect. Then ask yourself if your process would be even better if you made those implicit requirements explicit.
 
