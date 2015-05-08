@@ -5,7 +5,7 @@ title: "Carnac the Magnificent"
 
 Programmers love to discuss interviewing programmers. And hate to discuss it. Interviewing touches the very heart of human social interaction: It's a process for picking "winners" and "losers," for determining who's "in" and who's "out."
 
-Today I'd like to discuss and anti-pattern, **Carnac the Magnificent**.
+Today I'd like to discuss an anti-pattern, **Carnac the Magnificent**.
 
 > Carnac the Magnificent was a recurring comedic role played by Johnny Carson on The Tonight Show Starring Johnny Carson. One of Carson's most well known characters, Carnac was a "mystic from the East" who could psychically "divine" unknown answers to unseen questions.--[wikipedia](https://en.wikipedia.org/wiki/Carnac_the_Magnificent)
 
