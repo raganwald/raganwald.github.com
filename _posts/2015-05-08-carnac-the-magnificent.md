@@ -9,7 +9,9 @@ Today I'd like to discuss an anti-pattern, **Carnac the Magnificent**.
 
 > Carnac the Magnificent was a recurring comedic role played by Johnny Carson on The Tonight Show Starring Johnny Carson. One of Carson's most well known characters, Carnac was a "mystic from the East" who could psychically "divine" unknown answers to unseen questions.--[wikipedia](https://en.wikipedia.org/wiki/Carnac_the_Magnificent)
 
-The "Carnac the Magnificent" anti-pattern is setting up a situation where the only way to pass is to guess what the interviewer is looking for. Here's an example from a blog post that is currently causing a lot of tongues to wag:
+The "Carnac the Magnificent" anti-pattern is setting up a situation where the only way to pass is to guess what the interviewer is looking for. Here's an example from a blog post that is currently [causing tongues to wag][wag]:
+
+[wag]: http://www.reddit.com/r/programming/comments/358tnp/five_programming_problems_every_software_engineer/
 
 > Write a program that outputs all possibilities to put `+` or `-` or nothing between the numbers `1`, `2`, ..., `9` (in this order) such that the result is always `100`. For example: `1 + 2 + 34 – 5 + 67 – 8 + 9 = 100`.
 
