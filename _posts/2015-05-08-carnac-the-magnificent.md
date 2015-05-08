@@ -51,7 +51,7 @@ for (let o1 of ["", "+", "-"]) {
 }
 ```
 
-([es6fiddle](http://www.es6fiddle.net/i9fozjux/))
+([es6fiddle](http://www.es6fiddle.net/i9fp5ur2/))
 
 Or you could do the same thing, but avoid `eval` and bake in a little of your own computation. Because `eval` is "bad."
 
