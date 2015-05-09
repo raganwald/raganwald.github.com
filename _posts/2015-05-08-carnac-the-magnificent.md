@@ -78,22 +78,22 @@ function solutions (accumulatedOutput, runningTotal, ...numbers) {
   }
   else {
     const [first, ...butFirst] = numbers;
-    
+
     if (accumulatedOutput !== "") {
-    
+
       // case one, addition
       solutions(`${accumulatedOutput}+${first}`, runningTotal + first, ...butFirst);
-    
+
       // case two, subtraction
       solutions(`${accumulatedOutput}-${first}`, runningTotal - first, ...butFirst);
-      
+  
     }
     else solutions(`${first}`, first, ...butFirst);
-    
+
     // case three, catenation
     if (butFirst.length > 0) {
       const [second, ...butSecond] = butFirst;
-      
+  
       solutions(accumulatedOutput, runningTotal, first * 10 + second, ...butSecond);
     }
   }
@@ -106,7 +106,7 @@ solutions("", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
 It's faster, and more beautiful mathematically, but it's actually harder to understand how it works than the iterative solution. And it took me a lot longer to write, so beyond proving that I know how to write things recursively... Why is this better? When is this better? For which interviewers is this better?
 
-We don't know from the problem as stated/
+We don't know from the problem as stated.
 
 So maybe what you should do is ask the interviewer about the hidden requirements. Optimize for speed above all else? Write tests or not? Is shorter code better? Should the code be factored neatly and all repetition DRY'd out?
 
