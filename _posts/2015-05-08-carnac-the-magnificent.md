@@ -107,25 +107,7 @@ solutions("", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 It's faster, and more beautiful mathematically, but it's actually harder to understand how it works than the iterative solution. And it took me a lot longer to write. As did this one, based on Generators and Iterators:
 
 {% highlight javascript %}
-// Utility functions from https://leanpub.com/javascriptallongesix
-
-const mapAllIterableWith = (fn, iterable) =>
-  ({
-    [Symbol.iterator]: function* () {
-      for (let element of iterable) {
-        yield* fn(element);
-      }
-    }
-  });
-  
-const reduceIterableWith = (fn, seed, iterable) => {
-    let accumulator = seed;
-
-    for (let element in iterable) {
-      accumulator = fn(accumulator, element);
-    }
-    return accumulator;
-  };
+// Utility function from https://leanpub.com/javascriptallongesix
 
 const filterIterableWith = (fn, iterable) =>
   ({
@@ -135,43 +117,23 @@ const filterIterableWith = (fn, iterable) =>
       }
     }
   });
-
-const mapIterableWith = (fn, iterable) =>
-  ({
-    [Symbol.iterator]: function* () {
-      for (let element of iterable) {
-        yield fn(element);
-      }
-    }
-  });
   
 // problem-specific functions
   
 const catenate = (left, right) =>
   left * Math.pow(10, Math.ceil(Math.log(right) / Math.LN10)) + right;
 
-function * partitions ([first, ...rest]) {
+function * expressions ([first, ...rest]) {
   if (rest.length === 0) {
     yield [first];
   }
   else {
-    for (let restBlanks of partitions(rest)) {
+    for (let restBlanks of expressions(rest)) {
       const [firstOfRest, ...restOfRest] = restBlanks;
       
-      yield [first, ...restBlanks];
+      yield [first, '+', ...restBlanks];
+      yield [first, '-', ...restBlanks];
       yield [catenate(first, firstOfRest), ...restOfRest];
-    }
-  }
-}
-
-function * plusAndMinus ([first, ...rest]) {
-  if (rest.length === 0) {
-    yield [first];
-  }
-  else {
-    for (let restPlusAndMinus of plusAndMinus(rest)) {
-      yield [first, '+', ...restPlusAndMinus];
-      yield [first, '-', ...restPlusAndMinus];
     }
   }
 }
@@ -192,15 +154,14 @@ const is100 = (expr) =>
   calculate(expr) === 100
 
 const solutions = filterIterableWith(is100,
-  mapAllIterableWith(plusAndMinus,
-    partitions([1, 2, 3, 4, 5, 6, 7, 8, 9])));
+    expressions([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 {% endhighlight %}
 
-([es6fiddle](http://www.es6fiddle.net/i9hgqfi4/))
+([es6fiddle](http://www.es6fiddle.net/i9hhvyp0/))
 
-Again, this highlights a ceratin way of thinking about the problem, that of viewing it as a pipeline of operations on iterable collections: Generate all the partitions, generate all the variations with `+` and `-` joining the partitions, and filter for those that sum to `100`.
+Again, this highlights a ceratin way of thinking about the problem, that of viewing it as a pipeline of operations on iterable collections: Recursively generate all the expressions, and filter for those that sum to `100`.
 
-Beyond proving that a candidate knows how to write things recursively, or with iterators... Why are either of these better? When are they better? For which interviewers are these better?
+Beyond proving that a candidate knows how to write things recursively, or with iterators, or both... Why are either of these better? When are they better? For which interviewers are these better?
 
 We don't know from the problem as stated.
 
