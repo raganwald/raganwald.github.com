@@ -127,4 +127,8 @@ I think you'll find that eliminating Carnac the Magnificent from your interviewi
 
 *post scriptum*:
 
-> Maybe the central problem in software is that not enough devs are old enough to remember Carnac.—[Eric Sink](https://twitter.com/eric_sink/status/596671692367372289)
+Note: I'm not saying that the author if TFA poses the question exactly as worded to real candidates without any further discussion. TFA is a blog post explaining the problem to fellow interviewers, not going into all the details of how to set up the problem, whether to encourage conversation or give hints, and so forth.
+
+However, I *am* saying that I have seen similar problems posed as filters, without any further exposition about what is wanted, and I have definitely encountered interviewers who have hidden expectations, interviewers who are impatient if asked too many questions, interviewers who are judging candidates by the speed of writing a solution and consider questions to take up valuable time, and so forth.
+
+TFA was simply an excuse to discuss something I have observed many, many times over the past couple of decades.
