@@ -69,6 +69,45 @@ for (let o1 of ["", "+", "-"]) {
 
 Every single thing you can say negatively about this solution represents an unstated requirement.
 
+Likewise, here's a recursive solution:
+
+{% highlight javascript %}
+function solutions (accumulatedOutput, runningTotal, ...numbers) {
+  if (numbers.length === 0) {
+    if (runningTotal == 100) console.log(accumulatedOutput);
+  }
+  else {
+    const [first, ...butFirst] = numbers;
+    
+    if (accumulatedOutput !== "") {
+    
+      // case one, addition
+      solutions(`${accumulatedOutput}+${first}`, runningTotal + first, ...butFirst);
+    
+      // case two, subtraction
+      solutions(`${accumulatedOutput}-${first}`, runningTotal - first, ...butFirst);
+      
+    }
+    else solutions(`${first}`, first, ...butFirst);
+    
+    // case three, catenation
+    if (butFirst.length > 0) {
+      const [second, ...butSecond] = butFirst;
+      
+      solutions(accumulatedOutput, runningTotal, first * 10 + second, ...butSecond);
+    }
+  }
+}
+
+solutions("", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+{% endhighlight %}
+
+([es6fiddle](http://www.es6fiddle.net/i9h7385g/))
+
+It's faster, and more beautiful mathematically, but it's actually harder to understand how it works than the iterative solution. And it took me a lot longer to write, so beyond proving that I know how to write things recursively... Why is this better? When is this better? For which interviewers is this better?
+
+We don't know from the problem as stated/
+
 So maybe what you should do is ask the interviewer about the hidden requirements. Optimize for speed above all else? Write tests or not? Is shorter code better? Should the code be factored neatly and all repetition DRY'd out?
 
 That seems reasonable, diving requirements is part of a developer's job. And some interviewers will rate you highly for that. But others will consider it wasting time when all they wanted as a working answer, any answer, you are obviously tedious and slow and can't GetShitDone™.
