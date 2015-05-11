@@ -81,6 +81,10 @@ In sum, JavaScript is not exactly like any other object-oriented programming lan
 
 ---
 
+(discuss on [reddit](http://www.reddit.com/r/javascript/comments/35mg2g/oop_javascript_and_socalled_classes/))
+
+---
+
 This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. The extracts so far:
 
 * [Left-Variadic Functions in JavaScript](http://raganwald.com/2015/04/03/left-variadic.html),
