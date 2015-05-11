@@ -24,7 +24,7 @@ Since that time, languages have either bolted object-ish ideas on top of their e
 [OCaml]: https://en.wikipedia.org/wiki/OCaml
 [C++]: https://en.wikipedia.org/wiki/C%2B%2B
 
-That being said, there really is no one definition of "object-oriented." For one thing, there is no one definition of "object:"
+That being said, there really is no one definition of "object-oriented." For one thing, there is no one definition of "object."
 
 ### objects
 
@@ -49,7 +49,7 @@ Ruby has classes, and they're first-class entities. You can ask an object for it
 
 ### constructors
 
-Some languages allow programs to construct objects independently, others (notably those that are heavily class-centric) require that objects always be constructed by classes.
+Some languages allow programs to construct objects independently, others (notably those that are heavily class-centric) require that objects always be constructed by their classes. Some languages allow any function or method to be used as a constructor, others require a special syntax or declaration for constructors.
 
 ### prototypes are not classes
 
