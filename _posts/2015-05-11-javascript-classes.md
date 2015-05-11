@@ -1,0 +1,92 @@
+---
+layout: default
+title: "OOP, Javascript, and so-called Classes"
+---
+
+I'm updating the chapters in [JavaScript Allongé, The "Six" Edition][ja6] to include a description of the new `class` syntax, and I thought it might help to organize my thoughts about "Object-Oriented Programming" and how many things that phrase might possibly mean.
+
+[ja6]: https://leanpub.com/javascriptallongesix
+
+### history
+
+Programming with objects and classes began in the late 1960s with the [Simula] programming language, invented in Norway by Ole-Johan Dahl and Kristen Nygaard, although they did not use those words to describe what would eventually become the dominant paradigm in computing.
+
+A decade later, Dr. Alan Kay coined the phrase "Object-Oriented Programming" along with co-creating the [Smalltalk] programming language. He has famously said that to him, "OOP" was objects communicating with each other using messages, and that other languages copied the things that didn't matter from Smalltalk, and ignored the things he thought did matter.
+
+[Simula]: https://en.wikipedia.org/wiki/Simula
+[Smalltalk]: https://en.wikipedia.org/wiki/Smalltalk
+
+Since that time, languages have either bolted object-ish ideas on top of their existing paradigms (like [Object Pascal] and [OCaml]), baked them in alongside other paradigms (like JavaScript), or embraced objects wholeheartedly.
+
+[Object Pascal]: https://en.wikipedia.org/wiki/Object_Pascal
+[OCaml]: https://en.wikipedia.org/wiki/OCaml
+[C++]: https://en.wikipedia.org/wiki/C%2B%2B
+
+That being said, there really is no one definition of "object-oriented." For one thing, there is no one definition of "object:"
+
+### objects
+
+Some languages, like Smalltalk and [Ruby], treat an object as a fully encapsulated entity. There is no access to an object's private state, all you can do is invoke one of its methods. Other languages, like Java, permit objects to access each other's  state.
+
+[Ruby]: https://en.wikipedia.org/wiki/Ruby_(programming_language)
+
+Some languages (again, like Java) have very rigid objects and classes, it is impossible or awkward to add new methods or properties to objects at run time. Some are flexible about adding methods and properties at run time. And yet other languages treat object as dictionaries, where properties and even methods and be added with abandon.
+
+So we can see that the concept of "object" is flexible across languages.
+
+### classes
+
+The concept of "class" is also flexible across languages. Object-oriented languages do not uniformly agree on whether classes are necessary, much less how they work. For example, The Common Lisp Object System has generic functions, but not classes. The [Self] and [NewtonScript] languages have prototypes instead of classes. So some "OO" languages have objects, but not classes.
+
+[Self]: https://en.wikipedia.org/wiki/Self_(programming_language)
+[NewtonScript]: https://en.wikipedia.org/wiki/NewtonScript
+
+C++ has classes, but they are not "first-class entities." You can't assign a class to a variable or pass it to a function. You can, however, manipulate the constructors for classes, the functions that make new objects.
+
+Ruby has classes, and they're first-class entities. You can ask an object for its class, you can put a class in a variable, pass it to a method, or return it from a method, just like every other entity in the language.
+
+### constructors
+
+Some languages allow programs to construct objects independently, others (notably those that are heavily class-centric) require that objects always be constructed by classes.
+
+### prototypes are not classes
+
+Prototypical languages like Self and NewtonScript eschew classes altogether, using *prototypes* to define common behaviour for a set of objects. The difference between a prototype and a class is similar to the difference between a model home and a blueprint for a home.
+
+You can say to a builder, "make me a home just like that model home," and the builder makes you a home that has a lot in common with the model home. You then decorate your home with additional personalization. But the model home is, itself, a home. Although you may choose to keep it empty, you could in principle move a family into it. This is different than asking a builder to make you a home based on a blueprint. The blueprint may specify the features of the home, but it isn't a home. It could never be used as a home.
+
+Prototypes are like model homes, and classes are like blueprints. Classes in are not like the objects they describe.
+
+### "object-oriented programming" can mean almost anything
+
+From this whirlwind tour of "object-oriented programming," we can see that the ideas behind "object-oriented programming" have some common roots in the history of programming languages, but each language implements its own particular flavour in its own particular way.
+
+Thus, when we talk about "objects" and "prototypes" and "classes" in JavaScript, we're talking about objects, prototypes, and classes *as implemented in JavaScript*. And we must keep in mind that other languages can have a radically different take on these ideas.
+
+### the javascript approach
+
+JavaScript has objects, and by default, those objects are dictionaries. By default, objects and directly manipulate each other's state. Methods can be added to, or removed from objects at run time.
+
+JavaScript has optional prototypes. Prototypes are objects in the same sense that model homes are homes. 
+
+In JavaScript, object and array literals construct objects that delegate behaviour to the standard library's object prototype and array prototype, respectively. JavaScript also supports using `Object.create` to construct objects with or without a prototype, and `new` to construct objects using a constructor function.
+
+Using prototypes and constructor functions, JavaScript programs can emulate many of the features of classes in other languages. JavaScript also a `class` keyword that provides syntactic sugar for writing constructor functions and prototypes in a declarative fashion.
+
+JavaScript classes are not first-class entities in the sense that Ruby or Smalltalk classes are first-class entities. They are abstractions built out of constructor functions and prototypes. Although they aren't first-class entities, JavaScript programs can borrow a technique from C++ and make do by manipulating constructor functions as first-class entities. This is exactly the approach taken by features such as the `instanceof` operator.
+
+In sum, JavaScript is not exactly like any other object-oriented programming language, and its classes aren't like any other language that features classes, but then again, neither is any other object-oriented programming language, and neither are any other classes.
+
+---
+
+This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. The extracts so far:
+
+* [Left-Variadic Functions in JavaScript](http://raganwald.com/2015/04/03/left-variadic.html),
+* [Partial Application in ECMAScript 2015](http://raganwald.com/2015/04/01/partial-application.html),
+* [The Symmetry of JavaScript Functions](http://raganwald.com/2015/03/12/symmetry.html),
+* [Lazy Iterables in JavaScript](http://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html),
+* [The Quantum Electrodynamics of Functional JavaScript](http://raganwald.com/2015/02/13/functional-quantum-electrodynamics.html),
+* [Tail Calls, Default Arguments, and Excessive Recycling in ES-6](http://raganwald.com/2015/02/07/tail-calls-defult-arguments-recycling.html), and:
+* [Destructuring and Recursion in ES-6](http://raganwald.com/2015/02/02/destructuring.html).
+
+Your [feedback](https://github.com/raganwald/raganwald.github.com/issues/new) improves the book for everyone, thank you!
