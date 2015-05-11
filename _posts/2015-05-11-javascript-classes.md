@@ -3,7 +3,9 @@ layout: default
 title: "OOP, Javascript, and so-called Classes"
 ---
 
-I'm updating the chapters in [JavaScript Allongé, The "Six" Edition][ja6] to include a description of the new `class` syntax, and I thought it might help to organize my thoughts about "Object-Oriented Programming" and how many things that phrase might possibly mean.
+*I'm updating the chapters in [JavaScript Allongé, The "Six" Edition][ja6] to include a description of the new `class` syntax, and I thought it might help to organize my thoughts about "Object-Oriented Programming" and how many things that phrase might possibly mean.*
+
+*Your feedback on this perspective would help a lot. Thanks in advance!*
 
 [ja6]: https://leanpub.com/javascriptallongesix
 
