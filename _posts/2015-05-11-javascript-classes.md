@@ -11,7 +11,7 @@ title: "OOP, Javascript, and so-called Classes"
 
 ### history
 
-Programming with objects and classes began in the late 1960s with the [Simula] programming language, invented in Norway by Ole-Johan Dahl and Kristen Nygaard, although they did not use those words to describe what would eventually become the dominant paradigm in computing.
+Programming with objects and classes began in Norway in the late 1960s with the [Simula] programming language. Its creators, Ole-Johan Dahl and Kristen Nygaard, did not use those words to describe what would eventually become the dominant paradigm in computing.
 
 A decade later, Dr. Alan Kay coined the phrase "Object-Oriented Programming" along with co-creating the [Smalltalk] programming language. He has famously said that to him, "OOP" was objects communicating with each other using messages, and that other languages copied the things that didn't matter from Smalltalk, and ignored the things he thought did matter.
 
