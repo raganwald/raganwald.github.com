@@ -32,7 +32,7 @@ Some languages, like Smalltalk and [Ruby], treat an object as a fully encapsulat
 
 [Ruby]: https://en.wikipedia.org/wiki/Ruby_(programming_language)
 
-Some languages (again, like Java) have very rigid objects and classes, it is impossible or awkward to add new methods or properties to objects at run time. Some are flexible about adding methods and properties at run time. And yet other languages treat object as dictionaries, where properties and even methods and be added with abandon.
+Some languages (again, like Java) have very rigid objects and classes, it is impossible or awkward to add new methods or properties to objects at run time. Some are flexible about adding methods and properties at run time. And yet other languages treat objects as dictionaries, where properties and even methods can be added, modified, or removed with abandon.
 
 So we can see that the concept of "object" is flexible across languages.
 
