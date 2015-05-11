@@ -2,6 +2,7 @@
 title: "I Can't Find Good Salespeople"
 layout: default
 tags: [management]
+published: false
 ---
 
 I was meeting Sarah for our regular coffee. Sarah's one of those born entrepreneurs, she's built and sold a variety of businesses, and she's has a great touch with investments. I pick her brain about business issues, and she picks my brain about tech.
