@@ -69,7 +69,7 @@ Thus, when we talk about "objects" and "prototypes" and "classes" in JavaScript,
 
 ### the javascript approach
 
-JavaScript has objects, and by default, those objects are dictionaries. By default, objects and directly manipulate each other's state. Methods can be added to, or removed from objects at run time.
+JavaScript has objects, and by default, those objects are dictionaries. By default, objects directly manipulate each other's state. Methods can be added to, or removed from objects at run time.
 
 JavaScript has optional prototypes. Prototypes are objects in the same sense that model homes are homes. 
 
