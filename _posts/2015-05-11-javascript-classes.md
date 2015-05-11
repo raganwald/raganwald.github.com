@@ -57,7 +57,7 @@ Prototypical languages like Self and NewtonScript eschew classes altogether, usi
 
 You can say to a builder, "make me a home just like that model home," and the builder makes you a home that has a lot in common with the model home. You then decorate your home with additional personalization. But the model home is, itself, a home. Although you may choose to keep it empty, you could in principle move a family into it. This is different than asking a builder to make you a home based on a blueprint. The blueprint may specify the features of the home, but it isn't a home. It could never be used as a home.
 
-Prototypes are like model homes, and classes are like blueprints. Classes in are not like the objects they describe.
+Prototypes are like model homes, and classes are like blueprints. Classes are not like the objects they describe.
 
 ### "object-oriented programming" can mean almost anything
 
