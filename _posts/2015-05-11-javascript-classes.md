@@ -75,7 +75,7 @@ JavaScript has optional prototypes. Prototypes are objects in the same sense tha
 
 In JavaScript, object and array literals construct objects that delegate behaviour to the standard library's object prototype and array prototype, respectively. JavaScript also supports using `Object.create` to construct objects with or without a prototype, and `new` to construct objects using a constructor function.
 
-Using prototypes and constructor functions, JavaScript programs can emulate many of the features of classes in other languages. JavaScript also a `class` keyword that provides syntactic sugar for writing constructor functions and prototypes in a declarative fashion.
+Using prototypes and constructor functions, JavaScript programs can emulate many of the features of classes in other languages. JavaScript also has a `class` keyword that provides syntactic sugar for writing constructor functions and prototypes in a declarative fashion.
 
 JavaScript classes are not first-class entities in the sense that Ruby or Smalltalk classes are first-class entities. They are abstractions built out of constructor functions and prototypes. Although they aren't first-class entities, JavaScript programs can borrow a technique from C++ and make do by manipulating constructor functions as first-class entities. This is exactly the approach taken by features such as the `instanceof` operator.
 
