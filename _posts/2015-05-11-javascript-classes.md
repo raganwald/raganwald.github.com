@@ -98,3 +98,5 @@ This post was extracted from the in-progress book, [JavaScript Allongé, The "Si
 * [Destructuring and Recursion in ES-6](http://raganwald.com/2015/02/02/destructuring.html).
 
 Your [feedback](https://github.com/raganwald/raganwald.github.com/issues/new) improves the book for everyone, thank you!
+
+---
