@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "OOP, Javascript, and so-called Classes"
+title: "OOP, JavaScript, and so-called Classes"
 ---
 
 *I'm updating the chapters in [JavaScript Allongé, The "Six" Edition][ja6] to include a description of the new `class` syntax, and I thought it might help to organize my thoughts about "Object-Oriented Programming" and how many things that phrase might possibly mean.*
