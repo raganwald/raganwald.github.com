@@ -538,6 +538,7 @@ And last but certainly not least, destructuring, spreading, and gathering make t
 
 This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. The extracts so far:
 
+* [OOP, Javascript, and so-called Classes](http://raganwald.com/2015/05/11/javascript-classes.html),
 * [Left-Variadic Functions in JavaScript](http://raganwald.com/2015/04/03/left-variadic.html),
 * [Partial Application in ECMAScript 2015](http://raganwald.com/2015/04/01/partial-application.html),
 * [The Symmetry of JavaScript Functions](http://raganwald.com/2015/03/12/symmetry.html),
