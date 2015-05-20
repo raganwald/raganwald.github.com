@@ -40,7 +40,7 @@ tags: [allonge]
 * [The Rebellion Imperative](https://vimeo.com/53265664) [1:12:58]
 * The Art of the JavaScript Metaobject Protocol
   * [Part I: Combinators](http://vimeo.com/97408202) [54:55]
-  * [Part II: Metaobjects](http://vimeo.com/97408202) [58:06]
+  * [Part II: Metaobjects](http://vimeo.com/97415345) [58:06]
   * [Part III: Adaptors](https://www.youtube.com/watch?v=hp7sgLVepF8) [26:29]
 
 ### older essays
