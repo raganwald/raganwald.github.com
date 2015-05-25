@@ -4,7 +4,7 @@ layout: default
 tags : [homoiconic, javascript]
 ---
 
-(This post is Part I of [II][Part II]. The recipes in this post are excerpted the book [JavaScript Allongé](http://leanpub.com/javascript-allonge).)
+(This post is Part I of [II][Part II]. The recipes in this post are excerpted the book [JavaScript Allongé](http://leanpub.com/javascriptallongesix).)
 
 ### combinators
 
@@ -200,7 +200,7 @@ This maps the array, getting the name if there is a value.
 * We've seen four handy combinators: "get," "splat," "pluck," and "maybe."
 * "Get" and "maybe" play well together; "splat" and "pluck" are conveniences that help program in a functional rather than OO style.
 
-In [Part II], we'll look at a more complex recipe, "partial," and some combinators that are specifically tuned for working with instance methods: "bound," "send," and "fluent." (*cough*). The recipes in this post are from the book [JavaScript Allongé](http://leanpub.com/javascript-allonge), a book focused on working with functions in JavaScript, including combinators, constructors, methods, and decorators. You can download a [free sample PDF](http://samples.leanpub.com/javascript-allonge-sample.pdf).
+In [Part II], we'll look at a more complex recipe, "partial," and some combinators that are specifically tuned for working with instance methods: "bound," "send," and "fluent." (*cough*). The recipes in this post are from the book [JavaScript Allongé](http://leanpub.com/javascriptallongesix), a book focused on working with functions in JavaScript, including combinators, constructors, methods, and decorators. You can download a [free sample PDF](http://samples.leanpub.com/javascriptallongesix-sample.pdf).
 
 [Feedback welcome](mailto:reg@braythwayt.com), or discuss these ideas on [reddit](http://www.reddit.com/r/javascript/comments/14we7r/combinator_recipes_for_working_with_objects_in/) and [hacker news](http://news.ycombinator.com/item?id=4925658).
 

@@ -16,7 +16,7 @@ Jeremy Ashkenas recently announced that CoffeeScript 1.5 is out. One of its chan
         
 And when you wrote `new Weird()`, you'd get a plain object, not an instance of `Weird`. This is no longer the case. Now when you write the above, you get an error: *CANNOT RETURN A VALUE FROM A CONSTRUCTOR: "{ EXCLAMATION: "THAT'S STRANGE" }" IN CLASS WEIRD*. Does this matter? Only in edge cases. in [JavaScript Allongé][ja], I borrowed a pattern from [Effective JavaScript](http://effectivejs.com). Here's the use case. Consider this constructor with a variable number of arguments:
 
-[ja]: http://leanpub.com/javascript-allonge
+[ja]: http://leanpub.com/javascriptallongesix
 
     class Contact
       constructor: (@name, @emails...) ->

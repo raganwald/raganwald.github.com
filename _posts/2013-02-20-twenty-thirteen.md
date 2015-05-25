@@ -29,7 +29,7 @@ One of the nice things about markdown is that it is what it is. There's very lit
 
 In the last twelve months or so, I've been embracing [Github Pages](http://pages.github.com) for some projects. In exchange for fiddling with a domain registrar, I can host things on my own domains, like:
 
-* [http://allong.es](http://allong.es): A free library of [JavaScript Allongé](https://leanpub.com/javascript-allonge) recipes.
+* [http://allong.es](http://allong.es): A free library of [JavaScript Allongé](https://leanpub.com/javascriptallongesix) recipes.
 * [http://recursiveuniver.se](http://recursiveuniver.se): An implementation of HashLife, in Literate CoffeeScript.
 * [http://oscin.es](http://oscin.es): Combinatory Logic in JavaScript.
 

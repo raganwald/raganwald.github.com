@@ -373,6 +373,6 @@ Notes:
 
 * `variadic`/`ellipsis`, `applyFirst` and `applyLast` are just a few of the utility functions in the [allong.es](http://allong.es) library.
 * `applyFirst` and `applyLast` were inspired by Michael Fogus' [Lemonad](https://github.com/fogus/lemonad). Thanks!
-* The ideas in this post are shamelessly extracted from my book [JavaScript Allongé](http://leanpub.com/javascript-allonge). Yes I am pimping it out! Please consider downloading the free sample PDF. It comes with a no questions asked, 100% money-back guarantee.
+* The ideas in this post are shamelessly extracted from my book [JavaScript Allongé](http://leanpub.com/javascriptallongesix). Yes I am pimping it out! Please consider downloading the free sample PDF. It comes with a no questions asked, 100% money-back guarantee.
 
 

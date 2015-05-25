@@ -7,7 +7,7 @@ published: true
 
 One of JavaScript's defining characteristics is its treatment of functions as first-class values. Like numbers, strings, and other kinds of objects, references to functions can be passed as arguments to functions, returned as the result from functions, bound to variables, and generally treated like any other value.[^reference]
 
-[ja]: https://leanpub.com/javascript-allonge "JavaScript Allongé"
+[ja]: https://leanpub.com/javascriptallongesix "JavaScript Allongé"
 
 [^reference]: JavaScript does not actually pass functions or any other kind of object around, it passes references to functions and other objects around. But it's awkward to describe `var I = function (a) { return a; }` as binding a reference to a function to the variable `I`, so we often take an intellectually lazy shortcut, and say the function is bound to the variable `I`. This is much the same shorthand as saying that somebody added me to the schedule for an upcoming conference: They really added my name to the list, which is a kind of reference to me.
 

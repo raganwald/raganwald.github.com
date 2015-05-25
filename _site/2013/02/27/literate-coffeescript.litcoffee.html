@@ -69,7 +69,7 @@ class Weird
     return { exclamation: &quot;That&#39;s Strange&quot; }
 ###</code></pre>
 
-<p>And when you wrote <code>new Weird()</code>, you&#8217;d get a plain object, not an instance of <code>Weird</code>. This is no longer the case. Now when you write the above, you get an error: <em>CANNOT RETURN A VALUE FROM A CONSTRUCTOR: &#8220;{ EXCLAMATION: &#8220;THAT&#8217;S STRANGE&#8221; }&#8221; IN CLASS WEIRD</em>. Does this matter? Only in edge cases. in <a href='http://leanpub.com/javascript-allonge'>JavaScript Allongé</a>, I borrowed a pattern from <a href='http://effectivejs.com'>Effective JavaScript</a>. Here&#8217;s the use case. Consider this constructor with a variable number of arguments:</p>
+<p>And when you wrote <code>new Weird()</code>, you&#8217;d get a plain object, not an instance of <code>Weird</code>. This is no longer the case. Now when you write the above, you get an error: <em>CANNOT RETURN A VALUE FROM A CONSTRUCTOR: &#8220;{ EXCLAMATION: &#8220;THAT&#8217;S STRANGE&#8221; }&#8221; IN CLASS WEIRD</em>. Does this matter? Only in edge cases. in <a href='http://leanpub.com/javascriptallongesix'>JavaScript Allongé</a>, I borrowed a pattern from <a href='http://effectivejs.com'>Effective JavaScript</a>. Here&#8217;s the use case. Consider this constructor with a variable number of arguments:</p>
 
 <pre><code>class Contact
   constructor: (@name, @emails...) -&gt;</code></pre>

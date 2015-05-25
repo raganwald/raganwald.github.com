@@ -282,7 +282,7 @@ notes:
 [^tao]: A Taoist ordered a vegetarian hot dog from a street vendor: "Make me one with everything," he requested politely.
 [^also]: There are a lot of other reasons to curry functions, but this is an article about the relationship between currying and partial application, not an introduction to combinatory logic and functional programming :-)
 [allong.es]: http://allong.es
-[ja]: http://leanpub.com/javascript-allonge
+[ja]: http://leanpub.com/javascriptallongesix
 [pa]: https://github.com/raganwald/allong.es/blob/master/lib/partial_application.js
 [repo]: https://github.com/raganwald/raganwald.github.com
 [issue]: https://github.com/raganwald/raganwald.github.com/issues

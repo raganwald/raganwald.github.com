@@ -74,7 +74,7 @@ If we take the blue pill, writing programs productively and correctly is importa
 
 If we take the blue pill, we think that some programmers are 10x or 20x or 100x as productive as mediocre programmers, *and we think that this matters*. If we take the blue pill, we care about Clojure and Haskell and think that programming language design matters. If we take the blue pill, we care about books like [JavaScript Allongé][ja] and [POODR] and think that good program design matters.
 
-[ja]: https://leanpub.com/javascript-allonge
+[ja]: https://leanpub.com/javascriptallongesix
 [POODR]: http://www.poodr.com "Practical Object-Oriented Design in Ruby"
 
 If we take the blue pill, we believe that the world we inhabit today is the real world.
