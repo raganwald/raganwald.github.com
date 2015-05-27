@@ -3,14 +3,6 @@ layout: default
 title: "OOP, JavaScript, and so-called Classes"
 ---
 
-*I'm updating the chapters in [JavaScript Allongé, The "Six" Edition][ja6] to include a description of the new `class` syntax, and I thought it might help to organize my thoughts about "Object-Oriented Programming" and how many things that phrase might possibly mean.*
-
-*Your feedback on this perspective would help a lot. Thanks in advance!*
-
-[ja6]: https://leanpub.com/javascriptallongesix
-
-### history
-
 Programming with objects and classes began in Norway in the late 1960s with the [Simula] programming language. Its creators, Ole-Johan Dahl and Kristen Nygaard, did not use those words to describe what would eventually become the dominant paradigm in computing.
 
 A decade later, Dr. Alan Kay coined the phrase "Object-Oriented Programming" along with co-creating the [Smalltalk] programming language. He has famously said that to him, "OOP" was objects communicating with each other using messages, and that other languages copied the things that didn't matter from Smalltalk, and ignored the things he thought did matter.
@@ -96,6 +88,8 @@ In sum, JavaScript is not exactly like any other object-oriented programming lan
 ---
 
 This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. The extracts so far:
+
+[ja6]: https://leanpub.com/javascriptallongesix
 
 * [OOP, Javascript, and so-called Classes](http://raganwald.com/2015/05/11/javascript-classes.html),
 * [Left-Variadic Functions in JavaScript](http://raganwald.com/2015/04/03/left-variadic.html),
