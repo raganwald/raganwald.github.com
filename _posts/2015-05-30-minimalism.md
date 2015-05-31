@@ -4,14 +4,13 @@ title: "Minimalism: On the necessity of `const`, `let`, and `var` in JavaScript"
 tags: noindex
 ---
 
-{% highlight javascript %}
-{% endhighlight %}
-
 *Disclaimer: JavaScript the language has some complicated edge cases, and as such, the following essay has some hand-wavey bits and some bits that are usually correct but wrong for certain edge cases. If it helps any, pretend that nearly every statement has a footnote reading, "for most cases in practice, however \_\_\_\_\_\_."*
 
-### is `var` necessary?
-
 Before there was a `let` or a `const` in JavaScript, there was `var`. Variables scoped with `var` were either *global* if they were evaluated at the top-level, or *function-scoped* if they appeared anywhere inside a function declaration or function expression.
+
+[![Gerrit Rietveld's Roodblauwe stoel](/assets/images/roodblauwe-stoel.jpg)](https://www.flickr.com/photos/matijagrguric/4439360724)
+
+### is `var` necessary?
 
 As a thought experiment, let's ask ourselves: Is `var` really necessary? Can we write JavaScript without it? And let's make it interesting: Can we get rid of `var` without using `let`?
 
@@ -187,6 +186,8 @@ function arraySum (array) {
 }
 {% endhighlight %}
 
+[![Rietveld's Hanging Lamp](/assets/images/hanging-lamp.jpg)](https://www.flickr.com/photos/59633635@N08/6433053889)
+
 Another thing: `let` has special rules for loops. So if we simplify our `arraySum` with a `for...in` loop, we'll need an IIFE around the `for` loop to prevent any `let` within the loop from leaking into the surrounding scope, and one inside the `for` loop to preserve its value within the block. Let's write a completely contrived function:
 
 {% highlight javascript %}
@@ -282,6 +283,8 @@ function maybe (fn) {
   }
 }
 {% endhighlight %}
+
+[![The Rietveld Schröderhuis](/assets/images/reitveld-schroederhuis.jpg)](https://www.flickr.com/photos/kjbo/4444981118)
 
 ### what have we learnt from removing `var` and `let`?
 
