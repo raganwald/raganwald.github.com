@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "Minimalism: On the necessity of `const`, `let`, and `var` in JavaScript"
-tags: noindex
 ---
 
 *Disclaimer: JavaScript the language has some complicated edge cases, and as such, the following essay has some hand-wavey bits and some bits that are usually correct but wrong for certain edge cases. If it helps any, pretend that nearly every statement has a footnote reading, "for most cases in practice, however \_\_\_\_\_\_."*
@@ -10,7 +9,7 @@ Before there was a `let` or a `const` in JavaScript, there was `var`. Variables 
 
 [![Gerrit Rietveld's Roodblauwe stoel](/assets/images/roodblauwe-stoel.jpg)](https://www.flickr.com/photos/matijagrguric/4439360724)
 
-### is `var` necessary?
+### is "var" necessary?
 
 As a thought experiment, let's ask ourselves: Is `var` really necessary? Can we write JavaScript without it? And let's make it interesting: Can we get rid of `var` without using `let`?
 
@@ -85,7 +84,7 @@ And at runtime, we are creating an extra closure with every invocation. This has
 
 But we get the general idea: If we were willing to live with this code, we could get rid of a lot or even all uses of `var` from our programs. Now, what about `let`?
 
-### is `let` necessary?
+### is "let" necessary?
 
 `let` has a more complicated behaviour, but if we are careful, we can translate `let` declarations into IIFEs just like `var`. The simplest case is when a `let` is at the top-level of a function. In that case, we can replace it with a `var`. And from there, if we are removing both `let` and `var`, we can excise it completely. So:
 
@@ -188,7 +187,9 @@ function arraySum (array) {
 
 [![Rietveld's Hanging Lamp](/assets/images/hanging-lamp.jpg)](https://www.flickr.com/photos/59633635@N08/6433053889)
 
-Another thing: `let` has special rules for loops. So if we simplify our `arraySum` with a `for...in` loop, we'll need an IIFE around the `for` loop to prevent any `let` within the loop from leaking into the surrounding scope, and one inside the `for` loop to preserve its value within the block. Let's write a completely contrived function:
+### loops and blocks
+
+`let` has special rules for loops. So if we simplify our `arraySum` with a `for...in` loop, we'll need an IIFE around the `for` loop to prevent any `let` within the loop from leaking into the surrounding scope, and one inside the `for` loop to preserve its value within the block. Let's write a completely contrived function:
 
 {% highlight javascript %}
 function sumFrom (original, i) {
@@ -286,7 +287,7 @@ function maybe (fn) {
 
 [![The Rietveld Schröderhuis](/assets/images/reitveld-schroederhuis.jpg)](https://www.flickr.com/photos/kjbo/4444981118)
 
-### what have we learnt from removing `var` and `let`?
+### what have we learnt from removing "var" and "let"?
 
 The first thing we've learnt is that for most purposes, `var` and `let` aren't *strictly* necessary in JavaScript. Roughly speaking, scoping constructs with lexical scope can be mechanically transformed into  functional arguments.
 
@@ -298,7 +299,7 @@ However, looking at the code we would have to write if we didn't have `var` or b
 
 This is a case where taking something away does not create elegance. If we take `let` away and only use `var`, we have to add IIFEs to get block scope. If we take `var` away too, we get even more IIFEs. Removing `let` makes our programs less elegant.
 
-### wait, what about `const`?
+### wait, what about "const"?
 
 As you know, `const` behaves exactly like `let`, however when a program is first parsed, it is analyzed, and if there are any lines of code that attempt to assign to a `const` variable, an error is generated. This happens *before* the program is executed, it's a syntax error, not a runtime error.
 
@@ -354,7 +355,7 @@ It might look something like this:
 
 `const` is not like `var` or `let`. It ay seem like the others, and get lumped alongside them in descriptions of variables and scoping, but it's something else.
 
-### do we need `const`?
+### do we need "const"?
 
 If we think of `const` as being `let` plus an annotation that speaks to the compiler, we can understand why some people suggest we not use it at all: It does provide some convenient checking when first writing your program, but thereafter it adds complexity for the reader in the form of a fifth scoping construct (the others being globals, function arguments, `var`, and `let`).
 
@@ -370,7 +371,7 @@ And also, declaring a property that can't be written looks nothing at all like d
 
 It's not clear that we *need* const the way we need `let`.
 
-### so… should we use `const`?
+### so… should we use "const"?
 
 One can see the argument that `const` shouldn't be in the language *at all*, that it should have been deferred until there was a way to programatically annotate variables with properties that could be statically applied. Or that it should have been deferred until we got gradual typing. Or just left out.
 
