@@ -433,7 +433,7 @@ Although we showed how to use tail calls to map and fold over arrays with `[firs
 
 ---
 
-This post was extracted from the in-progress book, [JavaScript Allongé, The "Six" Edition][ja6]. The extracts so far:
+This post was extracted from a draft of the book, [JavaScript Allongé, The "Six" Edition][ja6]. The extracts so far:
 
 * [OOP, Javascript, and so-called Classes](http://raganwald.com/2015/05/11/javascript-classes.html),
 * [Left-Variadic Functions in JavaScript](http://raganwald.com/2015/04/03/left-variadic.html),
@@ -443,8 +443,6 @@ This post was extracted from the in-progress book, [JavaScript Allongé, The "Si
 * [The Quantum Electrodynamics of Functional JavaScript](http://raganwald.com/2015/02/13/functional-quantum-electrodynamics.html),
 * [Tail Calls, Default Arguments, and Excessive Recycling in ES-6](http://raganwald.com/2015/02/07/tail-calls-defult-arguments-recycling.html), and:
 * [Destructuring and Recursion in ES-6](http://raganwald.com/2015/02/02/destructuring.html).
-
-Your [feedback](https://github.com/raganwald/raganwald.github.com/issues/new) improves the book for everyone, thank you!
 
 [ja6]: https://leanpub.com/b/buyjavascriptallongthesixeditiongetjavascriptallongfree
 
