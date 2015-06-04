@@ -15,7 +15,7 @@ function Person (first, last) {
   this.rename(first, last);
 }
 
-Person.prototype.fullName: = function fullName () {
+Person.prototype.fullName = function fullName () {
   return this.firstName + " " + this.lastName;
 };
 
@@ -36,7 +36,7 @@ let Person = function (first, last) {
   this.rename(first, last);
 }
 
-Person.prototype.fullName: = function fullName () {
+Person.prototype.fullName = function fullName () {
   return this.firstName + " " + this.lastName;
 };
 
