@@ -204,7 +204,7 @@ class Person {
 };
 {% endhighlight %}
 
-So far, exactly the same behaviour, any code that wants to, can access a person's `.firstname` or `.lastName`. Next, we'll extract some variables:
+So far, exactly the same behaviour, any code that wants to, can access a person's `.firstName` or `.lastName`. Next, we'll extract some variables:
 
 {% highlight javascript %}
 let firstNameProperty = 'firstName',
