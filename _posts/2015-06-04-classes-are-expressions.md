@@ -327,7 +327,7 @@ This pattern of creating a class that has private variables emerged from combini
 
 There's no need to have special keywords or magic namespaces. That keeps the "surface area" of the language small, and provides a surprising amount of flexibility. If we want to, we can build mixins, traits, eigenclasses, and all sorts of other constructs that have to be baked into other languages.
 
-(discuss on [hacker news](https://news.ycombinator.com/item?id=9660658))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=9660658) and [reddit](http://www.reddit.com/r/javascript/comments/38joif/classes_are_expressions_and_why_that_matters/))
 
 ---
 
