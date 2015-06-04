@@ -4,9 +4,7 @@ title: "Classes are Expressions (and why that matters)"
 tags: allonge
 ---
 
-*Prerequisite: This post presumes that readers are familiar with JavaScript's objects, know how a prototype defines behaviour for an object, know what a constructor function is, and how its `.prototype` property is related to the objects it constructs. All of this can, of course, be found in [JavaScript Allongé][ja6]. Passing familiarity with ECMAScript-2015 syntax like `let` and gathering parameters will be extremely helpful.*
-
----
+*Prerequisite: This post presumes that readers are familiar with JavaScript's objects, know how a prototype defines behaviour for an object, know what a constructor function is, and how a constructor's `.prototype` property is related to the objects it constructs. Passing familiarity with ECMAScript 2015 syntax like `let` and gathering parameters will be extremely helpful.*
 
 [![Vacuum](/assets/images/vacuum.jpg)](https://www.flickr.com/photos/viydook/7613217660)
 
