@@ -317,7 +317,7 @@ let Person = (() = > {
 )();
 {% endhighlight %}
 
-Now this is different. Code outside the IIFE cannot see the property names. We construct a class and return it from the IIFE. We then assign it to the `Person` variable. It's mechanism has been completely encapsulated.
+Now this is different. Code outside the IIFE cannot see the property names. We construct a class and return it from the IIFE. We then assign it to the `Person` variable. Its mechanism has been completely encapsulated.
 
 ### commentary
 
