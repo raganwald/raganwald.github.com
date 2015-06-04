@@ -27,7 +27,7 @@ Person.prototype.rename = function rename (first, last) {
 }
 {% endhighlight %}
 
-`Person` is a constructor function, and it's also a class, [in the JavaScript sense of the word "class"][class]. As we've written it here, it's a *function declaration*. But let's rewrite it as a *function expression*. We'll use `let` just to get into the ECMAScript 2015 swing of things (many people would use `const`, that doesn't matter here):
+`Person` is a constructor function, and it's also a class, in the JavaScript sense of the word "[class][class]." As we've written it here, it's a *function declaration*. But let's rewrite it as a *function expression*. We'll use `let` just to get into the ECMAScript 2015 swing of things (many people would use `const`, that doesn't matter here):
 
 [class]: http://raganwald.com/2015/05/11/javascript-classes.html
 
