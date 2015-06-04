@@ -273,7 +273,7 @@ let Person = class Person {
 };
 {% endhighlight %}
 
-Now we wrap the class in an [IIFE][^iife]:
+Now we wrap the class in an IIFE[^iife]:
 
 {% highlight javascript %}
 let firstNameProperty = Symbol('firstName'),
