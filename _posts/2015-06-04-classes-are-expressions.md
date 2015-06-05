@@ -147,7 +147,7 @@ class Person {
   rename (first, last, middle) {
     this.firstName = first;
     this.lastName = last;
-    this.middleName = last;
+    this.middleName = middle;
     return this;
   }
 };
