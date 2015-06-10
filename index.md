@@ -39,8 +39,8 @@ tags: [allonge]
 * [I have a good feeling about this](https://vimeo.com/76141334) [43:15]
 * [The Rebellion Imperative](https://vimeo.com/53265664) [1:12:58]
 * The Art of the JavaScript Metaobject Protocol
-  * [Part I: Combinators](http://vimeo.com/97408202) [54:55]
-  * [Part II: Metaobjects](http://vimeo.com/97408202) [58:06]
+  * [Part I: Combinators](https://vimeo.com/97408202) [54:55]
+  * [Part II: Metaobjects](https://vimeo.com/97415345) [58:06]
   * [Part III: Adaptors](https://www.youtube.com/watch?v=hp7sgLVepF8) [26:29]
 
 ### older essays
