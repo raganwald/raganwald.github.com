@@ -78,7 +78,7 @@ So far, very easy and very simple. This is a *pattern*, a recipe for solving a c
 
 ### functional mixins
 
-The object mixin we have above works properly, but our little recipe had two distinct steps: Define the mixin and then extend the class prototype. Angus Croll pointed out that it's more elegant to define a mixin as a function rather than an object. He calls this a [functional mixin][fm]. Here's our `Coloured` recast in functional form:
+The object mixin we have above works properly, but our little recipe had two distinct steps: Define the mixin and then extend the class prototype. Angus Croll pointed out that it's more elegant to define a mixin as a function rather than an object. He calls this a [functional mixin][fm]. Here's `Coloured` again, recast in functional form:
 
 {% highlight javascript %}
 const Coloured = (target) =>
@@ -98,14 +98,14 @@ Coloured(Todo.prototype);
 We can make ourselves a convenience function (that also names the pattern):
 
 {% highlight javascript %}
-const Mixin = (behaviour) =>
+const FunctionalMixin = (behaviour) =>
   target => Object.assign(target, behaviour);
 {% endhighlight %}
 
 This allows us to define functional mixins neatly:
 
 {% highlight javascript %}
-const Coloured = Mixin({
+const Coloured = FunctionalMixin({
   setColourRGB ({r, g, b}) {
     this.colourCode = {r, g, b};
     return this;
@@ -144,7 +144,7 @@ As we can see, the `setColourRGB` and `getColourRGB` methods are enumerated, alt
 One benefit of functional mixins is that we can solve this problem and transparently make mixins behave like `class`:
 
 {% highlight javascript %}
-const Mixin = (behaviour) =>
+const FunctionalMixin = (behaviour) =>
   function (target) {
     for (let property of Object.getOwnPropertyNames(behaviour))
       Object.defineProperty(target, property, { value: behaviour[property] })
@@ -185,10 +185,10 @@ Todo.DEFAULT_NAME = 'Untitled';
 
 We can't really do the same thing with simple mixins, because all of the properties in a simple mixin end up being mixed into the prototype of instances we create by default. For example, let's say we want to define `Coloured.RED`, `Coloured.GREEN`, and `Coloured.BLUE`. But we don't want any specific coloured instance to define `RED`, `GREEN`, or `BLUE`.
 
-Again, we can solve this problem by building a functional mixin. Our `Mixin` factory function will accept an optional dictionary of read-only mixin properties:
+Again, we can solve this problem by building a functional mixin. Our `FunctionalMixin` factory function will accept an optional dictionary of read-only mixin properties:
 
 {% highlight javascript %}
-function Mixin (instanceBehaviour, mixinBehaviour = {}) {
+function FunctionalMixin (instanceBehaviour, mixinBehaviour = {}) {
   function mixin (target) {
     for (let property of Object.getOwnPropertyNames(instanceBehaviour))
       Object.defineProperty(target, property, { value: instanceBehaviour[property] })
@@ -206,7 +206,7 @@ function Mixin (instanceBehaviour, mixinBehaviour = {}) {
 And now we can write:
 
 {% highlight javascript %}
-const Coloured = Mixin({
+const Coloured = FunctionalMixin({
   setColourRGB ({r, g, b}) {
     this.colourCode = {r, g, b};
     return this;
@@ -260,7 +260,7 @@ urgent instanceof Coloured
 Of course, that is not semantically correct. But using this technique, we can write:
 
 {% highlight javascript %}
-function Mixin (instanceBehaviour, mixinBehaviour = {}) {
+function FunctionalMixin (instanceBehaviour, mixinBehaviour = {}) {
   const typeTag = Symbol("isA");
 
   function mixin (target) {
@@ -292,7 +292,7 @@ The charm of the object mixin pattern is its simplicity: It really does not need
 
 However, behaviour defined with the mixin pattern is *slightly* different than behaviour defined with the `class` keyword. Two examples of these differences are enumerability and mixin properties (such as constants and mixin methods like `[Symbol.instanceof]`).
 
-Functional mixins provide an opportunity to implement such functionality, at the cost of some complexity in the `Mixin` function that creates functional mixins.
+Functional mixins provide an opportunity to implement such functionality, at the cost of some complexity in the `FunctionalMixin` function that creates functional mixins.
 
 As a general rule, it's best to have things behave as similarly as possible in the domain code, and this sometimes does involve some extra complexity in the infrastructure code. But that is more of a guideline than a hard-and-fast rule, and for this reason there is a place for both the object mixin pattern *and* functional mixins in JavaScript.
 
