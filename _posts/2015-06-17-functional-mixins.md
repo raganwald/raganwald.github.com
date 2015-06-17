@@ -1,4 +1,5 @@
 ---
+title: "Functional Mixins in ECMAScript 2015"
 layout: default
 tags: allonge
 ---
