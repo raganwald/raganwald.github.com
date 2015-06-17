@@ -286,7 +286,7 @@ urgent instanceof Coloured
   //=> false
 {% endhighlight %}
 
-Do you need to implement `instanceof`? Quite possibly not, especially if you are trying to "roll your own polymorphism." But it can be handy for writing test cases, and a few daring framework developers might be working on multiple dispatch and pattern-matching for functions.
+Do you need to implement `instanceof`? Quite possibly not. "Rolling your own polymorphism" is usually a last resort. But it can be handy for writing test cases, and a few daring framework developers might be working on multiple dispatch and pattern-matching for functions.
 
 ### closing thoughts
 
