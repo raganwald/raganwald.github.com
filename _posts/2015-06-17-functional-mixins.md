@@ -297,7 +297,7 @@ Functional mixins provide an opportunity to implement such functionality, at the
 
 As a general rule, it's best to have things behave as similarly as possible in the domain code, and this sometimes does involve some extra complexity in the infrastructure code. But that is more of a guideline than a hard-and-fast rule, and for this reason there is a place for both the object mixin pattern *and* functional mixins in JavaScript.
 
-(discuss on [hacker news](https://news.ycombinator.com/item?id=9734774))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=9734774) and [/r/javascript](http://www.reddit.com/r/javascript/comments/3a7hxz/functional_mixins_in_ecmascript_2015/))
 
 ---
 
@@ -305,7 +305,7 @@ As a general rule, it's best to have things behave as similarly as possible in t
 
 The purpose of this post is to illustrate a certain approach to thinking about composing and decomposing functionality, and especially to highlight the trade-off between providing a complete feature that addresses all use cases, and providing a simple pattern that is easy to read and understand. The example code is not intended to be blindly copied and pasted: Plenty of libraries already exist that provide mixin functionality, lightweight traits, or over full traits.
 
-If you do wish to build some of this functionality for yourself, you might want to consider handling private methods, e.g. using `Object.getOwnSymbolNames`.
+If you do wish to build some of this functionality for yourself, you might want to consider handling private methods, e.g. using `Object.getOwnSymbolNames`. The object mixin pattern uses `Object.assign`, and that copies symbols as well as strings (although that was not one of our examples). `Object.getOwnPropertyNames` does not, so a functional mixin that needed to address this use case would need to go further.
 
 {% highlight javascript %}
 function FunctionalMixin (instanceBehaviour, mixinBehaviour = {}) {
