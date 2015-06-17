@@ -255,7 +255,7 @@ We can test this quickly:[^but]
 Coloured[Symbol.instanceOf] = (instance) => true
 urgent instanceof Coloured
   //=> true
-() instanceof Coloured
+{} instanceof Coloured
   //=> true
 {% endhighlight %}
 
@@ -282,7 +282,7 @@ function Mixin (instanceBehaviour, mixinBehaviour = {}) {
 
 urgent instanceof Coloured
   //=> true
-() instanceof Coloured
+{} instanceof Coloured
   //=> false
 {% endhighlight %}
 
