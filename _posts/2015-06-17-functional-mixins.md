@@ -95,7 +95,7 @@ const Coloured = (target) =>
 Coloured(Todo.prototype);
 {% endhighlight %}
 
-We can make ourselves a convenience function (that also names the pattern):
+We can make ourselves a *factory function* that also names the pattern:
 
 {% highlight javascript %}
 const FunctionalMixin = (behaviour) =>
