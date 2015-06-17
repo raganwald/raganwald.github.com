@@ -305,7 +305,7 @@ As a general rule, it's best to have things behave as similarly as possible in t
 
 The purpose of this post is to illustrate a certain approach to thinking about composing and decomposing functionality, and especially to highlight the trade-off between providing a complete feature that addresses all use cases, and providing a simple pattern that is easy to read and understand. The example code is not intended to be blindly copied and pasted: Plenty of libraries already exist that provide mixin functionality, lightweight traits, or over full traits.
 
-If you do wish to build some of this functionality for yourself, you might want to consider handling private methods, e.g. using `Object.getOwnSymbolNames`. The object mixin pattern uses `Object.assign`, and that copies symbols as well as strings (although that was not one of our examples). `Object.getOwnPropertyNames` does not, so a functional mixin that needed to address this use case would need to go further.
+If you do wish to build some of this functionality for yourself, you might want to consider handling private methods, e.g. using `Object.Object.getOwnPropertySymbols`. The object mixin pattern uses `Object.assign`, and that copies symbols as well as strings (although that was not one of our examples). `Object.getOwnPropertyNames` does not, so a functional mixin that needed to address this use case would need to go further.
 
 {% highlight javascript %}
 function FunctionalMixin (instanceBehaviour, mixinBehaviour = {}) {
@@ -314,7 +314,7 @@ function FunctionalMixin (instanceBehaviour, mixinBehaviour = {}) {
   function mixin (target) {
     for (let property of Object.getOwnPropertyNames(instanceBehaviour))
       Object.defineProperty(target, property, { value: instanceBehaviour[property] });
-    for (let privateProperty of Object.getOwnSymbolNames(behaviour))
+    for (let privateProperty of Object.Object.getOwnPropertySymbols(behaviour))
       Object.defineProperty(target, privateProperty, { value: behaviour[privateProperty] });
     return target;
   }
@@ -323,7 +323,7 @@ function FunctionalMixin (instanceBehaviour, mixinBehaviour = {}) {
       value: mixinBehaviour[property],
       enumerable: mixinBehaviour.propertyIsEnumerable(property)
     });
-  for (let privateProperty of Object.getOwnSymbolNames(mixinBehaviour))
+  for (let privateProperty of Object.Object.getOwnPropertySymbols(mixinBehaviour))
     Object.defineProperty(mixin, privateProperty, {
       value: mixinBehaviour[privateProperty],
       enumerable: mixinBehaviour.propertyIsEnumerable(privateProperty)
