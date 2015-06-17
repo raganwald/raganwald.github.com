@@ -287,7 +287,7 @@ urgent instanceof Coloured
 
 Do you need to implement `instanceof`? Quite possibly not. "Rolling your own polymorphism" is usually a last resort. But it can be handy for writing test cases, and a few daring framework developers might be working on multiple dispatch and pattern-matching for functions.
 
-### closing thoughts
+### summary
 
 The charm of the object mixin pattern is its simplicity: It really does not need an abstraction wrapped around an object literal and `Object.assign`.
 
@@ -298,6 +298,44 @@ Functional mixins provide an opportunity to implement such functionality, at the
 As a general rule, it's best to have things behave as similarly as possible in the domain code, and this sometimes does involve some extra complexity in the infrastructure code. But that is more of a guideline than a hard-and-fast rule, and for this reason there is a place for both the object mixin pattern *and* functional mixins in JavaScript.
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=9734774))
+
+---
+
+### author's afterword
+
+The purpose of this post is to illustrate a certain approach to thinking about composing and decomposing functionality, and especially to highlight the trade-off between providing a complete feature that addresses all use cases, and providing a simple pattern that is easy to read and understand. The example code is not intended to be blindly copied and pasted: Plenty of libraries already exist that provide mixin functionality, lightweight traits, or over full traits.
+
+If you do wish to build some of this functionality for yourself, you might want to consider handling private methods, e.g. using `Object.getOwnSymbolNames`.
+
+{% highlight javascript %}
+function FunctionalMixin (instanceBehaviour, mixinBehaviour = {}) {
+  const typeTag = Symbol("isA");
+
+  function mixin (target) {
+    for (let property of Object.getOwnPropertyNames(instanceBehaviour))
+      Object.defineProperty(target, property, { value: instanceBehaviour[property] });
+    for (let privateProperty of Object.getOwnSymbolNames(behaviour))
+      Object.defineProperty(target, privateProperty, { value: behaviour[privateProperty] });
+    return target;
+  }
+  for (let property of Object.getOwnPropertyNames(mixinBehaviour))
+    Object.defineProperty(mixin, property, {
+      value: mixinBehaviour[property],
+      enumerable: mixinBehaviour.propertyIsEnumerable(property)
+    });
+  for (let privateProperty of Object.getOwnSymbolNames(mixinBehaviour))
+    Object.defineProperty(mixin, privateProperty, {
+      value: mixinBehaviour[privateProperty],
+      enumerable: mixinBehaviour.propertyIsEnumerable(privateProperty)
+    });
+  mixin[Symbol.instanceOf] = (instance) => !!instance[typeTag];
+  return mixin;
+}
+{% endhighlight %}
+
+And then there is the question of getters and setters. And writing `init` or `initialize` methods for mixins. And policies composing behaviour when there are conflicts. And. And. And...
+
+All of which loops back to the closing remarks: For your code base, in your circumstances, *What is the right balance between simplicity of implementation and transparent handling of all cases that parallel those of writing a class?*
 
 ---
 
