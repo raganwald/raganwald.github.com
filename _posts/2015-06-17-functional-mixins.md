@@ -156,6 +156,8 @@ const Mixin = (behaviour) =>
 
 Writing this out as a pattern would be tedious and error-prone. Encapsulating the behaviour into a function is a win.
 
+[![Just Below the Surface](/assets/images/jbts.jpg)](https://www.flickr.com/photos/yellowskyphotography/7449919584)
+
 ### mixin responsibilities
 
 Like classes, mixins are metaobjects: They define behaviour for instances. In addition to defining behaviour in the form of methods, classes are also responsible for initializing instances. But sometimes, classes and metaobjects handle additional responsibilities.
@@ -294,7 +296,7 @@ However, behaviour defined with the mixin pattern is *slightly* different than b
 
 Functional mixins provide an opportunity to implement such functionality, at the cost of some complexity in the `Mixin` function that creates functional mixins.
 
-As a general rule, it's best to have things behave as similarly as possible in the domain code, and this sometimes does involve some extra complexity in the infrastructure code. But that is more of a guideline than a hard-and-fast rule, and for this reason there is a place for both the mixin pattern and functional mixins in JavaScript.
+As a general rule, it's best to have things behave as similarly as possible in the domain code, and this sometimes does involve some extra complexity in the infrastructure code. But that is more of a guideline than a hard-and-fast rule, and for this reason there is a place for both the object mixin pattern *and* functional mixins in JavaScript.
 
 ---
 
