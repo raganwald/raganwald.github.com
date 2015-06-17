@@ -1,7 +1,6 @@
 ---
 layout: default
 tags: allonge
-noindex: true
 ---
 
 *Prerequisite: This post presumes that readers are familiar with JavaScript's objects, know how a prototype defines behaviour for an object, know what a constructor function is, and how a constructor's `.prototype` property is related to the objects it constructs. Passing familiarity with ECMAScript 2015 syntax will be  helpful.*
@@ -12,7 +11,9 @@ First, a quick recap: In JavaScript, a "class" is implemented as a constructor f
 
 [^delegate]: A much better way to put it is that objects with a prototype *delegate* behaviour to their prototype (and that may in turn delegate behaviour to its prototype if it has one, and so on).
 
-One way to share behaviour scattered across multiple classes, or to untangle behaviour by factoring it out of an overweight prototype, is to extend a prototype with a mixin.
+### the object mixin pattern
+
+One way to share behaviour scattered across multiple classes, or to untangle behaviour by factoring it out of an overweight prototype, is to extend a prototype with a *mixin*.
 
 Here's a class of todo items:
 
@@ -75,9 +76,11 @@ const Coloured = {
 
 So far, very easy and very simple. This is a *pattern*, a recipe for solving a certain problem using a particular organization of code.
 
+[![Macchiato](/assets/images/macchiato.jpg)](https://www.flickr.com/photos/chrisjrn/3771031871)
+
 ### functional mixins
 
-The mixin we have above works properly, but our little recipe had two distinct steps: Define the mixin and then extend the class prototype. Angus Croll pointed out that it's far more elegant to define a mixin as a function rather than an object. He calls this a [functional mixin][fm]. Here's our `Coloured` recast in functional form:
+The object mixin we have above works properly, but our little recipe had two distinct steps: Define the mixin and then extend the class prototype. Angus Croll pointed out that it's more elegant to define a mixin as a function rather than an object. He calls this a [functional mixin][fm]. Here's our `Coloured` recast in functional form:
 
 {% highlight javascript %}
 const Coloured = (target) =>
@@ -119,9 +122,9 @@ const Coloured = Mixin({
 
 If we look at the way `class` defines prototypes, we find that the methods defined are not enumerable by default. This works around a common error where programmers iterate over the keys of an instance and fail to test for `.hasOwnProperty`.
 
-Our simple mixin pattern does not work this way, the methods defined in a mixin *are* enumerable by default, and if we carefully defined them to be non-enumerable, `Object.assign` wouldn't mix them into the target prototype, because `Object.assign` only assigns enumerable properties.
+Our object mixin pattern does not work this way, the methods defined in a mixin *are* enumerable by default, and if we carefully defined them to be non-enumerable, `Object.assign` wouldn't mix them into the target prototype, because `Object.assign` only assigns enumerable properties.
 
-Thus:
+And thus:
 
 {% highlight javascript %}
 Coloured(Todo.prototype)
@@ -138,7 +141,7 @@ for (let property in urgent) console.log(property);
     getColourRGB
 {% endhighlight %}
 
-As we can see, the `setColourRGB` and `getColourRGB` methods are enumerated, although the `do` and `undo` methods are not. This can be a problem with naïve code, can we can't always rewrite all the *other* code to carefully use `.hasOwnProperty`.
+As we can see, the `setColourRGB` and `getColourRGB` methods are enumerated, although the `do` and `undo` methods are not. This can be a problem with naïve code: we can't always rewrite all the *other* code to carefully use `.hasOwnProperty`.
 
 One benefit of functional mixins is that we can solve this problem and transparently make mixins behave like `class`:
 
@@ -210,23 +213,7 @@ const Coloured = Mixin({
   },
   getColourRGB () {
     return this.colourCode;
-  },
-  rando () { return Math.random(); }
-}, {
-  RED:   { r: 255, g: 0,   b: 0   },
-  GREEN: { r: 0,   g: 255, b: 0   },
-  BLUE:  { r: 0,   g: 0,   b: 255 },
-});
-
-const Coloured = Mixin({
-  setColourRGB ({r, g, b}) {
-    this.colourCode = {r, g, b};
-    return this;
-  },
-  getColourRGB () {
-    return this.colourCode;
-  },
-  rando () { return Math.random(); }
+  }
 }, {
   RED:   { r: 255, g: 0,   b: 0   },
   GREEN: { r: 0,   g: 255, b: 0   },
@@ -296,6 +283,18 @@ urgent instanceof Coloured
 () instanceof Coloured
   //=> false
 {% endhighlight %}
+
+Do you need to implement `instanceof`? Quite possibly not, especially if you are trying to "roll your own polymorphism." But it can be handy for writing test cases, and a few daring framework developers might be working on multiple dispatch and pattern-matching for functions.
+
+### closing thoughts
+
+The charm of the object mixin pattern is its simplicity: It really does not need an abstraction wrapped around an object literal and `Object.assign`.
+
+However, behaviour defined with the mixin pattern is *slightly* different than behaviour defined with the `class` keyword. Two examples of these differences are enumerability and mixin properties (such as constants and mixin methods like `[Symbol.instanceof]`).
+
+Functional mixins provide an opportunity to implement such functionality, at the cost of some complexity in the `Mixin` function that creates functional mixins.
+
+As a general rule, it's best to have things behave as similarly as possible in the domain code, and this sometimes does involve some extra complexity in the infrastructure code. But that is more of a guideline than a hard-and-fast rule, and for this reason there is a place for both the mixin pattern and functional mixins in JavaScript.
 
 ---
 
