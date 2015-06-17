@@ -6,7 +6,7 @@ noindex: true
 
 *Prerequisite: This post presumes that readers are familiar with JavaScript's objects, know how a prototype defines behaviour for an object, know what a constructor function is, and how a constructor's `.prototype` property is related to the objects it constructs. Passing familiarity with ECMAScript 2015 syntax will be  helpful.*
 
-In [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html), we saw that you can emulate "mixins" using `Object.assign` on the prototypes that underly JavaScript "classes." We'll revisit this subject now and spend more time looking at mixing functionality into classes.
+In [Prototypes are Objects](http://raganwald.com/2015/06/10/mixins.html), we saw that you can emulate "mixins" using `Object.assign` on the prototypes that underly JavaScript "classes." We'll revisit this subject now and spend more time looking at mixing functionality into classes.
 
 First, a quick recap: In JavaScript, a "class" is implemented as a constructor function and its prototype, whether you write it directly, or use the `class` keyword. Instances of the class are created by calling the constructor with `new`. They "inherit" shared behaviour from the constructor's `prototype` property.[^delegate]
 
@@ -80,23 +80,6 @@ So far, very easy and very simple. This is a *pattern*, a recipe for solving a c
 The mixin we have above works properly, but our little recipe had two distinct steps: Define the mixin and then extend the class prototype. Angus Croll pointed out that it's far more elegant to define a mixin as a function rather than an object. He calls this a [functional mixin][fm]. Here's our `Coloured` recast in functional form:
 
 {% highlight javascript %}
-const Coloured = (clazz) =>
-  Object.assign(Todo.prototype, {
-    setColourRGB ({r, g, b}) {
-      this.colourCode = {r, g, b};
-      return this;
-    },
-    getColourRGB () {
-      return this.colourCode;
-    }
-  });
-
-Coloured(Todo);
-{% endhighlight %}
-
-The challenge with this approach is that it only works with constructor functions (and "classes," since they desugar to constructor functions). If we mix functionality directly into a target, we could mix functionality directly into an object if we so chose:
-
-{% highlight javascript %}
 const Coloured = (target) =>
   Object.assign(target, {
     setColourRGB ({r, g, b}) {
@@ -111,14 +94,7 @@ const Coloured = (target) =>
 Coloured(Todo.prototype);
 {% endhighlight %}
 
-Either way, we can make ourselves a convenience function (that also names the pattern):
-
-{% highlight javascript %}
-const ClassMixin = (behaviour) =>
-  clazz => Object.assign(clazz.prototype, behaviour);
-{% endhighlight %}
-
-or:
+We can make ourselves a convenience function (that also names the pattern):
 
 {% highlight javascript %}
 const Mixin = (behaviour) =>
@@ -204,20 +180,125 @@ Todo.DEFAULT_NAME = 'Untitled';
 // Object.defineProperty(Todo, 'DEFAULT_NAME', {value: 'Untitled'});
 {% endhighlight %}
 
-We can't really do the same thing with simple mixins, because all of the properties in a simple mixin end up being mixed into the prototype of instances we create by default.
+We can't really do the same thing with simple mixins, because all of the properties in a simple mixin end up being mixed into the prototype of instances we create by default. For example, let's say we want to define `Coloured.RED`, `Coloured.GREEN`, and `Coloured.BLUE`. But we don't want any specific coloured instance to define `RED`, `GREEN`, or `BLUE`.
 
-For example, let's say we want to define `Coloured.RED`, `Coloured.GREEN`, and `Coloured.BLUE`. But we don't want any specific coloured instance to define `RED`, `GREEN`, or `BLUE`. One way to do that is to take advantage of the separation between the behaviour being mixed in and the function that does the mixing in when we create a functional mixin:
+Again, we can solve this problem by building a functional mixin. Our `Mixin` factory function will accept an optional dictionary of read-only mixin properties:
 
 {% highlight javascript %}
-const Mixin = (instanceBehaviour) =>
-  function (target) {
+function Mixin (instanceBehaviour, mixinBehaviour = {}) {
+  function mixin (target) {
     for (let property of Object.getOwnPropertyNames(instanceBehaviour))
       Object.defineProperty(target, property, { value: instanceBehaviour[property] })
     return target;
   }
+  for (let property of Object.getOwnPropertyNames(mixinBehaviour))
+    Object.defineProperty(mixin, property, {
+      value: mixinBehaviour[property],
+      enumerable: mixinBehaviour.propertyIsEnumerable(property)
+    });
+  return mixin;
+}
+{% endhighlight %}
+
+And now we can write:
+
+{% highlight javascript %}
+const Coloured = Mixin({
+  setColourRGB ({r, g, b}) {
+    this.colourCode = {r, g, b};
+    return this;
+  },
+  getColourRGB () {
+    return this.colourCode;
+  },
+  rando () { return Math.random(); }
+}, {
+  RED:   { r: 255, g: 0,   b: 0   },
+  GREEN: { r: 0,   g: 255, b: 0   },
+  BLUE:  { r: 0,   g: 0,   b: 255 },
+});
+
+const Coloured = Mixin({
+  setColourRGB ({r, g, b}) {
+    this.colourCode = {r, g, b};
+    return this;
+  },
+  getColourRGB () {
+    return this.colourCode;
+  },
+  rando () { return Math.random(); }
+}, {
+  RED:   { r: 255, g: 0,   b: 0   },
+  GREEN: { r: 0,   g: 255, b: 0   },
+  BLUE:  { r: 0,   g: 0,   b: 255 },
+});
+
+Coloured(Todo.prototype)
+
+const urgent = new Todo("finish blog post");
+urgent.setColourRGB(Coloured.RED);
+
+urgent.getColourRGB()
+  //=> {"r":255,"g":0,"b":0}
+{% endhighlight %}
+
+### mixin methods
+
+Such properties need not be values. Sometimes, classes have methods. And likewise, sometimes it makes sense for a mixin to have its own methods. One example concerns `instanceof`.
+
+In earlier versions of ECMAScript, `instanceof` is an operator that checks to see whether the prototype of an instance matches the prototype of a constructor function. It works just fine with "classes," but it does not work "out of the box" with mixins:
+
+{% highlight javascript %}
+urgent instanceof Todo
+  //=> true
+
+urgent instanceof Coloured
+  //=> false
+{% endhighlight %}
+
+To handle this and some other issues where programmers are creating their own notion of dynamic types, or managing prototypes directly with `Object.create` and `Object.setPrototypeOf`, ECMAScript 2015 provides a way to override the built-in `instanceof` behaviour: An object can define a method associated with a well-known symbol, `Symbol.instanceOf`.
+
+We can test this quickly:[^but]
+
+[^but]: This may **not** work with various transpilers and other incomplete ECMAScript 2015 implementations. Check the documentation. For example, you must enable the "high compliancy" mode in [BabelJS](http://babeljs.io). This is off by default to provide the highest possible performance for code bases that do not need to use features like this.
+
+{% highlight javascript %}
+Coloured[Symbol.instanceOf] = (instance) => true
+urgent instanceof Coloured
+  //=> true
+() instanceof Coloured
+  //=> true
+{% endhighlight %}
+
+Of course, that is not semantically correct. But using this technique, we can write:
+
+{% highlight javascript %}
+function Mixin (instanceBehaviour, mixinBehaviour = {}) {
+  const typeTag = Symbol("isA");
+
+  function mixin (target) {
+    for (let property of Object.getOwnPropertyNames(instanceBehaviour))
+      Object.defineProperty(target, property, { value: instanceBehaviour[property] });
+    target[typeTag] = true;
+    return target;
+  }
+  for (let property of Object.getOwnPropertyNames(mixinBehaviour))
+    Object.defineProperty(mixin, property, {
+      value: mixinBehaviour[property],
+      enumerable: mixinBehaviour.propertyIsEnumerable(property)
+    });
+    mixin[Symbol.instanceOf] = (instance) => !!instance[typeTag];
+  return mixin;
+}
+
+urgent instanceof Coloured
+  //=> true
+() instanceof Coloured
+  //=> false
 {% endhighlight %}
 
 ---
 
 [^iife]: "Immediately Invoked Function Expressions"
 [ja6]: https://leanpub.com/javascriptallongesix
+[fm]: https://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at-javascript-mixins/ "A fresh look at JavaScript Mixins"
