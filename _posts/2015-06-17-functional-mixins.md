@@ -153,7 +153,21 @@ const FunctionalMixin = (behaviour) =>
   }
 {% endhighlight %}
 
-Writing this out as a pattern would be tedious and error-prone. Encapsulating the behaviour into a function is a win.
+The above code supports methods with ordinary string names, but sometimes methods are declared with symbols (typically to create private methods). Although we won't discuss that pattern yet, we can support those too:
+
+{% highlight javascript %}
+const FunctionalMixin = (behaviour) =>
+  function (target) {
+    const instanceKeys = Object.getOwnPropertyNames(behaviour)
+      .concat(Object.getOwnPropertySymbols(behaviour));
+
+    for (let property of instanceKeys)
+      Object.defineProperty(target, property, { value: behaviour[property] })
+    return target;
+  }
+{% endhighlight %}
+
+Writing this out as a pattern would be tedious and error-prone. Encapsulating the behaviour into a function is a small win.
 
 [![Just Below the Surface](/assets/images/jbts.jpg)](https://www.flickr.com/photos/yellowskyphotography/7449919584)
 
@@ -180,28 +194,40 @@ class Todo {
 }
 
 Todo.DEFAULT_NAME = 'Untitled';
+
 // If we are sticklers for read-only constants, we could write:
 // Object.defineProperty(Todo, 'DEFAULT_NAME', {value: 'Untitled'});
 {% endhighlight %}
 
 We can't really do the same thing with simple mixins, because all of the properties in a simple mixin end up being mixed into the prototype of instances we create by default. For example, let's say we want to define `Coloured.RED`, `Coloured.GREEN`, and `Coloured.BLUE`. But we don't want any specific coloured instance to define `RED`, `GREEN`, or `BLUE`.
 
-Again, we can solve this problem by building a functional mixin. Our `FunctionalMixin` factory function will accept an optional dictionary of read-only mixin properties:
+Again, we can solve this problem by building a functional mixin. Our `FunctionalMixin` factory function will accept an optional dictionary of read-only mixin properties, provided they are associated with a special key:
 
 {% highlight javascript %}
-function FunctionalMixin (instanceBehaviour, mixinBehaviour = {}) {
+const shared = Symbol("shared");
+
+function FunctionalMixin (behaviour) {
+  const instanceKeys = Object.getOwnPropertyNames(behaviour)
+    .concat(Object.getOwnPropertySymbols(behaviour))
+    .filter(key => key !== shared);
+  const sharedBehaviour = behaviour[shared] || {};
+  const sharedKeys = Object.getOwnPropertyNames(sharedBehaviour)
+    .concat(Object.getOwnPropertySymbols(sharedBehaviour));
+
   function mixin (target) {
-    for (let property of Object.getOwnPropertyNames(instanceBehaviour))
-      Object.defineProperty(target, property, { value: instanceBehaviour[property] })
+    for (let property of instanceKeys)
+      Object.defineProperty(target, property, { value: behaviour[property] });
     return target;
   }
-  for (let property of Object.getOwnPropertyNames(mixinBehaviour))
+  for (let property of sharedKeys)
     Object.defineProperty(mixin, property, {
-      value: mixinBehaviour[property],
-      enumerable: mixinBehaviour.propertyIsEnumerable(property)
+      value: sharedBehaviour[property],
+      enumerable: sharedBehaviour.propertyIsEnumerable(property)
     });
   return mixin;
 }
+
+FunctionalMixin.shared = shared;
 {% endhighlight %}
 
 And now we can write:
@@ -214,11 +240,12 @@ const Coloured = FunctionalMixin({
   },
   getColourRGB () {
     return this.colourCode;
+  },
+  [FunctionalMixin.shared]: {
+    RED:   { r: 255, g: 0,   b: 0   },
+    GREEN: { r: 0,   g: 255, b: 0   },
+    BLUE:  { r: 0,   g: 0,   b: 255 },
   }
-}, {
-  RED:   { r: 255, g: 0,   b: 0   },
-  GREEN: { r: 0,   g: 255, b: 0   },
-  BLUE:  { r: 0,   g: 0,   b: 255 },
 });
 
 Coloured(Todo.prototype)
@@ -261,23 +288,33 @@ urgent instanceof Coloured
 Of course, that is not semantically correct. But using this technique, we can write:
 
 {% highlight javascript %}
-function FunctionalMixin (instanceBehaviour, mixinBehaviour = {}) {
+const shared = Symbol("shared");
+
+function FunctionalMixin (behaviour) {
+  const instanceKeys = Object.getOwnPropertyNames(behaviour)
+    .concat(Object.getOwnPropertySymbols(behaviour))
+    .filter(key => key !== shared);
+  const sharedBehaviour = behaviour[shared] || {};
+  const sharedKeys = Object.getOwnPropertyNames(sharedBehaviour)
+    .concat(Object.getOwnPropertySymbols(sharedBehaviour));
   const typeTag = Symbol("isA");
 
   function mixin (target) {
-    for (let property of Object.getOwnPropertyNames(instanceBehaviour))
-      Object.defineProperty(target, property, { value: instanceBehaviour[property] });
+    for (let property of instanceKeys)
+      Object.defineProperty(target, property, { value: behaviour[property] });
     target[typeTag] = true;
     return target;
   }
-  for (let property of Object.getOwnPropertyNames(mixinBehaviour))
+  for (let property of sharedKeys)
     Object.defineProperty(mixin, property, {
-      value: mixinBehaviour[property],
-      enumerable: mixinBehaviour.propertyIsEnumerable(property)
+      value: sharedBehaviour[property],
+      enumerable: sharedBehaviour.propertyIsEnumerable(property)
     });
-    mixin[Symbol.instanceOf] = (instance) => !!instance[typeTag];
+  mixin[Symbol.instanceOf] = (instance) => !!instance[typeTag];
   return mixin;
 }
+
+FunctionalMixin.shared = shared;
 
 urgent instanceof Coloured
   //=> true
@@ -298,44 +335,6 @@ Functional mixins provide an opportunity to implement such functionality, at the
 As a general rule, it's best to have things behave as similarly as possible in the domain code, and this sometimes does involve some extra complexity in the infrastructure code. But that is more of a guideline than a hard-and-fast rule, and for this reason there is a place for both the object mixin pattern *and* functional mixins in JavaScript.
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=9734774) and [/r/javascript](http://www.reddit.com/r/javascript/comments/3a7hxz/functional_mixins_in_ecmascript_2015/))
-
----
-
-### author's afterword
-
-The purpose of this post is to illustrate a certain approach to thinking about composing and decomposing functionality, and especially to highlight the trade-off between providing a complete feature that addresses all use cases, and providing a simple pattern that is easy to read and understand. The example code is not intended to be blindly copied and pasted: Plenty of libraries already exist that provide mixin functionality, lightweight traits, or over full traits.
-
-If you do wish to build some of this functionality for yourself, you might want to consider handling private methods, e.g. using `Object.Object.getOwnPropertySymbols`. The object mixin pattern uses `Object.assign`, and that copies symbols as well as strings (although that was not one of our examples). `Object.getOwnPropertyNames` does not, so a functional mixin that needed to address this use case would need to go further.
-
-{% highlight javascript %}
-function FunctionalMixin (instanceBehaviour, mixinBehaviour = {}) {
-  const typeTag = Symbol("isA");
-
-  function mixin (target) {
-    for (let property of Object.getOwnPropertyNames(instanceBehaviour))
-      Object.defineProperty(target, property, { value: instanceBehaviour[property] });
-    for (let privateProperty of Object.Object.getOwnPropertySymbols(behaviour))
-      Object.defineProperty(target, privateProperty, { value: behaviour[privateProperty] });
-    return target;
-  }
-  for (let property of Object.getOwnPropertyNames(mixinBehaviour))
-    Object.defineProperty(mixin, property, {
-      value: mixinBehaviour[property],
-      enumerable: mixinBehaviour.propertyIsEnumerable(property)
-    });
-  for (let privateProperty of Object.Object.getOwnPropertySymbols(mixinBehaviour))
-    Object.defineProperty(mixin, privateProperty, {
-      value: mixinBehaviour[privateProperty],
-      enumerable: mixinBehaviour.propertyIsEnumerable(privateProperty)
-    });
-  mixin[Symbol.instanceOf] = (instance) => !!instance[typeTag];
-  return mixin;
-}
-{% endhighlight %}
-
-And then there is the question of getters and setters. And writing `init` or `initialize` methods for mixins. And policies composing behaviour when there are conflicts. And. And. And...
-
-All of which loops back to the closing remarks: For your code base, in your circumstances, *What is the right balance between simplicity of implementation and transparent handling of all cases that parallel those of writing a class?*
 
 ---
 
