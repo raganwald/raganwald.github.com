@@ -1,19 +1,21 @@
 ---
 layout: default
-tags: allonge, noindex
+tags: allonge
 ---
 
-In [Functional Mixins](http://raganwald.com/2015/06/17/functional-mixins.html), we saw that you can emulate "mixins" using `Object.assign` on the prototypes that underly JavaScript "classes." We'll revisit this subject now and spend more time looking at mixing functionality into classes.
+In [Functional Mixins], we discussed mixing functionality *into* JavaScript classes. The act of mixing functionality in changes the class. This approach maps well to idioms from other languages, such as Ruby's modules. It also helps us decompose classes into smaller entities with focused responsibilities that can be shared beyween classes as necessary.[^ES7]
 
-First, a quick recap: In JavaScript, a "class" is implemented as a constructor function and its prototype, whether you write it directly, or use the `class` keyword. Instances of the class are created by calling the constructor with `new`. They "inherit" shared behaviour from the constructor's `prototype` property.[^delegate]
+[Functional Mixins]: http://raganwald.com/2015/06/17/functional-mixins.html
 
-[^delegate]: A much better way to put it is that objects with a prototype *delegate* behaviour to their prototype (and that may in turn delegate behaviour to its prototype if it has one, and so on).
+[^ES7]: Another, speculative benefit is that it maps well to features like [class decorators](https://github.com/wycats/javascript-decorators) or the [`with` keyword](https://github.com/WebReflection/es-class/blob/master/FEATURES.md#with), either of which may land in a future version of JavaScript or may be adopted by transpiling tools like Babel.
 
-### the object mixin pattern
+That being said, mutation has its drawbacks as well. People often say "it's hard to reason about code that mutates data," and when it comes to modifying classes they are often right: Experience has shown that classes are often global to an entire program, and changing a class in one place can break the functionality of another part of the program that expects the class to remain unmodified.
 
-One way to share behaviour scattered across multiple classes, or to untangle behaviour by factoring it out of an overweight prototype, is to extend a prototype with a *mixin*.
+Of course, if the modifications are only made as part of building the class in the first place, these concerns really do not apply. But what if we wish to modify a class that was made somewhere else? What if we wish to make modifications in just one place?
 
-Here's a class of todo items:
+### extension
+
+Let's revisit our ridiculously trivial `Todo` class:
 
 {% highlight javascript %}
 class Todo {
@@ -32,7 +34,7 @@ class Todo {
 }
 {% endhighlight %}
 
-And a "mixin" that is responsible for colour-coding:
+Now let us presume that this class is used throughout our application for various purposes. In one section of the code, we want `Todo` items that are also coloured. As we saw [previously][Functional Mixins], we can accomplish that with a simple mixin like this:
 
 {% highlight javascript %}
 const Coloured = {
@@ -44,247 +46,71 @@ const Coloured = {
     return this.colourCode;
   }
 };
-{% endhighlight %}
 
-Mixing colour coding into our Todo prototype is straightforward:
-
-{% highlight javascript %}
 Object.assign(Todo.prototype, Coloured);
-
-new Todo('test')
-  .setColourRGB({r: 1, g: 2, b: 3})
-  //=> {"name":"test","done":false,"colourCode":{"r":1,"g":2,"b":3}}
 {% endhighlight %}
 
-We can "upgrade" it to have a [private property](http://raganwald.com/2015/06/04/classes-are-expressions.html) if we wish:
+While this works just fine for all of the Todos we create in this part of the program, we may accidentally break `Todo` instances used elewhere. What we really want is a `ColoredTodo` in one part of the program, and `Todo` everwhere else.
+
+The `extends` keyword solves that problem in the trivial case:
 
 {% highlight javascript %}
-const colourCode = Symbol("colourCode");
+class ColouredTodo extends Todo {
+  setColourRGB ({r, g, b}) {
+    this.colourCode = {r, g, b};
+    return this;
+  }
+  getColourRGB () {
+    return this.colourCode;
+  }
+}
+{% endhighlight %}
+
+A `ColouredTodo` is just like a `Todo`, but with added colour.
+
+### sharing is caring
+
+One oft-repeated drawback of using extension is that it is difficult to share the "colour" functionality with other classes. Extension forms a strict tree. Another draback is that the functionality can only be tested in concert with `ToDo`, whereas it is trivial to independently test a well-crafted mixin.
+
+Our problem is that with extension, our colour functionality is coupled to the `Todo` class. With a mixin, it isn't. But with a mixin, our `Todo` class ended up coupled to `Coloured`. With extension, it wasn't.
+
+What we want is to decouple `Todo` from `Coloured` with extension, and to decouple `Coloured` from `ColouredTodo` with a mixin:
+
+{% highlight javascript %}
+class ColouredTodo extends Todo {}
 
 const Coloured = {
   setColourRGB ({r, g, b}) {
-    this[colourCode]= {r, g, b};
+    this.colourCode = {r, g, b};
     return this;
   },
   getColourRGB () {
-    return this[colourCode];
+    return this.colourCode;
   }
 };
+
+Object.assign(ColouredTodo.prototype, Coloured);
 {% endhighlight %}
 
-So far, very easy and very simple. This is a *pattern*, a recipe for solving a certain problem using a particular organization of code.
-
-[![Macchiato](/assets/images/macchiato.jpg)](https://www.flickr.com/photos/chrisjrn/3771031871)
-
-### functional mixins
-
-The object mixin we have above works properly, but our little recipe had two distinct steps: Define the mixin and then extend the class prototype. Angus Croll pointed out that it's more elegant to define a mixin as a function rather than an object. He calls this a [functional mixin][fm]. Here's `Coloured` again, recast in functional form:
+We can write a simple function to encapsulate this pattern:
 
 {% highlight javascript %}
-const Coloured = (target) =>
-  Object.assign(target, {
-    setColourRGB ({r, g, b}) {
-      this.colourCode = {r, g, b};
-      return this;
-    },
-    getColourRGB () {
-      return this.colourCode;
-    }
-  });
-
-Coloured(Todo.prototype);
-{% endhighlight %}
-
-We can make ourselves a *factory function* that also names the pattern:
-
-{% highlight javascript %}
-const FunctionalMixin = (behaviour) =>
-  target => Object.assign(target, behaviour);
-{% endhighlight %}
-
-This allows us to define functional mixins neatly:
-
-{% highlight javascript %}
-const Coloured = FunctionalMixin({
-  setColourRGB ({r, g, b}) {
-    this.colourCode = {r, g, b};
-    return this;
-  },
-  getColourRGB () {
-    return this.colourCode;
+function ComposeWithMixin(clazz, ...mixins) {
+  const subclazz = class extends clazz {};
+  for (let mixin of mixins) {
+    Object.assign(subclazz.prototype, mixin);
   }
-});
-{% endhighlight %}
-
-### enumerability
-
-If we look at the way `class` defines prototypes, we find that the methods defined are not enumerable by default. This works around a common error where programmers iterate over the keys of an instance and fail to test for `.hasOwnProperty`.
-
-Our object mixin pattern does not work this way, the methods defined in a mixin *are* enumerable by default, and if we carefully defined them to be non-enumerable, `Object.assign` wouldn't mix them into the target prototype, because `Object.assign` only assigns enumerable properties.
-
-And thus:
-
-{% highlight javascript %}
-Coloured(Todo.prototype)
-
-const urgent = new Todo("finish blog post");
-urgent.setColourRGB({r: 256, g: 0, b: 0});
-
-for (let property in urgent) console.log(property);
-  // =>
-    name
-    done
-    colourCode
-    setColourRGB
-    getColourRGB
-{% endhighlight %}
-
-As we can see, the `setColourRGB` and `getColourRGB` methods are enumerated, although the `do` and `undo` methods are not. This can be a problem with naïve code: we can't always rewrite all the *other* code to carefully use `.hasOwnProperty`.
-
-One benefit of functional mixins is that we can solve this problem and transparently make mixins behave like `class`:
-
-{% highlight javascript %}
-const FunctionalMixin = (behaviour) =>
-  function (target) {
-    for (let property of Object.getOwnPropertyNames(behaviour))
-      Object.defineProperty(target, property, { value: behaviour[property] })
-    return target;
-  }
-{% endhighlight %}
-
-The above code supports methods with ordinary string names, but sometimes methods are declared with symbols (typically to create private methods). Although we won't discuss that pattern yet, we can support those too:
-
-{% highlight javascript %}
-const FunctionalMixin = (behaviour) =>
-  function (target) {
-    const instanceKeys = Object.getOwnPropertyNames(behaviour)
-      .concat(Object.getOwnPropertySymbols(behaviour));
-
-    for (let property of instanceKeys)
-      Object.defineProperty(target, property, { value: behaviour[property] })
-    return target;
-  }
-{% endhighlight %}
-
-Writing this out as a pattern would be tedious and error-prone. Encapsulating the behaviour into a function is a small win.
-
-[![Just Below the Surface](/assets/images/jbts.jpg)](https://www.flickr.com/photos/yellowskyphotography/7449919584)
-
-### mixin responsibilities
-
-Like classes, mixins are metaobjects: They define behaviour for instances. In addition to defining behaviour in the form of methods, classes are also responsible for initializing instances. But sometimes, classes and metaobjects handle additional responsibilities.
-
-For example, sometimes a particular concept is associated with some well-known constants. When using a class, can be handy to namespace such values in the class itself:
-
-{% highlight javascript %}
-class Todo {
-  constructor (name) {
-    this.name = name || Todo.DEFAULT_NAME;
-    this.done = false;
-  }
-  do () {
-    this.done = true;
-    return this;
-  }
-  undo () {
-    this.done = false;
-    return this;
-  }
+  return subclazz;
 }
 
-Todo.DEFAULT_NAME = 'Untitled';
-
-// If we are sticklers for read-only constants, we could write:
-// Object.defineProperty(Todo, 'DEFAULT_NAME', {value: 'Untitled'});
+const ColouredTodo = ComposeWithMixin(Todo, Coloured);
 {% endhighlight %}
 
-We can't really do the same thing with simple mixins, because all of the properties in a simple mixin end up being mixed into the prototype of instances we create by default. For example, let's say we want to define `Coloured.RED`, `Coloured.GREEN`, and `Coloured.BLUE`. But we don't want any specific coloured instance to define `RED`, `GREEN`, or `BLUE`.
+The `ComposeWithMixin` function returns a new class without modifying its arguments. In other words, it's a *pure functional mixin*.
 
-Again, we can solve this problem by building a functional mixin. Our `FunctionalMixin` factory function will accept an optional dictionary of read-only mixin properties, provided they are associated with a special key:
+### enhance
 
-{% highlight javascript %}
-const shared = Symbol("shared");
-
-function FunctionalMixin (behaviour) {
-  const instanceKeys = Object.getOwnPropertyNames(behaviour)
-    .concat(Object.getOwnPropertySymbols(behaviour))
-    .filter(key => key !== shared);
-  const sharedBehaviour = behaviour[shared] || {};
-  const sharedKeys = Object.getOwnPropertyNames(sharedBehaviour)
-    .concat(Object.getOwnPropertySymbols(sharedBehaviour));
-
-  function mixin (target) {
-    for (let property of instanceKeys)
-      Object.defineProperty(target, property, { value: behaviour[property] });
-    return target;
-  }
-  for (let property of sharedKeys)
-    Object.defineProperty(mixin, property, {
-      value: sharedBehaviour[property],
-      enumerable: sharedBehaviour.propertyIsEnumerable(property)
-    });
-  return mixin;
-}
-
-FunctionalMixin.shared = shared;
-{% endhighlight %}
-
-And now we can write:
-
-{% highlight javascript %}
-const Coloured = FunctionalMixin({
-  setColourRGB ({r, g, b}) {
-    this.colourCode = {r, g, b};
-    return this;
-  },
-  getColourRGB () {
-    return this.colourCode;
-  },
-  [FunctionalMixin.shared]: {
-    RED:   { r: 255, g: 0,   b: 0   },
-    GREEN: { r: 0,   g: 255, b: 0   },
-    BLUE:  { r: 0,   g: 0,   b: 255 },
-  }
-});
-
-Coloured(Todo.prototype)
-
-const urgent = new Todo("finish blog post");
-urgent.setColourRGB(Coloured.RED);
-
-urgent.getColourRGB()
-  //=> {"r":255,"g":0,"b":0}
-{% endhighlight %}
-
-### mixin methods
-
-Such properties need not be values. Sometimes, classes have methods. And likewise, sometimes it makes sense for a mixin to have its own methods. One example concerns `instanceof`.
-
-In earlier versions of ECMAScript, `instanceof` is an operator that checks to see whether the prototype of an instance matches the prototype of a constructor function. It works just fine with "classes," but it does not work "out of the box" with mixins:
-
-{% highlight javascript %}
-urgent instanceof Todo
-  //=> true
-
-urgent instanceof Coloured
-  //=> false
-{% endhighlight %}
-
-To handle this and some other issues where programmers are creating their own notion of dynamic types, or managing prototypes directly with `Object.create` and `Object.setPrototypeOf`, ECMAScript 2015 provides a way to override the built-in `instanceof` behaviour: An object can define a method associated with a well-known symbol, `Symbol.instanceOf`.
-
-We can test this quickly:[^but]
-
-[^but]: This may **not** work with various transpilers and other incomplete ECMAScript 2015 implementations. Check the documentation. For example, you must enable the "high compliancy" mode in [BabelJS](http://babeljs.io). This is off by default to provide the highest possible performance for code bases that do not need to use features like this.
-
-{% highlight javascript %}
-Coloured[Symbol.instanceOf] = (instance) => true
-urgent instanceof Coloured
-  //=> true
-{} instanceof Coloured
-  //=> true
-{% endhighlight %}
-
-Of course, that is not semantically correct. But using this technique, we can write:
+We can enhance `ComposeWithMixin` to address some of the issues we noticed with mutating mixins, such as making methods non-enumerable. Recall `FunctionalMixin`:
 
 {% highlight javascript %}
 const shared = Symbol("shared");
@@ -314,26 +140,81 @@ function FunctionalMixin (behaviour) {
 }
 
 FunctionalMixin.shared = shared;
-
-urgent instanceof Coloured
-  //=> true
-{} instanceof Coloured
-  //=> false
 {% endhighlight %}
 
-Do you need to implement `instanceof`? Quite possibly not. "Rolling your own polymorphism" is usually a last resort. But it can be handy for writing test cases, and a few daring framework developers might be working on multiple dispatch and pattern-matching for functions.
+We can borrow its ideas and write:
+
+{% highlight javascript %}
+const shared = Symbol("shared");
+
+function ComposeWithMixin(clazz, ...mixins) {
+  const subclazz = class extends clazz {};
+
+  for (let mixin of mixins) {
+    const instanceKeys = Object.getOwnPropertyNames(mixin)
+      .concat(Object.getOwnPropertySymbols(mixin))
+      .filter(key => key !== shared && key != Symbol.instanceOf);
+    const sharedBehaviour = mixin[shared] || {};
+    const sharedKeys = Object.getOwnPropertyNames(sharedBehaviour)
+      .concat(Object.getOwnPropertySymbols(sharedBehaviour));
+
+    for (let property of instanceKeys)
+      Object.defineProperty(subclazz.prototype, property, { value: mixin[property] });
+    for (let property of sharedKeys)
+      Object.defineProperty(subclazz, property, {
+        value: sharedBehaviour[property],
+        enumerable: sharedBehaviour.propertyIsEnumerable(property)
+      });
+  }
+  return subclazz;
+}
+
+ComposeWithMixin.shared = shared;
+{% endhighlight %}
+
+Written like this, it's up to individual mixins to sort out `instanceof` behaviour:
+
+{% highlight javascript %}
+const isaColoured = Symbol();
+
+const Coloured = {
+  setColourRGB ({r, g, b}) {
+    this.colourCode = {r, g, b};
+    return this;
+  },
+  getColourRGB () {
+    return this.colourCode;
+  },
+  [isaColoured]: true,
+  [Symbol.hasInstance] (instance) { return instance[isaColoured]; }
+};
+{% endhighlight %}
+
+And that's something we can encapsulate, if we wish:
+
+{% highlight javascript %}
+function HasInstances (behaviour) {
+  const typeTag = Symbol();
+  return Object.assign({}, behaviour, {
+    [typeTag]: true,
+    [Symbol.hasInstance] (instance) { return instance[typeTag]; }
+  })
+}
+
+const Coloured = HasInstances({
+  setColourRGB ({r, g, b}) {
+    this.colourCode = {r, g, b};
+    return this;
+  },
+  getColourRGB () {
+    return this.colourCode;
+  }
+});
+{% endhighlight %}
 
 ### summary
 
-The charm of the object mixin pattern is its simplicity: It really does not need an abstraction wrapped around an object literal and `Object.assign`.
-
-However, behaviour defined with the mixin pattern is *slightly* different than behaviour defined with the `class` keyword. Two examples of these differences are enumerability and mixin properties (such as constants and mixin methods like `[Symbol.instanceof]`).
-
-Functional mixins provide an opportunity to implement such functionality, at the cost of some complexity in the `FunctionalMixin` function that creates functional mixins.
-
-As a general rule, it's best to have things behave as similarly as possible in the domain code, and this sometimes does involve some extra complexity in the infrastructure code. But that is more of a guideline than a hard-and-fast rule, and for this reason there is a place for both the object mixin pattern *and* functional mixins in JavaScript.
-
-(discuss on [hacker news](https://news.ycombinator.com/item?id=9734774) and [/r/javascript](http://www.reddit.com/r/javascript/comments/3a7hxz/functional_mixins_in_ecmascript_2015/))
+A "purely functional" approach to composing functionality is appropriate when we wish to compose behaviour with classes, but do not wish to mutate a class that is used elsewhere. One approach is to extend teh class into a subclass, and mix behaviour into the newly created subclass.
 
 ---
 
