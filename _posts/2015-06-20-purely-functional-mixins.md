@@ -3,7 +3,7 @@ layout: default
 tags: allonge
 ---
 
-In [Functional Mixins], we discussed mixing functionality *into* JavaScript classes. The act of mixing functionality in changes the class. This approach maps well to idioms from other languages, such as Ruby's modules. It also helps us decompose classes into smaller entities with focused responsibilities that can be shared beyween classes as necessary.[^ES7]
+In [Functional Mixins], we discussed mixing functionality *into* JavaScript classes. The act of mixing functionality in changes the class. This approach maps well to idioms from other languages, such as Ruby's modules. It also helps us decompose classes into smaller entities with focused responsibilities that can be shared between classes as necessary.[^ES7]
 
 [Functional Mixins]: http://raganwald.com/2015/06/17/functional-mixins.html
 
@@ -50,7 +50,7 @@ const Coloured = {
 Object.assign(Todo.prototype, Coloured);
 {% endhighlight %}
 
-While this works just fine for all of the Todos we create in this part of the program, we may accidentally break `Todo` instances used elewhere. What we really want is a `ColoredTodo` in one part of the program, and `Todo` everwhere else.
+While this works just fine for all of the Todos we create in this part of the program, we may accidentally break `Todo` instances used elsewhere. What we really want is a `ColoredTodo` in one part of the program, and `Todo` everywhere else.
 
 The `extends` keyword solves that problem in the trivial case:
 
@@ -70,7 +70,7 @@ A `ColouredTodo` is just like a `Todo`, but with added colour.
 
 ### sharing is caring
 
-One oft-repeated drawback of using extension is that it is difficult to share the "colour" functionality with other classes. Extension forms a strict tree. Another draback is that the functionality can only be tested in concert with `ToDo`, whereas it is trivial to independently test a well-crafted mixin.
+One oft-repeated drawback of using extension is that it is difficult to share the "colour" functionality with other classes. Extension forms a strict tree. Another drawback is that the functionality can only be tested in concert with `ToDo`, whereas it is trivial to independently test a well-crafted mixin.
 
 Our problem is that with extension, our colour functionality is coupled to the `Todo` class. With a mixin, it isn't. But with a mixin, our `Todo` class ended up coupled to `Coloured`. With extension, it wasn't.
 
@@ -214,7 +214,7 @@ const Coloured = HasInstances({
 
 ### summary
 
-A "purely functional" approach to composing functionality is appropriate when we wish to compose behaviour with classes, but do not wish to mutate a class that is used elsewhere. One approach is to extend teh class into a subclass, and mix behaviour into the newly created subclass.
+A "purely functional" approach to composing functionality is appropriate when we wish to compose behaviour with classes, but do not wish to mutate a class that is used elsewhere. One approach is to extend the class into a subclass, and mix behaviour into the newly created subclass.
 
 ---
 
