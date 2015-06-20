@@ -211,6 +211,10 @@ A "purely functional" approach to composing functionality is appropriate when we
 
 ---
 
+(discuss on [reddit](http://www.reddit.com/r/javascript/comments/3aj1t5/purely_functional_composition/))
+
+---
+
 [^iife]: "Immediately Invoked Function Expressions"
 [ja6]: https://leanpub.com/javascriptallongesix
 [fm]: https://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at-javascript-mixins/ "A fresh look at JavaScript Mixins"
