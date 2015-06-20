@@ -13,6 +13,8 @@ That being said, mutation has its drawbacks as well. People often say "it's hard
 
 Of course, if the modifications are only made as part of building the class in the first place, these concerns really do not apply. But what if we wish to modify a class that was made somewhere else? What if we wish to make modifications in just one place?
 
+[![Campos Macchiato](/assets/images/compos.jpg)](https://www.flickr.com/photos/profernity/3727948215)
+
 ### extension
 
 Let's revisit our ridiculously trivial `Todo` class:
