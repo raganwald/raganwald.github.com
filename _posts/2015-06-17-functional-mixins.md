@@ -271,14 +271,14 @@ urgent instanceof Coloured
   //=> false
 {% endhighlight %}
 
-To handle this and some other issues where programmers are creating their own notion of dynamic types, or managing prototypes directly with `Object.create` and `Object.setPrototypeOf`, ECMAScript 2015 provides a way to override the built-in `instanceof` behaviour: An object can define a method associated with a well-known symbol, `Symbol.instanceOf`.
+To handle this and some other issues where programmers are creating their own notion of dynamic types, or managing prototypes directly with `Object.create` and `Object.setPrototypeOf`, ECMAScript 2015 provides a way to override the built-in `instanceof` behaviour: An object can define a method associated with a well-known symbol, `Symbol.hasInstance`.
 
 We can test this quickly:[^but]
 
 [^but]: This may **not** work with various transpilers and other incomplete ECMAScript 2015 implementations. Check the documentation. For example, you must enable the "high compliancy" mode in [BabelJS](http://babeljs.io). This is off by default to provide the highest possible performance for code bases that do not need to use features like this.
 
 {% highlight javascript %}
-Coloured[Symbol.instanceOf] = (instance) => true
+Coloured[Symbol.hasInstance] = (instance) => true
 urgent instanceof Coloured
   //=> true
 {} instanceof Coloured
@@ -310,7 +310,7 @@ function FunctionalMixin (behaviour) {
       value: sharedBehaviour[property],
       enumerable: sharedBehaviour.propertyIsEnumerable(property)
     });
-  mixin[Symbol.instanceOf] = (instance) => !!instance[typeTag];
+  mixin[Symbol.hasInstance] = (instance) => !!instance[typeTag];
   return mixin;
 }
 
@@ -328,7 +328,7 @@ Do you need to implement `instanceof`? Quite possibly not. "Rolling your own pol
 
 The charm of the object mixin pattern is its simplicity: It really does not need an abstraction wrapped around an object literal and `Object.assign`.
 
-However, behaviour defined with the mixin pattern is *slightly* different than behaviour defined with the `class` keyword. Two examples of these differences are enumerability and mixin properties (such as constants and mixin methods like `[Symbol.instanceof]`).
+However, behaviour defined with the mixin pattern is *slightly* different than behaviour defined with the `class` keyword. Two examples of these differences are enumerability and mixin properties (such as constants and mixin methods like `[Symbol.hasInstance]`).
 
 Functional mixins provide an opportunity to implement such functionality, at the cost of some complexity in the `FunctionalMixin` function that creates functional mixins.
 
