@@ -68,6 +68,8 @@ class ColouredTodo extends Todo {
 
 A `ColouredTodo` is just like a `Todo`, but with added colour.
 
+[![Cappuccinos and coffee cake, baked in capp cups](/assets/images/coffee-cake.jpg)](https://www.flickr.com/photos/insidious_plots/4561130216/)
+
 ### sharing is caring
 
 One oft-repeated drawback of using extension is that it is difficult to share the "colour" functionality with other classes. Extension forms a strict tree. Another drawback is that the functionality can only be tested in concert with `ToDo`, whereas it is trivial to independently test a well-crafted mixin.
