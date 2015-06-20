@@ -95,7 +95,7 @@ Object.assign(ColouredTodo.prototype, Coloured);
 We can write a simple function to encapsulate this pattern:
 
 {% highlight javascript %}
-function ComposeWithMixin(clazz, ...mixins) {
+function ComposeWithClass(clazz, ...mixins) {
   const subclazz = class extends clazz {};
   for (let mixin of mixins) {
     Object.assign(subclazz.prototype, mixin);
@@ -103,51 +103,19 @@ function ComposeWithMixin(clazz, ...mixins) {
   return subclazz;
 }
 
-const ColouredTodo = ComposeWithMixin(Todo, Coloured);
+const ColouredTodo = ComposeWithClass(Todo, Coloured);
 {% endhighlight %}
 
-The `ComposeWithMixin` function returns a new class without modifying its arguments. In other words, it's a *pure functional mixin*.
+The `ComposeWithClass` function returns a new class without modifying its arguments. In other words, it's *composing* behaviour with a class, not mixing behaviour into a class.
 
 ### enhance
 
-We can enhance `ComposeWithMixin` to address some of the issues we noticed with mutating mixins, such as making methods non-enumerable. Recall `FunctionalMixin`:
+We can enhance `ComposeWithClass` to address some of the issues we noticed with mutating mixins, such as making methods non-enumerable:
 
 {% highlight javascript %}
 const shared = Symbol("shared");
 
-function FunctionalMixin (behaviour) {
-  const instanceKeys = Object.getOwnPropertyNames(behaviour)
-    .concat(Object.getOwnPropertySymbols(behaviour))
-    .filter(key => key !== shared);
-  const sharedBehaviour = behaviour[shared] || {};
-  const sharedKeys = Object.getOwnPropertyNames(sharedBehaviour)
-    .concat(Object.getOwnPropertySymbols(sharedBehaviour));
-  const typeTag = Symbol("isA");
-
-  function mixin (target) {
-    for (let property of instanceKeys)
-      Object.defineProperty(target, property, { value: behaviour[property] });
-    target[typeTag] = true;
-    return target;
-  }
-  for (let property of sharedKeys)
-    Object.defineProperty(mixin, property, {
-      value: sharedBehaviour[property],
-      enumerable: sharedBehaviour.propertyIsEnumerable(property)
-    });
-  mixin[Symbol.instanceOf] = (instance) => !!instance[typeTag];
-  return mixin;
-}
-
-FunctionalMixin.shared = shared;
-{% endhighlight %}
-
-We can borrow its ideas and write:
-
-{% highlight javascript %}
-const shared = Symbol("shared");
-
-function ComposeWithMixin(clazz, ...mixins) {
+function ComposeWithClass(clazz, ...mixins) {
   const subclazz = class extends clazz {};
 
   for (let mixin of mixins) {
@@ -169,10 +137,10 @@ function ComposeWithMixin(clazz, ...mixins) {
   return subclazz;
 }
 
-ComposeWithMixin.shared = shared;
+ComposeWithClass.shared = shared;
 {% endhighlight %}
 
-Written like this, it's up to individual mixins to sort out `instanceof` behaviour:
+Written like this, it's up to individual behaviours to sort out `instanceof`:
 
 {% highlight javascript %}
 const isaColoured = Symbol();

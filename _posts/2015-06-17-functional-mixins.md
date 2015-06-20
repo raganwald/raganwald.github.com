@@ -336,7 +336,7 @@ As a general rule, it's best to have things behave as similarly as possible in t
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=9734774) and [/r/javascript](http://www.reddit.com/r/javascript/comments/3a7hxz/functional_mixins_in_ecmascript_2015/))
 
-*follow-up: [Purely Functional Mixins](http://raganwald.com/2015/06/20/purely-functional-mixins.html)
+*follow-up: [Purely Functional Composition](http://raganwald.com/2015/06/20/purely-functional-composition.html)
 
 ---
 
