@@ -168,16 +168,6 @@ function HasInstances (behaviour) {
     [Symbol.hasInstance] (instance) { return instance[typeTag]; }
   })
 }
-
-const Coloured = HasInstances({
-  setColourRGB ({r, g, b}) {
-    this.colourCode = {r, g, b};
-    return this;
-  },
-  getColourRGB () {
-    return this.colourCode;
-  }
-});
 {% endhighlight %}
 
 ### the complete composition
