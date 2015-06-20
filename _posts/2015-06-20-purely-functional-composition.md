@@ -180,6 +180,37 @@ const Coloured = HasInstances({
 });
 {% endhighlight %}
 
+### the complete composition
+
+{% highlight javascript %}
+class Todo {
+  constructor (name) {
+    this.name = name || 'Untitled';
+    this.done = false;
+  }
+  do () {
+    this.done = true;
+    return this;
+  }
+  undo () {
+    this.done = false;
+    return this;
+  }
+}
+
+const Coloured = HasInstances({
+  setColourRGB ({r, g, b}) {
+    this.colourCode = {r, g, b};
+    return this;
+  },
+  getColourRGB () {
+    return this.colourCode;
+  }
+});
+
+const ColouredTodo = ComposeWithClass(Todo, Coloured);
+{% endhighlight %}
+
 ### summary
 
 A "purely functional" approach to composing functionality is appropriate when we wish to compose behaviour with classes, but do not wish to mutate a class that is used elsewhere. One approach is to extend the class into a subclass, and mix behaviour into the newly created subclass.
