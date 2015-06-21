@@ -125,7 +125,7 @@ function ComposeWithClass(clazz, ...mixins) {
   for (let mixin of mixins) {
     const instanceKeys = Object.getOwnPropertyNames(mixin)
       .concat(Object.getOwnPropertySymbols(mixin))
-      .filter(key => key !== shared && key != Symbol.instanceOf);
+      .filter(key => key !== shared && key !== Symbol.hasInstance);
     const sharedBehaviour = mixin[shared] || {};
     const sharedKeys = Object.getOwnPropertyNames(sharedBehaviour)
       .concat(Object.getOwnPropertySymbols(sharedBehaviour));
