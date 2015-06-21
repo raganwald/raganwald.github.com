@@ -1,4 +1,5 @@
 ---
+title: "Purely Functional Composition"
 layout: default
 tags: allonge
 ---
