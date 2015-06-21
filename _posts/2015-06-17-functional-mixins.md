@@ -147,21 +147,7 @@ One benefit of functional mixins is that we can solve this problem and transpare
 {% highlight javascript %}
 const FunctionalMixin = (behaviour) =>
   function (target) {
-    for (let property of Object.getOwnPropertyNames(behaviour))
-      Object.defineProperty(target, property, { value: behaviour[property] })
-    return target;
-  }
-{% endhighlight %}
-
-The above code supports methods with ordinary string names, but sometimes methods are declared with symbols (typically to create private methods). Although we won't discuss that pattern yet, we can support those too:
-
-{% highlight javascript %}
-const FunctionalMixin = (behaviour) =>
-  function (target) {
-    const instanceKeys = Object.getOwnPropertyNames(behaviour)
-      .concat(Object.getOwnPropertySymbols(behaviour));
-
-    for (let property of instanceKeys)
+    for (let property of Reflect.ownKeys(behaviour))
       Object.defineProperty(target, property, { value: behaviour[property] })
     return target;
   }
@@ -207,12 +193,10 @@ Again, we can solve this problem by building a functional mixin. Our `Functional
 const shared = Symbol("shared");
 
 function FunctionalMixin (behaviour) {
-  const instanceKeys = Object.getOwnPropertyNames(behaviour)
-    .concat(Object.getOwnPropertySymbols(behaviour))
+  const instanceKeys = Reflect.ownKeys(behaviour))
     .filter(key => key !== shared);
   const sharedBehaviour = behaviour[shared] || {};
-  const sharedKeys = Object.getOwnPropertyNames(sharedBehaviour)
-    .concat(Object.getOwnPropertySymbols(sharedBehaviour));
+  const sharedKeys = Reflect.ownKeys(sharedBehaviour));
 
   function mixin (target) {
     for (let property of instanceKeys)
@@ -291,12 +275,10 @@ Of course, that is not semantically correct. But using this technique, we can wr
 const shared = Symbol("shared");
 
 function FunctionalMixin (behaviour) {
-  const instanceKeys = Object.getOwnPropertyNames(behaviour)
-    .concat(Object.getOwnPropertySymbols(behaviour))
+  const instanceKeys = Reflect.ownKeys(behaviour))
     .filter(key => key !== shared);
   const sharedBehaviour = behaviour[shared] || {};
-  const sharedKeys = Object.getOwnPropertyNames(sharedBehaviour)
-    .concat(Object.getOwnPropertySymbols(sharedBehaviour));
+  const sharedKeys = Reflect.ownKeys(sharedBehaviour));
   const typeTag = Symbol("isA");
 
   function mixin (target) {

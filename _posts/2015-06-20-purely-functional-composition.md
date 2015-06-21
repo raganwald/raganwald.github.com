@@ -124,12 +124,11 @@ function ComposeWithClass(clazz, ...mixins) {
   const subclazz = class extends clazz {};
 
   for (let mixin of mixins) {
-    const instanceKeys = Object.getOwnPropertyNames(mixin)
-      .concat(Object.getOwnPropertySymbols(mixin))
+    const instanceKeys = Reflect
+      .ownKeys(mixin)
       .filter(key => key !== shared && key !== Symbol.hasInstance);
     const sharedBehaviour = mixin[shared] || {};
-    const sharedKeys = Object.getOwnPropertyNames(sharedBehaviour)
-      .concat(Object.getOwnPropertySymbols(sharedBehaviour));
+    const sharedKeys = Reflect.ownKeys(sharedBehaviour));
 
     for (let property of instanceKeys)
       Object.defineProperty(subclazz.prototype, property, { value: mixin[property] });
