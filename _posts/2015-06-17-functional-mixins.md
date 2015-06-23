@@ -193,10 +193,10 @@ Again, we can solve this problem by building a functional mixin. Our `Functional
 const shared = Symbol("shared");
 
 function FunctionalMixin (behaviour) {
-  const instanceKeys = Reflect.ownKeys(behaviour))
+  const instanceKeys = Reflect.ownKeys(behaviour)
     .filter(key => key !== shared);
   const sharedBehaviour = behaviour[shared] || {};
-  const sharedKeys = Reflect.ownKeys(sharedBehaviour));
+  const sharedKeys = Reflect.ownKeys(sharedBehaviour);
 
   function mixin (target) {
     for (let property of instanceKeys)
@@ -275,10 +275,10 @@ Of course, that is not semantically correct. But using this technique, we can wr
 const shared = Symbol("shared");
 
 function FunctionalMixin (behaviour) {
-  const instanceKeys = Reflect.ownKeys(behaviour))
+  const instanceKeys = Reflect.ownKeys(behaviour)
     .filter(key => key !== shared);
   const sharedBehaviour = behaviour[shared] || {};
-  const sharedKeys = Reflect.ownKeys(sharedBehaviour));
+  const sharedKeys = Reflect.ownKeys(sharedBehaviour);
   const typeTag = Symbol("isA");
 
   function mixin (target) {
