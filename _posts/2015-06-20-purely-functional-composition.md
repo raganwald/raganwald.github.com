@@ -12,7 +12,7 @@ In [Functional Mixins], we discussed mixing functionality *into* JavaScript clas
 
 That being said, mutation has its drawbacks as well. People say, "it's hard to reason about code that mutates data," and when it comes to modifying classes, they are right.
 
-Experience has shown that classes are often global to an entire program, and changing a class in one place can break the functionality of another part of the program that expects the class to remain unmodified.
+Classes are often global to an entire program. Experience has shown that changing a class in one place can break the functionality of an entirely different part of the program that expects the class to remain unmodified.
 
 Of course, if the modifications are only made as part of building the class in the first place, these concerns really do not apply. But what if we wish to modify a class that was made somewhere else? What if we wish to make modifications in just one place?
 
