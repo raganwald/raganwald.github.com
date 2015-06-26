@@ -8,7 +8,7 @@ In [Functional Mixins], we discussed mixing functionality *into* JavaScript clas
 
 [Functional Mixins]: http://raganwald.com/2015/06/17/functional-mixins.html
 
-Let's recall our pattern for a functional mixin. We'll just call it `mixin` here:
+Let's recall our helper for making a functional mixin. We'll just call it `mixin`:
 
 {% highlight javascript %}
 function mixin (behaviour, sharedBehaviour = {}) {
@@ -36,9 +36,48 @@ function mixin (behaviour, sharedBehaviour = {}) {
 
 This creates a function that mixes behaviour into any target, be it a class prototype or a standalone object. There is a convenience capability of making "static" or "shared" properties of the the function, and it even adds some simple `hasInstance` handling so that the `instanceof` operator will work.
 
+Here we are using it on a class' prototype:
+
+{% highlight javascript %}
+const BookCollector = mixin({
+  addToCollection (name) {
+    this.collection().push(name);
+    return this;
+  },
+  collection () {
+    return this._collected_books || (this._collected_books = []);
+  }
+});
+
+class Person {
+  constructor (first, last) {
+    this.rename(first, last);
+  }
+  fullName () {
+    return this.firstName + " " + this.lastName;
+  }
+  rename (first, last) {
+    this.firstName = first;
+    this.lastName = last;
+    return this;
+  }
+};
+
+BookCollector(Person.prototype);
+
+const president = new Person('Barak', 'Obama')
+
+president
+  .addToCollection("JavaScript Allongé")
+  .addToCollection("Kestrels, Quirky Birds, and Hopeless Egocentricity");
+
+president.collection()
+  //=> ["JavaScript Allongé","Kestrels, Quirky Birds, and Hopeless Egocentricity"]
+{% endhighlight %}
+
 ### mixins just for classes
 
-It's very nice that it supports any target, but let's make it class-specific:
+It's very nice that our mixins support any kind of target, but let's make them class-specific:
 
 {% highlight javascript %}
 function mixin (behaviour, sharedBehaviour = {}) {
@@ -64,7 +103,7 @@ function mixin (behaviour, sharedBehaviour = {}) {
 }
 {% endhighlight %}
 
-This version's `_mixin` function mixes instance behaviour into a class's prototype, so we gain convenience at the expense of flexibility. We can try it:
+This version's `_mixin` function mixes instance behaviour into a class's prototype, so we gain convenience at the expense of flexibility:
 
 {% highlight javascript %}
 const BookCollector = mixin({
