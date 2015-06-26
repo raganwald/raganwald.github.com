@@ -294,6 +294,6 @@ Decorators have not been formally approved, however there are various implementa
 
 If you prefer syntactic sugar that gives the appearance of a declarative construct, combining a `mixin` function with ES7's class decorators does the trick.
 
-(discuss on [reddit](http://www.reddit.com/r/javascript/comments/3b7urd/using_es7_decorators_as_mixins/))
+(discuss on [reddit](http://www.reddit.com/r/javascript/comments/3b7urd/using_es7_decorators_as_mixins/) and [hacker news](https://news.ycombinator.com/item?id=9786706))
 
 ---
