@@ -159,7 +159,7 @@ But others want a language to give them "magic," an abstraction that they learn 
 
 ### class decorators
 
-There is a well-regarded proposal to add Python-style [class decorators] to JavaScript in the next major revision after ECMAScript 205 (a/k/a "ES6").
+There is a well-regarded proposal to add Python-style [class decorators] to JavaScript in the next major revision after ECMAScript 2015.
 
 [class decorators]: https://github.com/wycats/javascript-decorators
 
