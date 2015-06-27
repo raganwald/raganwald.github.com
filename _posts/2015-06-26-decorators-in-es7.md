@@ -4,7 +4,7 @@ layout: default
 tags: allonge
 ---
 
-In [Functional Mixins], we discussed mixing functionality *into* JavaScript classes, changing the class. We observed that this has pitfalls when applied to a class that might already be in use elsewhere, but is perfectly cromulant when used as a technique to build a class from scratch. When used strictly to build a class, mixins help us decompose classes into smaller entities with focused responsibilities that can be shared between classes as necessary.
+In [Functional Mixins], we discussed mixing functionality *into* JavaScript classes, changing the class. We observed that this has pitfalls when applied to a class that might already be in use elsewhere, but is perfectly cromulent when used as a technique to build a class from scratch. When used strictly to build a class, mixins help us decompose classes into smaller entities with focused responsibilities that can be shared between classes as necessary.
 
 [Functional Mixins]: http://raganwald.com/2015/06/17/functional-mixins.html
 
