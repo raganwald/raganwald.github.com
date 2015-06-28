@@ -180,15 +180,17 @@ Since our `once` decorator returns a decorated function with private state (the 
 
 ### stateful method decorators
 
-If we don't need to use the same decorator for functions and for methods, we can rewrite our decorator to save `hasRun` as a "private" property of the object using symbols:
+If we don't need to use the same decorator for functions and for methods, we can rewrite our decorator to use a [WeakSet] to track whether a method has been invoked for an instance:
+
+[WeakSet]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet
 
 {% highlight javascript %}
 const once = (fn) => {
-  let hasRun = Symbol("hasRun-#{fn.name}");
+  let invocations = new WeakSet();
 
   return function (...args) {
-    if (this[hasRun]) return;
-    this[hasRun] = true;
+    if (invocations.has(this)) return;
+    invocations.add(this);
     return fn.apply(this, args);
   }
 }
@@ -220,49 +222,12 @@ This would be great, except that to handle methods, we have introduced a lot of 
 const hello = once(() => 'hello!');
 
 hello()
-  //=> undefined is not an object
+  //=> undefined is not an object!
 {% endhighlight %}
 
-It tries to bind a property of `this`, but if you haven't invoked it as a method, `this` is bound to `undefined` in strict mode.
+If you haven't invoked it as a method, `this` is bound to `undefined` in strict mode, and `undefined` cannot be added to a `WeakSet`.
 
-There are various ways to work around this limitation. One is to write two kinds of stateful decorator, one for functions, and another for methods. Or we can build both kinds of logic into the same decorator and check for `undefined`:
-
-{% highlight javascript %}
-const once = (fn) => {
-  let hasRunValue = false,
-      hasRunProperty = Symbol("hasRun-#{fn.name}");
-
-  return function (...args) {
-    if (this == null) {
-      if (hasRunValue) return;
-      hasRunValue = true;
-    }
-    else {
-      if (this[hasRunProperty]) return;
-      this[hasRunProperty] = true;
-    }
-    return fn.apply(this, args);
-  }
-}
-{% endhighlight %}
-
-Another way forward is to back up and use a different pattern for managing "private" data associated with instances. This implementation uses a [WeakSet] to track whether a method has been invoked for an instance:
-
-[WeakSet]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet
-
-{% highlight javascript %}
-const once = (fn) => {
-  let invocations = new WeakSet();
-
-  return function (...args) {
-    if (invocations.has(this)) return;
-    invocations.add(this);
-    return fn.apply(this, args);
-  }
-}
-{% endhighlight %}
-
-Correcting it to handle `undefined` is easy:
+Correcting our decorator to deal with `undefined` is straightforward:
 
 {% highlight javascript %}
 const once = (fn) => {
@@ -280,13 +245,13 @@ const once = (fn) => {
 }
 {% endhighlight %}
 
-Either way, we're still adding accidental complexity to handle the fact that function invocation is <span style="color: blue;">blue</span>, and method invocation is (<span style="color: #999900;">khaki</span>.[^colours]
+However, we're still adding accidental complexity to handle the fact that function invocation is <span style="color: blue;">blue</span>, and method invocation is <span style="color: #999900;">khaki</span>.[^colours]
 
 [^colours]: See the aforelinked [The Symmetry of JavaScript Functions](/2015/03/12/symmetry.html)
 
 ### method decorators in ES7
 
-Before ECMAScript 2015 (a/k/a "ES6"), we decorated a method in a simple an direct way. Here's roughly how we used to write `Person`:
+Before ECMAScript 2015 (a/k/a "ES6"), we decorated a method in a simple an direct way. Here's roughly how we used to write `Person`, using a pseudo-private property pattern:
 
 {% highlight javascript %}
 const once = (fn) => {
