@@ -266,11 +266,13 @@ In the end, we can either write specialized decorators designed specifically for
 
 Function decorators can be used as method decorators, provided that we take care to handle `this` properly, and manage state carefully when required. The patterns for creating and using method decorators in JavaScript are straightforward, in large part because underneath the syntactic sugar for classes, we are still working with functions, objects, and delegation through prototypes.
 
+(discuss on [reddit](http://www.reddit.com/r/javascript/comments/3bj2ti/method_decorators_in_ecmascript_2015_and_beyond/))
+
 ---
 
-[![XFJ 022](/assets/images/xfj022.jpg)](https://www.flickr.com/photos/gi/199083883)
+## Bonus: Method Decorators in ES7
 
-### bonus: method decorators in ES7
+[![XFJ 022](/assets/images/xfj022.jpg)](https://www.flickr.com/photos/gi/199083883)
 
 Before ECMAScript 2015 (a/k/a "ES6"), we decorated a method in a simple an direct way. Here's roughly how we used to write `Person`, using a pseudo-private property pattern:
 
