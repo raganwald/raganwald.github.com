@@ -262,9 +262,9 @@ However, we're adding more accidental complexity to handle the fact that functio
 
 In the end, we can either write specialized decorators designed specifically for methods, or tolerate the additional complexity of trying to handle method invocation and function invocation in the same decorator.
 
-### summary
+### the bottom line
 
-Function decorators can be used as method decorators, provided that we take care to handle `this` properly and manage state carefully. If we're using a transpilation tool, we may also choose to use ES7 method decorator syntax, although it is not required.
+Function decorators can be used as method decorators, provided that we take care to handle `this` properly, and manage state carefully when required. The patterns for creating and using method decorators in JavaScript are straightforward, in large part because underneath the syntactic sugar for classes, we are still working with functions, objects, and delegation through prototypes.
 
 ---
 
