@@ -45,6 +45,10 @@ const requireAll = (fn) =>
   }
 {% endhighlight %}
 
+Function decorators are fairly straightforward. You'll find a variety of them in popular libraries, such as decorators that memoize a computation or debounce an action that might be performed repeatedly.
+
+---
+
 [![Messerschmidt](/assets/images/messerschmidt.jpg)](https://www.flickr.com/photos/31265723@N04/8619634268)
 
 ### simple method decoration
