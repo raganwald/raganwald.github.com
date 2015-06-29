@@ -3,7 +3,11 @@ layout: default
 tags: allonge, noindex
 ---
 
-Writing [higher-order functions][hof] in JavaScript is a long-established practice. A higher-order function is a function that takes one or more functions as arguments, returns a function, or both. For example, `compose` is a higher-order function that takes two functions as arguments, and returns a function that represents the composition of the arguments:
+Writing [higher-order functions][hof] in JavaScript is a long-established practice:
+
+> A higher-order function is a function that takes one or more functions as arguments, returns a function, or both.
+
+For example, `compose` is a higher-order function that takes two functions as arguments, and returns a function that represents the composition of the arguments:
 
 {% highlight javascript %}
 const compose = (a, b) => (c) => a(b(c));
@@ -176,7 +180,7 @@ musician.fullName()
 
 What has happened here is that when we write `Object.defineProperty(Person.prototype, 'setName', { value: once(Person.prototype.setName) });`, we wrapped a function bound to `Person.prototype`. That function is shared between all instances of `Person`. That's deliberate, it's the whole point of prototypical inheritance (and the "class-based inheritance" JavaScript builds with prototypes).
 
-Since our `once` decorator returns a decorated function with private state (the `hasRun` variable), all the instances share the same private state, and thus the bug. One solution, obviously, is to avoid sharing references to the same method. Another is to store the private state in the instance, rather than in the scope of the decorated function.
+Since our `once` decorator returns a decorated function with private state (the `hasRun` variable), all the instances share the same private state, and thus the bug.
 
 ### stateful method decorators
 
@@ -210,11 +214,11 @@ musician.fullName()
   //=> Miles Davis
 {% endhighlight %}
 
-Now each instance stores whether `.setName` has been invoked in a property named by a symbol, so `logician` and `musician` can share the method without sharing its state.
+Now each instance stores whether `.setName` has been invoked on each instance a `WeakSet`, so `logician` and `musician` can share the method without sharing its state.
 
 ### incompatibility
 
-This would be great, except that to handle methods, we have introduced a lot of "accidental complexity" to handle `this` and to handle stateful decorators. Worse, our implementation of `once` for methods won't work properly with ordinary functions in "strict" mode:
+To handle methods, we have introduced "accidental complexity" to handle `this` and to handle state. Worse, our implementation of `once` for methods won't work properly with ordinary functions in "strict" mode:
 
 {% highlight javascript %}
 "use strict"
@@ -245,9 +249,11 @@ const once = (fn) => {
 }
 {% endhighlight %}
 
-However, we're still adding accidental complexity to handle the fact that function invocation is <span style="color: blue;">blue</span>, and method invocation is <span style="color: #999900;">khaki</span>.[^colours]
+However, we're adding more accidental complexity to handle the fact that function invocation is <span style="color: blue;">blue</span>, and method invocation is <span style="color: #999900;">khaki</span>.[^colours]
 
 [^colours]: See the aforelinked [The Symmetry of JavaScript Functions](/2015/03/12/symmetry.html)
+
+In the end, we can either write specialized decorators designed specifically for methods, or tolerate the additional complexity of trying to handle method invocation and function invocation in the same decorator.
 
 ### method decorators in ES7
 
