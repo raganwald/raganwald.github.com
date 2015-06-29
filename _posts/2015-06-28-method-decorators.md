@@ -1,6 +1,7 @@
 ---
+title: "Method Decorators in ECMAScript 2015 (and beyond)"
 layout: default
-tags: allonge, noindex
+tags: allonge
 ---
 
 Writing [higher-order functions][hof] in JavaScript is a long-established practice:
@@ -43,6 +44,8 @@ const requireAll = (fn) =>
       return fn(...args);
   }
 {% endhighlight %}
+
+[![Messerschmidt](/assets/images/messerschmidt.jpg)](https://www.flickr.com/photos/31265723@N04/8619634268)
 
 ### simple method decoration
 
@@ -255,7 +258,15 @@ However, we're adding more accidental complexity to handle the fact that functio
 
 In the end, we can either write specialized decorators designed specifically for methods, or tolerate the additional complexity of trying to handle method invocation and function invocation in the same decorator.
 
-### method decorators in ES7
+### summary
+
+Function decorators can be used as method decorators, provided that we take care to handle `this` properly and manage state carefully. If we're using a transpilation tool, we may also choose to use ES7 method decorator syntax, although it is not required.
+
+---
+
+[![XFJ 022](/assets/images/xfj022.jpg)](https://www.flickr.com/photos/gi/199083883)
+
+### bonus: method decorators in ES7
 
 Before ECMAScript 2015 (a/k/a "ES6"), we decorated a method in a simple an direct way. Here's roughly how we used to write `Person`, using a pseudo-private property pattern:
 
@@ -388,10 +399,6 @@ class Person {
 
 [method decorators]: https://github.com/wycats/javascript-decorators
 
-Although ES7 has not been approved, there is extensive support for ES7 method decorators in transpilation tools. The examples in this post were evaluated with [Babel](http://babeljs.io).
-
-### summary
-
-Function decorators can be used as method decorators, provided that we take care to handle `this` properly and manage state carefully. If we're using a transpilation tool, we may also choose to use ES7 method decorator syntax, although it is not required.
+(Although ES7 has not been approved, there is extensive support for ES7 method decorators in transpilation tools. The examples in this post were evaluated with [Babel](http://babeljs.io).)
 
 ---
