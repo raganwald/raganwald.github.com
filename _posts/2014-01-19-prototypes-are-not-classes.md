@@ -173,4 +173,4 @@ What they *really mean* is that JavaScript has metaobjects, not classes.
 
 [C++]: https://en.wikipedia.org/wiki/C%2B%2B
 
-(discussions on [hacker news](https://news.ycombinator.com/item?id=7084794) and [reddit](http://www.reddit.com/r/javascript/comments/1vlm6f/prototypes_are_not_classes/))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=7084794))

@@ -398,7 +398,7 @@ Funny we should mention that. The Clojure and ClojureScript people have systemat
 
 Have a look at Mori. Then consider whether immutable structs could be useful in your code.
 
-(discuss on [reddit](http://www.reddit.com/r/javascript/comments/28gycg/structs_and_immutablestructs/) and [hacker news](https://news.ycombinator.com/item?id=7911134))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=7911134))
 
 ---
 

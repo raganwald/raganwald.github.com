@@ -83,7 +83,7 @@ In sum, JavaScript is not exactly like any other object-oriented programming lan
 
 ---
 
-(discuss on [reddit](http://www.reddit.com/r/javascript/comments/35mg2g/oop_javascript_and_socalled_classes/))
+
 
 ---
 

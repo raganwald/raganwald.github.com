@@ -211,7 +211,7 @@ const ColouredTodo = ComposeWithClass(Todo, Coloured);
 
 A "purely functional" approach to composing functionality is appropriate when we wish to compose behaviour with classes, but do not wish to mutate a class that is used elsewhere. One approach is to extend the class into a subclass, and mix behaviour into the newly created subclass.
 
-(discuss on [hacker news](https://news.ycombinator.com/item?id=9762055) and [reddit](http://www.reddit.com/r/javascript/comments/3aj1t5/purely_functional_composition/))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=9762055))
 
 ---
 

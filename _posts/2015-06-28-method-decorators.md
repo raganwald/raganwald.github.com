@@ -266,7 +266,7 @@ In the end, we can either write specialized decorators designed specifically for
 
 Function decorators can be used as method decorators, provided that we take care to handle `this` properly, and manage state carefully when required. The patterns for creating and using method decorators in JavaScript are straightforward, in large part because underneath the syntactic sugar for classes, we are still working with functions, objects, and delegation through prototypes.
 
-(discuss on [reddit](http://www.reddit.com/r/javascript/comments/3bj2ti/method_decorators_in_ecmascript_2015_and_beyond/))
+
 
 ---
 

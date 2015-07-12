@@ -655,4 +655,4 @@ We've also seen how to implement "later binding" delegation by delegating or for
 
 We deliberately haven't discussed prototypes or the things you can build with prototypes (like classes). Instead, we take our understanding gleaned from these prototype-less techniques to help us understand what prototypes offer and what tradeoffs they make.
 
-(discuss on [hacker news](https://news.ycombinator.com/item?id=7566879) and [reddit](http://www.reddit.com/r/javascript/comments/22p3ex/mixins_forwarding_and_delegation_in_javascript/))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=7566879))

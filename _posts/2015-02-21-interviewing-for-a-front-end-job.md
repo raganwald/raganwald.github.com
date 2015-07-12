@@ -271,7 +271,7 @@ The Carpenter smiled. "I forgot about them, it's been a while. So, do They Live?
 
 ---
 
-[hacker news](https://news.ycombinator.com/item?id=9087398) | [reddit](http://www.reddit.com/r/javascript/comments/2wpkm7/interviewing_for_a_javascript_job/) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-21-interviewing-for-a-front-end-job.md)
+[hacker news](https://news.ycombinator.com/item?id=9087398) | [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2015-02-21-interviewing-for-a-front-end-job.md)
 
 ---
 

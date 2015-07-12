@@ -368,7 +368,7 @@ This applies to transforming and composing functions, and it also applies to tra
 
 ![Harpo Marx and three of his children](/assets/images/harpo.jpg)
 
-(discuss on [reddit](http://www.reddit.com/r/javascript/comments/2478ck/javascript_values_algebra/))
+
 
 ---
 

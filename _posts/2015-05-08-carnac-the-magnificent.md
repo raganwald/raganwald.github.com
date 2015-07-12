@@ -217,7 +217,7 @@ So if you are interviewing programmers, here's your homework: Go through all of 
 
 I think you'll find that eliminating Carnac the Magnificent from your interviewing process will make it better.
 
-(discuss on [reddit](http://www.reddit.com/r/programming/comments/35afm0/carnac_the_magnificent/) and [hacker news](https://news.ycombinator.com/item?id=9511700))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=9511700))
 
 ---
 

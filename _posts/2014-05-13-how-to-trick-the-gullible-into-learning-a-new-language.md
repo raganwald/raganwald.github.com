@@ -60,4 +60,4 @@ Which leaves me offering some free advice: There's plenty of room for new progra
 
 ![Harpo Marx and three of his children](/assets/images/harpo.jpg)
 
-(discuss on [reddit](http://www.reddit.com/r/programming/comments/261cu6/how_to_trick_the_gullible_into_learning_a_new/))
+
