@@ -14,16 +14,6 @@ const wrapWith = (decorator) =>
     descriptor.value = decorator(descriptor.value);
   }
 
-const once = (method) => {
-  let invocations = new WeakSet();
-
-  return function (...args) {
-    if (invocations.has(this)) return;
-    invocations.add(this);
-    return method.apply(this, args);
-  }
-}
-
 const fluent = (method) =>
   function (...args) {
     method.apply(this, args);
@@ -31,8 +21,6 @@ const fluent = (method) =>
   }
 
 class Person {
-
-  @wrapWith(once)
   @wrapWith(fluent)
   setName (first, last) {
     this.firstName = first;
@@ -42,22 +30,12 @@ class Person {
   fullName () {
     return this.firstName + " " + this.lastName;
   }
-
 };
 {% endhighlight %}
 
 The `wrapWith` function takes an ordinary method decorator and turns it into an ES7 method decorator. This is not necessary in production, as you can write your decorators directly for ES7 if you are using a Transpiler like [Babel]. But it does allow us to write decorators that work in ES6 and ES7, so if you aren't targeting ES7, you can write your code like this:
 
 {% highlight javascript %}
-const once = (method) => {
-  let invocations = new WeakSet();
-
-  return function (...args) {
-    if (invocations.has(this)) return;
-    invocations.add(this);
-    return method.apply(this, args);
-  }
-}
 
 const fluent = (method) =>
   function (...args) {
@@ -66,9 +44,6 @@ const fluent = (method) =>
   }
 
 class Person {
-
-  @wrapWith(once)
-  @wrapWith(fluent)
   setName (first, last) {
     this.firstName = first;
     this.lastName = last;
@@ -77,10 +52,9 @@ class Person {
   fullName () {
     return this.firstName + " " + this.lastName;
   }
-
 };
 
-Person.prototype.setName = once(fluent(Person.prototype.setName));
+Person.prototype.setName = fluent(Person.prototype.setName);
 {% endhighlight %}
 
 ### what question do method decorators answer?
