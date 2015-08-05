@@ -1,4 +1,5 @@
 ---
+title: "Method Advice in Modern JavaScript"
 layout: default
 tags: allonge
 ---
