@@ -4,11 +4,11 @@ layout: default
 tags: allonge
 ---
 
-We've [previously](http://raganwald.com/2015/06/28/method-decorators.html) looked at using ES.later [method decorators] like this:[^ES.later]
+We've [previously](http://raganwald.com/2015/06/28/method-decorators.html) looked at using ES.later [method decorators] like this:[^ESdotlater]
 
 [method decorators]: https://github.com/wycats/javascript-decorators
 
-[^ES.later]: By "ES.later," we mean some future version of ECMAScript that is likely to be approved eventually, but for the moment exists only in transpilers like [Babel](http://babeljs.io). Obviously, using any ES.later feature in production is a complex decision requiring many more considerations than can be enumerated in a blog post.
+[^ESdotlater]: By "ES.later," we mean some future version of ECMAScript that is likely to be approved eventually, but for the moment exists only in transpilers like [Babel](http://babeljs.io). Obviously, using any ES.later feature in production is a complex decision requiring many more considerations than can be enumerated in a blog post.
 
 {% highlight javascript %}
 const wrapWith = (decorator) =>
