@@ -4,7 +4,7 @@ layout: default
 tags: allonge
 ---
 
-In [Method Decorators in ECMAScript 2015 (and beyond)](http://raganwald.com/2015/06/28/method-decorators.html), we looked at using ES7 [method decorators] like this:
+We've [previously](http://raganwald.com/2015/06/28/method-decorators.html) looked at using ES7 [method decorators] like this:
 
 [method decorators]: https://github.com/wycats/javascript-decorators
 
