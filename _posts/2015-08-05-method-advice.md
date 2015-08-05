@@ -364,3 +364,6 @@ const Person = compose(
 {% endhighlight %}
 
 [Babel]: http://babeljs.io
+
+---
+
