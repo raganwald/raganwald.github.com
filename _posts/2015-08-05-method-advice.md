@@ -320,6 +320,65 @@ Mind you, there's always room for polish and gold plate. We could enhance `befor
 
 Although decorating methods in bulk has appeared in other languages and paradigms, it's not something special and alien to JavaScript, it's really the same pattern we see over and over again: Programming by composing small and single-responsibility entities, and using functions to transform and combine the entities into their final form.
 
-(Although ES7 has not been approved, there is extensive support for ES7 method decorators in transpilation tools. The examples in this post were evaluated with [Babel](http://babeljs.io).)
+### es6
 
----
+Although ES7 has not been approved, there is extensive support for ES7 method decorators in transpilation tools. The examples in this post were evaluated with [Babel](http://babeljs.io). If we don't want to use ES7 decorators, we can use the exact same functions as *ordinary functions*, like this:
+
+{% highlight javascript %}
+const mustBeLoggedIn = () => {
+    if (currentUser() == null)
+      throw new PermissionsException("Must be logged in!");
+  }
+
+const mustBeMe = () => {
+    if (currentUser() == null || !currentUser().person().equals(this))
+      throw new PermissionsException("Must be me!");
+  }
+
+const Person =
+  HasAge(
+  before(mustBeMe, 'setName', 'setAge', 'age')(
+  before(mustBeLoggedIn, 'fullName')(
+    class {
+      setName (first, last) {
+        this.firstName = first;
+        this.lastName = last;
+      }
+
+      fullName () {
+        return this.firstName + " " + this.lastName;
+      }
+    }
+  )
+  )
+);
+{% endhighlight %}
+
+Composition could also help:
+
+{% highlight javascript %}
+const mustBeLoggedIn = () => {
+    if (currentUser() == null)
+      throw new PermissionsException("Must be logged in!");
+  }
+
+const mustBeMe = () => {
+    if (currentUser() == null || !currentUser().person().equals(this))
+      throw new PermissionsException("Must be me!");
+  }
+
+const Person = compose(
+  HasAge,
+  before(mustBeMe, 'setName', 'setAge', 'age'),
+  before(mustBeLoggedIn, 'fullName'),
+)(class {
+  setName (first, last) {
+    this.firstName = first;
+    this.lastName = last;
+  }
+
+  fullName () {
+    return this.firstName + " " + this.lastName;
+  }
+});
+{% endhighlight %}
