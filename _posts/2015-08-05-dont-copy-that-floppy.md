@@ -30,7 +30,7 @@ This implementation omits consideration of everything except for showing the ide
 
 So...
 
-Before you copy code you find here, ask yourself if it wouldn't be easier to take a moment and look for an existing library that does what you want, and has been tested in the field. Wouldn't that be *even easier*?
+Before you copy code you find here, ask yourself if it wouldn't be a good idea to take a moment and look for an existing library that does what you want, and has been tested in the field. Wouldn't that save you some trouble down the road when you find out there's something else you want to do that wasn't covered by the function you copied from a blog post?
 
----
+Wouldn't that be *even easier* than copying and pasting?
 
