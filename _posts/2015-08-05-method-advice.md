@@ -325,7 +325,7 @@ Although decorating methods in bulk has appeared in other languages and paradigm
 
 ### a word about es6
 
-Although ES7 has not been approved, there is extensive support for ES7 method decorators in transpilation tools. The examples in this post were evaluated with [Babel](http://babeljs.io). If we don't want to use ES7 decorators, we can use the exact same functions as *ordinary functions*, like this:
+Although ES7 has not been approved, there is extensive support for ES7 method decorators in transpilation tools. The examples in this post were evaluated with [Babel](http://babeljs.io). If we don't want to use ES7 decorators, we can use the exact same decorators as *ordinary functions*, like this:
 
 {% highlight javascript %}
 const mustBeLoggedIn = () => {
