@@ -4,11 +4,11 @@ layout: default
 tags: allonge
 ---
 
-In [Functional Mixins], we discussed mixing functionality *into* JavaScript classes. The act of mixing functionality in changes the class. This approach maps well to idioms from other languages, such as Ruby's modules. It also helps us decompose classes into smaller entities with focused responsibilities that can be shared between classes as necessary.[^ES7]
+In [Functional Mixins], we discussed mixing functionality *into* JavaScript classes. The act of mixing functionality in changes the class. This approach maps well to idioms from other languages, such as Ruby's modules. It also helps us decompose classes into smaller entities with focused responsibilities that can be shared between classes as necessary.[^ES.later]
 
 [Functional Mixins]: http://raganwald.com/2015/06/17/functional-mixins.html
 
-[^ES7]: Another, speculative benefit is that it maps well to features like [class decorators](https://github.com/wycats/javascript-decorators) or the [`with` keyword](https://github.com/WebReflection/es-class/blob/master/FEATURES.md#with), either of which may land in a future version of JavaScript or may be adopted by transpiling tools like Babel.
+[^ES.later]: Another, speculative benefit is that it maps well to features like [class decorators](https://github.com/wycats/javascript-decorators) or the [`with` keyword](https://github.com/WebReflection/es-class/blob/master/FEATURES.md#with), either of which may land in a future version of JavaScript or may be adopted by transpiling tools like Babel.
 
 That being said, mutation has its drawbacks as well. People say, "it's hard to reason about code that mutates data," and when it comes to modifying classes, they are right.
 

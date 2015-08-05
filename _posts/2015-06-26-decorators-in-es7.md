@@ -1,5 +1,5 @@
 ---
-title: "Using ES7 Decorators as Mixins"
+title: "Using ES.later Decorators as Mixins"
 layout: default
 tags: allonge
 ---
@@ -334,8 +334,10 @@ Class decorators provide a compact, "magic" syntax that is closely tied to the c
 
 Decorators have not been formally approved, however there are various implementations available for transpiling decorator syntax to ES5 syntax. The examples in this post were evaluated with [Babel](http://babeljs.io).
 
-If you prefer syntactic sugar that gives the appearance of a declarative construct, combining a `mixin` function with ES7's class decorators does the trick.
+If you prefer syntactic sugar that gives the appearance of a declarative construct, combining a `mixin` function with [ES.later]'s class decorators does the trick.[^ES.later]
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=9786706))
 
 ---
+
+[^ES.later]: By "ES.later," we mean some future version of ECMAScript that is likely to be approved eventually, but for the moment exists only in transpilers like [Babel](http://babeljs.io). Obviously, using any ES.later feature in production is a complex decision requiring many more considerations than can be enumerated in a blog post.

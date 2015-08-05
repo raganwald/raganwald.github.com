@@ -270,7 +270,7 @@ Function decorators can be used as method decorators, provided that we take care
 
 ---
 
-## Bonus: Method Decorators in ES7
+## Bonus: Method Decorators in ES.later
 
 [![XFJ 022](/assets/images/xfj022.jpg)](https://www.flickr.com/photos/gi/199083883)
 
@@ -337,7 +337,7 @@ Object.defineProperty(Person.prototype, 'setName', { value: once(Person.prototyp
 
 This is weak for two reasons. First, it's fugly and full of accidental complexity. Second, modifying the prototype after defining the class separates two things that conceptually ought to be together. The `class` keyword giveth, but it also taketh away.
 
-To solve a problem created by ECMAScript 2015, [method decorators] have been proposed for ES7. The syntax is similar to class decorators, but where a class decorator takes a class asan argument and returns the same (or a different) class, a method decorator actually intercedes when a property is defined on the prototype.
+To solve a problem created by ECMAScript 2015, [method decorators] have been proposed for ES.later.[^ES.later] The syntax is similar to class decorators, but where a class decorator takes a class asan argument and returns the same (or a different) class, a method decorator actually intercedes when a property is defined on the prototype.
 
 Thus, a `fluent` (a/k/a `chain`) decorator would look like this:
 
@@ -405,6 +405,6 @@ class Person {
 
 [method decorators]: https://github.com/wycats/javascript-decorators
 
-(Although ES7 has not been approved, there is extensive support for ES7 method decorators in transpilation tools. The examples in this post were evaluated with [Babel](http://babeljs.io).)
+[^ES.later]: By "ES.later," we mean some future version of ECMAScript that is likely to be approved eventually, but for the moment exists only in transpilers like [Babel](http://babeljs.io). Obviously, using any ES.later feature in production is a complex decision requiring many more considerations than can be enumerated in a blog post.
 
 ---

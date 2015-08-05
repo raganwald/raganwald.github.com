@@ -4,9 +4,11 @@ layout: default
 tags: allonge
 ---
 
-We've [previously](http://raganwald.com/2015/06/28/method-decorators.html) looked at using ES7 [method decorators] like this:
+We've [previously](http://raganwald.com/2015/06/28/method-decorators.html) looked at using ES.later [method decorators] like this:[^ES.later]
 
 [method decorators]: https://github.com/wycats/javascript-decorators
+
+[^ES.later]: By "ES.later," we mean some future version of ECMAScript that is likely to be approved eventually, but for the moment exists only in transpilers like [Babel](http://babeljs.io). Obviously, using any ES.later feature in production is a complex decision requiring many more considerations than can be enumerated in a blog post.
 
 {% highlight javascript %}
 const wrapWith = (decorator) =>
@@ -33,7 +35,7 @@ class Person {
 };
 {% endhighlight %}
 
-The `wrapWith` function takes an ordinary method decorator and turns it into an ES7 method decorator. This is not necessary in production, as you can write your decorators directly for ES7 if you are using a Transpiler like [Babel]. But it does allow us to write decorators that work in ES6 and ES7, so if you aren't targeting ES7, you can write your code like this:
+The `wrapWith` function takes an ordinary method decorator and turns it into an ES.later method decorator. This is not necessary in production, as you can write your decorators directly for ES.later if you are using a Transpiler like [Babel]. But it does allow us to write decorators that work in ES6 and ES.later, so if you aren't targeting ES.later, you can write your code like this:
 
 {% highlight javascript %}
 
@@ -59,7 +61,7 @@ Person.prototype.setName = fluent(Person.prototype.setName);
 
 ### what question do method decorators answer?
 
-The ES7 method decorators put the decorations right next to the method body. This makes it easy to answer the question "What is the precise behaviour of this method?"
+The ES.later method decorators put the decorations right next to the method body. This makes it easy to answer the question "What is the precise behaviour of this method?"
 
 But sometimes, this is not what you want. Consider a responsibility like authentication. Let's imagine that we validate permissions in our model classes. We might write something like this:
 
@@ -136,7 +138,7 @@ That question matters, because when decomposing responsibilities, we often decid
 
 There is another way to decorate methods: We can decorate multiple methods in a single declaration. This is called providing *method advice*.
 
-In JavaScript, we can implement method advice by decorating the entire class. A class decorator is nothing more than a function that takes a class as an argument and returns the same or a different class. We already have a combinator for making mixins (see [Using ES7 Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)):
+In JavaScript, we can implement method advice by decorating the entire class. A class decorator is nothing more than a function that takes a class as an argument and returns the same or a different class. We already have a combinator for making mixins (see [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-ES.later.html)):
 
 {% highlight javascript %}
 function mixin (behaviour, sharedBehaviour = {}) {
@@ -300,7 +302,7 @@ Although decorating methods in bulk has appeared in other languages and paradigm
 
 ### a word about es6
 
-Although ES7 has not been approved, there is extensive support for ES7 method decorators in transpilation tools. The examples in this post were evaluated with [Babel](http://babeljs.io). If we don't want to use ES7 decorators, we can use the exact same decorators as *ordinary functions*, like this:
+Although ES.later has not been approved, there is extensive support for ES.later method decorators in transpilation tools. The examples in this post were evaluated with [Babel](http://babeljs.io). If we don't want to use ES.later decorators, we can use the exact same decorators as *ordinary functions*, like this:
 
 {% highlight javascript %}
 const mustBeLoggedIn = () => {
