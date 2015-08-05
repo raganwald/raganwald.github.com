@@ -159,9 +159,9 @@ That question matters, because when decomposing responsibilities, we often decid
 
 ### cross-cutting method decorators
 
-There is another way to decorate methods: We can decorate multiple methods by decorating the entire class. A class decorator is nothing more than a function that takes a class as an argument and returns the same or a different class.
+There is another way to decorate methods: We can decorate multiple methods in a single declaration. This is called providing *method advice*.
 
-We already have a combinator for making mixins (see [Using ES7 Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)):
+In JavaScript, we can implement method advice by decorating the entire class. A class decorator is nothing more than a function that takes a class as an argument and returns the same or a different class. We already have a combinator for making mixins (see [Using ES7 Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)):
 
 {% highlight javascript %}
 function mixin (behaviour, sharedBehaviour = {}) {
