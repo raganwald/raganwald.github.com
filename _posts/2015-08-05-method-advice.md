@@ -3,7 +3,7 @@ layout: default
 tags: allonge
 ---
 
-In [Method Decorators in ECMAScript 2015 (and beyond)"](http://raganwald.com/2015/06/28/method-decorators.html), we looked at using ES7 [method decorators] like this:
+In [Method Decorators in ECMAScript 2015 (and beyond)](http://raganwald.com/2015/06/28/method-decorators.html), we looked at using ES7 [method decorators] like this:
 
 [method decorators]: https://github.com/wycats/javascript-decorators
 
@@ -118,6 +118,7 @@ class Person {
     this.age = age;
   }
 
+  @wrapWith(mustBeMe)
   age () {
     return this.age;
   }
@@ -129,7 +130,7 @@ class Person {
 
 Now we can look at `setName` and see that users can only set their own name, likewise if we look at `setAge`, we see that users can only set their own age.
 
-In a tiny toy example the next question is easy to answer: *What methods can only be invoked by the person themselves?* We see at a glance that the answer is `setName` and `setAge`.
+In a tiny toy example the next question is easy to answer: *What methods can only be invoked by the person themselves?* We see at a glance that the answer is `setName`, `setAge`, and `age`.
 
 But as classes grow, this becomes more difficult to answer. This especially becomes difficult if we decompose classes using mixins. For example, what if `setAge` and `age` come from a mixin:
 
@@ -320,7 +321,9 @@ Mind you, there's always room for polish and gold plate. We could enhance `befor
 
 Although decorating methods in bulk has appeared in other languages and paradigms, it's not something special and alien to JavaScript, it's really the same pattern we see over and over again: Programming by composing small and single-responsibility entities, and using functions to transform and combine the entities into their final form.
 
-### es6
+---
+
+### a word about es6
 
 Although ES7 has not been approved, there is extensive support for ES7 method decorators in transpilation tools. The examples in this post were evaluated with [Babel](http://babeljs.io). If we don't want to use ES7 decorators, we can use the exact same functions as *ordinary functions*, like this:
 
