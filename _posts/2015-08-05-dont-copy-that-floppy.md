@@ -1,7 +1,7 @@
 ---
 title: "Before you copy that code..."
 layout: default
-tags: allonge, noindex
+tags: [allonge, noindex]
 ---
 
 This blog includes a lot of code examples. The vast majority have been tested and work as advertised. But before you copy anything and paste it into a production code base, consider the following:
