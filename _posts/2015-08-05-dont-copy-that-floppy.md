@@ -6,7 +6,9 @@ tags: [allonge, noindex]
 
 This blog includes a lot of code examples. The vast majority have been tested and work as advertised. But before you copy anything and paste it into a production code base, consider the following:
 
-This is a blog about software development in general. Although a particular post might be titled "Fooing with Bar in JavaScript," it's not about JavaScript: It's about `Foo`. And `Bar`. And it just *happens* to be written in JavaScript, because JavaScript is widely-understood language with a set of features that make explaining many things straightforward.
+**This is a blog about software development *in general*.**
+
+Although a particular post might be titled "Fooing with Bar in JavaScript," it's not about JavaScript: It's about `Foo`. And `Bar`. And it just *happens* to be written in JavaScript, because JavaScript is widely-understood language with a set of features that make explaining many things straightforward.
 
 [![Copy Machine Operator](/assets/images/copy-machine-operator.jpg)](https://www.flickr.com/photos/wonderlane/3234368267)
 
