@@ -1,7 +1,7 @@
 ---
 title: "Extension Methods, Monkey-Patching, and the Bind Operator"
 layout: default
-tags: [allonge, noindex]
+tags: allonge
 ---
 
 ### extension methods
