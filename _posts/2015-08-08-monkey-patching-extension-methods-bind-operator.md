@@ -74,7 +74,7 @@ That's enough for government work. So, the key question is, *Why should we write
 
 There is a general principle in OO that objects should be responsible for implementing all of the operations where they are the primary participant. So by this reasoning, if you want a `second` operation on arrays, the `Array` class should be responsible for implementing it.
 
-At first glance, an extension method accomplishes this. `Array` should be resonsible for implementing `.second`, and look! We opened the `Array` class up and added `second` to it. But this reasoning does not apply to a language like Ruby that has a strong distinction between the static organization of the code in `.rb` files and the runtime organization of the code in classes and instances.
+At first glance, an extension method accomplishes this. `Array` should be responsible for implementing `.second`, and look! We opened the `Array` class up and added `second` to it. But this reasoning does not apply to a language like Ruby that has a strong distinction between the static organization of the code in `.rb` files and the runtime organization of the code in classes and instances.
 
 At *runtime*, an extension method makes `Array` responsible for implementing the `.second` method, but in the organization of the code, the programming entity responsible for defining `.second` is `ActiveSupport`, not `Array`. And if there was source code for `Array`, we would not find a `second` method in it, or a reference to `include ActiveSupport` or anything like that.
 
@@ -86,7 +86,7 @@ No, that is not wrong. The *other* OO perspective is that objects should be resp
 
 Secondary concerns could be defined elsewhere, and thus there is an OO argument in favour of `.second` not being an `Array` method.
 
-### the syntatic argument for extension methods
+### the syntactic argument for extension methods
 
 If `.second` isn't an object's primary responsibility, then why implement something like `.second` as a method? Why not as a function?
 
@@ -180,7 +180,7 @@ One of the features proposed for possible inclusion in a future formal release o
 
 [Babel]: http://babeljs.io
 
-Its uses for abbreviating code where we are already using `.bind`, `.call`, and `.apply` have been explored elsewhere. It's nice, because something like `foo::bar(baz)` looks like what we're tryingt o say: "Treat `.bar` as a method being sent to `foo` with the parameter `baz`." When we write `foo::bar(baz)`, we're saying something different: "Send the `.call` method to the entity `bar` with the parameters `foo` and `baz`."
+Its uses for abbreviating code where we are already using `.bind`, `.call`, and `.apply` have been explored elsewhere. It's nice, because something like `foo::bar(baz)` looks like what we're trying to say: "Treat `.bar` as a method being sent to `foo` with the parameter `baz`." When we write `foo::bar(baz)`, we're saying something different: "Send the `.call` method to the entity `bar` with the parameters `foo` and `baz`."
 
 And that speaks *directly* to our exploration of extension methods. Consider:
 
@@ -212,6 +212,6 @@ If we're using JavaScript and have a tolerance for ES.maybe features, the bind o
 
 ### summary
 
-Extension methods are a reasonable design choice when we want to provide the syntactic appearance of methods, and also wish to provide secondary functionality that does not belong in the core class definition (or was not shipped in teh standard implementation fo a class we don't control).
+Extension methods are a reasonable design choice when we want to provide the syntactic appearance of methods, and also wish to provide secondary functionality that does not belong in the core class definition (or was not shipped in the standard implementation fo a class we don't control).
 
-Monkey-patching is a popular choice in some languages, but has deep and difficult-to-resolve conflicting dependency problems. There are some langauge-specific alternatives, such as C#'s extension method syntax, and ES.maybe's bind operator.
+Monkey-patching is a popular choice in some languages, but has deep and difficult-to-resolve conflicting dependency problems. There are some language-specific alternatives, such as C#'s extension method syntax, and ES.maybe's bind operator.
