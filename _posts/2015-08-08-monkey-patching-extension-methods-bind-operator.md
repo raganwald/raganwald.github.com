@@ -176,7 +176,9 @@ Languages like Javascript ought to know the same thing for a string literal, and
 
 ### es.maybe's bind operator as an implementation
 
-One of the features proposed for possible inclusion in a future formal release of ECMAScript (a/k/a "ES.maybe") is the bind operator, `::`. In short, `::fn` is equivalent to `fn.bind(this)`, `foo::bar` is equivalent to `bar.bind(foo)`, and `foo::bar(baz)` is equivalent `foo::bar(baz)`. We can experiment with it right now using transpilation tools like [Babel].
+One of the features proposed for possible inclusion in a future formal release of ECMAScript (a/k/a "ES.maybe") is the bind operator, `::`. In short, `::fn` is equivalent to `fn.bind(this)`, `foo::bar` is equivalent to `bar.bind(foo)`, and `foo::bar(baz)` is equivalent to `bar.call(foo, baz)`.[^maybe] We can experiment with it right now using transpilation tools like [Babel].
+
+[^maybe]:There is some talk that transpilers or implementations may turn `foo::bar(baz)` into `bar.bind(foo)(baz)` and not `bar.call(foo, baz)`. This would temporarily create another function that needs to be garbage collected. Does that matter? If and when we are putting this code into production, we should measure the performance, and if `foo::bar(baz)` seems to be a problem, we will optimize it then. But for now, the important thing is the semantics.
 
 [Babel]: http://babeljs.io
 
