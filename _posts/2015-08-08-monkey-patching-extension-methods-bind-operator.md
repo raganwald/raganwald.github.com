@@ -170,7 +170,7 @@ The compiler knows that `Reverse` is to be implemented as an extension method on
 
 The code within the `BackAsswardAlphabet` method includes the expression `"abcdefghijklmnopqrstuvwxyz".Reverse()`, and the C# compiler knows that `"abcdefghijklmnopqrstuvwxyz"` is a string, and therefore that it should treat `"abcdefghijklmnopqrstuvwxyz".Reverse()` as if we had actually written `Something.Reverse("abcdefghijklmnopqrstuvwxyz")`.
 
-This is only possible because C# includes static typing, and thus that the compiler knows that "abcdefghijklmnopqrstuvwxyz" is a string, so it can resolve the extension method at compile time.
+This is only possible because C# includes static typing, and thus that the compiler knows that `"abcdefghijklmnopqrstuvwxyz"` is a string, so it can resolve the extension method at compile time.
 
 Languages like Javascript ought to know the same thing for a string literal, and for any `const` variable bound to a string literal, but reasoning about types beyond some very simple cases is very difficult in "untyped" languages, so this technique is out of reach until some future version of JavaScript brings us [gradual typing](https://en.wikipedia.org/wiki/Gradual_typing).
 
