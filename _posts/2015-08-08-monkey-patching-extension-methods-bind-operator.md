@@ -68,7 +68,7 @@ module Kernel
 end
 {% endhighlight %}
 
-That's enough for government work. So, the key question is, *Why should we write extension methods instead of functions?*
+Close enough for government work! So, the key question is, *Why should we write extension methods instead of functions?*
 
 ### the "oo" arguments against and for extension methods
 
@@ -82,7 +82,7 @@ Thus, we can't really say that `Array` is responsible for `second` in a conceptu
 
 Is that wrong?
 
-No, that is not wrong. The *other* OO perspective is that objects should be responsible for implementing the *central and characteristic* operations where they are the primary participant. Thus `Array` implements `[]`, '.push', '.pop', and so forth. An operation like `.second` can be implemented in terms of `Array`'s primary operations, so it is a secondary concern.
+No, that is not wrong. The *other* OO perspective is that objects should be responsible for implementing the *central and characteristic* operations where they are the primary participant. Thus `Array` implements `[]`, `.push`, `.pop`, and so forth. An operation like `.second` can be implemented in terms of `Array`'s primary operations, so it is a secondary concern.
 
 Secondary concerns could be defined elsewhere, and thus there is an OO argument in favour of `.second` not being an `Array` method.
 
