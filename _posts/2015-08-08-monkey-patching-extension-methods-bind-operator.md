@@ -217,3 +217,5 @@ If we're using JavaScript and have a tolerance for ES.maybe features, the bind o
 Extension methods are a reasonable design choice when we want to provide the syntactic appearance of methods, and also wish to provide secondary functionality that does not belong in the core class definition (or was not shipped in the standard implementation fo a class we don't control).
 
 Monkey-patching is a popular choice in some languages, but has deep and difficult-to-resolve conflicting dependency problems. There are some language-specific alternatives, such as C#'s extension method syntax, and ES.maybe's bind operator.
+
+---
