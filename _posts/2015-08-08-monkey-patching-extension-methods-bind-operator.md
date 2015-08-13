@@ -178,7 +178,7 @@ The code within the `BackAsswardAlphabet` method includes the expression `"abcde
 
 This is only possible because C# includes static typing, and thus that the compiler knows that `"abcdefghijklmnopqrstuvwxyz"` is a string, so it can resolve the extension method at compile time.
 
-Languages like Javascript ought to know the same thing for a string literal, and for any `const` variable bound to a string literal, but reasoning about types beyond some very simple cases is very difficult in "untyped" languages, so this technique is out of reach until some future version of JavaScript brings us [gradual typing](https://en.wikipedia.org/wiki/Gradual_typing).
+Languages like JavaScript ought to know the same thing for a string literal, and for any `const` variable bound to a string literal, but reasoning about types beyond some very simple cases is very difficult in "untyped" languages, so this technique is out of reach until some future version of JavaScript brings us [gradual typing](https://en.wikipedia.org/wiki/Gradual_typing).
 
 ### es.maybe's bind operator as an implementation
 
