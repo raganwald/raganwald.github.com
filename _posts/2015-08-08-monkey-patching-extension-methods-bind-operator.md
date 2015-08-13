@@ -141,9 +141,11 @@ Some early JavaScript libraries tried to follow suit, but for technical reasons,
 
 [rails]: http://rubyonrails.org/
 
-But not all. [Ember.js] "monkeys around" with `Array.prototype` and `String.prototype`. And a few other libraries implement things like `Function.prototype.delay`: Anybody who tries to use two such libraries in the same code base is in for a headache.
+But not all. At the moment, [Ember.js] "monkeys around" with `Array.prototype` and `String.prototype`.[^but] And a few other libraries implement things like `Function.prototype.delay`: Anybody who tries to use two such libraries in the same code base is in for a headache.
 
 [Ember.js]: http://emberjs.com/
+
+[^but]: This behaviour is on-by-default, but can be turned off. Future versions of Ember may discontinue the practice outright.
 
 ### static extension methods as an implementation
 
