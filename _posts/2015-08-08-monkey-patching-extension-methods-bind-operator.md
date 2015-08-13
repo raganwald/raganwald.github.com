@@ -182,9 +182,9 @@ One of the features proposed for possible inclusion in a future formal release o
 
 [Babel]: http://babeljs.io
 
-Its uses for abbreviating code where we are already using `.bind`, `.call`, and `.apply` have been explored elsewhere. It's nice, because something like `foo::bar(baz)` looks like what we're trying to say: "Treat `.bar` as a method being sent to `foo` with the parameter `baz`." When we write `foo::bar(baz)`, we're saying something different: "Send the `.call` method to the entity `bar` with the parameters `foo` and `baz`."
+Its uses for abbreviating code where we are already using `.bind`, `.call`, and `.apply` have been explored elsewhere. It's nice, because something like `foo::bar(baz)` looks like what we're trying to say: "Treat `.bar` as a method being sent to `foo` with the parameter `baz`."
 
-And that speaks *directly* to our exploration of extension methods. Consider:
+Whereas, when we write `bar.call(foo, baz)`, we're saying something different: "Send the `.call` method to the entity `bar` with the parameters `foo` and `baz`." And that speaks *directly* to our exploration of extension methods. Consider:
 
 {% highlight javascript %}
 Array.prototype.second = function () {
