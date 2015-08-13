@@ -133,9 +133,11 @@ Modifying core classes has been considered and rejected many times by many other
 
 If every gem defined its own extensions to every core class, you'd have an unmanageable mess. Rails gets away with it, because it's the 800 pound gorilla of Ruby libraries, so everyone else works around their choices. Most other rubyists avoid the practice entirely.
 
-![Ember Monkey-Patching](/assets/images/embermonkey.png)
+### monkey-patching javascript
 
 Some early JavaScript libraries tried to follow suit, but for technical reasons, this caused even more headaches for programmers than it did in languages like Ruby, so today you find that most JavaScript programmers view the practice with extreme suspicion.
+
+![Ember Monkey-Patching](/assets/images/embermonkey.png)
 
 [rails]: http://rubyonrails.org/
 
