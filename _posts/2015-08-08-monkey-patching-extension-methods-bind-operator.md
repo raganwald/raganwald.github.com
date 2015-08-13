@@ -141,7 +141,9 @@ Some early JavaScript libraries tried to follow suit, but for technical reasons,
 
 [rails]: http://rubyonrails.org/
 
-But not all. Some libraries "monkey around" with `Array.prototype`, `String.prototype`, and a few libraries implement `Function.prototype.delay`: Anybody who tries to use two such libraries in the same code base is in for a headache.
+But not all. [Ember.js] "monkeys around" with `Array.prototype` and `String.prototype`. And a few otehr libraries implement things like `Function.prototype.delay`: Anybody who tries to use two such libraries in the same code base is in for a headache.
+
+[Ember.js]: http://emberjs.com/
 
 ### static extension methods as an implementation
 
