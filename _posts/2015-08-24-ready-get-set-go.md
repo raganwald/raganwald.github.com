@@ -4,9 +4,9 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-Once upon a time, there was a language called C,[^bcpl] and this language had something called a `struct`, and you could use it to make heterogenously aggredated data structures that had members. The key thing to know about C is that when you have a struct called `current_user`, and a member like `id`, and you write something like `currentUser.id = 42`, the C complier turned this into extremely fast assembler instructions. Same for `int id = currentUser.id`.
+Once upon a time, there was a language called C,[^bcpl] and this language had something called a `struct`, and you could use it to make heterogeneously aggregated data structures that had members. The key thing to know about C is that when you have a struct called `current_user`, and a member like `id`, and you write something like `currentUser.id = 42`, the C complier turned this into extremely fast assembler instructions. Same for `int id = currentUser.id`.
 
-[^bcpl] There was also a language called BCPL, and others before that, but our story has to start somewhere, and it starts with C.
+[^bcpl]: There was also a language called BCPL, and others before that, but our story has to start somewhere, and it starts with C.
 
 Also of importance was that you could have pointers to functions in structs, so you could write things like `current_user->setId(42)` if you preferred to make setting an `id` a function, and this was also translated into fast assembler.
 
@@ -20,7 +20,7 @@ So the nice people behind Java gave it C-like syntax with the braces and the sta
 
 History has shown that this was the right way to sell a new language. History has also shown that the actual performance distinction was irrelevant to almost everybody. Performance is only for now, code flexibility is forever.
 
-Well, it turned out that Sun was right about getting C programmers to use Java (it worked on me, I ditched CodeWarrior and Lightspeed C), but wrong about using Java in browsers. Instead, people started using another language called JavaScript to write code in browsers, and using Java to write code on servers. The irony is, Javascript was designed to run on servers, so the state of affairs was that everyobody was using a server-side language to write browser code, and a browser language to write server code.[^ignorant]
+Well, it turned out that Sun was right about getting C programmers to use Java (it worked on me, I ditched CodeWarrior and Lightspeed C), but wrong about using Java in browsers. Instead, people started using another language called JavaScript to write code in browsers, and using Java to write code on servers. The irony is, Javascript was designed to run on servers, so the state of affairs was that everybody was using a server-side language to write browser code, and a browser language to write server code.[^ignorant]
 
 [^ignorant]: Amazingly, people sometimes complain about Node that "JavaScript was never meant to run on a server." They need to buy Brandon Eich a BEvERage.
 
@@ -32,11 +32,11 @@ No, it will not surprise you to learn that it works kinda-sorta like C in the sa
 
 Very soon after people begun working with Java at scale, they learned that directly accessing instance variables was a terrible idea. JIT compilers narrowed the performance difference between `currentUser.id = 42` and `current_user.setId(42)` to almost nothing of relevance to anybody, and code using `currentUser.id = 42` or `int id = currentUser.id` was remarkably inflexible.
 
-There was no way to decorate such operations with cross-cutting concerns like logging or validation. You could not override the behaviour of setting or getting an `id` in a subclass. (Java programmers love subclasses!) So Java programmers religiously started following a pattern: They made their instance variables private, but exposed access with methods for getting and settingtheir values, e.g. `currentUser.setId(42)` and `currentUser.getId()`.
+There was no way to decorate such operations with cross-cutting concerns like logging or validation. You could not override the behaviour of setting or getting an `id` in a subclass. (Java programmers love subclasses!) So Java programmers religiously started following a pattern: They made their instance variables private, but exposed access with methods for getting and setting their values, e.g. `currentUser.setId(42)` and `currentUser.getId()`.
 
 This is awkward to write, but Java programmers have heavyweight IDEs, and they figured out how to have their code editors do all the tying for them.
 
-Meanwhile, JavaScript programmers carried on writing `currentUser.id = 42`, and eventually they too discovered that this was a terrible idea. One of the catalysts for change was the arrival of frameworks for client-side JavaScript applications. Let's say we have a rediculously simple person class:
+Meanwhile, JavaScript programmers carried on writing `currentUser.id = 42`, and eventually they too discovered that this was a terrible idea. One of the catalysts for change was the arrival of frameworks for client-side JavaScript applications. Let's say we have a ridiculously simple person class:
 
 {% highlight javascript %}
 class Person {
