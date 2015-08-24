@@ -92,7 +92,7 @@ It didn't take long for JavaScript libraries to figure out how to make this go a
 {% highlight javascript %}
 class Model {
   constructor () {
-    this.listeners = new WeakSet();
+    this.listeners = new Set();
   }
 
   get (property) {
@@ -106,15 +106,15 @@ class Model {
   }
 
   addListener (listener) {
-    listeners.add(listener);
+    this.listeners.add(listener);
   }
 
   deleteListener (listener) {
-    listeners.delete(listener);
+    this.listeners.delete(listener);
   }
 
   notifyAll (message, ...args) {
-    for (let listener of listeners) {
+    for (let listener of this.listeners) {
       listener.notify(this, message, ...args);
     }
   }
@@ -139,7 +139,7 @@ class View {
   }
 }
 
-class PersonView {
+class PersonView extends View {
   // ...
 
   notify(notifier, method, ...args) {
@@ -148,8 +148,8 @@ class PersonView {
 
   redraw () {
     document
-      .querySelector(`person-${person.id}`)
-      .text(person.fullName())
+      .querySelector(`person-${this.model.id}`)
+      .text(this.model.fullName())
   }
 }
 {% endhighlight %}
@@ -175,7 +175,7 @@ const after = (behaviour, ...methodNames) =>
     for (let methodName of methodNames) {
       const method = clazz.prototype[methodName];
 
-      Object.defineProperty(clazz.prototype, property, {
+      Object.defineProperty(clazz.prototype, methodName, {
         value: function (...args) {
           const returnValue = method.apply(this, args);
 
@@ -215,19 +215,19 @@ ECMAScript 5 ("ES 5") introduced a special way to turn direct property access in
 {% highlight javascript %}
 class Model {
   constructor () {
-    this.listeners = new WeakSet();
+    this.listeners = new Set();
   }
 
   addListener (listener) {
-    listeners.add(listener);
+    this.listeners.add(listener);
   }
 
   deleteListener (listener) {
-    listeners.delete(listener);
+    this.listeners.delete(listener);
   }
 
   notifyAll (message, ...args) {
-    for (let listener of listeners) {
+    for (let listener of this.listeners) {
       listener.notify(this, message, ...args);
     }
   }
@@ -264,7 +264,7 @@ class Person extends Model {
   }
 
   fullName () {
-    return `${this.first)} ${this.last}`;
+    return `${this.first} ${this.last}`;
   }
 };
 {% endhighlight %}
@@ -279,5 +279,203 @@ currentUser.first = 'Ragnvald';
 {% endhighlight %}
 
 And everything still works just as if we'd written `currentUser.set('first', 'Ragnvald')` with the `.set`-style code.
+
+### well, actually
+
+ECMAScript 5 getters and setters seem at first glance to be a magic combination of familiar syntax and powerful ability to meta-program. However, a getter or setter isn't a method in the usual sense. So we can't decorate a setter using the exact same code like an ES.later decorator like `@after(LogSetter, 'set first')`, because `set first` isn't a method. Although the syntax makes it look like a method, it's actually a special property we can only introspect using `Object.getOwnPropertyDescriptor()` and set using `Object.defineProperty()`.
+
+For this reason, the naïve `after` decorator won't work for getters and setters right out of the box.[^mixin] But we can "saddle up" and add a special case:
+
+[^mixin]: Neither will the `mixin` recipe we've evolved in previous posts like [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html). It can be enhanced to add a special case for getters, setters, and other concerns like working with POJOs. For example, https://github.com/WebReflection/universal-mixin.
+
+{% highlight javascript %}
+function getPropertyDescriptor (obj, property) {
+  if (obj == null) return null;
+
+  const descriptor = Object.getOwnPropertyDescriptor(obj, property);
+
+  if (obj.hasOwnProperty(property))
+    return Object.getOwnPropertyDescriptor(obj, property);
+  else return getPropertyDescriptor(Object.getPrototypeOf(obj), property);
+};
+
+const after = (behaviour, ...methodNames) =>
+  (clazz) => {
+    for (let methodNameExpr of methodNames) {
+      const [_, accessor, methodName] = methodNameExpr.match(/^(?:(get|set) )(.+)$/);
+      let descriptor = {};
+
+      if (accessor == null) {
+        const method = clazz.prototype[methodName];
+
+        descriptor = {
+          value: function (...args) {
+            const returnValue = method.apply(this, args);
+
+            behaviour.apply(this, args);
+            return returnValue;
+          },
+          writable: true
+        };
+      }
+      else if (accessor === "get") {
+        descriptor = getPropertyDescriptor(clazz.prototype, methodName);
+        const method = descriptor.get;
+
+        descriptor.get = function (...args) {
+          const returnValue = method.apply(this, args);
+
+          behaviour.apply(this, args);
+          return returnValue;
+        }
+      }
+      else if (accessor === "set") {
+        descriptor = getPropertyDescriptor(clazz.prototype, methodName);
+        const method = descriptor.set;
+
+        descriptor.set = function (...args) {
+          const returnValue = method.apply(this, args);
+
+          behaviour.apply(this, args);
+          return returnValue;
+        }
+      }
+      Object.defineProperty(clazz.prototype, methodName, descriptor);
+    }
+    return clazz;
+  }
+{% endhighlight %}
+
+*Now* we can write things like:
+
+{% highlight javascript %}
+const notify = (name) =>
+  function (...args) {
+    this.notifyAll(name, ...args);
+  };
+
+@after(notify('set'), 'set first', 'set last')
+@after(notify('get'), 'get first', 'get last')
+class Person extends Model {
+  constructor (first, last) {
+    super();
+    this.first = first;
+    this.last = last;
+  }
+
+  get first () {
+    return this[_first];
+  }
+
+  set first (value) {
+    return this[_first] = value;
+  }
+
+  get last () {
+    return this[_last];
+  }
+
+  set last (value) {
+    return this[_last] = value;
+  }
+
+  fullName () {
+    return `${this.first} ${this.last}`;
+  }
+};
+{% endhighlight %}
+
+We have now decoupled the code for notifying listeners from the code for getting and setting values. Which provokes a simple question: If the code that tracks listeners is already decoupled in `Model`, why shouldn't the code for triggering notifications be in the same entity?
+
+There are a few ways to do that. We'll use a [mixin](http://raganwald.com/2015/06/26/decorators-in-es7.html) instead of stuffing that logic in the model class:
+
+const Notifier = mixin({
+  init () {
+    this.listeners = new Set();
+  },
+
+  addListener (listener) {
+    this.listeners.add(listener);
+  },
+
+  deleteListener (listener) {
+    this.listeners.delete(listener);
+  },
+
+  notifyAll (message, ...args) {
+    for (let listener of this.listeners) {
+      listener.notify(this, message, ...args);
+    }
+  }
+}, {
+  notify (name) {
+    return function (...args) {
+      this.notifyAll(name, ...args);
+    }
+  }
+});
+
+And now we write:
+
+{% highlight javascript %}
+@Notifier
+@after(Notifier.notify('set'), 'set first', 'set last')
+@after(Notifier.notify('get'), 'get first', 'get last')
+class Person {
+  constructor (first, last) {
+    this.init();
+    this.first = first;
+    this.last = last;
+  }
+
+  get first () {
+    return this[_first];
+  }
+
+  set first (value) {
+    return this[_first] = value;
+  }
+
+  get last () {
+    return this[_last];
+  }
+
+  set last (value) {
+    return this[_last] = value;
+  }
+
+  fullName () {
+    return `${this.first} ${this.last}`;
+  }
+};
+{% endhighlight %}
+
+What have we done? **We have incorporated getters and setters into our code, while maintaining the ability to decorate them with added functionality as if they were ordinary methods**.
+
+That's a win for decomposing code/
+
+### one more thing
+
+Java programmers and Rubyists would scoff at:
+
+{% highlight javascript %}
+get first () {
+  return this[_first];
+}
+
+set first (value) {
+  return this[_first] = value;
+}
+
+get last () {
+  return this[_last];
+}
+
+set last (value) {
+  return this[_last] = value;
+}
+{% endhighlight %}
+
+The Java people would have and IDE that writes it for them, and the Rubyists would use the built-in class method `attr_accessor` to write them for us. Just for kicks, let's take the Ruby path:
 
 ---
