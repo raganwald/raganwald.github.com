@@ -16,6 +16,8 @@ And finally, C programming has a very strong culture of preferring "extremely fa
 
 Then there was a language called Java, and it was designed to run in browsers, and be portable across all sorts of hardware and operating systems, and one of its goals was to get C programmers to write Java code in the browser instead of writing C that lived in a plugin. Or rather, that was one of its strategies, the goal was for Sun Microsystems to stay relevant in a world that Microsoft was commoditizing, but that is another chapter of the history book.
 
+![Professor Frink on Java](/assets/images/frink.jpg)
+
 So the nice people behind Java gave it C-like syntax with the braces and the statement/expression dichotomy and the dot notation. They have "objects" instead of structs, and objects have a lot more going on than structs, but Java's designers made a distinction between `currentUser.id = 42` and `currentUser.setId(42)`, and made sure that one was extremely fast and the other was just fast. Or rather, that one was fast, and the other was just ok compared to C, but C programmers could feel like they were doing *important thinking* when deciding whether `id` ought to be directly accessed for performance or indirectly accessed for elegance and flexibility.
 
 History has shown that this was the right way to sell a new language. History has also shown that the actual performance distinction was irrelevant to almost everybody. Performance is only for now, code flexibility is forever.
