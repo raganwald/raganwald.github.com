@@ -28,7 +28,7 @@ Will it surprise you to learn that JavaScript was *also* designed to get C progr
 
 No, it will not surprise you to learn that it works kinda-sorta like C in the same way that Java kinda-sort works like C, and for exactly the same reason. And the reason really doesn't matter any more.
 
-### in praise of getters and setters
+### the problem with direct access
 
 Very soon after people begun working with Java at scale, they learned that directly accessing instance variables was a terrible idea. JIT compilers narrowed the performance difference between `currentUser.id = 42` and `current_user.setId(42)` to almost nothing of relevance to anybody, and code using `currentUser.id = 42` or `int id = currentUser.id` was remarkably inflexible.
 
@@ -81,4 +81,201 @@ currentUser.first = 'Ragnvald';
 currentUserView.redraw();
 {% endhighlight %}
 
-It didn't take long for JavaScript libraries to figure out how to make this go away by using a `get` and `set` method. Stripped down to
+This is pretty-much the opposite of "OO" programming: Why should the code updating a model like `Person` need to know that there is a view, and if there is a view, how and when to get it to update itself and redraw?
+
+### get and set
+
+It didn't take long for JavaScript libraries to figure out how to make this go away by using a `get` and `set` method. Stripped down to the bare essentials for illustrative purposes, we could write this:
+
+{% highlight javascript %}
+class Model {
+  constructor () {
+    this.listeners = new WeakSet();
+  }
+
+  get (property) {
+    this.notifyAll('get', property, this[property]);
+    return this[property];
+  }
+
+  set (property, value) {
+    this.notifyAll('set', property, value);
+    return this[property] = value;
+  }
+
+  addListener (listener) {
+    listeners.add(listener);
+  }
+
+  deleteListener (listener) {
+    listeners.delete(listener);
+  }
+
+  notifyAll (message, ...args) {
+    for (let listener of listeners) {
+      listener.notify(this, message, ...args);
+    }
+  }
+}
+
+class Person extends Model {
+  constructor (first, last) {
+    super();
+    this.set('first', first);
+    this.set('last', last);
+  }
+
+  fullName () {
+    return `${this.get('first')} ${this.get('last')}`;
+  }
+};
+
+class View {
+  constructor (model) {
+    this.model = model;
+    model.addListener(this);
+  }
+}
+
+class PersonView {
+  // ...
+
+  notify(notifier, method, ...args) {
+    if (notifier === this.model && method === 'set') this.redraw();
+  }
+
+  redraw () {
+    document
+      .querySelector(`person-${person.id}`)
+      .text(person.fullName())
+  }
+}
+{% endhighlight %}
+
+Our new `Model` superclass manually manages allowing objects to listen to the `get` and `set` methods on a model. If they are called, the "listeners" are notified via the `.notifyAll` method. We use that to have the `PersonView` listen to its `Person` and call its own `.redraw` method when a property is set via the `.set` method.
+
+So we can write:
+
+{% highlight javascript %}
+const currentUser = new Person('Reginald', 'Braithwaite');
+const currentUserView = new PersonView(currentUser);
+
+currentUser.set('first', 'Ragnvald');
+{% endhighlight %}
+
+And we don't need to call `currentUserView.redraw()`, because the notification built into `.set` does it for us.
+
+We can do other things with `.get` and `.set`, of course. Now that they are methods, we can decorate them with logging or validation if we choose. Methods make our code flexible and open to extension. For example, we can use an [ES.later decorator](http://raganwald.com/2015/08/05/method-advice.html) to add logging advice to `.set`:
+
+{% highlight javascript %}
+const after = (behaviour, ...methodNames) =>
+  (clazz) => {
+    for (let methodName of methodNames) {
+      const method = clazz.prototype[methodName];
+
+      Object.defineProperty(clazz.prototype, property, {
+        value: function (...args) {
+          const returnValue = method.apply(this, args);
+
+          behaviour.apply(this, args);
+          return returnValue;
+        },
+        writable: true
+      });
+    }
+    return clazz;
+  }
+
+function LogSetter (model, property, value) {
+  console.log(`Setting ${property} of ${model.fullName()} to ${value}`);
+}
+
+@after(LogSetter, 'set')
+class Person extends Model {
+  constructor (first, last) {
+    super();
+    this.set('first', first);
+    this.set('last', last);
+  }
+
+  fullName () {
+    return `${this.get('first')} ${this.get('last')}`;
+  }
+};
+{% endhighlight %}
+
+Whereas we can't do anything like that with direct property access. So the takeaway is, **mediating property access with methods is more flexible than directly accessing properties**.
+
+### getters and setters in javascript
+
+ECMAScript 5 ("ES 5") introduced a special way to turn direct property access into a kind of method. Here's how we'd write our `Person` class using ES 5 getters and setters:
+
+{% highlight javascript %}
+class Model {
+  constructor () {
+    this.listeners = new WeakSet();
+  }
+
+  addListener (listener) {
+    listeners.add(listener);
+  }
+
+  deleteListener (listener) {
+    listeners.delete(listener);
+  }
+
+  notifyAll (message, ...args) {
+    for (let listener of listeners) {
+      listener.notify(this, message, ...args);
+    }
+  }
+}
+
+const _first = Symbol('first'),
+      _last = Symbol('last');
+
+class Person extends Model {
+  constructor (first, last) {
+    super();
+    this.first = first;
+    this.last = last;
+  }
+
+  get first () {
+    this.notifyAll('get', 'first', this[_first]);
+    return this[_first];
+  }
+
+  set first (value) {
+    this.notifyAll('set', 'first', value);
+    return this[_first] = value;
+  }
+
+  get last () {
+    this.notifyAll('get', 'last', this[_last]);
+    return this[_last];
+  }
+
+  set last (value) {
+    this.notifyAll('set', 'last', value);
+    return this[_last] = value;
+  }
+
+  fullName () {
+    return `${this.first)} ${this.last}`;
+  }
+};
+{% endhighlight %}
+
+With this syntax, we can write:
+
+{% highlight javascript %}
+const currentUser = new Person('Reginald', 'Braithwaite');
+const currentUserView = new PersonView(currentUser);
+
+currentUser.first = 'Ragnvald';
+{% endhighlight %}
+
+And everything still works just as if we'd written `currentUser.set('first', 'Ragnvald')` with the `.set`-style code.
+
+---
