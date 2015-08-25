@@ -12,7 +12,7 @@ Also of importance was that you could have pointers to functions in structs, so 
 
 And finally, C programming has a very strong culture of preferring "extremely fast" to just "fast," and thus if you wanted a C programmer's attention, you had to make sure that you never do something that is just fast when you could do something that is extremely fast. This is a generalization, of course. I'm sure that if we ask around, we'll eventually meet *both* C programmers who prefer elegant abstractions to extremely fast code.
 
-[![Castle](/assets/images/castle.jpg)](https://www.flickr.com/photos/gags9999/13981886162)
+[![Flathead Dragster](/assets/images/dragster.jpg)](https://www.flickr.com/photos/tom-margie/1255624456)
 
 ### java and javascript
 
