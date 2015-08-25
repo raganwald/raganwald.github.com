@@ -22,9 +22,7 @@ So the nice people behind Java gave it C-like syntax with the braces and the sta
 
 History has shown that this was the right way to sell a new language. History has also shown that the actual performance distinction was irrelevant to almost everybody. Performance is only for now, code flexibility is forever.
 
-Well, it turned out that Sun was right about getting C programmers to use Java (it worked on me, I ditched CodeWarrior and Lightspeed C), but wrong about using Java in browsers. Instead, people started using another language called JavaScript to write code in browsers, and using Java to write code on servers. The irony is, Javascript was designed to run on servers, so the state of affairs was that everybody was using a server-side language to write browser code, and a browser language to write server code.[^ignorant]
-
-[^ignorant]: Amazingly, people sometimes complain about Node that "JavaScript was never meant to run on a server." They need to buy Brandon Eich a BEvERage.
+Well, it turned out that Sun was right about getting C programmers to use Java (it worked on me, I ditched CodeWarrior and Lightspeed C), but wrong about using Java in browsers. Instead, people started using another language called JavaScript to write code in browsers, and using Java to write code on servers. The irony is, Javascript was designed to run on servers, so the state of affairs was that everybody was using a server-side language to write browser code, and a browser language to write server code.
 
 Will it surprise you to learn that JavaScript was *also* designed to get C programmers to write code? And that it went with the C-like syntax with the braces and the statement/expression dichotomy and the dot notation? And although JavaScript has a thing that is kinda-sorta like a Java object, and kinda-sorta like a Smalltalk dictionary, will it surprise you to learn that JavaScript *also* has a distinction between `currentUser.id = 42` and `currentUser.setId(42)`? And that originally, one was slow, and the other dog-slow, but programmers could do *important thinking* about when to optimize for performance and when to give a hoot about programmer sanity?
 
