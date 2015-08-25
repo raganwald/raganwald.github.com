@@ -459,7 +459,7 @@ What have we done? **We have incorporated getters and setters into our code, whi
 
 That's a win for decomposing code.
 
-[![Flying saucers fro everyone](/assetsimages/saucers.jpg)](https://www.flickr.com/photos/x-ray_delta_one/3949834600)
+[![Flying saucers fro everyone](/assets/images/saucers.jpg)](https://www.flickr.com/photos/x-ray_delta_one/3949834600)
 
 ### one more thing
 
