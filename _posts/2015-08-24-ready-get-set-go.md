@@ -477,11 +477,15 @@ But when you find a way to use mixins and decorate methods, you can decompose th
 
 Getters and setters allow us to maintain the legacy style of writing code that appears to directly access properties, while actually mediating that access with methods. With care, we can update our tooling to permit us to decorate our getters and setters, distributing responsibility as we see fit and freeing us from dependence upon heavyweight base classes.
 
+(discuss on [Hacker News](https://news.ycombinator.com/item?id=10116678))
+
+---
+
 [![Flying saucers for everyone](/assets/images/saucers.jpg)](https://www.flickr.com/photos/x-ray_delta_one/3949834600)
 
 ### one more thing
 
-Java programmers and Rubyists scoff at:
+Rubyists scoff at:
 
 {% highlight javascript %}
 get first () {
@@ -501,7 +505,7 @@ set last (value) {
 }
 {% endhighlight %}
 
-The Java people would have and IDE that writes it for them, and the Rubyists would use the built-in class method `attr_accessor` to write them for us. Just for kicks, let's take the Ruby path: We'll write a decorator that writes getters and setters. The raw values will be stored in an `attributes` map:
+Rubyists would use the built-in class method `attr_accessor` to write them for us. So just for kicks, we'll write a decorator that writes getters and setters. The raw values will be stored in an `attributes` map:
 
 {% highlight javascript %}
 function attrAccessor (...propertyNames) {
@@ -549,8 +553,8 @@ class Person {
 };
 {% endhighlight %}
 
-`attrAccessor` takes a list of property names and returns a decorator for a class. It writes a plain getter or setter function for each property, and all the properties defined are stored in the `.attributes` hash. This is very convenient for serialization or other persistance.
+`attrAccessor` takes a list of property names and returns a decorator for a class. It writes a plain getter or setter function for each property, and all the properties defined are stored in the `.attributes` hash. This is very convenient for serialization or other persistance mechanisms.
 
-it's trivial to also make `attrReader` and `attrWriter` functions.
+(It's trivial to also make `attrReader` and `attrWriter` functions using this template. We just need to omit the `set` when writing `attrReader` and omit the `get` when writing `attrWriter`.)
 
 ---
