@@ -1,7 +1,7 @@
 ---
-title: "Ready... Get Set... Go!"
+title: "Getters and Setters in JavaScript"
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 Once upon a time, there was a language called C,[^bcpl] and this language had something called a `struct`, and you could use it to make heterogeneously aggregated data structures that had members. The key thing to know about C is that when you have a struct called `currentUser`, and a member like `id`, and you write something like `currentUser.id = 42`, the C complier turned this into extremely fast assembler instructions. Same for `int id = currentUser.id`.
@@ -459,6 +459,8 @@ What have we done? **We have incorporated getters and setters into our code, whi
 
 That's a win for decomposing code.
 
+[![Flying saucers fro everyone](/assetsimages/saucers.jpg)](https://www.flickr.com/photos/x-ray_delta_one/3949834600)
+
 ### one more thing
 
 Java programmers and Rubyists would scoff at:
@@ -484,7 +486,7 @@ set last (value) {
 The Java people would have and IDE that writes it for them, and the Rubyists would use the built-in class method `attr_accessor` to write them for us. Just for kicks, let's take the Ruby path: We'll write a decorator that writes getters and setters. The raw values will be stored in an `attributes` map:
 
 {% highlight javascript %}
-function attrAaccessor (...propertyNames) {
+function attrAccessor (...propertyNames) {
   return function (clazzOrObject) {
     const target = clazzOrObject.prototype || clazzOrObject;
 
@@ -513,7 +515,7 @@ Now we can write:
 
 {% highlight javascript %}
 @Notifier
-@attrAaccessor('first', 'last')
+@attrAccessor('first', 'last')
 @after(Notifier.notify('set'), 'set first', 'set last')
 @after(Notifier.notify('get'), 'get first', 'get last')
 class Person {
@@ -529,7 +531,7 @@ class Person {
 };
 {% endhighlight %}
 
-The `attrAaccessor` function takes a list of property names and returns a decorator for a class (or POJO, if you like). It writes a plain getter or setter function for each property, and all the properties defined are stored in the `.attributes` hash. This is very convenient for serialization or other persistance.
+`attrAccessor` takes a list of property names and returns a decorator for a class. It writes a plain getter or setter function for each property, and all the properties defined are stored in the `.attributes` hash. This is very convenient for serialization or other persistance.
 
 it's trivial to also make `attrReader` and `attrWriter` functions.
 
