@@ -1,5 +1,5 @@
 ---
-title: "Getters and Setters in JavaScript"
+title: "Getters, Setters, and Class Decorators in ES 6"
 layout: default
 tags: [allonge]
 ---
@@ -85,7 +85,7 @@ Why does this matter?
 
 Well, if you can't control *where* certain responsibilities are handled, you can't really organize your program. Subclasses, methods, mixins and decorators are techniques: What they make possible is choosing which code is responsible for which functionality.
 
-And that's the whole thing about programming: Organzing the functonality. *Direct access does not allow you to organize the functionality associated with getting and setting properties*, it forces the code doing the getting and setting to also be responsible for anything else associated with getting and setting.
+And that's the whole thing about programming: Organizing the functionality. *Direct access does not allow you to organize the functionality associated with getting and setting properties*, it forces the code doing the getting and setting to also be responsible for anything else associated with getting and setting.
 
 [![Magnetic Core Memory](/assets/images/core.jpg)](https://www.flickr.com/photos/dvanzuijlekom/6952363784)
 
@@ -275,9 +275,9 @@ class Person extends Model {
 };
 {% endhighlight %}
 
-When we preface a method with the keyword `get`, we are defining a getter, a method that will be called when code attempts to read from the property. And when we preface a method with `set`, we are defining a setter, a methid that will be called when code attempts to write to the property.
+When we preface a method with the keyword `get`, we are defining a getter, a method that will be called when code attempts to read from the property. And when we preface a method with `set`, we are defining a setter, a method that will be called when code attempts to write to the property.
 
-Getters and setters needn't actaully read or write any properties, they can do anything. But in this essay, we'll talk about using them to mediate property access. With getters and setters, we can write:
+Getters and setters needn't actually read or write any properties, they can do anything. But in this essay, we'll talk about using them to mediate property access. With getters and setters, we can write:
 
 {% highlight javascript %}
 const currentUser = new Person('Reginald', 'Braithwaite');
