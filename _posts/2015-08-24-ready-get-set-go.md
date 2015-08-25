@@ -284,13 +284,13 @@ And everything still works just as if we'd written `currentUser.set('first', 'Ra
 
 [![Keypunch](/assets/images/keypunch.jpg)](https://www.flickr.com/photos/mwichary/3582506038)
 
-### well, actually
+### an after combinator that can handle getters and setters
 
 ECMAScript 5 getters and setters seem at first glance to be a magic combination of familiar syntax and powerful ability to meta-program. However, a getter or setter isn't a method in the usual sense. So we can't decorate a setter using the exact same code like an ES.later decorator like `@after(LogSetter, 'set first')`, because `set first` isn't a method. Although the syntax makes it look like a method, it's actually a special property we can only introspect using `Object.getOwnPropertyDescriptor()` and set using `Object.defineProperty()`.
 
-For this reason, the naïve `after` decorator won't work for getters and setters right out of the box.[^mixin] We'd have to use one kind of decorator for methods, another for getters, and a third for setters. Instead, let's modify our `after` decorator so that you can use a single function with methods, getters, and setters:
+For this reason, the naïve `after` decorator won't work for getters and setters right out of the box.[^mixin] We'd have to use one kind of decorator for methods, another for getters, and a third for setters. That doesn't sound like fun, so let's modify our `after` combinator so that you can use a single function with methods, getters, and setters:
 
-[^mixin]: Neither will the `mixin` recipe we've evolved in previous posts like [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html). It can be enhanced to add a special case for getters, setters, and other concerns like working with POJOs. For example, @Webreflection's [Universal Mixin](https://github.com/WebReflection/universal-mixin).
+[^mixin]: Neither will the `mixin` recipe we've evolved in previous posts like [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html). It can be enhanced to add a special case for getters, setters, and other concerns like working with POJOs. For example, Andrea Giammarchi's [Universal Mixin](https://github.com/WebReflection/universal-mixin).
 
 {% highlight javascript %}
 function getPropertyDescriptor (obj, property) {
@@ -307,23 +307,21 @@ const after = (behaviour, ...methodNames) =>
   (clazz) => {
     for (let methodNameExpr of methodNames) {
       const [_, accessor, methodName] = methodNameExpr.match(/^(?:(get|set) )(.+)$/);
-      let descriptor = {};
+      const descriptor = getPropertyDescriptor(clazz.prototype, methodName);
+
 
       if (accessor == null) {
         const method = clazz.prototype[methodName];
 
-        descriptor = {
-          value: function (...args) {
-            const returnValue = method.apply(this, args);
+        descriptor.value = function (...args) {
+          const returnValue = method.apply(this, args);
 
-            behaviour.apply(this, args);
-            return returnValue;
-          },
-          writable: true
+          behaviour.apply(this, args);
+          return returnValue;
         };
+        descriptor.writable = true;
       }
       else if (accessor === "get") {
-        descriptor = getPropertyDescriptor(clazz.prototype, methodName);
         const method = descriptor.get;
 
         descriptor.get = function (...args) {
@@ -331,10 +329,10 @@ const after = (behaviour, ...methodNames) =>
 
           behaviour.apply(this, args);
           return returnValue;
-        }
+        };
+        descriptor.configurable = true;
       }
       else if (accessor === "set") {
-        descriptor = getPropertyDescriptor(clazz.prototype, methodName);
         const method = descriptor.set;
 
         descriptor.set = function (...args) {
@@ -342,7 +340,8 @@ const after = (behaviour, ...methodNames) =>
 
           behaviour.apply(this, args);
           return returnValue;
-        }
+        };
+        descriptor.configurable = true;
       }
       Object.defineProperty(clazz.prototype, methodName, descriptor);
     }
@@ -350,7 +349,7 @@ const after = (behaviour, ...methodNames) =>
   }
 {% endhighlight %}
 
-*Now* we can write things like:
+*Now* we can write:
 
 {% highlight javascript %}
 const notify = (name) =>
@@ -391,8 +390,9 @@ class Person extends Model {
 
 We have now decoupled the code for notifying listeners from the code for getting and setting values. Which provokes a simple question: If the code that tracks listeners is already decoupled in `Model`, why shouldn't the code for triggering notifications be in the same entity?
 
-There are a few ways to do that. We'll use a [universalmixin](https://github.com/WebReflection/universal-mixin) instead of stuffing that logic in the model class:
+There are a few ways to do that. We'll use a [universal mixin](https://github.com/WebReflection/universal-mixin) instead of stuffing that logic into a superclass:
 
+{% highlight javascript %}
 const Notifier = mixin({
   init () {
     this.listeners = new Set();
@@ -418,6 +418,7 @@ const Notifier = mixin({
     }
   }
 });
+{% endhighlight %}
 
 And now we write:
 
@@ -480,6 +481,56 @@ set last (value) {
 }
 {% endhighlight %}
 
-The Java people would have and IDE that writes it for them, and the Rubyists would use the built-in class method `attr_accessor` to write them for us. Just for kicks, let's take the Ruby path:
+The Java people would have and IDE that writes it for them, and the Rubyists would use the built-in class method `attr_accessor` to write them for us. Just for kicks, let's take the Ruby path: We'll write a decorator that writes getters and setters. The raw values will be stored in an `attributes` map:
+
+{% highlight javascript %}
+function attrAaccessor (...propertyNames) {
+  return function (clazzOrObject) {
+    const target = clazzOrObject.prototype || clazzOrObject;
+
+    for (let propertyName of propertyNames) {
+      Object.defineProperty(target, propertyName, {
+        get: function () {
+          if (this.attributes)
+            return this.attributes[propertyName];
+        },
+        set: function (value) {
+          if (this.attributes == undefined)
+            this.attributes = new Map();
+          return this.attributes[propertyName] = value;
+        },
+        configurable: true,
+        enumerable: true
+      })
+    }
+
+    return clazzOrObject;
+  }
+}
+{% endhighlight %}
+
+Now we can write:
+
+{% highlight javascript %}
+@Notifier
+@attrAaccessor('first', 'last')
+@after(Notifier.notify('set'), 'set first', 'set last')
+@after(Notifier.notify('get'), 'get first', 'get last')
+class Person {
+  constructor (first, last) {
+    this.init();
+    this.first = first;
+    this.last = last;
+  }
+
+  fullName () {
+    return `${this.first} ${this.last}`;
+  }
+};
+{% endhighlight %}
+
+The `attrAaccessor` function takes a list of property names and returns a decorator for a class (or POJO, if you like). It writes a plain getter or setter function for each property, and all the properties defined are stored in the `.attributes` hash. This is very convenient for serialization or other persistance.
+
+it's trivial to also make `attrReader` and `attrWriter` functions.
 
 ---
