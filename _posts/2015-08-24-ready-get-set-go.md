@@ -12,7 +12,7 @@ Also of importance was that you could have pointers to functions in structs, so 
 
 And finally, C programming has a very strong culture of preferring "extremely fast" to just "fast," and thus if you wanted a C programmer's attention, you had to make sure that you never do something that is just fast when you could do something that is extremely fast. This is a generalization, of course. I'm sure that if we ask around, we'll eventually meet *both* C programmers who prefer elegant abstractions to extremely fast code.
 
-<img src="/assets/images/frink.jpg" alt="Professor Frink on Java" style="width: 100%;">
+[![Castle](/assets/images/castle.jpg)](https://www.flickr.com/photos/gags9999/13981886162)
 
 ### java and javascript
 
@@ -28,7 +28,7 @@ Will it surprise you to learn that JavaScript was *also* designed to get C progr
 
 No, it will not surprise you to learn that it works kinda-sorta like C in the same way that Java kinda-sort works like C, and for exactly the same reason. And the reason really doesn't matter any more.
 
-![Techniques](/assets/images/techniques.png)
+<img src="/assets/images/frink.jpg" alt="Professor Frink on Java" style="width: 100%;">
 
 ### the problem with direct access
 
@@ -213,6 +213,8 @@ class Person extends Model {
 Whereas we can't do anything like that with direct property access. Mediating property access with methods is more flexible than directly accessing properties, and this allows us to organize our program and distribute responsibility properly.
 
 > Note: All the ES.later class decorators can be used in vanilla ES 6 code as ordinary functions. Instead of `@after(LogSetter, 'set') class Person extends Model {...}`, simply write `const Person = after(LogSetter, 'set')(class Person extends Model {...})`
+
+![Techniques](/assets/images/techniques.png)
 
 ### getters and setters in javascript
 
