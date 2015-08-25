@@ -22,7 +22,7 @@ So the nice people behind Java gave it C-like syntax with the braces and the sta
 
 History has shown that this was the right way to sell a new language. History has also shown that the actual performance distinction was irrelevant to almost everybody. Performance is only for now, code flexibility is forever.
 
-Well, it turned out that Sun was right about getting C programmers to use Java (it worked on me, I ditched CodeWarrior and Lightspeed C), but wrong about using Java in browsers. Instead, people started using another language called JavaScript to write code in browsers, and using Java to write code on servers. ~~The irony is, JavaScript was designed to run on servers, so the state of affairs was that everybody was using a server-side language to write browser code, and a browser language to write server code.~~[^correction]
+Well, it turned out that Sun was right about getting C programmers to use Java (it worked on me, I ditched CodeWarrior and Lightspeed C), but wrong about using Java in browsers. Instead, people started using another language called JavaScript to write code in browsers, and using Java to write code on servers. <strike>The irony is, JavaScript was designed to run on servers, so the state of affairs was that everybody was using a server-side language to write browser code, and a browser language to write server code.</strike>[^correction]
 
 [^correction]: Apparently it's a myth that JavaScript was designed for servers. Wikipedia says it was designed as a lightweight alternative to Java, much as Visual Basic was a lightweight alternative C++. It was released to run on servers soon after being released on browsers, but was not intended from the start as a server-side language.
 
