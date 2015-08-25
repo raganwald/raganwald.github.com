@@ -28,15 +28,15 @@ Will it surprise you to learn that JavaScript was *also* designed to get C progr
 
 No, it will not surprise you to learn that it works kinda-sorta like C in the same way that Java kinda-sort works like C, and for exactly the same reason. And the reason really doesn't matter any more.
 
+![Techniques](/assets/images/techniques.png)
+
 ### the problem with direct access
 
 Very soon after people begun working with Java at scale, they learned that directly accessing instance variables was a terrible idea. JIT compilers narrowed the performance difference between `currentUser.id = 42` and `currentUser.setId(42)` to almost nothing of relevance to anybody, and code using `currentUser.id = 42` or `int id = currentUser.id` was remarkably inflexible.
 
-There was no way to decorate such operations with cross-cutting concerns like logging or validation. You could not override the behaviour of setting or getting an `id` in a subclass. (Java programmers love subclasses!) So Java programmers religiously started following a pattern: They made their instance variables private, but exposed access with methods for getting and setting their values, e.g. `currentUser.setId(42)` and `currentUser.getId()`.
+There was no way to decorate such operations with cross-cutting concerns like logging or validation. You could not override the behaviour of setting or getting an `id` in a subclass. (Java programmers love subclasses!)
 
-This is awkward to write, but Java programmers have heavyweight IDEs, and they figured out how to have their code editors do all the tying for them.
-
-Meanwhile, JavaScript programmers carried on writing `currentUser.id = 42`, and eventually they too discovered that this was a terrible idea. One of the catalysts for change was the arrival of frameworks for client-side JavaScript applications. Let's say we have a ridiculously simple person class:
+Meanwhile, JavaScript programmers were also writing `currentUser.id = 42`, and eventually they too discovered that this was a terrible idea. One of the catalysts for change was the arrival of frameworks for client-side JavaScript applications. Let's say we have a ridiculously simple person class:
 
 {% highlight javascript %}
 class Person {
@@ -81,13 +81,17 @@ currentUser.first = 'Ragnvald';
 currentUserView.redraw();
 {% endhighlight %}
 
-This is pretty-much the opposite of "OO" programming: Why should the code updating a model like `Person` need to know that there is a view, and if there is a view, how and when to get it to update itself and redraw?
+Why does this matter?
+
+Well, if you can't control *where* certain responsibilities are handled, you can't really organize your program. Subclasses, methods, mixins and decorators are techniques: What they make possible is choosing which code is responsible for which functionality.
+
+And that's the whole thing about programming: Organzing the functonality. *Direct access does not allow you to organize the functionality associated with getting and setting properties*, it forces the code doing the getting and setting to also be responsible for anything else associated with getting and setting.
 
 [![Magnetic Core Memory](/assets/images/core.jpg)](https://www.flickr.com/photos/dvanzuijlekom/6952363784)
 
 ### get and set
 
-It didn't take long for JavaScript libraries to figure out how to make this go away by using a `get` and `set` method. Stripped down to the bare essentials for illustrative purposes, we could write this:
+It didn't take long for JavaScript library authors to figure out how to make this go away by using a `get` and `set` method. Stripped down to the bare essentials for illustrative purposes, we could write this:
 
 {% highlight javascript %}
 class Model {
@@ -206,11 +210,13 @@ class Person extends Model {
 };
 {% endhighlight %}
 
-Whereas we can't do anything like that with direct property access. So the takeaway is, **mediating property access with methods is more flexible than directly accessing properties**.
+Whereas we can't do anything like that with direct property access. Mediating property access with methods is more flexible than directly accessing properties, and this allows us to organize our program and distribute responsibility properly.
+
+> Note: All the ES.later class decorators can be used in vanilla ES 6 code as ordinary functions. Instead of `@after(LogSetter, 'set') class Person extends Model {...}`, simply write `const Person = after(LogSetter, 'set')(class Person extends Model {...})`
 
 ### getters and setters in javascript
 
-ECMAScript 5 ("ES 5") introduced a special way to turn direct property access into a kind of method. Here's how we'd write our `Person` class using ES 5 getters and setters:
+The problem with getters and setters was well-understood, and the stewards behind JavaScript's evolution responded by introducing a special way to turn direct property access into a kind of method. Here's how we'd write our `Person` class using "getters" and "setters:"
 
 {% highlight javascript %}
 class Model {
@@ -269,7 +275,9 @@ class Person extends Model {
 };
 {% endhighlight %}
 
-With this syntax, we can write:
+When we preface a method with the keyword `get`, we are defining a getter, a method that will be called when code attempts to read from the property. And when we preface a method with `set`, we are defining a setter, a methid that will be called when code attempts to write to the property.
+
+Getters and setters needn't actaully read or write any properties, they can do anything. But in this essay, we'll talk about using them to mediate property access. With getters and setters, we can write:
 
 {% highlight javascript %}
 const currentUser = new Person('Reginald', 'Braithwaite');
@@ -280,13 +288,17 @@ currentUser.first = 'Ragnvald';
 
 And everything still works just as if we'd written `currentUser.set('first', 'Ragnvald')` with the `.set`-style code.
 
+Getters and setters allow us to have the semantics of using methods, but the syntax of direct access.
+
 [![Keypunch](/assets/images/keypunch.jpg)](https://www.flickr.com/photos/mwichary/3582506038)
 
 ### an after combinator that can handle getters and setters
 
-ECMAScript 5 getters and setters seem at first glance to be a magic combination of familiar syntax and powerful ability to meta-program. However, a getter or setter isn't a method in the usual sense. So we can't decorate a setter using the exact same code like an ES.later decorator like `@after(LogSetter, 'set first')`, because `set first` isn't a method. Although the syntax makes it look like a method, it's actually a special property we can only introspect using `Object.getOwnPropertyDescriptor()` and set using `Object.defineProperty()`.
+Getters and setters seem at first glance to be a magic combination of familiar syntax and powerful ability to meta-program. However, a getter or setter isn't a method in the usual sense. So we can't decorate a setter using the exact same code we'd use to decorate an ordinary method.
 
-For this reason, the naïve `after` decorator won't work for getters and setters right out of the box.[^mixin] We'd have to use one kind of decorator for methods, another for getters, and a third for setters. That doesn't sound like fun, so let's modify our `after` combinator so that you can use a single function with methods, getters, and setters:
+With the `.set` method, we could directly access `Model.prototype.set` and wrap it in another function. That's how our decorators work. But there is no `Person.prototype.first` method. Instead, there is a property descriptor we can only introspect using `Object.getOwnPropertyDescriptor()` and update using `Object.defineProperty()`.
+
+For this reason, the naïve `after` decorator given above won't work for getters and setters.[^mixin] We'd have to use one kind of decorator for methods, another for getters, and a third for setters. That doesn't sound like fun, so let's modify our `after` combinator so that you can use a single function with methods, getters, and setters:
 
 [^mixin]: Neither will the `mixin` recipe we've evolved in previous posts like [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html). It can be enhanced to add a special case for getters, setters, and other concerns like working with POJOs. For example, Andrea Giammarchi's [Universal Mixin](https://github.com/WebReflection/universal-mixin).
 
@@ -455,13 +467,19 @@ class Person {
 
 What have we done? **We have incorporated getters and setters into our code, while maintaining the ability to decorate them with added functionality as if they were ordinary methods**.
 
-That's a win for decomposing code.
+That's a win for decomposing code. And it points to something to think about: When all you have are methods, you're encouraged to make heavyweight superclasses. That's why so many frameworks force you to extend their special-purpose base classes like `Model` or `View`.
 
-[![Flying saucers fro everyone](/assets/images/saucers.jpg)](https://www.flickr.com/photos/x-ray_delta_one/3949834600)
+But when you find a way to use mixins and decorate methods, you can decompose things into smaller pieces and apply them where they are needed. This leads in the direction of using collections of libraries instead of a heavyweight framework.
+
+### summary
+
+Getters and setters allow us to maintain the legacy style of writing code that appears to directly access properties, while actually mediating that access with methods. With care, we can update our tooling to permit us to decorate our getters and setters, distributing responsibility as we see fit and freeing us from dependence upon heavyweight base classes.
+
+[![Flying saucers for everyone](/assets/images/saucers.jpg)](https://www.flickr.com/photos/x-ray_delta_one/3949834600)
 
 ### one more thing
 
-Java programmers and Rubyists would scoff at:
+Java programmers and Rubyists scoff at:
 
 {% highlight javascript %}
 get first () {
