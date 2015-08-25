@@ -284,9 +284,9 @@ And everything still works just as if we'd written `currentUser.set('first', 'Ra
 
 ECMAScript 5 getters and setters seem at first glance to be a magic combination of familiar syntax and powerful ability to meta-program. However, a getter or setter isn't a method in the usual sense. So we can't decorate a setter using the exact same code like an ES.later decorator like `@after(LogSetter, 'set first')`, because `set first` isn't a method. Although the syntax makes it look like a method, it's actually a special property we can only introspect using `Object.getOwnPropertyDescriptor()` and set using `Object.defineProperty()`.
 
-For this reason, the naïve `after` decorator won't work for getters and setters right out of the box.[^mixin] But we can "saddle up" and add a special case:
+For this reason, the naïve `after` decorator won't work for getters and setters right out of the box.[^mixin] We'd have to use one kind of decorator for methods, another for getters, and a third for setters. Instead, let's modify our `after` decorator so that you can use a single function with methods, getters, and setters:
 
-[^mixin]: Neither will the `mixin` recipe we've evolved in previous posts like [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html). It can be enhanced to add a special case for getters, setters, and other concerns like working with POJOs. For example, https://github.com/WebReflection/universal-mixin.
+[^mixin]: Neither will the `mixin` recipe we've evolved in previous posts like [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html). It can be enhanced to add a special case for getters, setters, and other concerns like working with POJOs. For example, @Webreflection's [Universal Mixin](https://github.com/WebReflection/universal-mixin).
 
 {% highlight javascript %}
 function getPropertyDescriptor (obj, property) {
@@ -387,7 +387,7 @@ class Person extends Model {
 
 We have now decoupled the code for notifying listeners from the code for getting and setting values. Which provokes a simple question: If the code that tracks listeners is already decoupled in `Model`, why shouldn't the code for triggering notifications be in the same entity?
 
-There are a few ways to do that. We'll use a [mixin](http://raganwald.com/2015/06/26/decorators-in-es7.html) instead of stuffing that logic in the model class:
+There are a few ways to do that. We'll use a [universalmixin](https://github.com/WebReflection/universal-mixin) instead of stuffing that logic in the model class:
 
 const Notifier = mixin({
   init () {
@@ -452,7 +452,7 @@ class Person {
 
 What have we done? **We have incorporated getters and setters into our code, while maintaining the ability to decorate them with added functionality as if they were ordinary methods**.
 
-That's a win for decomposing code/
+That's a win for decomposing code.
 
 ### one more thing
 
