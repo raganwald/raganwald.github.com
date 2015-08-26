@@ -432,7 +432,7 @@ const Notifier = mixin({
 });
 {% endhighlight %}
 
-And now we write:
+This permits us to write:
 
 {% highlight javascript %}
 @Notifier
@@ -481,7 +481,9 @@ Getters and setters allow us to maintain the legacy style of writing code that a
 
 *Post Scriptum*
 
-*This post uses listening to property setters as an excuse to discuss the getter and setter mechanisms, and ways to decorate them so that we can organize code around concerns. Of course, propagating changes through explicit notification is not the only way to organize code that needs to manage dependencies on data changing. It's beyond teh scope of this post to discuss the many alternatives, but readers have suggested exploring [Object.observe](http://arv.github.io/ecmascript-object-observe/) and working with immutable data.*
+*This post uses listening to property setters as an excuse to discuss the getter and setter mechanisms, and ways to decorate them so that we can organize code around concerns.*
+
+*Of course, propagating changes through explicit notification is not the only way to organize code that needs to manage dependencies on data changing. It's beyond the scope of this post to discuss the many alternatives, but readers have suggested exploring [Object.observe](http://arv.github.io/ecmascript-object-observe/) and working with immutable data.*
 
 ---
 
