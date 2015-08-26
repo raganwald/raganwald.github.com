@@ -22,9 +22,7 @@ So the nice people behind Java gave it C-like syntax with the braces and the sta
 
 History has shown that this was the right way to sell a new language. History has also shown that the actual performance distinction was irrelevant to almost everybody. Performance is only for now, code flexibility is forever.
 
-Well, it turned out that Sun was right about getting C programmers to use Java (it worked on me, I ditched CodeWarrior and Lightspeed C), but wrong about using Java in browsers. Instead, people started using another language called JavaScript to write code in browsers, and used Java to write code on servers. <strike>The irony is, JavaScript was designed to run on servers, so the state of affairs was that everybody was using a server-side language to write browser code, and a browser language to write server code.</strike>[^correction]
-
-[^correction]: Apparently it's a myth that JavaScript was designed for servers. Wikipedia says it was designed as a lightweight alternative to Java, much as Visual Basic was a lightweight alternative to C++. It was released to run on servers soon after being released on browsers, but it was not intended from the start as a server-side language.
+Well, it turned out that Sun was right about getting C programmers to use Java (it worked on me, I ditched CodeWarrior and Lightspeed C), but wrong about using Java in browsers. Instead, people started using another language called JavaScript to write code in browsers, and used Java to write code on servers.
 
 Will it surprise you to learn that JavaScript was *also* designed to get C programmers to write code? And that it went with the C-like syntax with curly braces, the statement/expression dichotomy, and dot notation? And although JavaScript has a thing that is kinda-sorta like a Java object, and kinda-sorta like a Smalltalk dictionary, will it surprise you to learn that JavaScript *also* has a distinction between `currentUser.id = 42` and `currentUser.setId(42)`? And that originally, one was slow, and the other dog-slow, but programmers could do *important thinking* about when to optimize for performance and when to give a hoot about programmer sanity?
 
@@ -480,6 +478,10 @@ But when you find a way to use mixins and decorate methods, you can decompose th
 Getters and setters allow us to maintain the legacy style of writing code that appears to directly access properties, while actually mediating that access with methods. With care, we can update our tooling to permit us to decorate our getters and setters, distributing responsibility as we see fit and freeing us from dependence upon heavyweight base classes.
 
 (discuss on [Hacker News](https://news.ycombinator.com/item?id=10116678))
+
+*Post Scriptum*
+
+*This post uses listening to property setters as an excuse to discuss the getter and setter mechanisms, and ways to decorate them so that we can organize code around concerns. Of course, propagating changes through explicit notification is not the only way to organize code that needs to manage dependencies on data changing. It's beyond teh scope of this post to discuss the many alternatives, but readers have suggested exploring [Object.observe](http://arv.github.io/ecmascript-object-observe/) and working with immutable data.*
 
 ---
 
