@@ -198,7 +198,7 @@ In [Part I], we saw a recipe for `get` that plays nicely with properties:
       }
     }
 
-Simple and useful. But when we consider instances with methods, we can see that `get` (and `pluck`) has a failure mode. Specifically, it's not very useful if we every want to get a *method*, since we'll lose the context. Consider some hypothetical class:
+Simple and useful. But when we consider instances with methods, we can see that `get` (and `pluck`) has a failure mode. Specifically, it's not very useful if we ever want to get a *method*, since we'll lose the context. Consider some hypothetical class:
 
     function InventoryRecord (apples, oranges, eggs) {
       this.record = {
