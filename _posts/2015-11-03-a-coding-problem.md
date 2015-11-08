@@ -37,7 +37,7 @@ Follow-up problems often incorporate a few extra elements to keep track off. The
 
 For example: *Write a function that given an arbitrary number of ordered streams of elements, produces an ordered stream containing the union of each stream's elements*.
 
-In JavaScript, we can represent streams as [Iterators]. The answer is once again easy to compose in ECMAScript 2015. We'll write a generator that takes iterables as arguments. Thus you can collect its results into an array or iterate over them as you see fit:
+In ECMAScript 2015, we can represent streams as [Iterators]. Here's one possible solution consisting of a generator that takes iterables as arguments:
 
 [Iterators]: https://leanpub.com/javascriptallongesix/read#collections
 
