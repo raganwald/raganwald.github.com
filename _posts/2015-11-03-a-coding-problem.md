@@ -25,7 +25,7 @@ function merge (originalA, originalB) {
 }
 {% endhighlight %}
 
-The usual hazards to navigate are so-called edge cases like either array being empty or having a single element. In a follow-up discussion, an interview might explore why this implementation takes a beating from the ugly memory stick, and how to use indices to make it better.
+The usual hazards to navigate are cases like either array being empty or having a single element. In a follow-up discussion, an interview might explore why this implementation takes a beating from the ugly memory stick, and how to use indices to make it better.
 
 [![Coding](/assets/images/coding.jpg)](https://www.flickr.com/photos/mpa/4369776892)
 
