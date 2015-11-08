@@ -27,8 +27,6 @@ function merge (originalA, originalB) {
 
 The usual hazards to navigate are cases like either array being empty or having a single element. In a follow-up discussion, an interview might explore why this implementation takes a beating from the ugly memory stick, and how to use indices to make it better.
 
-[![Coding](/assets/images/coding.jpg)](https://www.flickr.com/photos/mpa/4369776892)
-
 ### taking it up a level
 
 Sometimes, the interviewer will then move on to a follow-up that adds some complexity. Whereas the previous problem was given just to eliminate the (hopefully few) candidates who really should have been filtered out before getting an interview of any type, now we are looking for an opportunity to discuss approaches to problem solving.
