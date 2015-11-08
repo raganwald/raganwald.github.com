@@ -78,9 +78,7 @@ The hazards to navigate include dealing with the fact that you can't "peek" at t
 
 ### but what if i hate cs-style puzzles?
 
-Given the first problem, the more experienced candidate might roll their eyes and prepare to be asked to write a [Merge Sort](https://en.wikipedia.org/wiki/Merge_sort) as the obvious, algorithm-centric follow-up question.
-
-But I suggest it's a mistake to dismiss such things out of hand. Consider the follow-up question given here, merging an arbitrary number of streams. It's clearly related to the first problem. But is it "impractical CS-wankery?"
+Given the first problem, the more experienced candidate might roll their eyes. But I suggest it's a mistake to dismiss fizz-buzz problems out of hand. Consider what happens if the interview proceeds to merging an arbitrary number of streams as we've discussed here. It's clearly related to the first problem. But is it "Impractical Computer Science?"
 
 Let's wrap it in a story:
 
