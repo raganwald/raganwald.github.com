@@ -2,9 +2,9 @@
 layout: default
 ---
 
-Job interviews sometimes contain simple programming puzzles. Often called "fizz-buzz problems," the usual purpose is to quickly weed out hopefuls who can't actually program anything.
+[![Coding](/assets/images/coding.jpg)](https://www.flickr.com/photos/mpa/4369776892)
 
-[![Frustrated](/assets/images/frustrated.jpg)](https://www.flickr.com/photos/marvin_lee/3254923387)
+Job interviews sometimes contain simple programming puzzles. Often called "fizz-buzz problems," the usual purpose is to quickly weed out hopefuls who can't actually program anything.
 
 Here's an example, something that might be used in a phone screen or an in-person interview with programmers early in their career: *Write a function that given two sorted lists, produces a sorted list containing the union of each list's elements*. For example, given: `[1, 7, 11, 17]` and `[3, 5, 13]`, produce `[1, 3, 5, 7, 11, 13, 17]`. And given `[1, 3, 5, 7, 11, 13, 17]` and `[1, 3, 5, 7, 11, 13, 17]`, produce `[1, 1, 3, 3, 5, 5, 7, 7, 11, 11, 13, 13, 17, 17]`.
 
