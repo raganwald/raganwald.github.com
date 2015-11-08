@@ -12,7 +12,9 @@ In a language with convenient array semantics, and with a reckless disregard for
 
 {% highlight javascript %}
 function merge (originalA, originalB) {
-  const merged = [], tempA = originalA.slice(0), tempB = originalB.slice(0);
+  const merged = [],
+        tempA = originalA.slice(0),
+        tempB = originalB.slice(0);
 
   while (tempA.length > 0 && tempB.length > 0) {
     merged.push(
