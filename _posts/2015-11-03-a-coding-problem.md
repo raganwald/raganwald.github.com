@@ -78,6 +78,8 @@ function * merge (...iterables) {
 
 The hazards to navigate include dealing with the fact that you can't "peek" at the head element of an iterator in JavaScript, writing a generator so that you can lazily deal with elements, and handling an arbitrary number of streams.
 
+[![Servers](/assets/images/servers.jpg)](https://www.flickr.com/photos/sfllaw/78981814/)
+
 ### but what if i hate cs-style puzzles?
 
 Given the first problem, the more experienced candidate might roll their eyes and prepare to be asked to write a [Merge Sort](https://en.wikipedia.org/wiki/Merge_sort) as the obvious, algorithm-centric follow-up question.
@@ -85,8 +87,6 @@ Given the first problem, the more experienced candidate might roll their eyes an
 But I suggest it's a mistake to dismiss such things out of hand. Consider the follow-up question given here, merging an arbitrary number of streams. It's clearly related to the first problem. But is it "impractical CS-wankery?"
 
 Let's wrap it in a story:
-
-[![Servers](/assets/images/servers.jpg)](https://www.flickr.com/photos/sfllaw/78981814/)
 
 > You work for a company that manages alerting and event remediation. You have a large, distributed cluster of servers, each of which emits a huge number of events tagged with a customer id, type, timestamp, and so forth. You are looking for certain patterns of events. Write a function that creates an alert when it sees a certain pattern of evens occurring within a certain time frame.
 
