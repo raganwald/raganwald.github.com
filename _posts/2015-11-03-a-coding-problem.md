@@ -2,7 +2,7 @@
 layout: default
 ---
 
-[![Coding](/assets/images/coding.jpg)](https://www.flickr.com/photos/mpa/4369776892)
+[![Servers](/assets/images/servers.jpg)](https://www.flickr.com/photos/sfllaw/78981814/)
 
 Job interviews sometimes contain simple programming puzzles. Often called "fizz-buzz problems," the usual purpose is to quickly weed out hopefuls who can't actually program anything.
 
@@ -26,8 +26,6 @@ function merge (originalA, originalB) {
 {% endhighlight %}
 
 The usual hazards to navigate are cases like either array being empty or having a single element. In a follow-up discussion, an interview might explore why this implementation takes a beating from the ugly memory stick, and how to use indices to make it better.
-
-[![Servers](/assets/images/servers.jpg)](https://www.flickr.com/photos/sfllaw/78981814/)
 
 ### taking it up a level
 
@@ -103,6 +101,8 @@ And if you get a problem that seems "way out there..." Maybe solve it brilliantl
 You might be pleasantly surprised by the answer.
 
 ---
+
+[![PagerDuty](/assets/images/pagerduty.jpg)](https://www.pagerduty.com/company/work-with-us/)
 
 Note: At [PagerDuty], we do indeed work with streams of data on highly-available and distributed clusters of systems. We have great problems to solve with the engines that keep everything going, and with developing user-facing tooling. If that piques your intellectual curiosity, we're hiring applications and real-time engineers in San Francisco and Toronto. Come [work with us](https://www.pagerduty.com/company/work-with-us/)!
 
