@@ -27,6 +27,8 @@ function merge (originalA, originalB) {
 
 The usual hazards to navigate are cases like either array being empty or having a single element. In a follow-up discussion, an interview might explore why this implementation takes a beating from the ugly memory stick, and how to use indices to make it better.
 
+[![Servers](/assets/images/servers.jpg)](https://www.flickr.com/photos/sfllaw/78981814/)
+
 ### taking it up a level
 
 Sometimes, the interviewer will then move on to a follow-up that adds some complexity. Whereas the previous problem was given just to eliminate the (hopefully few) candidates who really should have been filtered out before getting an interview of any type, now we are looking for an opportunity to discuss approaches to problem solving.
@@ -75,8 +77,6 @@ function * merge (...iterables) {
 {% endhighlight %}
 
 The hazards to navigate include dealing with the fact that you can't "peek" at the head element of an iterator in JavaScript, writing a generator so that you can lazily deal with elements, and handling an arbitrary number of streams.
-
-[![Servers](/assets/images/servers.jpg)](https://www.flickr.com/photos/sfllaw/78981814/)
 
 ### but what if i hate cs-style puzzles?
 
