@@ -76,27 +76,19 @@ function * merge (...iterables) {
 }
 {% endhighlight %}
 
-We can try it in something like [Babel](http://babeljs.io/repl):
-
-{% highlight javascript %}
-function* fivePrimes () { yield 2; yield 3; yield 5; yield 7; yield 11; }
-const fiveEvens = [2, 4, 6, 8, 10]
-
-console.log(...merge(fiveEvens, fivePrimes()))
-  //=> 2 2 3 4 5 6 7 8 10 11
-{% endhighlight %}
-
-The hazards to navigate here are dealing with the fact that you can't "peek" at the head element of an iterator in JavaScript, writing a generator so that you can lazily deal with elements, and handling an arbitrary number of streams.
-
-[![Servers](/assets/images/servers.jpg)](https://www.flickr.com/photos/sfllaw/78981814/)
+The hazards to navigate include dealing with the fact that you can't "peek" at the head element of an iterator in JavaScript, writing a generator so that you can lazily deal with elements, and handling an arbitrary number of streams.
 
 ### but what if i hate cs-style puzzles?
 
 Given the first problem, the more experienced candidate might roll their eyes and prepare to be asked to write a [Merge Sort](https://en.wikipedia.org/wiki/Merge_sort) as the obvious, algorithm-centric follow-up question.
 
-But I suggest it's a mistake to dismiss such things out of hand. Consider the follow-up question given here, merging two streams. It's clearly related to the first problem. But is it "impractical CS-wankery?"
+But I suggest it's a mistake to dismiss such things out of hand. Consider the follow-up question given here, merging an arbitrary number of streams. It's clearly related to the first problem. But is it "impractical CS-wankery?"
 
-Let's wrap it in a story. *You work for a company that manages alerting and event remediation. You have a large, distributed cluster of servers, each of which emits a huge number of events tagged with a customer id, type, timestamp, and so forth. You are looking for certain patterns of events. Write a function that creates an alert when it sees a certain pattern of evens occurring within a certain time frame.*
+Let's wrap it in a story:
+
+[![Servers](/assets/images/servers.jpg)](https://www.flickr.com/photos/sfllaw/78981814/)
+
+> You work for a company that manages alerting and event remediation. You have a large, distributed cluster of servers, each of which emits a huge number of events tagged with a customer id, type, timestamp, and so forth. You are looking for certain patterns of events. Write a function that creates an alert when it sees a certain pattern of evens occurring within a certain time frame.
 
 Naturally, the first thing to do is to get all the alerts for a customer into a single stream, ordered by timestamp. You can't get them all and sort them, because they won't fit into memory. So what do you do?
 
