@@ -8,7 +8,7 @@ Job interviews sometimes contain simple programming puzzles. Often called "fizz-
 
 Here's an example, something that might be used in a phone screen or an in-person interview with programmers early in their career: *Write a function that given two sorted lists, produces a sorted list containing the union of each list's elements*. For example, given: `[1, 7, 11, 17]` and `[3, 5, 13]`, produce `[1, 3, 5, 7, 11, 13, 17]`. And given `[1, 3, 5, 7, 11, 13, 17]` and `[1, 3, 5, 7, 11, 13, 17]`, produce `[1, 1, 3, 3, 5, 5, 7, 7, 11, 11, 13, 13, 17, 17]`.
 
-In a language with convenient array semantics, and with a reckless disregard for memory and performance, the answer is very easy to compose:
+In a language with convenient array semantics, and with a reckless disregard for memory and performance, a solution is straightforward to compose:
 
 {% highlight javascript %}
 function merge (originalA, originalB) {
@@ -25,9 +25,7 @@ function merge (originalA, originalB) {
 }
 {% endhighlight %}
 
-The usual hazards to navigate are so-called edge cases like either array being empty or having a single element.
-
-In a follow-up discussion, an interview might explore why this implementation takes a beating from the ugly memory stick, and how to use indices to make it better.
+The usual hazards to navigate are so-called edge cases like either array being empty or having a single element. In a follow-up discussion, an interview might explore why this implementation takes a beating from the ugly memory stick, and how to use indices to make it better.
 
 [![Coding](/assets/images/coding.jpg)](https://www.flickr.com/photos/mpa/4369776892)
 
