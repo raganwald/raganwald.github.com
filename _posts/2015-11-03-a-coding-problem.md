@@ -1,4 +1,5 @@
 ---
+title: "Solving a Coding Problem with Iterators and Generators"
 layout: default
 ---
 
@@ -6,7 +7,15 @@ layout: default
 
 Job interviews sometimes contain simple programming tasks. Often called "fizz-buzz problems," the usual purpose is to quickly weed out hopefuls who can't actually program anything.
 
-Here's an example, something that might be used in a phone screen or an in-person interview with programmers early in their career: *Write a function that given two sorted lists, produces a sorted list containing the union of each list's elements*. For example, given: `[1, 7, 11, 17]` and `[3, 5, 13]`, produce `[1, 3, 5, 7, 11, 13, 17]`. And given `[1, 3, 5, 7, 11, 13, 17]` and `[1, 3, 5, 7, 11, 13, 17]`, produce `[1, 1, 3, 3, 5, 5, 7, 7, 11, 11, 13, 13, 17, 17]`.
+Here's an example, something that might be used in a phone screen or an in-person interview with programmers early in their career: *Write a `merge` function, that given two sorted lists, produces a sorted list containing the union of each list's elements*. For example:
+
+{% highlight javascript %}
+merge ([1, 7, 11, 17], [3, 5, 13])
+  //=> [1, 3, 5, 7, 11, 13, 17]
+
+merge([2, 3, 5, 7, 11], [2, 4, 6, 8, 10, 12, 14])
+  //=> [2, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 14]
+{% endhighlight %}
 
 In a language with convenient array semantics, and with a reckless disregard for memory and performance, a solution is straightforward to compose:
 
@@ -151,7 +160,9 @@ function * merge (...iterables) {
 }
 {% endhighlight %}
 
-And here's our complete solution:
+We're done!
+
+### the complete solution
 
 {% highlight javascript %}
 const _iterator = Symbol('iterator');
@@ -195,7 +206,45 @@ function * merge (...iterables) {
 }
 {% endhighlight %}
 
-Reasonably straightforward if you're comfortable with iterators and generators, and there's plenty of opportunity to talk about design choices like writing the `PeekableIterator` adaptor class.
+This is reasonably straightforward if you're comfortable with iterators and generators.[^js] Since our `merge` function is a generator, we can easily iterate over its contents or spread them into an array. In fact, it's *almost* interchangeable with the solution for arrays, you just need to remember to spread the result.
+
+[^js]: And if iterators and generators are fairly new to you, you can read [JavaScript Allongé](https://leanpub.com/javascriptallongesix) for free!
+
+{% highlight javascript %}
+const primes = [2, 3, 5, 7, 11];
+const evens = function * () {
+  for (let n of [1, 2, 3, 4, 5, 6, 7]) {
+    yield n * 2;
+  }
+}
+
+for (let value of merge(primes, evens())) {
+  console.log(value);
+}
+  //=>
+    2
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    10
+    11
+    12
+    14
+
+[...merge(primes, evens())]
+  //=> [2, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 14]
+{% endhighlight %}
+
+There is plenty to discuss about this solution. Here are a few to start you off:
+
+- What are the performance implications of having lots and lots of iterables, maybe a few hundred or a few thousand?
+- What happens if you have one iterable that produces thousands of values, along with a few hundred that only produce a few hundred each? Or more generally, what if there is an inverse power law relationship between the number of iterables and the number of values they produce?
+
+As an exercise, ask yourself what questions you would ask a candidate who wrote this solution within the confines of a forty-minute time slot.
 
 ---
 
