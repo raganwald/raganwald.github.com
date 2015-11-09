@@ -84,7 +84,7 @@ function * merge (...iterables) {
 }
 {% endhighlight %}
 
-Our next problem is thorny: To test whether an iterator has one or more values to return, you call `.next()`. But doing so actually fetches the value and changes the state of the iterator. If we write:
+Our next problem is thorny: To test whether an iterator has one or more values to return, we call `.next()`. But doing so actually fetches the value and changes the state of the iterator. If we write:
 
 {% highlight javascript %}
 while (iterators.some(i => !i.next().done))
@@ -206,7 +206,7 @@ function * merge (...iterables) {
 }
 {% endhighlight %}
 
-This is reasonably straightforward if you're comfortable with iterators and generators.[^js] Since our `merge` function is a generator, we can easily iterate over its contents or spread them into an array. In fact, it's *almost* interchangeable with the solution for arrays, you just need to remember to spread the result.
+This is reasonably straightforward for programmers comfortable with iterators and generators.[^js] Since our `merge` function is a generator, we can easily iterate over its contents or spread them into an array. In fact, it's *almost* interchangeable with the solution for arrays, we just need to remember to spread the result.
 
 [^js]: And if iterators and generators are fairly new to you, you can read [JavaScript Allongé](https://leanpub.com/javascriptallongesix) for free!
 
@@ -239,12 +239,12 @@ for (let value of merge(primes, evens())) {
   //=> [2, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 14]
 {% endhighlight %}
 
-There is plenty to discuss about this solution. Here are a few to start you off:
+There is plenty to discuss about this solution. Here are a few to start things off:
 
 - What are the performance implications of having lots and lots of iterables, maybe a few hundred or a few thousand?
 - What happens if you have one iterable that produces thousands of values, along with a few hundred that only produce a few hundred each? Or more generally, what if there is an inverse power law relationship between the number of iterables and the number of values they produce?
 
-As an exercise, ask yourself what questions you would ask a candidate who wrote this solution within the confines of a forty-minute time slot.
+As an exercise, we can ask ourselves what other questions we would ask a candidate who wrote this solution within the confines of a forty-minute time slot.
 
 ---
 
@@ -252,15 +252,15 @@ As an exercise, ask yourself what questions you would ask a candidate who wrote 
 
 ### but what if i hate cs-style puzzles?
 
-Given the first problem, the more experienced candidate might roll their eyes. But I suggest it's a mistake to dismiss fizz-buzz problems out of hand. Consider what happens if the interview proceeds to merging an arbitrary number of streams as we've discussed here. It's clearly related to the first problem. But is it "Impractical Computer Science?"
+Given the first problem, the more experienced candidate might roll their eyes. But could it be a mistake to dismiss fizz-buzz problems out of hand? Consider what happens if the interview proceeds to merging an arbitrary number of streams as we've discussed here. It's clearly related to the first problem. But is it "Impractical Computer Science?"
 
-Let's wrap it in a story:
+Let's try wrapping it in a story:
 
 > You work for a company that manages alerting and event remediation. You have a large, distributed cluster of servers, each of which emits a huge number of events tagged with a customer id, type, timestamp, and so forth. You are looking for certain patterns of events. Write a function that creates an alert when it sees a certain pattern of evens occurring within a certain time frame.
 
-Naturally, the first thing to do is to get all the alerts for a customer into a single stream, ordered by timestamp. You can't get them all and sort them, because they won't fit into memory. So what do you do?
+Naturally, the first thing to do is to get all the alerts for a customer into a single stream, ordered by timestamp. We can't get them all and sort them, because they won't fit into memory. So what do we do?
 
-That's right, you create a stream of events that merges the streams from each server. You can then write filters and pattern matchers that operates on the merged stream.
+That's right, we create a stream of events that merges the streams from each server. We can then write filters and pattern matchers that operates on the merged stream.
 
 Now perhaps this won't happen in JavaScript. And perhaps there will be some mechanism other than an ECMAScript Iterator for representing a real time screen. But somewhere, there will be some code that merges streams, and demonstrating an aptitude for understanding such algorithms is certainly demonstrating on-the-job skills.
 
@@ -268,9 +268,9 @@ Now perhaps this won't happen in JavaScript. And perhaps there will be some mech
 
 Coding in job interviews doesn't seem to be going away any time soon. Until it does, it behooves engineers to be competent at writing code in real time, and it behooves employers to choose problems that have a reasonable relationship to the problems they solve at work.
 
-And if you get a problem that seems "way out there..." Maybe solve it brilliantly, then ask a question of your own: "Say, if this works out and I come to work for you, when would I be working with algorithms like this?"
+And if we encounter a programming problem that seems "Way out there..." Maybe we should solve it brilliantly, then ask a question of our own: "Say, if this works out and I come to work for you, when would I be working with algorithms like this?"
 
-You might be pleasantly surprised by the answer.
+We might be pleasantly surprised by the answer.
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=10533372))
 
