@@ -37,10 +37,9 @@ For example: *Write a function that given an arbitrary number of ordered streams
 
 ### let's write it
 
-In ECMAScript 2015, we can represent the streams we have to merge as [Iterables]. We'll write a [Generator], a function that `yield`s values. Our generator will take the iterables as arguments, and `yield` the values in the correct order to represent an ordered merge.
+In ECMAScript 2015, we can represent the streams we have to merge as [Iterables]. We'll write a generator, a function that `yield`s values. Our generator will take the iterables as arguments, and `yield` the values in the correct order to represent an ordered merge.
 
 [Iterables]: https://leanpub.com/javascriptallongesix/read#collections
-[Generators]: https://leanpub.com/javascriptallongesix/read#leanpub-auto-generators
 
 The skeleton will look like this:
 
@@ -58,7 +57,7 @@ function * merge (...iterables) {
 }
 {% endhighlight %}
 
-Our first problem is handling more than two iterables. Our second is that to iterate over an iterable, we have to turn it into an iterator. That's easy, every iterable has a method named `Symbol.iterator` that returns a new iterato over that iterable.
+Our first problem is handling more than two iterables. Our second is that to iterate over an iterable, we have to turn it into an iterator. That's easy, every iterable has a method named `Symbol.iterator` that returns a new iterator over that iterable.
 
 {% highlight javascript %}
 function * merge (...iterables) {
