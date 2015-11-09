@@ -272,6 +272,8 @@ And if you get a problem that seems "way out there..." Maybe solve it brilliantl
 
 You might be pleasantly surprised by the answer.
 
+(discuss on [hacker news](https://news.ycombinator.com/item?id=10533372))
+
 ---
 
 [![PagerDuty](/assets/images/pagerduty.jpg)](https://www.pagerduty.com/company/work-with-us/)
