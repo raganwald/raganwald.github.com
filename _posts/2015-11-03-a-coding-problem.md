@@ -102,6 +102,8 @@ You might be pleasantly surprised by the answer.
 
 [![PagerDuty](/assets/images/pagerduty.jpg)](https://www.pagerduty.com/company/work-with-us/)
 
-Note: At [PagerDuty], we do indeed work with streams of data on highly-available and distributed clusters of systems. We have great problems to solve with the engines that keep everything going, and with developing user-facing tooling. If that piques your intellectual curiosity, we're hiring applications and real-time engineers in San Francisco and Toronto. Come [work with us](https://www.pagerduty.com/company/work-with-us/)!
+Note: At [PagerDuty], we do indeed work with streams of data on highly-available and distributed clusters of systems. We have great problems to solve with the engines that keep everything going, and with developing user-facing tooling. If that piques your intellectual curiosity, we're hiring engineers for our applications and real-time teams. There are positions in both San Francisco and Toronto.
+
+Come [work with us](https://www.pagerduty.com/company/work-with-us/)!
 
 [PagerDuty]: https://www.pagerduty.com
