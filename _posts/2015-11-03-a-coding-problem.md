@@ -35,46 +35,168 @@ Follow-up problems often incorporate a few extra elements to keep track off. The
 
 For example: *Write a function that given an arbitrary number of ordered streams of elements, produces an ordered stream containing the union of each stream's elements*.
 
-In ECMAScript 2015, we can represent streams as [Iterators]. Here's one possible solution consisting of a generator that takes iterables as arguments:
+### let's write it
 
-[Iterators]: https://leanpub.com/javascriptallongesix/read#collections
+In ECMAScript 2015, we can represent the streams we have to merge as [Iterables]. We'll write a [Generator], a function that `yield`s values. Our generator will take the iterables as arguments, and `yield` the values in the correct order to represent an ordered merge.
+
+[Iterables]: https://leanpub.com/javascriptallongesix/read#collections
+[Generators]: https://leanpub.com/javascriptallongesix/read#leanpub-auto-generators
+
+The skeleton will look like this:
 
 {% highlight javascript %}
 function * merge (...iterables) {
 
-  const iterators = iterables.map(i => i[Symbol.iterator]());
-  const values = iterators
-    .map(
-      function(iterator) {
-        const n = iterator.next();
-        if (!n.done) return { iterator, value: n.value };
-      }
-    )
-    .filter(x => !!x);
+  // setup
 
-  while ( values.length > 0 ) {
-    let lowestIndex = 0;
+  while (our_iterables_are_not_done) {
 
-    for (let iValue = 1; iValue < values.length; ++iValue) {
-      if (values[iValue].value < values[lowestIndex].value) {
-        lowestIndex = iValue;
-      }
-    }
+    // find the iterator with the lowest value
 
-    yield values[lowestIndex].value;
-
-    const n = values[lowestIndex].iterator.next();
-    if (n.done) {
-      values.splice(lowestIndex, 1);
-    }
-    else {
-      values[lowestIndex].value = n.value;
-    }
+    yield lowestIterator.next().value;
   }
 }
 {% endhighlight %}
 
-The hazards to navigate include dealing with the fact that you can't "peek" at the head element of an iterator in JavaScript, writing a generator so that you can lazily deal with elements, and handling an arbitrary number of streams.
+Our first problem is handling more than two iterables. Our second is that to iterate over an iterable, we have to turn it into an iterator. That's easy, every iterable has a method named `Symbol.iterator` that returns a new iterato over that iterable.
+
+{% highlight javascript %}
+function * merge (...iterables) {
+
+  const iterators = iterables.map(
+    i => i[Symbol.iterator]()
+  );
+
+  while (our_iterables_are_not_done) {
+
+    // find the iterator with the lowest value
+
+    yield lowestIterator.next().value;
+  }
+}
+{% endhighlight %}
+
+Our next problem is thorny: To test whether an iterator has one or more values to return, you call `.next()`. But doing so actually fetches the value and changes the state of the iterator. If we write:
+
+{% highlight javascript %}
+while (iterators.some(i => !i.next().done))
+{% endhighlight %}
+
+We will fetch the first element of each iterator and discard it. That's a problem. What we want is a magic iterator that lets us peek at the next element (and whether the iterator is done), while allowing us to grab that element later.
+
+So let's write an iterator adaptor class that does that:
+
+{% highlight javascript %}
+const _iterator = Symbol('iterator');
+const _peeked = Symbol('peeked');
+
+class PeekableIterator {
+  constructor (iterator) {
+    this[_iterator] = iterator;
+    this[_peeked] = iterator.next();
+  }
+
+  peek () {
+    return this[_peeked];
+  }
+
+  next () {
+    const returnValue = this[_peeked];
+    this[_peeked] = this[_iterator].next();
+    return returnValue;
+  }
+}
+{% endhighlight %}
+
+Our `PeekableIterator` class is wraps around an existing iterator, but in addition to a `next` method that advances to the next value (if any), it also provides a `peek` method that doesn't advance the iterator.
+
+Now we can back up and use `PeekableIterator`s instead of plain iterators:
+
+{% highlight javascript %}
+function * merge (...iterables) {
+
+  const iterators = iterables.map(
+    i => new PeekableIterator(i[Symbol.iterator]())
+  );
+
+  while (iterators.some(i => !i.peek().done)) {
+
+    // find the iterator with the lowest value
+
+    yield lowestIterator.next().value;
+  }
+}
+{% endhighlight %}
+
+We can also use our `peek` method to find the iterator with the lowest value. We'll take our iterators, filter out any that are done, sort them according to the value we `peek`, and the first iterator has the lowest value:
+
+{% highlight javascript %}
+function * merge (...iterables) {
+
+  const iterators = iterables.map(
+    i => new PeekableIterator(i[Symbol.iterator]())
+  );
+
+  while (iterators.some(i => !i.peek().done)) {
+
+    const lowestIterator =
+      iterators
+        .filter(
+          i => !i.peek().done
+        ).sort(
+          (a, b) => a.peek().value - b.peek().value
+        )[0];
+
+    yield lowestIterator.next().value;
+  }
+}
+{% endhighlight %}
+
+And here's our complete solution:
+
+{% highlight javascript %}
+const _iterator = Symbol('iterator');
+const _peeked = Symbol('peeked');
+
+class PeekableIterator {
+  constructor (iterator) {
+    this[_iterator] = iterator;
+    this[_peeked] = iterator.next();
+  }
+
+  peek () {
+    return this[_peeked];
+  }
+
+  next () {
+    const returnValue = this[_peeked];
+    this[_peeked] = this[_iterator].next();
+    return returnValue;
+  }
+}
+
+function * merge (...iterables) {
+
+  const iterators = iterables.map(
+    i => new PeekableIterator(i[Symbol.iterator]())
+  );
+
+  while (iterators.some(i => !i.peek().done)) {
+
+    const lowestIterator =
+      iterators
+        .filter(
+          i => !i.peek().done
+        ).sort(
+          (a, b) => a.peek().value - b.peek().value
+        )[0];
+
+    yield lowestIterator.next().value;
+  }
+}
+{% endhighlight %}
+
+Reasonably straightforward if you're comfortable with iterators and generators, and there's plenty of opportunity to talk about design choices like writing the `PeekableIterator` adaptor class.
 
 ### but what if i hate cs-style puzzles?
 
