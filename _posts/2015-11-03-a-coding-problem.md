@@ -1,6 +1,7 @@
 ---
 title: "Solving a Coding Problem with Iterators and Generators"
 layout: default
+tags: [allonge]
 ---
 
 ### a fizz-buzz problem
