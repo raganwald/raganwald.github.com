@@ -41,7 +41,7 @@ The usual hazards to navigate are cases like either array being empty or having 
 
 Sometimes, the interviewer will then move on to a follow-up that adds some complexity. Whereas the previous problem was given just to eliminate the (hopefully few) candidates who really should have been filtered out before getting an interview of any type, now we are looking for an opportunity to discuss approaches to problem solving.
 
-Follow-up problems often incorporate a few extra elements to keep track off. They shouldn't be "gotchas," just things that require some careful consideration and the ability to juggle several problems at the same time.
+Follow-up problems often incorporate a few extra elements to manage. They shouldn't be "gotchas," just things that require some careful consideration and the ability to juggle several problems at the same time.
 
 For example: *Write a function that given an arbitrary number of ordered streams of elements, produces an ordered stream containing the union of each stream's elements*.
 
@@ -85,13 +85,13 @@ function * merge (...iterables) {
 }
 {% endhighlight %}
 
-Our next problem is thorny: To test whether an iterator has one or more values to return, we call `.next()`. But doing so actually fetches the value and changes the state of the iterator. If we write:
+Our third problem is thorny: To test whether an iterator has one or more values to return, we call `.next()`. But doing so actually fetches the value and changes the state of the iterator. If we write:
 
 {% highlight javascript %}
 while (iterators.some(i => !i.next().done))
 {% endhighlight %}
 
-We will fetch the first element of each iterator and discard it. That's a problem. What we want is a magic iterator that lets us peek at the next element (and whether the iterator is done), while allowing us to grab that element later.
+We will fetch the first element of each iterator and discard it. That's a problem. What we want is a magic iterator that lets us peek at the next element (and whether the iterator is done), while allowing us to grab the element later.
 
 So let's write an iterator adaptor class that does that:
 
@@ -117,7 +117,7 @@ class PeekableIterator {
 }
 {% endhighlight %}
 
-Our `PeekableIterator` class is wraps around an existing iterator, but in addition to a `next` method that advances to the next value (if any), it also provides a `peek` method that doesn't advance the iterator.
+Our `PeekableIterator` class wraps around an existing iterator, but in addition to a `next` method that advances to the next value (if any), it also provides a `peek` method that doesn't advance the iterator.
 
 Now we can back up and use `PeekableIterator`s instead of plain iterators:
 
