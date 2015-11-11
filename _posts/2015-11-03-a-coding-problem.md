@@ -263,7 +263,7 @@ Naturally, the first thing to do is to get all the alerts for a customer into a 
 
 That's right, we create a stream of events that merges the streams from each server. We can then write filters and pattern matchers that operates on the merged stream.
 
-Now perhaps this won't happen in JavaScript. And perhaps there will be some mechanism other than an ECMAScript Iterator for representing a real time screen. But somewhere, there will be some code that merges streams, and demonstrating an aptitude for understanding such algorithms is certainly demonstrating on-the-job skills.
+Now perhaps this won't happen in JavaScript. And perhaps there will be some mechanism other than an ECMAScript Iterator for representing a real time stream. But somewhere, there will be some code that merges streams, and demonstrating an aptitude for understanding such algorithms is certainly demonstrating on-the-job skills.
 
 ### conclusion
 
