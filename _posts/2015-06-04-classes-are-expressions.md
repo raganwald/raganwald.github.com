@@ -90,7 +90,7 @@ This is interesting, because it shows that creating a class in JavaScript (wheth
 
 [^infer]: JavaScript engines will "infer" that the otherwise anonymous function expression should be named `Person` because it is immediately assigned to a variable of that name. There are ways to create a truly anonymous constructor function or "class" and bind it to a name, but that isn't relevant here.
 
-That's a very powerful thing. Not all OOP languages do things that way, some have classes, but they aren't values. Some have classes with names, but the names like in a special space that is separate from the variables we bind. But having classes be "just a function" and having prototypes be "just an object" means they are "just values." And that lets us do anything with a class or a prototype we could do with any other value.
+That's a very powerful thing. Not all OOP languages do things that way, some have classes, but they aren't values. Some have classes with names, but the names live in a special space that is separate from the variables we bind. But having classes be "just a function" and having prototypes be "just an object" means they are "just values." And that lets us do anything with a class or a prototype we could do with any other value.
 
 Like what? I'm glad you asked. First, let's review the ECMAScript 2015 `Symbol`:
 
