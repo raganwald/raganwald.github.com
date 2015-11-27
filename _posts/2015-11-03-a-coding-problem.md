@@ -4,7 +4,7 @@ layout: default
 tags: [allonge]
 ---
 
-### a fizz-buzz problem
+### a 'fizz-buzz' problem
 
 Job interviews sometimes contain simple programming tasks. Often called "fizz-buzz problems," the usual purpose is to quickly weed out hopefuls who can't actually program anything.
 
