@@ -10,17 +10,17 @@ Job interviews sometimes contain simple programming tasks. Often called "fizz-bu
 
 Here's an example, something that might be used in a phone screen or an in-person interview with programmers early in their career: *Write a `merge` function, that given two sorted lists, produces a sorted list containing the union of each list's elements*. For example:
 
-{% highlight javascript %}
+```javascript
 merge ([1, 7, 11, 17], [3, 5, 13])
   //=> [1, 3, 5, 7, 11, 13, 17]
 
 merge([2, 3, 5, 7, 11], [2, 4, 6, 8, 10, 12, 14])
   //=> [2, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 14]
-{% endhighlight %}
+```
 
 In a language with convenient array semantics, and with a reckless disregard for memory and performance, a solution is straightforward to compose:
 
-{% highlight javascript %}
+```javascript
 function merge (originalA, originalB) {
   const merged = [],
         tempA = originalA.slice(0),
@@ -33,7 +33,7 @@ function merge (originalA, originalB) {
   }
   return merged.concat(tempA).concat(tempB);
 }
-{% endhighlight %}
+```
 
 The usual hazards to navigate are cases like either array being empty or having a single element. In a follow-up discussion, an interview might explore why this implementation takes a beating from the ugly memory stick, and how to use indices to make it better.
 
@@ -53,7 +53,7 @@ In ECMAScript 2015, we can represent the streams we have to merge as [Iterables]
 
 The skeleton will look like this:
 
-{% highlight javascript %}
+```javascript
 function * merge (...iterables) {
 
   // setup
@@ -65,11 +65,11 @@ function * merge (...iterables) {
     yield lowestIterator.next().value;
   }
 }
-{% endhighlight %}
+```
 
 Our first problem is handling more than two iterables. Our second is that to iterate over an iterable, we have to turn it into an iterator. That's easy, every iterable has a method named `Symbol.iterator` that returns a new iterator over that iterable.
 
-{% highlight javascript %}
+```javascript
 function * merge (...iterables) {
 
   const iterators = iterables.map(
@@ -83,19 +83,19 @@ function * merge (...iterables) {
     yield lowestIterator.next().value;
   }
 }
-{% endhighlight %}
+```
 
 Our third problem is thorny: To test whether an iterator has one or more values to return, we call `.next()`. But doing so actually fetches the value and changes the state of the iterator. If we write:
 
-{% highlight javascript %}
+```javascript
 while (iterators.some(i => !i.next().done))
-{% endhighlight %}
+```
 
 We will fetch the first element of each iterator and discard it. That's a problem. What we want is a magic iterator that lets us peek at the next element (and whether the iterator is done), while allowing us to grab the element later.
 
 So let's write an iterator adaptor class that does that:
 
-{% highlight javascript %}
+```javascript
 const _iterator = Symbol('iterator');
 const _peeked = Symbol('peeked');
 
@@ -115,13 +115,13 @@ class PeekableIterator {
     return returnValue;
   }
 }
-{% endhighlight %}
+```
 
 Our `PeekableIterator` class wraps around an existing iterator, but in addition to a `next` method that advances to the next value (if any), it also provides a `peek` method that doesn't advance the iterator.
 
 Now we can back up and use `PeekableIterator`s instead of plain iterators:
 
-{% highlight javascript %}
+```javascript
 function * merge (...iterables) {
 
   const iterators = iterables.map(
@@ -135,11 +135,11 @@ function * merge (...iterables) {
     yield lowestIterator.next().value;
   }
 }
-{% endhighlight %}
+```
 
 We can also use our `peek` method to find the iterator with the lowest value. We'll take our iterators, filter out any that are done, sort them according to the value we `peek`, and the first iterator has the lowest value:
 
-{% highlight javascript %}
+```javascript
 function * merge (...iterables) {
 
   const iterators = iterables.map(
@@ -159,13 +159,13 @@ function * merge (...iterables) {
     yield lowestIterator.next().value;
   }
 }
-{% endhighlight %}
+```
 
 We're done!
 
 ### the complete solution
 
-{% highlight javascript %}
+```javascript
 const _iterator = Symbol('iterator');
 const _peeked = Symbol('peeked');
 
@@ -205,13 +205,13 @@ function * merge (...iterables) {
     yield lowestIterator.next().value;
   }
 }
-{% endhighlight %}
+```
 
 This is reasonably straightforward for programmers comfortable with iterators and generators.[^js] Since our `merge` function is a generator, we can easily iterate over its contents or spread them into an array. In fact, it's *almost* interchangeable with the solution for arrays, we just need to remember to spread the result.
 
 [^js]: And if iterators and generators are fairly new to you, you can read [JavaScript Allongé](https://leanpub.com/javascriptallongesix) for free!
 
-{% highlight javascript %}
+```javascript
 const primes = [2, 3, 5, 7, 11];
 const evens = function * () {
   for (let n of [1, 2, 3, 4, 5, 6, 7]) {
@@ -238,7 +238,7 @@ for (let value of merge(primes, evens())) {
 
 [...merge(primes, evens())]
   //=> [2, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 14]
-{% endhighlight %}
+```
 
 There is plenty to discuss about this solution. Here are a few to start things off:
 
