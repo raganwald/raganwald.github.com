@@ -17,11 +17,11 @@ While this is a useful definition for conventional OOP, there is more to program
 
 ### the value of values
 
-Let's begin by making an observation about the value of values:
+Let's begin by making an observation about the value of values: In programming, we have *nouns*. Things. "Entities."
 
-In programming, we have *nouns*. Things. "Entities." In JavaScript, we call nouns, *values*, things we can put in a variable, pass to a function as an argument, or return from a function. Famously, JavaScript functions are values too, which leads to the fact that you can write functions that take functions as arguments and return new functions. It makes it easy to dynamically *compose* functions. For example:
+In JavaScript, we call them, *values*, things we can put in a variable, pass to a function as an argument, or return from a function. Famously, JavaScript functions are values too, which leads to the fact that you can write functions that take functions as arguments and return new functions. It makes it easy to dynamically *compose* functions. For example:
 
-```javascript
+{% highlight javascript %}
 function compose (...fns) {
   let snf = fns.reverse();
 
@@ -32,4 +32,4 @@ function compose (...fns) {
     return arg;
   };
 }
-```
+{% endhighlight %}
