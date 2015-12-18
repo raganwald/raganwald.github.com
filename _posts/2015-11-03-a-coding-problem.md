@@ -11,7 +11,7 @@ Job interviews sometimes contain simple programming tasks. Often called "fizz-bu
 Here's an example, something that might be used in a phone screen or an in-person interview with programmers early in their career: *Write a `merge` function, that given two sorted lists, produces a sorted list containing the union of each list's elements*. For example:
 
 {% highlight javascript %}
-merge ([1, 7, 11, 17], [3, 5, 13])
+merge([1, 7, 11, 17], [3, 5, 13])
   //=> [1, 3, 5, 7, 11, 13, 17]
 
 merge([2, 3, 5, 7, 11], [2, 4, 6, 8, 10, 12, 14])
