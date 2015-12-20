@@ -139,10 +139,10 @@ Thusly, we can write our complete fibonacci function:
 let matrixFibonacci = (n) =>
   n < 2
   ? n
-  : power([1, 1, 0], n - 1)[0]
+  : power([1, 1, 0], n - 1)[0];
 
-new Array(20).fill().map((_, i) => matrixFibonacci(i))
-  // => [0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181]
+matrixFibonacci(62)
+  // => 4052739537881
 {%endhighlight %}
 
 If we'd like to work with very large numbers, JavaScript's integers are insufficient. Borrowing a BigInt library like [BigInteger.js](https://github.com/peterolson/BigInteger.js), our solution becomes:
