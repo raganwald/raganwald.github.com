@@ -18,14 +18,15 @@ There are various common problems offered in such a vein, including FizzBuzz its
 
 ## enter the matrix
 
-One problem with calculating a Fibonacci number is that naive algorithms require _n_ addition operations. There are some interesting things we can do to improve on this. One way is to transform _n_ additions into raising something to the power of *n*. This turns _n_ additions into _n_ multiplications. That seems retrograde, but hold on to your disbelief.
+One problem with calculating a Fibonacci number is that naïve algorithms require _n_ additions. There are some interesting things we can do to improve on performing _n_ operations.
 
-This is actually nice, because there is a trick about raising something to a power that we can exploit. But first things first. We can express the Fibonacci number `F(n)` using a 2x2 matrix:
+In this solution, we observe that we can express the Fibonacci number `F(n)` using a 2x2 matrix that is raised to the power of _n_:
 
     [ 1 1 ] n      [ F(n+1) F(n)   ]
     [ 1 0 ]    =   [ F(n)   F(n-1) ]
 
-So. We can calculate a Fibonacci number by raising a matrix to some power. How do we put that to work? Let's start by writing some code to multiply matricies:
+
+On the face of it, raising someting to the power of _n_ turns _n_ additions into _n_ multiplications. _n_ multiplications sounds worse than _n_ additions, however there is a trick about raising something to a power that we can exploit. Let's start by writing some code to multiply matricies:
 
 ### multiplying matrices
 
