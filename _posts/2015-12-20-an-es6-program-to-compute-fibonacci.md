@@ -6,9 +6,9 @@ tags: [allonge]
 
 (This is a translation of a blog post written in [2008])
 
-Once upon a time, people would ask for a [fizzbuzz](http://raganwald.com/2007/01/dont-overthink-fizzbuzz.html "Don't Overthink FizzBuzz") program to weed out the folks who can't string together a few lines of code. We can debate when and how such things are appropriate interview questions, but one thing that is always appropriate is to use them as inspiration for practising our own skills.
+Once upon a time, people would ask for a [fizzbuzz](http://raganwald.com/2007/01/dont-overthink-fizzbuzz.html "Don't Overthink FizzBuzz") program to weed out the folks who can't string together a few lines of code. We can debate when and how such things are appropriate interview questions, but one thing that is always appropriate is to use them as inspiration for practising our own skills.[^candid]
 
-(Actually, let me be candid: I just like programming, and I find it's fun, even if I don't magically transform myself into a 10x programming ninja through putting in 10,000 hours of practice. But practice certainly doesn't hurt.)
+[^candid]: Actually, let me be candid: I just like programming, and I find it's fun, even if I don't magically transform myself into a 10x programming ninja through putting in 10,000 hours of practice. But practice certainly doesn't hurt.
 
 [A few years back][2008], I thought I'd write up a program to compute the *n*th Fibonacci number. There's an intriguing bit of matrix math involved, so I learned something while implementing it.[^closed]
 
@@ -142,8 +142,8 @@ let matrixFibonacci = (n) =>
   ? n
   : power([1,1,0], n - 1)[0]
 
-(0..20).map { |n| n.matrix_fib }
-  // => [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
+new Array(20).fill(1).map((_, i) => matrixFibonacci(i))
+  // => [0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181]
 {%endhighlight %}
 
 We're done. And thsi is a win over the typical recursive or even iterative solution for large numbers, because whe each operation is more expensive, we perform _log2_ operations.[^notfastest]
