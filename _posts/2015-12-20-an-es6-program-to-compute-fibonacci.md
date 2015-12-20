@@ -10,7 +10,7 @@ Once upon a time, programming interviews would include a [fizz-buzz](http://raga
 
 [^candid]: Actually, let me be candid: I just like programming, and I find it's fun, even if I don't magically transform myself into a 10x programming ninja through putting in 10,000 hours of practice. But practice certainly doesn't hurt.
 
-There are various common problems offered in such a vein, including FizzBuzz itself, computing certain prime numbers, and computing Fibonacci number. [A few years back][2008], I had a go at writing my own Fibonacci function. When I started researching approaches, I discovered an intriguing bit of matrix math, so I learned something while practicing my skills.[^closed]
+There are various common problems offered in such a vein, including fizz-buzz itself, computing certain prime numbers, and computing Fibonacci number. [A few years back][2008], I had a go at writing my own Fibonacci function. When I started researching approaches, I discovered an intriguing bit of matrix math, so I learned something while practicing my skills.[^closed]
 
 [2008]: http://raganwald.com/2008/12/12/fibonacci.html
 
