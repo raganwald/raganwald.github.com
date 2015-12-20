@@ -62,49 +62,49 @@ let times = (...matrices) =>
     ([a,b,c], [d,e,f]) => [a*d + b*e, a*e + b*f, b*e + c*f]
   );
 
-times([1,1,0]) // => [1, 1, 0]
-times([1,1,0], [1,1,0]) // => [2, 1, 1]
-times([1,1,0], [1,1,0], [1,1,0]) // => [3, 2, 1]
-times([1,1,0], [1,1,0], [1,1,0], [1,1,0]) // => [5, 3, 2]
-times([1,1,0], [1,1,0], [1,1,0], [1,1,0], [1,1,0]) // => [8, 5, 3]
+times([1, 1, 0]) // => [1, 1, 0]
+times([1, 1, 0], [1, 1, 0]) // => [2, 1, 1]
+times([1, 1, 0], [1, 1, 0], [1, 1, 0]) // => [3, 2, 1]
+times([1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0]) // => [5, 3, 2]
+times([1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0]) // => [8, 5, 3]
 {% endhighlight %}
 
-To get exponentiation from multiplication, we could write out a naive implementation that constructs a long array of copies of `[1,1,0]` and then calls `times`:
+To get exponentiation from multiplication, we could write out a naive implementation that constructs a long array of copies of `[1, 1, 0]` and then calls `times`:
 
 {% highlight javascript %}
 let naive_power = (matrix, n) =>
-  times(...new Array(n).fill([1,1,0]));
+  times(...new Array(n).fill([1, 1, 0]));
 
-naive_power([1,1,0], 1) // => [1, 1, 0]
-naive_power([1,1,0], 2) // => [2, 1, 1]
-naive_power([1,1,0], 3) // => [3, 2, 1]
-naive_power([1,1,0], 4) // => [5, 3, 2]
-naive_power([1,1,0], 5) // => [8, 5, 3]
+naive_power([1, 1, 0], 1) // => [1, 1, 0]
+naive_power([1, 1, 0], 2) // => [2, 1, 1]
+naive_power([1, 1, 0], 3) // => [3, 2, 1]
+naive_power([1, 1, 0], 4) // => [5, 3, 2]
+naive_power([1, 1, 0], 5) // => [8, 5, 3]
 {%endhighlight %}
 
 Very interesting, and less expensive than multiplying any two arbitrary matrices, but we are still performing _n_ multiplications when we raise a matrix to the _nth_ power. What can we do about that?
 
 ### exponentiation with matrices
 
-Now let's make an observation: instead of accumulating a product by iterating over the list, let's [Divide and Conquer](http://www.cs.berkeley.edu/~vazirani/algorithms/chap2.pdf). Let's take the easy case: Don't you agree that `times([1,1,0], [1,1,0], [1,1,0], [1,1,0])` is equal to `times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))`? And that this saves us an operation, since `times([1,1,0], [1,1,0], [1,1,0], [1,1,0])` is implemented as:
+Now let's make an observation: instead of accumulating a product by iterating over the list, let's [Divide and Conquer](http://www.cs.berkeley.edu/~vazirani/algorithms/chap2.pdf). Let's take the easy case: Don't you agree that `times([1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0])` is equal to `times(times([1, 1, 0], [1, 1, 0]), times([1, 1, 0], [1, 1, 0]))`? And that this saves us an operation, since `times([1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0])` is implemented as:
 
 {% highlight javascript %}
-times([1,1,0],
-  times([1,1,0],
-    times([1,1,0],[1,1,0]))
+times([1, 1, 0],
+  times([1, 1, 0],
+    times([1, 1, 0], [1, 1, 0]))
 {%endhighlight %}
 
-Whereas `times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))` can be implemented as:
+Whereas `times(times([1, 1, 0], [1, 1, 0]), times([1, 1, 0], [1, 1, 0]))` can be implemented as:
 
 {% highlight javascript %}
-let double = times([1,1,0], [1,1,0]),
+let double = times([1, 1, 0], [1, 1, 0]),
     quadruple = times(double, double);
 {%endhighlight %}
 
-This only requires two operations rather than three. Furthermore, it is recursive. `naive_power([1,1,0], 8)` requires seven operations. However, it can be formulated as:
+This only requires two operations rather than three. Furthermore, it is recursive. `naive_power([1, 1, 0], 8)` requires seven operations. However, it can be formulated as:
 
 {% highlight javascript %}
-let double = times([1,1,0], [1,1,0]),
+let double = times([1, 1, 0], [1, 1, 0]),
     quadruple = times(double, double),
     octuple = times(quadruple, quadruple);
 {%endhighlight %}
@@ -122,11 +122,11 @@ let power = (matrix, n) => {
          : times(halves, halves, matrix);
 }
 
-power([1,1,0], 1) // => [1, 1, 0]
-power([1,1,0], 2) // => [2, 1, 1]
-power([1,1,0], 3) // => [3, 2, 1]
-power([1,1,0], 4) // => [5, 3, 2]
-power([1,1,0], 5) // => [8, 5, 3]
+power([1, 1, 0], 1) // => [1, 1, 0]
+power([1, 1, 0], 2) // => [2, 1, 1]
+power([1, 1, 0], 3) // => [3, 2, 1]
+power([1, 1, 0], 4) // => [5, 3, 2]
+power([1, 1, 0], 5) // => [8, 5, 3]
 {%endhighlight %}
 
 Now we can perform exponentiation of our matrices, and we take advantage of the symmetry to perform _log2n_ multiplications.
@@ -139,7 +139,7 @@ Thusly, we can write our complete fibonacci function:
 let matrixFibonacci = (n) =>
   n < 2
   ? n
-  : power([1,1,0], n - 1)[0]
+  : power([1, 1, 0], n - 1)[0]
 
 new Array(20).fill().map((_, i) => matrixFibonacci(i))
   // => [0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181]
@@ -152,7 +152,7 @@ var bigInt = require("big-integer");
 
 let times = (...matrices) =>
   matrices.reduce(
-    ([a,b,c], [d,e,f]) => [
+    ([a, b, c], [d, e, f]) => [
         a.times(d).plus(b.times(e)),
         a.times(e).plus(b.times(f)),
         b.times(e).plus(c.times(f))
@@ -172,7 +172,7 @@ let power = (matrix, n) => {
 let matrixFibonacci = (n) =>
   n < 2
   ? n
-  : power([bigInt.one,bigInt.one,bigInt.zero], n - 1)[0]
+  : power([bigInt.one, bigInt.one, bigInt.zero], n - 1)[0]
 
 matrixFibonacci(1000000).toString()
   // =>
