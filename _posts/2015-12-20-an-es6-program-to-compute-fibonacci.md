@@ -173,7 +173,11 @@ let matrixFibonacci = (n) =>
   n < 2
   ? n
   : power([bigInt.one, bigInt.one, bigInt.zero], n - 1)[0]
+{%endhighlight %}
 
+Let's stretch our wings and calculate the one millionth Fibonacci number:
+
+{% highlight javascript %}
 matrixFibonacci(1000000).toString()
   // =>
     1953282128707757731632014947596256332443542996591
