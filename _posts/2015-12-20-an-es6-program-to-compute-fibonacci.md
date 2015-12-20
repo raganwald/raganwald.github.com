@@ -141,7 +141,7 @@ let matrixFibonacci = (n) =>
   ? n
   : power([1,1,0], n - 1)[0]
 
-new Array(20).fill(1).map((_, i) => matrixFibonacci(i))
+new Array(20).fill().map((_, i) => matrixFibonacci(i))
   // => [0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181]
 {%endhighlight %}
 
