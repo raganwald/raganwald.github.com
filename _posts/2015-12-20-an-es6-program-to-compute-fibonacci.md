@@ -14,7 +14,7 @@ There are various common problems offered in such a vein, including fizz-buzz it
 
 [2008]: http://raganwald.com/2008/12/12/fibonacci.html
 
-[^closed]: There is a [closed-form solution](http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression) to the function `fib`, but floating point math has some limitations you should be aware of before [using it in an interview](http://raganwald.com/2013/03/26/the-interview.html).
+[^closed]: There is a [closed-form solution](http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression) to the function `fib`, but floating point math has some limitations you should be aware of before [using it in an interview](http://raganwald.com/2013/03/26/the-interview.html). Naturally, if you're running into some of those limits, you would use a BigInt library such as [BigInteger.js](https://github.com/peterolson/BigInteger.js).
 
 ### enter the matrix
 
