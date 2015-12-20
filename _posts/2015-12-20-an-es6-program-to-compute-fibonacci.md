@@ -28,8 +28,6 @@ In this solution, we observe that we can express the Fibonacci number `F(n)` usi
 
 On the face of it, raising someting to the power of _n_ turns _n_ additions into _n_ multiplications. _n_ multiplications sounds worse than _n_ additions, however there is a trick about raising something to a power that we can exploit. Let's start by writing some code to multiply matrices:
 
-### multiplying matrices
-
 [Multiplying two matrices](http://www.maths.surrey.ac.uk/explore/emmaspages/option1.html "Matrices and Determinants") is a little interesting if you have never seen it before:
 
     [ a b ]       [ e f ]   [ ae + bg  af + bh ]
