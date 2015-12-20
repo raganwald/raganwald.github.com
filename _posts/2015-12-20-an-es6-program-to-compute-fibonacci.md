@@ -16,9 +16,9 @@ There are various common problems offered in such a vein, including FizzBuzz its
 
 [^closed]: There is a [closed-form solution](http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression) to the function `fib`, but floating point math has some limitations you should be aware of before [using it in an interview](http://raganwald.com/2013/03/26/the-interview.html).
 
-## enter the matrix
+### enter the matrix
 
-One problem with calculating a Fibonacci number is that naïve algorithms require _n_ additions. There are some interesting things we can do to improve on performing _n_ operations.
+One problem with calculating a Fibonacci number is that naïve algorithms require _n_ additions. This is obviously expensive for large values of _n_. But of course, there are some interesting things we can do to improve on this.
 
 In this solution, we observe that we can express the Fibonacci number `F(n)` using a 2x2 matrix that is raised to the power of _n_:
 
@@ -71,10 +71,6 @@ times([1,1,0], [1,1,0], [1,1,0], [1,1,0]) // => [5, 3, 2]
 times([1,1,0], [1,1,0], [1,1,0], [1,1,0], [1,1,0]) // => [8, 5, 3]
 {% endhighlight %}
 
-Very interesting.
-
-### exponentiation with matrices
-
 To get exponentiation from multiplication, we could write out a naive implementation that constructs a long array of copies of `[1,1,0]` and then calls `times`:
 
 {% highlight ruby %}
@@ -87,6 +83,10 @@ naive_power([1,1,0], 3) // => [3, 2, 1]
 naive_power([1,1,0], 4) // => [5, 3, 2]
 naive_power([1,1,0], 5) // => [8, 5, 3]
 {%endhighlight %}
+
+Very interesting, and less expensive than multiplying any two arbitrary matrices, but we are still performing _n_ multiplications when we raise a matrix to the _nth_ power. What can we do about that?
+
+### exponentiation with matrices
 
 Now let's make an observation: instead of accumulating a product by iterating over the list, let's [Divide and Conquer](http://www.cs.berkeley.edu/~vazirani/algorithms/chap2.pdf). Let's take the easy case: Don't you agree that `times([1,1,0], [1,1,0], [1,1,0], [1,1,0])` is equal to `times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))`? And that this saves us an operation, since `times([1,1,0], [1,1,0], [1,1,0], [1,1,0])` is implemented as:
 
