@@ -4,8 +4,6 @@ layout: default
 tags: [allonge]
 ---
 
-(This is a translation of a blog post written in [2008])
-
 ![FIbonacci Spiral](/assets/images/fibonacci.png)
 
 Once upon a time, people would ask for a [fizzbuzz](http://raganwald.com/2007/01/dont-overthink-fizzbuzz.html "Don't Overthink FizzBuzz") program to weed out the folks who can't string together a few lines of code. We can debate when and how such things are appropriate interview questions, but one thing that is always appropriate is to use them as inspiration for practising our own skills.[^candid]
@@ -151,6 +149,8 @@ new Array(20).fill(1).map((_, i) => matrixFibonacci(i))
 We're done. And thsi is a win over the typical recursive or even iterative solution for large numbers, because whe each operation is more expensive, we perform _log2_ operations.[^notfastest]
 
 [^notfastest]: No, this isn't [the fastest implementation](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/194815 "Fast Fibonacci method") by far. But it beats the pants off of a naïve iterative implementation.
+
+(This is a translation of a blog post written in [2008])
 
 ---
 
