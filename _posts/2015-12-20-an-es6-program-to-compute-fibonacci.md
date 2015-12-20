@@ -26,7 +26,7 @@ In this solution, we observe that we can express the Fibonacci number `F(n)` usi
     [ 1 0 ]    =   [ F(n)   F(n-1) ]
 
 
-On the face of it, raising someting to the power of _n_ turns _n_ additions into _n_ multiplications. _n_ multiplications sounds worse than _n_ additions, however there is a trick about raising something to a power that we can exploit. Let's start by writing some code to multiply matricies:
+On the face of it, raising someting to the power of _n_ turns _n_ additions into _n_ multiplications. _n_ multiplications sounds worse than _n_ additions, however there is a trick about raising something to a power that we can exploit. Let's start by writing some code to multiply matrices:
 
 ### multiplying matrices
 
@@ -100,15 +100,15 @@ Whereas `times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))` can be impleme
 
 {% highlight ruby %}
 let double = times([1,1,0], [1,1,0]),
-    quadrouple = times(double, double);
+    quadruple = times(double, double);
 {%endhighlight %}
 
 This only requires two operations rather than three. Furthermore, it is recursive. `naive_power([1,1,0], 8)` requires seven operations. However, it can be formulated as:
 
 {% highlight ruby %}
 let double = times([1,1,0], [1,1,0]),
-    quadrouple = times(double, double),
-    octuple = times(quadrouple, quadrouple);
+    quadruple = times(double, double),
+    octuple = times(quadruple, quadruple);
 {%endhighlight %}
 
 Now we only need three operations compared to seven. Of course, we left out how to deal with odd numbers. Fixing that also fixes how to deal with even numbers that aren't neat powers of two:
@@ -131,7 +131,7 @@ power([1,1,0], 4) // => [5, 3, 2]
 power([1,1,0], 5) // => [8, 5, 3]
 {%endhighlight %}
 
-Now we can perform exponentiation of our matrices, and we take advantage of the symmytry to perfom _log2_ multiplications.
+Now we can perform exponentiation of our matrices, and we take advantage of the symmetry to perform _log2n_ multiplications.
 
 ### and thus to fibonacci
 
@@ -147,7 +147,7 @@ new Array(20).fill(1).map((_, i) => matrixFibonacci(i))
   // => [0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181]
 {%endhighlight %}
 
-We're done. And thsi is a win over the typical recursive or even iterative solution for large numbers, because whe each operation is more expensive, we perform _log2_ operations.[^notfastest]
+We're done. And this is a win over the typical recursive or even iterative solution for large numbers, because while each operation is more expensive, we only perform _log2n_ operations.[^notfastest]
 
 [^notfastest]: No, this isn't [the fastest implementation](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/194815 "Fast Fibonacci method") by far. But it beats the pants off of a naïve iterative implementation.
 
