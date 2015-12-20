@@ -20,12 +20,12 @@ Once upon a time, people would ask for a [fizzbuzz](http://raganwald.com/2007/01
 
 One problem with calculating a Fibonacci number is that naive algorithms require _n_ addition operations. There are some interesting things we can do to improve on this. One way is to transform _n_ additions into raising something to the power of *n*. This turns _n_ additions into _n_ multiplications. That seems retrograde, but hold on to your disbelief.
 
-This is actually nice, because there is a trick about raising something to a power that we can exploit. But first things first. As explained in [Sum of Fibonacci numbers?](http://expertvoices.nsdl.org/cornell-cs322/2008/03/25/sum-of-fibonacci-numbers/), we can express the Fibonacci number `F(n)` using a 2x2 matrix:
+This is actually nice, because there is a trick about raising something to a power that we can exploit. But first things first. We can express the Fibonacci number `F(n)` using a 2x2 matrix:
 
     [ 1 1 ] n      [ F(n+1) F(n)   ]
     [ 1 0 ]    =   [ F(n)   F(n-1) ]
 
-So. We can calculate a Fibonacci number by raising a matrix to some power. How do we put that to work? Let's start by writing some code to multiply matrixies:
+So. We can calculate a Fibonacci number by raising a matrix to some power. How do we put that to work? Let's start by writing some code to multiply matricies:
 
 ### multiplying matrices
 
@@ -63,11 +63,11 @@ let times = (...matrices) =>
     ([a,b,c], [d,e,f]) => [a*d + b*e, a*e + b*f, b*e + c*f]
   );
 
-times([1,1,0]) # => [1, 1, 0]
-times([1,1,0], [1,1,0]) # => [2, 1, 1]
-times([1,1,0], [1,1,0], [1,1,0]) # => [3, 2, 1]
-times([1,1,0], [1,1,0], [1,1,0], [1,1,0]) # => [5, 3, 2]
-times([1,1,0], [1,1,0], [1,1,0], [1,1,0], [1,1,0]) # => [8, 5, 3]
+times([1,1,0]) // => [1, 1, 0]
+times([1,1,0], [1,1,0]) // => [2, 1, 1]
+times([1,1,0], [1,1,0], [1,1,0]) // => [3, 2, 1]
+times([1,1,0], [1,1,0], [1,1,0], [1,1,0]) // => [5, 3, 2]
+times([1,1,0], [1,1,0], [1,1,0], [1,1,0], [1,1,0]) // => [8, 5, 3]
 {% endhighlight %}
 
 Very interesting.
@@ -80,11 +80,11 @@ To get exponentiation from multiplication, we could write out a naive implementa
 let naive_power = (matrix, n) =>
   times(...new Array(n).fill([1,1,0]));
 
-naive_power([1,1,0], 1) # => [1, 1, 0]
-naive_power([1,1,0], 2) # => [2, 1, 1]
-naive_power([1,1,0], 3) # => [3, 2, 1]
-naive_power([1,1,0], 4) # => [5, 3, 2]
-naive_power([1,1,0], 5) # => [8, 5, 3]
+naive_power([1,1,0], 1) // => [1, 1, 0]
+naive_power([1,1,0], 2) // => [2, 1, 1]
+naive_power([1,1,0], 3) // => [3, 2, 1]
+naive_power([1,1,0], 4) // => [5, 3, 2]
+naive_power([1,1,0], 5) // => [8, 5, 3]
 {%endhighlight %}
 
 Now let's make an observation: instead of accumulating a product by iterating over the list, let's [Divide and Conquer](http://www.cs.berkeley.edu/~vazirani/algorithms/chap2.pdf). Let's take the easy case: Don't you agree that `times([1,1,0], [1,1,0], [1,1,0], [1,1,0])` is equal to `times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))`? And that this saves us an operation, since `times([1,1,0], [1,1,0], [1,1,0], [1,1,0])` is implemented as:
@@ -123,11 +123,11 @@ let power = (matrix, n) => {
          : times(halves, halves, matrix);
 }
 
-power([1,1,0], 1) # => [1, 1, 0]
-power([1,1,0], 2) # => [2, 1, 1]
-power([1,1,0], 3) # => [3, 2, 1]
-power([1,1,0], 4) # => [5, 3, 2]
-power([1,1,0], 5) # => [8, 5, 3]
+power([1,1,0], 1) // => [1, 1, 0]
+power([1,1,0], 2) // => [2, 1, 1]
+power([1,1,0], 3) // => [3, 2, 1]
+power([1,1,0], 4) // => [5, 3, 2]
+power([1,1,0], 5) // => [8, 5, 3]
 {%endhighlight %}
 
 Now we can perform exponentiation of our matrices, and we take advantage of the symmytry to perfom _log2_ multiplications.
@@ -143,7 +143,7 @@ let matrixFibonacci = (n) =>
   : power([1,1,0], n - 1)[0]
 
 (0..20).map { |n| n.matrix_fib }
-  # => [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
+  // => [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
 {%endhighlight %}
 
 We're done. And thsi is a win over the typical recursive or even iterative solution for large numbers, because whe each operation is more expensive, we perform _log2_ operations.[^notfastest]
