@@ -145,10 +145,10 @@ matrixFibonacci(62)
   // => 4052739537881
 {%endhighlight %}
 
-If we'd like to work with very large numbers, JavaScript's integers are insufficient. Borrowing a BigInt library like [BigInteger.js](https://github.com/peterolson/BigInteger.js), our solution becomes:
+If we'd like to work with very large numbers, JavaScript's integers are insufficient. Using a library like [BigInteger.js](https://github.com/peterolson/BigInteger.js), our solution becomes:
 
 {% highlight javascript %}
-var bigInt = require("big-integer");
+let { zero, one } = require("big-integer");
 
 let times = (...matrices) =>
   matrices.reduce(
@@ -172,7 +172,7 @@ let power = (matrix, n) => {
 let matrixFibonacci = (n) =>
   n < 2
   ? n
-  : power([bigInt.one, bigInt.one, bigInt.zero], n - 1)[0]
+  : power([one, one, zero], n - 1)[0];
 {%endhighlight %}
 
 Let's stretch our wings and calculate the 19,620,614th Fibonacci number:[^1962]
