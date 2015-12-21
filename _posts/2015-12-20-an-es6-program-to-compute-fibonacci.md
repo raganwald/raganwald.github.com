@@ -136,6 +136,21 @@ Now we can perform exponentiation of our matrices, and we take advantage of the 
 Thusly, we can write our complete fibonacci function:
 
 {% highlight javascript %}
+let times = (...matrices) =>
+  matrices.reduce(
+    ([a,b,c], [d,e,f]) => [a*d + b*e, a*e + b*f, b*e + c*f]
+  );
+
+let power = (matrix, n) => {
+  if (n === 1) return matrix;
+
+  let halves = power(matrix, Math.floor(n / 2));
+
+  return n % 2 === 0
+         ? times(halves, halves)
+         : times(halves, halves, matrix);
+}
+
 let matrixFibonacci = (n) =>
   n < 2
   ? n
