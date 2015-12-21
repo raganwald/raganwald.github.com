@@ -148,7 +148,7 @@ matrixFibonacci(62)
 If we'd like to work with very large numbers, JavaScript's integers are insufficient. Using a library like [BigInteger.js](https://github.com/peterolson/BigInteger.js), our solution becomes:
 
 {% highlight javascript %}
-import { zero, one  } from 'big-integer';
+import { zero, one } from 'big-integer';
 
 let times = (...matrices) =>
   matrices.reduce(
