@@ -232,7 +232,7 @@ We're done. And this is a win over the typical recursive or even iterative solut
 
 [^notfastest]: No, this isn't [the fastest implementation](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/194815 "Fast Fibonacci method") by far. But it beats the pants off of a naïve iterative implementation.
 
-(This is a translation of a blog post written in [2008]. Discuss on [Hacker News](https://news.ycombinator.com/item?id=10771440))
+(This is a translation of a blog post written in [2008]. It feels cleaner than the Ruby original, possibly because of the destructuring, and possibly because writing functions is idiomatic JavaScript, whereas refining core classes is idiomatic Ruby. What do you think? Discuss on [Hacker News](https://news.ycombinator.com/item?id=10771440).)
 
 ---
 
