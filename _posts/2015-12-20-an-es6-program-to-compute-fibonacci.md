@@ -54,7 +54,7 @@ And thus, we can always work with three elements instead of four. Let's express 
 
     [a, b, c] times [d, e, f] = [ad + be, ae + bf, be + cf]
 
-Which we can code in JavaScript:
+Which we can code in JavaScript, using array destructuring:
 
 {% highlight javascript %}
 let times = (...matrices) =>
@@ -86,7 +86,9 @@ Very interesting, and less expensive than multiplying any two arbitrary matrices
 
 ### exponentiation with matrices
 
-Now let's make an observation: instead of accumulating a product by iterating over the list, let's [Divide and Conquer](http://www.cs.berkeley.edu/~vazirani/algorithms/chap2.pdf). Let's take the easy case: Don't you agree that `times([1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0])` is equal to `times(times([1, 1, 0], [1, 1, 0]), times([1, 1, 0], [1, 1, 0]))`? And that this saves us an operation, since `times([1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0])` is implemented as:
+Now let's make an observation: instead of accumulating a product by iterating over the list, let's [Divide and Conquer](http://www.cs.berkeley.edu/~vazirani/algorithms/chap2.pdf). Let's take the easy case: Don't you agree that `times([1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0])` is equal to `times(times([1, 1, 0], [1, 1, 0]), times([1, 1, 0], [1, 1, 0]))`?
+
+This saves us an operation, since `times([1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0])` is implemented as:
 
 {% highlight javascript %}
 times([1, 1, 0],
@@ -101,7 +103,19 @@ let double = times([1, 1, 0], [1, 1, 0]),
     quadruple = times(double, double);
 {%endhighlight %}
 
-This only requires two operations rather than three. Furthermore, it is recursive. `naive_power([1, 1, 0], 8)` requires seven operations. However, it can be formulated as:
+This only requires two operations rather than three. Furthermore, this pattern is recursive. For example, `naive_power([1, 1, 0], 8)` requires seven operations:
+
+{% highlight javascript %}
+times([1, 1, 0],
+  times([1, 1, 0],
+    times([1, 1, 0],
+      times([1, 1, 0],
+        times([1, 1, 0],
+          times([1, 1, 0],
+            times([1, 1, 0], [1, 1, 0])))))))
+{%endhighlight %}
+
+However, it can be formulated with just three operations:
 
 {% highlight javascript %}
 let double = times([1, 1, 0], [1, 1, 0]),
@@ -109,7 +123,7 @@ let double = times([1, 1, 0], [1, 1, 0]),
     octuple = times(quadruple, quadruple);
 {%endhighlight %}
 
-Now we only need three operations compared to seven. Of course, we left out how to deal with odd numbers. Fixing that also fixes how to deal with even numbers that aren't neat powers of two:
+Of course, we left out how to deal with odd numbers. Fixing that also fixes how to deal with even numbers that aren't neat powers of two:
 
 {% highlight javascript %}
 let power = (matrix, n) => {
@@ -133,7 +147,7 @@ Now we can perform exponentiation of our matrices, and we take advantage of the 
 
 ### and thus to fibonacci
 
-Thusly, we can write our complete fibonacci function:
+We can now write our complete fibonacci function:
 
 {% highlight javascript %}
 let times = (...matrices) =>
@@ -151,12 +165,12 @@ let power = (matrix, n) => {
          : times(halves, halves, matrix);
 }
 
-let matrixFibonacci = (n) =>
+let fibonacci = (n) =>
   n < 2
   ? n
   : power([1, 1, 0], n - 1)[0];
 
-matrixFibonacci(62)
+fibonacci(62)
   // => 4052739537881
 {%endhighlight %}
 
@@ -184,7 +198,7 @@ let power = (matrix, n) => {
          : times(halves, halves, matrix);
 }
 
-let matrixFibonacci = (n) =>
+let fibonacci = (n) =>
   n < 2
   ? n
   : power([one, one, zero], n - 1)[0];
@@ -195,7 +209,7 @@ Let's stretch our wings and calculate the 19,620,614th Fibonacci number:[^1962]
 [^1962]: 1962-06-14 is a number near and dear to me :-)
 
 {% highlight javascript %}
-matrixFibonacci(19620614).toString()
+fibonacci(19620614).toString()
   // =>
     29554981652302145421961363135286189884298419359021591207414
     94029404508891979849589048890639433083583865137532017734839
@@ -218,7 +232,7 @@ We're done. And this is a win over the typical recursive or even iterative solut
 
 [^notfastest]: No, this isn't [the fastest implementation](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/194815 "Fast Fibonacci method") by far. But it beats the pants off of a naïve iterative implementation.
 
-(This is a translation of a blog post written in [2008])
+(This is a translation of a blog post written in [2008]. Discuss on [Hacker News](https://news.ycombinator.com/item?id=10771440))
 
 ---
 
