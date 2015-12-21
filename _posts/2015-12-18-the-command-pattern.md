@@ -19,17 +19,124 @@ While this is a useful definition for conventional OOP, there is more to program
 
 Let's begin by making an observation about the value of values: In programming, we have *nouns*. Things. "Entities."
 
-In JavaScript, we call them, *values*, things we can put in a variable, pass to a function as an argument, or return from a function. Famously, JavaScript functions are values too, which leads to the fact that you can write functions that take functions as arguments and return new functions. It makes it easy to dynamically *compose* functions. For example:
+In JavaScript, we call them, *values*, things we can put in a variable, pass to a function as an argument, return from a function, or both. Integers are values:
 
 {% highlight javascript %}
-function compose (...fns) {
-  let snf = fns.reverse();
+let one = 1;
 
-  return function (arg) {
-    for (let fn of snf) {
+function knockOnDoor (times) {
+  for(let i = 0; i < times; ++i)
+    console.log("knock!");
+}
+
+function occurrences (string, term, fromIndex = 0, plus = 0) {
+  let i = string.indexOf(term, fromIndex);
+  return i < 0
+         ? plus
+         : occurrences(string, term, i + term.length, ++plus)
+}
+
+function occurrences (string, term, fromIndex = 0, plus = 0) {
+  let i = string.indexOf(term, fromIndex);
+  return i < 0
+         ? plus
+         : occurrences(string, term, i + term.length, ++plus)
+}
+{% endhighlight %}
+
+Famously, JavaScript functions are values too, we can assign them to variables, pass, them to functions as arguments, return them from functions, or both:
+
+{% highlight javascript %}
+let occurrences = (string, term, fromIndex = 0, plus = 0) => {
+  let i = string.indexOf(term, fromIndex);
+  return i < 0
+         ? plus
+         : occurrences(string, term, i + term.length, ++plus)
+};
+
+function maybeApply (fn, ...args) {
+  if (args.some((arg) => arg == null)) return;
+  return fn(...args);
+}
+
+let makeCounter = () => {
+  let count = 0;
+  return () => ++count;
+}
+
+let compose = (...fns) =>
+  (arg) => {
+    for (let fn of fns.reverse()) {
       arg = fn(arg)
     }
     return arg;
   };
-}
+{% endhighlight %}
+
+The idea of functions being first-class values goes back to Lisp, and before that to the Lambda Calculus and Combinatory Logic. It's one of the "great discoveries." When we write functions that take functions as arguments, return functions, or both, we're writing "higher-order functions," and that moves us up a level of abstraction. It also gives us new ways to decompose functionality and separate concerns.
+
+### invocations as values
+
+In normal JavaScript programming, we work with values, some of which are functions. What we do with them We invoke functions with those values. So we spend a lot of time talking about values, and a lot of time talking about functions, and every once in a while we talki about "calling" or "invoking" a function.
+
+But an "invocation" is not, itself, a first-class value. Some values you plan to pass to a function are values, and the function itself is a value, but the invocation of the function is not, itself a value. Some laguages have special features for invocations being first-class values, but in JavaScript we have to rustle something up for ourselves.
+
+Let's build about the simplest thing that could possibly work (TSTTCPW). Obviously, we usually invoke a function directly:
+
+{% highlight javascript %}
+fn(a, b, c)
+
+// or better still:
+
+fn(...args)
+{% endhighlight %}
+
+If we want to capture that invocation and use it as a first-class value, we can wrap it in a function, like this:
+
+{% highlight javascript %}
+let invoke = () => fn(...args);
+{% endhighlight %}
+
+Now we have a function, `invoke`, that invokes our function with arguments from an array. Any time we want to resolve the invocation, we simply invoke it without arguments:
+
+{% highlight javascript %}
+invoke();
+{% endhighlight %}
+
+And we know it will invoke our original function for us.
+
+Now, obviously, we've seen how to assign an invocation to a variable. We can also write functions return invocations. The very simplest is one that makes an invocation for us:
+
+{% highlight javascript %}
+let invocation = (fn, ...args) =>
+  () => fn(...args);
+{% endhighlight %}
+
+The `invocation` function makes invocations for us. We can use it in all sorts of ways. Let's say that we have an array of strings:
+
+{% highlight javascript %}
+let corpus = [
+  "let times = (...matrices) =>",
+  "  matrices.reduce(",
+  "    ([a,b,c], [d,e,f]) => [a*d + b*e, a*e + b*f, b*e + c*f]",
+  "  );",
+  "",
+  "let power = (matrix, n) => {",
+  "  if (n === 1) return matrix;",
+  "",
+  "  let halves = power(matrix, Math.floor(n / 2));",
+  "",
+  "  return n % 2 === 0",
+  "         ? times(halves, halves)",
+  "         : times(halves, halves, matrix);",
+  "}",
+  "",
+  "let matrixFibonacci = (n) =>",
+  "  n < 2",
+  "  ? n",
+  "  : power([1, 1, 0], n - 1)[0];",
+  "",
+  "matrixFibonacci(62)",
+  "  // => 4052739537881"
+];
 {% endhighlight %}
