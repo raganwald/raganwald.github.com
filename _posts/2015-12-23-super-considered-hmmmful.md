@@ -37,16 +37,16 @@ JavaScript out of the box is very definately virtual-by-default. The technical o
 
 For example, making up our own little JavaScript flavour that has manifest typing:
 
-```
+```javascript
 class Foo {
   toString () {
-    return "I am a foo";
+    return "foo";
   }
 }
 
 class Bar extends Foo {
   toString () {
-    return "I am a bar";
+    return "bar";
   }
 }
 
@@ -54,20 +54,20 @@ Foo f = new Bar();
 console.log(f.toString());
 ```
 
-In a virtual-by-default language, the console logs `I am a bar`. In a static-by-default language, the console logs `I am a foo`, because even though the object `f` is a `Bar`, it is declared as a `Foo`, and the compiler translates `f.toString()` into roughly `Foo.prototype.toString.call(f)`.
+In a virtual-by-default language, the console logs `bar`. In a static-by-default language, the console logs `foo`, because even though the object `f` is a `Bar`, it is declared as a `Foo`, and the compiler translates `f.toString()` into roughly `Foo.prototype.toString.call(f)`.
 
 C++ is a static-by-default language. If you want dynamic dispatching, you use a special `virtual` keyword to indicate which functions should be dynamically dispatched. If our hypothetical JavaScript flavour was static-by-default and we wanted `toString()` to be a virtual function, we would write:
 
-```
+```javascript
 class Foo {
   virtual toString () {
-    return "I am a foo";
+    return "foo";
   }
 }
 
 class Bar extends Foo {
   virtual toString () {
-    return "I am a bar";
+    return "bar";
   }
 }
 
@@ -83,10 +83,10 @@ If most languages are settled on virtual-by-default, how can there be another tr
 
 But there was another argument, a semantic argument. The argument was this. If we write:
 
-```
+```javascript
 class Foo {
   toString () {
-    return "I am a foo";
+    return "foo";
   }
 }
 ```
@@ -94,24 +94,24 @@ We are defining `Foo` to be:
 
 1. A class
 2. That has a method, `toString`
-3. That returns `"I am a foo"`
+3. That returns `"foo"`
 
-Everyone agrees on the first two points, but OO programmers are split on the third point. Some say that a `Foo` is defined to return `"I am a foo"`, others say that it returns `"I am a foo"` by *default*, but any subclass of `Foo` can override this,a nd it could return anything, raise an exception, or erase your hard drive and email 419 scam letters to everyone in your contacts, you can't tell unless you examine an individual object that happens to be declared to be a `Foo` and see how it actually behaves.
+Everyone agrees on the first two points, but OO programmers are split on the third point. Some say that a `Foo` is defined to return `"foo"`, others say that it returns `"foo"` by *default*, but any subclass of `Foo` can override this,a nd it could return anything, raise an exception, or erase your hard drive and email 419 scam letters to everyone in your contacts, you can't tell unless you examine an individual object that happens to be declared to be a `Foo` and see how it actually behaves.
 
 When the Java language was released, it was virtual-by-default, but it didn't ignore this question. Java introduced the `final` keyword. When a method was declared `final`, it was *illegal to override it*, and if you tried, you got a compiler error.
 
 If our imaginary JavaScript dialog worked this way, this code would not compile at all:
 
-```
+```javascript
 class Foo {
   final toString () {
-    return "I am a foo";
+    return "foo";
   }
 }
 
 class Bar extends Foo {
   toString () {
-    return "I am a bar";
+    return "bar";
   }
 }
 // => Error: Method toString of superclass Foo is final and cannot be overridden.
@@ -121,31 +121,31 @@ In Java, `final` was optional. But many people felt that like C++, the designers
 
 If our dialect worked like that, all methods would be virtual, but if we wanted to allow a method to be overridden, we would use a special keyword, like `default`:
 
-```
+```javascript
 class Foo {
   toString () {
-    return "I am a foo";
+    return "foo";
   }
 }
 
 class Bar extends Foo {
   toString () {
-    return "I am a bar";
+    return "bar";
   }
 }
 // => Error: Method toString of superclass Foo is final and cannot be overridden.
 ```
 
-```
+```javascript
 class Foo {
   default toString () {
-    return "I am a foo";
+    return "foo";
   }
 }
 
 class Bar extends Foo {
   toString () {
-    return "I am a bar";
+    return "bar";
   }
 }
 //=> No errors, because Foo#toString is a default method.
@@ -169,7 +169,7 @@ Another principle you will hear discussed in this vein is called the [Open-Close
 
 In our examples above, overriding `toString` in `Bar` modifies the definition of `Foo`, because it changes the definition of the behaviour of objects that are instances of `Foo`. Whereas, if we write:
 
-```
+```javascript
 class Bar extends Foo {
   toArray () {
     return this.toString().split('');
@@ -181,11 +181,111 @@ Now we are extending `Foo` for those objects that are both a `Foo` and a `Bar`, 
 
 [^well-actually]: As orginally professed, the Open-Closed Principle had more to do with saying that a language or system should allow things to be modified by adding subclasses and so forth, while strongly discouraging changing original things. So in the late eighties and early nineties, overriding methods was in keeping with the Open/Closed Principle, because superclasses remeain closed to modification. This was a good idea at the time, because it encouraged building systems that didn't have [brittle dependencies](https://en.wikipedia.org/wiki/Fragile_base_class). It has since evolved to have much more in common with LSP.
 
-The "final-by-default" tribe of OO programmers like their programs to confirm to LSP and Open/Closed. This makes them nervious of language features that encourage violations.
+The "final-by-default" tribe of OO programmers like their programs to confirm to LSP and Open/Closed. This makes them nervious of language features that encourage overriding methods.
 
-### enter super()-man
+### mixins and final-by-default
 
+If you're a member of the final-by-default tribe, you don't want a lot of overriding of methods. You don't want mixins to blindly copy over an existing prototype's methods just as you don't want a classes' methods to will-nilly override a superclass's methods or a mixin's methods.
 
+If you're a member of the final-by-default tribe, every time you see the `super()` keyword, you stare at it long and hard, and work out the tradeoff of convenience now versus potential for bugs down the road.
+
+If you're a member of the final-by-default tribe, your `mixin` implementation will throw an error if a mixin and a class's method clash:
+
+```javascript
+let HappyObjects = final_by_default_mixin({
+  toString () {
+    return "I'm a happy object!";
+  }
+});
+
+@HappyObjects
+class Foo {
+  toString () {
+    return "foo";
+  }
+};
+// => Error: HappyObjects and Foo both define toString
+```
+Members of the final-by-default tribe want `HappyObjects` to describe all happy objects, and `Foo` to define all instances of `Foo`. Blindly copying methods won't protect against naming clashes like this.
+
+Of course, setting mixins up as subclass factories won't do that either. With subclass factories, we would actually write something like:
+
+```javascript
+let HappyObjects = subclass_factory_mixin({
+  toString () {
+    return 'happy';
+  }
+});
+
+class HappyFoo extends HappyObjects(Object) {
+  toString () {
+    return `${super()} foo`;
+  }
+};
+
+let f = new HappyFoo();
+f.toString()
+  //=> happy foo
+```
+
+With a subclass factory, you have everything virtual-by-default and overridable-by-default. Which is fine if you aren't a member of the final-by-default tribe.
+
+### there has to be a catch
+
+So, if there are these fancy "Liskov Substitution Principles" and "Open/Closed Principles" arguing for not encouraging overriding methods, what is the catch? Why doesn't everyone program this way?
+
+Well, convenience. If you can't override methods (because that modifies the meaning of the superclass or mixin), you need to do something else when you want to extend the behaviour of a superclass or mixin. For example, if you want the mixin for imlementation convenience but aren't trying to imply that a `Foo` is-a `HappyObject`, you would use delegation, like this:
+
+```javascript
+class HappyObjects {
+  toString () {
+    return 'happy';
+  }
+};
+
+class HappyFoo {
+  constructor () {
+    this.happiness = new HappyObjects();
+  }
+
+  toString () {
+    return `${this.happiness.toString()} foo`;
+  }
+};
+
+let f = new HappyFoo();
+f.toString()
+  //=> I'm a happy foo!
+```
+A `HappyFoo` delegates part of its behaviour to an instance of `HappyObjects` that it owns. Some people find this kind of things more trouble than its worth, no matter how many times they hear grizzled veterans intoning "Prefer [Composition Over Inheritance]."
+
+[Composition Over Inheritance]: https://en.wikipedia.org/wiki/Composition_over_inheritance
+
+Another technique that final-by-default tribe members use is to focus on extending superclass methods rather than replacing them outright. [Method Advice] can help. In the Ruby on Rails framework, for example, you can add behaviour to existing methods that is run before, after, or around methods, without overriding the methods themselves.
+
+In this example, decorators add behaviour to methods that could be inherited from a superclass or mixed in:
+
+```javascript
+@before(validatePersonhood, 'setName', 'setAge', 'age')
+@before(mustBeLoggedIn, 'fullName')
+class User extends Person {
+ // ...
+};
+```
+
+Using method advice adds some semantic complexity in terms of learning what decorators like `before` or `after` might do, but encourages writing code where behaviour is extended rather than overridden. On larger and more complicated code bases, this can be a win.
+
+[Method Advice]: http://raganwald.com/2015/08/05/method-advice.html
+
+[![Thinking, please wait](thinking-please-wait.jpg)](https://www.flickr.com/photos/karola/3623768629)
+
+### super() considered hmmm-ful
+
+So, is `super()` considered harmful? No. Like anything else, it depends upon how you use it. The Liskov Supsitution and Open/Closed principles are guidelines for writing software that is extensible and maintainable, just as "Prefer Composition over Inheritence" expresses a preference, not an ironclad rule to never inherit when you could compose.
+
+However, understanding the longstanding principles and the forces motivating people to consider their use is vital to scaling our programming and design skills up from functions, methods, and classes to classes and the various tools (like mixins or method advice) that we use to factor our programs along responsibility lines.
+
+In the end, we shouldn't reject any use of `super()`. But we can always stop for a moment and ask ourselves if it's the best way to accomplish a particular objective.
 ---
 
 notes:
