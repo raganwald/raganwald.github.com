@@ -14,7 +14,7 @@ Justin also wants to have mixins be much more equivalent to classes, especially 
 
 Finally, Justin wants to create code that existing engines can optimize easily, and avoid changing the "shape" of prototypes.
 
-I don't particularly treat these objections as criticism: They describe what Justin needs from a tool they intend to use in production, while I am giving examples of tools for the purpose of understanding how pieces of the language can fit together in extremely simple and elegant ways.
+I don't treat these objections as personal criticism: They describe what Justin needs from a tool they intend to use in production, while I am giving examples of tools for the purpose of understanding how pieces of the language can fit together in extremely simple and elegant ways.
 
 One of the things I like the most about Justin's article is that it shines a light on two longstanding debates in OOP, both going back at least as far as Smalltalk. The first is about deep class hierarchies. My opinion can be expressed in three words: [Don't do that!](http://raganwald.com/2014/03/31/class-hierarchies-dont-do-that.html)
 
