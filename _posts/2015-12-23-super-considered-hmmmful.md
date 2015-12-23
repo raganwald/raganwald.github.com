@@ -163,7 +163,27 @@ Overriding public methods is the easiest way to break LSP. Not always, of course
 
 But in general, if you treat methods as "defaults, open to overriding in any arbitrary way," you are abandoning LSP. Is that a bad thing? Well, many people feel that it makes object-oriented programs very difficult to reason about. Or in plain English, *prone to defects*.
 
-The final-by-default tribe of OO programmers like their programs o
+Another principle you will hear discussed in this vein is called the [Open-Closed Principle]: "Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification."
+
+[Open-Closed Principle]: https://en.wikipedia.org/wiki/Open/closed_principle
+
+In our examples above, overriding `toString` in `Bar` modifies the definition of `Foo`, because it changes the definition of the behaviour of objects that are instances of `Foo`. Whereas, if we write:
+
+```
+class Bar extends Foo {
+  toArray () {
+    return this.toString().split('');
+  }
+}
+```
+
+Now we are extending `Foo` for those objects that are both a `Foo` and a `Bar`, but not modifying the definition of `Foo`.
+
+The "final-by-default" tribe of OO programmers like their programs to confirm to LSP and Open/Closed. This makes them nervious of language features that encourage violations.
+
+### enter super()-man
+
+
 ---
 
 notes:
