@@ -149,6 +149,10 @@ class Bar extends Foo {
 
 In essence, the "final-by-default" tribe believe that methods *can* override each other, but that it should be rare, not common. We can think of them as the paranoid fringe of the virtual-by-default tribe.
 
+The "virtual-by-default" tribe turn around and ask, "if you can't override, what makes you think you have polymorphism?" Of course, you can have two different subclasses each implement the same method without one overriding the other. And with "dynamic" languages and duck typing, you can have completely different classes implement the same "interface" without any overriding whatsoever. Or you can do all kinds of monkeying about with private methods but always expose the same public behaviour.
+
+In the end, the "final-by-default" people are just as OO as the "virtual-by-default" people, but they spend a lot more time trying to keep their inheritance hierarchies "clean."
+
 ### what's up with final-by-default
 
 Overriding methods is often taught as a central plank of OOP. So why would there by a hardy band of dissenters?
