@@ -147,6 +147,8 @@ class Bar extends Foo {
 //=> No errors, because Foo#toString is a default method.
 {% endhighlight %}
 
+In essence, the "final-by-default" tribe believe that methods *can* override each other, but that it should be rare, not common. We can think of them as the paranoid fringe of the virtual-by-default tribe.
+
 ### what's up with final-by-default
 
 Overriding methods is often taught as a central plank of OOP. So why would there by a hardy band of dissenters?
