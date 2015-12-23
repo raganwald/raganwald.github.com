@@ -290,7 +290,7 @@ So, is `super()` considered harmful? No. Like anything else, it depends upon how
 
 However, understanding the longstanding principles and the forces motivating people to consider their use is vital to scaling our programming and design skills up from functions, methods, and classes to classes and the various tools (like mixins or method advice) that we use to factor our programs along responsibility lines.
 
-In the end, we shouldn't reject any use of `super()`. But we can always stop for a moment and ask ourselves if it's the best way to accomplish a particular objective.
+In the end, we shouldn't reject all uses of `super()`. But we can always stop for a moment and ask ourselves if it's the best way to accomplish a particular objective. And we ought to understand the alternatives available to us.
 
 ---
 
