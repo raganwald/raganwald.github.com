@@ -1,7 +1,7 @@
 ---
 title: super() considered hmmm-ful
 layout: default
-tags: [allonge]
+tags: [allonge, noindex]
 ---
 
 I highly recommend reading Justin Fagnani's ["Real" Mixins with JavaScript Classes](http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/). To summarize my understanding, Justin likes using "mixins," but takes issues with the way they are implemented as described in things like [Using ES7 Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html).
