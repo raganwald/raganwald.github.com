@@ -296,6 +296,8 @@ I don't think we've settled that general debate one way or the other, and this s
 
 Pragmatically, we shouldn't reject all uses of `super()`. But we can always stop for a moment and ask ourselves if it's the best way to accomplish a particular objective. And we ought to understand the alternatives available to us.
 
+(discuss on [hacker news](https://news.ycombinator.com/item?id=10786168))
+
 ---
 
 notes:
