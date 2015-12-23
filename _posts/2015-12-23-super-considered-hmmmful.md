@@ -182,6 +182,7 @@ Now we are extending `Foo` for those objects that are both a `Foo` and a `Bar`, 
 [^well-actually]: As orginally professed, the Open-Closed Principle had more to do with saying that a language or system should allow things to be modified by adding subclasses and so forth, while strongly discouraging changing original things. So in the late eighties and early nineties, overriding methods was in keeping with the Open/Closed Principle, because superclasses remeain closed to modification. This was a good idea at the time, because it encouraged building systems that didn't have [brittle dependencies](https://en.wikipedia.org/wiki/Fragile_base_class). It has since evolved to have much more in common with LSP.
 
 The "final-by-default" tribe of OO programmers like their programs to confirm to LSP and Open/Closed. This makes them nervious of language features that encourage overriding methods.
+[![Reconfiguring the Station](/assets/images/reconfiguring.jpg)](https://www.flickr.com/photos/gsfc/6377206309)
 
 ### mixins and final-by-default
 
@@ -277,9 +278,15 @@ Using method advice adds some semantic complexity in terms of learning what deco
 
 [Method Advice]: http://raganwald.com/2015/08/05/method-advice.html
 
-[![Thinking, please wait](thinking-please-wait.jpg)](https://www.flickr.com/photos/karola/3623768629)
+People have also investigated other ways of composing metaobjects. One promising direction is [traits]: A trait is like a mixin, but when it is applied, there is a name resolution policy that determines whether conflicting names should override or act like method advice.
 
-### super() considered hmmm-ful
+Traits are very much from the "final by default" school, but instead of simply preventing name overriding and leaing it up to the programmer to find another way forward, traits provide mechanisms for composing both metaobjects (like classes and mixins) as well as the methods they define.
+
+[traits]: https://en.wikipedia.org/wiki/Trait_(computer_programming)
+
+[![Thinking, please wait](/assets/images/thinking-please-wait.jpg)](https://www.flickr.com/photos/karola/3623768629)
+
+### is super() considered hmmm-ful?
 
 So, is `super()` considered harmful? No. Like anything else, it depends upon how you use it. The Liskov Supsitution and Open/Closed principles are guidelines for writing software that is extensible and maintainable, just as "Prefer Composition over Inheritence" expresses a preference, not an ironclad rule to never inherit when you could compose.
 
