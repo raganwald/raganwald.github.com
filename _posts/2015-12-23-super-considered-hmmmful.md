@@ -286,7 +286,7 @@ Traits are very much from the "final by default" school, but instead of simply p
 
 ### is super() considered hmmm-ful?
 
-So, is `super()` considered harmful? No. Like anything else, it depends upon how you use it. The Liskov Substitution and Open/Closed principles are guidelines for writing software that is extensible and maintainable, just as "Prefer Composition over Inheritance" expresses a preference, not an ironclad rule to never inherit when you could compose.
+So, is `super()` considered harmful? No. Like anything else, it depends upon how you use it. The "Liskov Substitution" and "Open/Closed" principles are guidelines for writing software that is extensible and maintainable, just as "Prefer Composition over Inheritance" expresses a preference, not an ironclad rule to never inherit when you could compose.
 
 However, understanding the longstanding principles and the forces motivating people to consider their use is vital to scaling our programming and design skills up from functions, methods, and classes to classes and the various tools (like mixins or method advice) that we use to factor our programs along responsibility lines.
 
