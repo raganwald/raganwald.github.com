@@ -16,7 +16,7 @@ I highly recommend reading Justin Fagnani's ["Real" Mixins with JavaScript Class
 
 One of the things I like the most about Justin's article is that it shines a light on two longstanding debates in OOP, both going back at least as far as Smalltalk. The first is about deep class hierarchies. My opinion can be expressed in three words: [Don't do that!](http://raganwald.com/2014/03/31/class-hierarchies-dont-do-that.html) The second debate is more subtle, and it concerns overriding methods.
 
-It's a massive oversimilification to suggest that there are only two sides to that debate, but for the purpose of this discussion, there are two different OOP tribes. One of them is called **virtual-by-default**, and the other is called **final-by-default**.
+It's a massive oversimplification to suggest that there are only two sides to that debate, but for the purpose of this discussion, there are two different OOP tribes. One of them is called **virtual-by-default**, and the other is called **final-by-default**.
 
 ### virtual-by-default
 
@@ -24,12 +24,12 @@ In languages like Smalltalk and almost every other "dynamically typed" OO descen
 
 When the method is invoked on an object, the most-specific version of the method is invoked. The other versions are available via various methods, from denoting them by absolute name (e.g. `SomeSuperclassName.prototype.foo.call(this, 'bar', 'baz')`) or using a magic keyword, `super` (e.g. `super('bar', 'baz')`).
 
-The canonical name for this is [Dynamic Dispatch], because the method invocation is dynamically dispatched to the most appripriate method implementation. Such methods or functions are often called [virtual functions], and thus a language where methods are automatically virtual is called "virtual-by-default."
+The canonical name for this is [Dynamic Dispatch], because the method invocation is dynamically dispatched to the most appropriate method implementation. Such methods or functions are often called [virtual functions], and thus a language where methods are automatically virtual is called "virtual-by-default."
 
 [Dynamic Dispatch]: https://en.wikipedia.org/wiki/Dynamic_dispatch
 [virtual function]: https://en.wikipedia.org/wiki/Virtual_function
 
-JavaScript out of the box is very definately virtual-by-default. The technical opposite of a virtual-by-default language is a *static-by-default* language. In a static-by-default language, no matter whether the function is overridden or not, the implementation to be used is chosen at compile time based on the declared class of the receiver.
+JavaScript out of the box is very definitely virtual-by-default. The technical opposite of a virtual-by-default language is a *static-by-default* language. In a static-by-default language, no matter whether the function is overridden or not, the implementation to be used is chosen at compile time based on the declared class of the receiver.
 
 For example, making up our own little JavaScript flavour that has manifest typing:
 
@@ -92,7 +92,7 @@ We are defining `Foo` to be:
 2. That has a method, `toString`
 3. That returns `"foo"`
 
-Everyone agrees on the first two points, but OO programmers are split on the third point. Some say that a `Foo` is defined to return `"foo"`, others say that it returns `"foo"` by *default*, but any subclass of `Foo` can override this,a nd it could return anything, raise an exception, or erase your hard drive and email 419 scam letters to everyone in your contacts, you can't tell unless you examine an individual object that happens to be declared to be a `Foo` and see how it actually behaves.
+Everyone agrees on the first two points, but OO programmers are split on the third point. Some say that a `Foo` is defined to return `"foo"`, others say that it returns `"foo"` by *default*, but any subclass of `Foo` can override this, and it could return anything, raise an exception, or erase your hard drive and email 419 scam letters to everyone in your contacts, you can't tell unless you examine an individual object that happens to be declared to be a `Foo` and see how it actually behaves.
 
 When the Java language was released, it was virtual-by-default, but it didn't ignore this question. Java introduced the `final` keyword. When a method was declared `final`, it was *illegal to override it*, and if you tried, you got a compiler error.
 
@@ -175,9 +175,9 @@ class Bar extends Foo {
 
 Now we are extending `Foo` for those objects that are both a `Foo` and a `Bar`, but not modifying the definition of `Foo`.[^well-actually]
 
-[^well-actually]: As orginally professed, the Open-Closed Principle had more to do with saying that a language or system should allow things to be modified by adding subclasses and so forth, while strongly discouraging changing original things. So in the late eighties and early nineties, overriding methods was in keeping with the Open/Closed Principle, because superclasses remeain closed to modification. This was a good idea at the time, because it encouraged building systems that didn't have [brittle dependencies](https://en.wikipedia.org/wiki/Fragile_base_class). It has since evolved to have much more in common with LSP.
+[^well-actually]: As originally professed, the Open-Closed Principle had more to do with saying that a language or system should allow things to be modified by adding subclasses and so forth, while strongly discouraging changing original things. So in the late eighties and early nineties, overriding methods was in keeping with the Open/Closed Principle, because superclasses remain closed to modification. This was a good idea at the time, because it encouraged building systems that didn't have [brittle dependencies](https://en.wikipedia.org/wiki/Fragile_base_class). It has since evolved to have much more in common with LSP.
 
-The "final-by-default" tribe of OO programmers like their programs to confirm to LSP and Open/Closed. This makes them nervious of language features that encourage overriding methods.
+The "final-by-default" tribe of OO programmers like their programs to confirm to LSP and Open/Closed. This makes them nervous of language features that encourage overriding methods.
 [![Reconfiguring the Station](/assets/images/reconfiguring.jpg)](https://www.flickr.com/photos/gsfc/6377206309)
 
 ### mixins and final-by-default
@@ -231,7 +231,7 @@ With a subclass factory, you have everything virtual-by-default and overridable-
 
 So, if there are these fancy "Liskov Substitution Principles" and "Open/Closed Principles" arguing for not encouraging overriding methods, what is the catch? Why doesn't everyone program this way?
 
-Well, convenience. If you can't override methods (because that modifies the meaning of the superclass or mixin), you need to do something else when you want to extend the behaviour of a superclass or mixin. For example, if you want the mixin for imlementation convenience but aren't trying to imply that a `Foo` is-a `HappyObject`, you would use delegation, like this:
+Well, convenience. If you can't override methods (because that modifies the meaning of the superclass or mixin), you need to do something else when you want to extend the behaviour of a superclass or mixin. For example, if you want the mixin for implementation convenience but aren't trying to imply that a `Foo` is-a `HappyObject`, you would use delegation, like this:
 
 ```javascript
 class HappyObjects {
@@ -276,7 +276,7 @@ Using method advice adds some semantic complexity in terms of learning what deco
 
 People have also investigated other ways of composing metaobjects. One promising direction is [traits]: A trait is like a mixin, but when it is applied, there is a name resolution policy that determines whether conflicting names should override or act like method advice.
 
-Traits are very much from the "final by default" school, but instead of simply preventing name overriding and leaing it up to the programmer to find another way forward, traits provide mechanisms for composing both metaobjects (like classes and mixins) as well as the methods they define.
+Traits are very much from the "final by default" school, but instead of simply preventing name overriding and leaving it up to the programmer to find another way forward, traits provide mechanisms for composing both metaobjects (like classes and mixins) as well as the methods they define.
 
 [traits]: https://en.wikipedia.org/wiki/Trait_(computer_programming)
 
@@ -284,7 +284,7 @@ Traits are very much from the "final by default" school, but instead of simply p
 
 ### is super() considered hmmm-ful?
 
-So, is `super()` considered harmful? No. Like anything else, it depends upon how you use it. The Liskov Supsitution and Open/Closed principles are guidelines for writing software that is extensible and maintainable, just as "Prefer Composition over Inheritence" expresses a preference, not an ironclad rule to never inherit when you could compose.
+So, is `super()` considered harmful? No. Like anything else, it depends upon how you use it. The Liskov Substitution and Open/Closed principles are guidelines for writing software that is extensible and maintainable, just as "Prefer Composition over Inheritance" expresses a preference, not an ironclad rule to never inherit when you could compose.
 
 However, understanding the longstanding principles and the forces motivating people to consider their use is vital to scaling our programming and design skills up from functions, methods, and classes to classes and the various tools (like mixins or method advice) that we use to factor our programs along responsibility lines.
 
