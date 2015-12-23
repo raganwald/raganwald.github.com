@@ -33,7 +33,7 @@ JavaScript out of the box is very definitely virtual-by-default. The technical o
 
 For example, making up our own little JavaScript flavour that has manifest typing:
 
-```javascript
+{% highlight javascript %}
 class Foo {
   toString () {
     return "foo";
@@ -48,13 +48,13 @@ class Bar extends Foo {
 
 Foo f = new Bar();
 console.log(f.toString());
-```
+{% endhighlight %}
 
 In a virtual-by-default language, the console logs `bar`. In a static-by-default language, the console logs `foo`, because even though the object `f` is a `Bar`, it is declared as a `Foo`, and the compiler translates `f.toString()` into roughly `Foo.prototype.toString.call(f)`.
 
 C++ is a static-by-default language. If you want dynamic dispatching, you use a special `virtual` keyword to indicate which functions should be dynamically dispatched. If our hypothetical JavaScript flavour was static-by-default and we wanted `toString()` to be a virtual function, we would write:
 
-```javascript
+{% highlight javascript %}
 class Foo {
   virtual toString () {
     return "foo";
@@ -69,7 +69,7 @@ class Bar extends Foo {
 
 Foo f = new Bar();
 console.log(f.toString());
-```
+{% endhighlight %}
 
 After much experience with errors from forgetting to use the `virtual` keyword, most programming languages abandoned static-by-default and went with virtual-by-default.
 
@@ -79,13 +79,13 @@ If most languages are settled on virtual-by-default, how can there be another tr
 
 But there was another argument, a semantic argument. The argument was this. If we write:
 
-```javascript
+{% highlight javascript %}
 class Foo {
   toString () {
     return "foo";
   }
 }
-```
+{% endhighlight %}
 We are defining `Foo` to be:
 
 1. A class
@@ -98,7 +98,7 @@ When the Java language was released, it was virtual-by-default, but it didn't ig
 
 If our imaginary JavaScript dialog worked this way, this code would not compile at all:
 
-```javascript
+{% highlight javascript %}
 class Foo {
   final toString () {
     return "foo";
@@ -111,13 +111,13 @@ class Bar extends Foo {
   }
 }
 // => Error: Method toString of superclass Foo is final and cannot be overridden.
-```
+{% endhighlight %}
 
 In Java, `final` was optional. But many people felt that like C++, the designers got it backwards. They felt that by default, all methods should be final. The special treatment should be for virtual methods, not for final methods.
 
 If our dialect worked like that, all methods would be virtual, but if we wanted to allow a method to be overridden, we would use a special keyword, like `default`:
 
-```javascript
+{% highlight javascript %}
 class Foo {
   toString () {
     return "foo";
@@ -130,9 +130,9 @@ class Bar extends Foo {
   }
 }
 // => Error: Method toString of superclass Foo is final and cannot be overridden.
-```
+{% endhighlight %}
 
-```javascript
+{% highlight javascript %}
 class Foo {
   default toString () {
     return "foo";
@@ -145,7 +145,7 @@ class Bar extends Foo {
   }
 }
 //=> No errors, because Foo#toString is a default method.
-```
+{% endhighlight %}
 
 ### what's up with final-by-default
 
@@ -165,13 +165,13 @@ Another principle you will hear discussed in this vein is called the [Open-Close
 
 In our examples above, overriding `toString` in `Bar` modifies the definition of `Foo`, because it changes the definition of the behaviour of objects that are instances of `Foo`. Whereas, if we write:
 
-```javascript
+{% highlight javascript %}
 class Bar extends Foo {
   toArray () {
     return this.toString().split('');
   }
 }
-```
+{% endhighlight %}
 
 Now we are extending `Foo` for those objects that are both a `Foo` and a `Bar`, but not modifying the definition of `Foo`.[^well-actually]
 
@@ -188,7 +188,7 @@ If you're a member of the final-by-default tribe, every time you see the `super(
 
 If you're a member of the final-by-default tribe, your `mixin` implementation will throw an error if a mixin and a class's method clash:
 
-```javascript
+{% highlight javascript %}
 let HappyObjects = final_by_default_mixin({
   toString () {
     return "I'm a happy object!";
@@ -202,12 +202,12 @@ class Foo {
   }
 };
 // => Error: HappyObjects and Foo both define toString
-```
+{% endhighlight %}
 Members of the final-by-default tribe want `HappyObjects` to describe all happy objects, and `Foo` to define all instances of `Foo`. Blindly copying methods won't protect against naming clashes like this.
 
 Of course, setting mixins up as subclass factories won't do that either. With subclass factories, we would actually write something like:
 
-```javascript
+{% highlight javascript %}
 let HappyObjects = subclass_factory_mixin({
   toString () {
     return 'happy';
@@ -223,7 +223,7 @@ class HappyFoo extends HappyObjects(Object) {
 let f = new HappyFoo();
 f.toString()
   //=> happy foo
-```
+{% endhighlight %}
 
 With a subclass factory, you have everything virtual-by-default and overridable-by-default. Which is fine if you aren't a member of the final-by-default tribe.
 
@@ -233,7 +233,7 @@ So, if there are these fancy "Liskov Substitution Principles" and "Open/Closed P
 
 Well, convenience. If you can't override methods (because that modifies the meaning of the superclass or mixin), you need to do something else when you want to extend the behaviour of a superclass or mixin. For example, if you want the mixin for implementation convenience but aren't trying to imply that a `Foo` is-a `HappyObject`, you would use delegation, like this:
 
-```javascript
+{% highlight javascript %}
 class HappyObjects {
   toString () {
     return 'happy';
@@ -253,7 +253,7 @@ class HappyFoo {
 let f = new HappyFoo();
 f.toString()
   //=> I'm a happy foo!
-```
+{% endhighlight %}
 A `HappyFoo` delegates part of its behaviour to an instance of `HappyObjects` that it owns. Some people find this kind of things more trouble than its worth, no matter how many times they hear grizzled veterans intoning "Prefer [Composition Over Inheritance]."
 
 [Composition Over Inheritance]: https://en.wikipedia.org/wiki/Composition_over_inheritance
@@ -262,13 +262,13 @@ Another technique that final-by-default tribe members use is to focus on extendi
 
 In this example, decorators add behaviour to methods that could be inherited from a superclass or mixed in:
 
-```javascript
+{% highlight javascript %}
 @before(validatePersonhood, 'setName', 'setAge', 'age')
 @before(mustBeLoggedIn, 'fullName')
 class User extends Person {
  // ...
 };
-```
+{% endhighlight %}
 
 Using method advice adds some semantic complexity in terms of learning what decorators like `before` or `after` might do, but encourages writing code where behaviour is extended rather than overridden. On larger and more complicated code bases, this can be a win.
 
