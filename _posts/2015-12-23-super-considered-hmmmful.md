@@ -1,7 +1,7 @@
 ---
 title: super() considered hmmm-ful
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 [![Threat Display](/assets/images/threat-display.jpg)](https://www.flickr.com/photos/winnu/7292115026)
