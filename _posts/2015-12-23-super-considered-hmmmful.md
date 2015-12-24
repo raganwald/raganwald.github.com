@@ -147,15 +147,27 @@ class Bar extends Foo {
 //=> No errors, because Foo#toString is a default method.
 {% endhighlight %}
 
-In essence, the "final-by-default" tribe believe that methods *can* override each other, but that it should be rare, not common. We can think of them as the paranoid fringe of the virtual-by-default tribe.
+In essence, the "final-by-default" tribe believe that methods *can* override each other, but that it should be rare, not common. So when a final-by-default programmer writes this code:
 
-The "virtual-by-default" tribe turn around and ask, "if you can't override, what makes you think you have polymorphism?" Of course, you can have two different subclasses each implement the same method without one overriding the other. And with "dynamic" languages and duck typing, you can have completely different classes implement the same "interface" without any overriding whatsoever. Or you can do all kinds of monkeying about with private methods but always expose the same public behaviour.
+{% highlight javascript %}
+class Foo {
+  toString () {
+    return "foo";
+  }
+}
+{% endhighlight %}
+
+They are defining the behaviour of all instances of `Foo`. If they need to override `toString` later, they will come back and declare it to be `default toString () { ... }`. That makes it easier to reason about the behaviour of the code, because when you look at at the code for `Foo`, you know what a `Foo` is and does, not what it might do but nobody-really-knows-without-reading-every-possible-subclass.
+
+We can think of final-by-default as *The paranoid fringe of the virtual-by-default tribe*.
+
+The "virtual-by-default" tribe are not impressed. They ask, "if you can't override, what makes you think you have polymorphism?" Of course, you can have two different subclasses each implement the same method without one overriding the other. And with "dynamic" languages and duck typing, you can have completely different classes implement the same "interface" without any overriding whatsoever. Or you can do all kinds of monkeying about with private methods but always expose the same public behaviour.
 
 In the end, the "final-by-default" people are just as OO as the "virtual-by-default" people, but they spend a lot more time trying to keep their inheritance hierarchies "clean."
 
-### what's up with final-by-default
+### the academic basis for final-by-default
 
-Overriding methods is often taught as a central plank of OOP. So why would there by a hardy band of dissenters?
+Overriding methods is often taught as a central plank of OOP. So why would there by a hardy band of dissenting final-by-default people?
 
 The problem final-by-default tries to solve is called the [Liskov Substitution Principle] or "LSP." It states that if a `Bar` is-a `Foo`, you ought to be able to take any piece of code that works for a `Foo`, and substitute a `Bar`, and it should just work.
 
@@ -184,6 +196,7 @@ Now we are extending `Foo` for those objects that are both a `Foo` and a `Bar`, 
 [^well-actually]: As originally professed, the Open-Closed Principle had more to do with saying that a language or system should allow things to be modified by adding subclasses and so forth, while strongly discouraging changing original things. So in the late eighties and early nineties, overriding methods was in keeping with the Open/Closed Principle, because superclasses remain closed to modification. This was a good idea at the time, because it encouraged building systems that didn't have [brittle dependencies](https://en.wikipedia.org/wiki/Fragile_base_class). It has since evolved to have much more in common with LSP.
 
 The "final-by-default" tribe of OO programmers like their programs to confirm to LSP and Open/Closed. This makes them nervous of language features that encourage overriding methods.
+
 [![Reconfiguring the Station](/assets/images/reconfiguring.jpg)](https://www.flickr.com/photos/gsfc/6377206309)
 
 ### mixins and final-by-default
@@ -209,6 +222,7 @@ class Foo {
 };
 // => Error: HappyObjects and Foo both define toString
 {% endhighlight %}
+
 Members of the final-by-default tribe want `HappyObjects` to describe all happy objects, and `Foo` to define all instances of `Foo`. Blindly copying methods won't protect against naming clashes like this.
 
 Of course, setting mixins up as subclass factories won't do that either. With subclass factories, we would actually write something like:
