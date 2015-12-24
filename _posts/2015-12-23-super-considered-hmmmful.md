@@ -290,7 +290,11 @@ Traits are very much from the "final by default" school, but instead of simply p
 
 ### is super() considered hmmm-ful?
 
-So, is `super()` considered harmful? No. Like anything else, it depends upon how you use it. The "Liskov Substitution" and "Open/Closed" principles are guidelines for writing software that is extensible and maintainable, just as "Prefer Composition over Inheritance" expresses a preference, not an ironclad rule to never inherit when you could compose.
+The expression `super()` is how ES6 denotes a method that overrides another method, and invokes the method it overrides from within its body. Overriding any arbitrary method and calling the overridden method when and how you like obviously provides maximum flexibility and convenience. It's characteristic of the virtual-by-default mindset: Everything can be overridden, in any arbitrary way.
+
+Replacing `super()` with method advice, for example, requires careful design, but offers an easier way to reason about the code: Looking at a `Foo` class, you can have confidence that instances of `Foo` might extend its methods, but you will have a higher degree of confidence how they will behave.
+
+So: Is `super()` considered harmful? No. Like anything else, it depends upon how you use it. The "Liskov Substitution" and "Open/Closed" principles are guidelines for writing software that is extensible and maintainable, just as "Prefer Composition over Inheritance" expresses a preference, not an ironclad rule to never inherit when you could compose.
 
 However, understanding the longstanding principles and the forces motivating people to consider their use is vital to scaling our programming and design skills up from functions, methods, and classes to classes and the various tools (like mixins or method advice) that we use to factor our programs along responsibility lines.
 
