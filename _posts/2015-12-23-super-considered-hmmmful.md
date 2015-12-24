@@ -308,15 +308,11 @@ The expression `super()` is how ES6 denotes a method that overrides another meth
 
 Replacing `super()` with method advice, for example, requires careful design, but offers an easier way to reason about the code: Looking at a `Foo` class, you can have confidence that instances of `Foo` might extend its methods, but you will have a higher degree of confidence how they will behave.
 
-So: Is `super()` considered harmful? No. Like anything else, it depends upon how you use it. The "Liskov Substitution" and "Open/Closed" principles are guidelines for writing software that is extensible and maintainable, just as "Prefer Composition over Inheritance" expresses a preference, not an ironclad rule to never inherit when you could compose.
+The "Liskov Substitution" and "Open/Closed" principles are guidelines for writing software that is extensible and maintainable, just as "Prefer Composition over Inheritance" expresses a preference, not an ironclad rule to never inherit when you could compose.
 
-However, understanding the longstanding principles and the forces motivating people to consider their use is vital to scaling our programming and design skills up from functions, methods, and classes to classes and the various tools (like mixins or method advice) that we use to factor our programs along responsibility lines.
+[considered harmful]: http://meyerweb.com/eric/comment/chech.html
 
-There is a very longstanding argument in programming, one that comes down to, "are we better off with greater flexibility?" Or with "picking a sane subset of features that are easier to reason about when used together?" This is the argument around "JavaScript, the Good Parts." And around type checking. And around these principles. Some argue, "Use all of a language's features." Others say, "Use a subset of features, but build special abstractions to make up for the missing flexibility."
-
-I don't think we've settled that general debate one way or the other, and this seems like a particularly unsettled example of the schism. So what, practically, should we do? Especially if we write code in conjunction with a wide-ranging team of other programmers, each of whom have their own approach to inheritance?
-
-Pragmatically, we shouldn't reject all uses of `super()`. But we can always stop for a moment and ask ourselves if it's the best way to accomplish a particular objective. And we ought to understand the alternatives available to us.
+So: Is [`super()` considered harmful][considered harmful]? No. Like anything else, it depends upon how you use it. Pragmatically, we shouldn't reject all uses of `super()`. But we can always stop for a moment and ask ourselves if it's the best way to accomplish a particular objective. And we ought to understand the alternatives available to us.
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=10786168))
 
