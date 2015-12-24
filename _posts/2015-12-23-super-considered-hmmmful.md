@@ -24,7 +24,7 @@ In languages like Smalltalk and almost every other "dynamically typed" OO descen
 
 When the method is invoked on an object, the most-specific version of the method is invoked. The other versions are available via various methods, from denoting them by absolute name (e.g. `SomeSuperclassName.prototype.foo.call(this, 'bar', 'baz')`) or using a magic keyword, `super` (e.g. `super('bar', 'baz')`).
 
-The canonical name for this is [Dynamic Dispatch], because the method invocation is dynamically dispatched to the most appropriate method implementation. Such methods or functions are often called [virtual functions], and thus a language where methods are automatically virtual is called "virtual-by-default."
+The canonical name for this is [Dynamic Dispatch], because the method invocation is dynamically dispatched to the most appropriate method implementation. Such methods or functions are often called [virtual functions][virtual function], and thus a language where methods are automatically virtual is called "virtual-by-default."
 
 [Dynamic Dispatch]: https://en.wikipedia.org/wiki/Dynamic_dispatch
 [virtual function]: https://en.wikipedia.org/wiki/Virtual_function
@@ -260,9 +260,9 @@ let f = new HappyFoo();
 f.toString()
   //=> I'm a happy foo!
 {% endhighlight %}
-A `HappyFoo` delegates part of its behaviour to an instance of `HappyObjects` that it owns. Some people find this kind of things more trouble than its worth, no matter how many times they hear grizzled veterans intoning "[Prefer Composition Over Inheritance]."
+A `HappyFoo` delegates part of its behaviour to an instance of `HappyObjects` that it owns. Some people find this kind of things more trouble than its worth, no matter how many times they hear grizzled veterans intoning "[Prefer Composition Over Inheritance][coi]."
 
-[Composition Over Inheritance]: https://en.wikipedia.org/wiki/Composition_over_inheritance
+[coi] https://en.wikipedia.org/wiki/Composition_over_inheritance
 
 Another technique that final-by-default tribe members use is to focus on extending superclass methods rather than replacing them outright. [Method Advice] can help. In the Ruby on Rails framework, for example, you can add behaviour to existing methods that is run before, after, or around methods, without overriding the methods themselves.
 
