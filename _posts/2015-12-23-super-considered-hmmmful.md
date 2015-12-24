@@ -262,7 +262,7 @@ f.toString()
 {% endhighlight %}
 A `HappyFoo` delegates part of its behaviour to an instance of `HappyObjects` that it owns. Some people find this kind of things more trouble than its worth, no matter how many times they hear grizzled veterans intoning "[Prefer Composition Over Inheritance][coi]."
 
-[coi] https://en.wikipedia.org/wiki/Composition_over_inheritance
+[coi]: https://en.wikipedia.org/wiki/Composition_over_inheritance
 
 Another technique that final-by-default tribe members use is to focus on extending superclass methods rather than replacing them outright. [Method Advice] can help. In the Ruby on Rails framework, for example, you can add behaviour to existing methods that is run before, after, or around methods, without overriding the methods themselves.
 
