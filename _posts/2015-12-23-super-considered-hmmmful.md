@@ -113,7 +113,9 @@ class Bar extends Foo {
 // => Error: Method toString of superclass Foo is final and cannot be overridden.
 {% endhighlight %}
 
-In Java, `final` was optional. But many people felt that like C++, the designers got it backwards. They felt that by default, all methods should be final. The special treatment should be for virtual methods, not for final methods.
+In Java, `final` was the way you wrote: "This class has a method, and you can be sure that all subclasses implement this method in this way." In Java, `final` was optional. So whether by intent or by sheer laziness, most Java methods in the wild are not final.
+
+But many people felt that like C++, the designers got it backwards. They felt that by default, all methods should be final. The special treatment should be for virtual methods, not for final methods.
 
 If our dialect worked like that, all methods would be virtual, but if we wanted to allow a method to be overridden, we would use a special keyword, like `default`:
 
