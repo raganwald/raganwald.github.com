@@ -338,6 +338,8 @@ If you prefer syntactic sugar that gives the appearance of a declarative constru
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=9786706))
 
+*NEW!* See [`super()` considered hmmm-ful](http://raganwald.com/2015/12/23/super-considered-hmmmful.html)
+
 ---
 
 [^ESdotlater]: By "ES.later," we mean some future version of ECMAScript that is likely to be approved eventually, but for the moment exists only in transpilers like [Babel](http://babeljs.io). Obviously, using any ES.later feature in production is a complex decision requiring many more considerations than can be enumerated in a blog post.
