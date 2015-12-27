@@ -4,9 +4,11 @@ layout: default
 tags: [allonge, noindex]
 ---
 
+[![Crossed Wires](/assets/images/crossed-wires.jpg)](https://www.flickr.com/photos/howardlake/4834299551/)
+
 *Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a *many-to-many* relationship between behaviour and classes, and it does not neatly decompose into a tree. The mixin approach is to leave classes in a single inheritance hierarchy, and to mix additional behaviour into individual classes as needed.
 
-Here's a simplified[^simplified] functional mixin for classes:
+Here's a simplified functional mixin for classes:[^simplified]
 
 [^simplified]: A production-ready version would handle more than just methods. For example, it would allow you to mix getters and setters into a class. But this simplified version handles methods, simple properties, "mixin properties," and `instanceof`, and that is enough for the purposes of investigating OO design questions.
 
