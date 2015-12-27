@@ -434,16 +434,14 @@ new CanadianAirForceRoundel().roundels()
     {"r":"AD","g":"D8","b":"E6"}
   ]
 {% endhighlight %}
-### around advice for simple mixins
 
-The above adjustment to 'mixin' is fine for simple overwriting, but what about when we wish to modify or extend a method's behaviour while still invoking the original? Recall
-### to-do
+### combining advice with simple mixins
 
-- subclass factories
-- extending methods
-- preventing overwriting
-- trait(...).overwri
-- Private properties and methods
+The above adjustment to 'mixin' is fine for simple overwriting, but what about when we wish to modify or extend a method's behaviour while still invoking the original? Recall that our `TimeSensitiveTodo` example performed a simple override of `getColourRGB`, but its implementation of `toHTML` used `super` to invoke the method it was overriding.
+
+Our adjustment will not allow a method in the class to invoke the body of a method in a mixin.
+
+
 
 ---
 
