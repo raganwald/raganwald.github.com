@@ -357,30 +357,43 @@ The solution subclass factories offer is emulating inheritance from more than on
 
 It's just that we're looking at an overriding/extending methods problem, but we're holding an inheritence-shapped hammer. So it looks like a multiple-inheritance nail. But what if we address the problem of overriding and extending methods directly, rather than indirectly via multiple inheritance?
 
+### simple overwriting with simple mixins
+
 The simplest start to this is to note that in the first pass of our `mixin` function, we blindly copy properties from the mixin into the class's prototype, whether the class defines those properties or not. So if we write:
 
 {%highlight javascript %}
 let RED        = { r: 'FF', g: '00', b: '00' },
     WHITE      = { r: 'FF', g: 'FF', b: 'FF' },
-    BLUE       = { r: '00', g: '00', b: 'FF' },
-    LIGHT_BLUE = { r: '4F', g: '4F', b: 'FF' };
+    ROYAL_BLUE = { r: '41', g: '69', b: 'E1' },
+    LIGHT_BLUE = { r: 'AD', g: 'D8', b: 'E6' };
 
-let Blue = mixin({
+let BritishRoundel = mixin({
+  shape () {
+    return 'round';
+  },
+
   roundels () {
-    return [RED, WHITE, BLUE];
+    return [RED, WHITE, ROYAL_BLUE];
   }
 })
 
-let CanadianAirForceRoundel = Blue(class {
+let CanadianAirForceRoundel = BritishRoundel(class {
   roundels () {
     return [RED, WHITE, LIGHT_BLUE];
   }
 });
+
+new CanadianAirForceRoundel().roundels()
+  //=> [
+    {"r":"FF","g":"00","b":"00"},
+    {"r":"FF","g":"FF","b":"FF"},
+    {"r":"41","g":"69","b":"E1"}
+  ]
 {% endhighlight %}
 
-Our `CanadianAirForceRoundel`'s third stripe winds up being regular blue instead of light blue, because the `roundels` method from the mixin `Blue` overwrites its own. (Yes, this is a ridiculous example, but it gets the point across.)
+Our `CanadianAirForceRoundel`'s third stripe winds up being regular blue instead of light blue, because the `roundels` method from the mixin `BritishRoundel` overwrites its own. (Yes, this is a ridiculous example, but it gets the point across.)
 
-We can fix this by simply not overwriting a property if the class already defines it. That's not so hard:
+We can fix this by not overwriting a property if the class already defines it. That's not so hard:
 
 {% highlight javascript %}
 function mixin (behaviour, sharedBehaviour = {}) {
@@ -411,7 +424,19 @@ function mixin (behaviour, sharedBehaviour = {}) {
 }
 {% endhighlight %}
 
+Now we can override `roundels` in `CanadianAirForceRoundel` while mixing `shape` in just fine:
 
+{% highlight javascript %}
+new CanadianAirForceRoundel().roundels()
+  //=> [
+    {"r":"FF","g":"00","b":"00"},
+    {"r":"FF","g":"FF","b":"FF"},
+    {"r":"AD","g":"D8","b":"E6"}
+  ]
+{% endhighlight %}
+### around advice for simple mixins
+
+The above adjustment to 'mixin' is fine for simple overwriting, but what about when we wish to modify or extend a method's behaviour while still invoking the original? Recall
 ### to-do
 
 - subclass factories
