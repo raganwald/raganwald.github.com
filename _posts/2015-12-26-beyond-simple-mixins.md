@@ -36,7 +36,7 @@ function mixin (behaviour, sharedBehaviour = {}) {
 }
 {% endhighlight %}
 
-This is more than enough to do a lot of very good work in JavaScript, but it's just the starting point. First, we note that our `mixin` function returns a function that *destructively modifies* its target class's prototype. This works just fine when we write:
+This is more than enough to do a lot of very good work in JavaScript, but it's just the starting point. Here's how we put it to work:
 
 {% highlight javascript %}
 let BookCollector = mixin({
@@ -90,7 +90,7 @@ president.collection()
 
 ### multiple inheritance
 
-If you want to mix behaviour into a class, mixins do the job very nicely. But sometimes, people want more. They want *multiple inheritence*. Meaning, what they really want is for class `Executive` to inherit from `Person` and from `BookCollector`.
+If you want to mix behaviour into a class, mixins do the job very nicely. But sometimes, people want more. They want **multiple inheritence**. Meaning, what they really want is for class `Executive` to inherit from `Person` *and* from `BookCollector`.
 
 What's the difference between `Executive` mixing `BookCollector` in and `Executive` inheriting from `BookCollector`?
 
@@ -300,7 +300,7 @@ let subclassFactory = (behaviour, sharedBehaviour = {}) => {
 
 Using `subclassFactory`, we wrap the class we want to extend, instead of the class we are declaring. Like this:
 
-{%highlight javascript %}
+{% highlight javascript %}
 let subclassFactory = (behaviour, sharedBehaviour = {}) => {
   let mixBehaviourInto = mixin(behaviour, sharedBehaviour);
 
@@ -350,6 +350,66 @@ class TimeSensitiveTodo extends ColouredAsWellAs(ToDo) {
 The syntax of `class TimeSensitiveTodo extends ColouredAsWellAs(ToDo)` says exactly what we mean: We are extending our `Coloured` behaviour as well as extending `ToDo`.[^fagnani]
 
 [^fagnani]: Justin Fagnani named this pattern "subclass factory" in his essay ["Real" Mixins with JavaScript Classes](http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/). It's well worth a read, and his implementation touches on other matters such as optimizing performance on modern JavaScript engines.
+
+### another way forward
+
+The solution subclass factories offer is emulating inheritance from more than one superclass. That, in turn, makes it possible to override methods from our superclass as well as the behaviour we want to mix in. Which is fine, but we don't actually want multiple inheritance!
+
+It's just that we're looking at an overriding/extending methods problem, but we're holding an inheritence-shapped hammer. So it looks like a multiple-inheritance nail. But what if we address the problem of overriding and extending methods directly, rather than indirectly via multiple inheritance?
+
+The simplest start to this is to note that in the first pass of our `mixin` function, we blindly copy properties from the mixin into the class's prototype, whether the class defines those properties or not. So if we write:
+
+{%highlight javascript %}
+let RED        = { r: 'FF', g: '00', b: '00' },
+    WHITE      = { r: 'FF', g: 'FF', b: 'FF' },
+    BLUE       = { r: '00', g: '00', b: 'FF' },
+    LIGHT_BLUE = { r: '4F', g: '4F', b: 'FF' };
+
+let Blue = mixin({
+  roundels () {
+    return [RED, WHITE, BLUE];
+  }
+})
+
+let CanadianAirForceRoundel = Blue(class {
+  roundels () {
+    return [RED, WHITE, LIGHT_BLUE];
+  }
+});
+{% endhighlight %}
+
+Our `CanadianAirForceRoundel`'s third stripe winds up being regular blue instead of light blue, because the `roundels` method from the mixin `Blue` overwrites its own. (Yes, this is a ridiculous example, but it gets the point across.)
+
+We can fix this by simply not overwriting a property if the class already defines it. That's not so hard:
+
+{% highlight javascript %}
+function mixin (behaviour, sharedBehaviour = {}) {
+  let instanceKeys = Reflect.ownKeys(behaviour);
+  let sharedKeys = Reflect.ownKeys(sharedBehaviour);
+  let typeTag = Symbol('isa');
+
+  function _mixin (clazz) {
+    for (let property of instanceKeys)
+      if (!clazz.prototype.hasOwnProperty(property)) {
+        Object.defineProperty(clazz.prototype, property, {
+          value: behaviour[property],
+          writable: true
+        });
+      }
+    Object.defineProperty(clazz.prototype, typeTag, { value: true });
+    return clazz;
+  }
+  for (let property of sharedKeys)
+    Object.defineProperty(_mixin, property, {
+      value: sharedBehaviour[property],
+      enumerable: sharedBehaviour.propertyIsEnumerable(property)
+    });
+  Object.defineProperty(_mixin, Symbol.hasInstance, {
+    value: (i) => !!i[typeTag]
+  });
+  return _mixin;
+}
+{% endhighlight %}
 
 
 ### to-do
