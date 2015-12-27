@@ -6,11 +6,11 @@ tags: [allonge, noindex]
 
 [![Crossed Wires](/assets/images/crossed-wires.jpg)](https://www.flickr.com/photos/howardlake/4834299551/)
 
-*Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a very messy *many-to-many* relationship between behaviour and classes, and it does not neatly decompose into a tree. The mixin solution to this problem is to leave classes in a single inheritance hierarchy, and to mix additional behaviour into individual classes as needed.
+*Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a very messy *many-to-many* relationship between behaviour and classes, and it does not neatly decompose into a tree.
 
-Here's a simplified functional mixin for classes:[^simplified]
+The mixin solution to this problem is to leave classes in a single inheritance hierarchy, and to mix additional behaviour into individual classes as needed. Here's a vastly simplified functional mixin for classes:[^simplified]
 
-[^simplified]: A production-ready version would handle more than just methods. For example, it would allow you to mix getters and setters into a class, and it would allow us to attach properties or methods to the target class itself, and not just instances. But this simplified version handles methods, simple properties, "mixin properties," and `instanceof`, and that is enough for the purposes of investigating OO design questions.
+[^simplified]: A production-ready implementation would handle more than just methods. For example, it would allow you to mix getters and setters into a class, and it would allow us to attach properties or methods to the target class itself, and not just instances. But this simplified version handles methods, simple properties, "mixin properties," and `instanceof`, and that is enough for the purposes of investigating OO design questions.
 
 {% highlight javascript %}
 function mixin (behaviour) {
@@ -91,9 +91,9 @@ If you want to mix behaviour into a class, mixins do the job very nicely. But so
 
 What's the difference between `Executive` mixing `BookCollector` in and `Executive` inheriting from `BookCollector`?
 
-0. If `Executive` mixes `BookCollector` in, the properties `addToCollection` and `collection` become own properties of `Executive`'s prototype. If `Executive` inherits from `BookCollector`, they don't.
-0.  If `Executive` mixes `BookCollector` in, `Executive` can't override methods of `BookCollector`. If `Executive` inherits from `BookCollector`, it can.
-0.  If `Executive` mixes `BookCollector` in, `Executive` can't override methods of `BookCollector`, and therefore it can't make a method that overrides a method of `BookCollector` and then uses `super` to call the original. If `Executive` inherits from `BookCollector`, it can.
+- If `Executive` mixes `BookCollector` in, the properties `addToCollection` and `collection` become own properties of `Executive`'s prototype. If `Executive` inherits from `BookCollector`, they don't.
+- If `Executive` mixes `BookCollector` in, `Executive` can't override methods of `BookCollector`. If `Executive` inherits from `BookCollector`, it can.
+- If `Executive` mixes `BookCollector` in, `Executive` can't override methods of `BookCollector`, and therefore it can't make a method that overrides a method of `BookCollector` and then uses `super` to call the original. If `Executive` inherits from `BookCollector`, it can.
 
 If JavaScript had multiple inheritance, we could extend a class with more than one superclass:
 
