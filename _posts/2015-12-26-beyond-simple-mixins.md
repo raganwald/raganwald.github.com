@@ -6,7 +6,7 @@ tags: [allonge, noindex]
 
 [![Crossed Wires](/assets/images/crossed-wires.jpg)](https://www.flickr.com/photos/howardlake/4834299551/)
 
-*Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a *many-to-many* relationship between behaviour and classes, and it does not neatly decompose into a tree. The mixin approach is to leave classes in a single inheritance hierarchy, and to mix additional behaviour into individual classes as needed.
+*Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a very messy *many-to-many* relationship between behaviour and classes, and it does not neatly decompose into a tree. The mixin solution to this problem is to leave classes in a single inheritance hierarchy, and to mix additional behaviour into individual classes as needed.
 
 Here's a simplified functional mixin for classes:[^simplified]
 
