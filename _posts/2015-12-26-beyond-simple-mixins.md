@@ -359,3 +359,7 @@ The syntax of `class TimeSensitiveTodo extends ColouredAsWellAs(ToDo)` says exac
 - preventing overwriting
 - trait(...).overwri
 - Private properties and methods
+
+---
+
+### notes
