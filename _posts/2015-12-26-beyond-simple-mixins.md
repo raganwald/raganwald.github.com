@@ -1,9 +1,10 @@
 ---
+title: "Beyond Simple Mixins, Part I"
 layout: default
 tags: [allonge, noindex]
 ---
 
-*Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a *many-to-many* relationship between behaviour and classes, and it does not neatly decompose into a tree. The mixin approach is to leave classes in a single inheritence hierarchy, and to mix additional behaviour into individual classes as needed.
+*Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a *many-to-many* relationship between behaviour and classes, and it does not neatly decompose into a tree. The mixin approach is to leave classes in a single inheritance hierarchy, and to mix additional behaviour into individual classes as needed.
 
 Here's a simplified[^simplified] functional mixin for classes:
 
@@ -90,7 +91,7 @@ president.collection()
 
 ### multiple inheritance
 
-If you want to mix behaviour into a class, mixins do the job very nicely. But sometimes, people want more. They want **multiple inheritence**. Meaning, what they really want is for class `Executive` to inherit from `Person` *and* from `BookCollector`.
+If you want to mix behaviour into a class, mixins do the job very nicely. But sometimes, people want more. They want **multiple inheritance**. Meaning, what they really want is for class `Executive` to inherit from `Person` *and* from `BookCollector`.
 
 What's the difference between `Executive` mixing `BookCollector` in and `Executive` inheriting from `BookCollector`?
 
@@ -98,7 +99,7 @@ What's the difference between `Executive` mixing `BookCollector` in and `Executi
 0.  If `Executive` mixes `BookCollector` in, `Executive` can't override methods of `BookCollector`. If `Executive` inherits from `BookCollector`, it can.
 0.  If `Executive` mixes `BookCollector` in, `Executive` can't override methods of `BookCollector`, and therefore it can't make a method that overrides a method of `BookCollector` and then uses `super` to call the original. If `Executive` inherits from `BookCollector`, it can.
 
-If JavaScript had multiple inheritence, we could extend a class with more than one superclass:
+If JavaScript had multiple inheritance, we could extend a class with more than one superclass:
 
 {% highlight javascript %}
 class Todo {
@@ -171,9 +172,9 @@ class TimeSensitiveTodo extends Todo, Coloured {
 
 This hypothetical TimeSensitiveTodo` extends both `Todo` and `Coloured`, and it overrides `toHTML` from `Todo` as well as overriding `getColourRGB` from `Coloured`.
 
-However, JavaScript does not have "true" multiple inheritence, and therefore this code does not work. But we can simulate mutltiple inheritence for cases like this. The way it works is to step back and ask ourselves, "What would we do if we didn't have mixins or multipel inheritence?"
+However, JavaScript does not have "true" multiple inheritance, and therefore this code does not work. But we can simulate multiple inheritance for cases like this. The way it works is to step back and ask ourselves, "What would we do if we didn't have mixins or multipel inheritance?"
 
-The answer is, we'd create an arbitrary hierarchy, like ths:
+The answer is, we'd create an arbitrary hierarchy, like this:
 
 {% highlight javascript %}
 class Todo {
@@ -189,7 +190,7 @@ class TimeSensitiveTodo extends ColouredTodo {
 }
 {% endhighlight %}
 
-By making `ColouredTodo` extend `Todo`, `TimeSensitiveTodo` can extend `ColouredTodo` and override methods from both. This is exactly what most programmers do, and we know that it is an antipattern, as it leads to duplciated class behaviour and deep class hierarchies.
+By making `ColouredTodo` extend `Todo`, `TimeSensitiveTodo` can extend `ColouredTodo` and override methods from both. This is exactly what most programmers do, and we know that it is an anti-pattern, as it leads to duplicated class behaviour and deep class hierarchies.
 
 But.
 
@@ -210,7 +211,7 @@ let Coloured = mixin({
 let ColouredTodo = Coloured(class extends Todo {});
 {% endhighlight %}
 
-Thus, we have a `ColouredTodo` that we can extend and override, but we also have our `Coloured` behaviour in a mixin we can use anywhere we like without duplicating its functionality in our code. The full solution likks like this:
+Thus, we have a `ColouredTodo` that we can extend and override, but we also have our `Coloured` behaviour in a mixin we can use anywhere we like without duplicating its functionality in our code. The full solution looks like this:
 
 {% highlight javascript %}
 class Todo {
@@ -355,7 +356,7 @@ The syntax of `class TimeSensitiveTodo extends ColouredAsWellAs(ToDo)` says exac
 
 The solution subclass factories offer is emulating inheritance from more than one superclass. That, in turn, makes it possible to override methods from our superclass as well as the behaviour we want to mix in. Which is fine, but we don't actually want multiple inheritance!
 
-It's just that we're looking at an overriding/extending methods problem, but we're holding an inheritence-shapped hammer. So it looks like a multiple-inheritance nail. But what if we address the problem of overriding and extending methods directly, rather than indirectly via multiple inheritance?
+It's just that we're looking at an overriding/extending methods problem, but we're holding an inheritance-shaped hammer. So it looks like a multiple-inheritance nail. But what if we address the problem of overriding and extending methods directly, rather than indirectly via multiple inheritance?
 
 ### simple overwriting with simple mixins
 
