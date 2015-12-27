@@ -10,12 +10,11 @@ tags: [allonge, noindex]
 
 Here's a simplified functional mixin for classes:[^simplified]
 
-[^simplified]: A production-ready version would handle more than just methods. For example, it would allow you to mix getters and setters into a class. But this simplified version handles methods, simple properties, "mixin properties," and `instanceof`, and that is enough for the purposes of investigating OO design questions.
+[^simplified]: A production-ready version would handle more than just methods. For example, it would allow you to mix getters and setters into a class, and it would allow us to attach properties or methods to the target class itself, and not just instances. But this simplified version handles methods, simple properties, "mixin properties," and `instanceof`, and that is enough for the purposes of investigating OO design questions.
 
 {% highlight javascript %}
-function mixin (behaviour, sharedBehaviour = {}) {
+function mixin (behaviour) {
   let instanceKeys = Reflect.ownKeys(behaviour);
-  let sharedKeys = Reflect.ownKeys(sharedBehaviour);
   let typeTag = Symbol('isa');
 
   function _mixin (clazz) {
@@ -27,11 +26,6 @@ function mixin (behaviour, sharedBehaviour = {}) {
     Object.defineProperty(clazz.prototype, typeTag, { value: true });
     return clazz;
   }
-  for (let property of sharedKeys)
-    Object.defineProperty(_mixin, property, {
-      value: sharedBehaviour[property],
-      enumerable: sharedBehaviour.propertyIsEnumerable(property)
-    });
   Object.defineProperty(_mixin, Symbol.hasInstance, {
     value: (i) => !!i[typeTag]
   });
@@ -294,8 +288,8 @@ task.toHTML()
 The key snippet is `let ColouredTodo = Coloured(class extends Todo {});`, it turns a mixin into a subclass that can be extended and overridden. We can turn this pattern into a function:
 
 {%highlight javascript %}
-let subclassFactory = (behaviour, sharedBehaviour = {}) => {
-  let mixBehaviourInto = mixin(behaviour, sharedBehaviour);
+let subclassFactory = (behaviour) => {
+  let mixBehaviourInto = mixin(behaviour);
 
   return (superclazz) => mixBehaviourInto(class extends superclazz {});
 }
@@ -304,8 +298,8 @@ let subclassFactory = (behaviour, sharedBehaviour = {}) => {
 Using `subclassFactory`, we wrap the class we want to extend, instead of the class we are declaring. Like this:
 
 {% highlight javascript %}
-let subclassFactory = (behaviour, sharedBehaviour = {}) => {
-  let mixBehaviourInto = mixin(behaviour, sharedBehaviour);
+let subclassFactory = (behaviour) => {
+  let mixBehaviourInto = mixin(behaviour);
 
   return (superclazz) => mixBehaviourInto(class extends superclazz {});
 }
@@ -399,9 +393,8 @@ Our `CanadianAirForceRoundel`'s third stripe winds up being regular blue instead
 We can fix this by not overwriting a property if the class already defines it. That's not so hard:
 
 {% highlight javascript %}
-function mixin (behaviour, sharedBehaviour = {}) {
+function mixin (behaviour) {
   let instanceKeys = Reflect.ownKeys(behaviour);
-  let sharedKeys = Reflect.ownKeys(sharedBehaviour);
   let typeTag = Symbol('isa');
 
   function _mixin (clazz) {
@@ -415,11 +408,6 @@ function mixin (behaviour, sharedBehaviour = {}) {
     Object.defineProperty(clazz.prototype, typeTag, { value: true });
     return clazz;
   }
-  for (let property of sharedKeys)
-    Object.defineProperty(_mixin, property, {
-      value: sharedBehaviour[property],
-      enumerable: sharedBehaviour.propertyIsEnumerable(property)
-    });
   Object.defineProperty(_mixin, Symbol.hasInstance, {
     value: (i) => !!i[typeTag]
   });
