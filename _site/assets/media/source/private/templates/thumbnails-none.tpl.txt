@@ -1,7 +1,0 @@
-<!-- Template for no thumbnails -->
-
-<BR>
-<BR>
-<FONT SIZE=4>
-Sorry, there are no thumbnails in this category.
-</FONT>

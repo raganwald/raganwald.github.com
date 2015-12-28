@@ -1,1 +1,0 @@
-(begin	(define (add1 x) (+ x 1))	(map add1 '(1 3 5 7 9)))
