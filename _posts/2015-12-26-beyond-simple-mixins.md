@@ -643,7 +643,35 @@ let after = (behaviour, ...decoratedMethodNames) =>
   };
 {% endhighlight %}
 
-With `before`, `after`, and `override` in hand, we have several advantages over traditional method overriding. First, `before` and `after` do a better job of declaring our intent when decomposing behaviour. And second, method advice allows us to add behaviour to multiple methods at once, focusing responsibility for cross-cutting concerns.
+With `before`, `after`, and `override` in hand, we have several advantages over traditional method overriding. First, `before` and `after` do a better job of declaring our intent when decomposing behaviour. And second, method advice allows us to add behaviour to multiple methods at once, focusing responsibility for cross-cutting concerns, like this:
+
+{% highlight javascript %}
+const mustBeLoggedIn = () => {
+    if (currentUser() == null)
+      throw new PermissionsException("Must be logged in!");
+  }
+
+const mustBeMe = () => {
+    if (currentUser() == null || !currentUser().person().equals(this))
+      throw new PermissionsException("Must be me!");
+  }
+
+@HasAge
+@before(mustBeMe, 'setName', 'setAge', 'age')
+@before(mustBeLoggedIn, 'fullName')
+class Person {
+
+  setName (first, last) {
+    this.firstName = first;
+    this.lastName = last;
+  }
+
+  fullName () {
+    return this.firstName + " " + this.lastName;
+  }
+
+};
+{% endhighlight %}
 
 After using mixins and method advice on a regular basis, it becomes apparent that you far, far fewer superclasses. Instead of using superclasses for shared behaviour, we use mixins and method advice. Superclasses are then relegated to those cases where we need to build behaviour into the constructor.
 
