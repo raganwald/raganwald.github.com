@@ -362,9 +362,11 @@ The solution subclass factories offer is emulating inheritance from more than on
 
 It's just that we're looking at an overriding/extending methods problem, but we're holding an inheritance-shaped hammer. So it looks like a multiple-inheritance nail. But what if we address the problem of overriding and extending methods directly, rather than indirectly via multiple inheritance?
 
+[![Nail](/assets/images/nail.jpg)](https://www.flickr.com/photos/25182350@N03/2981062354)
+
 ### simple overwriting with simple mixins
 
-The simplest start to this is to note that in the first pass of our `mixin` function, we blindly copy properties from the mixin into the class's prototype, whether the class defines those properties or not. So if we write:
+We start by noting that in the first pass of our `mixin` function, we blindly copy properties from the mixin into the class's prototype, whether the class defines those properties or not. So if we write:
 
 {%highlight javascript %}
 let RED        = { r: 'FF', g: '00', b: '00' },
