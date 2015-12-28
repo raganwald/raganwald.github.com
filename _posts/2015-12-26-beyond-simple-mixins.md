@@ -174,11 +174,11 @@ class TimeSensitiveTodo extends Todo, Coloured {
 }
 {% endhighlight %}
 
-This hypothetical TimeSensitiveTodo` extends both `Todo` and `Coloured`, and it overrides `toHTML` from `Todo` as well as overriding `getColourRGB` from `Coloured`.
+This hypothetical `TimeSensitiveTodo` extends both `Todo` and `Coloured`, and it overrides `toHTML` from `Todo` as well as overriding `getColourRGB` from `Coloured`.
 
-However, JavaScript does not have "true" multiple inheritance, and therefore this code does not work. But we can simulate multiple inheritance for cases like this. The way it works is to step back and ask ourselves, "What would we do if we didn't have mixins or multipel inheritance?"
+However, JavaScript does not have "true" multiple inheritance, and therefore this code does not work. But we can simulate multiple inheritance for cases like this. The way it works is to step back and ask ourselves, "What would we do if we didn't have mixins or multiple inheritance?"
 
-The answer is, we'd create an arbitrary hierarchy, like this:
+The answer is, we'd force a square multiple inheritance peg into a round single inheritance hole, like this:
 
 {% highlight javascript %}
 class Todo {
