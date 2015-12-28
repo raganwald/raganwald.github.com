@@ -1,5 +1,5 @@
 ---
-title: "Mixins, Subclass Factories, and Method Advice in JavaScript"
+title: "JavaScript Mixins, Subclass Factories, and Method Advice"
 layout: default
 tags: [allonge]
 ---
