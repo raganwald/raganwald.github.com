@@ -218,7 +218,7 @@ A "purely functional" approach to composing functionality is appropriate when we
 more reading:
 
 - [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html)
-- [Classes are Expressions (And Why That Matters)](http://raganwald.com/2015/06/04/classes-are-expressions.html)
+- [Classes are Expressions (and why that matters)](http://raganwald.com/2015/06/04/classes-are-expressions.html)
 - [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html)
 - [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)
 - [Method Advice in Modern JavaScript](http://raganwald.com/2015/08/05/method-advice.html)
