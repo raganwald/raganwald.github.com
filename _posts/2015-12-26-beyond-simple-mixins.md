@@ -687,4 +687,10 @@ Either way, we find ourselves needing shallower and shallower class hierarchies 
 
 ---
 
+### more reading
+
+- [Method Advice in Modern JavaScript](http://raganwald.com/2015/08/05/method-advice.html)
+- [Classes are Expressions (And Why That Matters)](http://raganwald.com/2015/06/04/classes-are-expressions.html)
+- [Class Decorators Proposal](https://github.com/wycats/javascript-decorators)
+
 ### notes
