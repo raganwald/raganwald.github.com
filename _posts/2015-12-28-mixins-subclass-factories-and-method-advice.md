@@ -4,7 +4,7 @@ layout: default
 tags: [allonge]
 ---
 
-*Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a messy many-to-many relationship between behaviour and classes, and it does not neatly decompose into a tree. In this essay, we gloss over the benefits of using mixins, instead we will focus on some of the limitations and ways to overcome them.
+*Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a messy many-to-many relationship between behaviour and classes, and it does not neatly decompose into a tree. In this essay, we only touch lightly over the benefits of using mixins with classes, and in their stead we will focus on some of the limitations of mixins and ways to not just overcome them, but create designs that are superior to those created with classes alone.
 
 (For more on why mixins matter in the first place, you may want to review [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html), [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html), and [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html).)
 
