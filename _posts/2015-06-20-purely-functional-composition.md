@@ -215,6 +215,19 @@ A "purely functional" approach to composing functionality is appropriate when we
 
 ---
 
+more reading:
+
+- [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html)
+- [Classes are Expressions (And Why That Matters)](http://raganwald.com/2015/06/04/classes-are-expressions.html)
+- [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html)
+- [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)
+- [Method Advice in Modern JavaScript](http://raganwald.com/2015/08/05/method-advice.html)
+- [`super()` considered hmmm-ful](http://raganwald.com/2015/12/23/super-considered-hmmmful.html)
+- [Mixins, Prototype Factories, and Method Advice](http://raganwald.com/2015/12/28/mixins-prototype factories-and-method-advice.html)
+
+notes:
+
+
 [^iife]: "Immediately Invoked Function Expressions"
 [ja6]: https://leanpub.com/javascriptallongesix
 [fm]: https://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at-javascript-mixins/ "A fresh look at JavaScript Mixins"

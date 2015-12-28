@@ -1,12 +1,12 @@
 ---
-title: "Beyond Simple Mixins, Part I"
+title: "Mixins, Prototype Factories, and Method Advice"
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
-*Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a very messy *many-to-many* relationship between behaviour and classes, and it does not neatly decompose into a tree. In this essay, we gloss over the benefits of using mixins, instead we will focus on some of the limitations and ways to overcome them.[^more]
+*Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a very messy *many-to-many* relationship between behaviour and classes, and it does not neatly decompose into a tree. In this essay, we gloss over the benefits of using mixins, instead we will focus on some of the limitations and ways to overcome them.
 
-[^more]: For more on why mixins matter in the first place, you may want to review [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html), [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html), and [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)
+(For more on why mixins matter in the first place, you may want to review [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html), [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html), and [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html).)
 
 [![Crossed Wires](/assets/images/crossed-wires.jpg)](https://www.flickr.com/photos/howardlake/4834299551/)
 
@@ -687,10 +687,15 @@ Either way, we find ourselves needing shallower and shallower class hierarchies 
 
 ---
 
-### more reading
+more reading:
 
-- [Method Advice in Modern JavaScript](http://raganwald.com/2015/08/05/method-advice.html)
+- [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html)
 - [Classes are Expressions (And Why That Matters)](http://raganwald.com/2015/06/04/classes-are-expressions.html)
-- [Class Decorators Proposal](https://github.com/wycats/javascript-decorators)
+- [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html)
+- [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)
+- [Method Advice in Modern JavaScript](http://raganwald.com/2015/08/05/method-advice.html)
+- [`super()` considered hmmm-ful](http://raganwald.com/2015/12/23/super-considered-hmmmful.html)
+- [Mixins, Prototype Factories, and Method Advice](http://raganwald.com/2015/12/28/mixins-prototype factories-and-method-advice.html)
 
-### notes
+notes:
+

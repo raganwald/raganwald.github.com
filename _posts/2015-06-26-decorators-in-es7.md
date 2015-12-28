@@ -338,8 +338,19 @@ If you prefer syntactic sugar that gives the appearance of a declarative constru
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=9786706))
 
-*NEW!* See [`super()` considered hmmm-ful](http://raganwald.com/2015/12/23/super-considered-hmmmful.html)
+[^ESdotlater]: By "ES.later," we mean some future version of ECMAScript that is likely to be approved eventually, but for the moment exists only in transpilers like [Babel](http://babeljs.io). Obviously, using any ES.later feature in production is a complex decision requiring many more considerations than can be enumerated in a blog post.
+
 
 ---
 
-[^ESdotlater]: By "ES.later," we mean some future version of ECMAScript that is likely to be approved eventually, but for the moment exists only in transpilers like [Babel](http://babeljs.io). Obviously, using any ES.later feature in production is a complex decision requiring many more considerations than can be enumerated in a blog post.
+more reading:
+
+- [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html)
+- [Classes are Expressions (And Why That Matters)](http://raganwald.com/2015/06/04/classes-are-expressions.html)
+- [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html)
+- [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)
+- [Method Advice in Modern JavaScript](http://raganwald.com/2015/08/05/method-advice.html)
+- [`super()` considered hmmm-ful](http://raganwald.com/2015/12/23/super-considered-hmmmful.html)
+- [Mixins, Prototype Factories, and Method Advice](http://raganwald.com/2015/12/28/mixins-prototype factories-and-method-advice.html)
+
+notes:
