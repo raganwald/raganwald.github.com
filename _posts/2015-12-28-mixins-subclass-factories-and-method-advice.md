@@ -4,7 +4,7 @@ layout: default
 tags: [allonge]
 ---
 
-*Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a very messy *many-to-many* relationship between behaviour and classes, and it does not neatly decompose into a tree. In this essay, we gloss over the benefits of using mixins, instead we will focus on some of the limitations and ways to overcome them.
+*Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a messy many-to-many relationship between behaviour and classes, and it does not neatly decompose into a tree. In this essay, we gloss over the benefits of using mixins, instead we will focus on some of the limitations and ways to overcome them.
 
 (For more on why mixins matter in the first place, you may want to review [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html), [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html), and [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html).)
 
@@ -12,7 +12,7 @@ tags: [allonge]
 
 ### simple mixins
 
-As noted above, for non-trivial applications, there is a very messy *many-to-many* relationship between behaviour and classes. However, JavaScript's single-inheritance model forces us to organize behaviour in trees, which can only represent one-to-many relationships.
+As noted above, for non-trivial applications, there is a messy many-to-many relationship between behaviour and classes. However, JavaScript's single-inheritance model forces us to organize behaviour in trees, which can only represent one-to-many relationships.
 
 The mixin solution to this problem is to leave classes in a single inheritance hierarchy, and to mix additional behaviour into individual classes as needed. Here's a vastly simplified functional mixin for classes:[^simplified]
 
@@ -176,6 +176,10 @@ class TimeSensitiveTodo extends Todo, Coloured {
 
 This hypothetical `TimeSensitiveTodo` extends both `Todo` and `Coloured`, and it overrides `toHTML` from `Todo` as well as overriding `getColourRGB` from `Coloured`.
 
+[![Boeing Factory](/assets/images/boeing-factory.jpg)](https://www.flickr.com/photos/jetstarairways/9130160595)
+
+### subclass factories
+
 However, JavaScript does not have "true" multiple inheritance, and therefore this code does not work. But we can simulate multiple inheritance for cases like this. The way it works is to step back and ask ourselves, "What would we do if we didn't have mixins or multiple inheritance?"
 
 The answer is, we'd force a square multiple inheritance peg into a round single inheritance hole, like this:
@@ -293,7 +297,7 @@ task.toHTML()
   //=> <span style="color: #FFFF00;">Finish blog post</span>
 {% endhighlight %}
 
-The key snippet is `let ColouredTodo = Coloured(class extends Todo {});`, it turns a mixin into a subclass that can be extended and overridden. We can turn this pattern into a function:
+The key snippet is `let ColouredTodo = Coloured(class extends Todo {});`, it turns behaviour into a subclass that can be extended and overridden. We can turn this pattern into a function:
 
 {%highlight javascript %}
 let subclassFactory = (behaviour) => {
