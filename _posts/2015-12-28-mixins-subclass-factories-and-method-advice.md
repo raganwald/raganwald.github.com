@@ -681,13 +681,15 @@ class Person {
 
 After using mixins and method advice on a regular basis, instead of using superclasses for shared behaviour, we use mixins and method advice instead. Superclasses are then relegated to those cases where we need to build behaviour into the constructor.
 
-### so, what is the takeaway?
+### wrapping up part i
 
 A simple mixin can cover many cases, but when we wish to override or extend method behaviour, we need to either use the subclass factory pattern or incorporate method advice. Method advice offers benefits above and beyond overriding mixin methods, especially if we use `before` and `after` in addition to `override`.
 
 That being said, subclass factories are most convenient of we are comfortable with hierarchies of superclasses and with using `super` to extend method behaviour. Method advice permits us to use a simpler approach to mixins, and is the best choice when we also want to use advice to factor behaviour along responsibility lines elsewhere in our programs.
 
 Either way, we find ourselves needing shallower and shallower class hierarchies when we use mixins to their fullest. Which demonstrates the power of working with simple constructs (like mixins and decorators) in JavaScript: We do not need nearly as much of the heavyweight OOP apparatus borrowed from 30 year-old languages, we just need to use the language we already have, in ways that cut with its grain.
+
+(What's in Part II? That would be telling!)
 
 ---
 
