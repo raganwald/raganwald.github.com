@@ -342,7 +342,9 @@ more reading:
 - [Method Advice in Modern JavaScript][ma-mj]
 - [`super()` considered hmmm-ful](http://raganwald.com/2015/12/23/super-considered-hmmmful.html)
 - [JavaScript Mixins, Subclass Factories, and Method Advice][mi-sf-ma]
+- [This is not an essay about 'Traits in Javascript'][traits]
 
+[traits]: http://raganwald.com/2015/12/31/this-is-not-an-essay-about-traits-in-javascript.html
 [mi-sf-ma]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
 [ma-mj]: http://raganwald.com/2015/08/05/method-advice.html
 
