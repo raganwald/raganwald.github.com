@@ -339,6 +339,10 @@ These are all fundamental ideas that apply everywhere, even if we don't end up a
 
 This essay is not, in the end, about how to write traits in JavaScript. Traits are just an example of how the lightweight approach is particularly easy in JavaScript, and an explanation of why that matters.
 
+(discuss on [hacker news](https://news.ycombinator.com/newest))
+
+---
+
 ### postscript from the author: "happy new year!"
 
 As I write this on New Year's Eve, 2015, I am struck by how much this essay is the same as almost every other essay I've written about JavaScript. That's partly because my brain is shaped by "lightweight" thinking, and partly because JavaScript, for all of its faults, and despite attempts to write heavyweight frameworks for it, is a lightweight language.
