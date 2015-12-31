@@ -328,11 +328,12 @@ more reading:
 - [Classes are Expressions (and why that matters)](http://raganwald.com/2015/06/04/classes-are-expressions.html)
 - [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html)
 - [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)
-- [Method Advice in Modern JavaScript](http://raganwald.com/2015/08/05/method-advice.html)
+- [Method Advice in Modern JavaScript][ma-mj]
 - [`super()` considered hmmm-ful](http://raganwald.com/2015/12/23/super-considered-hmmmful.html)
 - [JavaScript Mixins, Subclass Factories, and Method Advice][mi-sf-ma]
 
 [mi-sf-ma]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
+[ma-mj]: http://raganwald.com/2015/08/05/method-advice.html
 
 notes:
 
