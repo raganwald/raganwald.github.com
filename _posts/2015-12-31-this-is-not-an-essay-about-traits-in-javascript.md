@@ -1,5 +1,5 @@
 ---
-title: "This is not an essay about 'Traits in Javascript'"
+title: "This is not an essay about 'Traits in Javascript' (updated)"
 layout: default
 tags: [allonge]
 ---
@@ -24,7 +24,7 @@ Here's a toy problem we solved elsewhere with a [subclass factory][mi-sf-ma] tha
 
 [^extremely-simple]: The implementations given here are extremely simple in order to illustrate a larger principle of how the pieces fit together. A production library based on these principles would handle needs we've seen elsewhere, like defining "class" or "static" properties, making `instanceof` work, and appeasing the V8 compiler's optimizations.
 
-To reacpitualte from the very beginning, we have a `Todo` class:
+To recapitulate from the very beginning, we have a `Todo` class:
 
 {% highlight javascript %}
 class Todo {
@@ -64,7 +64,7 @@ class Coloured {
 }
 {% endhighlight %}
 
-And we want to create a time-sensitive to-do that has colour according to whether it is ovrdue, close to its deadline, or has plenty of time left. If we had multiple inheritance, we would write:
+And we want to create a time-sensitive to-do that has colour according to whether it is overdue, close to its deadline, or has plenty of time left. If we had multiple inheritance, we would write:
 
 {% highlight javascript %}
 let yellow = {r: 'FF', g: 'FF', b: '00'},
@@ -103,7 +103,7 @@ class TimeSensitiveTodo extends Todo, Coloured {
 }
 {% endhighlight %}
 
-But we don't hanve multiple inheritance. In langauges where mixing in functionality is difficult, we can fake a solution by having `ColouredTodo` inherit from `Todo`:
+But we don't have multiple inheritance. In languages where mixing in functionality is difficult, we can fake a solution by having `ColouredTodo` inherit from `Todo`:
 
 {% highlight javascript %}
 class ColouredTodo extends Todo {
@@ -146,7 +146,7 @@ class TimeSensitiveTodo extends ColouredTodo {
 }
 {% endhighlight %}
 
-The drawback of this approach is that we can no longer make other kinds of things "coloured" without making them also todos. For exampe, if we had coloured meetings in a time management application, we'd have to write:
+The drawback of this approach is that we can no longer make other kinds of things "coloured" without making them also todos. For example, if we had coloured meetings in a time management application, we'd have to write:
 
 {% highlight javascript %}
 class Meeting {
