@@ -341,7 +341,9 @@ more reading:
 - [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)
 - [Method Advice in Modern JavaScript](http://raganwald.com/2015/08/05/method-advice.html)
 - [`super()` considered hmmm-ful](http://raganwald.com/2015/12/23/super-considered-hmmmful.html)
-- [JavaScript Mixins, Subclass Factories, and Method Advice](http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html)
+- [JavaScript Mixins, Subclass Factories, and Method Advice][mi-sf-ma]
+
+[mi-sf-ma]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
 
 notes:
 
