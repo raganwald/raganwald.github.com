@@ -339,7 +339,7 @@ These are all fundamental ideas that apply everywhere, even if we don't end up a
 
 This essay is not, in the end, about how to write traits in JavaScript. Traits are just an example of how the lightweight approach is particularly easy in JavaScript, and an explanation of why that matters.
 
-(discuss on [hacker news](https://news.ycombinator.com/newest))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=10818795))
 
 ---
 
