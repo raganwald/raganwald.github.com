@@ -20,34 +20,13 @@ Traits are not built into JavaScript, and there is no TC-39 proposal for them ye
 
 ### our toy problem
 
-Here's a toy problem we solved elsewhere with a [subclass factory][mi-sf-ma] that in turn is made out of a an extremely simple mixin:[^extremely-simple]
+Here's a toy problem we solved elsewhere with a [subclass factory][mi-sf-ma] that in turn is made out of a an extremely simple mixin.[^extremely-simple]
 
 [^extremely-simple]: The implementations given here are extremely simple in order to illustrate a larger principle of how the pieces fit together. A production library based on these principles would handle needs we've seen elsewhere, like defining "class" or "static" properties, making `instanceof` work, and appeasing the V8 compiler's optimizations.
 
+To reacpitualte from the very beginning, we have a `Todo` class:
+
 {% highlight javascript %}
-function ClassMixin (behaviour) {
-  const instanceKeys = Reflect.ownKeys(behaviour);
-
-  return function mixin (clazz) {
-    for (let property of instanceKeys)
-      Object.defineProperty(clazz.prototype, property, {
-        value: behaviour[property],
-        writable: true
-      });
-    return clazz;
-  }
-}
-
-const SubclassFactory = (behaviour) =>
-  (superclazz) => ClassMixin(behaviour)(class extends superclazz {});
-
-let yellow = {r: 'FF', g: 'FF', b: '00'},
-    red    = {r: 'FF', g: '00', b: '00'},
-    green  = {r: '00', g: 'FF', b: '00'},
-    grey   = {r: '80', g: '80', b: '80'};
-
-let oneDayInMilliseconds = 1000 * 60 * 60 * 24;
-
 class Todo {
   constructor (name) {
     this.name = name || 'Untitled';
@@ -68,6 +47,142 @@ class Todo {
     return this.name; // highly insecure
   }
 }
+{% endhighlight %}
+
+And we have the idea of "things that are coloured:"
+
+{% highlight javascript %}
+class Coloured {
+  setColourRGB ({r, g, b}) {
+    this.colourCode = {r, g, b};
+    return this;
+  }
+
+  getColourRGB () {
+    return this.colourCode;
+  }
+}
+{% endhighlight %}
+
+And we want to create a time-sensitive to-do that has colour according to whether it is ovrdue, close to its deadline, or has plenty of time left. If we had multiple inheritance, we would write:
+
+{% highlight javascript %}
+let yellow = {r: 'FF', g: 'FF', b: '00'},
+    red    = {r: 'FF', g: '00', b: '00'},
+    green  = {r: '00', g: 'FF', b: '00'},
+    grey   = {r: '80', g: '80', b: '80'};
+
+let oneDayInMilliseconds = 1000 * 60 * 60 * 24;
+
+class TimeSensitiveTodo extends Todo, Coloured {
+  constructor (name, deadline) {
+    super(name);
+    this.deadline = deadline;
+  }
+
+  getColourRGB () {
+    let slack = this.deadline - Date.now();
+
+    if (this.done) {
+      return grey;
+    }
+    else if (slack <= 0) {
+      return red;
+    }
+    else if (slack <= oneDayInMilliseconds){
+      return yellow;
+    }
+    else return green;
+  }
+
+  toHTML () {
+    let rgb = this.getColourRGB();
+
+    return `<span style="color: #${rgb.r}${rgb.g}${rgb.b};">${super.toHTML()}</span>`;
+  }
+}
+{% endhighlight %}
+
+But we don't hanve multiple inheritance. In langauges where mixing in functionality is difficult, we can fake a solution by having `ColouredTodo` inherit from `Todo`:
+
+{% highlight javascript %}
+class ColouredTodo extends Todo {
+  setColourRGB ({r, g, b}) {
+    this.colourCode = {r, g, b};
+    return this;
+  }
+
+  getColourRGB () {
+    return this.colourCode;
+  }
+}
+
+class TimeSensitiveTodo extends ColouredTodo {
+  constructor (name, deadline) {
+    super(name);
+    this.deadline = deadline;
+  }
+
+  getColourRGB () {
+    let slack = this.deadline - Date.now();
+
+    if (this.done) {
+      return grey;
+    }
+    else if (slack <= 0) {
+      return red;
+    }
+    else if (slack <= oneDayInMilliseconds){
+      return yellow;
+    }
+    else return green;
+  }
+
+  toHTML () {
+    let rgb = this.getColourRGB();
+
+    return `<span style="color: #${rgb.r}${rgb.g}${rgb.b};">${super.toHTML()}</span>`;
+  }
+}
+{% endhighlight %}
+
+The drawback of this approach is that we can no longer make other kinds of things "coloured" without making them also todos. For exampe, if we had coloured meetings in a time management application, we'd have to write:
+
+{% highlight javascript %}
+class Meeting {
+  // ...
+}
+
+class ColouredMeeting extends Meeting {
+  setColourRGB ({r, g, b}) {
+    this.colourCode = {r, g, b};
+    return this;
+  }
+
+  getColourRGB () {
+    return this.colourCode;
+  }
+}
+{% endhighlight %}
+
+This forces us to duplicate "coloured" functionality throughout our code base. But thanks to mixins, we can have our cake and eat it to: We can make `ColouredAsWellAs` a kind of mixin that makes a new subclass and then mixes into the subclass. We call this a "subclass factory:"
+
+{% highlight javascript %}
+function ClassMixin (behaviour) {
+  const instanceKeys = Reflect.ownKeys(behaviour);
+
+  return function mixin (clazz) {
+    for (let property of instanceKeys)
+      Object.defineProperty(clazz.prototype, property, {
+        value: behaviour[property],
+        writable: true
+      });
+    return clazz;
+  }
+}
+
+const SubclassFactory = (behaviour) =>
+  (superclazz) => ClassMixin(behaviour)(class extends superclazz {});
 
 const ColouredAsWellAs = SubclassFactory({
   setColourRGB ({r, g, b}) {
@@ -109,11 +224,23 @@ class TimeSensitiveTodo extends ColouredAsWellAs(ToDo) {
 }
 {% endhighlight %}
 
-In this case, we want to take a class, `Todo`, and turn it into a `TimeSensitiveTodo` by incorporating some colouring behaviour. Instead of mixing that behaviour into our `TimeSensitiveTodo` class, we create a subclass of `Todo` and mix the colour `ColourAsWellAs` into that, the we extend our new subclass with `TimeSensitiveTodo`.
+This allows us to override both our `Todo` methods and the `ColourAsWellAs` methods. And elsewhere, we can write:
 
-This allows us to override both our `Todo` methods and the `ColourAsWellAs` methods.
+{% highlight javascript %}
+const ColouredMeeting = ColouredAsWellAs(Meeting);
+{% endhighlight %}
 
-To summarize, our problem is that we want to be able to override or extend functionality from shared behaviour, whether that shared behaviour is defined as a class or as functionality to be mixed in. Now we'll solve the same problem with traits.
+Or perhaps:
+
+{% highlight javascript %}
+class TimeSensitiveMeeting extends ColouredAsWellAs(Meeting) {
+  // ...
+}
+{% endhighlight %}
+
+To summarize, our problem is that we want to be able to override or extend functionality from shared behaviour, whether that shared behaviour is defined as a class or as functionality to be mixed in. Subclass factories are one way to solve that problem.
+
+Now we'll solve the same problem with traits.
 
 ### defining lightweight traits
 
