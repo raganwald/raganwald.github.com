@@ -227,7 +227,10 @@ class TimeSensitiveTodo extends ToDo {
 But if we want to use `DeadlineSensitive` and `Coloured` together more than once, we can make a lightweight trait with simple function composition:
 
 {% highlight javascript %}
-const pipeline = (...fns) => (value) => fns.reduce((acc, fn) => fn(acc), value);
+const pipeline =
+  (...fns) =>
+    (value) =>
+      fns.reduce((acc, fn) => fn(acc), value);
 
 const SensitizeTodos = pipeline(Coloured, DeadlineSensitive);
 
