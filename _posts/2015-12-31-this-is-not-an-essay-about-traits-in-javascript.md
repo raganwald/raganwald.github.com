@@ -333,13 +333,13 @@ When we do things the lightweight way, we make very small bets on their benefits
 
 Every tool affects the way we think about programming. But heavyweight tools force us to think about the heavyweight tooling. That thinking isn't always portable to another tool or another code base.
 
-Whereas lightweight tools are simple things, composed together in simple ways. If we move to a different code base or tool, we can take our experience wit the simple things with us. With lightweight traits, for example, we are not teaching ourselves how to "program with traits," we're teaching ourselves how to "decompose behaviour," how to "compose functions" and how to "write functions that decorate entities."
+Whereas lightweight tools are simple things, composed together in simple ways. If we move to a different code base or tool, we can take our experience with the simple things along. With lightweight traits, for example, we are not teaching ourselves how to "program with traits," we're teaching ourselves how to "decompose behaviour," how to "compose functions" and how to "write functions that decorate entities."
 
 These are all fundamental ideas that apply everywhere, even if we don't end up applying them to build traits every time we write code. Lightweight thinking is portable and future-proof.
 
 This essay is not, in the end, about how to write traits in JavaScript. Traits are just an example of how the lightweight approach is particularly easy in JavaScript, and an explanation of why that matters.
 
-(discuss on [hacker news](https://news.ycombinator.com/item?id=10818795))
+(discuss on [hacker news](https://news.ycombinator.com/newest))
 
 ---
 
