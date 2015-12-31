@@ -1,4 +1,5 @@
 ---
+title: "This is not an essay about 'Traits in Javascript'"
 layout: default
 tags: [allonge]
 ---
