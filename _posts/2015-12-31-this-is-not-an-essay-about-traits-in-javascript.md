@@ -6,7 +6,9 @@ tags: [allonge]
 
 [![Scott Penkava, Untitled (Portrait of Felix in NY), 2009](/assets/images/lego-portrait.jpg)](https://www.flickr.com/photos/sixteen-miles/3757674953)
 
-> In computer programming, a **trait** is a concept used in object-oriented programming: a trait represents a collection of methods that can be used to extend the functionality of a class. Essentially a trait is similar to a class made only of concrete methods that is used to extend another class with a mechanism similar to multiple inheritance, but paying attention to name conflicts, hence with some support from the language for a name-conflict resolution policy to use when merging.
+> A **trait** is a concept used in object-oriented programming: a trait represents a collection of methods that can be used to extend the functionality of a class. Essentially a trait is similar to a class made only of concrete methods that is used to extend another class with a mechanism similar to multiple inheritance, but paying attention to name conflicts, hence with some support from the language for a name-conflict resolution policy to use when merging.—[Wikipedia][wikitrait]
+
+[wikitrait]: https://en.wikipedia.org/wiki/Trait_(computer_programming)
 
 A trait is like a [mixin](http://raganwald.com/2015/06/26/decorators-in-es7.html), however with a trait, we can not just define new behaviour, but also define ways to extend or override existing behaviour. Traits are a first-class feature languages like [Scala](http://raganwald.com/2015/06/26/decorators-in-es7.html) and [Rust](https://doc.rust-lang.org/stable/book/traits.html). Traits are also available as a standard library in many other languages, including [Racket](http://docs.racket-lang.org/reference/trait.html). Most interestingly, traits are a feature of the [Self][self] programming language, one of the inspirations for JavaScript.
 
