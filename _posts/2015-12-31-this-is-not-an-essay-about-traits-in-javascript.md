@@ -474,7 +474,7 @@ This essay is not, in the end, about how to write traits in JavaScript. Traits a
 
 As I write this on New Year's Eve, 2015, I am struck by how much this essay is the same as almost every other essay I've written about JavaScript. That's partly because my brain is shaped by "lightweight" thinking, and partly because JavaScript, for all of its faults, and despite attempts to write heavyweight frameworks for it, is a lightweight language.
 
-People often say that JavaScript wants to be a functional programming language. I believe this is not so: I believe it wants to be a lightweight programming language, and functions-as-first-class-entities is a deeply lightweight idea. the same is true of newer ideas like classes-as-expressions and decorators-as-functions.
+People often say that JavaScript wants to be a functional programming language. I believe this is not the whole story: I believe JavaScript wants to be a lightweight programming language, and functions-as-first-class-entities is a deeply lightweight idea. the same is true of newer ideas like classes-as-expressions and decorators-as-functions.
 
 But I repeat myself. Again.
 
