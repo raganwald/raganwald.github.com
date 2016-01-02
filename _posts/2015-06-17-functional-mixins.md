@@ -262,7 +262,7 @@ We can test this quickly:[^but]
 [^but]: This may **not** work with various transpilers and other incomplete ECMAScript 2015 implementations. Check the documentation. For example, you must enable the "high compliancy" mode in [BabelJS](http://babeljs.io). This is off by default to provide the highest possible performance for code bases that do not need to use features like this.
 
 {% highlight javascript %}
-Coloured[Symbol.hasInstance] = (instance) => true
+Object.defineProperty(Coloured, Symbol.hasInstance, {value: (instance) => true});
 urgent instanceof Coloured
   //=> true
 {} instanceof Coloured
@@ -292,7 +292,7 @@ function FunctionalMixin (behaviour) {
       value: sharedBehaviour[property],
       enumerable: sharedBehaviour.propertyIsEnumerable(property)
     });
-  mixin[Symbol.hasInstance] = (instance) => !!instance[typeTag];
+  Object.defineProperty(mixin, Symbol.hasInstance, {value: (instance) => !!instance[typeTag]});
   return mixin;
 }
 
