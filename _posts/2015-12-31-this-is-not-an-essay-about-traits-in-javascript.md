@@ -446,7 +446,7 @@ We just have to start with simple things, and combine them in simple ways.
 
 ### the heavyweight. and the light.
 
-When developing employing a new approach, like traits, there are two ways to do it. The heavyweight way, and the lightweight way.
+When employing a new approach, like traits, there are two ways to do it. The heavyweight way, and the lightweight way.
 
 The lightweight way, as shown here, attempts to be as "JavaScript-y" as possible. For example, using functions for protocols and composing them. With the lightweight way, everything is still just a function, or just an object, or just a class with just a prototype. Lightweight code interoperates 100% with code from other libraries. Lightweight approaches can be incrementally added to an existing code base, refactoring a bit here and a bit there.
 
