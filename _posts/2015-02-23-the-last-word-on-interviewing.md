@@ -79,7 +79,7 @@ const positionsOf = (game) =>
         "↓": ([x, y]) => [x, y - 1],
         "↑": ([x, y]) => [x, y + 1] 
       };
-      const [x, y] =  MOVE[direction](position);
+      const [x, y] = position = MOVE[direction](position);
       
       return [position, `x: ${x}, y: ${y}`];
     },
@@ -221,7 +221,7 @@ const statefulMapIterableWith = (fn, seed, iterable) =>
 const positionsOf = (game) =>
   statefulMapIterableWith(
     (position, direction) => {
-      const [x, y] =  MOVE[direction](position);
+      const [x, y] = position = MOVE[direction](position);
       position = [x, y];
       return [position, `x: ${x}, y: ${y}`];
     },

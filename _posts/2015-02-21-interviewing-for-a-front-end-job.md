@@ -30,7 +30,7 @@ Christine quickly scribbled on the whiteboard:
 
 {% highlight javascript %}
 const Game = (size = 8) => {
-  
+
   // initialize the board
   const board = [];
   for (let i = 0; i < size; ++i) {
@@ -39,27 +39,27 @@ const Game = (size = 8) => {
       board[i][j] = '←→↓↑'[Math.floor(Math.random() * 4)];
     }
   }
-  
+
   // initialize the position
   let initialPosition = [
-    2 + Math.floor(Math.random() * (size - 4)), 
+    2 + Math.floor(Math.random() * (size - 4)),
     2 + Math.floor(Math.random() * (size - 4))
   ];
-  
+
   // ???
   let [x, y] = initialPosition;
-  
+
   const MOVE = {
     "←": ([x, y]) => [x - 1, y],
     "→": ([x, y]) => [x + 1, y],
     "↓": ([x, y]) => [x, y - 1],
-    "↑": ([x, y]) => [x, y + 1] 
+    "↑": ([x, y]) => [x, y + 1]
   };
   while (x >= 0 && y >=0 && x < size && y < size) {
     const arrow = board[x][y];
-    
+
     // ???
-    
+
     [x, y] = MOVE[arrow]([x, y]);
   }
   // ???
@@ -102,7 +102,7 @@ And:
 
 {% highlight javascript %}
 const Game = (size = 8) => {
-  
+
   // initialize the board
   const board = [];
   for (let i = 0; i < size; ++i) {
@@ -111,27 +111,27 @@ const Game = (size = 8) => {
       board[i][j] = '←→↓↑'[Math.floor(Math.random() * 4)];
     }
   }
-  
+
   // initialize the position
   let initialPosition = [
-    2 + Math.floor(Math.random() * (size - 4)), 
+    2 + Math.floor(Math.random() * (size - 4)),
     2 + Math.floor(Math.random() * (size - 4))
   ];
-  
+
   return ({
     [Symbol.iterator]: function* () {
       let [x, y] = initialPosition;
-  
+
       const MOVE = {
         "←": ([x, y]) => [x - 1, y],
         "→": ([x, y]) => [x + 1, y],
         "↓": ([x, y]) => [x, y - 1],
-        "↑": ([x, y]) => [x, y + 1] 
+        "↑": ([x, y]) => [x, y + 1]
       };
-      
+
       while (x >= 0 && y >=0 && x < size && y < size) {
         const arrow = board[x][y];
-        
+
         yield arrow;
         [x, y] = MOVE[arrow]([x, y]);
       }
@@ -149,7 +149,7 @@ const takeIterable = (numberToTake, iterable) =>
   ({
     [Symbol.iterator]: function* () {
       let remainingElements = numberToTake;
-      
+
       for (let element of iterable) {
         if (remainingElements-- <= 0) break;
         yield element;
@@ -170,7 +170,7 @@ const statefulMapIterableWith = (fn, seed, iterable) =>
     [Symbol.iterator]: function* () {
       let value,
           state = seed;
-      
+
       for (let element of iterable) {
         [state, value] = fn(state, element);
         yield value;
@@ -189,10 +189,10 @@ const positionsOf = (game) =>
         "←": ([x, y]) => [x - 1, y],
         "→": ([x, y]) => [x + 1, y],
         "↓": ([x, y]) => [x, y - 1],
-        "↑": ([x, y]) => [x, y + 1] 
+        "↑": ([x, y]) => [x, y + 1]
       };
-      const [x, y] =  MOVE[direction](position);
-      
+      const [x, y] = position = MOVE[direction](position);
+
       return [position, `x: ${x}, y: ${y}`];
     },
     [0, 0],
@@ -213,20 +213,20 @@ The Carpenter reflected. "Having turned our game loop into an iterable, we can n
 const hasCycle = (orderedCollection) => {
   const hare = orderedCollection[Symbol.iterator]();
   let hareResult = (hare.next(), hare.next());
-  
+
   for (let tortoiseValue of orderedCollection) {
-    
+
     hareResult = hare.next();
-    
+
     if (hareResult.done) {
       return false;
     }
     if (tortoiseValue === hareResult.value) {
       return true;
     }
-    
+
     hareResult = hare.next();
-    
+
     if (hareResult.done) {
       return false;
     }
