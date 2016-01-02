@@ -14,7 +14,7 @@ A trait is like a [mixin](http://raganwald.com/2015/06/26/decorators-in-es7.html
 
 [self]: https://en.wikipedia.org/wiki/Self_(programming_language)#Traits
 
-Traits are not built into JavaScript, and there is no TC-39 proposal for them yet, but we can make easily lightweight traits out of the features JavaScript already has.
+Traits are not a JavaScript feature as this essay is being written, but we can easily make lightweight traits out of the features JavaScript already has.
 
 > Our problem is that we want to be able to override or extend functionality from shared behaviour, whether that shared behaviour is defined as a class or as functionality to be mixed in.
 
