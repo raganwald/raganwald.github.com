@@ -223,7 +223,7 @@ I think you'll find that eliminating Carnac the Magnificent from your interviewi
 
 *post scriptum*:
 
-Note: I'm not saying that the author if TFA poses the question exactly as worded to real candidates without any further discussion. TFA is a blog post explaining the problem to fellow interviewers, not going into all the details of how to set up the problem, whether to encourage conversation or give hints, and so forth.
+Note: I'm not saying that the author of TFA poses the question exactly as worded to real candidates without any further discussion. TFA is a blog post explaining the problem to fellow interviewers, not going into all the details of how to set up the problem, whether to encourage conversation or give hints, and so forth.
 
 However, I *am* saying that I have seen similar problems posed as filters, without any further exposition about what is wanted, and I have definitely encountered interviewers who have hidden expectations, interviewers who are impatient if asked too many questions, interviewers who are judging candidates by the speed of writing a solution and consider questions to take up valuable time, and so forth.
 
