@@ -171,7 +171,7 @@ sum2(3)
   //=> The sum of 2 and 3 is 5
 {% endhighlight %}
 
-What we have just written is a *left partial application* function: Given any function and some arguments, we partially apply those arguments and get back a function that applies those arguments and and more you supply to the original function.
+What we have just written is a *left partial application* function: Given any function and some arguments, we partially apply those arguments and get back a function that applies those arguments and any more you supply to the original function.
 
 Partial application is thus the application of part of the arguments of a function, and getting in return a function that takes the remaining arguments.
 
