@@ -248,7 +248,7 @@ class Person {
 
 This is different. Instances of `Person` won't have properties like `.lastName`, they will be properties like `['Symbol(lastName)_v.cn3u8ad08']`. Furthermore, JavaScript automatically makes these properties non-enumerable, so they won't show up should we use things like `for...in` loops.
 
-So it will be difficult for other code to directly manipulate the properties we use for a person's first and last name. But that being said, we're "exposing" the `firstNameProperty` and `lastNameProperty` variables to the world. WE've encapsulated *instances* of `Person`, but not `Person` itself.
+So it will be difficult for other code to directly manipulate the properties we use for a person's first and last name. But that being said, we're "exposing" the `firstNameProperty` and `lastNameProperty` variables to the world. We've encapsulated *instances* of `Person`, but not `Person` itself.
 
 ### encapsulating our class implementation
 
