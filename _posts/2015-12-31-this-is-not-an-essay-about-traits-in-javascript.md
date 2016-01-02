@@ -10,7 +10,7 @@ tags: [allonge]
 
 [wikitrait]: https://en.wikipedia.org/wiki/Trait_(computer_programming)
 
-A trait is like a [mixin](http://raganwald.com/2015/06/26/decorators-in-es7.html), however with a trait, we can not just define new behaviour, but also define ways to extend or override existing behaviour. Traits are a first-class feature languages like [Scala](http://raganwald.com/2015/06/26/decorators-in-es7.html) and [Rust](https://doc.rust-lang.org/stable/book/traits.html). Traits are also available as a standard library in many other languages, including [Racket](http://docs.racket-lang.org/reference/trait.html). Most interestingly, traits are a feature of the [Self][self] programming language, one of the inspirations for JavaScript.
+A trait is like a [mixin](http://raganwald.com/2015/06/26/decorators-in-es7.html), however with a trait, we can not just define new behaviour, but also define ways to extend or override existing behaviour. Traits are a first-class feature languages like [Scala](http://www.scala-lang.org). Traits are also available as a standard library in languages like [Racket](http://docs.racket-lang.org/reference/trait.html). Most interestingly, traits are a feature of the [Self][self] programming language, one of the inspirations for JavaScript.
 
 [self]: https://en.wikipedia.org/wiki/Self_(programming_language)#Traits
 
