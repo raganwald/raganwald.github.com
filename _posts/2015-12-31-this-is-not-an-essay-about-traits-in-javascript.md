@@ -178,6 +178,14 @@ class ColouredMeeting extends Meeting {
     return this;
   }
 
+  luminosity () {
+    let {r, g, b} = this.getColourRGB();
+
+    return 0.21 * toTwoFiftyFive(r) +
+           0.72 * toTwoFiftyFive(g) +
+           0.07 * toTwoFiftyFive(b);
+  }
+
   getColourRGB () {
     return this.colourCode;
   }
