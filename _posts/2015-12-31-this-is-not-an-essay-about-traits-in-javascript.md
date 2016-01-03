@@ -52,10 +52,21 @@ class Todo {
 And we have the idea of "things that are coloured:"
 
 {% highlight javascript %}
+let toSixteen = (c) => '0123456789ABCDEF'.indexOf(c),
+    toTwoFiftyFive = (cc) => toSixteen(cc[0]) * 16 + toSixteen(cc[1]);
+
 class Coloured {
   setColourRGB ({r, g, b}) {
     this.colourCode = {r, g, b};
     return this;
+  }
+
+  luminosity () {
+    let {r, g, b} = this.getColourRGB();
+
+    return 0.21 * toTwoFiftyFive(r) +
+           0.72 * toTwoFiftyFive(g) +
+           0.07 * toTwoFiftyFive(b);
   }
 
   getColourRGB () {
@@ -110,6 +121,14 @@ class ColouredTodo extends Todo {
   setColourRGB ({r, g, b}) {
     this.colourCode = {r, g, b};
     return this;
+  }
+
+  luminosity () {
+    let {r, g, b} = this.getColourRGB();
+
+    return 0.21 * toTwoFiftyFive(r) +
+           0.72 * toTwoFiftyFive(g) +
+           0.07 * toTwoFiftyFive(b);
   }
 
   getColourRGB () {
@@ -190,12 +209,20 @@ const ColouredAsWellAs = SubclassFactory({
     return this;
   },
 
+  luminosity () {
+    let {r, g, b} = this.getColourRGB();
+
+    return 0.21 * toTwoFiftyFive(r) +
+           0.72 * toTwoFiftyFive(g) +
+           0.07 * toTwoFiftyFive(b);
+  },
+
   getColourRGB () {
     return this.colourCode;
   }
 });
 
-class TimeSensitiveTodo extends ColouredAsWellAs(ToDo) {
+class TimeSensitiveTodo extends ColouredAsWellAs(Todo) {
   constructor (name, deadline) {
     super(name);
     this.deadline = deadline;
@@ -258,7 +285,7 @@ function Define (behaviour) {
           writable: true
         });
       }
-      else throw `illegal attempt to override ${property}, which already exists.
+      else throw `illegal attempt to override ${property}, which already exists.`
   }
 }
 
@@ -267,6 +294,15 @@ const Coloured = Define({
     this.colourCode = {r, g, b};
     return this;
   },
+
+  luminosity () {
+    let {r, g, b} = this.getColourRGB();
+
+    return 0.21 * toTwoFiftyFive(r) +
+           0.72 * toTwoFiftyFive(g) +
+           0.07 * toTwoFiftyFive(b);
+  },
+
   getColourRGB () {
     return this.colourCode;
   }
@@ -331,7 +367,7 @@ We *could* now write:
 {% highlight javascript %}
 const TimeSensitiveTodo = DeadlineSensitive(
   Coloured(
-    class TimeSensitiveTodo extends ToDo {
+    class TimeSensitiveTodo extends Todo {
       constructor (name, deadline) {
         super(name);
         this.deadline = deadline;
@@ -346,7 +382,7 @@ Or:
 {% highlight javascript %}
 @DeadlineSensitive
 @Coloured
-class TimeSensitiveTodo extends ToDo {
+class TimeSensitiveTodo extends Todo {
   constructor (name, deadline) {
     super(name);
     this.deadline = deadline;
@@ -365,7 +401,7 @@ const pipeline =
 const SensitizeTodos = pipeline(Coloured, DeadlineSensitive);
 
 @SensitizeTodos
-class TimeSensitiveTodo extends ToDo {
+class TimeSensitiveTodo extends Todo {
   constructor (name, deadline) {
     super(name);
     this.deadline = deadline;
