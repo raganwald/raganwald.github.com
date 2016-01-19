@@ -503,11 +503,13 @@ Now we get the correct result!
 
 Once upon a time, "undo" was a magical feature for single users. It transformed the software experience for users, because they could act without fear of making irreversible catastrophic mistakes. There was a natural progression to undo and redo stacks. But it was rare that applications went further.
 
-Only the most esoteric would surface the undo and redo stacks, permitting execution of arbitrary commands from the redo stack, or maintained the redo stack after performing new edits (as we've implemented here). This is a neat feature, but challenging to design into an application in teh "real world." It's challenging to set user expectations about what the redo command will do.[^hand-wave]
+Only the most esoteric would surface the undo and redo stacks, permitting execution of arbitrary commands from the redo stack, or maintained the redo stack after performing new edits (as we've implemented here). This is a neat feature, but challenging to design into an application in the "real world." It's challenging to set user expectations about what the redo command will do.[^hand-wave]
 
 [^hand-wave]: Another problem is that we have made a massive number of hand waves. We only correctly handle edits that do not overlap. We'll talk about this a little later.
 
+But not all implementations of commands have a direct representation in the user experience. And if we put aside the problem of user experience, we have a very string takeaway from dealing with maintaining the `future` while inserting new edits into the history. While it's just one limited example, it hints at being able to arbitrarily manipulate history, inserting, removing, or reordering edits as we desire.
 
+This is a very powerful concept: Typically, we are slaves to mutable state. It moves forward inexorably. Taming it is a struggle. But commands offer a hint that we may have a way forward.
 
 
 ![](/assets/images/command/035.png)
@@ -538,6 +540,8 @@ Slides are also a poor way to convey detailed information. It is difficult to pu
 For this reason, I prefer to compose talks in a completely different style than blog posts. Blog posts can have longer sections of code, and people can move along at their own pace. Blog posts can convey technical ideas much more efficiently than presentations, so my goal with a presentation is simply to get people interested enough in the subject to seek out blog posts, books, or screen casts for further study.
 
 Which presents me with a dilemma: After giving a talk at a conference, what good are the slides? Even if a video is published online, what good is that compared to rewriting the presentation as a blog post?
+
+I decided to experiment with this annotated set of slides. It's not a transcript, and it's not a blog post. It may be a compromise, but I hope you enjoyed reading it.
 
 ### image credits
 
