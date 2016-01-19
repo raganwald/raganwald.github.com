@@ -185,8 +185,6 @@ undoer.doIt();
   //=> The quick brown fox jumped over the lazy dog
 {% endhighlight %}
 
-Now we can undo any edit.
-
 ![](/assets/images/command/014.png)
 
 Let's put our storing and transforming together. Instead of returning a command from the `replaceWith` method, we'll create a `doer` command, and push its reverse onto a `history` stack. We'll then invoke `doer.doIt()` to actually perform the replacement on the buffer:
@@ -216,9 +214,66 @@ class Buffer {
 }
 {% endhighlight %}
 
-
 ![](/assets/images/command/015.png)
+
+Implementing `undo` is straightforward: Pop an `undoer` from the stack, create a `redoer` for later, push the `redoer` onto a `future` stack, and invoke the undoer:
+
+{% highlight javascript %}
+class Buffer {
+
+  undo () {
+    let undoer = this.history.pop(),
+        redoer = undoer.reversed();
+
+    this.future.unshift(redoer);
+    return undoer.doIt();
+  }
+
+}
+
+let buffer = new Buffer(
+  "The quick brown fox jumped over the lazy dog"
+);
+
+buffer.replaceWith("fast", 4, 9)
+  //=> The fast brown fox jumped over the lazy dog
+
+buffer.replaceWith("canine", 40, 43)
+  //=> The fast brown fox jumped over the lazy canine
+
+buffer.undo()
+  //=> The fast brown fox jumped over the lazy dog
+
+buffer.undo()
+  //=> The quick brown fox jumped over the lazy dog
+{% endhighlight %}
+
 ![](/assets/images/command/016.png)
+
+Redoing something we've undone is now simple:
+
+{% highlight javascript %}
+class Buffer {
+
+  redo () {
+    let redoer = this.future.shift(),
+        undoer = redoer.reversed();
+
+    this.history.push(undoer);
+    return redoer.doIt();
+  }
+
+}
+
+buffer.redo()
+  //=> The fast brown fox jumped over the lazy dog
+
+buffer.redo()
+  //=> The fast brown fox jumped over the lazy canine
+{% endhighlight %}
+
+And agin, its reverse goes onto the history so we can toggle back and forth between undoing and redoing.
+
 ![](/assets/images/command/017.png)
 ![](/assets/images/command/018.png)
 ![](/assets/images/command/019.png)
