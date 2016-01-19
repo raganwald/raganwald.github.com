@@ -353,7 +353,7 @@ What went wrong?
 
 As the illustration shows, when we first performed `.replaceWith('fast', 4, 9)`, it replaced the characters `q`, `u`, `i`, `c`, and `k`, because those were in the selection between `4` and `9` of the buffer.
 
-Our `redoer` in the `future` performs this same replacement, but now that we've invoked `.replaceWith('My', 0, 3)`, the characters in the selection between `4` and `9` are now `u`, `i`, `c`, `k`, and a blank space.
+Our `redoer` in the `future` performs this same replacement, but now that we've invoked `.replaceWith('My', 0, 3)`, the characters in the selection between `4` and `9` are now `u`, `i`, `c`, `k`, and ` `, a blank space.
 
 Invoking `.replaceWith('My', 0, 3)` has moved the part of the buffer we semantically want to replace.
 
@@ -455,7 +455,7 @@ fast.prependedWith(my)
   //=> buffer.replaceWith("fast", 3, 8)
 {% endhighlight %}
 
-With this in hand,w e see what to do with `this.future`: Whenever we invoke a fresh command, we must replace all of the edits in the `future` with versions prepended with the command we're invoking, thus adjusting them to maintain the same semantic meaning:
+With this in hand, we see what to do with `this.future`: Whenever we invoke a fresh command, we must replace all of the edits in the `future` with versions prepended with the command we're invoking, thus adjusting them to maintain the same semantic meaning:
 
 {% highlight javascript %}
 class Buffer {
@@ -497,7 +497,19 @@ buffer.redo();
 
 Now we get the correct result!
 
+### the bigger picture
+
 ![](/assets/images/command/034.png)
+
+Once upon a time, "undo" was a magical feature for single users. It transformed the software experience for users, because they could act without fear of making irreversible catastrophic mistakes. There was a natural progression to undo and redo stacks. But it was rare that applications went further.
+
+Only the most esoteric would surface the undo and redo stacks, permitting execution of arbitrary commands from the redo stack, or maintained the redo stack after performing new edits (as we've implemented here). This is a neat feature, but challenging to design into an application in teh "real world." It's challenging to set user expectations about what the redo command will do.[^hand-wave]
+
+[^hand-wave]: Another problem is that we have made a massive number of hand waves. We only correctly handle edits that do not overlap. We'll talk about this a little later.
+
+
+
+
 ![](/assets/images/command/035.png)
 ![](/assets/images/command/036.png)
 ![](/assets/images/command/037.png)
