@@ -8,8 +8,12 @@ This talk was given at [NDC London](http://ndc-london.com) on January 14, 2016. 
 
 ![](/assets/images/command/001.png)
 
+> In object-oriented programming, the [command pattern](https://en.wikipedia.org/wiki/Command_pattern) is a behavioral design pattern in which an object is used to encapsulate all information needed to perform an action or trigger an event at a later time.
 
 ![](/assets/images/command/002.png)
+
+The command patterns was popularized in the book [Design Patterns: Elements of Reusable Object-Oriented Software], published in 1994. It's 2016. Why do we care?
+
 ![](/assets/images/command/003.png)
 ![](/assets/images/command/004.png)
 ![](/assets/images/command/005.png)
