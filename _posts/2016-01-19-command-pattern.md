@@ -512,7 +512,9 @@ But not all implementations of commands have a direct representation in the user
 This is a very powerful concept: Typically, we are slaves to mutable state. It moves forward inexorably. Taming it is a struggle. But commands offer a hint that we may have a way forward.
 
 
-![](/assets/images/command/035.png)
+<iframe width="4620" height="425" src="https://www.youtube.com/embed/D4deW5Okmr4" frameborder="0" allowfullscreen></iframe>
+
+
 ![](/assets/images/command/036.png)
 ![](/assets/images/command/037.png)
 ![](/assets/images/command/038.png)
