@@ -519,7 +519,7 @@ This is a very powerful concept: Typically, we are slaves to mutable state. It m
 
 ![](/assets/images/command/037.png)
 
-[Alice] and [Bob] are writing a screenplay.
+[Alice] and [Bob] are writing a screenplay. Naturally, their editors use our buffers and edits:
 
 [Alice]: https://en.wikipedia.org/wiki/Alice_B._Toklas
 [Bob]: https://en.wikipedia.org/wiki/Bob_Fosse
