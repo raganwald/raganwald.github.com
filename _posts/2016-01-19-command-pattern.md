@@ -794,12 +794,51 @@ carol.appendAll(bob);
 It works!
 
 ![](/assets/images/command/042.png)
+
+For some definition of "works." The algorithm we just implemented is called [Operational Transformation](https://en.wikipedia.org/wiki/Operational_transformation), and John Gentle's quote above is pertinent.
+
+We've completely omitted the problem of overlapping edits. We're working with a remarkably simple data model, a string. Even so, what if Alice, Bob, and Carol each make edits that don't conflict with each other when compared individually: Can we guarantee that we can apply them in any order and not end up with a conflict?
+
+And if we imagine trying to use these techniques to maintain consistency while multiple users edit a complex data structure with internal references, things get complicated. For example, what if we have users, each of whom have multiple addresses, and one person deletes an address that another person is editing. What happens then? Our algorithm skipped over undos. Are undo queues local? Or can you undo an edit another user makes?
+
+OT relies on making a very careful analysis of the different kinds of edits that can be made, and determining exactly how to transform them when prepended by any other edit. Even then, it is hairy.
+
 ![](/assets/images/command/043.png)
+
+Recognizing this, people have come up with other mechanisms for distributing edits. Mapping commands 1-1 with user actions is necessary for undo. But it is hard to infer user intentions from their actions:  What if instead of selecting a word and replacing it with another, Alice backspaces five times and then types a word. Is that six edits? Two edits? Or one?
+
+And it may not be necessary for us to infer actions to synchronize documents. We can, for example, regularly take a diff of the document and send that off to be synchronized. That's the [Differential Synchronization](http://neil.fraser.name/writing/sync/) algorithm, and it's how Google Docs work:
+
 ![](/assets/images/command/044.png)
+
+At it's heart, though, we're still dealing with the idea that we don't just treat physical entities--nouns--as our software entities. We also model changes as first-class entities that can be stored, queried, and edited.
+
 ![](/assets/images/command/045.png)
+
+Working with distributed changes is now a very, *very* big problem space. Software is no longer living on one device. We chat, we have distributed sessions, we demand eventual consistency from our data.
+
+Everything we do in these areas requires treating changes as first-class entities.
+
 ![](/assets/images/command/046.png)
+
+*"There are only two hard problems in Computer Science: Cache invalidation, and naming things."--Phil Karleton
+
+What if we take the names of our Buffer class:
+
 ![](/assets/images/command/047.png)
+
+And changed them:
+
 ![](/assets/images/command/048.png)
+
+Does this look familiar? We've discussed reordering time for an individual user, and we've discussed synchronizing changes across distributed users. But we now write software that puts control of cause and effect in the hands of distributed users as well.
+
+Being able to fork repositories, cherry-pick changes to apply, and merge (or rebase) changes is another aspect of the same concept: Changes as first-class entities. What new user models can we develop if we take that kind of thinking to other kinds of software?
+
+Will there one day be a version of PowerPoint that allows someone to submit a pull request to a presentation?[^DeckSet]
+
+[^DeckSet]: In fact, this presentation was written in Markdown and presented using [DeckSet](http://www.decksetapp.com), precisely because this affords using git to manipulate its history.
+
 ![](/assets/images/command/049.png)
 ![](/assets/images/command/050.png)
 ![](/assets/images/command/051.png)
