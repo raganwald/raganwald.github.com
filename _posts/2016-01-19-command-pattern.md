@@ -122,7 +122,9 @@ while (jobQueue.length > 0) {
 
 Since we're taking an OO approach, we've created an `Edit` class that represents invocations. Each instance is an invocation, and thus we can create new invocations with `new Edit(...)` and actually perform the invocation with `.doIt()`.
 
-In this example, we've create a job queue, deferring a number of invocations until we pop them off the queue and perfom them.
+In this example, we've create a job queue, deferring a number of invocations until we pop them off the queue and perfom them. Note that "invoking" methods on a buffer no longer does anything: Instead, they return invcations we manipulate explicitly.[^promises]
+
+[^promises]: This is vaguely related to working with promises in JavaScript, although we won't explore that as this is decidedly **not** a talk about JavaScript, it's a talk *in* JavaScript.
 
 This is the canonical way to "do commands" in OOP: Make them instances of a class and perform them with a method. There are other ways to implement the command pattern, and it acn be implemented in FP as well, but for our purposes this is enough to explore its applications.
 
@@ -138,6 +140,7 @@ class Edit {
   netChange () {
     return this.from - this.to + this.replacement.length;
   }
+
 }
 
 let buffer = new Buffer();
@@ -230,3 +233,5 @@ Which presents me with a dilemna: After giving a talk at a conference, what good
 [https://www.flickr.com/photos/sidelong/18620995913](https://www.flickr.com/photos/sidelong/18620995913)
 [https://www.flickr.com/photos/stawarz/3848824508](https://www.flickr.com/photos/stawarz/3848824508)
 [https://www.flickr.com/photos/mwichary/3338901313](https://www.flickr.com/photos/mwichary/3338901313)
+
+### notes
