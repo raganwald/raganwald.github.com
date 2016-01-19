@@ -120,7 +120,37 @@ while (jobQueue.length > 0) {
  //=> The fast brown fox jumped over the lazy canine
 {% endhighlight %}
 
+Since we're taking an OO approach, we've created an `Edit` class that represents invocations. Each instance is an invocation, and thus we can create new invocations with `new Edit(...)` and actually perform the invocation with `.doIt()`.
+
+In this example, we've create a job queue, deferring a number of invocations until we pop them off the queue and perfom them.
+
+This is the canonical way to "do commands" in OOP: Make them instances of a class and perform them with a method. There are other ways to implement the command pattern, and it acn be implemented in FP as well, but for our purposes this is enough to explore its applications.
+
 ![](/assets/images/command/012.png)
+
+We can also query commends. Naturally, we do this by implementing methods that report on some critical characteristic, like a command's scope. For simplicity, we won't implement a `.scope()` method that reports the extent of an edit's election, since JavaScript encourges unencapsulated drect property access.
+
+But we can report on the amount by which an edit lengthens or shortens a buffer:
+
+{% highlight javascript %}
+class Edit {
+
+  netChange () {
+    return this.from - this.to + this.replacement.length;
+  }
+}
+
+let buffer = new Buffer();
+
+buffer.replaceWith(
+    "The quick brown fox jumped over the lazy dog"
+).netChange();
+ //=> 44
+
+buffer.replaceWith("fast", 4, 9).netChange();
+ //=> -1
+{% endhighlight %}
+
 ![](/assets/images/command/013.png)
 ![](/assets/images/command/014.png)
 ![](/assets/images/command/015.png)
