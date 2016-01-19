@@ -28,7 +28,7 @@ In 2016, software is parallel and distributed by default. And the command patter
 
 So let's have a look at the "canonical example" of the command patern, working with mutable data. Here's one such example, chosen because it fits on a couple of sldes:
 
-```javascript
+{% highlight javascript %}
 class Buffer {
   constructor (text = '') { this.text = text; }
 
@@ -50,7 +50,7 @@ buffer.replaceWith(
 buffer.replaceWith("fast", 4, 9);
 buffer.replaceWith("canine", 40, 43);
  //=> The fast brown fox jumped over the lazy canine
-```
+{% endhighlight %}
 
 We have  buffer that contains some plain text, and it has a single behaviour, a `replaceWith` method that replaces a selection of the buffer with some new text. Insertions can be managed by replacing a zero-length selection, and deletions can be handled by replacing a selection with the empty string.
 
