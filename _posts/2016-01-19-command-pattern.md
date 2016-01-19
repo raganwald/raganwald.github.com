@@ -54,8 +54,6 @@ buffer.replaceWith("canine", 40, 43);
 
 We have  buffer that contains some plain text, and it has a single behaviour, a `replaceWith` method that replaces a selection of the buffer with some new text. Insertions can be managed by replacing a zero-length selection, and deletions can be handled by replacing a selection with the empty string.
 
-![](/assets/images/command/004.png)
-![](/assets/images/command/005.png)
 ![](/assets/images/command/006.png)
 ![](/assets/images/command/007.png)
 ![](/assets/images/command/008.png)
