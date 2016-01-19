@@ -12,6 +12,8 @@ This talk was given at [NDC London](http://ndc-london.com) on January 14, 2016. 
 
 In this talk, we'll review what the command pattern is, then look at some interesting applications. We'll see why what matters about the command pattern is the underlying idea that behaviour can be treated as a first-class entity in its own right.
 
+# Part I: The Basics
+
 ![](/assets/images/command/002.png)
 
 The command patterns was popularized in the 1994 book [Design Patterns: Elements of Reusable Object-Oriented Software][GoF]. But it's 2016. Why do we care? Why is it worth another look?
@@ -515,7 +517,7 @@ This is a very powerful concept: Typically, we are slaves to mutable state. It m
 
 ![](/assets/images/command/036.png)
 
-### software in a distributed world
+# Part II: Software in a Distributed World
 
 ![](/assets/images/command/037.png)
 
@@ -524,10 +526,94 @@ This is a very powerful concept: Typically, we are slaves to mutable state. It m
 [Alice]: https://en.wikipedia.org/wiki/Alice_B._Toklas
 [Bob]: https://en.wikipedia.org/wiki/Bob_Fosse
 
+{% highlight javascript %}
+let alice = new Buffer(
+  "The quick brown fox jumped over the lazy dog"
+);
+
+let bob = new Buffer(
+  "The quick brown fox jumped over the lazy dog"
+);
+{% endhighlight %}
+
+To keep the code simple, we'll omit some of the moving parts to support undoing edits from our command-oriented `Buffer` class:
+
+{% highlight javascript %}
+class Buffer {
+
+  constructor (text = '') {
+    this.text = text;
+    this.history = [];
+  }
+
+  replaceWith (replacement, from = 0, to = this.length()) {
+    let edit = new Edit(this,
+                   {replacement, from, to}
+                 );
+
+    this.history.push(edit);
+    return edit.doIt();
+  }
+
+}
+
+alice.replaceWith("My", 0, 3);
+  //=> My quick brown fox jumped over the lazy dog
+
+bob.replaceWith("fast", 4, 9);
+  //=> The fast brown fox jumped over the lazy dog
+{% endhighlight %}
+
+Now we want to synchronize the screenplay, so that Alice can see Bob's change, and Bob can see Alice's change. So, naturally, Alice sends Bob her change, and Bob sends Alice his change. We want to apply those changes so that we end up with both Alice and Bob looking at identical buffers.
+
+What we want to do looks like this:
+
 ![](/assets/images/command/038.png)
+
+Alice and Bob each perform a different edit, causing their buffers to diverge. We want to apply each other's edits in such a way that they converge back to a consistent view of the buffer.
+
+We can try that:
+
+{% highlight javascript %}
+class Buffer {
+
+  append (theirEdit) {
+    this.history.forEach( (myEdit) => {
+      theirEdit = theirEdit.prependedWith(myEdit);
+    });
+    return new Edit(this, theirEdit).doIt();
+  }
+
+}
+
+class Buffer {
+
+  appendAll(otherBuffer) {
+    otherBuffer.history.forEach(
+      (theirEdit) => this.append(theirEdit)
+    );
+    return this;
+  }
+
+}
+
+alice.appendAll(bob);
+  //=> My fast brown fox jumped over the lazy dog
+
+bob.appendAll(alice);
+  //=> My fast brown fox jumped over the lazy dog
+{% endhighlight %}
+
 ![](/assets/images/command/039.png)
+
+Unfortunately, there's a bug.
+
 ![](/assets/images/command/040.png)
+
+A **big** bug!
+
 ![](/assets/images/command/041.png)
+
 ![](/assets/images/command/042.png)
 ![](/assets/images/command/043.png)
 ![](/assets/images/command/044.png)
