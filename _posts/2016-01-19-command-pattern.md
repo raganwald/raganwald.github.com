@@ -748,9 +748,50 @@ class Edit {
 
 With all these changes in place, Alice and Bob can exchange edits at will.[^except] Let's try it!
 
+### alice, bob, and carol
+
 [^except]: Furiously hand-waving over edits that overlap, of course. Not to mention pesky protocol issues like unreliable communication channels.
 
 ![](/assets/images/command/041.png)
+
+[Alice], [Bob] and [Carol] are writing a screenplay.
+
+[Carol]: https://en.wikipedia.org/wiki/Carroll_O%27Connor
+
+{% highlight javascript %}
+let alice = new Buffer(
+  "The quick brown fox jumped over the lazy dog"
+);
+
+let bob = alice.share();
+  //=> The quick brown fox jumped over the lazy dog
+
+alice.replaceWith("My", 0, 3);
+  //=> My quick brown fox jumped over the lazy dog
+
+let carol = alice.share();
+  //=> My quick brown fox jumped over the lazy dog
+
+bob.replaceWith("fast", 4, 9);
+  //=> The fast brown fox jumped over the lazy dog
+
+alice.appendAll(bob);
+  //=> My fast brown fox jumped over the lazy dog
+
+bob.appendAll(alice);
+  //=> My fast brown fox jumped over the lazy dog
+
+alice.replaceWith("spotted", 8, 13);
+  //=> My fast spotted fox jumped over the lazy dog
+
+bob.appendAll(alice);
+  //=> My fast spotted fox jumped over the lazy dog
+
+carol.appendAll(bob);
+  //=> My fast spotted fox jumped over the lazy dog
+{% endhighlight %}
+
+It works!
 
 ![](/assets/images/command/042.png)
 ![](/assets/images/command/043.png)
