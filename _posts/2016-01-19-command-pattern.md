@@ -509,14 +509,21 @@ Only the most esoteric would surface the undo and redo stacks, permitting execut
 
 But not all implementations of commands have a direct representation in the user experience. And if we put aside the problem of user experience, we have a very string takeaway from dealing with maintaining the `future` while inserting new edits into the history. While it's just one limited example, it hints at being able to arbitrarily manipulate history, inserting, removing, or reordering edits as we desire.
 
-This is a very powerful concept: Typically, we are slaves to mutable state. It moves forward inexorably. Taming it is a struggle. But commands offer a hint that we may have a way forward.
-
-
 <iframe width="620" height="425" src="https://www.youtube.com/embed/D4deW5Okmr4" frameborder="0" allowfullscreen></iframe>
 
+This is a very powerful concept: Typically, we are slaves to mutable state. It moves forward inexorably. Taming it is a struggle. But commands offer a hint that we may have a way forward.
 
 ![](/assets/images/command/036.png)
+
+### software in a distributed world
+
 ![](/assets/images/command/037.png)
+
+[Alice] and [Bob] are writing a screenplay.
+
+[Alice]: https://en.wikipedia.org/wiki/Alice_B._Toklas
+[Bob]: https://en.wikipedia.org/wiki/Bob_Fosse
+
 ![](/assets/images/command/038.png)
 ![](/assets/images/command/039.png)
 ![](/assets/images/command/040.png)
