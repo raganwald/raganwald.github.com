@@ -282,7 +282,7 @@ Like the slide says, this is the basic idea you'll find in the GoF book as well 
 
 Our example hits all three of the characteristics of invocations as first-class entities. But that isn't really enough to "provoke our intellectual curiosity." So let's consider a more interesting direction.
 
-### part ii: playing with time
+### coupling through time
 
 We begin by asking a question.
 
@@ -373,12 +373,54 @@ Then after undoing it and invoking `.replaceWith('My', 0, 3)`, we have created a
 
 ![](/assets/images/command/029.png)
 
+It turns out that commands are first-class entities, but there is a spooky relationship between them and the models they manipulate, thanks to cause-and-effect. They aren't 100% independent entities that can be invoked in any order, any number of times.
+
 ![](/assets/images/command/030.png)
 
-The problem is that commands mutating a model have a semantic dependency on all of the commands that have mutated the model in the past. If you change the order of commands, they may no longer be semantically valid. In some cases, they could even become logically invalid.
+Commands mutating a model have a semantic dependency on all of the commands that have mutated the model in the past. If you change the order of commands, they may no longer be semantically valid. In some cases, they could even become logically invalid.
 
 ![](/assets/images/command/031.png)
+
+Semantically, we can think that if we alter the history of edits before invoking a command, we are altering the meaning of the command. Replacing `The` with `My` altered the meaning of `.replaceWith('fast', 4, 9)`.
+
+### adjusting for changes in history
+
 ![](/assets/images/command/032.png)
+
+Let's go about fixing this specific problem, that of commands altering the position of other commands.[^specific]
+
+[^specific]: There are other problems, like overlapping commands, but this is enough to move along and illustrate the kind of thinking we need to do with first-class invocations.
+
+{% highlight javascript %}
+let buffer = new Buffer(
+  "The quick brown fox jumped over the lazy dog"
+);
+
+let fast = new Edit(
+    buffer,
+    { replacement: "fast", from: 4, to: 9 }
+  );
+
+let my = new Edit(
+    buffer,
+    { replacement: "My", from: 0, to: 3 }
+  );
+
+class Edit {
+
+  isBefore (other) {
+    return other.from >= this.to;
+  }
+
+}
+
+fast.isBefore(my);
+  //=> false
+
+my.isBefore(fast);
+  //=> true
+{% endhighlight %}
+
 ![](/assets/images/command/033.png)
 ![](/assets/images/command/034.png)
 ![](/assets/images/command/035.png)
