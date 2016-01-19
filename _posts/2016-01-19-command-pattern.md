@@ -1,4 +1,3 @@
----
 title: "First-Class Commands: An unexpectedly fertile design pattern"
 layout: default
 tags: [allonge, noindex]
