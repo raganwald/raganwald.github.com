@@ -1,6 +1,8 @@
+---
 title: "First-Class Commands: An unexpectedly fertile design pattern"
 layout: default
 tags: [allonge, noindex]
+---
 
 ![](/assets/images/command/001.png)
 ![](/assets/images/command/002.png)
