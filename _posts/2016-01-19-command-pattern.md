@@ -275,11 +275,72 @@ buffer.redo()
 And agin, its reverse goes onto the history so we can toggle back and forth between undoing and redoing.
 
 ![](/assets/images/command/017.png)
+
+Like the slide says, this is the basic idea you'll find in the GoF book as well as in 1980s tomes on OO programming. I recall an Object Pascal book using this pattern to implement undo within the [MacApp](https://en.wikipedia.org/wiki/MacApp) framework in the late 1980s.
+
 ![](/assets/images/command/018.png)
+
+Our example hits all three of the characteristics of invocations as first-class entities. But that isn't really enough to "provoke our intellectual curiosity." So let's consider a more interesting direction.
+
 ![](/assets/images/command/019.png)
+
+Recall this code for replacing text in a buffer:
+
+{% highlight javascript %}
+class Buffer {
+
+  replaceWith (replacement, from = 0, to = this.length()) {
+    let doer = new Edit(this, {replacement, from, to}),
+        undoer = doer.reversed();
+
+    this.history.push(undoer);
+    this.future = [];
+    return doer.doIt();
+  }
+
+}
+{% endhighlight %}
+
 ![](/assets/images/command/020.png)
+
+Let's try not throwing it away:
+
+{% highlight javascript %}
+class Buffer {
+
+  replaceWith (replacement, from = 0, to = this.length()) {
+    let doer = new Edit(this, {replacement, from, to}),
+        undoer = doer.reversed();
+
+    this.history.push(undoer);
+    // this.future = [];
+    return doer.doIt();
+  }
+
+}
+
+let buffer = new Buffer(
+  "The quick brown fox jumped over the lazy dog"
+);
+
+buffer.replaceWith("fast", 4, 9);
+  //=> The fast brown fox jumped over the lazy dog
+
+buffer.undo();
+  //=> The quick brown fox jumped over the lazy dog
+
+buffer.replaceWith("My", 0, 3);
+  //=> My quick brown fox jumped over the lazy dog
+{% endhighlight %}
+
+We've performed a replacement, then we've undone the replacement, restoring the buffer to its original state. Then we performed a different replacement.
+
 ![](/assets/images/command/021.png)
+
+Unfortunately, the result is not what we expect semantically:
+
 ![](/assets/images/command/022.png)
+
 ![](/assets/images/command/023.png)
 ![](/assets/images/command/024.png)
 ![](/assets/images/command/025.png)
