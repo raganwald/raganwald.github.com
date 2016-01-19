@@ -8,7 +8,7 @@ This talk was given at [NDC London](http://ndc-london.com) on January 14, 2016. 
 
 ![](/assets/images/command/001.png)
 
-*"In object-oriented programming, the [command pattern](https://en.wikipedia.org/wiki/Command_pattern) is a behavioral design pattern in which an object is used to encapsulate all information needed to perform an action or trigger an event at a later time."*
+*"In object-oriented programming, the [command pattern](https://en.wikipedia.org/wiki/Command_pattern) is a behavioural design pattern in which an object is used to encapsulate all information needed to perform an action or trigger an event at a later time."*
 
 In this talk, we'll review what the command pattern is, then look at some interesting applications. We'll see why what matters about the command pattern is the underlying idea that behaviour can be treated as a first-class entity in its own right.
 
@@ -20,13 +20,13 @@ The command patterns was popularized in the 1994 book [Design Patterns: Elements
 
 When the command pattern was first popularized, most people wrote desktop software and client-server software. Distributed software was relatively exotic. So naturally, the examples given of the command pattern in use were often those applicable to single users. Like "undo," or writing macros, or perhaps displaying a progress bar.
 
-But as we'll see, the underlying idea of the command pattern becomes partiularly interesting when we consider parallel and distributed software, whether we are thinking of job queues, thread pools, or algorithms that provide eventual consistency across a distributed system.
+But as we'll see, the underlying idea of the command pattern becomes particularly interesting when we consider parallel and distributed software, whether we are thinking of job queues, thread pools, or algorithms that provide eventual consistency across a distributed system.
 
 In 2016, software is parallel and distributed by default. And the command pattern deserves another look, with fresh eyes.
 
 ![](/assets/images/command/003.png)
 
-So let's have a look at the "canonical example" of the command patern, working with mutable data. Here's one such example, chosen because it fits on a couple of sldes:
+So let's have a look at the "canonical example" of the command pattern, working with mutable data. Here's one such example, chosen because it fits on a couple of sides:
 
 {% highlight javascript %}
 class Buffer {
@@ -62,7 +62,7 @@ There is a very explicit idea that objects model entities in the real world, and
 
 ![](/assets/images/command/007.png)
 
-Many languages also permit us to treat methods as first-class entities. In Python, we can easily extract a bound method from an object. In Ruby, we can maniulate both bound and unbound methods. In JavaScript, methods are just functions.
+Many languages also permit us to treat methods as first-class entities. In Python, we can easily extract a bound method from an object. In Ruby, we can manipulate both bound and unbound methods. In JavaScript, methods are just functions.
 
 Typically, treating methods as first-class entities is rarer than treating "nouns" as first-class entities, but it is possible. This forms the basis of meta-programming techniques like writing method decorators.
 
@@ -122,15 +122,15 @@ while (jobQueue.length > 0) {
 
 Since we're taking an OO approach, we've created an `Edit` class that represents invocations. Each instance is an invocation, and thus we can create new invocations with `new Edit(...)` and actually perform the invocation with `.doIt()`.
 
-In this example, we've create a job queue, deferring a number of invocations until we pop them off the queue and perfom them. Note that "invoking" methods on a buffer no longer does anything: Instead, they return invcations we manipulate explicitly.[^promises]
+In this example, we've create a job queue, deferring a number of invocations until we pop them off the queue and perform them. Note that "invoking" methods on a buffer no longer does anything: Instead, they return invocations we manipulate explicitly.[^promises]
 
 [^promises]: This is vaguely related to working with promises in JavaScript, although we won't explore that as this is decidedly **not** a talk about JavaScript, it's a talk *in* JavaScript.
 
-This is the canonical way to "do commands" in OOP: Make them instances of a class and perform them with a method. There are other ways to implement the command pattern, and it acn be implemented in FP as well, but for our purposes this is enough to explore its applications.
+This is the canonical way to "do commands" in OOP: Make them instances of a class and perform them with a method. There are other ways to implement the command pattern, and it can be implemented in FP as well, but for our purposes this is enough to explore its applications.
 
 ![](/assets/images/command/012.png)
 
-We can also query commends. Naturally, we do this by implementing methods that report on some critical characteristic, like a command's scope. For simplicity, we won't implement a `.scope()` method that reports the extent of an edit's election, since JavaScript encourges unencapsulated drect property access.
+We can also query commends. Naturally, we do this by implementing methods that report on some critical characteristic, like a command's scope. For simplicity, we won't implement a `.scope()` method that reports the extent of an edit's election, since JavaScript encourages unencapsulated direct property access.
 
 But we can report on the amount by which an edit lengthens or shortens a buffer:
 
@@ -199,11 +199,11 @@ buffer.replaceWith("fast", 4, 9).netChange();
 
 As is often the case, the slides by themselves can only hint at the substance of the presentation: Typically, people read much faster than people speak, so if the slides convey the ideas on their own, the audience will quickly become bored with the speaker's delivery.
 
-Slides are also a poor way to convey detailed information. It is difficult to put a lot of code on a slide, for example, and if you do put a lot of any kind of information on a slide, diffeent people in the audience will process it at different rates, so somebody is bound to grasp it quickly and be bored, while others will still be trying to work it out when the speaker moves along.
+Slides are also a poor way to convey detailed information. It is difficult to put a lot of code on a slide, for example, and if you do put a lot of any kind of information on a slide, different people in the audience will process it at different rates, so somebody is bound to grasp it quickly and be bored, while others will still be trying to work it out when the speaker moves along.
 
-For this reason, I prefer to compose talks in a completely different style than blog posts. Blog posts can have longer sections of code, and people can move along at their own pace. Blog posts can convey technical ideas much more fefficiently than presentations, so my goal with a presentation is simply to get people interested enough in the subject to seek out blog posts, books, or screen casts for further study.
+For this reason, I prefer to compose talks in a completely different style than blog posts. Blog posts can have longer sections of code, and people can move along at their own pace. Blog posts can convey technical ideas much more efficiently than presentations, so my goal with a presentation is simply to get people interested enough in the subject to seek out blog posts, books, or screen casts for further study.
 
-Which presents me with a dilemna: After giving a talk at a conference, what good are the slides? Even if a video is published online, what good is that compared to rewriting the presentation as a blog post?
+Which presents me with a dilemma: After giving a talk at a conference, what good are the slides? Even if a video is published online, what good is that compared to rewriting the presentation as a blog post?
 
 ### image credits
 
