@@ -73,8 +73,53 @@ But the command pattern concerns itself with *invocations*. An invocation is a s
 Classes are to instances as methods are to invocations.
 
 ![](/assets/images/command/009.png)
+
+If an invocation was a first-class entity, we could store it in a variable or data structure. Let's try it:
+
 ![](/assets/images/command/010.png)
-![](/assets/images/command/011.png)
+
+{% highlight javascript %}
+class Edit {
+  constructor (buffer, {replacement, from, to}) {
+    this.buffer = buffer;
+    Object.assign(this, {replacement, from, to});
+  }
+
+  doIt () {
+    this.buffer.text =
+      this.buffer.text.slice(0, this.from) +
+      this.replacement +
+      this.buffer.text.slice(this.to);
+    return this.buffer;
+  }
+}
+
+class Buffer {
+  constructor (text = '') { this.text = text; }
+
+  replaceWith (replacement, from = 0, to = this.text.length) {
+    return new Edit(this, {replacement, from, to});
+  }
+
+  toString () { return this.text; }
+}
+
+let buffer = new Buffer(), jobQueue = [];
+
+jobQueue.push(
+  buffer.replaceWith(
+    "The quick brown fox jumped over the lazy dog"
+  )
+);
+jobQueue.push( buffer.replaceWith("fast", 4, 9) );
+jobQueue.push( buffer.replaceWith("canine", 40, 43) );
+
+while (jobQueue.length > 0) {
+  jobQueue.shift().doIt();
+}
+ //=> The fast brown fox jumped over the lazy canine
+{% endhighlight %}
+
 ![](/assets/images/command/012.png)
 ![](/assets/images/command/013.png)
 ![](/assets/images/command/014.png)
