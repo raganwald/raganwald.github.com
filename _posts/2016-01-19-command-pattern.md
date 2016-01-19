@@ -154,8 +154,69 @@ buffer.replaceWith("fast", 4, 9).netChange();
  //=> -1
 {% endhighlight %}
 
+This can be useful.
+
 ![](/assets/images/command/013.png)
+
+First-class entities can also be *transformed*. And here we come to the most interesting application of commands. Here's a `.reversed()` method that returns the inverse of any edit:
+
+{% highlight javascript %}
+class Edit {
+
+  reversed () {
+    let replacement = this.buffer.text.slice(this.from, this.to),
+        from = this.from,
+        to = from + this.replacement.length;
+    return new Edit(buffer, {replacement, from, to});
+  }
+}
+
+let buffer = new Buffer(
+  "The quick brown fox jumped over the lazy dog"
+);
+
+let doer = buffer.replaceWith("fast", 4, 9),
+    undoer = doer.reversed();
+
+doer.doIt();
+  //=> The fast brown fox jumped over the lazy dog
+
+undoer.doIt();
+  //=> The quick brown fox jumped over the lazy dog
+{% endhighlight %}
+
+Now we can undo any edit.
+
 ![](/assets/images/command/014.png)
+
+Let's put our storing and transforming together. Instead of returning a command from the `replaceWith` method, we'll create a `doer` command, and push its reverse onto a `history` stack. We'll then invoke `doer.doIt()` to actually perform the replacement on the buffer:
+
+{% highlight javascript %}
+class Buffer {
+
+  constructor (text = '') {
+    this.text = text;
+    this.history = [];
+    this.future = [];
+  }
+
+}
+
+class Buffer {
+
+  replaceWith (replacement, from = 0, to = this.length()) {
+    let doer = new Edit(this, {replacement, from, to}),
+        undoer = doer.reversed();
+
+    this.history.push(undoer);
+    this.future = [];
+    return doer.doIt();
+  }
+
+}
+{% endhighlight %}
+
+
 ![](/assets/images/command/015.png)
 ![](/assets/images/command/016.png)
 ![](/assets/images/command/017.png)
