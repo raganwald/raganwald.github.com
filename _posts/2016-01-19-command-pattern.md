@@ -596,7 +596,11 @@ class Buffer {
   }
 
 }
+{% endhighlight %}
 
+Now we can write `alice.appendAll(bob)` to apply all of Bob's edits to Alice's copy of the buffer. And we can write `bob.appendAll(alice)` to apply all of Alice's edits to Bob's copy of the buffer. Problem solved?
+
+{% highlight javascript %}
 alice.appendAll(bob);
   //=> My fast brown fox jumped over the lazy dog
 
@@ -604,13 +608,147 @@ bob.appendAll(alice);
   //=> My fast brown fox jumped over the lazy dog
 {% endhighlight %}
 
+Nope.
+
 ![](/assets/images/command/039.png)
 
 Unfortunately, there's a bug.
 
 ![](/assets/images/command/040.png)
 
-A **big** bug!
+A **big** bug! As we can infer from our experience "fixing" the problem of redoing after putting edits into the history, naïvely appending commands onto a hisstory doesn't work because those commands are dependent upon a completely different history.
+
+To fix that, we have to borrow some of what we learned about prepending. First, let's upgrade our edits and give them a `guid` we can use to identify them, as well as a set of the guids of the edits that came before them:
+
+{% highlight javascript %}
+let GUID = () => {
+    let _p8 = (s) => {
+        let p = (Math.random().toString(16)+"000000000").substr(2,8);
+        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
+    }
+    return _p8() + _p8(true) + _p8(true) + _p8();
+}
+
+class Edit {
+
+  constructor (buffer,
+    { guid = GUID(), befores = new Set(),
+      replacement, from, to }) {
+    this.buffer = buffer;
+    befores = new Set(befores);
+
+    Object.assign(this,
+                  {guid, replacement, from, to, befores});
+  }
+
+}
+{% endhighlight %}
+
+Our buffers will also track the guids of the edits in their history:
+
+{% highlight javascript %}
+class Buffer {
+
+  constructor (text = '', history = []) {
+    let befores = new Set(history.map(e => e.guid));
+    history = history.slice(0);
+    Object.assign(this, {text, history, befores});
+  }
+
+  share () {
+    return new Buffer(this.text, this.history);
+  }
+
+  has (edit) { return this.befores.has(edit.guid); }
+
+}
+{% endhighlight %}
+
+We'll refactor `replaceWith` to extract a `.perform(edit)`, it will simplify a lot of what's coming:
+
+{% highlight javascript %}
+class Buffer {
+
+  perform (edit) {
+    if (!this.has(edit)) {
+      this.history.push(edit);
+      this.befores.add(edit.guid);
+      return edit.doIt();
+    }
+  }
+
+  replaceWith (replacement,
+               from = 0, to = this.length()) {
+    let befores = this.befores,
+    let edit = new Edit(this,
+                   {replacement, from, to, befores}
+                 );
+    return this.perform(edit);
+  }
+
+}
+{% endhighlight %}
+
+Now our `append` method can be fixed to prepend every edit with everything in its history, much as we did with fixing `redo`:
+
+{% highlight javascript %}
+class Buffer {
+
+  append (theirEdit) {
+    this.history.forEach( (myEdit) => {
+      theirEdit = theirEdit.prependedWith(myEdit);
+    });
+    return this.perform(new Edit(this, theirEdit));
+  }
+
+}
+{% endhighlight %}
+
+Here's an updated `appendAll` that only appends edits that aren't already in the history. What? We didn't mention that was another bug in the code? Silly us.[^also]
+
+[^also]: Most people wil take a strong exception to using `this.has(theirEdit) || this.append(theirEdit)` as a control-flow construct. Mind you, most people don't have to make a method fit on a slide. Be more explicit in real code.
+
+{% highlight javascript %}
+class Buffer {
+
+  appendAll(otherBuffer) {
+    otherBuffer.history.forEach(
+      (theirEdit) =>
+        this.has(theirEdit) || this.append(theirEdit)
+    );
+    return this;
+  }
+
+}
+{% endhighlight %}
+
+Now we're finally ready to update the `prependedWith` method to check whether an edit is "before" another edit, is the same as another edit, or is already in the edit's history:
+
+{% highlight javascript %}
+class Edit {
+
+  prependedWith (other) {
+    if (this.isBefore(other) ||
+        this.befores.has(other.guid) ||
+        this.guid === other.guid) return this;
+
+    let change = other.netChange(),
+        {guid, replacement, from, to, befores} = this;
+
+    from = from + change;
+    to = to + change;
+    befores = new Set(befores);
+    befores.add(other.guid);
+
+    return new Edit(this.buffer, {guid, replacement, from, to, befores});
+  }
+
+}
+{% endhighlight %}
+
+With all these changes in place, Alice and Bob can exchange edits at will.[^except] Let's try it!
+
+[^except]: Furiously hand-waving over edits that overlap, of course. Not to mention pesky protocol issues like unreliable communication channels.
 
 ![](/assets/images/command/041.png)
 
