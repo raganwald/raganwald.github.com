@@ -55,8 +55,23 @@ buffer.replaceWith("canine", 40, 43);
 We have  buffer that contains some plain text, and it has a single behaviour, a `replaceWith` method that replaces a selection of the buffer with some new text. Insertions can be managed by replacing a zero-length selection, and deletions can be handled by replacing a selection with the empty string.
 
 ![](/assets/images/command/006.png)
+
+Ten years ago, Steve Yegge described OOP as a [Kingdom of Nouns](http://steve-yegge.blogspot.ca/2006/03/execution-in-kingdom-of-nouns.html): Everything is an object and objects own their behaviours.
+
+There is a very explicit idea that objects model entities in the real world, and methods model changes to those entities. Objects are "first-class:" They can be stored in variables, we can query them for their properties, and we can transform them into different states or different entities altogether.
+
 ![](/assets/images/command/007.png)
+
+Many languages also permit us to treat methods as first-class entities. In Python, we can easily extract a bound method from an object. In Ruby, we can maniulate both bound and unbound methods. In JavaScript, methods are just functions.
+
+Typically, treating methods as first-class entities is rarer than treating "nouns" as first-class entities, but it is possible. This forms the basis of meta-programming techniques like writing method decorators.
+
+But the command pattern concerns itself with *invocations*. An invocation is a specific method, invoked on a specific receiver, with specific parameters:
+
 ![](/assets/images/command/008.png)
+
+Classes are to instances as methods are to invocations.
+
 ![](/assets/images/command/009.png)
 ![](/assets/images/command/010.png)
 ![](/assets/images/command/011.png)
