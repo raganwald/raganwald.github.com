@@ -4,11 +4,13 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-This talk was given at [NDC London](http://ndc-london.com) on January 14, 2016. The complete slide deck is [here](https://speakerdeck.com/raganwald/first-class-commands-an-unexpectedly-fertile-design-pattern). The more important slides are shown here, along with some annotations explaining the ideas being presented. This is not a transcript.
+This talk was given at [NDC London](http://ndc-london.com) on January 14, 2016. The complete slide deck is [here](https://speakerdeck.com/raganwald/first-class-commands-an-unexpectedly-fertile-design-pattern). The more important slides are shown here, along with some annotations explaining the ideas being presented. This is not a transcript, nor is it a blog post. Some slides are elided, especially those showing code. It will be most valuable to those who attended the talk or watch it when it is released on video.
 
 ![](/assets/images/command/001.png)
 
 *"In object-oriented programming, the [command pattern](https://en.wikipedia.org/wiki/Command_pattern) is a behavioral design pattern in which an object is used to encapsulate all information needed to perform an action or trigger an event at a later time."*
+
+In this talk, we'll review what the command pattern is, then look at some interesting applications. We'll see why what matters about the command pattern is the underlying idea that behaviour can be treated as a first-class entity in its own right.
 
 ![](/assets/images/command/002.png)
 
@@ -23,6 +25,35 @@ But as we'll see, the underlying idea of the command pattern becomes partiularly
 In 2016, software is parallel and distributed by default. And the command pattern deserves another look, with fresh eyes.
 
 ![](/assets/images/command/003.png)
+
+So let's have a look at the "canonical example" of the command patern, working with mutable data. Here's one such example, chosen because it fits on a couple of sldes:
+
+```javascript
+class Buffer {
+  constructor (text = '') { this.text = text; }
+
+  replaceWith (replacement, from = 0, to = this.text.length) {
+    this.text = this.text.slice(0, from) +
+                  replacement +
+                  this.text.slice(to);
+    return this;
+  }
+
+  toString () { return this.text; }
+}
+
+let buffer = new Buffer();
+
+buffer.replaceWith(
+  "The quick brown fox jumped over the lazy dog"
+);
+buffer.replaceWith("fast", 4, 9);
+buffer.replaceWith("canine", 40, 43);
+ //=> The fast brown fox jumped over the lazy canine
+```
+
+We have  buffer that contains some plain text, and it has a single behaviour, a `replaceWith` method that replaces a selection of the buffer with some new text. Insertions can be managed by replacing a zero-length selection, and deletions can be handled by replacing a selection with the empty string.
+
 ![](/assets/images/command/004.png)
 ![](/assets/images/command/005.png)
 ![](/assets/images/command/006.png)
