@@ -4,7 +4,11 @@ layout: default
 tags: [allonge, noindex]
 ---
 
+This talk was given at [NDC London](http://ndc-london.com) on January 14, 2016. The complete slide deck is [here](https://speakerdeck.com/raganwald/first-class-commands-an-unexpectedly-fertile-design-pattern). The more important slides are shown here, along with some annotations explaining the ideas being presented. This is not a transcript.
+
 ![](/assets/images/command/001.png)
+
+
 ![](/assets/images/command/002.png)
 ![](/assets/images/command/003.png)
 ![](/assets/images/command/004.png)
@@ -56,6 +60,16 @@ tags: [allonge, noindex]
 ![](/assets/images/command/050.png)
 ![](/assets/images/command/051.png)
 ![](/assets/images/command/052.png)
+
+### afterword
+
+As is often the case, the slides by themselves can only hint at the substance of the presentation: Typically, people read much faster than people speak, so if the slides convey the ideas on their own, the audience will quickly become bored with the speaker's delivery.
+
+Slides are also a poor way to convey detailed information. It is difficult to put a lot of code on a slide, for example, and if you do put a lot of any kind of information on a slide, diffeent people in the audience will process it at different rates, so somebody is bound to grasp it quickly and be bored, while others will still be trying to work it out when the speaker moves along.
+
+For this reason, I prefer to compose talks in a completely different style than blog posts. Blog posts can have longer sections of code, and people can move along at their own pace. Blog posts can convey technical ideas much more fefficiently than presentations, so my goal with a presentation is simply to get people interested enough in the subject to seek out blog posts, books, or screen casts for further study.
+
+Which presents me with a dilemna: After giving a talk at a conference, what good are the slides? Even if a video is published online, what good is that compared to rewriting the presentation as a blog post?
 
 ### image credits
 
