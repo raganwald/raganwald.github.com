@@ -385,9 +385,7 @@ Semantically, we can think that if we alter the history of edits before invoking
 
 ### adjusting for changes in history
 
-![](/assets/images/command/032.png)
-
-Let's go about fixing this specific problem, that of commands altering the position of other commands.[^specific]
+Let's go about fixing this specific problem, that of commands altering the position of other commands.[^specific] We being with another query, we can ask whether a particular edit is *before* another edit, meaning that A is before B if A affects a selection of text that entirely precedes the selection affected by B.
 
 [^specific]: There are other problems, like overlapping commands, but this is enough to move along and illustrate the kind of thinking we need to do with first-class invocations.
 
@@ -421,7 +419,84 @@ my.isBefore(fast);
   //=> true
 {% endhighlight %}
 
+Equipped with `.isBefore` and `.netChange()`, we can write `.prependedWith` method that takes an edit, and returns a new version of the edit that corrects for any change caused by prepending another edit into its history.
+
+There are two cases we cover: If we write `a.prependedWith(b)`, and `a` is before `b`, then we return `a` since `b` doesn't change its semantic meaning. But if we write `a.prependedWith(b)`, and `b` is before `a`, then we return a copy of `a` that has been adjusted by the amount of `b`'s net change:
+
+{% highlight javascript %}
+class Edit {
+
+  prependedWith (other) {
+    if (this.isBefore(other)) {
+      return this;
+    }
+    else if (other.isBefore(this)) {
+      let change = other.netChange(),
+          {replacement, from, to} = this;
+
+      from = from + change;
+      to = to + change;
+      return new Edit(this.buffer, {replacement, from, to})
+    }
+  }
+
+}
+
+my.prependedWith(fast)
+  //=> buffer.replaceWith("My", 0, 3)
+
+fast.prependedWith(my)
+  //=> buffer.replaceWith("fast", 3, 8)
+
+my.prependedWith(fast)
+  //=> buffer.replaceWith("My", 0, 3)
+
+fast.prependedWith(my)
+  //=> buffer.replaceWith("fast", 3, 8)
+{% endhighlight %}
+
+With this in hand,w e see what to do with `this.future`: Whenever we invoke a fresh command, we must replace all of the edits in the `future` with versions prepended with the command we're invoking, thus adjusting them to maintain the same semantic meaning:
+
+{% highlight javascript %}
+class Buffer {
+
+  replaceWith (replacement, from = 0, to = this.length()) {
+    let doer = new Edit(this, {replacement, from, to}),
+        undoer = doer.reversed();
+
+    this.history.push(undoer);
+    this.future = this.future.map(
+      (edit) => edit.prependedWith(doer)
+    );
+    return doer.doIt();
+  }
+
+}
+{% endhighlight %}
+
+![](/assets/images/command/032.png)
+
+{% highlight javascript %}
+let buffer = new Buffer(
+  "The quick brown fox jumped over the lazy dog"
+);
+
+buffer.replaceWith("fast", 4, 9);
+  //=> The fast brown fox jumped over the lazy dog
+
+buffer.undo();
+  //=> The quick brown fox jumped over the lazy dog
+
+buffer.replaceWith("My", 0, 3);
+  //=> My quick brown fox jumped over the lazy dog
+
+buffer.redo();
+{% endhighlight %}
+
 ![](/assets/images/command/033.png)
+
+Now we get the correct result!
+
 ![](/assets/images/command/034.png)
 ![](/assets/images/command/035.png)
 ![](/assets/images/command/036.png)
