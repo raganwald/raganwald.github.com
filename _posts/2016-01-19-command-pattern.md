@@ -272,7 +272,7 @@ buffer.redo()
   //=> The fast brown fox jumped over the lazy canine
 {% endhighlight %}
 
-And agin, its reverse goes onto the history so we can toggle back and forth between undoing and redoing.
+And again, its reverse goes onto the history so we can toggle back and forth between undoing and redoing.
 
 ![](/assets/images/command/017.png)
 
@@ -281,6 +281,10 @@ Like the slide says, this is the basic idea you'll find in the GoF book as well 
 ![](/assets/images/command/018.png)
 
 Our example hits all three of the characteristics of invocations as first-class entities. But that isn't really enough to "provoke our intellectual curiosity." So let's consider a more interesting direction.
+
+### part ii: playing with time
+
+We begin by asking a question.
 
 ![](/assets/images/command/019.png)
 
@@ -300,6 +304,8 @@ class Buffer {
 
 }
 {% endhighlight %}
+
+Note that when we perform a replacement, we execute `this.future = []`, throwing away any "redoers" we may have accumulated by undoing edits.
 
 ![](/assets/images/command/020.png)
 
@@ -333,7 +339,7 @@ buffer.replaceWith("My", 0, 3);
   //=> My quick brown fox jumped over the lazy dog
 {% endhighlight %}
 
-We've performed a replacement, then we've undone the replacement, restoring the buffer to its original state. Then we performed a different replacement.
+We've performed a replacement, then we've undone the replacement, restoring the buffer to its original state. Then we performed a different replacement. But since our code no longer discards the future, a `redoer` is still in `this.future`.
 
 ![](/assets/images/command/021.png)
 
@@ -341,14 +347,36 @@ Unfortunately, the result is not what we expect semantically:
 
 ![](/assets/images/command/022.png)
 
+What went wrong?
+
 ![](/assets/images/command/023.png)
+
+As the illustration shows, when we first performed `.replaceWith('fast', 4, 9)`, it replaced the characters `q`, `u`, `i`, `c`, and `k`, because those were in the selection between `4` and `9` of the buffer.
+
+Our `redoer` in the `future` performs this same replacement, but now that we've invoked `.replaceWith('My', 0, 3)`, the characters in the selection between `4` and `9` are now `u`, `i`, `c`, `k`, and a blank space.
+
+Invoking `.replaceWith('My', 0, 3)` has moved the part of the buffer we semantically want to replace.
+
 ![](/assets/images/command/024.png)
+
+If we step through the invocations, we can see that when we first invoke `.replaceWith('fast', 4, 9)`, no other edits were invoked before it.
+
 ![](/assets/images/command/025.png)
+
 ![](/assets/images/command/026.png)
+
 ![](/assets/images/command/027.png)
+
 ![](/assets/images/command/028.png)
+
+Then after undoing it and invoking `.replaceWith('My', 0, 3)`, we have created a situation where `.replaceWith('My', 0, 3)` is now *before* `.replaceWith('fast', 4, 9)` in the `future`. If we invoke it, we see this clearly as it moves to the past, but it is now preceded by `.replaceWith('My', 0, 3)`:
+
 ![](/assets/images/command/029.png)
+
 ![](/assets/images/command/030.png)
+
+The problem is that commands mutating a model have a semantic dependency on all of the commands that have mutated the model in the past. If you change the order of commands, they may no longer be semantically valid. In some cases, they could even become logically invalid.
+
 ![](/assets/images/command/031.png)
 ![](/assets/images/command/032.png)
 ![](/assets/images/command/033.png)
