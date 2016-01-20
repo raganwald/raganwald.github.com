@@ -4,7 +4,7 @@ layout: default
 tags: [allonge]
 ---
 
-### foreward
+### foreword
 
 ![](/assets/images/command/001.png)
 
