@@ -26,15 +26,15 @@ The command pattern was popularized by the 1994 book [Design Patterns: Elements 
 
 [GoF]: http://www.amazon.com/gp/product/B000SEIBB8/ref=as_li_tl?tag=raganwald001-20
 
-At that time, most software ran on the desktop or in a client-server environment. Distributed software was relatively exotic. So naturally, the examples given of the command pattern in use were often those applicable to single users. Like "undo," or writing macros, or perhaps displaying a progress bar.
+At that time, most software ran on the desktop or in a client-server environment. Distributed software was relatively exotic. So naturally, the examples given of the command pattern in use were often those applicable to single users. Like "undo," writing macros, or perhaps displaying a progress bar.
 
-But as we'll see, the underlying idea of the command pattern becomes particularly interesting when we consider parallel and distributed software, whether we are thinking of job queues, thread pools, or algorithms that provide eventual consistency across a distributed system.
+Nevertheless, the underlying idea of the command pattern becomes particularly interesting when applied to parallel and distributed software, whether we are thinking of job queues, thread pools, or algorithms that provide eventual consistency across a distributed system.
 
 In 2016, software is parallel and distributed by default. And the command pattern deserves another look, with fresh eyes.
 
 ![](/assets/images/command/003.png)
 
-So let's have a look at the "canonical example" of the command pattern, working with mutable data. Here's one such example, chosen because it fits on a couple of sides:
+The "canonical example" of the command pattern is working with mutable data. Here's one such example, chosen because it fits on a couple of sides:
 
 {% highlight javascript %}
 class Buffer {
