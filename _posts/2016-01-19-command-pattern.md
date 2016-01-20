@@ -8,7 +8,7 @@ tags: [allonge]
 
 ![](/assets/images/command/001.png)
 
-This talk was given at [NDC London](http://ndc-london.com) on January 14, 2016.[^deck]. A selection of slides are shown here, along with some annotations explaining the ideas being presented. This is not a transcript, nor is it a blog post. Some slides are elided, especially those showing code. It will be most valuable to those who attended the talk or watch it when it is released on video.
+This talk was given at [NDC London](http://ndc-london.com) on January 14, 2016.[^deck]. This is not a transcript, nor is it a blog post: A selection of [the original slides](https://speakerdeck.com/raganwald/first-class-commands-an-unexpectedly-fertile-design-pattern) are shown here, along with some annotations explaining the ideas presented.
 
 [^deck]: The complete slide deck is [here](https://speakerdeck.com/raganwald/first-class-commands-an-unexpectedly-fertile-design-pattern)
 
@@ -849,7 +849,7 @@ Being able to fork repositories, cherry-pick changes to apply, and merge (or reb
 
 Will there one day be a version of PowerPoint that allows someone to submit a pull request to a presentation?[^DeckSet] If there is, it will be because somebody modeled presentations as commands rather than as big binary data blobs.
 
-[^DeckSet]: In fact, this presentation was written in Markdown and presented using [DeckSet](http://www.decksetapp.com), precisely because this affords using git to manipulate its history.
+[^DeckSet]: In fact, this presentation was written in [Markdown](https://github.com/raganwald/presentations/blob/master/command-pattern.md) and presented using [DeckSet](http://www.decksetapp.com), precisely because this affords using git to manipulate its history.
 
 ![](/assets/images/command/050.png)
 
