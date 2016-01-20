@@ -8,7 +8,9 @@ tags: [allonge]
 
 ![](/assets/images/command/001.png)
 
-This talk was given at [NDC London](http://ndc-london.com) on January 14, 2016. The complete slide deck is [here](https://speakerdeck.com/raganwald/first-class-commands-an-unexpectedly-fertile-design-pattern). The more important slides are shown here, along with some annotations explaining the ideas being presented. This is not a transcript, nor is it a blog post. Some slides are elided, especially those showing code. It will be most valuable to those who attended the talk or watch it when it is released on video.
+This talk was given at [NDC London](http://ndc-london.com) on January 14, 2016.[^deck]. A selection of slides are shown here, along with some annotations explaining the ideas being presented. This is not a transcript, nor is it a blog post. Some slides are elided, especially those showing code. It will be most valuable to those who attended the talk or watch it when it is released on video.
+
+[^deck]: The complete slide deck is [here](https://speakerdeck.com/raganwald/first-class-commands-an-unexpectedly-fertile-design-pattern)
 
 ---
 
