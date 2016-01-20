@@ -557,11 +557,7 @@ class Buffer {
 
 }
 
-alice.replaceWith("My", 0, 3);
-  //=> My quick brown fox jumped over the lazy dog
 
-bob.replaceWith("fast", 4, 9);
-  //=> The fast brown fox jumped over the lazy dog
 {% endhighlight %}
 
 Now we want to synchronize the screenplay, so that Alice can see Bob's change, and Bob can see Alice's change. So, naturally, Alice sends Bob her change, and Bob sends Alice his change. We want to apply those changes so that we end up with both Alice and Bob looking at identical buffers.
@@ -584,10 +580,6 @@ class Buffer {
     return new Edit(this, theirEdit).doIt();
   }
 
-}
-
-class Buffer {
-
   appendAll(otherBuffer) {
     otherBuffer.history.forEach(
       (theirEdit) => this.append(theirEdit)
@@ -608,7 +600,7 @@ bob.appendAll(alice);
   //=> My fast brown fox jumped over the lazy dog
 {% endhighlight %}
 
-Nope.
+This appears to work: By prepending the exiting edits onto edits being appended to a buffer, we transform the new edits to producet the same result, synchronizing the buffers.
 
 ![](/assets/images/command/039.png)
 
@@ -616,7 +608,17 @@ Unfortunately, there's a bug.
 
 ![](/assets/images/command/040.png)
 
-A **big** bug! As we can infer from our experience "fixing" the problem of redoing after putting edits into the history, naïvely appending commands onto a hisstory doesn't work because those commands are dependent upon a completely different history.
+A **big** bug!
+
+What happens if we try to append again? Since neither Alice nor Bob have made any further edits, the buffers should remain unchanged. But they don't:
+
+{% highlight javascript %}
+alice.appendAll(bob);
+  //=> My fastbrown fox jumped over the lazy dog
+
+bob.appendAll(alice);
+  //=> Myfast brown fox jumped over the lazy dog
+{% endhighlight %}
 
 To fix that, we have to borrow some of what we learned about prepending. First, let's upgrade our edits and give them a `guid` we can use to identify them, as well as a set of the guids of the edits that came before them:
 
