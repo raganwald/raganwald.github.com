@@ -1,5 +1,5 @@
 ---
-title: "First-Class Commands: An unexpectedly fertile design pattern"
+title: "First-Class Commands: An unexpectedly fertile design pattern (the annotated edition)"
 layout: default
 tags: [allonge]
 ---
