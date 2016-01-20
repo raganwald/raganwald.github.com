@@ -626,7 +626,7 @@ bob.appendAll(alice);
   //=> Myfast brown fox jumped over the lazy dog
 {% endhighlight %}
 
-To fix that, we have to borrow some of what we learned about prepending. First, let's upgrade our edits and give them a `guid` we can use to identify them, as well as a set of the guids of the edits that came before them:
+Our `append` methods are applying each edit all over again. To fix that, we have to modify our algorithm to pay attention to whether edits already exist in a buffer or edit's history. First, let's upgrade our edits and give them a `guid` we can use to identify them, as well as a set of the guids of the edits that came before them:
 
 {% highlight javascript %}
 let GUID = () => {
