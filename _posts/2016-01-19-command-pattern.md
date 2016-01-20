@@ -712,7 +712,7 @@ class Buffer {
 
 Here's an updated `appendAll` that only appends edits that aren't already in the history. What? We didn't mention that was another bug in the code? Silly us.[^also]
 
-[^also]: Most people wil take a strong exception to using `this.has(theirEdit) || this.append(theirEdit)` as a control-flow construct. Mind you, most people don't have to make a method fit on a slide. Be more explicit in real code.
+[^also]: Many programmers will take a strong exception to using `this.has(theirEdit) || this.append(theirEdit)` as a control-flow construct. Mind you, most people don't have to make a method fit on a slide. Be more explicit in real code.
 
 {% highlight javascript %}
 class Buffer {
