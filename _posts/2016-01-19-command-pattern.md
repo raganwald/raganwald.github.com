@@ -871,8 +871,6 @@ So back to the Command Pattern. Sure, it's twenty years old. Sure, undoing user 
 
 For the command pattern, undo is the example, but treating invocations as first-class entities that can be stored, queried, and transformed is the underlying idea. And the opportunity to use that idea has never been greater.
 
-(discuss on [hacker news](https://news.ycombinator.com/item?id=10936522))
-
 ---
 
 ### image credits
