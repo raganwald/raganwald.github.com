@@ -4,15 +4,19 @@ layout: default
 tags: [allonge]
 ---
 
+### foreward
+
 ![](/assets/images/command/001.png)
 
 This talk was given at [NDC London](http://ndc-london.com) on January 14, 2016. The complete slide deck is [here](https://speakerdeck.com/raganwald/first-class-commands-an-unexpectedly-fertile-design-pattern). The more important slides are shown here, along with some annotations explaining the ideas being presented. This is not a transcript, nor is it a blog post. Some slides are elided, especially those showing code. It will be most valuable to those who attended the talk or watch it when it is released on video.
 
-*"In object-oriented programming, the [command pattern](https://en.wikipedia.org/wiki/Command_pattern) is a behavioural design pattern in which an object is used to encapsulate all information needed to perform an action or trigger an event at a later time."*
-
-In this talk, we'll review what the command pattern is, then look at some interesting applications. We'll see why what matters about the command pattern is the underlying idea that behaviour can be treated as a first-class entity in its own right.
+---
 
 # Part I: The Basics
+
+*"In object-oriented programming, the [command pattern](https://en.wikipedia.org/wiki/Command_pattern) is a behavioural design pattern in which an object is used to encapsulate all information needed to perform an action or trigger an event at a later time."*
+
+We will review the command pattern's definition, then look at some interesting applications. We'll see why what matters about the command pattern is the underlying idea that behaviour can be treated as a first-class entity in its own right.
 
 ![](/assets/images/command/002.png)
 
