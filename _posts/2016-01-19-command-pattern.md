@@ -817,7 +817,7 @@ OT relies on making a very careful analysis of the different kinds of edits that
 
 Recognizing this, people have come up with other mechanisms for distributing edits. Mapping commands 1-1 with user actions is necessary for undo. But it is hard to infer user intentions from their actions:  What if instead of selecting a word and replacing it with another, Alice backspaces five times and then types four letters. Is that nine edits? Two edits? Or one?
 
-And it may not be necessary for us to infer actions to synchronize documents. We can, for example, regularly take a diff of the document and send that off to be synchronized. That's the [Differential Synchronization](http://neil.fraser.name/writing/sync/) algorithm, and it's how Google Docs work:
+And it may not be necessary for us to infer actions to synchronize documents. We can, for example, regularly take a diff of the document and send that off to be synchronized. That's the [Differential Synchronization](http://neil.fraser.name/writing/sync/) algorithm, and it's how Google Docs originally worked when Google acquired Writely:
 
 ![](/assets/images/command/044.png)
 
