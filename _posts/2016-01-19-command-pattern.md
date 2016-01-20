@@ -22,11 +22,11 @@ We will review the command pattern's definition, then look at some interesting a
 
 ![](/assets/images/command/002.png)
 
-The command patterns was popularized in the 1994 book [Design Patterns: Elements of Reusable Object-Oriented Software][GoF]. But it's 2016. Why do we care? Why is it worth another look?
+The command pattern was popularized by the 1994 book [Design Patterns: Elements of Reusable Object-Oriented Software][GoF]. But it's 2016. Why do we care? Why is it worth another look?
 
 [GoF]: http://www.amazon.com/gp/product/B000SEIBB8/ref=as_li_tl?tag=raganwald001-20
 
-When the command pattern was first popularized, most people wrote desktop software and client-server software. Distributed software was relatively exotic. So naturally, the examples given of the command pattern in use were often those applicable to single users. Like "undo," or writing macros, or perhaps displaying a progress bar.
+At that time, most software ran on the desktop or in a client-server environment. Distributed software was relatively exotic. So naturally, the examples given of the command pattern in use were often those applicable to single users. Like "undo," or writing macros, or perhaps displaying a progress bar.
 
 But as we'll see, the underlying idea of the command pattern becomes particularly interesting when we consider parallel and distributed software, whether we are thinking of job queues, thread pools, or algorithms that provide eventual consistency across a distributed system.
 
