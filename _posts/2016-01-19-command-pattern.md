@@ -1,7 +1,7 @@
 ---
 title: "First-Class Commands: An unexpectedly fertile design pattern"
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 This talk was given at [NDC London](http://ndc-london.com) on January 14, 2016. The complete slide deck is [here](https://speakerdeck.com/raganwald/first-class-commands-an-unexpectedly-fertile-design-pattern). The more important slides are shown here, along with some annotations explaining the ideas being presented. This is not a transcript, nor is it a blog post. Some slides are elided, especially those showing code. It will be most valuable to those who attended the talk or watch it when it is released on video.
@@ -821,7 +821,7 @@ Everything we do in these areas requires treating changes as first-class entitie
 
 ![](/assets/images/command/046.png)
 
-*"There are only two hard problems in Computer Science: Cache invalidation, and naming things."--Phil Karleton
+*"There are only two hard problems in Computer Science: Cache invalidation, and naming things."--Phil Karlton
 
 What if we take the names of our Buffer class:
 
@@ -833,16 +833,33 @@ And changed them:
 
 Does this look familiar? We've discussed reordering time for an individual user, and we've discussed synchronizing changes across distributed users. But we now write software that puts control of cause and effect in the hands of distributed users as well.
 
+![](/assets/images/command/049.png)
+
 Being able to fork repositories, cherry-pick changes to apply, and merge (or rebase) changes is another aspect of the same concept: Changes as first-class entities. What new user models can we develop if we take that kind of thinking to other kinds of software?
 
-Will there one day be a version of PowerPoint that allows someone to submit a pull request to a presentation?[^DeckSet]
+Will there one day be a version of PowerPoint that allows someone to submit a pull request to a presentation?[^DeckSet] If there is, it will be because somebody modeled presentations as commands rather than as big binary data blobs.
 
 [^DeckSet]: In fact, this presentation was written in Markdown and presented using [DeckSet](http://www.decksetapp.com), precisely because this affords using git to manipulate its history.
 
-![](/assets/images/command/049.png)
 ![](/assets/images/command/050.png)
+
+Getting back to OT and DS, synchronizing data is far more than supporting simultaneous document editing. Database systems often model transactions as commands or collections of commands, and use various types of protocols to permit the commands to execute in parallel without blocking each other.
+
+Replicated data stores use distributed algorithms built out of commands to propagate changes and guarantee consistency.
+
 ![](/assets/images/command/051.png)
+
+And synchronizing data is far more than distributed editing applications and databases. We are in a world where people expect their documents and applications to sync everything, all the time, over unreliable channels.
+
+This is no longer a special feature of specialized applications It's the new normal.
+
 ![](/assets/images/command/052.png)
+
+So back to the Command Pattern. Sure, it's twenty years old. Sure, undoing user edits is well-understood. But we should never look at a pattern and think that because we understand the example use case for the pattern, we understand everything about the pattern.
+
+For the command pattern, undo is the example, but treating invocations as first-class entities that can be stored, queried, and transformed is the underlying idea. And the opportunity to use that idea has never been greater.
+
+---
 
 ### afterword
 
