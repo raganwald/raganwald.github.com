@@ -801,11 +801,15 @@ It works!
 
 ![](/assets/images/command/042.png)
 
-For some definition of "works." The algorithm we just implemented is called [Operational Transformation](https://en.wikipedia.org/wiki/Operational_transformation), and John Gentle's quote above is pertinent.
+Or rather, it works for some definition of "works." The algorithm we just implemented is called [Operational Transformation](https://en.wikipedia.org/wiki/Operational_transformation), and John Gentle's quote above is pertinent.
 
 We've completely omitted the problem of overlapping edits. We're working with a remarkably simple data model, a string. Even so, what if Alice, Bob, and Carol each make edits that don't conflict with each other when compared individually: Can we guarantee that we can apply them in any order and not end up with a conflict?
 
-And if we imagine trying to use these techniques to maintain consistency while multiple users edit a complex data structure with internal references, things get complicated. For example, what if we have users, each of whom have multiple addresses, and one person deletes an address that another person is editing. What happens then? Our algorithm skipped over undos. Are undo queues local? Or can you undo an edit another user makes?
+And if we imagine trying to use these techniques to maintain consistency while multiple users edit a complex data structure with internal references, things get complicated. For example, what if we have users, each of whom have multiple addresses, and one person deletes an address that another person is editing. What happens then?
+
+Our algorithm skipped over undos. Are undo queues local? Or can you undo an edit another user makes?[^hairy]
+
+[^hairy]: And the "overlapping edits" question applies to undos. Consider what happens if Bob inserts the word  `co-operation`, and Alice edits it to the more literary `coöperation`. Now Bob hits undo, expecting the word he just typed to vanish. What happens?
 
 OT relies on making a very careful analysis of the different kinds of edits that can be made, and determining exactly how to transform them when prepended by any other edit. Even then, it is hairy.
 
