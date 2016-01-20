@@ -813,6 +813,8 @@ And it may not be necessary for us to infer actions to synchronize documents. We
 
 At it's heart, though, we're still dealing with the idea that we don't just treat physical entities--nouns--as our software entities. We also model changes as first-class entities that can be stored, queried, and edited.
 
+# Part III: Commands, More Useful Now Than Ever
+
 ![](/assets/images/command/045.png)
 
 Working with distributed changes is now a very, *very* big problem space. Software is no longer living on one device. We chat, we have distributed sessions, we demand eventual consistency from our data.
@@ -821,7 +823,7 @@ Everything we do in these areas requires treating changes as first-class entitie
 
 ![](/assets/images/command/046.png)
 
-*"There are only two hard problems in Computer Science: Cache invalidation, and naming things."--Phil Karlton
+*"There are only two hard problems in Computer Science: Cache invalidation, and naming things."*--Phil Karlton
 
 What if we take the names of our Buffer class:
 
