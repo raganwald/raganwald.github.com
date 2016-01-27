@@ -6,7 +6,7 @@ tags: [allonge]
 
 *This is a repository of essays and presentations by [Reginald "raganwald" Braithwaite](http://braythwayt.com)*
 
-<iframe src="https://player.vimeo.com/video/153097877" width="560" height="315" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<iframe src="https://player.vimeo.com/video/153097877" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 <p><a href="https://vimeo.com/153097877">JavaScript Combinators, the &ldquo;Six&rdquo; Edition - Reginald Braithwaite</a> from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
 
 <p>&nbsp;</p>
