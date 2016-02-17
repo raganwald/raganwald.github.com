@@ -13,7 +13,7 @@
   };
 
   var HELPCONTENT = {
-    image: './assets/images/help.jpg',
+    image: './assets/hashlife/images/help.jpg',
     title: 'Help',
     text: 'Click on a square to toggle between alive and dead.<br/><br/>' +
           'Drag the background to pan around the universe.<br/><br/>' +
@@ -116,8 +116,8 @@
         viewportOffset = { x: 0, y: 0 },
         lastMousePosition = { x: 0, y: 0 };
 
-    viewPortCanvas.height = window.innerHeight;
-    viewPortCanvas.width = window.innerWidth;
+    // viewPortCanvas.height = window.innerHeight;
+    // viewPortCanvas.width = window.innerWidth;
 
     ///////////////////////////////////////////////////////////////////
 

@@ -4,4 +4,4 @@ layout: hashlife
 tags: [allonge, hashlife]
 ---
 
-<canvas id="viewport"></canvas>
+<canvas width="600" height="337" id="viewport"></canvas>
