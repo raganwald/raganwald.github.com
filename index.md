@@ -16,7 +16,7 @@ tags: [allonge]
 * contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
 * code: <a href="https://github.com/raganwald">https://github.com/raganwald</a>
 * books: <a href="https://leanpub.com/u/raganwald/">https://leanpub.com/u/raganwald/</a>
-* conferences: <a href="http://lanyrd.com/profile/raganwald/">http://lanyrd.com/profile/raganwald/</a>
+* talks: <a href="http://braythwayt.com/talks.html">http://braythwayt.com/talks.html</a>
 
 ### 2016 essays
 
@@ -47,16 +47,6 @@ tags: [allonge]
     {% endfor %}
   </ul>
 </div>
-
-### talks
-
-* [Invent the future, don't recreate the past](http://youtu.be/uYcAjr2J_rU) [39:16]
-* [I have a good feeling about this](https://vimeo.com/76141334) [43:15]
-* [The Rebellion Imperative](https://vimeo.com/53265664) [1:12:58]
-* The Art of the JavaScript Metaobject Protocol
-  * [Part I: Combinators](https://vimeo.com/97408202) [54:55]
-  * [Part II: Metaobjects](https://vimeo.com/97415345) [58:06]
-  * [Part III: Adaptors](https://www.youtube.com/watch?v=hp7sgLVepF8) [26:29]
 
 ### older essays
 

@@ -22,9 +22,11 @@ You can also [watch the full talk][vimeo] online.
 
 In 2014, I gave a talk about [JavaScript Combinators](https://vimeo.com/97408202) at NDC Oslo. Combinators are first-class functions that give us simple and powerful ways to take functions and combine them togther.
 
-When it's easy to combine functions, that encourages us to write smaller, single-responsibility functions, and that leads to cleaer, well-factored software architecture.
+When it's easy to combine functions, that encourages us to write smaller, single-responsibility functions, and that leads to cleaner, well-factored software architecture. We're going to look at decomposing functions into smaller, simplere functions. And we'll also look at how combinators help us compose functions in rich ways.
 
 ![](/assets/images/combinators/intro-2.png)
+
+
 
 ---
 
