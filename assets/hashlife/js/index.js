@@ -27,10 +27,10 @@
 
   $(document).ready(function () {
 
-    $.gritter.add($.extend({}, HELPCONTENT, {
-      sticky: false,
-      time: 5000
-    }));
+    // $.gritter.add($.extend({}, HELPCONTENT, {
+    //   sticky: false,
+    //   time: 5000
+    // }));
 
     var WE_ARE_MOBILE = !!$('html.touch').length,
         DURATION_THRESHOLD = 1000,
@@ -51,8 +51,8 @@
       color || (color = COLORS.LIFE);
 
       //synchronize window and canvas dimensions
-      viewPortCanvas.width = $(window).width();
-      viewPortCanvas.height = $(window).height();
+      // viewPortCanvas.width = $(window).width();
+      // viewPortCanvas.height = $(window).height();
 
       while (universe.doesNotEnclose({
         cellSize: Cell.size(),
