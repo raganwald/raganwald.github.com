@@ -20,7 +20,9 @@ You can also [watch the full talk][vimeo] online.
 
 ![](/assets/images/combinators/intro-1.png)
 
-In 2014, I gave a talk about [JavaScript Combinators](https://vimeo.com/97408202) at NDC Oslo.
+In 2014, I gave a talk about [JavaScript Combinators](https://vimeo.com/97408202) at NDC Oslo. Combinators are first-class functions that give us simple and powerful ways to take functions and combine them togther.
+
+When it's easy to combine functions, that encourages us to write smaller, single-responsibility functions, and that leads to cleaer, well-factored software architecture.
 
 ![](/assets/images/combinators/intro-2.png)
 
