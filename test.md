@@ -1,10 +1,12 @@
 ---
 title: Reginald Braithwaite
 layout: default
-tags: [allonge]
+tags: [allonge, hashlife]
 ---
 
-*This is a repository of essays and presentations by [Reginald "raganwald" Braithwaite](http://braythwayt.com)*
+*This is a repository of essays and presentations by [Reginald "Raganwald" Braithwaite](http://braythwayt.com)*
+
+### hashlife
 
 <canvas width="600" height="337" id="viewport"></canvas>
 

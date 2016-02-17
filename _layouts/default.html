@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        {% include head_tags.html %}
+      {% include head_tags.html %}
+      {% if post.tags contains "hashlife" %}
+        {% include hashlife_tags.html %}
+      {% endif %}
     </head>
   <body>
     <div id="container">
       <div class="inner">
-        
+
         {% include header_div.html %}
 
         <hr>
 
         <section id="main_content">
-          
+
           {% include book.html %}
-          
+
           {{ content }}
         </section>
 

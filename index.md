@@ -4,7 +4,7 @@ layout: default
 tags: [allonge]
 ---
 
-*This is a repository of essays and presentations by [Reginald "raganwald" Braithwaite](http://braythwayt.com)*
+*This is a repository of essays and presentations by [Reginald "Raganwald" Braithwaite](http://braythwayt.com)*
 
 <iframe src="https://player.vimeo.com/video/153097877" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
