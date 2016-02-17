@@ -1,6 +1,6 @@
 ---
-title: Reginald Braithwaite
-layout: default
+title: Reginald Braithwaite's HashLife
+layout: hashlife
 tags: [allonge, hashlife]
 ---
 
