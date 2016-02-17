@@ -6,7 +6,7 @@ tags: [allonge, noindex]
 
 ### foreword
 
-![](/assets/images/command/001.png)
+![](/assets/images/combinators/title.png)
 
 This talk was given at [NDC London](http://ndc-london.com) on January 13, 2016. This is not a literal transcript: A selection of [the original slides](https://speakerdeck.com/raganwald/javascript-combinators-the-six-edition) are shown here, along with some annotations explaining the ideas presented.
 
