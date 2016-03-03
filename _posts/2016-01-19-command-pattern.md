@@ -128,7 +128,7 @@ while (jobQueue.length > 0) {
 
 Since we're taking an OO approach, we've created an `Edit` class that represents invocations. Each instance is an invocation, and thus we can create new invocations with `new Edit(...)` and actually perform the invocation with `.doIt()`.
 
-In this example, we've create a job queue, deferring a number of invocations until we pop them off the queue and perform them. Note that "invoking" methods on a buffer no longer does anything: Instead, they return invocations we manipulate explicitly.[^promises]
+In this example, we've created a job queue, deferring a number of invocations until we pop them off the queue and perform them. Note that "invoking" methods on a buffer no longer does anything: Instead, they return invocations we manipulate explicitly.[^promises]
 
 [^promises]: This is vaguely related to working with promises in JavaScript, although we won't explore that as this is decidedly **not** a talk about JavaScript, it's a talk *in* JavaScript.
 
@@ -513,7 +513,7 @@ Only the most esoteric would surface the undo and redo stacks, permitting execut
 
 [^hand-wave]: Another problem is that we have made a massive number of hand waves. We only correctly handle edits that do not overlap. We'll talk about this a little later.
 
-But not all implementations of commands have a direct representation in the user experience. And if we put aside the problem of user experience, we have a very string takeaway from dealing with maintaining the `future` while inserting new edits into the history. While it's just one limited example, it hints at being able to arbitrarily manipulate history, inserting, removing, or reordering edits as we desire.
+But not all implementations of commands have a direct representation in the user experience. And if we put aside the problem of user experience, we have a very strong takeaway from dealing with maintaining the `future` while inserting new edits into the history. While it's just one limited example, it hints at being able to arbitrarily manipulate history, inserting, removing, or reordering edits as we desire.
 
 <iframe width="620" height="425" src="https://www.youtube.com/embed/D4deW5Okmr4" frameborder="0" allowfullscreen></iframe>
 
