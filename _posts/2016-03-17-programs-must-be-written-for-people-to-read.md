@@ -8,6 +8,8 @@ tags: [allonge, noindex]
 
 *[Photo by Joi Ito](https://commons.wikimedia.org/w/index.php?curid=4244437)—originally posted to Flickr as Hal Abelson, CC BY 2.0*
 
+---
+
 In mathematics, the Fibonacci numbers or [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number) were originally the numbers in the following integer sequence: `0, 1, 1, 2, 3, 5, 8, 13, 21, …`.[^hist]
 
 [^hist]: The numbers were originally given as `1, 1, 2, 3, 5, 8, 13, 21, …`, but it is more convenient for modern purposes to begin with `0` and `1`.
@@ -18,7 +20,7 @@ The rule for determining the sequence is quite simple to explain:
 0. The second number is `1`.
 0. Every subsequent number is the sum of the two previous numbers.
 
-THus, the third number is `1` (`0 + 1`), the fourth number is `2` (`1 + 1`), and that makes the fifth number `3` (`1 + 2`), the sixth number `5` (`2 + 3`) and so on _ad infinitum_.
+Thus, the third number is `1` (`0 + 1`), the fourth number is `2` (`1 + 1`), and that makes the fifth number `3` (`1 + 2`), the sixth number `5` (`2 + 3`) and so on _ad infinitum_.
 
 There are many ways to write a program that will output the Fibnacci numbers. each method optimizes for some particular purpose. We'll start by optimizing for being as close as possible to the written description of the numbers:
 
@@ -74,7 +76,7 @@ function * fibonacci () {
 
   let [previous, current] = [0, 1];
 
-  for(let numberPrinted = 2; numberPrinted <= numberToPrint; ++numberPrinted) {
+  while (true) {
     [previous, current] = [current, current + previous];
     yield current;
   }
@@ -86,15 +88,50 @@ Now we can take advantage of standard operations on generators and iterators, li
 [ja]: https://leanpub.com/javascriptallongesix
 
 {% highlight javascript %}
-https://github.com/jb55/take-iterator
+function * take (numberToTake, iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  for (let i = 0; i < numberToTake; ++i) {
+    const { done, value } = iterator.next();
+    if (!done) yield value;
+  }
+}
 {% endhighlight %}
 
 And then write:
 
 {% highlight javascript %}
-for (let n of take(fibonacci, 10)) {
+for (let n of take(10, fibonacci())) {
   console.log(n);
 }
 {% endhighlight %}
 
-Or if we
+Or we can splat the values into an array:
+
+{% highlight javascript %}
+[...take(10, fibonacci())]
+{% endhighlight %}
+
+Of course, doing this requires understanding what a generator is, and how the `take` operation converts a generator with a possibly infinite extent into a generator that produces a fixed number of values.
+
+It's almost certainly not worth learning all this _just_ for Fibonacci numbers, but if we do learn these things and then "internalize" them, it becomes a marvellous win, because we can write something like:
+
+{% highlight javascript %}
+function * fibonacci () {
+  yield 0;
+  yield 1;
+
+  let [previous, current] = [0, 1];
+
+  while (true) {
+    [previous, current] = [current, current + previous];
+    yield current;
+  }
+}
+{% endhighlight %}
+
+And we are simply and very directly reproducing the definition as it was given to us, without cluttering it up with a lot of other concerns that dilute the basic thing we want to communicate.
+
+### incidentally
+
+Just because
