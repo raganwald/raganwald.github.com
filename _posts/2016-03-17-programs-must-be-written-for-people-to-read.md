@@ -22,7 +22,7 @@ The rule for determining the sequence is quite simple to explain:
 0. The second number is `1`.
 0. Every subsequent number is the sum of the two previous numbers.
 
-Thus, the third number is `1` (`0 + 1`), the fourth number is `2` (`1 + 1`), and that makes the fifth number `3` (`1 + 2`), the sixth number `5` (`2 + 3`) and so on _ad infinitum_.
+Thus, the third number is `1` (0 + 1), the fourth number is `2` (1 + 1), and that makes the fifth number `3` (1 + 2), the sixth number `5` (2 + 3) and so on _ad infinitum_.
 
 There are many ways to write a program that will output the Fibonacci numbers. each method optimizes for some particular purpose. We'll start by optimizing for being as close as possible to the written description of the numbers:
 
