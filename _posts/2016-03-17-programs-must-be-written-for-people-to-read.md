@@ -1,7 +1,7 @@
 ---
 title: "“Programs must be written for people to read, and only incidentally for machines to execute”"
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 [![Photo of Hal Abelson by Joi Ito](/assets/images/HalAbelson.jpg)](https://www.flickr.com/photos/35034362831@N01/2108746065)
