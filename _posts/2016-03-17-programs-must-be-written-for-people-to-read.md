@@ -128,7 +128,7 @@ We won't get into counting evens and odds just yet, we've already made the point
 
 ### simplicity
 
-Of course, turning `fibonacci` into a generator this requires understanding what a generator is, and how the `take` operation converts a generator with a possibly infinite number of values into a generator that produces a fixed number of values.
+Turning `fibonacci` into a generator requires understanding what a generator is, and how the `take` operation converts a generator with a possibly infinite number of values into a generator that produces a fixed number of values.
 
 It's almost certainly not worth learning all this _just_ for Fibonacci numbers, but if we do learn these things and then "internalize" them, it becomes a marvellous win, because we can write something like:
 
@@ -173,14 +173,17 @@ function fibonacci (numberToPrint) {
 
 And then when we build larger and larger programs, at each step of the way eschewing an abstraction or technique because not using the technique we don't know is "simpler," and we are 100% certain at every step that we have done the right thing and avoided writing "clever" code.
 
+It seems obvious that understanding the capabilities of our tools and how to use them in direct and obvious ways to do the things they were designed to do is not "clever." So what is "cleaver code?"
+
 ---
 
-### clever?
+### clever code
 
 Here is the naïve way to extract a _particular_ Fibonacci number from our generator:
 
 {% highlight javascript %}
-const fibonacciAt = (index) => [...take(index + 1, fibonacci())][index];
+const fibonacciAt = (index) =>
+  [...take(index + 1, fibonacci())][index];
 
 fibonacciAt(7)
   //=> 13
@@ -350,7 +353,7 @@ function * fibonacci () {
 
 The mathematician in the driver's seat may be happy, but the programmer working with the engine realizes that this expression recursively generates generators. Nice car, but it's a gas guzzler.
 
-We can fix this, but once again, we do ur utmost to separate how we fix it from the code itself:
+We can fix this, but once again, we do our utmost to separate how we fix it from the code itself:
 
 {% highlight javascript %}
 function memoize (generator) {
@@ -398,6 +401,10 @@ Some code has multiple audiences, and separating the code's concerns enables eac
 
 Code that is written in a particular domain can and should be written for programmers who are proficient with the tools of their trade. In ES6, that includes generators and common operations on sequences like `take`, `tail`, and `zipWith`.
 
-Also, code that is written for a particular domain can and should be written for programmers who have domain-knowledge. A Fibonacci function should be written for the reader who has familiarity with mathematics. Code is written for humans to read, but there is a presumption that humans choosing to read it will have or be prepared to acquire the knowledge appropriate for that domain.
+Also, code that is written for a particular domain can and should be written for programmers who have domain-knowledge. A Fibonacci function should be written for the reader who has familiarity with mathematics. Code is written for humans to read, but there is a presumption that humans choosing to read it will have or be prepared to acquire the knowledge appropriate for that domain.[^business]
 
 When there are multiple concerns, each requiring attention to a different domain, we separate those concerns. This is why the engine of a car is hidden away from the driver and the passengers, and it is why the mechanics of computing a fibonacci number is separated from the programming issues of how to implement things like `take`, `tail`, `zipWith`, or `memoize`.
+
+---
+
+### notes
