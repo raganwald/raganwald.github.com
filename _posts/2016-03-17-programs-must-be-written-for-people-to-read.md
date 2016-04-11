@@ -173,7 +173,7 @@ function fibonacci (numberToPrint) {
 
 And then when we build larger and larger programs, at each step of the way eschewing an abstraction or technique because not using the technique we don't know is "simpler," and we are 100% certain at every step that we have done the right thing and avoided writing "clever" code.
 
-It seems obvious that understanding the capabilities of our tools and how to use them in direct and obvious ways to do the things they were designed to do is not "clever." So what is "cleaver code?"
+It seems obvious that understanding the capabilities of our tools and how to use them in direct and obvious ways to do the things they were designed to do is not "clever." So what is "clever code?"
 
 ---
 
