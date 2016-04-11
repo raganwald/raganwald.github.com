@@ -4,6 +4,8 @@ layout: default
 tags: [allonge]
 ---
 
+### hal abelson
+
 [![Photo of Hal Abelson by Joi Ito](/assets/images/HalAbelson.jpg)](https://www.flickr.com/photos/35034362831@N01/2108746065)
 
 ---
@@ -65,6 +67,8 @@ The logic for the number of results we want is buried inside the middle of our c
 
 And there's another problem. How do we know what we want to do with the numbers? maybe we want to print them out, but then again, maybe we want to do something else, like stuff them in an array, or count how many are even and how many are odd?
 
+---
+
 ### separating concerns
 
 Our code at the moment entangles these concerns, and our first improvement is to separate the concerns by rewriting our algorithm as a [generator](http://raganwald.com/2015/11/03/a-coding-problem.html "Solving a Coding Problem with Iterators and Generators"). Generators are an excellent way of separating "what we do with the steps of a calculation" from "how we calculate the steps."
@@ -120,6 +124,8 @@ To show that we are now able to be much more flexible, here we can splat the sam
 
 We won't get into counting evens and odds just yet, we've already made the point that we can make our `fibonacci` function more readable for people by ruthlessly pairing it down to do just one thing and combining it with other functions and code externally, rather than stuffing the other code inside our function.
 
+---
+
 ### simplicity
 
 Of course, turning `fibonacci` into a generator this requires understanding what a generator is, and how the `take` operation converts a generator with a possibly infinite number of values into a generator that produces a fixed number of values.
@@ -166,6 +172,8 @@ function fibonacci (numberToPrint) {
 {% endhighlight %}
 
 And then when we build larger and larger programs, at each step of the way eschewing an abstraction or technique because not using the technique we don't know is "simpler," and we are 100% certain at every step that we have done the right thing and avoided writing "clever" code.
+
+---
 
 ### clever?
 
@@ -220,6 +228,8 @@ at(7, fibonacci())
 {% endhighlight %}
 
 Separating concerns is more valuable than mixing them in terse code for precisely this reason: You can work on the separate pieces independently.
+
+---
 
 ### writing for an audience
 
@@ -381,6 +391,8 @@ const mfibs = memoize(function * () {
 {% endhighlight %}
 
 Some code has multiple audiences, and separating the code's concerns enables each piece to speak to specialists in the appropriate domain without demanding that anybody reading it be familiar with both mathematics and the efficient reuse of previously computed values.
+
+---
 
 ### summary: writing for humans to read
 
