@@ -214,7 +214,6 @@ function at (index, iterable) {
 
   return value;
 }
-{% endhighlight %}
 
 at(7, fibonacci())
   //=> 13
