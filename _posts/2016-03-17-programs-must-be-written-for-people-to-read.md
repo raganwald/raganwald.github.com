@@ -397,11 +397,13 @@ Some code has multiple audiences, and separating the code's concerns enables eac
 
 ---
 
-### summary: writing for humans to read
+### "writing for people to read"
 
 Code that is written in a particular domain can and should be written for programmers who are proficient with the tools of their trade. In ES6, that includes generators and common operations on sequences like `take`, `tail`, and `zipWith`.
 
 Also, code that is written for a particular domain can and should be written for programmers who have domain-knowledge. A Fibonacci function should be written for the reader who has familiarity with mathematics. Code is written for humans to read, but there is a presumption that humans choosing to read it will have or be prepared to acquire the knowledge appropriate for that domain.[^business]
+
+[^business]: Code written for the business domain can and should have abstractions appropriate for business software. Like state machines, domain-specific languages, batch jobs, and so forth.
 
 When there are multiple concerns, each requiring attention to a different domain, we separate those concerns. This is why the engine of a car is hidden away from the driver and the passengers, and it is why the mechanics of computing a fibonacci number is separated from the programming issues of how to implement things like `take`, `tail`, `zipWith`, or `memoize`.
 
