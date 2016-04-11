@@ -4,9 +4,7 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-![Hal Abelson](/assets/images/HalAbelson.jpg)
-
-*[Photo by Joi Ito](https://commons.wikimedia.org/w/index.php?curid=4244437)—originally posted to Flickr as Hal Abelson, CC BY 2.0*
+[![Photo of Hal Abelson by Joi Ito](/assets/images/HalAbelson.jpg)](https://www.flickr.com/photos/35034362831@N01/2108746065)
 
 ---
 
