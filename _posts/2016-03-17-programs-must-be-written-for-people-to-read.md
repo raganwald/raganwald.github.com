@@ -407,6 +407,8 @@ Also, code that is written for a particular domain can and should be written for
 
 When there are multiple concerns, each requiring attention to a different domain, we separate those concerns. This is why the engine of a car is hidden away from the driver and the passengers, and it is why the mechanics of computing a fibonacci number is separated from the programming issues of how to implement things like `take`, `tail`, `zipWith`, or `memoize`.
 
+(discuss on [hacker news](https://news.ycombinator.com/item?id=11474000))
+
 ---
 
 ### notes
