@@ -1,0 +1,88 @@
+---
+title: "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
+layout: default
+tags: [allonge]
+---
+
+### larry wall
+
+[![Larry Wall and Camelia, the Perl 6 Mascot](/assets/images/Larry_Wall_and_Camelia.jpg)](https://en.wikipedia.org/wiki/Perl_6#/media/File:FOSDEM_2015_Larry_Wall_and_Camelia_the_Perl6_logo.jpg)
+
+---
+
+### laziness and eagerness
+
+In computing, "laziness" is a broad term, generally referring to not doing any work unless you need it. Whereas its opposite is "eagerness," doing as much work as possible in case you need it later.
+
+For example, consider this JavaScript:
+
+{% highlight javascript %}
+function ifThen (a, b) {
+  if (a) return b;
+}
+
+ifThen(1 === 0, 2 + 3)
+  //=> undefined
+{% endhighlight %}
+
+Now, here's the question: Does JavaScript compute `2+3`? You probably know the answer: Yes it does. When it comes to passing arguments to a function invocation, JavaScript is *eager*, it evaluates all of the expressions, and it does so whether the value of the expression is used or not.
+
+If JavaScript was *lazy*, it would not evaluate `2+3` in the expression `ifThen(1 === 0, 2 + 3)`. So is JavaScript an "eager" language? Mostly. But not always! If we write: `1 === 0 ? 2 + 3 : undefined`, JavaScript does *not* evaluate `2+3`. Operators like `?:` and `&&` and `||`, along with program control structures like `if`, are lazy. You just have to know in your head what is eager and what is lazy.
+
+And if you want something to be lazy that isn't naturally lazy, you have to work around JavaScript's eagerness. For example:
+
+{% highlight javascript %}
+function ifThenEvaluate (a, b) {
+  if (a) return b();
+}
+
+ifThen(1 === 0, () => 2 + 3)
+  //=> undefined
+{% endhighlight %}
+
+JavaScript eagerly evaluates `() => 2 + 3`, which is a function. But it doesn't evaluate the expression in the body of the function until it is invoked. And it is not invoked, so `2+3` is not evaluated.
+
+Wrapping expressions in functions to delay evaluation is a longstanding technique in programming. They are colloquially called [thunks](https://en.wikipedia.org/wiki/Thunk), and there are lots of interesting applications for them.
+
+### generating laziness
+
+The bodies of functions are a kind of lazy thing: They aren't evaluated until you invoke the function. This is related to `if` statements, and every other kind of control flow construct: JavaScript does not evaluate statements unless the code actually encounters the statement.
+
+Consider this code:
+
+{% highlight javascript %}
+function contains(list, value) {
+  let listContainsValue = false;
+
+  for (element of list) {
+    if (element === value) {
+      listContainsValue = true;
+    }
+  }
+
+  return listContainsValue;
+}
+{% endhighlight %}
+
+You are doubtless chuckling at its naïveté. Imagine this list was the numbers from one to a billion--e.g. `[1, 2, 3, ..., 999999998, 999999999, 1000000000]`--and we invoke:
+
+{% highlight javascript %}
+const billion = [1, 2, 3, ..., 999999998, 999999999, 1000000000];
+
+contains(billion, 1)
+  //=> true
+{% endhighlight %}
+
+We get the correct result, but we iterate over every one of our billion numbers first. Awful! Small children and the otherwise febrile know that you can `return` from anywhere in a JavaScript function, and the rest of its evaluation is abandoned. So we can write this:
+
+{% highlight javascript %}
+function contains(list, value) {
+  for (element of list) {
+    if (element === value) {
+      return true;
+    }
+  }
+
+  return false;
+}
+{% endhighlight %}
