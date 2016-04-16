@@ -53,10 +53,10 @@ The bodies of functions are a kind of lazy thing: They aren't evaluated until yo
 Consider this code:
 
 {% highlight javascript %}
-function contains(list, value) {
+function containing(value, list) {
   let listContainsValue = false;
 
-  for (element of list) {
+  for (const element of list) {
     if (element === value) {
       listContainsValue = true;
     }
@@ -71,15 +71,15 @@ You are doubtless chuckling at its naïveté. Imagine this list was the numbers 
 {% highlight javascript %}
 const billion = [1, 2, 3, ..., 999999998, 999999999, 1000000000];
 
-contains(billion, 1)
+containing(1, billion)
   //=> true
 {% endhighlight %}
 
 We get the correct result, but we iterate over every one of our billion numbers first. Awful! Small children and the otherwise febrile know that you can `return` from anywhere in a JavaScript function, and the rest of its evaluation is abandoned. So we can write this:
 
 {% highlight javascript %}
-function contains(list, value) {
-  for (element of list) {
+function containing(list, value) {
+  for (const element of list) {
     if (element === value) {
       return true;
     }
@@ -90,6 +90,46 @@ function contains(list, value) {
 {% endhighlight %}
 
 This version of the function is lazier than the first: It only does the minimum needed to determine whether a particular list contains a particular value.
+
+From `containing`, we can make a similar function, `findWith`:
+
+{% highlight javascript %}
+function findWith(predicate, list) {
+  for (const element of list) {
+    if (predicate(element)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+{% endhighlight %}
+
+`findWith` applies a predicate function to lazily find the first value that evaluates truthily. Unfortunately, while `findWith` is lazy, its argument is evaluated eagerly, as we mentioned above. So let's say we want to find the first number in a list that is a palindrome:
+
+{% highlight javascript %}
+function isPalindromic(number) {
+  const forwards = number.toString();
+  const backwards = forwards.split('').reverse().join('');
+
+  return forwards === backwards;
+}
+
+// This function could have a lazier implementation, but let's stay focused.
+{% endhighlight %}
+
+(This function could have a lazier implementation, but let's stay focused.)
+
+Now we can search any list for the first palindromic number, e.g.
+
+{% highlight javascript %}
+const billion = [1, 2, 3, ..., 999999998, 999999999, 1000000000];
+
+findWith(isPalindromic, billion)
+  //=> 1
+{% endhighlight %}
+
+Same as before,
 
 (*This post is a work-in-progress*)
 
