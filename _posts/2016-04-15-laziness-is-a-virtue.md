@@ -1,7 +1,7 @@
 ---
 title: "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 (*This post is a work-in-progress*)
@@ -171,9 +171,9 @@ findWith(every(isPalindromic, gt(99)), Numbers())
 
 Generators yield values lazily. And `findWith` searches lazily, so we can find `101` without first generating an infinite array of numbers. JavaScript still evaluates `Numbers()` eagerly and binds it to `list`, but now it's binding an iterator, not an array. And the `for (const element of list) { ... }` statement lazily takes values from the iterator just as it did from the `billion` array.
 
-### beware!
+### but beware!
 
-We can use operators to do all kinds of things lazily. For example, here is the eager [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes):
+Here is the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes), written in eager style:
 
 {% highlight javascript %}
 function compact (list) {
@@ -210,7 +210,7 @@ PrimesUpTo(100)
   //=> [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
 {% endhighlight %}
 
-We can rewrite it lazily:
+We can use generators and operations on generators to do all kinds of things lazily. Here's our first pass at a lazy Sieve of Eratosthenes\:
 
 {% highlight javascript %}
 function * Numbers () {
@@ -268,18 +268,6 @@ function * Primes () {
 
   yield * compact(sieve(numbersFrom2));
 }
-
-take(100, Primes())
-  //=>
-    [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,
-     53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107,
-     109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167,
-     173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229,
-     233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283,
-     293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359,
-     367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431,
-     433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491,
-     499, 503, 509, 521, 523, 541]
 {% endhighlight %}
 
 Did you spot the bug? Try running it yourself, it won't work! The problem is that at the last step, we called `compact`, and `compact` is an eager function, not a lazy one. So we end up trying to build an infinite list of primes before filtering out the nulls.
@@ -318,7 +306,43 @@ take(100, Primes())
      499, 503, 509, 521, 523, 541]
 {% endhighlight %}
 
+When we write things in lazy style, we need lazy versions of all of our usual operations. For example, here's an eager implementation of `unique`:
+
+{% highlight javascript %}
+function unique (list) {
+  const orderedValues = [];
+  const uniqueValues = new Set();
+
+  for (const element of list) {
+    if (!uniqueValues.has(element)) {
+      uniqueValues.add(element);
+      orderedValues.push(element);
+    }
+  }
+  return orderedValues;
+}
+{% endhighlight %}
+
+Naturally, we'd need a lazy implementation if we anted to find the unique values of lazy iterators:
+
+{% highlight javascript %}
+function * unique (iterable) {
+  const uniqueValues = new Set();
+
+  for (const element of iterable) {
+    if (!uniqueValues.has(element)) {
+      uniqueValues.add(element);
+      yield element;
+    }
+  }
+}
+{% endhighlight %}
+
+And so it goes with all of our existing operations that we use with lists: We need lazy versions we can use with iterables, and we have to use the lazy operations throughout: We can't mix them.
+
 ### it comes down to types
+
+This brings us to an unexpected revelation.
 
 Generators and laziness can be wonderful. Exciting things are happening with using generators to emulate synchronized code with asynchronous operations, for example. But as we've seen, if we want to write lazy code, we have to be careful to be consistently lazy. If we accidentally mix lazy and eager code, we have problems.
 
@@ -326,14 +350,11 @@ This is a [symmetry](http://raganwald.com/2015/03/12/symmetry.html) problem.  An
 
 But this is not always the case. The functions `compact` and `existingValues` both quack like ducks that operate on lists, but one is lazy and the other is not. "Duck typing" does not and cannot capture difference between a function that assures laziness and another that assures eagerness.
 
-Many other things work this way, for example escaped and unescaped strings. Or obfuscated and native IDs. To distinguish between things that have the same interfaces, but also have semantic or other contractural differences, we need actual types and tooling that can check for consistency.
+Many other things work this way, for example escaped and unescaped strings. Or obfuscated and native IDs. To distinguish between things that have the same interfaces, but also have semantic or other contractural differences, we need *types*.
 
-In summary, JavaScript does allow us to program in multiple styles. We can use objects. Or functions. We can use laziness. Or eager evaluation. But those styles do not always mix properly, and "duck typing" does not help us the way that a fully typed language would.
-
-But it doesn't stop us, either!
+We need to ensure that our programs work with each of the types, using the correct operations, even if the incorrect operations are also "duck compatible" and appear to work at first glance.
 
 ---
-
 
 ### notes
 
