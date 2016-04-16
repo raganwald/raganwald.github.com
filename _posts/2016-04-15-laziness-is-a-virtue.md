@@ -97,15 +97,13 @@ From `containing`, we can make a similar function, `findWith`:
 function findWith(predicate, list) {
   for (const element of list) {
     if (predicate(element)) {
-      return true;
+      return element;
     }
   }
-
-  return false;
 }
 {% endhighlight %}
 
-`findWith` applies a predicate function to lazily find the first value that evaluates truthily. Unfortunately, while `findWith` is lazy, its argument is evaluated eagerly, as we mentioned above. So let's say we want to find the first number in a list that is a palindrome:
+`findWith` applies a predicate function to lazily find the first value that evaluates truthily. Unfortunately, while `findWith` is lazy, its argument is evaluated eagerly, as we mentioned above. So let's say we want to find the first number in a list that is greater than `99` and is a palindrome:
 
 {% highlight javascript %}
 function isPalindromic(number) {
@@ -115,21 +113,32 @@ function isPalindromic(number) {
   return forwards === backwards;
 }
 
-// This function could have a lazier implementation, but let's stay focused.
-{% endhighlight %}
+function gt(minimum) {
+  return (number) => number > minimum;
+}
 
-(This function could have a lazier implementation, but let's stay focused.)
+function every(...predicates) {
+  return function (value) {
+    for (const predicate of predicates) {
+      if (!predicate(value)) return false;
+    }
+    return true;
+  };
+}
 
-Now we can search any list for the first palindromic number, e.g.
-
-{% highlight javascript %}
 const billion = [1, 2, 3, ..., 999999998, 999999999, 1000000000];
 
-findWith(isPalindromic, billion)
-  //=> 1
+findWith(every(isPalindromic, gt(99)), billion)
+  //=> 101
 {% endhighlight %}
 
-Same as before,
+It's the same principle as before, of course, we iterate through our billion numbers and stop as soon as we get to `101`, which is greater than `99` and palindromic.
+
+But JavaScript eagerly evaluates the arguments to `findWith`. So it evaluates `isPalindromic, gt(99))` and binds it to `predicate`, then it eagerly evaluates `billion` and bids it to `list`.
+
+But what if we had a much more expensive computation to perform to get our numbers? Like this one:
+
+
 
 (*This post is a work-in-progress*)
 
