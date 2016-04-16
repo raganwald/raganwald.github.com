@@ -4,8 +4,6 @@ layout: default
 tags: [allonge]
 ---
 
-(*This post is a work-in-progress*)
-
 ### larry wall
 
 [![Larry Wall and Camelia, the Perl 6 Mascot](/assets/images/Larry_Wall_and_Camelia.jpg)](https://en.wikipedia.org/wiki/Perl_6#/media/File:FOSDEM_2015_Larry_Wall_and_Camelia_the_Perl6_logo.jpg)
