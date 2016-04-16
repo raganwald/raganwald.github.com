@@ -1,8 +1,10 @@
 ---
 title: "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
 layout: default
-tags: [allonge]
+tags: [allonge, noindex]
 ---
+
+(*This post is a work-in-progress*)
 
 ### larry wall
 
@@ -36,7 +38,7 @@ function ifThenEvaluate (a, b) {
   if (a) return b();
 }
 
-ifThen(1 === 0, () => 2 + 3)
+ifThenEvaluate(1 === 0, () => 2 + 3)
   //=> undefined
 {% endhighlight %}
 
@@ -86,3 +88,8 @@ function contains(list, value) {
   return false;
 }
 {% endhighlight %}
+
+This version of the function is lazier than the first: It only does the minimum needed to determine whether a particular list contains a particular value.
+
+(*This post is a work-in-progress*)
+
