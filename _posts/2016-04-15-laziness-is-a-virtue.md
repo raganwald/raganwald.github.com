@@ -318,13 +318,22 @@ take(100, Primes())
      499, 503, 509, 521, 523, 541]
 {% endhighlight %}
 
-### what colour are your operations?
+### it comes down to types
 
 Generators and laziness can be wonderful. Exciting things are happening with using generators to emulate synchronized code with asynchronous operations, for example. But as we've seen, if we want to write lazy code, we have to be careful to be consistently lazy. If we accidentally mix lazy and eager code, we have problems.
 
 This is a [symmetry](http://raganwald.com/2015/03/12/symmetry.html) problem.  And at a deeper level, it exposes a problem with the "duck typing" mindset: There is a general idea that as long as objects handle the correct interface--as long as they respond to the right methods--they are interchangeable.
 
-But this is not always the case. A function like
+But this is not always the case. The functions `compact` and `existingValues` both quack like ducks that operate on lists, but one is lazy and the other is not. "Duck typing" does not and cannot capture difference between a function that assures laziness and another that assures eagerness.
 
-(*This post is a work-in-progress*)
+Many other things work this way, for example escaped and unescaped strings. Or obfuscated and native IDs. To distinguish between things that have the same interfaces, but also have semantic or other contractural differences, we need actual types and tooling that can check for consistency.
+
+In summary, JavaScript does allow us to program in multiple styles. We can use objects. Or functions. We can use laziness. Or eager evaluation. But those styles do not always mix properly, and "duck typing" does not help us the way that a fully typed language would.
+
+But it doesn't stop us, either!
+
+---
+
+
+### notes
 
