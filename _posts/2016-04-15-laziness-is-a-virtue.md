@@ -132,7 +132,7 @@ findWith(every(isPalindromic, gt(99)), billion)
 
 It's the same principle as before, of course, we iterate through our billion numbers and stop as soon as we get to `101`, which is greater than `99` and palindromic.
 
-But JavaScript eagerly evaluates the arguments to `findWith`. So it evaluates `isPalindromic, gt(99))` and binds it to `predicate`, then it eagerly evaluates `billion` and bids it to `list`.
+But JavaScript eagerly evaluates the arguments to `findWith`. So it evaluates `isPalindromic, gt(99))` and binds it to `predicate`, then it eagerly evaluates `billion` and binds it to `list`.
 
 Binding one value to another is cheap. But what if we had to _generate_ a billion numbers?
 
