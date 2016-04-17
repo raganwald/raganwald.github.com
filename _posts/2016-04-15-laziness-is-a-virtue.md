@@ -208,7 +208,7 @@ PrimesUpTo(100)
   //=> [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
 {% endhighlight %}
 
-We can just as easily use generators and operations on generators to perform computations. Let's take a pass at writing the Sieve of Eratosthenes in lazy style. First off, a few handy things we've already seen in this blog, and in [JavaScript Allongé][ja]:
+Let's take a pass at writing the Sieve of Eratosthenes in lazy style. First off, a few handy things we've already seen in this blog, and in [JavaScript Allongé][ja]:
 
 [ja]: https://leanpub.com/javascriptallongesix
 
@@ -237,7 +237,7 @@ function * rest (iterable) {
 }
 {% endhighlight %}
 
-With those in hand, we can write a generator that maps an iterable to a sequence of values with every `nth` element changes to `null`:
+With those in hand, we can write a generator that maps an iterable to a sequence of values with every `nth` element changed to `null`:
 
 {% highlight javascript %}
 function * nullEveryNth (n, iterable) {
@@ -295,12 +295,6 @@ function * compact (list) {
       yield element;
     }
   }
-}
-
-function * Primes () {
-  const numbersFrom2 = rest(Numbers());
-
-  yield * compact(sieve(numbersFrom2));
 }
 {% endhighlight %}
 
