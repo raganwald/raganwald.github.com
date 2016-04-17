@@ -169,7 +169,7 @@ findWith(every(isPalindromic, gt(99)), Numbers())
 
 Generators yield values lazily. And `findWith` searches lazily, so we can find `101` without first generating an infinite array of numbers. JavaScript still evaluates `Numbers()` eagerly and binds it to `list`, but now it's binding an iterator, not an array. And the `for (const element of list) { ... }` statement lazily takes values from the iterator just as it did from the `billion` array.
 
-### but beware!
+### the sieve of eratosthenes
 
 Here is the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes), written in eager style:
 
@@ -208,7 +208,9 @@ PrimesUpTo(100)
   //=> [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
 {% endhighlight %}
 
-We can use generators and operations on generators to do all kinds of things lazily. Here's our first pass at a lazy Sieve of Eratosthenes\:
+We can just as easily use generators and operations on generators to perform computations. Let's take a pass at writing the Sieve of Eratosthenes in lazy style. First off, a few handy things we've already seen in this blog, and in [JavaScript Allongé][ja]:
+
+[ja]: https://leanpub.com/javascriptallongesix
 
 {% highlight javascript %}
 function * Numbers () {
@@ -233,7 +235,11 @@ function * rest (iterable) {
   iterator.next();
   yield * iterator;
 }
+{% endhighlight %}
 
+With those in hand, we can write a generator that maps an iterable to a sequence of values with every `nth` element changes to `null`:
+
+{% highlight javascript %}
 function * nullEveryNth (n, iterable) {
   const iterator = iterable[Symbol.iterator]();
 
@@ -249,18 +255,28 @@ function * nullEveryNth (n, iterable) {
     yield null;
   }
 }
+{% endhighlight %}
 
+That's the core of the "sieving" behaviour: take the front element of the list of numbers, call it `n`, and sieve every `nth` element afterwards. Our sieve is recursive, it sieves the result of sieving the rest of the list.[^gotcha]
+
+[^gotcha]: There is a performance problem with this. Can you find it?
+
+{% highlight javascript %}
 function * sieve (iterable) {
   const iterator = iterable[Symbol.iterator]();
 
-  const { done, value } = iterator.next();
+  const { done, value: n } = iterator.next();
 
   if (done) return;
 
-  yield value;
-  yield * nullEveryNth(value, sieve(iterator));
+  yield n;
+  yield * nullEveryNth(n, sieve(iterator));
 }
+{% endhighlight %}
 
+With `sieve` in hand, we can use `Numbers` to get a list of numbers from `1`, and the `rest` operation to give us all but the head... In other words, the numbers from `2`. Then we `compact` the result to filter out all the `nulls`, and what is left are the primes:
+
+{% highlight javascript %}
 function * Primes () {
   const numbersFrom2 = rest(Numbers());
 
@@ -268,12 +284,12 @@ function * Primes () {
 }
 {% endhighlight %}
 
-Did you spot the bug? Try running it yourself, it won't work! The problem is that at the last step, we called `compact`, and `compact` is an eager function, not a lazy one. So we end up trying to build an infinite list of primes before filtering out the nulls.
+Besides performance, did you spot the full-on bug? Try running it yourself, it won't work! The problem is that at the last step, we called `compact`, and `compact` is an eager function, not a lazy one. So we end up trying to build an infinite list of primes before filtering out the nulls.
 
-We need to write:
+We need to write a lazy version of `compact`:
 
 {% highlight javascript %}
-function * existingValues (list) {
+function * compact (list) {
   for (const element of list) {
     if (element != null) {
       yield element;
@@ -284,7 +300,7 @@ function * existingValues (list) {
 function * Primes () {
   const numbersFrom2 = rest(Numbers());
 
-  yield * existingValues(sieve(numbersFrom2));
+  yield * compact(sieve(numbersFrom2));
 }
 {% endhighlight %}
 
@@ -321,7 +337,7 @@ function unique (list) {
 }
 {% endhighlight %}
 
-Naturally, we'd need a lazy implementation if we anted to find the unique values of lazy iterators:
+Naturally, we'd need a lazy implementation if we wanted to find the unique values of lazy iterators:
 
 {% highlight javascript %}
 function * unique (iterable) {
@@ -346,7 +362,7 @@ Generators and laziness can be wonderful. Exciting things are happening with usi
 
 This is a [symmetry](http://raganwald.com/2015/03/12/symmetry.html) problem.  And at a deeper level, it exposes a problem with the "duck typing" mindset: There is a general idea that as long as objects handle the correct interface--as long as they respond to the right methods--they are interchangeable.
 
-But this is not always the case. The functions `compact` and `existingValues` both quack like ducks that operate on lists, but one is lazy and the other is not. "Duck typing" does not and cannot capture difference between a function that assures laziness and another that assures eagerness.
+But this is not always the case. The eager and lazy versions of `compact` both quack like ducks that operate on lists, but one is lazy and the other is not. "Duck typing" does not and cannot capture difference between a function that assures laziness and another that assures eagerness.
 
 Many other things work this way, for example escaped and unescaped strings. Or obfuscated and native IDs. To distinguish between things that have the same interfaces, but also have semantic or other contractural differences, we need *types*.
 
