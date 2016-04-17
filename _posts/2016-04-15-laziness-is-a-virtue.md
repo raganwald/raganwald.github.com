@@ -14,7 +14,7 @@ tags: [allonge]
 
 In computing, "laziness" is a broad term, generally referring to not doing any work unless you need it. Whereas its opposite is "eagerness," doing as much work as possible in case you need it later.
 
-For example, consider this JavaScript:
+Consider this JavaScript:
 
 {% highlight javascript %}
 function ifThen (a, b) {
