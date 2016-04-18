@@ -377,5 +377,7 @@ We need to ensure that our programs work with each of the types, using the corre
 
 <script src="https://gist.github.com/raganwald/cdfbd4c7b8aaf75469e2b404892718df.js"></script>
 
+---
+
 ### notes
 
