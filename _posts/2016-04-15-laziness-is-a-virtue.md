@@ -257,20 +257,23 @@ function * nullEveryNth (n, iterable) {
 }
 {% endhighlight %}
 
-That's the core of the "sieving" behaviour: take the front element of the list of numbers, call it `n`, and sieve every `nth` element afterwards. Our sieve is recursive, it sieves the result of sieving the rest of the list.[^gotcha]
-
-[^gotcha]: There is a performance problem with this. Can you find it?
+That's the core of the "sieving" behaviour: take the front element of the list of numbers, call it `n`, and sieve every `nth` element afterwards. Our sieve is recursive, it sieves the result of sieving the rest of the list.
 
 {% highlight javascript %}
 function * sieve (iterable) {
   const iterator = iterable[Symbol.iterator]();
+  let n;
 
-  const { done, value: n } = iterator.next();
+  do {
+    const { done, value } = iterator.next();
+    if (done) return;
 
-  if (done) return;
+    n = value
+    yield n;
+  } while (n == null);
 
-  yield n;
-  yield * nullEveryNth(n, sieve(iterator));
+
+  yield * sieve(nullEveryNth(n, iterator));
 }
 {% endhighlight %}
 
@@ -361,6 +364,8 @@ But this is not always the case. The eager and lazy versions of `compact` both q
 Many other things work this way, for example escaped and unescaped strings. Or obfuscated and native IDs. To distinguish between things that have the same interfaces, but also have semantic or other contractural differences, we need *types*.
 
 We need to ensure that our programs work with each of the types, using the correct operations, even if the incorrect operations are also "duck compatible" and appear to work at first glance.
+
+(discuss on [hacker news](https://news.ycombinator.com/item?id=11516215))
 
 ---
 
