@@ -219,10 +219,18 @@ Let's take a pass at writing the Sieve of Eratosthenes in lazy style. First off,
 [ja]: https://leanpub.com/javascriptallongesix
 
 {% highlight javascript %}
-function * Numbers () {
-  let number = 0;
-  while (true) {
-    yield ++number;
+function * Range (from = 0, to = null) {
+  let number = from;
+
+  if (to == null) {
+    while (true) {
+      yield number++
+    }
+  }
+  else {
+    while (from <= to) {
+      yield number++;
+    }
   }
 }
 
@@ -233,13 +241,6 @@ function * take (numberToTake, iterable) {
     const { done, value } = iterator.next();
     if (!done) yield value;
   }
-}
-
-function * rest (iterable) {
-  const iterator = iterable[Symbol.iterator]();
-
-  iterator.next();
-  yield * iterator;
 }
 {% endhighlight %}
 
@@ -285,7 +286,7 @@ With `sieve` in hand, we can use `Numbers` to get a list of numbers from `1`, an
 
 {% highlight javascript %}
 function * Primes () {
-  const numbersFrom2 = rest(Numbers());
+  const numbersFrom2 = Range(2);
 
   yield * compact(sieve(numbersFrom2));
 }
