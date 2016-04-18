@@ -173,6 +173,10 @@ Generators yield values lazily. And `findWith` searches lazily, so we can find `
 
 ### the sieve of eratosthenes
 
+> We start with a table of numbers (e.g., 2, 3, 4, 5, . . . ) and progressively cross off numbers in the table until the only numbers left are primes. Specifically, we begin with the first number, p, in the table, and:
+> 1. Declare p to be prime, and cross off all the multiples of that number in the table, starting from p^2^ then;
+>  2. Find the next number in the table after p that is not yet crossed off and set p to that number; and then repeat from step 1.
+
 Here is the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes), written in eager style:
 
 {% highlight javascript %}
@@ -241,16 +245,20 @@ function * rest (iterable) {
 
 With those in hand, we can write a generator that maps an iterable to a sequence of values with every `nth` element changed to `null`:[^genuine]
 
-[^genuine]: This is the simplest and most naïve implementation that is recognizably identical to the written description: *We start with a table of numbers (e.g., 2, 3, 4, 5, . . . ) and progressively cross off numbers in the table until the only numbers left are primes. Specifically, we begin with the first number, p, in the table, and: 1. Declare p to be prime, and cross off all the multiples of that number in the table, then 2. Find the next number in the table after p that is not yet crossed off and set p to that number; and then repeat from step 1.* In [The Genuine Sieve of Eratosthenes](https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf), Melissa E. O’Neill describes how to write a lazy functional sieve that is much faster than this implementation, although it abstracts away the notion of crossing off multiples from a list.
+[^genuine]: This is the simplest and most naïve implementation that is recognizably identical to the written description. In [The Genuine Sieve of Eratosthenes](https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf), Melissa E. O’Neill describes how to write a lazy functional sieve that is much faster than this implementation, although it abstracts away the notion of crossing off multiples from a list.
 
 {% highlight javascript %}
-function * nullEveryNth (n, iterable) {
+function * nullEveryNth (skipFirst, n, iterable) {
   const iterator = iterable[Symbol.iterator]();
+
+  yield * take(skipFirst, iterator);
 
   while (true) {
     yield * take(n - 1, iterator);
+
     const { done, value } = iterator.next();
     if (done) return;
+
     yield null;
   }
 }
@@ -273,8 +281,7 @@ function * sieve (iterable) {
     yield n;
   } while (n == null);
 
-
-  yield * sieve(nullEveryNth(n, iterator));
+  yield * sieve(nullEveryNth(n * (n - 2), n, iterator));
 }
 {% endhighlight %}
 
@@ -369,6 +376,10 @@ We need to ensure that our programs work with each of the types, using the corre
 (discuss on [hacker news](https://news.ycombinator.com/item?id=11516215))
 
 ---
+
+### a small optimization
+
+
 
 ### notes
 
