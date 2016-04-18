@@ -255,10 +255,7 @@ function * nullEveryNth (skipFirst, n, iterable) {
 
   while (true) {
     yield * take(n - 1, iterator);
-
-    const { done, value } = iterator.next();
-    if (done) return;
-
+    iterator.next();
     yield null;
   }
 }
@@ -274,10 +271,9 @@ function * sieve (iterable) {
   let n;
 
   do {
-    const { done, value } = iterator.next();
-    if (done) return;
+    const { value } = iterator.next();
 
-    n = value
+    n = value;
     yield n;
   } while (n == null);
 
