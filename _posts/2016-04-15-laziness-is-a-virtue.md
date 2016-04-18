@@ -25,7 +25,9 @@ ifThen(1 === 0, 2 + 3)
   //=> undefined
 {% endhighlight %}
 
-Now, here's the question: Does JavaScript compute `2+3`? You probably know the answer: Yes it does. When it comes to passing arguments to a function invocation, JavaScript is *eager*, it evaluates all of the expressions, and it does so whether the value of the expression is used or not.
+Now, here's the question: Does JavaScript evaluate `2+3`? You probably know the answer: Yes it does. When it comes to passing arguments to a function invocation, JavaScript is *eager*, it evaluates all of the expressions, and it does so whether the value of the expression is used or not.[^constant]
+
+[^constant]: A few people have pointed out that a [sufficiently smart compiler](http://c2.com/cgi/wiki?SufficientlySmartCompiler) can notice that `2+3`involves two constants and a fixed operator, and therefore it can be compiled to `5` in advance. JavaScript does not *necessarily* perform this optimization, but if it did, we could substitute something like `x + y` and get to the same place in the essay.
 
 If JavaScript was *lazy*, it would not evaluate `2+3` in the expression `ifThen(1 === 0, 2 + 3)`. So is JavaScript an "eager" language? Mostly. But not always! If we write: `1 === 0 ? 2 + 3 : undefined`, JavaScript does *not* evaluate `2+3`. Operators like `?:` and `&&` and `||`, along with program control structures like `if`, are lazy. You just have to know in your head what is eager and what is lazy.
 
