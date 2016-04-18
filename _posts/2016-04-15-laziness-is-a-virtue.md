@@ -248,12 +248,7 @@ function * nullEveryNth (n, iterable) {
   const iterator = iterable[Symbol.iterator]();
 
   while (true) {
-    for (let i = 1; i < n; ++i) {
-      const { done, value } = iterator.next();
-
-      if (done) return;
-      yield value;
-    }
+    yield * take(n - 1, iterator);
     const { done, value } = iterator.next();
     if (done) return;
     yield null;
