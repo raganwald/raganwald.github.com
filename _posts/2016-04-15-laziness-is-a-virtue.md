@@ -282,14 +282,10 @@ function * sieve (iterable) {
 }
 {% endhighlight %}
 
-With `sieve` in hand, we can use `Numbers` to get a list of numbers from `1`, and the `rest` operation to give us all but the head... In other words, the numbers from `2`. Then we `compact` the result to filter out all the `nulls`, and what is left are the primes:
+With `sieve` in hand, we can use `Range` to get a list of numbers from `2`, sieve those recursively, then we `compact` the result to filter out all the `nulls`, and what is left are the primes:
 
 {% highlight javascript %}
-function * Primes () {
-  const numbersFrom2 = Range(2);
-
-  yield * compact(sieve(numbersFrom2));
-}
+const Primes = compact(sieve(Range(2)));
 {% endhighlight %}
 
 Besides performance, did you spot the full-on bug? Try running it yourself, it won't work! The problem is that at the last step, we called `compact`, and `compact` is an eager function, not a lazy one. So we end up trying to build an infinite list of primes before filtering out the nulls.
