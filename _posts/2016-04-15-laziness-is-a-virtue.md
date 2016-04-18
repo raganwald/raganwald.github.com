@@ -219,7 +219,7 @@ Let's take a pass at writing the Sieve of Eratosthenes in lazy style. First off,
 [ja]: https://leanpub.com/javascriptallongesix
 
 {% highlight javascript %}
-function * Range (from = 0, to = null) {
+function * range (from = 0, to = null) {
   let number = from;
 
   if (to == null) {
@@ -282,10 +282,10 @@ function * sieve (iterable) {
 }
 {% endhighlight %}
 
-With `sieve` in hand, we can use `Range` to get a list of numbers from `2`, sieve those recursively, then we `compact` the result to filter out all the `nulls`, and what is left are the primes:
+With `sieve` in hand, we can use `range` to get a list of numbers from `2`, sieve those recursively, then we `compact` the result to filter out all the `nulls`, and what is left are the primes:
 
 {% highlight javascript %}
-const Primes = compact(sieve(Range(2)));
+const Primes = compact(sieve(range(2)));
 {% endhighlight %}
 
 Besides performance, did you spot the full-on bug? Try running it yourself, it won't work! The problem is that at the last step, we called `compact`, and `compact` is an eager function, not a lazy one. So we end up trying to build an infinite list of primes before filtering out the nulls.
