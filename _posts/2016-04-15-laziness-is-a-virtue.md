@@ -239,7 +239,9 @@ function * rest (iterable) {
 }
 {% endhighlight %}
 
-With those in hand, we can write a generator that maps an iterable to a sequence of values with every `nth` element changed to `null`:
+With those in hand, we can write a generator that maps an iterable to a sequence of values with every `nth` element changed to `null`:[^genuine]
+
+[^genuine]: This is the simplest and most naïve implementation that is recognizably identical to the written description *We start with a table of numbers (e.g., 2, 3, 4, 5, . . . ) and progressively cross off numbers in the table until the only numbers left are primes. Specifically, we begin with the first number, p, in the table, and: 1. Declare p to be prime, and cross off all the multiples of that number in the table, then 2. Find the next number in the table after p that is not yet crossed off and set p to that number; and then repeat from step 1.* In [The Genuine Sieve of Eratosthenes](https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf), Melissa E. O’Neill describes how to write a lazy functional sieve that is much faster than this implementation, although it abstracts away the notion of crossing off multiples from a list.
 
 {% highlight javascript %}
 function * nullEveryNth (n, iterable) {
@@ -259,7 +261,9 @@ function * nullEveryNth (n, iterable) {
 }
 {% endhighlight %}
 
-That's the core of the "sieving" behaviour: take the front element of the list of numbers, call it `n`, and sieve every `nth` element afterwards. Our sieve is recursive, it sieves the result of sieving the rest of the list.
+That's the core of the "sieving" behaviour: take the front element of the list of numbers, call it `n`, and sieve every `nth` element afterwards.
+
+Now we can apply `nullEveryNth` recursively: Take the first unsieved number from the front of the list, sieve its multiples out, and yield the results of sieving what remains:
 
 {% highlight javascript %}
 function * sieve (iterable) {
