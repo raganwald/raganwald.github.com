@@ -174,7 +174,9 @@ Generators yield values lazily. And `findWith` searches lazily, so we can find `
 ### the sieve of eratosthenes
 
 > We start with a table of numbers (e.g., 2, 3, 4, 5, . . . ) and progressively cross off numbers in the table until the only numbers left are primes. Specifically, we begin with the first number, p, in the table, and:
-> 1. Declare p to be prime, and cross off all the multiples of that number in the table, starting from p^2^ then;
+>
+> 1. Declare p to be prime, and cross off all the multiples of that number in the table, starting from p squared, then;
+>
 >  2. Find the next number in the table after p that is not yet crossed off and set p to that number; and then repeat from step 1.
 
 Here is the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes), written in eager style:
