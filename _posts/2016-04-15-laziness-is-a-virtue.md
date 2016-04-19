@@ -219,18 +219,11 @@ Let's take a pass at writing the Sieve of Eratosthenes in lazy style. First off,
 [ja]: https://leanpub.com/javascriptallongesix
 
 {% highlight javascript %}
-function * range (from = 0, to = null) {
+function * range (from = 0, to = Number.MAX_VALUE) {
   let number = from;
 
-  if (to == null) {
-    while (true) {
-      yield number++
-    }
-  }
-  else {
-    while (from <= to) {
-      yield number++;
-    }
+  while (number <= to) {
+    yield number++;
   }
 }
 
