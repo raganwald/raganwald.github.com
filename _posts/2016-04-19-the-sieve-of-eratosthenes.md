@@ -80,17 +80,7 @@ function * sieve (iterable) {
   yield * sieve(nullEveryNth(n * (n - 2), n, iterator));
 }
 
-take(100, Primes())
-  //=>
-    [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,
-     53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107,
-     109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167,
-     173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229,
-     233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283,
-     293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359,
-     367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431,
-     433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491,
-     499, 503, 509, 521, 523, 541]
+const Primes = compact(sieve(range(2)));
 {% endhighlight %}
 
 This is naïve in teh sense that it mimics what a child does when the sieve is explained to them for the firs time. Given a big table of numbers, they start crossing them out using what we know to be modulo arithmatic: They scan forward number by number, counting as they go:
@@ -111,19 +101,10 @@ Instead of thinking of "crossing numbers out of a list," let's think of the siev
 
 We are going to need some operations. From here on in, all operations assume that they are dealing with _ordered lists_. We won't give them fancy names like `mergeOrderedList`, we'll just call them `merge` or whatever, and if we were bundling them up for use eleswhere, we'd namespace them in a module.
 
-`take` transforms a possibly infinite iterator into a finite iterator with at most `numberToTake` elements. `merge` performs a naïve merge of two ordered iterators. `unique` removes duplicates from an ordered list. And `destructure` takes any iterable and returns an object with teh first element and the remainder of the iterable's elements. It's designed to be used with JavaScript's destructuring assignment.
+We've seen `take` above: Ittransforms a possibly infinite iterator into a finite iterator with at most `numberToTake` elements. `merge` performs a naïve merge of two ordered iterators. `unique` removes duplicates from an ordered list. And `destructure` takes any iterable and returns an object with teh first element and the remainder of the iterable's elements. It's designed to be used with JavaScript's destructuring assignment.
 
 {% highlight javascript %}
 // General-Purpose Lazy Operations
-
-function * take (numberToTake, iterable) {
-  const iterator = iterable[Symbol.iterator]();
-
-  for (let i = 0; i < numberToTake; ++i) {
-    const { done, value } = iterator.next();
-    if (!done) yield value;
-  }
-}
 
 function * merge (aIterable, bIterable) {
   const aIterator = aIterable[Symbol.iterator]();
@@ -192,7 +173,7 @@ function * multiplesOf (startingWith, n) {
 By successively merging them together, we get a list of numbers that aren't prime. The merge of the composites above is `4, 6, 8, 9, 10, 12, 12, 14, 15, 16, 18, 18, 20, 21, 22, 24, 24, 25, ...`, which we can pass to `unique` to get `4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, ...``. To derive the primes, we start with `2` and iterate upwards. If our prime candidate is less than the lowest composite number, we `yield` it and merge its multiples with our list of composites. Whenever the prime candidate is the same as the lowest composite number, we don't yield it, and we also get the next lowest composite number.
 
 {% highlight javascript %}
-function * primes () {
+function * Primes () {
   let prime = 2;
   let { first: lowestCompositeNumber,
         rest: remainingCompositeNumbers
@@ -212,5 +193,17 @@ function * primes () {
     }
   }
 }
+
+take(100, Primes())
+  //=>
+    [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,
+     53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107,
+     109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167,
+     173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229,
+     233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283,
+     293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359,
+     367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431,
+     433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491,
+     499, 503, 509, 521, 523, 541]
 {% endhighlight %}
 
