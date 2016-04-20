@@ -83,7 +83,7 @@ function * sieve (iterable) {
 const Primes = compact(sieve(range(2)));
 {% endhighlight %}
 
-This is naïve in the sense that it mimics what a child does when the sieve is explained to them for the firs time. Given a big table of numbers, they start crossing them out using what we know to be modulo arithmetic: They scan forward number by number, counting as they go:
+This is naïve in the sense that it mimics what a child does when the sieve is explained to them for the first time. Given a big table of numbers, they start crossing them out using what we know to be modulo arithmetic: They scan forward number by number, counting as they go:
 
 > One TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out)...
 >
@@ -207,3 +207,14 @@ take(100, Primes())
      499, 503, 509, 521, 523, 541]
 {% endhighlight %}
 
+So far so good, but looking at our implementation of `merge`, we can see that the way it works is that as we take things from a collection of lists merged together, we're invoking a series of comparisons, one for each list. So every time we come across a composite number, we're invoking one comparison for each prime less than or equal to the square root of the composite number.
+
+This is roughly equivalent in performance to our naïve implementation from [the last post][last], the only improvement is that we don't need to do all the checking for primes.
+
+nevertheless, this is a step towards a better implementation in a different way: By isolating the composites in their own lazy structure, we can swap out the naïve merge for something faster.
+
+Like a [priority queue][pq].
+
+[pq]: https://en.wikipedia.org/wiki/Priority_queue
+
+*to be continued*
