@@ -1,9 +1,11 @@
 ---
 layout: default
-tags: [allonge]
+tags: [allonge, noindex]
 ---
 
-In [“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”](http://raganwald.com/2016/04/15/laziness-is-a-virtue.html), we looked at the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes).
+In [the last post][last], we looked at the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes).
+
+[last]: http://raganwald.com/2016/04/15/laziness-is-a-virtue.html "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
 
 The definition is:
 
