@@ -83,7 +83,7 @@ function * sieve (iterable) {
 const Primes = compact(sieve(range(2)));
 {% endhighlight %}
 
-This is naïve in teh sense that it mimics what a child does when the sieve is explained to them for the firs time. Given a big table of numbers, they start crossing them out using what we know to be modulo arithmatic: They scan forward number by number, counting as they go:
+This is naïve in the sense that it mimics what a child does when the sieve is explained to them for the firs time. Given a big table of numbers, they start crossing them out using what we know to be modulo arithmetic: They scan forward number by number, counting as they go:
 
 > One TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out)...
 >
@@ -99,9 +99,9 @@ Whereas, if we can eliminate 'counting past every number,' we can get to a place
 
 Instead of thinking of "crossing numbers out of a list," let's think of the sieve in the title: Let's imagine we are going to build an actual sieve, a filter that takes another list of numbers and 'filters out' the ones that aren't prime.
 
-We are going to need some operations. From here on in, all operations assume that they are dealing with _ordered lists_. We won't give them fancy names like `mergeOrderedList`, we'll just call them `merge` or whatever, and if we were bundling them up for use eleswhere, we'd namespace them in a module.
+We are going to need some operations. From here on in, all operations assume that they are dealing with _ordered lists_. We won't give them fancy names like `mergeOrderedList`, we'll just call them `merge` or whatever, and if we were bundling them up for use elsewhere, we'd namespace them in a module.
 
-We've seen `take` above: Ittransforms a possibly infinite iterator into a finite iterator with at most `numberToTake` elements. `merge` performs a naïve merge of two ordered iterators. `unique` removes duplicates from an ordered list. And `destructure` takes any iterable and returns an object with teh first element and the remainder of the iterable's elements. It's designed to be used with JavaScript's destructuring assignment.
+We've seen `take` above: It transforms a possibly infinite iterator into a finite iterator with at most `numberToTake` elements. `merge` performs a naïve merge of two ordered iterators. `unique` removes duplicates from an ordered list. And `destructure` takes any iterable and returns an object with the first element and the remainder of the iterable's elements. It's designed to be used with JavaScript's destructuring assignment.
 
 {% highlight javascript %}
 // General-Purpose Lazy Operations
