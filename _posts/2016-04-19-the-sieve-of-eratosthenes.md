@@ -211,7 +211,7 @@ So far so good, but looking at our implementation of `merge`, we can see that th
 
 This is roughly equivalent in performance to our naïve implementation from [the last post][last], the only improvement is that we don't need to do all the checking for primes.
 
-nevertheless, this is a step towards a better implementation in a different way: By isolating the composites in their own lazy structure, we can swap out the naïve merge for something faster.
+Nevertheless, this is a step towards a better implementation in a different way: By isolating the composites in their own lazy structure, we can swap out the naïve merge for something faster.
 
 Like a [priority queue][pq].
 
