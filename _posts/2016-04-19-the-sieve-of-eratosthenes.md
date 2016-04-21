@@ -95,6 +95,8 @@ This conforms to the description given above, but it has the performance charact
 
 Whereas, if we can eliminate 'counting past every number,' we can get to a place where every number is only touched by its prime factors.
 
+---
+
 ### altering our metaphor
 
 Instead of thinking of "crossing numbers out of a list," let's think of the sieve in the title: Let's imagine we are going to build an actual sieve, a filter that takes another list of numbers and 'filters out' the ones that aren't prime.
@@ -207,14 +209,110 @@ take(100, Primes())
      499, 503, 509, 521, 523, 541]
 {% endhighlight %}
 
-So far so good, but looking at our implementation of `merge`, we can see that the way it works is that as we take things from a collection of lists merged together, we're invoking a series of comparisons, one for each list. So every time we come across a composite number, we're invoking one comparison for each prime less than or equal to the square root of the composite number.
+So far so good, but looking at our implementation of `merge`, we can see that the way it works is that as we take things from a collection of lists merged together, we're invoking a series of comparisons, one for each list. So every time we come across a composite number, we're invoking one comparison for each prime less than the composite number.
 
-This is roughly equivalent in performance to our naïve implementation from [the last post][last], the only improvement is that we don't need to do all the checking for primes.
+Therefore, checking a number like `26` requires a comparison for the multiples of `2`, `3`, `5`, `7`, `11` and so on up to `23` even though it's only divisible by `2` and `13`. This is roughly equivalent in performance to our naïve implementation from [the last post][last].
+
+The *ideal* performance of the Sieve of Eratosthenes is that every composite number gets crossed out once for each of its factors less than its square root. Therefore, a number like `26` will get crossed out for `2`, but not `3`, `5`, or any other prime including `13`, its other factor.
 
 Nevertheless, this is a step towards a better implementation in a different way: By isolating the composites in their own lazy structure, we can swap out the naïve merge for something faster.
+
+---
+
+### hash checking
+
+As described, the Sieve of Eratosthenes uses a large set of numbers and checks each one off. If we were to faithfully reproduce it as we iterate over prime numbers, we'd require space proportional to the cardinality of the largest prime returned. So if we collect 100 primes, we'd need space proportional to `541`, the 100th prime.
+
+We don't want to do that, we want to maintain space proportional to the number of primes found. So for the 100th prime, we'd require space proportional to `100`. The ratio grows as we collect more primes, so this is important.
+
+The first and obvious step is to use a data structure more accommodating of sparse data. Since JavaScript makes hash tables easy, we'll start with that.
+
+Instead of our naïve lazy merge, let's put our prime iterators in a hash table, indexed by the next number to extract. Two iterators can have the same next number, so we'll keep a list of iterators for each number.
+
+When we start, our `HashMerge` will have one iterable, at index `4`. Its remaining numbers will be `6`, `8`, and d so on. We then add another at `9`, with numbers `12`, `15`, and so on. We try removing `4`, and when we do so, we re-merge the iterator for multiples of two, but now it will be at number `6`, with remaining numbers `8`, `10`, and so on.
+
+Thus `remove` is always relocating iterables to their next higher number. When two or more iterators end up at the same index (like `12`), all get relocated.
+
+{% highlight javascript %}
+class HashSieve {
+  constructor () {
+    this._hash = Object.create(null);
+  }
+
+  merge (iterable) {
+    const { first, rest } = destructure(iterable);
+
+    if (this._hash[first]) {
+      this._hash[first].push(iterable);
+    }
+    else this._hash[first] = [iterable];
+
+    return this;
+  }
+
+  has (number) {
+    return !!this._hash[number];
+  }
+
+  remove (number) {
+    const iterables = this._hash[number];
+
+    if (iterables == null) return false;
+
+    delete this._hash[number];
+    iterables.forEach((iterable) => this.merge(iterable));
+
+    return number;
+  }
+}
+
+function * Primes () {
+  let prime = 2;
+  const composites = new HashSieve();
+
+  while (true) {
+    yield prime;
+    composites.merge(multiplesOf(prime * prime, prime));
+
+    while (composites.has(++prime)) {
+      composites.remove(prime)
+    }
+  }
+}
+
+take(100, Primes())
+  //=>
+    [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,
+     53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107,
+     109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167,
+     173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229,
+     233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283,
+     293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359,
+     367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431,
+     433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491,
+     499, 503, 509, 521, 523, 541]
+{% endhighlight %}
+
+---
+
+### queues
+
+This is much better, and the code looks simpler to boot. That being said, it could be better. Hash tables are very nice, and fast for most purposes. But they are not perfect. Adding and removing elements involves monkeying around behind the scenes with hashing functions and buckets. Every time we look a number up, we run a hashing function on it.
+
+If we measure performance in JavaScript, we may be very happy because the HashTable implementation baked into the engine while our own code runs in its interpreter. And that might be good enough. But as curious people, we might ask ourselves if we aren't getting more than we need... And paying more than we need for it.
+
+For one thing, we only ever check the smallest number in the table with `.has`. There's actually no need for a fancy lookup that is actually checking all the numbers. If we knew what the smallest number was, we could check that with straight up `===`. The complexity would, of course, involve figuring out what the next smallest number would be when removing iterables and re-merging them.
+
+So what we need is
 
 Like a [priority queue][pq].
 
 [pq]: https://en.wikipedia.org/wiki/Priority_queue
 
 *to be continued*
+
+---
+
+### source code
+
+<script src="https://gist.github.com/raganwald/78b086166c0712b49e5160edca5ebadd.js"></script>
