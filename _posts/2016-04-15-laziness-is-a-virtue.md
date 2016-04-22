@@ -372,6 +372,12 @@ We need to ensure that our programs work with each of the types, using the corre
 
 ---
 
+### follow-up
+
+[The Genuine JavaScript Sieve of Eratosthenes](http://raganwald.com/2016/04/19/the-sieve-of-eratosthenes.html).
+
+---
+
 ### the full source
 
 <script src="https://gist.github.com/raganwald/cdfbd4c7b8aaf75469e2b404892718df.js"></script>
