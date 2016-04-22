@@ -4,6 +4,14 @@ layout: default
 tags: [allonge]
 ---
 
+### melissa e. o'neill
+
+![Melissa E. O'Neill lecturing at Stanford](/assets/images/melissaoneill.jpg)
+
+---
+
+### the unfaithful sieve
+
 In [the last post][last], we looked at the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes).
 
 [last]: http://raganwald.com/2016/04/15/laziness-is-a-virtue.html "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
@@ -86,31 +94,46 @@ const Primes = compact(sieve(range(2)));
 
 This is naïve in the sense that it mimics what a child does when the sieve is explained to them for the first time. Given a big table of numbers, they start crossing them out using what we know to be modulo arithmetic: They scan forward number by number, counting as they go:
 
-> One TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out), one TWO (cross out)...
+> One TWO (cross out), one TWO (cross out), one TWO (cross out), ...
 >
-> One two THREE (cross out), one two THREE (cross out), one two THREE (cross out), one two THREE (cross out), one two THREE (cross out), one two THREE (cross out), one two THREE (cross out), one two THREE (cross out), one two THREE (cross out), one two THREE (cross out), one two THREE (cross out), one two THREE (cross out), one two THREE (cross out)...
+> One two THREE (cross out), one two THREE (cross out), one two THREE (cross out), ...
 >
-> One two three four FIVE (cross out), one two three four FIVE (cross out), one two three four FIVE (cross out), one two three four FIVE (cross out), one two three four FIVE (cross out), one two three four FIVE (cross out), one two three four FIVE (cross out), one two three four FIVE (cross out), one two three four FIVE (cross out), one two three four FIVE (cross out)...
+> One two three four FIVE (cross out), one two three four FIVE (cross out), one two three four FIVE (cross out), ...
 
-This conforms to the description given above, but it has the performance characteristics of [Trial Division](https://en.wikipedia.org/wiki/Trial_division): Every number, whether prime or not, must be 'touched' by every prime smaller than it.
-
-Whereas, if we can eliminate 'counting past every number,' we can get towards[^towards] a place where every number is only touched by its prime factors.
-
-[^towards]: It seems so simple to say, "cross off every multiple of a prime." But what's the real cost of calculating the multiples of each prime? In an idealized computer, that's one operation, because we have hardware that adds numbers in one step. But for a human, that might involve one step for each digit in the result. Likewise, we can say "cross off the multiple," an idealized computer can write to an indexed data structure in one step. But for a human, that effort might actually involve scanning the numbers on a chart by eye. Is that actually sequential? The real cost of an algorithm is very sensitive to the data structures we use and the way we implement them.
+This conforms to the description given above, but it has the performance characteristics of [Trial Division](https://en.wikipedia.org/wiki/Trial_division): Every number, whether prime or not, must be 'touched' by every prime smaller than it. Melissa O'Neill calls this an "Unfaithful Sieve."
 
 ---
 
 ### altering our metaphor
 
-Instead of thinking of "crossing numbers out of a list," let's think of the sieve in the title: Let's imagine we are going to build an actual sieve, a filter that takes another list of numbers and 'filters out' the ones that aren't prime.
+Instead of thinking of "crossing numbers out of a list," let's think of the sieve in the title: Let's build an actual sieve, a data structure that we can use to determine whether a number is prime or not.
 
-We are going to need some operations. From here on in, all operations assume that they are dealing with _ordered lists_. We won't give them fancy names like `mergeOrderedList`, we'll just call them `merge` or whatever, and if we were bundling them up for use elsewhere, we'd namespace them in a module.
+Or sieve will be an object with a constructor and two methods of note:
 
-We've seen `take` above: It transforms a possibly infinite iterator into a finite iterator with at most `numberToTake` elements. `merge` performs a naïve merge of two ordered iterators. `unique` removes duplicates from an ordered list. And `destructure` takes any iterable and returns an object with the first element and the remainder of the iterable's elements. It's designed to be used with JavaScript's destructuring assignment.
+0. `addAll(iterable)` adds all the elements of `iterable` to our sieve. It is required that the elements of `iterable` be ordered, and that the first element of `iterable` be larger than the lowest number of any iterable already added.
+0. `has(number)` tests whether `number` is present in our sieve. It is required that successive calls to `has` must provide numbers that increase. In other words, calls to `has` are also ordered. Since calls to `has` are ordered by definition, the sieve is free to internally discard `number` if it returns `true`.
+
+Given such a data structure, our generator for primes is much simpler:
 
 {% highlight javascript %}
-// General-Purpose Lazy Operations
+function * Primes () {
+  let prime = 2;
+  const composites = new Sieve();
 
+  while (true) {
+    yield prime;
+    composites.addAll(multiplesOf(prime * prime, prime));
+
+    while (composites.has(++prime)) {
+      // do nothing
+    }
+  }
+}
+{% endhighlight %}
+
+So let's write a `Sieve` class. Our first crack will actually use the same "unfaithful" approach. Only instead of "crossing out" numbers in a list, we'll *merge* lists of composite numbers together. Here is a generator that takes two ordered lists and merges them naïvely:
+
+{% highlight javascript %}
 function * merge (aIterable, bIterable) {
   const aIterator = aIterable[Symbol.iterator]();
   const bIterator = bIterable[Symbol.iterator]();
@@ -137,7 +160,11 @@ function * merge (aIterable, bIterable) {
     }
   }
 }
+{% endhighlight %}
 
+We want to work with ordered lists that are also unique, so this function eliminates duplicates:
+
+{% highlight javascript %}
 function * unique (iterable) {
   const iterator = iterable[Symbol.iterator]();
   let lastYielded = {};
@@ -151,7 +178,11 @@ function * unique (iterable) {
     ({ done, value } = iterator.next());
   }
 }
+{% endhighlight %}
 
+We need to get the `first` element of a list and the `rest` of a list on a regular basis. Here's a helper that works very nicely with JavaScript's destructuring assignment:
+
+{% highlight javascript %}
 function destructure (iterable) {
   const iterator = iterable[Symbol.iterator]();
   const { done, value } = iterator.next();
@@ -162,7 +193,7 @@ function destructure (iterable) {
 }
 {% endhighlight %}
 
-With these in hand, we can write our sieve in a new way. As we collect primes, we create a list of composite numbers by collecting the multiples of each primes, starting with the prime squared. So for two, our composites are `4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, ...`. For three, they're `9, 12, 15, 18, 21, 24, ...`, and for five they're `25, 30, 35, 40, 45, ...`.
+With these in hand, we can write our sieve in the new way. As we collect primes, we create a list of composite numbers by collecting the multiples of each primes, starting with the prime squared. So for two, our composites are `4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, ...`. For three, they're `9, 12, 15, 18, 21, 24, ...`, and for five they're `25, 30, 35, 40, 45, ...`.
 
 {% highlight javascript %}
 function * multiplesOf (startingWith, n) {
@@ -175,7 +206,9 @@ function * multiplesOf (startingWith, n) {
 }
 {% endhighlight %}
 
-By successively merging them together, we get a list of numbers that aren't prime. The merge of the composites above is `4, 6, 8, 9, 10, 12, 12, 14, 15, 16, 18, 18, 20, 21, 22, 24, 24, 25, ...`, which we can pass to `unique` to get `4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, ...``. To derive the primes, we start with `2` and iterate upwards. If our prime candidate is less than the lowest composite number, we `yield` it and merge its multiples with our list of composites. Whenever the prime candidate is the same as the lowest composite number, we don't yield it, and we also get the next lowest composite number.
+By successively merging them together, we get a list of numbers that aren't prime. The merge of the composites above is `4, 6, 8, 9, 10, 12, 12, 14, 15, 16, 18, 18, 20, 21, 22, 24, 24, 25, ...`, which we can pass to `unique` to get `4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, ...``.
+
+Here is our `MergeSieve` class. It implements `addAll` by merging the new iterator with its existing iterator of composite numbers, and it implements `has` by checking whether the number provided is equal to the first number in its list. If it is, it removes the first.
 
 {% highlight javascript %}
 class MergeSieve {
@@ -184,7 +217,7 @@ class MergeSieve {
     this._rest = [];
   }
 
-  merge (iterable) {
+  addAll (iterable) {
     this._rest = unique(merge(this._rest, iterable));
     if (this._first == null) {
       ({
@@ -192,23 +225,24 @@ class MergeSieve {
         rest: this._rest
       } = destructure(this._rest));
     }
-
-    return this;
   }
 
   has (number) {
-    return number === this._first;
+    while (this._first < number) {
+      this._removeFirst();
+    }
+    if (number === this._first) {
+      this._removeFirst();
+      return true;
+    }
+    else return false;
   }
 
-  remove (number) {
-    if (number !== this._first) throw 'illegal';
-
+  _removeFirst () {
     ({
       first: this._first,
       rest: this._rest
     } = destructure(this._rest));
-
-    return number;
   }
 }
 
@@ -218,10 +252,10 @@ function * Primes () {
 
   while (true) {
     yield prime;
-    composites.merge(multiplesOf(prime * prime, prime));
+    composites.addAll(multiplesOf(prime * prime, prime));
 
     while (composites.has(++prime)) {
-      composites.remove(prime)
+      // do nothing
     }
   }
 }
@@ -261,7 +295,7 @@ Instead of our naïve lazy merge, let's put our prime iterators in a hash table,
 
 When we start, our `HashMerge` will have one iterable, at index `4`. Its remaining numbers will be `6`, `8`, and d so on. We then add another at `9`, with numbers `12`, `15`, and so on. We try removing `4`, and when we do so, we re-merge the iterator for multiples of two, but now it will be at number `6`, with remaining numbers `8`, `10`, and so on.
 
-Thus `remove` is always relocating iterables to their next higher number. When two or more iterators end up at the same index (like `12`), all get relocated.
+Thus, `_remove` is always relocating iterables to their next higher number. When two or more iterators end up at the same index (like `12`), all get relocated.
 
 {% highlight javascript %}
 class HashSieve {
@@ -269,7 +303,7 @@ class HashSieve {
     this._hash = Object.create(null);
   }
 
-  merge (iterable) {
+  addAll (iterable) {
     const { first, rest } = destructure(iterable);
 
     if (this._hash[first]) {
@@ -281,16 +315,20 @@ class HashSieve {
   }
 
   has (number) {
-    return !!this._hash[number];
+    if (this._hash[number]) {
+      this._remove(number);
+      return true;
+    }
+    else return false;
   }
 
-  remove (number) {
+  _remove (number) {
     const iterables = this._hash[number];
 
     if (iterables == null) return false;
 
     delete this._hash[number];
-    iterables.forEach((iterable) => this.merge(iterable));
+    iterables.forEach((iterable) => this.addAll(iterable));
 
     return number;
   }
@@ -302,10 +340,10 @@ function * Primes () {
 
   while (true) {
     yield prime;
-    composites.merge(multiplesOf(prime * prime, prime));
+    composites.addAll(multiplesOf(prime * prime, prime));
 
     while (composites.has(++prime)) {
-      composites.remove(prime)
+      // do nothing
     }
   }
 }
@@ -323,23 +361,34 @@ take(100, Primes())
      499, 503, 509, 521, 523, 541]
 {% endhighlight %}
 
+This is much better than our `MergeSieve`. The check for `has` involves the constant overhead of performing a hash lookup, of course, and that is more expensive than the `===` test of `MergeSieve`. But what happens when each sieve removes the no-longer-needed number?
+
+-  When `MergeSieve` tests a composite number, it iterates. Because of the way `merge` is written, iterating requires an `if` statement for the number of iterables seen so far -1. In other words, every time it hits a composite number, if there are `p` primes less than the composite number, `MergeSieve` needs to perform `p-1` operations, regardless of how many prime factors the composite number actually has.
+-  When `HashSieve` tests a composite number, it iterates and relocates each of the iterators at that number. There will be one iterator for each prime factor, and only the prime factors less than the square root of the composite number will be included. However, for each one, there is a large constant factor as we have to perform an insert in the has table. Finally, there is a single remove from the hash table. So `HashSieve` does fewer operations, but each is more expensive.
+
+As the numbers grow, primes become scarcer, but the total number of primes grows. Therefore, `MergeSieve` gets slower and slower as it is performing operations for each prime discovered so far. `HashSieve` catches up and then gets relatively faster and faster.
+
 ---
 
-### queues
+### summary
 
-This is much better, and the code looks simpler to boot. That being said, it could be better. Hash tables are very nice, and fast for most purposes. But they are not perfect. Adding and removing elements involves monkeying around behind the scenes with hashing functions and buckets. Every time we look a number up, we run a hashing function on it.
+Not all Sieves of Eratosthenes have the desired performance of time proportional to the number of prime factors for each composite number. Those that don't may or may not be useful for illustrating a point about mixing lazy and non-lazy operations, but they are "unfaithful" to the Sieve of Eratosthenes' performance and should not be considered authentic implementations.
 
-If we measure performance in JavaScript, we may be very happy because the HashTable implementation baked into the engine while our own code runs in its interpreter. And that might be good enough. But as curious people, we might ask ourselves if we aren't getting more than we need... And paying more than we need for it.
+(This essay is adapted from [The Genuine Sieve of Eratosthenes][g] by Melissa E. O'Neill)
 
-For one thing, we only ever check the smallest number in the table with `.has`. There's actually no need for a fancy lookup that is actually checking all the numbers. If we knew what the smallest number was, we could check that with straight up `===`. The complexity would, of course, involve figuring out what the next smallest number would be when removing iterables and re-merging them.
+[g]: https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf
 
-So what we need is
+---
 
-Like a [priority queue][pq].
+### postscript: queues
+
+Our `HashSieve` is much better than our `MergeSieve`, and the code looks simpler to boot. That being said, it could be even better. Hash tables are very nice, and fast for most purposes. But they are not perfect. Adding and removing elements involves monkeying around behind the scenes with hashing functions and buckets. Every time we look a number up, we run a hashing function on it.
+
+Also, we only ever check the smallest number in the table with `.has`. There's actually no need for a fancy lookup that is actually checking all the numbers. If we knew what the smallest number was, we could check that with straight up `===`, just like `MergeSieve`. The complexity would, of course, involve figuring out what the next smallest number would be when removing iterables and re-merging them.
+
+We'd need a [priority queue][pq].
 
 [pq]: https://en.wikipedia.org/wiki/Priority_queue
-
-*to be continued*
 
 ---
 
