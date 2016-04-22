@@ -1,4 +1,5 @@
 ---
+title: "The Genuine Sieve of Eratosthenes"
 layout: default
 tags: [allonge, noindex]
 ---
@@ -93,7 +94,9 @@ This is naïve in the sense that it mimics what a child does when the sieve is e
 
 This conforms to the description given above, but it has the performance characteristics of [Trial Division](https://en.wikipedia.org/wiki/Trial_division): Every number, whether prime or not, must be 'touched' by every prime smaller than it.
 
-Whereas, if we can eliminate 'counting past every number,' we can get to a place where every number is only touched by its prime factors.
+Whereas, if we can eliminate 'counting past every number,' we can get towards[^towards] a place where every number is only touched by its prime factors.
+
+[^towards]: It seems so simple to say, "cross off every multiple of a prime." But what's the real cost of calculating the multiples of each prime? In an idealized computer, that's one operation, because we have hardware that adds numbers in one step. But for a human, that might involve one step for each digit in the result. Likewise, we can say "cross off the multiple," an idealized computer can write to an indexed data structure in one step. But for a human, that effort might actually involve scanning the numbers on a chart by eye. Is that actually sequential? The real cost of an algorithm is very sensitive to the data structures we use and the way we implement them.
 
 ---
 
@@ -175,23 +178,50 @@ function * multiplesOf (startingWith, n) {
 By successively merging them together, we get a list of numbers that aren't prime. The merge of the composites above is `4, 6, 8, 9, 10, 12, 12, 14, 15, 16, 18, 18, 20, 21, 22, 24, 24, 25, ...`, which we can pass to `unique` to get `4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, ...``. To derive the primes, we start with `2` and iterate upwards. If our prime candidate is less than the lowest composite number, we `yield` it and merge its multiples with our list of composites. Whenever the prime candidate is the same as the lowest composite number, we don't yield it, and we also get the next lowest composite number.
 
 {% highlight javascript %}
+class MergeSieve {
+  constructor () {
+    this._first = undefined;
+    this._rest = [];
+  }
+
+  merge (iterable) {
+    this._rest = unique(merge(this._rest, iterable));
+    if (this._first == null) {
+      ({
+        first: this._first,
+        rest: this._rest
+      } = destructure(this._rest));
+    }
+
+    return this;
+  }
+
+  has (number) {
+    return number === this._first;
+  }
+
+  remove (number) {
+    if (number !== this._first) throw 'illegal';
+
+    ({
+      first: this._first,
+      rest: this._rest
+    } = destructure(this._rest));
+
+    return number;
+  }
+}
+
 function * Primes () {
   let prime = 2;
-  let { first: lowestCompositeNumber,
-        rest: remainingCompositeNumbers
-      } = destructure(multiplesOf(prime * prime, prime));
-
-  yield prime++;
+  const composites = new MergeSieve();
 
   while (true) {
-    if (prime < lowestCompositeNumber) {
-      remainingCompositeNumbers = unique(merge(remainingCompositeNumbers, multiplesOf(prime * prime, prime)));
-      yield prime++;
-    } else  {
-      ++prime;
-      ({ first: lowestCompositeNumber,
-        rest: remainingCompositeNumbers
-      } = destructure(remainingCompositeNumbers));
+    yield prime;
+    composites.merge(multiplesOf(prime * prime, prime));
+
+    while (composites.has(++prime)) {
+      composites.remove(prime)
     }
   }
 }
