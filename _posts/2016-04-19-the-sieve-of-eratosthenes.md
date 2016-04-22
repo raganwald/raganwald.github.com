@@ -1,7 +1,7 @@
 ---
 title: "The Genuine Sieve of Eratosthenes"
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 In [the last post][last], we looked at the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes).
