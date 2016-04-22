@@ -106,7 +106,7 @@ This conforms to the description given above, but it has the performance charact
 
 Instead of thinking of "crossing numbers out of a list," let's think of the sieve in the title: Let's build an actual sieve, a data structure that we can use to determine whether a number is prime or not.
 
-Or sieve will be an object with a constructor and two methods of note:
+Our sieve will be an object with a constructor and two methods of note:
 
 0. `addAll(iterable)` adds all the elements of `iterable` to our sieve. It is required that the elements of `iterable` be ordered, and that the first element of `iterable` be larger than the lowest number of any iterable already added.
 0. `has(number)` tests whether `number` is present in our sieve. It is required that successive calls to `has` must provide numbers that increase. In other words, calls to `has` are also ordered. Since calls to `has` are ordered by definition, the sieve is free to internally discard `number` if it returns `true`.
