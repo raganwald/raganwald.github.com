@@ -305,9 +305,9 @@ class HashSieve {
     const { first, rest } = destructure(iterable);
 
     if (this._hash[first]) {
-      this._hash[first].push(iterable);
+      this._hash[first].push(rest);
     }
-    else this._hash[first] = [iterable];
+    else this._hash[first] = [rest];
 
     return this;
   }
