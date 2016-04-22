@@ -1,5 +1,5 @@
 ---
-title: "The Genuine Sieve of Eratosthenes"
+title: "The Genuine JavaScript Sieve of Eratosthenes"
 layout: default
 tags: [allonge]
 ---
@@ -12,11 +12,9 @@ tags: [allonge]
 
 ### the unfaithful sieve
 
-In [the last post][last], we looked at the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes).
+In the [last][last] post, we looked at the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). The definition is:
 
 [last]: http://raganwald.com/2016/04/15/laziness-is-a-virtue.html "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
-
-The definition is:
 
 > We start with a table of numbers (e.g., 2, 3, 4, 5, . . . ) and progressively cross off numbers in the table until the only numbers left are primes. Specifically, we begin with the first number, p, in the table, and:
 >
@@ -392,6 +390,6 @@ We'd need a [priority queue][pq].
 
 ---
 
-### source code
+### hashsieve source code
 
 <script src="https://gist.github.com/raganwald/78b086166c0712b49e5160edca5ebadd.js"></script>
