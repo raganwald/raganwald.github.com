@@ -10,11 +10,37 @@ tags: [allonge, noindex]
 
 ---
 
-### the unfaithful sieve
+### the trap door
 
-In the [last][last] post, we looked at the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). The definition is:
+Althea and Ben were sharing an espresso. "Althea," Ben began, "I'm prepping for my interview with XL, and I did some googling for their interview questions..." Althea died a little inside *That conversation*, they thought. Programmers were notorious for taking interview questions extremely personally.
+
+"Oh?" Althea said aloud, trying not to encourage the conversation along those lines.
+
+"Well, they have five or six slots that they run, one phone screen and then the rest in a single-day onslaught." Althea nodded. Regardless of the content of each slot, having a selection of interviewers work with a candidtae could be helpful in getting a balanced perspective.
+
+"So one of them is an algorithms slot, and one of the posters on trapdoor.jobs said they asked about generating streams of primes."
+
+"In a strange coïncidence, I was just reading a blog post about lazily generating prime numbers on tweaker.news, I wonder if they read the same article and turned it into an interview question?"
+
+Althea laughed. "If they did, prepare for a terrible interview. If you're thinking of [the same post that I read][last], the algorithm is wrong! Or at least, terrible."
 
 [last]: http://raganwald.com/2016/04/15/laziness-is-a-virtue.html "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
+
+Ben nodded. "I saw something to that effect in the comments, but since the article wasn't precisely about prime numbers, I guess the author thought it was ok."
+
+Althea frowned. "It's never ok to post terrible code. Somebody can and will ship it to prduction. Or foist it on impressionable interns as the Gospel Truth. Stuff like this is why the industry ignores forty years of CS research, and..."
+
+Ben tuned out of Althea's rant for a moment. When they finally ran out of steam, Ben resumed:
+
+"I quietly got in touch with a buddy that works there, and they told me that they do a lot of stuff with streaming events, and that while they don't think there's a direct correlation between generating primes and job performance, they do take the attitude that manipulating lazy lists is sufficiently close to working with streams to be relevant."
+
+Althea considered this. "Maybe, go on..."
+
+Ben went on. "So I took a crack at it as an exercise. I stressed the use of iterators in my algorithm, as this seems to be what they're looking for."
+
+### the unfaithful sieve
+
+Ben started off. "I had a look at the tweaker.news post. It described its algorithm as the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). The definition of which is:"
 
 > We start with a table of numbers (e.g., 2, 3, 4, 5, . . . ) and progressively cross off numbers in the table until the only numbers left are primes. Specifically, we begin with the first number, p, in the table, and:
 >
@@ -22,7 +48,7 @@ In the [last][last] post, we looked at the [Sieve of Eratosthenes](https://en.wi
 >
 >  2. Find the next number in the table after p that is not yet crossed off and set p to that number; and then repeat from step 1.
 
-The solution given was the most naïve possible mapping from words to code:
+"The code in the blog post was the most naïve possible mapping from words to code:"
 
 {% highlight javascript %}
 // General-Purpose Lazy Operations
@@ -90,7 +116,7 @@ function * sieve (iterable) {
 const Primes = compact(sieve(range(2)));
 {% endhighlight %}
 
-This is naïve in the sense that it mimics what a child does when the sieve is explained to them for the first time. Given a big table of numbers, they start crossing them out using what we know to be modulo arithmetic: They scan forward number by number, counting as they go:
+Althea chimed in: "Naïve is right! This mimics what a child does when the sieve is explained to them for the first time. Given a big table of numbers, they start crossing them out using what we know to be modulo arithmetic: They scan forward number by number, counting as they go:"
 
 > One TWO (cross out), one TWO (cross out), one TWO (cross out), ...
 >
@@ -98,20 +124,20 @@ This is naïve in the sense that it mimics what a child does when the sieve is e
 >
 > One two three four FIVE (cross out), one two three four FIVE (cross out), one two three four FIVE (cross out), ...
 
-This conforms to the description given above, but it has the performance characteristics of [Trial Division](https://en.wikipedia.org/wiki/Trial_division): Every number, whether prime or not, must be 'touched' by every prime smaller than it. Melissa O'Neill calls this an "Unfaithful Sieve."
+"But Ben," Althea asked, "Do you see the problem with this code? It has the performance characteristics of [Trial Division](https://en.wikipedia.org/wiki/Trial_division): Every number, whether prime or not, must be 'touched' by every prime smaller than it, whether it is divisible by that prime or not. Melissa O'Neill calls this an 'Unfaithful Sieve' in her paper [The Genuine Sieve of Eratosthenes][g]."
 
 ---
 
-### altering our metaphor
+### ben's sieve
 
-Instead of thinking of "crossing numbers out of a list," let's think of the sieve in the title: Let's build an actual sieve, a data structure that we can use to determine whether a number is prime or not.
+Ben agreed. "Yes, it's terrible. I dislike how everything is jumbed together, so I extracted the sieve into its own object. In this day and age, there's no need to be all fussy about pure functional programming if you aren't actually using a pure functional language."
 
-Our sieve will be an object with a constructor and two methods of note:
+"The important thing is to avoid terrible stateful antipatterns and action-at-a-distance. So I created a `Sieve`, an object with a constructor and two methods of note:
 
 0. `addAll(iterable)` adds all the elements of `iterable` to our sieve. It is required that the elements of `iterable` be ordered, and that the first element of `iterable` be larger than the lowest number of any iterable already added.
 0. `has(number)` tests whether `number` is present in our sieve. It is required that successive calls to `has` must provide numbers that increase. In other words, calls to `has` are also ordered. Since calls to `has` are ordered by definition, the sieve is free to internally discard `number` if it returns `true`.
 
-Given such a data structure, our generator for primes is much simpler:
+"Given a sive object, my generator for primes is much simpler:"
 
 {% highlight javascript %}
 function * Primes () {
