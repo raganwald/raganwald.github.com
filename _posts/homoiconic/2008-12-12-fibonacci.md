@@ -80,7 +80,7 @@ naive_power([1,1,0], 2) # => [2, 1, 1]
 naive_power([1,1,0], 3) # => [3, 2, 1]
 naive_power([1,1,0], 4) # => [5, 3, 2]
 naive_power([1,1,0], 5) # => [8, 5, 3]
-{%endhighlight %}
+```
 
 Now let's make an observation: instead of accumulating a product by iterating over the list, let's [Divide and Conquer](http://www.cs.berkeley.edu/~vazirani/algorithms/chap2.pdf). Let's take the easy case: Don't you agree that `times([1,1,0], [1,1,0], [1,1,0], [1,1,0])` is equal to `times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))`? And that this saves us an operation, since `times([1,1,0], [1,1,0], [1,1,0], [1,1,0])` is implemented as:
 
@@ -88,7 +88,7 @@ Now let's make an observation: instead of accumulating a product by iterating ov
 times([1,1,0],
 	times([1,1,0],
 		times([1,1,0],[1,1,0]))
-{%endhighlight %}
+```
 
 Whereas `times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))` can be implemented as:
 
@@ -97,7 +97,7 @@ begin
 	double = times([1,1,0], [1,1,0])
 	times(double, double)
 end
-{%endhighlight %}
+```
 
 This only requires two operations rather than three. Furthermore, it is recursive. `naive_power([1,1,0], 8)` requires seven operations. However, it can be formulated as:
 
@@ -109,7 +109,7 @@ begin
 	end
 	times(quadruple, quadruple)
 end			
-{%endhighlight %}
+```
 
 Now we only need three operations compared to seven. Of course, we left out how to deal with odd numbers. Fixing that also fixes how to deal with even numbers that aren't neat powers of two:
 
@@ -132,7 +132,7 @@ power([1,1,0], 2) # => [2, 1, 1]
 power([1,1,0], 3) # => [3, 2, 1]
 power([1,1,0], 4) # => [5, 3, 2]
 power([1,1,0], 5) # => [8, 5, 3]
-{%endhighlight %}
+```
 
 And we can write our complete fibonacci function:
 
@@ -141,7 +141,7 @@ def fib(n)
   return n if n < 2
   power([1,1,0], n - 1).first
 end
-{%endhighlight %}
+```
 
 And dress things up in idiomatic Ruby using the anonymous module pattern:
 
@@ -181,7 +181,7 @@ end
 
 (0..20).map { |n| n.matrix_fib }
 	# => [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
-{%endhighlight %}
+```
 
 We're done!
 

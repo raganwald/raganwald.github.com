@@ -80,7 +80,7 @@ naive_power([1, 1, 0], 2) // => [2, 1, 1]
 naive_power([1, 1, 0], 3) // => [3, 2, 1]
 naive_power([1, 1, 0], 4) // => [5, 3, 2]
 naive_power([1, 1, 0], 5) // => [8, 5, 3]
-{%endhighlight %}
+```
 
 Very interesting, and less expensive than multiplying any two arbitrary matrices, but we are still performing _n_ multiplications when we raise a matrix to the _nth_ power. What can we do about that?
 
@@ -94,14 +94,14 @@ This saves us an operation, since `times([1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1,
 times([1, 1, 0],
   times([1, 1, 0],
     times([1, 1, 0], [1, 1, 0]))
-{%endhighlight %}
+```
 
 Whereas `times(times([1, 1, 0], [1, 1, 0]), times([1, 1, 0], [1, 1, 0]))` can be implemented as:
 
 ```javascript
 let double = times([1, 1, 0], [1, 1, 0]),
     quadruple = times(double, double);
-{%endhighlight %}
+```
 
 This only requires two operations rather than three. Furthermore, this pattern is recursive. For example, `naive_power([1, 1, 0], 8)` requires seven operations:
 
@@ -113,7 +113,7 @@ times([1, 1, 0],
         times([1, 1, 0],
           times([1, 1, 0],
             times([1, 1, 0], [1, 1, 0])))))))
-{%endhighlight %}
+```
 
 However, it can be formulated with just three operations:
 
@@ -121,7 +121,7 @@ However, it can be formulated with just three operations:
 let double = times([1, 1, 0], [1, 1, 0]),
     quadruple = times(double, double),
     octuple = times(quadruple, quadruple);
-{%endhighlight %}
+```
 
 Of course, we left out how to deal with odd numbers. Fixing that also fixes how to deal with even numbers that aren't neat powers of two:
 
@@ -141,7 +141,7 @@ power([1, 1, 0], 2) // => [2, 1, 1]
 power([1, 1, 0], 3) // => [3, 2, 1]
 power([1, 1, 0], 4) // => [5, 3, 2]
 power([1, 1, 0], 5) // => [8, 5, 3]
-{%endhighlight %}
+```
 
 Now we can perform exponentiation of our matrices, and we take advantage of the symmetry to perform _log2n_ multiplications.
 
@@ -172,7 +172,7 @@ let fibonacci = (n) =>
 
 fibonacci(62)
   // => 4052739537881
-{%endhighlight %}
+```
 
 If we'd like to work with very large numbers, JavaScript's integers are insufficient. Using a library like [BigInteger.js](https://github.com/peterolson/BigInteger.js), our solution becomes:
 
@@ -202,7 +202,7 @@ let fibonacci = (n) =>
   n < 2
   ? n
   : power([one, one, zero], n - 1)[0];
-{%endhighlight %}
+```
 
 Let's stretch our wings and calculate the 19,620,614th Fibonacci number:[^1962]
 
@@ -224,7 +224,7 @@ fibonacci(19620614).toString()
     35114452925784094009088430159367013806505734580798084002841
     21219542644844237050682927035326929321204843947060841278604
     7707601726389614978163177
-{%endhighlight %}
+```
 
 ([full result, as calculated in Safari](/19620614.fibonacci.txt))
 
