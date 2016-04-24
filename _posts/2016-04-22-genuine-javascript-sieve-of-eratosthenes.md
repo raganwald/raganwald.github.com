@@ -363,6 +363,10 @@ Bob started coding, with Althea providing feedback. Fuelled by an excellent Blue
 
 ---
 
+[![Espresso extraction](/assets/images/espresso-flow.jpg)](https://www.flickr.com/photos/schill/14576345751)
+
+---
+
 ### the hash merge
 
 Bob placed the prime iterators into a hash table, indexed by the next value for the iterator. Thus, the keys of the table were composites, and the values of the table were lists of iterators (a single composite might have two or more iterators, for example `12`).
