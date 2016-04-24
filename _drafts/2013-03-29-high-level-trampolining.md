@@ -9,7 +9,7 @@ in [Trampolines in JavaScript][t], we used a ridiculously simple factorial funct
 [t]: http://raganwald.com/2013/03/28/trampolines-in-javascript.html
 [trampolining]: https://en.wikipedia.org/wiki/Trampoline_(computing)
 
-{%highlight javascript %}
+```javascript
 function factorial (n) {
   return n
   ? n * factorial(n - 1)

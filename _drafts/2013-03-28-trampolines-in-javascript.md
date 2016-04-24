@@ -25,7 +25,7 @@ The challenge is to implement factorial in recursive style.
 
 You write:
 
-{%highlight javascript %}
+```javascript
 function factorial (n) {
   return n
   ? n * factorial(n - 1)

@@ -298,7 +298,7 @@ task.toHTML()
 
 The key snippet is `let ColouredTodo = Coloured(class extends Todo {});`, it turns behaviour into a subclass that can be extended and overridden. We can turn this pattern into a function:
 
-{%highlight javascript %}
+```javascript
 let subclassFactory = (behaviour) => {
   let mixBehaviourInto = mixin(behaviour);
 
