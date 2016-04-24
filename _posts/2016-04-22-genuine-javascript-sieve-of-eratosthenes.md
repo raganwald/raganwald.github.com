@@ -4,9 +4,7 @@ layout: default
 tags: [allonge]
 ---
 
-### melissa e. o'neill
-
-[![Prime Numbers](/assets/images/primes.jpg)](http://www.geek.com/science/geek-answers-why-should-we-care-about-prime-numbers-1574269/)
+[![Espresso](/assets/images/prime-espresso-jpg)](https://www.flickr.com/photos/cahadikincreations/8459301889)
 
 ---
 
@@ -125,6 +123,10 @@ Althea chimed in: "Naïve is right! This mimics what a child does when the sieve
 > One two THREE (cross out), one two THREE (cross out), one two THREE (cross out), ...
 >
 > One two three four FIVE (cross out), one two three four FIVE (cross out), one two three four FIVE (cross out), ...
+
+---
+
+[![Prime Numbers](/assets/images/primes.jpg)](http://www.geek.com/science/geek-answers-why-should-we-care-about-prime-numbers-1574269/)
 
 ---
 
