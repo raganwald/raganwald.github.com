@@ -10,9 +10,9 @@ tags: [allonge]
 
 ---
 
-### althea and ben have espressos
+### althea and ben talk interviews
 
-Althea and Ben were sipping feature espressos at their local indie coffee shop. "Althea," Ben began, "I'm prepping for my interview with RealTime, and I did some googling for their interview questions..." Althea died a little inside *That conversation*, they thought. Programmers were notorious for taking interview questions extremely personally.
+Althea and Ben were sipping feature espressos at their local indie coffee shop. "Althea," Ben began, "I'm prepping for my interview with RealTime, and I did some googling for their interview questions..." Althea died a little inside. *That conversation*. Programmers were notorious for taking interview questions extremely personally.
 
 "Oh?" Althea tried to discourage Bob with overt disinterest. It was futile, of course: Bob carried on.
 
