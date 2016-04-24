@@ -1,5 +1,5 @@
 ---
-title: "“Programs must be written for people to read, and only incidentally for machines to execute”"
+title: "“Programs must be written for people to read, and only incidentally for machines to execute!”"
 layout: default
 tags: [allonge]
 ---
