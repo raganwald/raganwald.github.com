@@ -329,7 +329,7 @@ Althea switched to Bob's code.
 
 "Now let's look at this implementation of `merge`. The way it works is that as we take things from a collection of lists merged together, we're invoking a series of comparisons, one for each list. So every time we come across a composite number, we're invoking one comparison for each prime less than the composite number."
 
-"Again, there's a prime-squared optimization, but the larger factor for computing the time complexity of this algorithm is how many operations are required for each composite number. And in this respect, your algorithm is almost identical to the OP's algorithm."[^slightly]
+"Again, there's a prime-squared optimization, but the larger factor for computing the time complexity of this algorithm is how many operations are required for each composite number. And in this respect, your algorithm is almost identical to the OP's algorithm."
 
 "The *ideal* performance of the Sieve of Eratosthenes is that every composite number gets crossed out once for each of its factors less than its square root. Therefore, a number like `26` would get crossed out for `2`, but not `3`, `5`, or any other prime including `13`, its other factor."
 
