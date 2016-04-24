@@ -295,3 +295,62 @@ let task = new TimeSensitiveTodo('Finish blog post', Date.now() + oneDayInMillis
 task.toHTML()
   //=> <span style="color: #FFFF00;">Finish blog post</span>
 ```
+
+The key snippet is `let ColouredTodo = Coloured(class extends Todo {});`, it turns behaviour into a subclass that can be extended and overridden. We can turn this pattern into a function:
+
+{%highlight javascript %}
+let subclassFactory = (behaviour) => {
+  let mixBehaviourInto = mixin(behaviour);
+
+  return (superclazz) => mixBehaviourInto(class extends superclazz {});
+}
+```
+
+Using `subclassFactory`, we wrap the class we want to extend, instead of the class we are declaring. Like this:
+
+```javascript
+let subclassFactory = (behaviour) => {
+  let mixBehaviourInto = mixin(behaviour);
+
+  return (superclazz) => mixBehaviourInto(class extends superclazz {});
+}
+
+let ColouredAsWellAs = subclassFactory({
+  setColourRGB ({r, g, b}) {
+    this.colourCode = {r, g, b};
+    return this;
+  },
+
+  getColourRGB () {
+    return this.colourCode;
+  }
+});
+
+class TimeSensitiveTodo extends ColouredAsWellAs(ToDo) {
+  constructor (name, deadline) {
+    super(name);
+    this.deadline = deadline;
+  }
+
+  getColourRGB () {
+    let slack = this.deadline - Date.now();
+
+    if (this.done) {
+      return grey;
+    }
+    else if (slack <= 0) {
+      return red;
+    }
+    else if (slack <= oneDayInMilliseconds){
+      return yellow;
+    }
+    else return green;
+  }
+
+  toHTML () {
+    let rgb = this.getColourRGB();
+
+    return `<span style="color: #${rgb.r}${rgb.g}${rgb.b};">${super.toHTML()}</span>`;
+  }
+}
+```
