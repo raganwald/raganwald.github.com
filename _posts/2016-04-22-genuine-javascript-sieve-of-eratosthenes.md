@@ -353,7 +353,7 @@ So when testing `26`, we need to know if it is any of the smallest of each of ou
 
 But as we've seen, the naïve merge means we need eight tests to determine that `26` is the smallest. What if it was cheaper to check whether `26` is anywhere in the set `26, 27, 30, 49, 121, 169, 289, 361, 529`?
 
-Bob thought about Althea's revelation. "We could use a set! Checking for member ship in a set is more expensive than `===`, but once we have a lot of primes, it'll be way cheaper than doing comparisons."
+Bob thought about Althea's revelation. "We could use a set! Checking for membership in a set is more expensive than `===`, but once we have a lot of primes, it'll be way cheaper than doing comparisons."
 
 Althea nodded and suggested Bob try coding that.
 
