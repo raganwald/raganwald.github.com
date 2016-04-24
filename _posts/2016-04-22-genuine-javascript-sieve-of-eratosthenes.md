@@ -225,7 +225,7 @@ function destructure (iterable) {
 
 Althea chafed at Ben's style of going through all the preliminaries before getting to the main business. It was very *academic*, but not the most effective way to communicate how code is written and what it does.
 
-Ben continued "With these in hand, we can write our sieve in the new way. As we collect primes, we create a list of composite numbers by collecting the multiples of each primes, starting with the prime squared. So for two, our composites are `4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, ...`. For three, they're `9, 12, 15, 18, 21, 24, ...`, and for five they're `25, 30, 35, 40, 45, ...`."
+Ben continued "With these in hand, I could write the sieve in the new way. As we collect primes, we create a list of composite numbers by collecting the multiples of each primes, starting with the prime squared. So for two, our composites are `4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, ...`. For three, they're `9, 12, 15, 18, 21, 24, ...`, and for five they're `25, 30, 35, 40, 45, ...`."
 
 ```javascript
 function * multiplesOf (startingWith, n) {
