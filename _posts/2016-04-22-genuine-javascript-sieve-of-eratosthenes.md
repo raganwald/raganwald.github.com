@@ -50,7 +50,7 @@ Ben went on. "So I took a crack at it as an exercise. I stressed the use of iter
 >
 >  2. Find the next number in the table after p that is not yet crossed off and set p to that number; and then repeat from step 1.
 
-"The code in the blog post was the most naïve possible mapping from words to code:"
+Bob pulled up the blog post on a laptop. "The code in the blog post was the most naïve possible mapping from words to code:"
 
 ```javascript
 // General-Purpose Lazy Operations
@@ -136,10 +136,10 @@ Ben continued. "Yes, it's naïve, but it's terrible for other reasons: I dislike
 
 "The important thing is to avoid terrible stateful antipatterns and action-at-a-distance. So I created a `Sieve`, an object with a constructor and two methods of note:
 
-0. `addAll(iterable)` adds all the elements of `iterable` to our sieve. It is required that the elements of `iterable` be ordered, and that the first element of `iterable` be larger than the lowest number of any iterable already added.
+0. `addAll(iterable)` adds all the elements of `iterable` to our sieve. It is required that the elements of `iterable` be ordered, and that the first element of `iterable` be larger than the lowest number of any iterable already added.<br/><br/>
 0. `has(number)` tests whether `number` is present in our sieve. It is required that successive calls to `has` must provide numbers that increase. In other words, calls to `has` are also ordered. Since calls to `has` are ordered by definition, the sieve is free to internally discard `number` if it returns `true`.
 
-"Given a sieve object, my generator for primes is much simpler:"
+"Given a `sieve` object, my generator for primes is much simpler:"
 
 ```javascript
 function * Primes () {
@@ -309,34 +309,67 @@ take(100, Primes())
 
 The exposition ran out of steam like a clock winding down. Ben looked at Althea, anxiously. "What do you think?"
 
-"Ben," Althea began, "This is much cleaner than the code from the blog." Ben nodded. "But," Althea continued, "If you were to show this to me in an interview, I would ask you about performance. Does this improve on the original? Or is it the same thing, dressed up in nicer code?"
+---
 
+### althea's feedback
 
-"Do you see the problem with this code? It has the performance characteristics of [Trial Division](https://en.wikipedia.org/wiki/Trial_division): Every number, whether prime or not, must be 'touched' by every prime smaller than it, whether it is divisible by that prime or not. Melissa O'Neill calls this an 'Unfaithful Sieve' in her paper [The Genuine Sieve of Eratosthenes][g]."
+"Ben," Althea began, "This is much cleaner than the code from the blog."
 
-So far so good, but looking at our implementation of `merge`, we can see that the way it works is that as we take things from a collection of lists merged together, we're invoking a series of comparisons, one for each list. So every time we come across a composite number, we're invoking one comparison for each prime less than the composite number.
+Ben nodded. "But," Althea continued, "If you were to show this to me in an interview, I would ask you about performance. Does this improve on the original? Or is it the same thing, dressed up in nicer code?"
 
-Therefore, checking a number like `26` requires a comparison for the multiples of `2`, `3`, `5`, `7`, `11` and so on up to `23` even though it's only divisible by `2` and `13`. This is roughly equivalent in performance to our naïve implementation from [the last post][last].
+"Let's look at the OP's original code. For each prime, the algorithm stepped through the numbers, counting one-TWO, one-TWO, or one-two-THREE, one-two-THREE, and so on. So each prime stepped through all the numbers larger than it. Actually, there's a prime-squared optimization, but roughly speaking, we can see that in the OP's code, every number `n` must be touched by all the primes smaller than `n`, whether they are factors of `n` or not.""
 
-The *ideal* performance of the Sieve of Eratosthenes is that every composite number gets crossed out once for each of its factors less than its square root. Therefore, a number like `26` will get crossed out for `2`, but not `3`, `5`, or any other prime including `13`, its other factor.
+"Melissa O'Neill calls this an 'Unfaithful Sieve' in her paper [The Genuine Sieve of Eratosthenes][g]."
 
-Nevertheless, this is a step towards a better implementation in a different way: By isolating the composites in their own lazy structure, we can swap out the naïve merge for something faster.
+Bob thought about this, then agreed that for every number `n`, the OP's code required an operation for each prime smaller than `n`. In the OP's naïve sieve, checking a number like `26` required a comparison for the multiples of `2`, `3`, `5`, `7`, `11` and so on up to `23` even though `26` is only divisible by `2` and `13`.
+
+Althea switched to Bob's code.
+
+"Now let's look at this implementation of `merge`. The way it works is that as we take things from a collection of lists merged together, we're invoking a series of comparisons, one for each list. So every time we come across a composite number, we're invoking one comparison for each prime less than the composite number."
+
+"Again, there's a prime-squared optimization, but the larger factor for computing the time complexity of this algorithm is how many operations are required for each composite number. And in this respect, your algorithm is almost identical to the OP's algorithm."[^slightly]
+
+"The *ideal* performance of the Sieve of Eratosthenes is that every composite number gets crossed out once for each of its factors less than its square root. Therefore, a number like `26` would get crossed out for `2`, but not `3`, `5`, or any other prime including `13`, its other factor."
+
+"So what we want is an algorithm where we only have to check a composite's prime factors, and even then only those less than its square root."
+
+Bob looked a little glum. "Well, at least I'm hearing this from you and not from an interviewer trying to impress themselves by tearing me down!"
+
+They both laughed wryly. It's almost impossible to interview for tech jobs without encountering the phenomena of an interviewer who thinks the purpose of an interview is to make other people feel stupid.[^ridiculous]
+
+[^ridiculous]: This is a ridiculous practise. First and foremost, interviews exist to find and flter people, not to boldster the egos of interviewers. Second, an interview question is carefully selected beforehand, and the interviewer has the luxury of knowing and studying the question beforehand. It is not a level playing field for comparing the experience and knowledge of interviewer and interviewee.
 
 ---
 
-### hash checking
+### althea and bob pair
 
-As described, the Sieve of Eratosthenes uses a large set of numbers and checks each one off. If we were to faithfully reproduce it as we iterate over prime numbers, we'd require space proportional to the cardinality of the largest prime returned. So if we collect 100 primes, we'd need space proportional to `541`, the 100th prime.
+Espressos finished, Althea and Bob ordered another round and started pairing in teh coffee shop.
 
-We don't want to do that, we want to maintain space proportional to the number of primes found. So for the 100th prime, we'd require space proportional to `100`. The ratio grows as we collect more primes, so this is important.
+Althea pointed out that the merge algorithm is useful if you always need the lowest composite number. But in truth, the sive does not *need* the lowest composite number, it merely needs to know if the number it is testing is *any* of the lowest multiples of the primes seen so far.
 
-The first and obvious step is to use a data structure more accommodating of sparse data. Since JavaScript makes hash tables easy, we'll start with that.
+So when testing `26`, we need to know if it is any of `26 (2x13)`, `27 (3x9)`, `30 (5x10)`, `49 (7x7)`, `121 (11x11)`, `169 (13x13)`, `289 (17x17)`, `361 (19x19)`,` or `529 (23x23)` (the smallest of each of our `multiplesOf` iterators). It's true that if we know that `26` is the smallest of the nine iterators seen so far, it is very cheap to test whether `26 === 26`.
 
-Instead of our naïve lazy merge, let's put our prime iterators in a hash table, indexed by the next number to extract. Two iterators can have the same next number, so we'll keep a list of iterators for each number.
+But as we've seen, the naïve merge means we need eight tests to determine that `26` is the smallest. What if it was cheaper to check whether `26` is anywhere in the set `26, 27, 30, 49, 121, 169, 289, 361, 529`?
 
-When we start, our `HashMerge` will have one iterable, at index `4`. Its remaining numbers will be `6`, `8`, and d so on. We then add another at `9`, with numbers `12`, `15`, and so on. We try removing `4`, and when we do so, we re-merge the iterator for multiples of two, but now it will be at number `6`, with remaining numbers `8`, `10`, and so on.
+Bob thought about Althea's revelation. "We could use a set! Checking for member ship in a set is more expensive than `===`, but once we have a lot of primes, it'll be way cheaper than doing comparisons."
 
-Thus, `_remove` is always relocating iterables to their next higher number. When two or more iterators end up at the same index (like `12`), all get relocated.
+Althea nodded and suggested Bob try coding that.
+
+"But wait!" A thought struck Bob. "A set is great, but after finding that `26` is in the set, we need to remove `26` from the set and insert `28`, the next multiple of two. We'd need to assocaite iterators with each of the values... So we need a dictionary."
+
+Bob started coding, with Althea providing feedback. Fueled by an excellent Blue Mountain pour-over, the code flowed from keyboard to screen.
+
+---
+
+### the hash merge
+
+Bob placed the prime iterators into a hash table, indexed by the next value for the iterator. Thus, the keys of the table were composites, and the values of the table were lists of iterators (a single composite might have two or more iterators, for example `12`).
+
+He spoke aloud as he walked through his new implementation:
+
+"When we start, our `HashMerge` will have one iterable, at index `4`. Its remaining numbers will be `6`, `8`, and so on. We then add another at `9`, with numbers `12`, `15`, and so on. We try removing `4`, and when we do so, we re-merge the iterator for multiples of two, but now it will be at number `6`, with remaining numbers `8`, `10`, and so on."
+
+"Thus, `_remove` is always relocating iterables to their next higher number. When two or more iterators end up at the same index (like `12`), all get relocated."
 
 ```javascript
 class HashSieve {
@@ -402,37 +435,35 @@ take(100, Primes())
      499, 503, 509, 521, 523, 541]
 ```
 
-This is much better than our `MergeSieve`. The check for `has` involves the constant overhead of performing a hash lookup, of course, and that is more expensive than the `===` test of `MergeSieve`. But what happens when each sieve removes the no-longer-needed number?
+"This is much better than my original `MergeSieve`. The check for `has` involves the constant overhead of performing a hash lookup, of course, and that is more expensive than the `===` test of `MergeSieve`. But what happens when each sieve removes the no-longer-needed number?
 
--  When `MergeSieve` tests a composite number, it iterates. Because of the way `merge` is written, iterating requires an `if` statement for the number of iterables seen so far -1. In other words, every time it hits a composite number, if there are `p` primes less than the composite number, `MergeSieve` needs to perform `p-1` operations, regardless of how many prime factors the composite number actually has.
+-  When `MergeSieve` tests a composite number, it iterates. Because of the way `merge` is written, iterating requires an `if` statement for the number of iterables seen so far -1. In other words, every time it hits a composite number, if there are `p` primes less than the composite number, `MergeSieve` needs to perform `p-1` operations, regardless of how many prime factors the composite number actually has.<br/><br/>
 -  When `HashSieve` tests a composite number, it iterates and relocates each of the iterators at that number. There will be one iterator for each prime factor, and only the prime factors less than the square root of the composite number will be included. However, for each one, there is a large constant factor as we have to perform an insert in the has table. Finally, there is a single remove from the hash table. So `HashSieve` does fewer operations, but each is more expensive.
 
-As the numbers grow, primes become scarcer, but the total number of primes grows. Therefore, `MergeSieve` gets slower and slower as it is performing operations for each prime discovered so far. `HashSieve` catches up and then gets relatively faster and faster.
+"As the numbers grow, primes become scarcer, but the total number of primes grows. Therefore, `MergeSieve` gets slower and slower as it is performing operations for each prime discovered so far. `HashSieve` catches up and then gets relatively faster and faster."
+
+Althea congratulated him. "You've got it!"
 
 ---
 
-### summary
+### the wrap-up
 
-Not all Sieves of Eratosthenes have the desired performance of time proportional to the number of prime factors for each composite number. Those that don't may or may not be useful for illustrating a point about mixing lazy and non-lazy operations, but they are "unfaithful" to the Sieve of Eratosthenes' performance and should not be considered authentic implementations.
+"So," Bob smiled, "I'm ready for my interview with RealTime. Thanks!"
 
-(This essay is adapted from [The Genuine Sieve of Eratosthenes][g] by Melissa E. O'Neill)
+"Sure!" Althea was reassuring. "You have improved on the OP's code style *and* performance. And now you're ready to discuss the algorithm with greater rigour."
+
+"What's there to discuss?" Bob was self-congratulatory: "This is way faster. Given the number of broken sieves on the internet, I'll bet this is better than anything the interviewer can write."
+
+Althea tried her best Han Solo impersonation: "Don't get cocky, kid! After all, if I could read [The Genuine Sieve of Eratosthenes][g] by Melissa E. O'Neill, so could the interviewer. And there's lots more that could be done. But this is probabbly good enough for the purposes of a interview."
 
 [g]: https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf
 
 ---
 
-### postscript: queues
+### source code
 
-Our `HashSieve` is much better than our `MergeSieve`, and the code looks simpler to boot. That being said, it could be even better. Hash tables are very nice, and fast for most purposes. But they are not perfect. Adding and removing elements involves monkeying around behind the scenes with hashing functions and buckets. Every time we look a number up, we run a hashing function on it.
-
-Also, we only ever check the smallest number in the table with `.has`. There's actually no need for a fancy lookup that is actually checking all the numbers. If we knew what the smallest number was, we could check that with straight up `===`, just like `MergeSieve`. The complexity would, of course, involve figuring out what the next smallest number would be when removing iterables and re-merging them.
-
-We'd need a [priority queue][pq].
-
-[pq]: https://en.wikipedia.org/wiki/Priority_queue
+<script src="https://gist.github.com/raganwald/78b086166c0712b49e5160edca5ebadd.js"></script>
 
 ---
 
-### hashsieve source code
-
-<script src="https://gist.github.com/raganwald/78b086166c0712b49e5160edca5ebadd.js"></script>
+### notes
