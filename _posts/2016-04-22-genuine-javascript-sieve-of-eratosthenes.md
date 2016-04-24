@@ -349,7 +349,7 @@ Espressos finished, Althea and Bob ordered another round and started pairing in 
 
 Althea pointed out that the merge algorithm is useful if you always need the lowest composite number. But in truth, the sieve does not *need* the lowest composite number, it merely needs to know if the number it is testing is *any* of the lowest multiples of the primes seen so far.
 
-So when testing `26`, we need to know if it is any of `26 (2x13)`, `27 (3x9)`, `30 (5x10)`, `49 (7x7)`, `121 (11x11)`, `169 (13x13)`, `289 (17x17)`, `361 (19x19)`,` or `529 (23x23)` (the smallest of each of our `multiplesOf` iterators). It's true that if we know that `26` is the smallest of the nine iterators seen so far, it is very cheap to test whether `26 === 26`.
+So when testing `26`, we need to know if it is any of `26` (2x13), `27` (3x9), `30` (5x10), `49` (7x7), `121` (11x11), `169` (13x13), `289` (17x17), `361` (19x19), or `529` (23x23) (the smallest of each of our `multiplesOf` iterators). It's true that if we know that `26` is the smallest of the nine iterators seen so far, it is very cheap to test whether `26 === 26`.
 
 But as we've seen, the naïve merge means we need eight tests to determine that `26` is the smallest. What if it was cheaper to check whether `26` is anywhere in the set `26, 27, 30, 49, 121, 169, 289, 361, 529`?
 
