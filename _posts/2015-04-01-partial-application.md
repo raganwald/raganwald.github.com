@@ -25,7 +25,7 @@ Partial application is straightforward. We could start with addition or some suc
 
 As a preamble, let's make ourselves a `mapWith` function that maps a function over any collection that has a `.map` method:
 
-{% highlight javascript %}
+```javascript
 const mapWith = (unaryFn, collection) =>
   collection.map(unaryFn);
 
@@ -33,7 +33,7 @@ const square = (n) => n * n;
 
 mapWith(square, [1, 2, 3])
   //=> [1, 4, 9]
-{% endhighlight %}
+```
 
 `mapWith` is a binary function, `square` is a unary function. When we called `mapWith` with arguments `square` and `[1, 2, 3]` and `square`, we *applied* the arguments to the function and got our result.
 
@@ -41,10 +41,10 @@ Since `mapWith` takes two arguments, and we supplied two arguments, we *fully ap
 
 Now what happens if we supply one argument to `mapWith`? We can't get a result without the other argument, so as we've written it, it breaks:
 
-{% highlight javascript %}
+```javascript
 mapWith(square)
   //=> undefined is not an object (evaluating 'collection.map')
-{% endhighlight %}
+```
 
 But let's imagine that we could apply fewer arguments. We wouldn't be fully applying `mapWith`, we'd be *partially applying* `mapWith`. What would we expect to get? Well, imagine we decide to buy a $2,000 bicycle. We go into the store, we give them $1,000. What do we get back? A pice of paper saying that we are doing a layaway program. The $1,000 is held in trust for us, when we come back with the other $1,000, we get the bicycle.
 
@@ -52,7 +52,7 @@ Putting down $1,000 on a $2,000 bicycle is partially buying a bicycle. What it g
 
 Something like this:
 
-{% highlight javascript %}
+```javascript
 const mapWith =
   (unaryFn) =>
     (collection) =>
@@ -64,49 +64,49 @@ const partiallyAppliedMapWith = mapWith(square);
 
 partiallyAppliedMapWith([1, 2, 3])
   //=> [1, 4, 9]
-{% endhighlight %}
+```
 
 The thing is, we don't want to always write our functions in this way. So what we want is a function that takes this:
 
-{% highlight javascript %}
+```javascript
 const mapWith = (unaryFn, collection) =>
   collection.map(unaryFn);
-{% endhighlight %}
+```
 
 And turns it into this:
 
-{% highlight javascript %}
+```javascript
 partiallyAppliedMapWith([1, 2, 3])
   //=> [1, 4, 9]
-{% endhighlight %}
+```
 
 Working backwards:
 
-{% highlight javascript %}
+```javascript
 const partiallyAppliedMapWith = (collection) =>
   mapWith(unaryFn, collection);
-{% endhighlight %}
+```
 
 The expression `(collection) => mapWith(unaryFn, collection)` has two free variables, `mapWith` and `unaryFn`. If we were using a fancy refactoring editor, we could extract a function. Let's do it by hand:
 
-{% highlight javascript %}
+```javascript
 const ____ = (mapWith, unaryFn) =>
   (collection) =>
     mapWith(unaryFn, collection);
-{% endhighlight %}
+```
 
 What is this `_____` function? It takes the `mapWith` function and the `unaryFn`, and returns a function that takes a collection and returns the result of applying `unaryFn` and `collection` to `mapWith`. Let's make the names very generic, the function works no matter what we call the arguments:
 
-{% highlight javascript %}
+```javascript
 const ____ =
   (fn, x) =>
     (y) =>
       fn(x, y);
-{% endhighlight %}
+```
 
 This is a function that takes a function and an argument, and returns a function that takes another argument, and applies both arguments to the function. So, we can write this:
 
-{% highlight javascript %}
+```javascript
 const mapWith = (unaryFn, collection) =>
   collection.map(unaryFn);
   
@@ -121,23 +121,23 @@ const partiallyAppliedMapWith = ____(mapWith, square);
 
 partiallyAppliedMapWith([1, 2, 3])
   //=> [1, 4, 9]
-{% endhighlight %}
+```
 
 So what is this `____` function? It partially applies one argument to any function that takes two arguments.
 
 We can dress it up a bit. For one thing, it doesn't work with methods, it's strictly a <span style="color: blue;">blue</span> higher-order function. Let's make it <span style="color: #999900;">khaki</span> by passing `this` properly:
 
-{% highlight javascript %}
+```javascript
 const ____ =
   (fn, x) =>
     function (y) {
       return fn.call(this, x, y);
     };
-{% endhighlight %}
+```
 
 Another problem is that it only works for binary functions. Let's make it so we can pass one argument and we get back a function that takes as many remaining arguments as we like:
 
-{% highlight javascript %}
+```javascript
 const ____ =
   (fn, x) =>
     function (...remainingArgs) {
@@ -151,11 +151,11 @@ const summer = ____(add, 'sum');
 
 summer(2, 3)
   //=> The sum of 2 and 3 is 5
-{% endhighlight %}
+```
 
 And what if we want to partially apply more than one argument?
 
-{% highlight javascript %}
+```javascript
 const ____ =
   (fn, ...partiallyAppliedArgs) =>
     function (...remainingArgs) {
@@ -169,7 +169,7 @@ const sum2 = ____(add, 'sum', 2);
 
 sum2(3)
   //=> The sum of 2 and 3 is 5
-{% endhighlight %}
+```
 
 What we have just written is a *left partial application* function: Given any function and some arguments, we partially apply those arguments and get back a function that applies those arguments and any more you supply to the original function.
 
@@ -177,7 +177,7 @@ Partial application is thus the application of part of the arguments of a functi
 
 And here's our finished function, properly named:
 
-{% highlight javascript %}
+```javascript
 const leftPartialApply =
   (fn, ...partiallyAppliedArgs) =>
     function (...remainingArgs) {
@@ -191,31 +191,31 @@ const sum2 = leftPartialApply(add, 'sum', 2);
 
 sum2(3)
   //=> The sum of 2 and 3 is 5
-{% endhighlight %}
+```
 
 ### right partial application
 
 It is very convenient to have a `mapWith` function, because you are far more likely to want to write something like:
 
-{% highlight javascript %}
+```javascript
 const squareAll = leftPartialApply(mapWith, x => x * x);
-{% endhighlight %}
+```
 
 Than to write:
 
-{% highlight javascript %}
+```javascript
 const map123 = leftPartialApply(map, [1, 2, 3]);
-{% endhighlight %}
+```
 
 But sometime you have `map` but not `mapWith`, or some other analogous situation where you want to apply the values *from the right* rather than the left. No problem:
 
-{% highlight javascript %}
+```javascript
 const rightPartialApply =
   (fn, ...partiallyAppliedArgs) =>
     function (...remainingArgs) {
       return fn.apply(this, remainingArgs.concat(partiallyAppliedArgs));
     };
-{% endhighlight %}
+```
 
 ### arbitrary partial application
 
@@ -223,7 +223,7 @@ What if you want to apply some, but not all of the arguments, and they may not b
 
 This implementation takes a "template" of values, you insert placeholder values (traditionally `_`, but anything will do) where you want values to be supplied later.
 
-{% highlight javascript %}
+```javascript
 const div = (verbed, numerator, denominator) =>
   `${numerator} ${verbed} ${denominator} is ${numerator/denominator}`
   
@@ -258,13 +258,13 @@ const dividedByThree =
 
 dividedByThree(2)
   //=> 2 divided by 3 is 0.6666666666666666
-{% endhighlight %}
+```
 
 Arbitrary partial application handles most of the cases for left- or right-partial application, but has more internal moving parts. It also doesn't handle cases involving an arbitrary number of parameters.
 
 For example, the built-in function `Math.max` returns the largest of its arguments, or `null` if no arguments are supplied:
 
-{% highlight javascript %}
+```javascript
 Math.max(1, 2, 3)
   //=> 3
   
@@ -273,11 +273,11 @@ Math.max(-1, -2, -3)
   
 Math.max()
   //=> null
-{% endhighlight %}
+```
 
 What if we want to have a default argument? For example, what if we want it tor return the largest number greater than or equal to `0`, or `0` if there aren't any? We can do that with `leftPartialApplication`, but we can't with `arbitraryPartialApply`, because we want to accept an arbitrary number of arguments:
 
-{% highlight javascript %}
+```javascript
 const maxDefaultZero = leftPartialApply(Math.max, 0);
 
 maxDefaultZero(1, 2, 3)
@@ -288,7 +288,7 @@ Math.max(-1, -2, -3)
   
 maxDefaultZero()
   //=> 0
-{% endhighlight %}
+```
 
 So there's good reason to have left-, right-, and arbitrary partial application functions in our toolbox.
 

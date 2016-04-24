@@ -18,7 +18,7 @@ The mixin solution to this problem is to leave classes in a single inheritance h
 
 [^simplified]: A production-ready implementation would handle more than just methods. For example, it would allow you to mix getters and setters into a class, and it would allow us to attach properties or methods to the target class itself, and not just instances. But this simplified version handles methods, simple properties, "mixin properties," and `instanceof`, and that is enough for the purposes of investigating OO design questions.
 
-{% highlight javascript %}
+```javascript
 function mixin (behaviour) {
   let instanceKeys = Reflect.ownKeys(behaviour);
   let typeTag = Symbol('isa');
@@ -37,11 +37,11 @@ function mixin (behaviour) {
   });
   return _mixin;
 }
-{% endhighlight %}
+```
 
 This is more than enough to do a lot of very good work in JavaScript, but it's just the starting point. Here's how we put it to work:
 
-{% highlight javascript %}
+```javascript
 let BookCollector = mixin({
   addToCollection (name) {
     this.collection().push(name);
@@ -87,7 +87,7 @@ president
 
 president.collection()
   //=> ["JavaScript Allongé","Kestrels, Quirky Birds, and Hopeless Egocentricity"]
-{% endhighlight %}
+```
 
 [class decorators]: https://github.com/wycats/javascript-decorators
 
@@ -105,7 +105,7 @@ What's the difference between `Executive` mixing `BookCollector` in and `Executi
 
 If JavaScript had multiple inheritance, we could extend a class with more than one superclass:
 
-{% highlight javascript %}
+```javascript
 class Todo {
   constructor (name) {
     this.name = name || 'Untitled';
@@ -172,7 +172,7 @@ class TimeSensitiveTodo extends Todo, Coloured {
     return `<span style="color: #${rgb.r}${rgb.g}${rgb.b};">${super.toHTML()}</span>`;
   }
 }
-{% endhighlight %}
+```
 
 This hypothetical `TimeSensitiveTodo` extends both `Todo` and `Coloured`, and it overrides `toHTML` from `Todo` as well as overriding `getColourRGB` from `Coloured`.
 
@@ -184,7 +184,7 @@ However, JavaScript does not have "true" multiple inheritance, and therefore thi
 
 The answer is, we'd force a square multiple inheritance peg into a round single inheritance hole, like this:
 
-{% highlight javascript %}
+```javascript
 class Todo {
   // ...
 }
@@ -196,7 +196,7 @@ class ColouredTodo extends Todo {
 class TimeSensitiveTodo extends ColouredTodo {
   // ...
 }
-{% endhighlight %}
+```
 
 By making `ColouredTodo` extend `Todo`, `TimeSensitiveTodo` can extend `ColouredTodo` and override methods from both. This is exactly what most programmers do, and we know that it is an anti-pattern, as it leads to duplicated class behaviour and deep class hierarchies.
 
@@ -204,7 +204,7 @@ But.
 
 What if, instead of manually creating this hierarchy, we use our simple mixins to do the work for us? We can take advantage of the fact that [classes are expressions](http://raganwald.com/2015/06/04/classes-are-expressions.html), like this:
 
-{% highlight javascript %}
+```javascript
 let Coloured = mixin({
   setColourRGB ({r, g, b}) {
     this.colourCode = {r, g, b};
@@ -217,11 +217,11 @@ let Coloured = mixin({
 });
 
 let ColouredTodo = Coloured(class extends Todo {});
-{% endhighlight %}
+```
 
 Thus, we have a `ColouredTodo` that we can extend and override, but we also have our `Coloured` behaviour in a mixin we can use anywhere we like without duplicating its functionality in our code. The full solution looks like this:
 
-{% highlight javascript %}
+```javascript
 class Todo {
   constructor (name) {
     this.name = name || 'Untitled';
@@ -295,7 +295,7 @@ let task = new TimeSensitiveTodo('Finish blog post', Date.now() + oneDayInMillis
 
 task.toHTML()
   //=> <span style="color: #FFFF00;">Finish blog post</span>
-{% endhighlight %}
+```
 
 The key snippet is `let ColouredTodo = Coloured(class extends Todo {});`, it turns behaviour into a subclass that can be extended and overridden. We can turn this pattern into a function:
 
@@ -305,11 +305,11 @@ let subclassFactory = (behaviour) => {
 
   return (superclazz) => mixBehaviourInto(class extends superclazz {});
 }
-{% endhighlight %}
+```
 
 Using `subclassFactory`, we wrap the class we want to extend, instead of the class we are declaring. Like this:
 
-{% highlight javascript %}
+```javascript
 let subclassFactory = (behaviour) => {
   let mixBehaviourInto = mixin(behaviour);
 
@@ -354,7 +354,7 @@ class TimeSensitiveTodo extends ColouredAsWellAs(ToDo) {
     return `<span style="color: #${rgb.r}${rgb.g}${rgb.b};">${super.toHTML()}</span>`;
   }
 }
-{% endhighlight %}
+```
 
 The syntax of `class TimeSensitiveTodo extends ColouredAsWellAs(ToDo)` says exactly what we mean: We are extending our `Coloured` behaviour as well as extending `ToDo`.[^fagnani]
 
@@ -400,13 +400,13 @@ new CanadianAirForceRoundel().roundels()
     {"r":"FF","g":"FF","b":"FF"},
     {"r":"41","g":"69","b":"E1"}
   ]
-{% endhighlight %}
+```
 
 Our `CanadianAirForceRoundel`'s third stripe winds up being regular blue instead of light blue, because the `roundels` method from the mixin `BritishRoundel` overwrites its own. (Yes, this is a ridiculous example, but it gets the point across.)
 
 We can fix this by not overwriting a property if the class already defines it. That's not so hard:
 
-{% highlight javascript %}
+```javascript
 function mixin (behaviour) {
   let instanceKeys = Reflect.ownKeys(behaviour);
   let typeTag = Symbol('isa');
@@ -427,18 +427,18 @@ function mixin (behaviour) {
   });
   return _mixin;
 }
-{% endhighlight %}
+```
 
 Now we can override `roundels` in `CanadianAirForceRoundel` while mixing `shape` in just fine:
 
-{% highlight javascript %}
+```javascript
 new CanadianAirForceRoundel().roundels()
   //=> [
     {"r":"FF","g":"00","b":"00"},
     {"r":"FF","g":"FF","b":"FF"},
     {"r":"AD","g":"D8","b":"E6"}
   ]
-{% endhighlight %}
+```
 
 The method defined in the class is now the "definition of record," just as we might expect. But it's not enough in and of itself.
 
@@ -452,7 +452,7 @@ Our adjustment will not allow a method in the class to invoke the body of a meth
 
 Method advice is a powerful tool in its own right: It allows us to compose method functionality in a declarative way. Here's a simple "override" function that decorates a class:
 
-{% highlight javascript %}
+```javascript
 let override = (behaviour, ...overriddenMethodNames) =>
   (clazz) => {
     if (typeof behaviour === 'string') {
@@ -470,7 +470,7 @@ let override = (behaviour, ...overriddenMethodNames) =>
     }
     return clazz;
   };
-{% endhighlight %}
+```
 
 It takes behaviour in the form of a name of a method or a function, and one or more names of methods to override. It overrides each of the methods with the behaviour, which is invoked with the overridden method's function as the first argument.
 
@@ -478,7 +478,7 @@ This allows us to invoke the original without needing to use `super`. And althou
 
 Using `override`, we can decorate methods with any arbitrary functionality. We'd use it like this:
 
-{% highlight javascript %}
+```javascript
 class Todo {
   constructor (name) {
     this.name = name || 'Untitled';
@@ -553,13 +553,13 @@ let task = new TimeSensitiveTodo('Finish blog post', Date.now() + oneDayInMillis
 
 task.toHTML()
   //=> <span style="color: #FFFF00;">Finish blog post</span>
-{% endhighlight %}
+```
 
 With this solution, we've used our revamped mixin function to support `getColourRGB` overriding the mixin's definition, and we've used `override` to support wrapping functionality around the original `toHTML` method.
 
 As a final bonus, if we are using a transpiler that supports ES.who-knows-when, we can use the proposed class decorator syntax:
 
-{% highlight javascript %}
+```javascript
 @override('wrapWithColour', 'toHTML')
 @Coloured
 class TimeSensitiveTodo extends Todo {
@@ -589,7 +589,7 @@ class TimeSensitiveTodo extends Todo {
     return `<span style="color: #${rgb.r}${rgb.g}${rgb.b};">${original()}</span>`;
   }
 }
-{% endhighlight %}
+```
 
 This is extremely readable.
 
@@ -601,7 +601,7 @@ This is extremely readable.
 
 So in addition to `override`, or toolbox should include `before` and `after` method advice. `before` invokes the behaviour first, and if its return value is `undefined` or `truthy`, it invokes the decorated method:
 
-{% highlight javascript %}
+```javascript
 let before = (behaviour, ...decoratedMethodNames) =>
   (clazz) => {
     if (typeof behaviour === 'string') {
@@ -622,11 +622,11 @@ let before = (behaviour, ...decoratedMethodNames) =>
     }
     return clazz;
   };
-{% endhighlight %}
+```
 
 `before` should be used to decorate methods with setup or validation behaviour. Its "partner" is `after`, a decorator that runs behaviour after the decorated method is invoked:
 
-{% highlight javascript %}
+```javascript
 let after = (behaviour, ...decoratedMethodNames) =>
   (clazz) => {
     if (typeof behaviour === 'string') {
@@ -647,11 +647,11 @@ let after = (behaviour, ...decoratedMethodNames) =>
     }
     return clazz;
   };
-{% endhighlight %}
+```
 
 With `before`, `after`, and `override` in hand, we have several advantages over traditional method overriding. First, `before` and `after` do a better job of declaring our intent when decomposing behaviour. And second, method advice allows us to add behaviour to multiple methods at once, focusing responsibility for cross-cutting concerns, like this:
 
-{% highlight javascript %}
+```javascript
 const mustBeLoggedIn = () => {
     if (currentUser() == null)
       throw new PermissionsException("Must be logged in!");
@@ -677,7 +677,7 @@ class Person {
   }
 
 };
-{% endhighlight %}
+```
 
 Mixins allow us to have a many-to-many relationship between behaviour and classes. Method advice is similar: It makes a many-to-many relationship between behaviour and methods particularly easy to declare.
 

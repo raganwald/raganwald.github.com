@@ -6,13 +6,13 @@ tags: [javascript]
 
 In JavaScript, you make a named function like this:
 
-{% highlight javascript %}
+```javascript
 function rank () { return "Captain"; }
-{% endhighlight %}
+```
 
 A named function is a *function declaration* if it appears as a statement. For example:
 
-{% highlight javascript %}
+```javascript
 function officer () {
   return rank() + " Reginald Thistleton";
   
@@ -21,7 +21,7 @@ function officer () {
 
 officer()
   //=> 'Captain Reginald Thistleton'
-{% endhighlight %}
+```
 
 [![Captain Reginald Thistleton](/assets/images/reginaldthistleton.png)](http://archer.wikia.com/wiki/Reggie_Thistleton)
 
@@ -32,27 +32,27 @@ The function `rank` is defined in the function declaration `function rank () { r
 
 That's a function declaration. What about function *expressions*? As we know, we can declare a function in an expression, meaning we can use it anywhere, like this:
 
-{% highlight javascript %}
+```javascript
 (function () { return "Captain Reginald Thistleton"; })()
   //=> 'Captain Reginald Thistleton'
-{% endhighlight %}
+```
 
 Or this:
 
-{% highlight javascript %}
+```javascript
 !function () { return "Captain Reginald Thistleton"; }()
   //=> false
-{% endhighlight %}
+```
 
 Or this:
 
-{% highlight javascript %}
+```javascript
 var reggie = function () { return "Captain Reginald Thistleton"; };
-{% endhighlight %}
+```
 
 This last statement binds an anonymous function to a variable in its environment. The binding takes place when the statement is executed, not before everything is executed. Therefore, this won't work:
 
-{% highlight javascript %}
+```javascript
 function officer () {
   return rank() + " " + given() + " Thistleton";
   
@@ -63,11 +63,11 @@ function officer () {
 
 officer()
   //=> TypeError: undefined is not a function
-{% endhighlight %}
+```
 
 But this will:
 
-{% highlight javascript %}
+```javascript
 function officer () {
   var given = function () { return "Reginald"; };
   
@@ -78,7 +78,7 @@ function officer () {
 
 officer()
   //=> 'Captain Reginald Thistleton'
-{% endhighlight %}
+```
 
 So, this is a named function: `function rank () { return "Captain"; }`, and this is an anonymous function: `function () { return "Captain"; }`. Pop quiz:
 
@@ -87,7 +87,7 @@ So, this is a named function: `function rank () { return "Captain"; }`, and this
 
 The answers are 1: `function () { return "Reginald"; }` is always an expression, but 2: `function surname () { return "Thistleton"; }` can be an expression or a declaration, depending on how you use it. For example:
 
-{% highlight javascript %}
+```javascript
 function officer () {
   var given = function () { return "Reginald"; };
   
@@ -100,11 +100,11 @@ function officer () {
 
 officer()
   //=> 'Captain Reginald Thistleton'
-{% endhighlight %}
+```
 
 And also:
 
-{% highlight javascript %}
+```javascript
 function officer () {
   var given   = function () { return "Reginald"; },
       surname = function family () { return "Thistleton"; };
@@ -116,7 +116,7 @@ function officer () {
 
 officer()
   //=> 'Captain Reginald Thistleton'
-{% endhighlight %}
+```
 
 We've used `function family () { return "Thistleton"; }` as an expression here, and bound the value to the name `surname` just as we did with an anonymous function. It's a *named function expression*, and it is very interesting.
 
@@ -124,7 +124,7 @@ We've used `function family () { return "Thistleton"; }` as an expression here, 
 
 In most environments, there is some way of inspecting the call stack for debugging or documentation purposes. For example:
 
-{% highlight javascript %}
+```javascript
 function officer () {
   return rank() + " " + given() + " Thistleton";
   
@@ -136,13 +136,13 @@ function officer () {
 officer()
   //=> TypeError: undefined is not a function
          at officer (repl:5:39)
-{% endhighlight %}
+```
 
 Note the second line: `at officer (repl:5:39)`. We know that the `TypeError` occurred within the `officer` function. How does the environment know it's the officer function? Because we named it in the declaration.
 
 If we used an anonymous function bound to a name, Node can deduce the name of the function:
 
-{% highlight javascript %}
+```javascript
 var officer = function () {
   return rank() + " " + given() + " Thistleton";
   
@@ -154,18 +154,18 @@ var officer = function () {
 officer()
   //=> TypeError: undefined is not a function
          at officer (repl:5:39)
-{% endhighlight %}
+```
 
 But not all functions are so easily deduced. Callbacks in Node, event handlers in the browser, and functions passed to higher-order functions and methods are all often anonymous:
 
-{% highlight javascript %}
+```javascript
 [1962, 6, 14].filter(function (n) { return n <= 12; })
   //=> [ 6 ]
-{% endhighlight %}
+```
 
 Sometimes, such functions go wrong:
 
-{% highlight javascript %}
+```javascript
 function factorial (n) {
   system.out.println(n);
   
@@ -177,13 +177,13 @@ function factorial (n) {
           at factorial (repl:2:1)
           at repl:1:45
           at Array.filter (native)
-{% endhighlight %}
+```
 
 We seem to have confused "JavaScript" with "Java," and looking at the stack trace, we can see it happens within `factorial`, but what calls it? `repl:1:45` is not very helpful. This case is trivial enough to work it out, but lots of stack traces are much deeper and contain multiple anonymous functions.
 
 But we know that a function expression doesn't need to be anonymous:
 
-{% highlight javascript %}
+```javascript
 function factorial (n) {
   system.out.println(n);
   
@@ -195,7 +195,7 @@ function factorial (n) {
           at factorial (repl:2:1)
           at numbersWithOddFactorials (repl:1:70)
           at Array.filter (native)
-{% endhighlight %}
+```
 
 Naming functions is extremely useful for debugging purposes. There are very few reasons *not* to name functions. Where by "very few", we mean "probably zero."
 
@@ -205,7 +205,7 @@ Are there any other benefits? Yes.
 
 When we use a named function expression (not a declaration, but an expression), the name of the function is **not** bound in its enclosing environment:
 
-{% highlight javascript %}
+```javascript
 function officer () {
   var given   = function () { return "Reginald"; },
       surname = function family () { return "Thistleton"; };
@@ -217,19 +217,19 @@ function officer () {
 
 officer()
   //=> ReferenceError: family is not defined
-{% endhighlight %}
+```
 
 So, when we *declare* a function, its name is bound in the enclosing environment, but when we use the function as an *expression*, its name is not bound in the enclosing environment. So where *is* it bound?
 
 Here's a named function expression: `function even (n) { return n == 0 ? true : !even(n-1) }`. We'll use it in an Immediately Invoked Function Expression ("IIFE"):
 
-{% highlight javascript %}
+```javascript
 (function even (n) { return n == 0 ? true : !even(n-1) })(42)
   //=> true
 
 even
   //=> ReferenceError: even is not defined
-{% endhighlight %}
+```
 
 Aha! The name is bound *inside* the body of the function. This is very useful if you're writing a lot of recursive functions, but where else?
 
@@ -237,7 +237,7 @@ Aha! The name is bound *inside* the body of the function. This is very useful if
 
 Well, how about "classes" (please excuse the scare-quotes):
 
-{% highlight javascript %}
+```javascript
 function Board () {
   this.height = Board.defaultHeight;
   this.width  = Board.defaultWidth;
@@ -245,13 +245,13 @@ function Board () {
 }
 
 Board.defaultheight = Board.defaultWidth = 8;
-{% endhighlight %}
+```
 
 We're making a "constructor" function, old-school style, and we're using properties of the constructor function as the rough equivalent of "class variables" in other languages.
 
 So far there's nothing special about this, because our constructor is a function declaration. But let's write a function that generates classes:
 
-{% highlight javascript %}
+```javascript
 function boardMaker (defaultSize) {
   var konstruktor = function Board () {
     this.height = Board.defaultHeight;
@@ -263,11 +263,11 @@ function boardMaker (defaultSize) {
   
   return konstruktor;
 }
-{% endhighlight %}
+```
 
 Now we can make different board constructors, and each constructor's `Board` variable doesn't conflict with any other constructor's `Board` variable:
 
-{% highlight javascript %}
+```javascript
 var Chess   = boardMaker(8),
     Go      = boardMaker(19),
     SmallGo = boardMaker(9);
@@ -276,13 +276,13 @@ var board = new Go();
 
 board.height
   //=> 19
-{% endhighlight %}
+```
 
 ### closures
 
 Of course, we could accomplish a similar thing by taking advantage of JavaScript's closures, like this:
 
-{% highlight javascript %}
+```javascript
 function boardMaker (defaultSize) {
   var defaultHeight = defaultSize,
       defaultWidth  = defaultSize;
@@ -295,7 +295,7 @@ function boardMaker (defaultSize) {
   
   return konstruktor;
 }
-{% endhighlight %}
+```
 
 We won't say this is *worse* or *better*, but it's not the same. First, as elegant as a closure is (closures really are awesome), it does use more memory: The JavaScript runtime can't throw away the invocation environment after `boardMaker` returns, it has to save it because `konstructor` refers to its variables. That might matter in some implementations.
 

@@ -16,7 +16,7 @@ That sounds tautological, until we look at JavaScript. But let's start with a qu
 
 In Ruby, classes are objects, but they're special objects. For example, here are some of the methods associated with the Ruby class `String`:
 
-{% highlight ruby %}
+```ruby
 String.methods
   #=> [:try_convert, :allocate, :new, :superclass, :freeze, :===, :==,
        :<=>, :<, :<=, :>, :>=, :to_s, :included_modules, :include?, :name, 
@@ -30,11 +30,11 @@ String.methods
        :protected_method_defined?, :public_class_method, :private_class_method, 
        # ...
        :!=, :instance_eval, :instance_exec, :__send__, :__id__] 
-{% endhighlight %}
+```
   
 And here are some of the methods associated with an instance of a string:
 
-{% highlight ruby %}
+```ruby
 String.new.methods
   #=> [:<=>, :==, :===, :eql?, :hash, :casecmp, :+, :*, :%, :[],
        :[]=, :insert, :length, :size, :bytesize, :empty?, :=~,
@@ -48,13 +48,13 @@ String.new.methods
        :start_with?, :end_with?, :scan, :ljust, :rjust, :center,
        # ...
        :instance_eval, :instance_exec, :__send__, :__id__]
-{% endhighlight %}
+```
   
 As you can see, a "class" in Ruby is very different from an "instance of that class." And the methods of a class are very different from the methods of an instance of that class.
 
 Here's how you define a Queue in Ruby:
 
-{% highlight ruby %}
+```ruby
 class Queue
   def initialize
     @array, @head, @tail = [], 0, -1
@@ -77,7 +77,7 @@ class Queue
     @tail < @head
   end
 end
-{% endhighlight %}
+```
   
 There is special syntax for defining a class, and special syntax for defining the behaviour of instances. There are different ways of defining the way new instances are created in classist languages. Ruby uses a "magic method" called `initialize`. Now let's look at JavaScript.
 
@@ -87,7 +87,7 @@ JavaScript objects don't have a formal class, and thus there's no special syntax
 
 JavaScript instances are created with a *constructor*. The constructor of an instance is a function that was invoked with the `new` operator. In JavaScript, any function can be a constructor, even if it doesn't look like one:
 
-{% highlight javascript %}
+```javascript
 function square (n) { return n * n; }
   //=> undefined
 square(2)
@@ -98,7 +98,7 @@ new square(2)
   //=> {}
 new square(2).constructor
   //=> [Function: square]
-{% endhighlight %}
+```
   
 As you can see, the `square` function will act as a constructor if you call it with `new`. *There is no special kind of thing that constructs new objects, every function is (potentially) a constructor*.
 
@@ -106,15 +106,15 @@ That's different from a true classical language, where the class is a special ki
 
 How does JavaScript define the behaviour of instances? JavaScript doesn't have a special syntax or special kind of object for that, it has "prototypes." Prototypes are objects, but unlike a classical system, there are no special methods or properties associated with a prototype. Any object can be a prototype, even an empty object. In fact, that's exactly what is associated with a constructor by default:
 
-{% highlight javascript %}
+```javascript
 function Nullo () {};
 Nullo.prototype
   //=> {}
-{% endhighlight %}
+```
   
 There's absolutely nothing special about a prototype object. No special class methods, no special constructor of its own, nothing. Let's look at a simple Queue in JavaScript:
 
-{% highlight javascript %}
+```javascript
 var Queue = function () {
   this.array = [];
   this.head = 0;
@@ -142,7 +142,7 @@ Queue.prototype
   //=>  { pushTail: [Function],
           pullHead: [Function],
           isEmpty: [Function] }
-{% endhighlight %}
+```
   
 The first way a prototype in JavaScript is different from a class in Ruby is that the prototype is an ordinary object with exactly the same properties that we expect to find in an instance: Methods `pushTail`, `pullHead`, and `isEmpty`.
 

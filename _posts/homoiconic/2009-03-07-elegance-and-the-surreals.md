@@ -16,9 +16,9 @@ In Paul Graham's essay [The Hundred-Year Language](http://www.paulgraham.com/hun
 
 This "lists of length n" implementation of numbers is based on just two things: The empty list or `[]`, and the operation of adding an element to it, an operation we could call `#succ`, `#next`, or `++` depending on your preferred programming language. Since we only have one kind of thing, the thing we can add to an empty list is an empty list. Therefore, the number "six" would be represented as a list of six empty lists:
 
-{% highlight ruby %}
+```ruby
 SIX = [ [], [], [], [], [], [] ]
-{% endhighlight %}
+```
 
 Is that elegance? I think it does have one component of elegance: It has fewer axiomatic entities in it, because you just have lists rather than having lists and integers. Having a smaller set of axiomatic entities is definitely part of elegance: Java's object/primitive dichotomy is an example of unnecessary entities in a language.
 
@@ -32,16 +32,16 @@ To see why, let's compare "lists of length n" to another representation using li
 
 In the "lists of length n" representation, numbers know how many times you've incremented the empty list. What if we pick a representation where numbers know something about how they compare to other numbers?
 
-{% highlight ruby %}
+```ruby
 class SurrealNumber < Struct.new(:numbers_to_my_left, :numbers_to_my_right)
 end
-{% endhighlight %}
+```
 
 If you line up all the numbers in order, each Surreal Number knows of zero or numbers to its *left* and zero or more numbers to its *right*. But its knowledge can be incomplete! Any finite number is greater than an infinite number of numbers and also less than an infinite number of numbers, so our representation could not fit in a finite space if each number actually enumerated *all* of the numbers to its left or its right.
 
 If we are going to write out some examples, we will need a simple notation. This being Ruby, we'll blithely monkey-patch core classes to make a kind of DSL:
 
-{% highlight ruby %}
+```ruby
 class SurrealNumber < Struct.new(:numbers_to_my_left, :numbers_to_my_right)
 
   def inspect
@@ -57,7 +57,7 @@ Array.class_eval do
   end
 
 end
-{% endhighlight %}
+```
  
 So you can create a new SurrealNumber by writing out using the `^` operation to join two arrays of numbers.
     
@@ -67,12 +67,12 @@ Now right away we can see some potential problems. We haven't figured out how to
 
 To sort this out, we'll need a precise definition of the expressions "to the right of" and "to the left of." We've already had plenty of words, so let's express ourselves in Ruby. We start with a single definition:
 
-{% highlight ruby %}
+```ruby
 def not_to_the_left_of?(other)
   !numbers_to_my_right.any? { |right| other.not_to_the_left_of?(right) } and
     !other.numbers_to_my_left.any { |left| left.not_to_the_left_of?(self) }
 end
-{% endhighlight %}
+```
 
 Meaning, one number is *not to the left of another number* if and only if:
 
@@ -81,7 +81,7 @@ Meaning, one number is *not to the left of another number* if and only if:
   
 You can now write a simple validation for our Surreal Number implementation:
 
-{% highlight ruby %}
+```ruby
 def valid?
   numbers_to_my_left.all? { |left| left.valid? } and
   numbers_to_my_right.all? { |right| right.valid? } and
@@ -91,7 +91,7 @@ def valid?
     end
   end
 end
-{% endhighlight %}
+```
 
 Meaning, a number is valid provided that all the numbers to its left are valid, all the numbers to its right are valid, and for every number to its left, there is no number to its right such that the number to its left is not to the left of the number to its right.
 
@@ -99,17 +99,17 @@ Meaning, a number is valid provided that all the numbers to its left are valid, 
 
 For convenience, let's define `#not_to_the_right_of?`:
 
-{% highlight ruby %}
+```ruby
 def not_to_the_right_of?(other)
   other.not_to_the_left_of?(self)
 end
-{% endhighlight %}
+```
 
 Recursive things and elegant things almost always start with a base or degenerate case and work from there. The "lists of length n" implementation of numbers started with an empty list. We have a similarly spartan base case, `[] ^ []`. We will call it *NAUGHT*:
 
-{% highlight ruby %}
+```ruby
 NAUGHT = [] ^ []
-{% endhighlight %}
+```
 
 Let's ask ourselves this question: *Is NAUGHT valid?*
 
@@ -133,24 +133,24 @@ Let's see what we get if we ask a few more questions.
 
 What is `NAUGHT.not_to_the_left_of?(NAUGHT)`? What is `NAUGHT.not_to_the_right_of?(NAUGHT)`? What do you infer from this? Correct! Given two numbers x and y, if `x.not_to_the_left_of?(y) && x.not_to_the_right_of?(y)`, we know that `x == y`!
 
-{% highlight ruby %}
+```ruby
 def == (other)
   other.kind_of?(SurrealNumber) && not_to_the_left_of?(other) && not_to_the_right_of?(other)
 end
-{% endhighlight %}
+```
 
 Note that equality is a *defined relationship*. There is no monkeying around with comparing the identities of our representations in our language's implementation. Two instances of Surreal Number in Ruby can be == each other even if they are not the same instance in memory. Furthermore, two instances of Surreal Number in Ruby can be == each other even if they don't have the exact same representation!
 
 NAUGHT or `[] ^ []` is the simplest possible number to represent. What is the next simplest number? How about `([([]^[])] ^ [])`? Or to put it more simply: `NAUGHT ^ []`. What do we know about this number?
 
-{% highlight ruby %}
+```ruby
 (NAUGHT ^ []).not_to_the_left_of?(NAUGHT) # => true
 (NAUGHT ^ []) == NAUGHT # => false
-{% endhighlight %}
+```
 
 Well, if `(NAUGHT ^ [])` is not to the left of NAUGHT and it is not equal to NAUGHT... It must be to the *right* of NAUGHT. Now we have a new relationship we can define, along with its symmetrical twin:
   
-{% highlight ruby %}
+```ruby
 def to_the_right_of?(other)
   not_to_the_left_of?(other) && !not_to_the_right_of?(other)
 end
@@ -158,40 +158,40 @@ end
 def to_the_left_of?(other)
   not_to_the_right_of?(other) && !not_to_the_left_of?(other)
 end
-{% endhighlight %}
+```
 
 ### Integers and arithmetic
 
 We can name our new number:
 
-{% highlight ruby %}
+```ruby
 ONE = NAUGHT ^ []
 
 ONE.to_the_right_of?(NAUGHT) # => true
 ONE.to_the_left_of?(NAUGHT)  # => false
 NAUGHT.to_the_left_of?(ONE)  # => true
 NAUGHT.to_the_right_of?(ONE) # => false
-{% endhighlight %}
+```
 
 If `NAUGHT ^ []` is ONE, what is `ONE ^ []`? Correct!
 
-{% highlight ruby %}
+```ruby
 TWO = ONE ^ []
-{% endhighlight %}
+```
 
 Verify for yourself that the relationships we have defined work for NAUGHT, ONE, and TWO. Make THREE, FOUR, and FIVE if you are so inclined. And what happens if we go the other way? Do we get negative numbers? Yes we do:
 
-{% highlight ruby %}
+```ruby
 MINUS_ONE = [] ^ NAUGHT
 MINUS_TWO = [] ^ MINUS_ONE
-{% endhighlight %}
+```
 
 Now we come to an interesting question: *Does the operation `^ []` mean plus one?*. We could just declare that it does, but in doing so we ought to check our results. Let's try it and see:
 
-{% highlight ruby %}
+```ruby
 MINUS_TWO ^ [] == MINUS_ONE # => false
 MINUS_TWO ^ [] == NAUGHT    # => true
-{% endhighlight %}
+```
 
 Bzzzzzzzzzt! Wrong!! If `^ []` meant plus one, `MINUS_TWO ^ []` should equal MINUS_ONE, not NAUGHT. `^ []` obviously does not equate to adding one to a number, even though it does help us generate numbers. Let's work addition out from first principles. Our concept of a number works off defining a set of numbers to its left and a set of numbers to its right. If we imagine the relationship `x = y + z`, how can we work out x given y and z? Here are some conclusions we can form:
 
@@ -204,19 +204,19 @@ Hmmmmm. Defining "plus" in terms of plus. Will this work? Taken in isolation, *n
 
 Of course, we like to automate things. Now that we are comfortable the algorithm terminates for our test numbers, we can write a method for our Surreal Number implementation:
 
-{% highlight ruby %}
+```ruby
 def + (other)
   (numbers_to_my_left.map { |left| left + other } | other.numbers_to_my_left.map { |left| left + self }) ^
     (numbers_to_my_right.map { |right| right + other } | other.numbers_to_my_right.map { |right| right + self })
 end
-{% endhighlight %}
+```
 
 Let's try our plus operator:
 
-{% highlight ruby %}
+```ruby
 MINUS_TWO + ONE == MINUS_ONE # => true
 MINUS_TWO + ONE == NAUGHT # => false
-{% endhighlight %}
+```
 
 Much better! You can verify for yourself that addition works just as you'd expect it for `TWO + TWO == FOUR` and everything else you can try. Let's implement another operator. How does negation work? If we imagine the relationship `x = -y`, we conclude:
 
@@ -225,11 +225,11 @@ Much better! You can verify for yourself that addition works just as you'd expec
 
 Try it out for yourself, or just use the obvious implementation:
 
-{% highlight ruby %}
+```ruby
 def -@
   numbers_to_my_right.map { |r| -r } ^ numbers_to_my_left.map { |l| -l }
 end
-{% endhighlight %}
+```
    
 And given plus and negation, subtraction is trivial. I won't write everything out here, but with a little thought you can work out how to perform multiplication, division and every other operation on our numbers. Although the representation looks weird to someone used to thinking in binary or decimal representations, our numbers can do everything a familiar number can do.
 

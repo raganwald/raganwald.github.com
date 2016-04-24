@@ -14,11 +14,11 @@ tags : [homoiconic, javascript]
 
 Some time ago I was asymmetrically pairing with a colleague, and I begun a new JavaScript file like this:
 
-{% highlight javascript %}
+```javascript
 ;(function ($) {
 	// ...
 })(jQuery);
-{% endhighlight %}
+```
   
 "What," she asked, "is the purpose of the opening semicolon?"
 
@@ -58,7 +58,7 @@ Without expert curation, we either get a brief book that fails to strike the pro
 
 As you by now expect, *Effective JavaScript* explained why I was inserting that leading semicolon. When file A and file B both use an IIFE, and when each file is loaded separately, a semicolon is automatically inserted at the end. So they look like this to the interpreter:
 
-{% highlight javascript %}
+```javascript
 (function ($) {
 	// ... A
 })(jQuery);
@@ -66,29 +66,29 @@ As you by now expect, *Effective JavaScript* explained why I was inserting that 
 (function ($) {
 	// ... B
 })(jQuery);
-{% endhighlight %}
+```
   
 No problem. But one day you add naïve concatenation to your asset streaming, and now the code is all in one big file:
 
-{% highlight javascript %}
+```javascript
 (function ($) {
 	// ... A
 })(jQuery)(function ($) {
 	// ... B
 })(jQuery);
-{% endhighlight %}
+```
   
 Instead of two IIFEs, you now have one function expression being called with `jQuery` as its argument. You then call the result it returns with a big function expression as its argument. You then call what that returns with `jQuery` as its argument. That's a bug.
 
 It wouldn't have been a bug if every file included was terminated with a semicolon, but you can only control the code you write. Let's say you wrote B, and you terminated yours with a semicolon and prefixed it with a semicolon defensively. After concatenation, you end up with:
 
-{% highlight javascript %}
+```javascript
 (function ($) {
 	// ... A
 })(jQuery);(function ($) {
 	// ... B
 })(jQuery);
-{% endhighlight %}
+```
   
 And that works fine. Now, *this is not the only way to solve this problem*. JavaScript has moved along since I first saw that idiom, and there are plenty of minification libraries and module management libraries that solve this problem for you whether you include an extra semicolon or not. Some of them solve the scoping issues that the IIFE is intended to solve.
 

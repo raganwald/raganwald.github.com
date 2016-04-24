@@ -22,7 +22,7 @@ Of course, if the modifications are only made as part of building the class in t
 
 Let's revisit our ridiculously trivial `Todo` class:
 
-{% highlight javascript %}
+```javascript
 class Todo {
   constructor (name) {
     this.name = name || 'Untitled';
@@ -37,11 +37,11 @@ class Todo {
     return this;
   }
 }
-{% endhighlight %}
+```
 
 Now let us presume that this class is used throughout our application for various purposes. In one section of the code, we want `Todo` items that are also coloured. As we saw [previously][Functional Mixins], we can accomplish that with a simple mixin like this:
 
-{% highlight javascript %}
+```javascript
 const Coloured = {
   setColourRGB ({r, g, b}) {
     this.colourCode = {r, g, b};
@@ -53,13 +53,13 @@ const Coloured = {
 };
 
 Object.assign(Todo.prototype, Coloured);
-{% endhighlight %}
+```
 
 While this works just fine for all of the Todos we create in this part of the program, we may accidentally break `Todo` instances used elsewhere. What we really want is a `ColoredTodo` in one part of the program, and `Todo` everywhere else.
 
 The `extends` keyword solves that problem in the trivial case:
 
-{% highlight javascript %}
+```javascript
 class ColouredTodo extends Todo {
   setColourRGB ({r, g, b}) {
     this.colourCode = {r, g, b};
@@ -69,7 +69,7 @@ class ColouredTodo extends Todo {
     return this.colourCode;
   }
 }
-{% endhighlight %}
+```
 
 A `ColouredTodo` is just like a `Todo`, but with added colour.
 
@@ -81,7 +81,7 @@ Our problem is that with extension, our colour functionality is coupled to the `
 
 What we want is to decouple `Todo` from `Coloured` with extension, and to decouple `Coloured` from `ColouredTodo` with a mixin:
 
-{% highlight javascript %}
+```javascript
 class ColouredTodo extends Todo {}
 
 const Coloured = {
@@ -95,11 +95,11 @@ const Coloured = {
 };
 
 Object.assign(ColouredTodo.prototype, Coloured);
-{% endhighlight %}
+```
 
 We can write a simple function to encapsulate this pattern:
 
-{% highlight javascript %}
+```javascript
 function ComposeWithClass(clazz, ...mixins) {
   const subclazz = class extends clazz {};
   for (let mixin of mixins) {
@@ -109,7 +109,7 @@ function ComposeWithClass(clazz, ...mixins) {
 }
 
 const ColouredTodo = ComposeWithClass(Todo, Coloured);
-{% endhighlight %}
+```
 
 The `ComposeWithClass` function returns a new class without modifying its arguments. In other words, it's *composing* behaviour with a class, not mixing behaviour into a class.
 
@@ -119,7 +119,7 @@ The `ComposeWithClass` function returns a new class without modifying its argume
 
 We can enhance `ComposeWithClass` to address some of the issues we noticed with mutating mixins, such as making methods non-enumerable:
 
-{% highlight javascript %}
+```javascript
 const shared = Symbol("shared");
 
 function ComposeWithClass(clazz, ...mixins) {
@@ -144,11 +144,11 @@ function ComposeWithClass(clazz, ...mixins) {
 }
 
 ComposeWithClass.shared = shared;
-{% endhighlight %}
+```
 
 Written like this, it's up to individual behaviours to sort out `instanceof`:
 
-{% highlight javascript %}
+```javascript
 const isaColoured = Symbol();
 
 const Coloured = {
@@ -162,11 +162,11 @@ const Coloured = {
   [isaColoured]: true,
   [Symbol.hasInstance] (instance) { return instance[isaColoured]; }
 };
-{% endhighlight %}
+```
 
 And that's something we can encapsulate, if we wish:
 
-{% highlight javascript %}
+```javascript
 function HasInstances (behaviour) {
   const typeTag = Symbol();
   return Object.assign({}, behaviour, {
@@ -174,11 +174,11 @@ function HasInstances (behaviour) {
     [Symbol.hasInstance] (instance) { return instance[typeTag]; }
   })
 }
-{% endhighlight %}
+```
 
 ### the complete composition
 
-{% highlight javascript %}
+```javascript
 class Todo {
   constructor (name) {
     this.name = name || 'Untitled';
@@ -205,7 +205,7 @@ const Coloured = HasInstances({
 });
 
 const ColouredTodo = ComposeWithClass(Todo, Coloured);
-{% endhighlight %}
+```
 
 ### summary
 

@@ -27,7 +27,7 @@ The team talked for a while longer before deciding to ask for enough budget to h
 
 "After some cajoling, he wrote this for me:"
 
-{% highlight ruby %}
+```ruby
 def closed_fib(n)
   a = Math.sqrt(5)
   return ((1/a)*(((1+a)/2)**n)).round()
@@ -46,7 +46,7 @@ end
 #   135301852344707186688
 #   218922995834555891712
 #   354224848179263111168
-{% endhighlight %}
+```
 
 "He wrote it quickly, and that was impressive, but I got nowhere trying to quiz him about its limitations. For example, I asked him if we were calculating the 1,000,000th Fibonacci number how we could be sure that Ruby's built-in `**` operator wouldn't take a naïve approach with big integers?"
 
@@ -56,14 +56,14 @@ end
 
 "But he let me know that he did not suffer fools gladly, and hadn't I heard him twice the first time that this was the correct implementation? In response, I simply typed this into `irb`:"
 
-{% highlight ruby %}
+```ruby
 closed_fib(10000)
 #=> FloatDomainError: Infinity
 #   	from (irb):38:in `truncate'
 #   	from (irb):38:in `closed_fib'
 #   	from (irb):44
 #   	from /Users/williams/.rvm/rubies/ruby-1.9.3-p327/bin/irb:16:in `<main>'
-{% endhighlight %}
+```
 
 "After he left, I emailed his resume to StinkWare, our competition. They deserve each other."
 

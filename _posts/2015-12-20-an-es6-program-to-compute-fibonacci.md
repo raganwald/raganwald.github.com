@@ -56,7 +56,7 @@ And thus, we can always work with three elements instead of four. Let's express 
 
 Which we can code in JavaScript, using array destructuring:
 
-{% highlight javascript %}
+```javascript
 let times = (...matrices) =>
   matrices.reduce(
     ([a,b,c], [d,e,f]) => [a*d + b*e, a*e + b*f, b*e + c*f]
@@ -67,11 +67,11 @@ times([1, 1, 0], [1, 1, 0]) // => [2, 1, 1]
 times([1, 1, 0], [1, 1, 0], [1, 1, 0]) // => [3, 2, 1]
 times([1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0]) // => [5, 3, 2]
 times([1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0]) // => [8, 5, 3]
-{% endhighlight %}
+```
 
 To get exponentiation from multiplication, we could write out a naive implementation that constructs a long array of copies of `[1, 1, 0]` and then calls `times`:
 
-{% highlight javascript %}
+```javascript
 let naive_power = (matrix, n) =>
   times(...new Array(n).fill([1, 1, 0]));
 
@@ -90,7 +90,7 @@ Now let's make an observation: instead of accumulating a product by iterating ov
 
 This saves us an operation, since `times([1, 1, 0], [1, 1, 0], [1, 1, 0], [1, 1, 0])` is implemented as:
 
-{% highlight javascript %}
+```javascript
 times([1, 1, 0],
   times([1, 1, 0],
     times([1, 1, 0], [1, 1, 0]))
@@ -98,14 +98,14 @@ times([1, 1, 0],
 
 Whereas `times(times([1, 1, 0], [1, 1, 0]), times([1, 1, 0], [1, 1, 0]))` can be implemented as:
 
-{% highlight javascript %}
+```javascript
 let double = times([1, 1, 0], [1, 1, 0]),
     quadruple = times(double, double);
 {%endhighlight %}
 
 This only requires two operations rather than three. Furthermore, this pattern is recursive. For example, `naive_power([1, 1, 0], 8)` requires seven operations:
 
-{% highlight javascript %}
+```javascript
 times([1, 1, 0],
   times([1, 1, 0],
     times([1, 1, 0],
@@ -117,7 +117,7 @@ times([1, 1, 0],
 
 However, it can be formulated with just three operations:
 
-{% highlight javascript %}
+```javascript
 let double = times([1, 1, 0], [1, 1, 0]),
     quadruple = times(double, double),
     octuple = times(quadruple, quadruple);
@@ -125,7 +125,7 @@ let double = times([1, 1, 0], [1, 1, 0]),
 
 Of course, we left out how to deal with odd numbers. Fixing that also fixes how to deal with even numbers that aren't neat powers of two:
 
-{% highlight javascript %}
+```javascript
 let power = (matrix, n) => {
   if (n === 1) return matrix;
 
@@ -149,7 +149,7 @@ Now we can perform exponentiation of our matrices, and we take advantage of the 
 
 We can now write our complete fibonacci function:
 
-{% highlight javascript %}
+```javascript
 let times = (...matrices) =>
   matrices.reduce(
     ([a,b,c], [d,e,f]) => [a*d + b*e, a*e + b*f, b*e + c*f]
@@ -176,7 +176,7 @@ fibonacci(62)
 
 If we'd like to work with very large numbers, JavaScript's integers are insufficient. Using a library like [BigInteger.js](https://github.com/peterolson/BigInteger.js), our solution becomes:
 
-{% highlight javascript %}
+```javascript
 import { zero, one } from 'big-integer';
 
 let times = (...matrices) =>
@@ -208,7 +208,7 @@ Let's stretch our wings and calculate the 19,620,614th Fibonacci number:[^1962]
 
 [^1962]: 1962-06-14 is a number near and dear to me :-)
 
-{% highlight javascript %}
+```javascript
 fibonacci(19620614).toString()
   // =>
     29554981652302145421961363135286189884298419359021591207414

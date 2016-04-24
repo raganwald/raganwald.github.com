@@ -16,7 +16,7 @@ One way to share behaviour scattered across multiple classes, or to untangle beh
 
 Here's a class of todo items:
 
-{% highlight javascript %}
+```javascript
 class Todo {
   constructor (name) {
     this.name = name || 'Untitled';
@@ -31,11 +31,11 @@ class Todo {
     return this;
   }
 }
-{% endhighlight %}
+```
 
 And a "mixin" that is responsible for colour-coding:
 
-{% highlight javascript %}
+```javascript
 const Coloured = {
   setColourRGB ({r, g, b}) {
     this.colourCode = {r, g, b};
@@ -45,21 +45,21 @@ const Coloured = {
     return this.colourCode;
   }
 };
-{% endhighlight %}
+```
 
 Mixing colour coding into our Todo prototype is straightforward:
 
-{% highlight javascript %}
+```javascript
 Object.assign(Todo.prototype, Coloured);
 
 new Todo('test')
   .setColourRGB({r: 1, g: 2, b: 3})
   //=> {"name":"test","done":false,"colourCode":{"r":1,"g":2,"b":3}}
-{% endhighlight %}
+```
 
 We can "upgrade" it to have a [private property](http://raganwald.com/2015/06/04/classes-are-expressions.html) if we wish:
 
-{% highlight javascript %}
+```javascript
 const colourCode = Symbol("colourCode");
 
 const Coloured = {
@@ -71,7 +71,7 @@ const Coloured = {
     return this[colourCode];
   }
 };
-{% endhighlight %}
+```
 
 So far, very easy and very simple. This is a *pattern*, a recipe for solving a certain problem using a particular organization of code.
 
@@ -81,7 +81,7 @@ So far, very easy and very simple. This is a *pattern*, a recipe for solving a c
 
 The object mixin we have above works properly, but our little recipe had two distinct steps: Define the mixin and then extend the class prototype. Angus Croll pointed out that it's more elegant to define a mixin as a function rather than an object. He calls this a [functional mixin][fm]. Here's `Coloured` again, recast in functional form:
 
-{% highlight javascript %}
+```javascript
 const Coloured = (target) =>
   Object.assign(target, {
     setColourRGB ({r, g, b}) {
@@ -94,18 +94,18 @@ const Coloured = (target) =>
   });
 
 Coloured(Todo.prototype);
-{% endhighlight %}
+```
 
 We can make ourselves a *factory function* that also names the pattern:
 
-{% highlight javascript %}
+```javascript
 const FunctionalMixin = (behaviour) =>
   target => Object.assign(target, behaviour);
-{% endhighlight %}
+```
 
 This allows us to define functional mixins neatly:
 
-{% highlight javascript %}
+```javascript
 const Coloured = FunctionalMixin({
   setColourRGB ({r, g, b}) {
     this.colourCode = {r, g, b};
@@ -115,7 +115,7 @@ const Coloured = FunctionalMixin({
     return this.colourCode;
   }
 });
-{% endhighlight %}
+```
 
 ### enumerability
 
@@ -125,7 +125,7 @@ Our object mixin pattern does not work this way, the methods defined in a mixin 
 
 And thus:
 
-{% highlight javascript %}
+```javascript
 Coloured(Todo.prototype)
 
 const urgent = new Todo("finish blog post");
@@ -138,20 +138,20 @@ for (let property in urgent) console.log(property);
     colourCode
     setColourRGB
     getColourRGB
-{% endhighlight %}
+```
 
 As we can see, the `setColourRGB` and `getColourRGB` methods are enumerated, although the `do` and `undo` methods are not. This can be a problem with naïve code: we can't always rewrite all the *other* code to carefully use `.hasOwnProperty`.
 
 One benefit of functional mixins is that we can solve this problem and transparently make mixins behave like `class`:
 
-{% highlight javascript %}
+```javascript
 const FunctionalMixin = (behaviour) =>
   function (target) {
     for (let property of Reflect.ownKeys(behaviour))
       Object.defineProperty(target, property, { value: behaviour[property] })
     return target;
   }
-{% endhighlight %}
+```
 
 Writing this out as a pattern would be tedious and error-prone. Encapsulating the behaviour into a function is a small win.
 
@@ -163,7 +163,7 @@ Like classes, mixins are metaobjects: They define behaviour for instances. In ad
 
 For example, sometimes a particular concept is associated with some well-known constants. When using a class, can be handy to namespace such values in the class itself:
 
-{% highlight javascript %}
+```javascript
 class Todo {
   constructor (name) {
     this.name = name || Todo.DEFAULT_NAME;
@@ -183,13 +183,13 @@ Todo.DEFAULT_NAME = 'Untitled';
 
 // If we are sticklers for read-only constants, we could write:
 // Object.defineProperty(Todo, 'DEFAULT_NAME', {value: 'Untitled'});
-{% endhighlight %}
+```
 
 We can't really do the same thing with simple mixins, because all of the properties in a simple mixin end up being mixed into the prototype of instances we create by default. For example, let's say we want to define `Coloured.RED`, `Coloured.GREEN`, and `Coloured.BLUE`. But we don't want any specific coloured instance to define `RED`, `GREEN`, or `BLUE`.
 
 Again, we can solve this problem by building a functional mixin. Our `FunctionalMixin` factory function will accept an optional dictionary of read-only mixin properties, provided they are associated with a special key:
 
-{% highlight javascript %}
+```javascript
 const shared = Symbol("shared");
 
 function FunctionalMixin (behaviour) {
@@ -212,11 +212,11 @@ function FunctionalMixin (behaviour) {
 }
 
 FunctionalMixin.shared = shared;
-{% endhighlight %}
+```
 
 And now we can write:
 
-{% highlight javascript %}
+```javascript
 const Coloured = FunctionalMixin({
   setColourRGB ({r, g, b}) {
     this.colourCode = {r, g, b};
@@ -239,7 +239,7 @@ urgent.setColourRGB(Coloured.RED);
 
 urgent.getColourRGB()
   //=> {"r":255,"g":0,"b":0}
-{% endhighlight %}
+```
 
 ### mixin methods
 
@@ -247,13 +247,13 @@ Such properties need not be values. Sometimes, classes have methods. And likewis
 
 In earlier versions of ECMAScript, `instanceof` is an operator that checks to see whether the prototype of an instance matches the prototype of a constructor function. It works just fine with "classes," but it does not work "out of the box" with mixins:
 
-{% highlight javascript %}
+```javascript
 urgent instanceof Todo
   //=> true
 
 urgent instanceof Coloured
   //=> false
-{% endhighlight %}
+```
 
 To handle this and some other issues where programmers are creating their own notion of dynamic types, or managing prototypes directly with `Object.create` and `Object.setPrototypeOf`, ECMAScript 2015 provides a way to override the built-in `instanceof` behaviour: An object can define a method associated with a well-known symbol, `Symbol.hasInstance`.
 
@@ -261,17 +261,17 @@ We can test this quickly:[^but]
 
 [^but]: This may **not** work with various transpilers and other incomplete ECMAScript 2015 implementations. Check the documentation. For example, you must enable the "high compliancy" mode in [BabelJS](http://babeljs.io). This is off by default to provide the highest possible performance for code bases that do not need to use features like this.
 
-{% highlight javascript %}
+```javascript
 Object.defineProperty(Coloured, Symbol.hasInstance, {value: (instance) => true});
 urgent instanceof Coloured
   //=> true
 {} instanceof Coloured
   //=> true
-{% endhighlight %}
+```
 
 Of course, that is not semantically correct. But using this technique, we can write:
 
-{% highlight javascript %}
+```javascript
 const shared = Symbol("shared");
 
 function FunctionalMixin (behaviour) {
@@ -302,7 +302,7 @@ urgent instanceof Coloured
   //=> true
 {} instanceof Coloured
   //=> false
-{% endhighlight %}
+```
 
 Do you need to implement `instanceof`? Quite possibly not. "Rolling your own polymorphism" is usually a last resort. But it can be handy for writing test cases, and a few daring framework developers might be working on multiple dispatch and pattern-matching for functions.
 

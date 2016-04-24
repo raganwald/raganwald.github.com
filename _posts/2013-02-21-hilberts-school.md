@@ -18,7 +18,7 @@ Well, an infinite number of students show up on the first day. "Line up please!"
 
 Bertie quickly whips out a JavaScript IDE he has devised, and he writes himself a functional iterator. Instead of iterating over a data structure in memory, it generates seat numbers on demand:
 
-{% highlight javascript %}
+```javascript
 function Numbers () {
   var number = 0;
   return function () {
@@ -31,7 +31,7 @@ while (true)
   console.log(seats());
 
 //=> 0, 1, 2, 3, ...
-{% endhighlight %}
+```
 
 He simply calls out the numbers as they are printed, and the students file into the auditorium in an orderly fashion, filling it completely. Well, the first day is very long indeed. But Bertie has an infinite supply of bitcoins and things go well.
 
@@ -45,7 +45,7 @@ In fact, a few people liked the lecture so much that they recommended it to thei
 
 Out comes the IDE and the bullhorn. This time, he uses the [allong.es] library and writes the following:
 
-{% highlight javascript %}
+```javascript
 map = require('allong.es').iterators.map
 
 var oldSeats = Numbers(),
@@ -69,7 +69,7 @@ i();
   //=> 3 -> 1000003
 
 // ...
-{% endhighlight %}
+```
 
 He has constructed an iterator with instructions for moving seats. Bertie tells the first person to move from seat zero to seat one million, the second from one to one million and one, and so forth. This means that seats 0 through 999,999 become vacant, so the 1,000,000 new students have a place to sit. Day Two goes well, and he is very pleased with his venture.
 
@@ -79,7 +79,7 @@ His fame spreads, and Jeff Atwood starts a discussion about Bertie's JavaScript 
 
 All of the students from Day Two have returned, so the auditorium is already full. Bertie is perplexed, but after scratching his head for a few moments, whips out his bullhorn and write the following JavaScript:
 
-{% highlight javascript %}
+```javascript
 var EvenNumbers = function () {
   return map(Numbers(), function (n) { return n * 2; });
 }
@@ -96,11 +96,11 @@ i();
   //=> 3 -> 6
 
 // ...
-{% endhighlight %}
+```
 
 Now all the existing students are in the even numbered seats, so he's ready to seat Jeff's fans:
 
-{% highlight javascript %}
+```javascript
 var OddNumbers = function () {
   return map(Numbers(), function (n) { return n * 2 + 1; });
 }
@@ -117,7 +117,7 @@ i();
   //=> 3 -> 7
 
 // ...
-{% endhighlight %}
+```
 
 Bertie calls out the seat numbers on Jeff's bus and the number of an odd-numbered (and therefore vacant) seat in the auditorium for them to occupy. Bertie has managed to add an infinite number of students to an infinitely large but full auditorium.
 
@@ -139,7 +139,7 @@ Bertie has to seat an infinite number of infinite groups of people, in an infini
 
 He writes a new program:
 
-{% highlight javascript %}
+```javascript
 var Diagonals = function () {
   return map(Numbers(), function (n) {
     var bus = 0;
@@ -155,23 +155,23 @@ var Diagonals = function () {
     };
   });
 };
-{% endhighlight %}
+```
 
 He has an Espresso Allongé and contemplates his work so far. `Diagonals` is an iterator over an infinite collection of iterators, each of which uniquely identifies a bus and seat on that bus. They look something like this:
 
-{% highlight javascript %}
+```javascript
 { bus: 0, seat: 0}
 { bus: 0, seat: 1}, { bus: 1, seat: 0}
 { bus: 0, seat: 2}, { bus: 1, seat: 1}, { bus: 2, seat: 0}
 { bus: 0, seat: 3}, { bus: 1, seat: 2}, { bus: 2, seat: 1}, { bus: 3, seat: 0 }
 ...
-{% endhighlight %}
+```
 
 If you think of the buses and seats forming a square, the diagonals iterator makes a path from one corner and works its way out, enumerating over every possible combination of bus and seat. Thus, given countably infinite time, it will list every one of the countably infinite number of Redditors on each of the countably infinite number of buses.
 
 To move forward, Bertie needs a `concatenate` iterator for iterators:
 
-{% highlight javascript %}
+```javascript
 function concatenate (iteratorOfIterators) {
   var thisIterator = iteratorOfIterators();
   return function myself () {
@@ -203,11 +203,11 @@ i();
   //=> { bus: 1, seat: 0 }
   
 // ...
-{% endhighlight %}
+```
 
 Bertie is satisfied, but the natives are restless, so he keeps coding, then reaches for his bullhorn:
 
-{% highlight javascript %}
+```javascript
 var RedditorSeats = map(PeopleOnTheBuses(), function (o) { 
       return 'bus: ' + o.bus + ', seat: ' + o.seat; 
     }),
@@ -227,7 +227,7 @@ i();
   //=> 'bus: 2, seat: 0 -> 11'
   
 // ...
-{% endhighlight %}
+```
 
 Well, this seats an infinite number of Redditors on an infinite number of buses in an infinite auditorium that was already full. He does a code walkthrough with the students, then segues on to talk about other interesting aspects of Georg Cantor[^cantor]'s work and a digression into Hotel Management.[^grand] By the time he finishes with a discussion of the Hypergame[^kongregate] proof of the infinite number of infinities, everyone has forgotten that they came to scoff.
 

@@ -28,7 +28,7 @@ Christine interrupted. "To save time, we have written a template of the solution
 
 Christine quickly scribbled on the whiteboard:
 
-{% highlight javascript %}
+```javascript
 const Game = (size = 8) => {
 
   // initialize the board
@@ -64,7 +64,7 @@ const Game = (size = 8) => {
   }
   // ???
 };
-{% endhighlight %}
+```
 
 "What," Christine asked, "Do you write in place of the three `// ???` placeholders to determine whether the game halts?"
 
@@ -80,27 +80,27 @@ The Carpenter coughed softly, then began. "To begin with, I'll transform a game 
 
 "I will add just five lines of code the `Game` function, and two of those are closing braces:"
 
-{% highlight javascript %}
+```javascript
   return ({
     [Symbol.iterator]: function* () {
-{% endhighlight %}
+```
 
 And:
 
-{% highlight javascript %}
+```javascript
         yield arrow;
-{% endhighlight %}
+```
 
 And:
 
-{% highlight javascript %}
+```javascript
     }
   });
-{% endhighlight %}
+```
 
 "The finished function reads:"
 
-{% highlight javascript %}
+```javascript
 const Game = (size = 8) => {
 
   // initialize the board
@@ -138,13 +138,13 @@ const Game = (size = 8) => {
     }
   });
 };
-{% endhighlight %}
+```
 
 "Now that we have an iterable, we can transform the iterable of arrows into an iterable of positions." The Carpenter sketched quickly. "We'll need some common utilities. You'll find equivalents in a number of JavaScript libraries, but I'll quote those given in [JavaScript Allongé](https://leanpub.com/javascriptallongesix):"
 
 "For starters, `takeIterable` transforms an iterable into one that yields at most a fixed number of elements. It's handy for debugging. We'll use it to check that our `Game` is working as an iterable:"
 
-{% highlight javascript %}
+```javascript
 const takeIterable = (numberToTake, iterable) =>
   ({
     [Symbol.iterator]: function* () {
@@ -156,7 +156,7 @@ const takeIterable = (numberToTake, iterable) =>
       }
     }
   });
-{% endhighlight %}
+```
 
 "This doesn't actually end up in our solution, it's just to check our work as we go along. And you can find it in libraries, it's not something we need to reinvent whenever we work with iterables."
 
@@ -164,7 +164,7 @@ const takeIterable = (numberToTake, iterable) =>
 
 "Again, this is a standard idiom we can obtain from libraries, we don't reinvent the wheel. I'll show it here for clarity:"
 
-{% highlight javascript %}
+```javascript
 const statefulMapIterableWith = (fn, seed, iterable) =>
   ({
     [Symbol.iterator]: function* () {
@@ -177,11 +177,11 @@ const statefulMapIterableWith = (fn, seed, iterable) =>
       }
     }
   });
-{% endhighlight %}
+```
 
 "Armed with this, it's straightforward to map an iterable of directions to an iterable of strings representing positions:"
 
-{% highlight javascript %}
+```javascript
 const positionsOf = (game) =>
   statefulMapIterableWith(
     (position, direction) => {
@@ -197,7 +197,7 @@ const positionsOf = (game) =>
     },
     [0, 0],
     game);
-{% endhighlight %}
+```
 
 The Carpenter reflected. "Having turned our game loop into an iterable, we can now see that our problem of whether the game terminates is isomorphic to the problem of detecting whether the positions given ever repeat themselves: If the chequer ever returns to a position it has previously visited, it will cycle endlessly."
 
@@ -207,7 +207,7 @@ The Carpenter reflected. "Having turned our game loop into an iterable, we can n
 
 "There's an old joke that a mathematician is someone who will take a five-minute problem, then spend an hour proving it is equivalent to another problem they have already solved. I approached this question in that spirit. Now that we have created an iterable of values that can be compared with `===`, I can show you this function:"
 
-{% highlight javascript %}
+```javascript
 // implements Tortoise and Hare cycle
 // detection algorithm.
 const hasCycle = (orderedCollection) => {
@@ -236,7 +236,7 @@ const hasCycle = (orderedCollection) => {
   }
   return false;
 };
-{% endhighlight %}
+```
 
 "A long time ago," The Carpenter explained, "Someone asked me a question in an interview. I have never forgotten the question, or the general form of the solution. The question was, *Given a linked list, detect whether it contains a cycle. Use constant space.*"
 
@@ -244,10 +244,10 @@ const hasCycle = (orderedCollection) => {
 
 "Thus, the solution to the game problem is:"
 
-{% highlight javascript %}
+```javascript
 const terminates = (game) =>
   !hasCycle(positionsOf(game))
-{% endhighlight %}
+```
 
 "This solution makes use of iterables and a single utility function, `statefulMapIterableWith`. It also cleanly separates the mechanics of the game from the algorithm for detecting cycles in a graph."
 

@@ -16,7 +16,7 @@ This is an example solution for [The "Drunken Walk" Programming Problem](http://
 
 The suggested starting point is a "Game" object that randomly initializes the directions associated with each square and a randomly selected starting square. Games are iterables: Calling `.iterate()` on a game returns an iterator that represents the chequer's path from square to square, returning the direction. SO the results might be `N`, `E`, `N`, `S`, and so forth:
 
-{% highlight javascript %}
+```javascript
 var DIRECTIONS = [
                    {
                      delta: [1, 0],
@@ -79,11 +79,11 @@ var Game = (function () {
   return Game;
   
 })();
-{% endhighlight %}
+```
 
 Finally, we are given `accumulate`, a version of `fold` that accumulates state and produces another iterator:
 
-{% highlight javascript %}
+```javascript
 function accumulate (iter, binaryFn, seed) {
   var acc = seed;
   return function () {
@@ -96,7 +96,7 @@ function accumulate (iter, binaryFn, seed) {
     }
   }
 };
-{% endhighlight %}
+```
 
 ### solution with commentary
 
@@ -115,7 +115,7 @@ So instead, we represent positions as strings, and that adds some fiddling to tr
 
 `RelativeIterator` is a function that converts a Game's iterator into a relative iterator.
 
-{% highlight javascript %}
+```javascript
 var RelativeIterator = (function () {
   var LOOKUP = (function () {
     var LOOKUP = {},
@@ -138,11 +138,11 @@ var RelativeIterator = (function () {
   return RelativeIterator;
   
 })();
-{% endhighlight %}
+```
 
 Finally, we need an iterable that returns RelativeIterators for `tortoiseAndHareLoopDetector`. `RelativeIterable` wraps a Game for exactly this purpose, and our `terminates` function uses this to answer whether a particular game ever terminates.
 
-{% highlight javascript %}
+```javascript
 function tortoiseAndHareLoopDetector (iterable) {
   var tortoise = iterable.iterator(),
       hare = iterable.iterator(), 
@@ -167,7 +167,7 @@ function RelativeIterable (game) {
 function terminates (game) {
   return !tortoiseAndHareLoopDetector(RelativeIterable(game));
 }
-{% endhighlight %}
+```
 
 ### conclusion
 

@@ -15,13 +15,13 @@ function factorial (n) {
   ? n * factorial(n - 1)
   : 1
 }
-{% endhighlight %}
+```
 
 The major problem given for this code is that stack-based languages like JavaScript consume order *n* space to compute factorial. Some implementations will have a limited stack and fail, others will simply consume an unnecessary amount of memory to compute the desired result.
 
 One solution presented was: 
 
-{% highlight javascript %}
+```javascript
 var variadic = require('allong.es').variadic;
 
 function trampoline (fn) {
@@ -46,7 +46,7 @@ function factorial (n) {
   
   return _factorial(1, n);
 };
-{% endhighlight %}
+```
 
 (I have elided big integer support to highlight the trampolining mechanism).
 
@@ -62,7 +62,7 @@ Trampolining eliminates tail-calls and replaces them "behind-the-scenes" with an
 
 This not the case. Trampolining eliminates all calls in tail position, including calls to other functions. Consider this delightfully simple example of two co-recursive functions:
 
-{% highlight javascript %}
+```javascript
 function even (n) {
   return n == 0
     ? true
@@ -74,20 +74,20 @@ function odd (n) {
     ? false
     : even(n - 1);
 };
-{% endhighlight %}
+```
 
 Like our `factorial`, it consumes *n* stack space of alternating calls to `even` and `odd`:
 
-{% highlight javascript %}
+```javascript
 even(32768);
   //=> RangeError: Maximum call stack size exceeded
-{% endhighlight %}
+```
 
 Obviously we can solve this problem with modulo arithmetic, but consider that what this shows is a pair of functions that call other functions in tail position, not just themselves.
 
 As with factorial, we separate the public interface that is not trampolined from the trampolined implementation:
 
-{% highlight javascript %}
+```javascript
 var even = trampoline(_even),
     odd  = trampoline(_odd);
 
@@ -102,14 +102,14 @@ function _odd (n) {
     ? false
     : function () { return _even(n - 1); };
 };
-{% endhighlight %}
+```
 
 And presto:
 
-{% highlight javascript %}
+```javascript
 even(32768);
   //=> true
-{% endhighlight %}
+```
 
 We can't overemphasize that **trampolining eliminates all tail calls, not just self-recursive calls**. That makes it suitable for replacing many control flow constructs with functions in tail position.
 

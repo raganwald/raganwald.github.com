@@ -9,7 +9,7 @@ published: false
 
 All non-trivial programs can be divided up into units of functionality. A very simple example is a function:
 
-{% highlight javascript %}
+```javascript
 function largest (largestNumber, ...remainingNumbers) {  
   for (let otherNumber of remainingNumbers) {
     if (otherNumber > largestNumber) largestNumber = otherNumber;
@@ -19,13 +19,13 @@ function largest (largestNumber, ...remainingNumbers) {
 
 largest(2,3,1)
   //=> 3
-{% endhighlight %}
+```
 
 The interface between this function and the rest of any program is the mechanism for invoking the function and returning a result. The implementation is all the code inside the function. As we have written it, the rest of a program cannot interact with this program in any other way.
 
 One of the principles of this division is that it should be possible to change the implementation without changing the interface. For example, we can rewrite the names of the parameters without changing the interface:
 
-{% highlight javascript %}
+```javascript
 function largest (x, ...y) {  
   for (let z of y) {
     if (z > x) x = z;
@@ -35,11 +35,11 @@ function largest (x, ...y) {
 
 largest(2,3,1)
   //=> 3
-{% endhighlight %}
+```
 
 The names of parameters are part of the implementation, not the interface. Likewise, we could change our function's algorithm entirely without changing the interface:
 
-{% highlight javascript %}
+```javascript
 function largest (x, ...y) {  
   if (y.length === 0)
     return x;
@@ -51,7 +51,7 @@ function largest (x, ...y) {
 
 largest(2,3,1)
   //=> 3
-{% endhighlight %}
+```
 
 The implementation is defined as the parts we can change without affecting the rest of the program. The interface is the parts we can't change without affecting the rest of the program.
 
@@ -59,7 +59,7 @@ The implementation is defined as the parts we can change without affecting the r
 
 Now let's consider this function that has been written in tail-recursive style:
 
-{% highlight javascript %}
+```javascript
 function factorial (n) {  
   return factorialHelper(n, 1)
 }
@@ -73,6 +73,6 @@ function factorialHelper (n, accumulator) {
 
 factorial(5)
   //=> 5
-{% endhighlight %}
+```
 
 Now here we have a slightly more complex interface. If you ask a human abut its interface, the answer is that the interface consists of calling the `factorial` function. But what about the `factorialHelper`? To a human, this is part of `factorial`'s implementation, a matter of no concern to the rest of the program. But 

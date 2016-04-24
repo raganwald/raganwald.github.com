@@ -26,7 +26,7 @@ Here's a toy problem we solved elsewhere with a [subclass factory][mi-sf-ma] tha
 
 To recapitulate from the very beginning, we have a `Todo` class:
 
-{% highlight javascript %}
+```javascript
 class Todo {
   constructor (name) {
     this.name = name || 'Untitled';
@@ -47,11 +47,11 @@ class Todo {
     return this.name; // highly insecure
   }
 }
-{% endhighlight %}
+```
 
 And we have the idea of "things that are coloured:"
 
-{% highlight javascript %}
+```javascript
 let toSixteen = (c) => '0123456789ABCDEF'.indexOf(c),
     toTwoFiftyFive = (cc) => toSixteen(cc[0]) * 16 + toSixteen(cc[1]);
 
@@ -73,11 +73,11 @@ class Coloured {
     return this.colourCode;
   }
 }
-{% endhighlight %}
+```
 
 And we want to create a time-sensitive to-do that has colour according to whether it is overdue, close to its deadline, or has plenty of time left. If we had multiple inheritance, we would write:
 
-{% highlight javascript %}
+```javascript
 let yellow = {r: 'FF', g: 'FF', b: '00'},
     red    = {r: 'FF', g: '00', b: '00'},
     green  = {r: '00', g: 'FF', b: '00'},
@@ -112,11 +112,11 @@ class TimeSensitiveTodo extends Todo, Coloured {
     return `<span style="color: #${rgb.r}${rgb.g}${rgb.b};">${super.toHTML()}</span>`;
   }
 }
-{% endhighlight %}
+```
 
 But we don't have multiple inheritance. In languages where mixing in functionality is difficult, we can fake a solution by having `ColouredTodo` inherit from `Todo`:
 
-{% highlight javascript %}
+```javascript
 class ColouredTodo extends Todo {
   setColourRGB ({r, g, b}) {
     this.colourCode = {r, g, b};
@@ -163,11 +163,11 @@ class TimeSensitiveTodo extends ColouredTodo {
     return `<span style="color: #${rgb.r}${rgb.g}${rgb.b};">${super.toHTML()}</span>`;
   }
 }
-{% endhighlight %}
+```
 
 The drawback of this approach is that we can no longer make other kinds of things "coloured" without making them also todos. For example, if we had coloured meetings in a time management application, we'd have to write:
 
-{% highlight javascript %}
+```javascript
 class Meeting {
   // ...
 }
@@ -190,11 +190,11 @@ class ColouredMeeting extends Meeting {
     return this.colourCode;
   }
 }
-{% endhighlight %}
+```
 
 This forces us to duplicate "coloured" functionality throughout our code base. But thanks to mixins, we can have our cake and eat it to: We can make `ColouredAsWellAs` a kind of mixin that makes a new subclass and then mixes into the subclass. We call this a "subclass factory:"
 
-{% highlight javascript %}
+```javascript
 function ClassMixin (behaviour) {
   const instanceKeys = Reflect.ownKeys(behaviour);
 
@@ -257,21 +257,21 @@ class TimeSensitiveTodo extends ColouredAsWellAs(Todo) {
     return `<span style="color: #${rgb.r}${rgb.g}${rgb.b};">${super.toHTML()}</span>`;
   }
 }
-{% endhighlight %}
+```
 
 This allows us to override both our `Todo` methods and the `ColourAsWellAs` methods. And elsewhere, we can write:
 
-{% highlight javascript %}
+```javascript
 const ColouredMeeting = ColouredAsWellAs(Meeting);
-{% endhighlight %}
+```
 
 Or perhaps:
 
-{% highlight javascript %}
+```javascript
 class TimeSensitiveMeeting extends ColouredAsWellAs(Meeting) {
   // ...
 }
-{% endhighlight %}
+```
 
 To summarize, our problem is that we want to be able to override or extend functionality from shared behaviour, whether that shared behaviour is defined as a class or as functionality to be mixed in. Subclass factories are one way to solve that problem.
 
@@ -281,7 +281,7 @@ Now we'll solve the same problem with traits.
 
 Let's start with our `ClassMixin`. We'll modify it slightly to insist that it never attempt to define a method that already exists, and we'll use that to create `Coloured`, a function that defines two methods:
 
-{% highlight javascript %}
+```javascript
 function Define (behaviour) {
   const instanceKeys = Reflect.ownKeys(behaviour);
 
@@ -315,13 +315,13 @@ const Coloured = Define({
     return this.colourCode;
   }
 });
-{% endhighlight %}
+```
 
 `Coloured` is now a function that modifies a class, adding two methods provided that they don't already exist in the class.
 
 But we need a variation that "overrides" `getColourRGB`. We can write a variation of `Define` that always overrides the target's methods, and passes in the original method as the first parameter. This is similar to "around" [method advice][ma-mj]:
 
-{% highlight javascript %}
+```javascript
 function Override (behaviour) {
   const instanceKeys = Reflect.ownKeys(behaviour);
 
@@ -364,7 +364,7 @@ const DeadlineSensitive = Override({
     return `<span style="color: #${rgb.r}${rgb.g}${rgb.b};">${original()}</span>`;
   }
 });
-{% endhighlight %}
+```
 
 `Define` and `Override` are *protocols*: They define whether methods may conflict, and if they do, how that conflict is resolved. `Define` prohibits conflicts, forcing us to pick another protocol. `Override` permits us to write a method that overrides an existing method and (optionally) call the original.
 
@@ -372,7 +372,7 @@ const DeadlineSensitive = Override({
 
 We *could* now write:
 
-{% highlight javascript %}
+```javascript
 const TimeSensitiveTodo = DeadlineSensitive(
   Coloured(
     class TimeSensitiveTodo extends Todo {
@@ -383,11 +383,11 @@ const TimeSensitiveTodo = DeadlineSensitive(
     }
   )
 );
-{% endhighlight %}
+```
 
 Or:
 
-{% highlight javascript %}
+```javascript
 @DeadlineSensitive
 @Coloured
 class TimeSensitiveTodo extends Todo {
@@ -396,11 +396,11 @@ class TimeSensitiveTodo extends Todo {
     this.deadline = deadline;
   }
 }
-{% endhighlight %}
+```
 
 But if we want to use `DeadlineSensitive` and `Coloured` together more than once, we can make a lightweight trait with simple function composition:
 
-{% highlight javascript %}
+```javascript
 const pipeline =
   (...fns) =>
     (value) =>
@@ -415,7 +415,7 @@ class TimeSensitiveTodo extends Todo {
     this.deadline = deadline;
   }
 }
-{% endhighlight %}
+```
 
 Now `SensitizeTodos` combines defining methods with overriding existing methods: We've built a lightweight trait by composing protocols.
 
@@ -425,7 +425,7 @@ And that's all a trait is: The composition of protocols. And we don't need a bun
 
 We can incorporate other protocols. Two of the most common are prepending behaviour to an existing method, or appending behaviour to an existing method:
 
-{% highlight javascript %}
+```javascript
 function Prepends (behaviour) {
   const instanceKeys = Reflect.ownKeys(behaviour);
 
@@ -472,7 +472,7 @@ function Append (behaviour) {
     return clazz;
   }
 }
-{% endhighlight %}
+```
 
 We can compose a lightweight trait using any combination of `Define`, `Override`, `Prepend`, and `Append`, and the composition is handled by `pipeline`, a plain old function composition tool.
 

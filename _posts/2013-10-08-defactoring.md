@@ -17,7 +17,7 @@ That's reorganizing, perhaps, but it's more like futzing with whitespace and ind
 
 Here is a method loosely snarfed from [Longest Common Subsequence](http://rosettacode.org/wiki/Longest_common_subsequence#Ruby):
 
-{% highlight ruby %}
+```ruby
 def find_common_ends(a, b)
   aa, bb = a.dup, b.dup
   prefix, suffix = Array.new, Array.new
@@ -34,11 +34,11 @@ end
 
 find_common_ends [1, '2', 3, 4, 5], [1, 2, 4, 3, 5]
   # => [[1], ["2", 3, 4], [2, 4, 3], [5]]
-{% endhighlight %}
+```
 
 Here we extract the comparison without factoring it much if at all:
 
-{% highlight ruby %}
+```ruby
 def find_common_ends(a, b)
   aa, bb = a.dup, b.dup
   prefix, suffix = Array.new, Array.new
@@ -59,11 +59,11 @@ end
 
 find_common_ends [1, '2', 3, 4, 5], [1, 2, 4, 3, 5]
   # => [[1], ["2", 3, 4], [2, 4, 3], [5]]
-{% endhighlight %}
+```
 
 But here we *factor* the comparison, by allowing you to paramaterize calls to `find_common_ends`:
 
-{% highlight ruby %}
+```ruby
 def find_common_ends(a, b, &similar)
   similar ||= lambda { |a, b| a == b }
   aa, bb = a.dup, b.dup
@@ -84,7 +84,7 @@ find_common_ends [1, '2', 3, 4, 5], [1, 2, 4, 3, 5]
 
 find_common_ends [1, '2', 3, 4, 5], [1, 2, 4, 3, 5] { |x, y| x.to_s == y.to_s }
   # => [[1, 2], [3, 4], [4, 3], [5]]
-{% endhighlight %}
+```
 
 Now you can use `find_common_ends` in more ways, because you've truly factored the similarity check out of the array scanning method.
 

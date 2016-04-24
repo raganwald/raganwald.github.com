@@ -34,7 +34,7 @@ In 2016, software is parallel and distributed by default. And the command patter
 
 The "canonical example" of the command pattern is working with mutable data. Here's one such example, chosen because it fits on a couple of sides:
 
-{% highlight javascript %}
+```javascript
 class Buffer {
   constructor (text = '') { this.text = text; }
 
@@ -56,7 +56,7 @@ buffer.replaceWith(
 buffer.replaceWith("fast", 4, 9);
 buffer.replaceWith("canine", 40, 43);
  //=> The fast brown fox jumped over the lazy canine
-{% endhighlight %}
+```
 
 We have  buffer that contains some plain text, and it has a single behaviour, a `replaceWith` method that replaces a selection of the buffer with some new text. Insertions can be managed by replacing a zero-length selection, and deletions can be handled by replacing a selection with the empty string.
 
@@ -84,7 +84,7 @@ If an invocation was a first-class entity, we could store it in a variable or da
 
 ![](/assets/images/command/010.png)
 
-{% highlight javascript %}
+```javascript
 class Edit {
   constructor (buffer, {replacement, from, to}) {
     this.buffer = buffer;
@@ -124,7 +124,7 @@ while (jobQueue.length > 0) {
   jobQueue.shift().doIt();
 }
  //=> The fast brown fox jumped over the lazy canine
-{% endhighlight %}
+```
 
 Since we're taking an OO approach, we've created an `Edit` class that represents invocations. Each instance is an invocation, and thus we can create new invocations with `new Edit(...)` and actually perform the invocation with `.doIt()`.
 
@@ -140,7 +140,7 @@ We can also query commends. Naturally, we do this by implementing methods that r
 
 But we can report on the amount by which an edit lengthens or shortens a buffer:
 
-{% highlight javascript %}
+```javascript
 class Edit {
 
   netChange () {
@@ -158,7 +158,7 @@ buffer.replaceWith(
 
 buffer.replaceWith("fast", 4, 9).netChange();
  //=> -1
-{% endhighlight %}
+```
 
 This can be useful.
 
@@ -166,7 +166,7 @@ This can be useful.
 
 First-class entities can also be *transformed*. And here we come to the most interesting application of commands. Here's a `.reversed()` method that returns the inverse of any edit:
 
-{% highlight javascript %}
+```javascript
 class Edit {
 
   reversed () {
@@ -189,13 +189,13 @@ doer.doIt();
 
 undoer.doIt();
   //=> The quick brown fox jumped over the lazy dog
-{% endhighlight %}
+```
 
 ![](/assets/images/command/014.png)
 
 Let's put our storing and transforming together. Instead of returning a command from the `replaceWith` method, we'll create a `doer` command, and push its reverse onto a `history` stack. We'll then invoke `doer.doIt()` to actually perform the replacement on the buffer:
 
-{% highlight javascript %}
+```javascript
 class Buffer {
 
   constructor (text = '') {
@@ -218,13 +218,13 @@ class Buffer {
   }
 
 }
-{% endhighlight %}
+```
 
 ![](/assets/images/command/015.png)
 
 Implementing `undo` is straightforward: Pop an `undoer` from the stack, create a `redoer` for later, push the `redoer` onto a `future` stack, and invoke the undoer:
 
-{% highlight javascript %}
+```javascript
 class Buffer {
 
   undo () {
@@ -252,13 +252,13 @@ buffer.undo()
 
 buffer.undo()
   //=> The quick brown fox jumped over the lazy dog
-{% endhighlight %}
+```
 
 ![](/assets/images/command/016.png)
 
 Redoing something we've undone is now simple:
 
-{% highlight javascript %}
+```javascript
 class Buffer {
 
   redo () {
@@ -276,7 +276,7 @@ buffer.redo()
 
 buffer.redo()
   //=> The fast brown fox jumped over the lazy canine
-{% endhighlight %}
+```
 
 And again, its reverse goes onto the history so we can toggle back and forth between undoing and redoing.
 
@@ -296,7 +296,7 @@ We begin by asking a question.
 
 Recall this code for replacing text in a buffer:
 
-{% highlight javascript %}
+```javascript
 class Buffer {
 
   replaceWith (replacement, from = 0, to = this.length()) {
@@ -309,7 +309,7 @@ class Buffer {
   }
 
 }
-{% endhighlight %}
+```
 
 Note that when we perform a replacement, we execute `this.future = []`, throwing away any "redoers" we may have accumulated by undoing edits.
 
@@ -317,7 +317,7 @@ Note that when we perform a replacement, we execute `this.future = []`, throwing
 
 Let's try not throwing it away:
 
-{% highlight javascript %}
+```javascript
 class Buffer {
 
   replaceWith (replacement, from = 0, to = this.length()) {
@@ -343,7 +343,7 @@ buffer.undo();
 
 buffer.replaceWith("My", 0, 3);
   //=> My quick brown fox jumped over the lazy dog
-{% endhighlight %}
+```
 
 We've performed a replacement, then we've undone the replacement, restoring the buffer to its original state. Then we performed a different replacement. But since our code no longer discards the future, a `redoer` is still in `this.future`.
 
@@ -395,7 +395,7 @@ Let's go about fixing this specific problem, that of commands altering the posit
 
 [^specific]: There are other problems, like overlapping commands, but this is enough to move along and illustrate the kind of thinking we need to do with first-class invocations.
 
-{% highlight javascript %}
+```javascript
 let buffer = new Buffer(
   "The quick brown fox jumped over the lazy dog"
 );
@@ -423,13 +423,13 @@ fast.isBefore(my);
 
 my.isBefore(fast);
   //=> true
-{% endhighlight %}
+```
 
 Equipped with `.isBefore` and `.netChange()`, we can write `.prependedWith` method that takes an edit, and returns a new version of the edit that corrects for any change caused by prepending another edit into its history.
 
 There are two cases we cover: If we write `a.prependedWith(b)`, and `a` is before `b`, then we return `a` since `b` doesn't change its semantic meaning. But if we write `a.prependedWith(b)`, and `b` is before `a`, then we return a copy of `a` that has been adjusted by the amount of `b`'s net change:
 
-{% highlight javascript %}
+```javascript
 class Edit {
 
   prependedWith (other) {
@@ -459,11 +459,11 @@ my.prependedWith(fast)
 
 fast.prependedWith(my)
   //=> buffer.replaceWith("fast", 3, 8)
-{% endhighlight %}
+```
 
 With this in hand, we see what to do with `this.future`: Whenever we invoke a fresh command, we must replace all of the edits in the `future` with versions prepended with the command we're invoking, thus adjusting them to maintain the same semantic meaning:
 
-{% highlight javascript %}
+```javascript
 class Buffer {
 
   replaceWith (replacement, from = 0, to = this.length()) {
@@ -478,11 +478,11 @@ class Buffer {
   }
 
 }
-{% endhighlight %}
+```
 
 ![](/assets/images/command/032.png)
 
-{% highlight javascript %}
+```javascript
 let buffer = new Buffer(
   "The quick brown fox jumped over the lazy dog"
 );
@@ -497,7 +497,7 @@ buffer.replaceWith("My", 0, 3);
   //=> My quick brown fox jumped over the lazy dog
 
 buffer.redo();
-{% endhighlight %}
+```
 
 ![](/assets/images/command/033.png)
 
@@ -530,7 +530,7 @@ This is a very powerful concept: Typically, we are slaves to mutable state. It m
 [Alice]: https://en.wikipedia.org/wiki/Alice_B._Toklas
 [Bob]: https://en.wikipedia.org/wiki/Bob_Fosse
 
-{% highlight javascript %}
+```javascript
 let alice = new Buffer(
   "The quick brown fox jumped over the lazy dog"
 );
@@ -538,11 +538,11 @@ let alice = new Buffer(
 let bob = new Buffer(
   "The quick brown fox jumped over the lazy dog"
 );
-{% endhighlight %}
+```
 
 To keep the code simple, we'll omit some of the moving parts to support undoing edits from our command-oriented `Buffer` class:
 
-{% highlight javascript %}
+```javascript
 class Buffer {
 
   constructor (text = '') {
@@ -562,7 +562,7 @@ class Buffer {
 }
 
 
-{% endhighlight %}
+```
 
 Now we want to synchronize the screenplay, so that Alice can see Bob's change, and Bob can see Alice's change. So, naturally, Alice sends Bob her change, and Bob sends Alice his change. We want to apply those changes so that we end up with both Alice and Bob looking at identical buffers.
 
@@ -574,7 +574,7 @@ Alice and Bob each perform a different edit, causing their buffers to diverge. W
 
 We can try that:
 
-{% highlight javascript %}
+```javascript
 class Buffer {
 
   append (theirEdit) {
@@ -592,17 +592,17 @@ class Buffer {
   }
 
 }
-{% endhighlight %}
+```
 
 Now we can write `alice.appendAll(bob)` to apply all of Bob's edits to Alice's copy of the buffer. And we can write `bob.appendAll(alice)` to apply all of Alice's edits to Bob's copy of the buffer. Problem solved?
 
-{% highlight javascript %}
+```javascript
 alice.appendAll(bob);
   //=> My fast brown fox jumped over the lazy dog
 
 bob.appendAll(alice);
   //=> My fast brown fox jumped over the lazy dog
-{% endhighlight %}
+```
 
 This appears to work: By prepending the exiting edits onto edits being appended to a buffer, we transform the new edits to producet the same result, synchronizing the buffers.
 
@@ -616,17 +616,17 @@ A **big** bug!
 
 What happens if we try to append again? Since neither Alice nor Bob have made any further edits, the buffers should remain unchanged. But they don't:
 
-{% highlight javascript %}
+```javascript
 alice.appendAll(bob);
   //=> My fastbrown fox jumped over the lazy dog
 
 bob.appendAll(alice);
   //=> Myfast brown fox jumped over the lazy dog
-{% endhighlight %}
+```
 
 Our `append` methods are applying each edit all over again. To fix that, we have to modify our algorithm to pay attention to whether edits already exist in a buffer or edit's history. First, let's upgrade our edits and give them a `guid` we can use to identify them, as well as a set of the guids of the edits that came before them:
 
-{% highlight javascript %}
+```javascript
 let GUID = () => {
     let _p8 = (s) => {
         let p = (Math.random().toString(16)+"000000000").substr(2,8);
@@ -648,11 +648,11 @@ class Edit {
   }
 
 }
-{% endhighlight %}
+```
 
 Our buffers will also track the guids of the edits in their history:
 
-{% highlight javascript %}
+```javascript
 class Buffer {
 
   constructor (text = '', history = []) {
@@ -668,11 +668,11 @@ class Buffer {
   has (edit) { return this.befores.has(edit.guid); }
 
 }
-{% endhighlight %}
+```
 
 We'll refactor `replaceWith` to extract a `.perform(edit)`, it will simplify a lot of what's coming:
 
-{% highlight javascript %}
+```javascript
 class Buffer {
 
   perform (edit) {
@@ -693,11 +693,11 @@ class Buffer {
   }
 
 }
-{% endhighlight %}
+```
 
 Now our `append` method can be fixed to prepend every edit with everything in its history, much as we did with fixing `redo`:
 
-{% highlight javascript %}
+```javascript
 class Buffer {
 
   append (theirEdit) {
@@ -708,13 +708,13 @@ class Buffer {
   }
 
 }
-{% endhighlight %}
+```
 
 Here's an updated `appendAll` that only appends edits that aren't already in the history. What? We didn't mention that was another bug in the code? Silly us.[^also]
 
 [^also]: Many programmers will take a strong exception to using `this.has(theirEdit) || this.append(theirEdit)` as a control-flow construct. Mind you, most people don't have to make a method fit on a slide. Be more explicit in real code.
 
-{% highlight javascript %}
+```javascript
 class Buffer {
 
   appendAll(otherBuffer) {
@@ -726,11 +726,11 @@ class Buffer {
   }
 
 }
-{% endhighlight %}
+```
 
 Now we're finally ready to update the `prependedWith` method to check whether an edit is "before" another edit, is the same as another edit, or is already in the edit's history:
 
-{% highlight javascript %}
+```javascript
 class Edit {
 
   prependedWith (other) {
@@ -750,7 +750,7 @@ class Edit {
   }
 
 }
-{% endhighlight %}
+```
 
 With all these changes in place, Alice and Bob can exchange edits at will.[^except] Let's try it!
 
@@ -764,7 +764,7 @@ With all these changes in place, Alice and Bob can exchange edits at will.[^exce
 
 [Carol]: https://en.wikipedia.org/wiki/Carroll_O%27Connor
 
-{% highlight javascript %}
+```javascript
 let alice = new Buffer(
   "The quick brown fox jumped over the lazy dog"
 );
@@ -795,7 +795,7 @@ bob.appendAll(alice);
 
 carol.appendAll(bob);
   //=> My fast spotted fox jumped over the lazy dog
-{% endhighlight %}
+```
 
 It works!
 

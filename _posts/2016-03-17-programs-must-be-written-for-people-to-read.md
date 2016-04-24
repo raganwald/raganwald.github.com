@@ -26,7 +26,7 @@ Thus, the third number is `1` (0 + 1), the fourth number is `2` (1 + 1), and tha
 
 There are many ways to write a program that will output the Fibonacci numbers. each method optimizes for some particular purpose. We'll start by optimizing for being as close as possible to the written description of the numbers:
 
-{% highlight javascript %}
+```javascript
 function fibonacci () {
   console.log(0);
   console.log(1);
@@ -38,13 +38,13 @@ function fibonacci () {
     console.log(current);
   }
 }
-{% endhighlight %}
+```
 
 This is a reasonable first crack, but we can do better.
 
 The sample above prints the numbers out to infinity. Which is the letter of the definition, but not useful for most purposes. If we only wanted, say, the first 10 or first 100, or any arbitrary number of fibonacci numbers? We'd have to weave logic about when to stop into our code:
 
-{% highlight javascript %}
+```javascript
 function fibonacci (numberToPrint) {
   console.log(0);
 
@@ -61,7 +61,7 @@ function fibonacci (numberToPrint) {
     console.log(current);
   }
 }
-{% endhighlight %}
+```
 
 The logic for the number of results we want is buried inside the middle of our code. Ideally, the definition of the sequence can be written completely independently of the mechanism for figuring out how many numbers we need.
 
@@ -73,7 +73,7 @@ And there's another problem. How do we know what we want to do with the numbers?
 
 Our code at the moment entangles these concerns, and our first improvement is to separate the concerns by rewriting our algorithm as a [generator](http://raganwald.com/2015/11/03/a-coding-problem.html "Solving a Coding Problem with Iterators and Generators"). Generators are an excellent way of separating "what we do with the steps of a calculation" from "how we calculate the steps."
 
-{% highlight javascript %}
+```javascript
 function * fibonacci () {
   yield 0;
   yield 1;
@@ -85,7 +85,7 @@ function * fibonacci () {
     yield current;
   }
 }
-{% endhighlight %}
+```
 
 Our generator _yields_ the values of the fibonacci function instead of logging them to the console. So instead of calling a function and things happen, we call `fibonacci` and get an _iterator_. That iterator can be used in a `for` loop, we can call its `Symbol.iterator` function to extract the values in sequence, or better still, we can take advantage of standard operations on generators and iterators, like `take`.
 
@@ -95,7 +95,7 @@ We can find an implementation of `take` in an [npm module](https://github.com/jb
 
 [ja]: https://leanpub.com/javascriptallongesix
 
-{% highlight javascript %}
+```javascript
 function * take (numberToTake, iterable) {
   const iterator = iterable[Symbol.iterator]();
 
@@ -104,23 +104,23 @@ function * take (numberToTake, iterable) {
     if (!done) yield value;
   }
 }
-{% endhighlight %}
+```
 
 And then log them to the console:
 
-{% highlight javascript %}
+```javascript
 for (let n of take(10, fibonacci())) {
   console.log(n);
 }
-{% endhighlight %}
+```
 
 The code above calls `fibonacci()` to get an iterator over the Fibonacci numbers, then `take(10, fibonacci())` turns that into an iterator over the first ten numbers of the Fibonacci numbers, then we run a `for` loop over those.
 
 To show that we are now able to be much more flexible, here we can splat the same values into an array:
 
-{% highlight javascript %}
+```javascript
 [...take(10, fibonacci())]
-{% endhighlight %}
+```
 
 We won't get into counting evens and odds just yet, we've already made the point that we can make our `fibonacci` function more readable for people by ruthlessly pairing it down to do just one thing and combining it with other functions and code externally, rather than stuffing the other code inside our function.
 
@@ -132,7 +132,7 @@ Turning `fibonacci` into a generator requires understanding what a generator is,
 
 It's almost certainly not worth learning all this _just_ for Fibonacci numbers, but if we do learn these things and then "internalize" them, it becomes a marvellous win, because we can write something like:
 
-{% highlight javascript %}
+```javascript
 function * fibonacci () {
   yield 0;
   yield 1;
@@ -144,7 +144,7 @@ function * fibonacci () {
     yield current;
   }
 }
-{% endhighlight %}
+```
 
 And we are simply and very directly reproducing the definition as it was given to us, without cluttering it up with a lot of other concerns that dilute the basic thing we want to communicate.
 
@@ -152,7 +152,7 @@ But if we don't know about generators, or we know about generators but aren't fa
 
 Well, then, this code just looks like mathematical wankery, and we will write a blog post congratulating ourselves on doing the "simple" thing and just writing:
 
-{% highlight javascript %}
+```javascript
 function fibonacci (numberToPrint) {
   console.log(0);
 
@@ -169,7 +169,7 @@ function fibonacci (numberToPrint) {
     console.log(current);
   }
 }
-{% endhighlight %}
+```
 
 And then when we build larger and larger programs, at each step of the way eschewing an abstraction or technique because not using the technique we don't know is "simpler," and we are 100% certain at every step that we have done the right thing and avoided writing "clever" code.
 
@@ -181,19 +181,19 @@ It seems obvious that understanding the capabilities of our tools and how to use
 
 Here is the naïve way to extract a _particular_ Fibonacci number from our generator:
 
-{% highlight javascript %}
+```javascript
 const fibonacciAt = (index) =>
   [...take(index + 1, fibonacci())][index];
 
 fibonacciAt(7)
   //=> 13
-{% endhighlight %}
+```
 
 Take all the values up to the one we want, splat them into an array, and then take the one we want. This is very wasteful of space, and really, we're trying to write:
 
-{% highlight javascript %}
+```javascript
 const fibonacciAt = (index) => [...fibonacci()][index];
-{% endhighlight %}
+```
 
 But the way JavaScript works, that would first try to create an infinitely long array, then it would run out of space. So sticking `take` in the expression is mixing what we want to write with some workaround for JavaScript being an [eagerly evaluated language](https://en.wikipedia.org/wiki/Eager_evaluation).
 
@@ -203,18 +203,18 @@ This gives us a hint about when some inscrutable code is an abstraction that may
 
 If taking a set of values from an iterator is a standard operation, maybe we can separate "how we take a particular number" from "how we calculate the numbers." Our first crack looks like this:
 
-{% highlight javascript %}
+```javascript
 const at = (index, iterable) => [...take(index+1, iterable)][index];
 
 at(7, fibonacci())
   //=> 13
-{% endhighlight %}
+```
 
 We are still using `take` as a workaround for JavaScript, but now we've tucked it inside the `at` function, and being able to write `at(7, fibonacci())` is short and whatever we do with that expression won't be cluttered up with implementation details.
 
 For example, we could rewrite `at` so that it doesn't create a long array just to ignore all but the last value:
 
-{% highlight javascript %}
+```javascript
 function at (index, iterable) {
   const iterator = iterable[Symbol.iterator]();
   let value = undefined;
@@ -228,7 +228,7 @@ function at (index, iterable) {
 
 at(7, fibonacci())
   //=> 13
-{% endhighlight %}
+```
 
 Separating concerns is more valuable than mixing them in terse code for precisely this reason: You can work on the separate pieces independently.
 
@@ -238,7 +238,7 @@ Separating concerns is more valuable than mixing them in terse code for precisel
 
 Let's look at `fibonacci` again:
 
-{% highlight javascript %}
+```javascript
 function fibonacci () {
   console.log(0);
   console.log(1);
@@ -250,7 +250,7 @@ function fibonacci () {
     console.log(current);
   }
 }
-{% endhighlight %}
+```
 
 This is _procedural_: It's a recipe for calculating the values one by one, as you might give it to a school child to practise arithmetic. Which is fine, _but it's just arithmetic_. Math is more than arithmetic.
 
@@ -258,7 +258,7 @@ What if the written instructions were: "The sequence of Fibonacci numbers are th
 
 Working along those lines, the simplest implementation starts with `zipWith`, an operation that composes two iterators using a supplied "zipper" function:
 
-{% highlight javascript %}
+```javascript
 function * zipWith (zipper, ...iterables) {
   const iterators = iterables.map(i => i[Symbol.iterator]());
 
@@ -274,36 +274,36 @@ function * zipWith (zipper, ...iterables) {
 
 zipWith((x, y) => x + y, [1, 2, 3], [1000, 2000, 3000])
   //=> iterator over 1001, 2002, 3003
-{% endhighlight %}
+```
 
 For offsetting a sequence by one, we can use `tail`, which iterates over all the values of an iterator except its "head:"
 
-{% highlight javascript %}
+```javascript
 function * tail (iterable) {
   const iterator = iterable[Symbol.iterator]();
 
   iterator.next();
   yield * iterator;
 }
-{% endhighlight %}
+```
 
 Given these two, if we had a `fibonacci` generator, we could yield the values of composing it with itself offset by one like this:
 
-{% highlight javascript %}
+```javascript
 function * fibonacci () {
   yield * zipWith((x, y) => x + y, fibonacci(), tail(fibonacci()));
 }
-{% endhighlight %}
+```
 
 What about the first two values?
 
-{% highlight javascript %}
+```javascript
 function * fibonacci () {
   yield 0;
   yield 1;
   yield * zipWith((x, y) => x + y, fibonacci(), tail(fibonacci()));
 }
-{% endhighlight %}
+```
 
 Now, there is a performance implication of this expression, but let's set that aside for a moment to consider: Which is better? The expression that describes composing a sequence with itself? Or the expression that describes procedurally generating numbers?
 
@@ -311,7 +311,7 @@ In other words, do we think in arithmetic or geometry?
 
 The answer seems easy: If we're talking about Fibonacci, go with geometry. It is, after all, a _mathematics_ function. If you ever did have to write it for a program, anybody looking at the code ought to have enough of a background in mathematics to appreciate composing sequences recursively. For the same reason, if you wanted to write  [this](http://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html):
 
-{% highlight javascript %}
+```javascript
 import { zero, one } from 'big-integer';
 
 let times = (...matrices) =>
@@ -337,25 +337,25 @@ let fibonacciAt = (n) =>
   n < 2
   ? n
   : power([one, one, zero], n - 1)[0];
-{% endhighlight %}
+```
 
 That would be fine as well. It is math, anybody looking at it ought to have the mathematics background or be prepared to look it up. As a car driver, I expect the steering wheel in the usual place and to find the other controls as a driver would expect them. But I appreciate that the engine will be designed for the mechanically inclined.
 
 This analogy of the driver and the automobile applies to our "geometric" expression:
 
-{% highlight javascript %}
+```javascript
 function * fibonacci () {
   yield 0;
   yield 1;
   yield * zipWith((x, y) => x + y, fibonacci(), tail(fibonacci()));
 }
-{% endhighlight %}
+```
 
 The mathematician in the driver's seat may be happy, but the programmer working with the engine realizes that this expression recursively generates generators. Nice car, but it's a gas guzzler.
 
 We can fix this, but once again, we do our utmost to separate how we fix it from the code itself:
 
-{% highlight javascript %}
+```javascript
 function memoize (generator) {
   const memos = {},
         iterators = {};
@@ -391,7 +391,7 @@ const mfibs = memoize(function * () {
   yield 1;
   yield * zipWith(plus, mfibs(), tail(mfibs()));
 });
-{% endhighlight %}
+```
 
 Some code has multiple audiences, and separating the code's concerns enables each piece to speak to specialists in the appropriate domain without demanding that anybody reading it be familiar with both mathematics and the efficient reuse of previously computed values.
 

@@ -16,14 +16,14 @@ In computing, "laziness" is a broad term, generally referring to not doing any w
 
 Consider this JavaScript:
 
-{% highlight javascript %}
+```javascript
 function ifThen (a, b) {
   if (a) return b;
 }
 
 ifThen(1 === 0, 2 + 3)
   //=> undefined
-{% endhighlight %}
+```
 
 Now, here's the question: Does JavaScript evaluate `2+3`? You probably know the answer: Yes it does. When it comes to passing arguments to a function invocation, JavaScript is *eager*, it evaluates all of the expressions, and it does so whether the value of the expression is used or not.[^constant]
 
@@ -33,14 +33,14 @@ If JavaScript was *lazy*, it would not evaluate `2+3` in the expression `ifThen(
 
 And if you want something to be lazy that isn't naturally lazy, you have to work around JavaScript's eagerness. For example:
 
-{% highlight javascript %}
+```javascript
 function ifThenEvaluate (a, b) {
   if (a) return b();
 }
 
 ifThenEvaluate(1 === 0, () => 2 + 3)
   //=> undefined
-{% endhighlight %}
+```
 
 JavaScript eagerly evaluates `() => 2 + 3`, which is a function. But it doesn't evaluate the expression in the body of the function until it is invoked. And it is not invoked, so `2+3` is not evaluated.
 
@@ -52,7 +52,7 @@ The bodies of functions are a kind of lazy thing: They aren't evaluated until yo
 
 Consider this code:
 
-{% highlight javascript %}
+```javascript
 function containing(value, list) {
   let listContainsValue = false;
 
@@ -64,20 +64,20 @@ function containing(value, list) {
 
   return listContainsValue;
 }
-{% endhighlight %}
+```
 
 You are doubtless chuckling at its naïveté. Imagine this list was the numbers from one to a billion--e.g. `[1, 2, 3, ..., 999999998, 999999999, 1000000000]`--and we invoke:
 
-{% highlight javascript %}
+```javascript
 const billion = [1, 2, 3, ..., 999999998, 999999999, 1000000000];
 
 containing(1, billion)
   //=> true
-{% endhighlight %}
+```
 
 We get the correct result, but we iterate over every one of our billion numbers first. Awful! Small children and the otherwise febrile know that you can `return` from anywhere in a JavaScript function, and the rest of its evaluation is abandoned. So we can write this:
 
-{% highlight javascript %}
+```javascript
 function containing(list, value) {
   for (const element of list) {
     if (element === value) {
@@ -87,13 +87,13 @@ function containing(list, value) {
 
   return false;
 }
-{% endhighlight %}
+```
 
 This version of the function is lazier than the first: It only does the minimum needed to determine whether a particular list contains a particular value.
 
 From `containing`, we can make a similar function, `findWith`:
 
-{% highlight javascript %}
+```javascript
 function findWith(predicate, list) {
   for (const element of list) {
     if (predicate(element)) {
@@ -101,11 +101,11 @@ function findWith(predicate, list) {
     }
   }
 }
-{% endhighlight %}
+```
 
 `findWith` applies a predicate function to lazily find the first value that evaluates truthily. Unfortunately, while `findWith` is lazy, its argument is evaluated eagerly, as we mentioned above. So let's say we want to find the first number in a list that is greater than `99` and is a palindrome:
 
-{% highlight javascript %}
+```javascript
 function isPalindromic(number) {
   const forwards = number.toString();
   const backwards = forwards.split('').reverse().join('');
@@ -130,7 +130,7 @@ const billion = [1, 2, 3, ..., 999999998, 999999999, 1000000000];
 
 findWith(every(isPalindromic, gt(99)), billion)
   //=> 101
-{% endhighlight %}
+```
 
 It's the same principle as before, of course, we iterate through our billion numbers and stop as soon as we get to `101`, which is greater than `99` and palindromic.
 
@@ -138,7 +138,7 @@ But JavaScript eagerly evaluates the arguments to `findWith`. So it evaluates `i
 
 Binding one value to another is cheap. But what if we had to _generate_ a billion numbers?
 
-{% highlight javascript %}
+```javascript
 function NumbersUpTo(limit) {
   const numbers = [];
   for (let number = 1; number <= limit; ++number) {
@@ -149,7 +149,7 @@ function NumbersUpTo(limit) {
 
 findWith(every(isPalindromic, gt(99)), NumbersUpTo(1000000000))
   //=> 101
-{% endhighlight %}
+```
 
 `NumbersUpTo(1000000000)` is eager, so it makes a list of all billion numbers, even though we only need the first `101`. This is the problem with laziness: We need to be lazy all the way through a computation.
 
@@ -157,7 +157,7 @@ Luckily, we just finished working with generators[^lastessay] and we know exactl
 
 [^lastessay]: [“Programs must be written for people to read, and only incidentally for machines to execute”](http://raganwald.com/2016/03/17/programs-must-be-written-for-people-to-read.html)
 
-{% highlight javascript %}
+```javascript
 function * Numbers () {
   let number = 0;
   while (true) {
@@ -167,7 +167,7 @@ function * Numbers () {
 
 findWith(every(isPalindromic, gt(99)), Numbers())
   //=> 101
-{% endhighlight %}
+```
 
 Generators yield values lazily. And `findWith` searches lazily, so we can find `101` without first generating an infinite array of numbers. JavaScript still evaluates `Numbers()` eagerly and binds it to `list`, but now it's binding an iterator, not an array. And the `for (const element of list) { ... }` statement lazily takes values from the iterator just as it did from the `billion` array.
 
@@ -181,7 +181,7 @@ Generators yield values lazily. And `findWith` searches lazily, so we can find `
 
 Here is the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes), written in eager style:
 
-{% highlight javascript %}
+```javascript
 function compact (list) {
   const compacted = [];
 
@@ -214,13 +214,13 @@ function PrimesUpTo (limit) {
 
 PrimesUpTo(100)
   //=> [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
-{% endhighlight %}
+```
 
 Let's take a pass at writing the Sieve of Eratosthenes in lazy style. First off, a few handy things we've already seen in this blog, and in [JavaScript Allongé][ja]:
 
 [ja]: https://leanpub.com/javascriptallongesix
 
-{% highlight javascript %}
+```javascript
 function * range (from = 0, to = null) {
   let number = from;
 
@@ -244,13 +244,13 @@ function * take (numberToTake, iterable) {
     if (!done) yield value;
   }
 }
-{% endhighlight %}
+```
 
 With those in hand, we can write a generator that maps an iterable to a sequence of values with every `nth` element changed to `null`:[^genuine]
 
 [^genuine]: This is the simplest and most naïve implementation that is recognizably identical to the written description. In [The Genuine Sieve of Eratosthenes](https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf), Melissa E. O’Neill describes how to write a lazy functional sieve that is much faster than this implementation, although it abstracts away the notion of crossing off multiples from a list.
 
-{% highlight javascript %}
+```javascript
 function * nullEveryNth (skipFirst, n, iterable) {
   const iterator = iterable[Symbol.iterator]();
 
@@ -262,13 +262,13 @@ function * nullEveryNth (skipFirst, n, iterable) {
     yield null;
   }
 }
-{% endhighlight %}
+```
 
 That's the core of the "sieving" behaviour: take the front element of the list of numbers, call it `n`, and sieve every `nth` element afterwards.
 
 Now we can apply `nullEveryNth` recursively: Take the first unsieved number from the front of the list, sieve its multiples out, and yield the results of sieving what remains:
 
-{% highlight javascript %}
+```javascript
 function * sieve (iterable) {
   const iterator = iterable[Symbol.iterator]();
   let n;
@@ -282,19 +282,19 @@ function * sieve (iterable) {
 
   yield * sieve(nullEveryNth(n * (n - 2), n, iterator));
 }
-{% endhighlight %}
+```
 
 With `sieve` in hand, we can use `range` to get a list of numbers from `2`, sieve those recursively, then we `compact` the result to filter out all the `nulls`, and what is left are the primes:
 
-{% highlight javascript %}
+```javascript
 const Primes = compact(sieve(range(2)));
-{% endhighlight %}
+```
 
 Besides performance, did you spot the full-on bug? Try running it yourself, it won't work! The problem is that at the last step, we called `compact`, and `compact` is an eager function, not a lazy one. So we end up trying to build an infinite list of primes before filtering out the nulls.
 
 We need to write a lazy version of `compact`:
 
-{% highlight javascript %}
+```javascript
 function * compact (list) {
   for (const element of list) {
     if (element != null) {
@@ -302,11 +302,11 @@ function * compact (list) {
     }
   }
 }
-{% endhighlight %}
+```
 
 And now it works!
 
-{% highlight javascript %}
+```javascript
 take(100, Primes())
   //=>
     [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,
@@ -318,11 +318,11 @@ take(100, Primes())
      367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431,
      433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491,
      499, 503, 509, 521, 523, 541]
-{% endhighlight %}
+```
 
 When we write things in lazy style, we need lazy versions of all of our usual operations. For example, here's an eager implementation of `unique`:
 
-{% highlight javascript %}
+```javascript
 function unique (list) {
   const orderedValues = [];
   const uniqueValues = new Set();
@@ -335,11 +335,11 @@ function unique (list) {
   }
   return orderedValues;
 }
-{% endhighlight %}
+```
 
 Naturally, we'd need a lazy implementation if we wanted to find the unique values of lazy iterators:
 
-{% highlight javascript %}
+```javascript
 function * unique (iterable) {
   const uniqueValues = new Set();
 
@@ -350,7 +350,7 @@ function * unique (iterable) {
     }
   }
 }
-{% endhighlight %}
+```
 
 And so it goes with all of our existing operations that we use with lists: We need lazy versions we can use with iterables, and we have to use the lazy operations throughout: We can't mix them.
 

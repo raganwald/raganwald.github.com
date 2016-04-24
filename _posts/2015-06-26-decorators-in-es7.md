@@ -10,7 +10,7 @@ In [Functional Mixins], we discussed mixing functionality *into* JavaScript clas
 
 Let's recall our helper for making a functional mixin. We'll just call it `mixin`:
 
-{% highlight javascript %}
+```javascript
 function mixin (behaviour, sharedBehaviour = {}) {
   const instanceKeys = Reflect.ownKeys(behaviour);
   const sharedKeys = Reflect.ownKeys(sharedBehaviour);
@@ -32,13 +32,13 @@ function mixin (behaviour, sharedBehaviour = {}) {
   });
   return _mixin;
 }
-{% endhighlight %}
+```
 
 This creates a function that mixes behaviour into any target, be it a class prototype or a standalone object. There is a convenience capability of making "static" or "shared" properties of the the function, and it even adds some simple `hasInstance` handling so that the `instanceof` operator will work.
 
 Here we are using it on a class' prototype:
 
-{% highlight javascript %}
+```javascript
 const BookCollector = mixin({
   addToCollection (name) {
     this.collection().push(name);
@@ -73,13 +73,13 @@ president
 
 president.collection()
   //=> ["JavaScript Allongé","Kestrels, Quirky Birds, and Hopeless Egocentricity"]
-{% endhighlight %}
+```
 
 ### mixins just for classes
 
 It's very nice that our mixins support any kind of target, but let's make them class-specific:
 
-{% highlight javascript %}
+```javascript
 function mixin (behaviour, sharedBehaviour = {}) {
   const instanceKeys = Reflect.ownKeys(behaviour);
   const sharedKeys = Reflect.ownKeys(sharedBehaviour);
@@ -104,11 +104,11 @@ function mixin (behaviour, sharedBehaviour = {}) {
   });
   return _mixin;
 }
-{% endhighlight %}
+```
 
 This version's `_mixin` function mixes instance behaviour into a class's prototype, so we gain convenience at the expense of flexibility:
 
-{% highlight javascript %}
+```javascript
 const BookCollector = mixin({
   addToCollection (name) {
     this.collection().push(name);
@@ -143,13 +143,13 @@ president
 
 president.collection()
   //=> ["JavaScript Allongé","Kestrels, Quirky Birds, and Hopeless Egocentricity"]
-{% endhighlight %}
+```
 
 So far, nice, but it feels a bit bolted-on-after-the-fact. Let's take advantage of the fact that [Classes are Expressions]:
 
 [Classes are Expressions]: http://raganwald.com/2015/06/04/classes-are-expressions.html
 
-{% highlight javascript %}
+```javascript
 const BookCollector = mixin({
   addToCollection (name) {
     this.collection().push(name);
@@ -173,13 +173,13 @@ const Person = BookCollector(class {
     return this;
   }
 });
-{% endhighlight %}
+```
 
 This is structurally nicer, it binds the mixing in of behaviour with the class declaration in one expression, so we're getting away from this idea of mixing things into classes after they're created.
 
 But (there's always a but), our pattern has three different elements (the name being bound, the mixin, and the class being declared). And if we wanted to mix two or more behaviours in, we'd have to nest the functions like this:
 
-{% highlight javascript %}
+```javascript
 const Author = mixin({
   writeBook (name) {
     this.books().push(name);
@@ -193,7 +193,7 @@ const Author = mixin({
 const Person = Author(BookCollector(class {
   // ...
 }));
-{% endhighlight %}
+```
 
 Some people find this "clear as day," arguing that this is a simple expression taking advantage of JavaScript's simplicity. The code behind `mixin` is simple and easy to read, and if you understand prototypes, you understand everything in this expression.
 
@@ -207,7 +207,7 @@ There is a well-regarded proposal to add Python-style [class decorators] to Java
 
 A decorator is a function that operates on a class. Here's a very simple example from the aforelinked implementation:
 
-{% highlight javascript %}
+```javascript
 function annotation(target) {
    // Add a property on target
    target.annotated = true;
@@ -220,7 +220,7 @@ class MyClass {
 
 MyClass.annotated
   //=> true
-{% endhighlight %}
+```
 
 As you can see, `annotation` is a class decorator, and it takes a class as an argument. The function can do anything, including modifying the class or the class's prototype. If the decorator function doesn't return anything, the class' name is bound to the modified class.[^adv]
 
@@ -230,7 +230,7 @@ A class is "decorated" with the function by preceding the definition with `@` an
 
 Hmmm. A function that modifies a class, you say? Let's try it:
 
-{% highlight javascript %}
+```javascript
 const BookCollector = mixin({
   addToCollection (name) {
     this.collection().push(name);
@@ -264,11 +264,11 @@ president
 
 president.collection()
   //=> ["JavaScript Allongé","Kestrels, Quirky Birds, and Hopeless Egocentricity"]
-{% endhighlight %}
+```
 
 You can also mix in multiple behaviours with decorators:
 
-{% highlight javascript %}
+```javascript
 const BookCollector = mixin({
   addToCollection (name) {
     this.collection().push(name);
@@ -303,13 +303,13 @@ class Person {
     return this;
   }
 };
-{% endhighlight %}
+```
 
 And if you want to use decorators to emulate [Purely Functional Composition], it's a fairly simple pattern:
 
 [Purely Functional Composition]: http://raganwald.com/2015/06/20/purely-functional-composition.html
 
-{% highlight javascript %}
+```javascript
 class Person {
   constructor (first, last) {
     this.rename(first, last);
@@ -326,7 +326,7 @@ class Person {
 
 @BookCollector @Author
 class BookLover extends Person {};
-{% endhighlight %}
+```
 
 Class decorators provide a compact, "magic" syntax that is closely tied to the construction of the class. They also require understanding one more kind of syntax. But some argue that having different syntax for different things aids understandability, and that having both `@foo` for decoration and `bar(...)` for function invocation is a win.
 

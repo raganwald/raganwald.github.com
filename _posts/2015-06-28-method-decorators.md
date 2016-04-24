@@ -10,9 +10,9 @@ Writing [higher-order functions][hof] in JavaScript is a long-established practi
 
 For example, `compose` is a higher-order function that takes two functions as arguments, and returns a function that represents the composition of the arguments:
 
-{% highlight javascript %}
+```javascript
 const compose = (a, b) => (c) => a(b(c));
-{% endhighlight %}
+```
 
 [hof]: https://en.wikipedia.org/wiki/Higher-order_function
 
@@ -20,7 +20,7 @@ A particularly interesting subset of higher-order functions are higher-order fun
 
 For example, this very simple `maybe` function is a function decorator. It takes a function as an argument, and returns a version of that function that returns `undefined` or `null` (without any side-effects) if any of its arguments are `undefined` or `null`:
 
-{% highlight javascript %}
+```javascript
 const maybe = (fn) =>
   (...args) => {
     for (let arg of args) {
@@ -31,11 +31,11 @@ const maybe = (fn) =>
 
 [1, null, 3, 4, null, 6, 7].map(maybe(x => x * x))
   //=> [1,null,9,16,null,36,49]
-{% endhighlight %}
+```
 
 A similar decorator, `requireAll`, raises an exception if a function is invoked without at least as many arguments as declared parameters:
 
-{% highlight javascript %}
+```javascript
 const requireAll = (fn) =>
   function (...args) {
     if (args.length < fn.length)
@@ -43,7 +43,7 @@ const requireAll = (fn) =>
     else
       return fn(...args);
   }
-{% endhighlight %}
+```
 
 Function decorators are fairly straightforward. You'll find a variety of them in popular libraries, such as decorators that memoize a computation or debounce an action that might be performed repeatedly.
 
@@ -61,7 +61,7 @@ Of great interest to us are *methods* in JavaScript, functions that are used to 
 
 Consider, for example `Person`:
 
-{% highlight javascript %}
+```javascript
 class Person {
   setName (first, last) {
     this.firstName = first;
@@ -83,17 +83,17 @@ thinker.setName('Marie', 'Curie');
 
 thinker.fullName()
   //=> 'Marie Curie'
-{% endhighlight %}
+```
 
 The `setName` method is a function. Let's see what happens if we try to decorate it with `requireAll`:
 
-{% highlight javascript %}
+```javascript
 Object.defineProperty(Person.prototype, 'setName', { value: requireAll(Person.prototype.setName) });
 
 const thinker = new Person()
                   .setName('Albert', 'Einstein');
   //=> Attempted to assign to readonly property.
-{% endhighlight %}
+```
 
 WTF!?
 
@@ -101,7 +101,7 @@ After some inspection, we realize the problem: Before we decorated it, `setName`
 
 If we want to use `requireAll` with methods, we have to write it in such a way that it preserves `this` when it invokes the underlying function:
 
-{% highlight javascript %}
+```javascript
 const requireAll = (fn) =>
   function (...args) {
     if (args.length < fn.length)
@@ -113,7 +113,7 @@ const requireAll = (fn) =>
 const thinker = new Person()
                   .setName('Prince');
   //=> missing required arguments
-{% endhighlight %}
+```
 
 It now works properly, including ignoring invocations that do not pass all the arguments. But you have to be very careful when writing higher-order functions to make sure they work as both function decorators and as method decorators.
 
@@ -121,7 +121,7 @@ It now works properly, including ignoring invocations that do not pass all the a
 
 Handling `this` properly is not the only way in which ordinary function decorators differ from method decorators. Some decorators are stateful, like `once`. Here's a version that correctly sets `this`:
 
-{% highlight javascript %}
+```javascript
 const once = (fn) => {
   let hasRun = false;
 
@@ -131,11 +131,11 @@ const once = (fn) => {
     return fn.apply(this, args);
   }
 }
-{% endhighlight %}
+```
 
 Imagining for a moment that we wish to only allow a person to have their name set once, we might write:
 
-{% highlight javascript %}
+```javascript
 const once = (fn) => {
   let hasRun = false;
 
@@ -165,11 +165,11 @@ const logician = new Person()
 
 logician.fullName()
   //=> Raymond Smullyan
-{% endhighlight %}
+```
 
 As we expect, only the first call to `.setName` has any effect, and it works on a method. But there is a subtle bug that could easily evade naïve attempts to write unit tests:
 
-{% highlight javascript %}
+```javascript
 const logician = new Person()
                    .setName('Raymond', 'Smullyan');
 
@@ -181,7 +181,7 @@ logician.fullName()
 
 musician.fullName()
   //=> Raymond Smullyan
-{% endhighlight %}
+```
 
 !?!?!?!
 
@@ -195,7 +195,7 @@ If we don't need to use the same decorator for functions and for methods, we can
 
 [WeakSet]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet
 
-{% highlight javascript %}
+```javascript
 const once = (fn) => {
   let invocations = new WeakSet();
 
@@ -219,7 +219,7 @@ logician.fullName()
 
 musician.fullName()
   //=> Miles Davis
-{% endhighlight %}
+```
 
 Now each instance stores whether `.setName` has been invoked on each instance a `WeakSet`, so `logician` and `musician` can share the method without sharing its state.
 
@@ -227,20 +227,20 @@ Now each instance stores whether `.setName` has been invoked on each instance a 
 
 To handle methods, we have introduced "accidental complexity" to handle `this` and to handle state. Worse, our implementation of `once` for methods won't work properly with ordinary functions in "strict" mode:
 
-{% highlight javascript %}
+```javascript
 "use strict"
 
 const hello = once(() => 'hello!');
 
 hello()
   //=> undefined is not an object!
-{% endhighlight %}
+```
 
 If you haven't invoked it as a method, `this` is bound to `undefined` in strict mode, and `undefined` cannot be added to a `WeakSet`.
 
 Correcting our decorator to deal with `undefined` is straightforward:
 
-{% highlight javascript %}
+```javascript
 const once = (fn) => {
   let invocations = new WeakSet(),
       undefinedContext = Symbol('undefined-context');
@@ -254,7 +254,7 @@ const once = (fn) => {
     return fn.apply(this, args);
   }
 }
-{% endhighlight %}
+```
 
 However, we're adding more accidental complexity to handle the fact that function invocation is <span style="color: blue;">blue</span>, and method invocation is <span style="color: #999900;">khaki</span>.[^colours]
 
@@ -276,7 +276,7 @@ Function decorators can be used as method decorators, provided that we take care
 
 Before ECMAScript 2015 (a/k/a "ES6"), we decorated a method in a simple an direct way. Here's roughly how we used to write `Person`, using a pseudo-private property pattern:
 
-{% highlight javascript %}
+```javascript
 const once = (fn) => {
   let hasRunValue = false,
       hasRunProperty = "hasRun-" + fn.name + "-" + new Date().getTime();
@@ -305,13 +305,13 @@ Person.prototype.setName = once(function setName (first, last) {
 Person.prototype.fullName = function fullName () {
   return this.firstName + " " + this.lastName;
 };
-{% endhighlight %}
+```
 
 Our decoration was simply a function call at the exact point where we were associating a function with the prototype. However, this code is inelegant: It separates the creation of the "class" from the definition of each method.
 
 If we had `Object.assign` or an equivalent, we we're able to define all of the methods, including decorators, in one step:
 
-{% highlight javascript %}
+```javascript
 var Person = function () {};
 
 _.extend(Person.prototype, {
@@ -327,13 +327,13 @@ _.extend(Person.prototype, {
   }
 
 });
-{% endhighlight %}
+```
 
 Easy, peasy, lemon-squeezy. But the ECMAScript 2015 syntaxes for classes makes this a tiny bit awkward. When we use a compact method definition, we get things like the method being non-enumerable by default. So to get a similar result in ECMAScript 2015, we have to write some clumsy code after the class has been defined:
 
-{% highlight javascript %}
+```javascript
 Object.defineProperty(Person.prototype, 'setName', { value: once(Person.prototype.setName) });
-{% endhighlight %}
+```
 
 This is weak for two reasons. First, it's fugly and full of accidental complexity. Second, modifying the prototype after defining the class separates two things that conceptually ought to be together. The `class` keyword giveth, but it also taketh away.
 
@@ -341,7 +341,7 @@ To solve a problem created by ECMAScript 2015, [method decorators] have been pro
 
 Thus, a `fluent` (a/k/a `chain`) decorator would look like this:
 
-{% highlight javascript %}
+```javascript
 function fluent (target, name, descriptor) {
   const method = descriptor.value;
 
@@ -350,11 +350,11 @@ function fluent (target, name, descriptor) {
     return this;
   }
 }
-{% endhighlight %}
+```
 
 And we'd use it like this:
 
-{% highlight javascript %}
+```javascript
 class Person {
 
   @fluent
@@ -368,13 +368,13 @@ class Person {
   }
 
 };
-{% endhighlight %}
+```
 
 Once again, we end up with two kinds of decorators: One for functions, and one for methods, with different structures. We need a new colour!
 
 But since decorators are expressions, we can alleviate the pain with an adaptor:
 
-{% highlight javascript %}
+```javascript
 const wrapWith = (decorator) =>
   function (target, name, descriptor) {
     descriptor.value = decorator(descriptor.value);
@@ -401,7 +401,7 @@ class Person {
   }
 
 };
-{% endhighlight %}
+```
 
 [method decorators]: https://github.com/wycats/javascript-decorators
 

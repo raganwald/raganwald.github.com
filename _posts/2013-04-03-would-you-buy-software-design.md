@@ -6,7 +6,7 @@ published: false
 
 Spotted in mid-refactor:
 
-{% highlight javascript %}
+```javascript
 function flip (fn) {
   fn = functionalize(fn);
   var fnLength = fn.length
@@ -64,6 +64,6 @@ function flip (fn) {
   }
 
 };
-{% endhighlight %}
+```
 
 Ouch!

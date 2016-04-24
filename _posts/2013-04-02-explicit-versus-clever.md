@@ -10,7 +10,7 @@ tags: [allonge, LiSP]
 
 Me too! And if we are all thinking the exact same thing when we read or write the words "explicit" and "clever," there is nothing else to say on the subject. But consider this piece of code in JavaScript:
 
-{% highlight javascript %}
+```javascript
 var mapWith = require('allong.es').mapWith,
     attrWith = require('allong.es').attrWith;
 
@@ -19,7 +19,7 @@ var totaller = mapWith(attrWith('total'));
 // ...
 
 var orderTotals = totaller(orders);
-{% endhighlight %}
+```
 
 `mapWith(attrWith('total'))` is not explicit if your knowledge of JavaScript is limited to the syntax, semantics, and standard libraries. To understand it, you need to know that `mapWith` is a function that produces a `map`, that `attrWith` turns a string into a property accessor, and you need to know enough about functional programming to know what a map is, or be able to relate it to `Array.prototype.map`.
 
@@ -27,11 +27,11 @@ If you're working all those out for the first time, it probably seems inordinate
 
 On the other hand, if you do think in terms of Higher-Order Functions ("HOFs"), `mapWith` is a small incremental improvement on `.map`, and it's also a variation on this code that uses the deservedly popular [Underscore](http://underscorejs.org) library:[^pluck]
 
-{% highlight javascript %}
+```javascript
 var _ = require('underscore');
 
 var orderTotals = _.pluck(orders, 'total');
-{% endhighlight %}
+```
 
 [^pluck]: So why not use `_.pluck`? It's even simpler! The benefit of `mapWith` and `attrWith` when used consistently in a codebase is that they *compose* very nicely because they're written to take a single value as an argument and return a function. `mapWith` and `attrWith` are shown here to illustrate the opacity of jargon to those who are not immersed in its culture. In actual fact, the [allong.es](http://allong.es) library does include its own version of pluck, and the definition is a one-liner: `var pluckWith = compose(mapWith, attrWith)`. It's curried, so you can write `var totaller = pluckWith('total');`, or you can write `pluckWith('total', orders);`. And thanks to the magic of the `flip` combinator, `var pluck = flip(pluckWith)`.
 
@@ -41,16 +41,16 @@ var orderTotals = _.pluck(orders, 'total');
 
 Here's the jargon in JavaScript:
 
-{% highlight javascript %}
+```javascript
 var applyLast = require('allong.es').applyLast,
     map = require('underscore').map;
     
 var mapWith = applyLast(map);
-{% endhighlight %}
+```
 
 I'll say that again in JavaScript, this time explicitly:
 
-{% highlight javascript %}
+```javascript
 function map (list, fn) {
   return Array.prototype.map.call(list, fn);
 };
@@ -62,7 +62,7 @@ function mapWith (fn) {
     });
   };
 };
-{% endhighlight %}
+```
 
 Is the second, most explicit form better? *Yes* when you're learning about HOFs in JavaScript, but quite possibly *no* when you're encountering a similar pattern for the twelfth time in the same code base, each time written out slightly differently, and one of them has a bug because the person writing it out was on their fourteenth straight hour programming things like this explicitly.
 

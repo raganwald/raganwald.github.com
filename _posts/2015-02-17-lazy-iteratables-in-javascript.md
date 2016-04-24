@@ -20,7 +20,7 @@ All of these actions involve going through the contents one by one. Acting on th
 
 When discussing functions, we looked at the benefits of writing [Functional Iterators](http://raganwald.com/2013/02/15/turtles-and-iterators.js.html "Tortoises, Teleporting Turtles, and Iterators"). We can do the same thing for objects. Here's a stack that has its own functional iterator method:
 
-{% highlight javascript %}
+```javascript
 const Stack1 = () =>
   ({
     array:[],
@@ -68,7 +68,7 @@ iter().value
   //=> "you!"
 iter().value
   //=> "to"
-{% endhighlight %}
+```
 
 The way we've written `.iterator` as a method, each object knows how to return an iterator for itself.
 
@@ -80,7 +80,7 @@ The way we've written `.iterator` as a method, each object knows how to return a
 
 And here's a `sum` function implemented as a fold over a functional iterator:
 
-{% highlight javascript %}
+```javascript
 const iteratorSum = (iterator) => {
   let eachIteration,
       sum = 0;
@@ -90,11 +90,11 @@ const iteratorSum = (iterator) => {
   }
   return sum
 }
-{% endhighlight %}
+```
 
 We can use it with our stack:
 
-{% highlight javascript %}
+```javascript
 const stack = Stack1();
 
 stack.push(1);
@@ -103,11 +103,11 @@ stack.push(3);
 
 iteratorSum(stack.iterator())
   //=> 6
-{% endhighlight %}
+```
 
 We could save a step and write `collectionSum`, a function that folds over any object, provided that the object implements an `.iterator` method:
 
-{% highlight javascript %}
+```javascript
 const collectionSum = (collection) => {
   const iterator = collection.iterator();
   
@@ -122,7 +122,7 @@ const collectionSum = (collection) => {
 
 collectionSum(stack)
   //=> 6
-{% endhighlight %}
+```
 
 If we write a program with the presumption that "everything is an object," we can write maps, folds, and filters that work on objects. We just ask the object for an iterator, and work on the iterator. Our functions don't need to know anything about how an object implements iteration, and we get the benefit of lazily traversing our objects.
 
@@ -138,7 +138,7 @@ Fortunately, an iterator object is almost as simple as an iterator function. Ins
 
 Like this:
 
-{% highlight javascript %}
+```javascript
 const Stack2 = ()) =>
   ({
     array: [],
@@ -197,7 +197,7 @@ const collectionSum = (collection) => {
 
 collectionSum(stack)
   //=> 2015
-{% endhighlight %}
+```
 
 Now our `.iterator()` method is returning an iterator object. When working with objects, we do things the object way. But having started by building functional iterators, we understand what is happening underneath the object's scaffolding.
 
@@ -215,7 +215,7 @@ The expression `Symbol.iterator` evaluates to a special symbol representing the 
 
 Our stack does, so instead of binding the existing iterator method to the name `iterator`, we bind it to the `Symbol.iterator`. We'll do that using the `[` `]` syntax for using an expression as an object literal key:
 
-{% highlight javascript %}
+```javascript
 const Stack3 = () =>
   ({
     array: [],
@@ -274,13 +274,13 @@ const collectionSum = (collection) => {
 
 collectionSum(stack)
   //=> 2015
-{% endhighlight %}
+```
 
 Using `[Symbol.iterator]` instead of `.iterator` seems like adding an extra moving part for nothing. Do we get anything in return?
 
 Indeed we do. Behold the `for...of` loop:
 
-{% highlight javascript %}
+```javascript
 const iterableSum = (iterable) => {
   let sum = 0;
   
@@ -292,11 +292,11 @@ const iterableSum = (iterable) => {
 
 iterableSum(stack)
   //=> 2015
-{% endhighlight %}
+```
 
 The `for...of` loop works directly with any object that is *iterable*, meaning it works with any object that has a `Symbol.iterator` method that returns a object iterator. Here's another linked list, this one is iterable:
 
-{% highlight javascript %}
+```javascript
 const EMPTY = {
   isEmpty: () => true
 };
@@ -339,26 +339,26 @@ const someSquares = list(1, 4, 9, 16, 25);
     
 iterableSum(someSquares)
   //=> 55
-{% endhighlight %}
+```
 
 As we can see, we can use `for...of` with linked lists just as easily as with stacks. And there's one more thing: You recall that the spread operator (`...`) can spread the elements of an array in an array literal or as parameters in a function invocation.
 
 Now is the time to note that we can spread any iterable. So we can spread the elements of an iterable into an array literal:
 
-{% highlight javascript %}
+```javascript
 ['some squares', ...someSquares]
   //=> ["some squares", 1, 4, 9, 16, 25]
-{% endhighlight %}
+```
 
 And we can also spread the elements of an array literal into parameters:
 
-{% highlight javascript %}
+```javascript
 const firstAndSecondElement = (first, second) =>
   ({first, second})
   
 firstAndSecondElement(...stack)
   //=> {"first":5,"second":10}
-{% endhighlight %}
+```
 
 This can be extremely useful.
 
@@ -370,7 +370,7 @@ And if we have an infinite collection, spreading is going to fail outright.
 
 Iterables needn't represent finite collections:
 
-{% highlight javascript %}
+```javascript
 const Numbers = {
   [Symbol.iterator]: () => {
     let n = 0;
@@ -381,23 +381,23 @@ const Numbers = {
     }
   }
 }
-{% endhighlight %}
+```
 
 There are useful things we can do with iterables representing an infinite number of elements. Before we point out something we can do with them, let's point out what we can't do with them:
 
-{% highlight javascript %}
+```javascript
 ['all the numbers', ...Numbers]
   //=> infinite loop!
   
 firstAndSecondElement(...Numbers)
   //=> infinite loop!
-{% endhighlight %}
+```
 
 Attempting to spread an infinite iterable into an array is always going to fail.
 
 We can look at useful things to do with both infinite and finite iterables. But first, let's define some operations on iterables. Here's `mapIterableWith`, it takes any iterable and returns an iterable representing a mapping over the original iterable:
 
-{% highlight javascript %}
+```javascript
 const mapIterableWith = (fn, iterable) =>
   ({
     [Symbol.iterator]: () => {
@@ -412,7 +412,7 @@ const mapIterableWith = (fn, iterable) =>
       }
     }
   });
-{% endhighlight %}
+```
 
 This illustrates the general pattern of working with iterables: An *iterable* is an object, representing a collection, with a `[Symbol.iterator]` method, that returns an iteration over the elements of a collection. The iteration over elements is an *iterator*. An iterator is also an object, but with a `.next()` method taht is invoked repeatedly to obtain the elements in order.
 
@@ -420,7 +420,7 @@ Many operations on iterables return iterables. Our `mapIterableWith` returns an 
 
 Here are two more operations on iterables, `filterIterableWith` and `untilIterable`:
 
-{% highlight javascript %}
+```javascript
 const filterIterableWith = (fn, iterable) =>
   ({
     [Symbol.iterator]: () => {
@@ -453,11 +453,11 @@ const untilIterable (fn, iterable) =>
       }
     }
   });
-{% endhighlight %}
+```
 
 And here's a computation performed using operations on iterables: We'll print the odd squares that are less than or equal to one hundred:
 
-{% highlight javascript %}
+```javascript
 const compose = (fn, ...rest) =>
   (...args) =>
     (rest.length === 0)
@@ -481,11 +481,11 @@ for (let s of compose(untilTooBig, oddsOf, squaresOf)(Numbers)) {
     25
     49
     81
-{% endhighlight %}
+```
 
 For completeness, here are two more handy iterable functions. `firstIterable` returns the first element of an iterable (if it has one), and `restIterable` returns an iterable that iterates over all but the first element of an iterable. They are equivalent to destructuring arrays with `[first, ...rest]`:
 
-{% highlight javascript %}
+```javascript
 const firstIterable = (iterable) =>
   iterable[Symbol.iterator]().next().value;
 
@@ -498,7 +498,7 @@ const restIterable = (iterable) =>
       return iterator;
     }
   });
-{% endhighlight %}
+```
 
 ### from
 
@@ -506,16 +506,16 @@ Having iterated over a collection, are we limited to `for..do` and/or gathering 
 
 One useful thing is to write a `.from` function that gathers an iterable into a particular collection type. JavaScript's built-in `Array` class already has one:
 
-{% highlight javascript %}
+```javascript
 Array.from(compose(untilTooBig, oddsOf, squaresOf)(Numbers))
   //=> [1, 9, 25, 49, 81]
-{% endhighlight %}
+```
 
 We can do the same with our own collections. As you recall, functions are mutable objects. And we can assign properties to functions with a `.` or even `[` and `]`. And if we assign a function to a property, we've created a method.
 
 So let's do that:
 
-{% highlight javascript %}
+```javascript
 Stack3.from = function (iterable) {
   const stack = this();
   
@@ -531,11 +531,11 @@ Pair1.from = (iterable) =>
     
     return done ? EMPTY : Pair1(value, interationToList(iteration));
   })(iterable[Symbol.iterator]())
-{% endhighlight %}
+```
 
 Now we can go "end to end," If we want to map a linked list of numbers to a linked list of the squares of some numbers, we can do that:
 
-{% highlight javascript %}
+```javascript
 const numberList = Pair1.from(untilIterable((x) => x > 10, Numbers));
 
 Pair1.from(squaresOf(numberList))
@@ -543,7 +543,7 @@ Pair1.from(squaresOf(numberList))
         "rest":{"first":1,
                 "rest":{"first":4,
                         "rest":{ ...
-{% endhighlight %}
+```
 
 ### why operations on iterables?
 
@@ -563,7 +563,7 @@ Object-oriented collections should definitely have methods for mapping, reducing
 
 Composing an iterable with a `mapIterable` method cleaves the responsibility for knowing how to map from the fiddly bits of how a linked list differs from a stack. And if we want to create convenience methods, we can reuse common pieces:
 
-{% highlight javascript %}
+```javascript
 const extend = function (consumer, ...providers) {
   for (let i = 0; i < providers.length; ++i) {
     const provider = providers[i];
@@ -796,7 +796,7 @@ Pair.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
   .reduce((seed, element) => seed + element, 0)
   
 //=> 220
-{% endhighlight %}
+```
 
 ### lazy iterables
 
@@ -804,7 +804,7 @@ Pair.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
 Here's an example. Compare these two:
 
-{% highlight javascript %}
+```javascript
 [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   .map((x) => x * x)
   .filter((x) => x % 2 == 0)
@@ -814,7 +814,7 @@ Pair.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
   .map((x) => x * x)
   .filter((x) => x % 2 == 0)
   .reduce((seed, element) => seed + element, 0)
-{% endhighlight %}
+```
 
 Both expressions evaluate to `220`. And they array is faster in practice, because it is a built-in data type that performs its work in the engine, while the linked list does its work in JavaScript.
 
@@ -824,14 +824,14 @@ Whereas the `.map` and `.filter` methods on `Pair` work with iterators. They pro
 
 The effect is even more pronounced when we use methods like `first`, `until`, or `take`:
 
-{% highlight javascript %}
+```javascript
 Stack.from([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
             10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
             20, 21, 22, 23, 24, 25, 26, 27, 28, 29])
   .map((x) => x * x)
   .filter((x) => x % 2 == 0)
   .first()
-{% endhighlight %}
+```
 
 This expression begins with a stack containing 30 elements. The top two are `29` and `28`. It maps to the squares of all 30 numbers, but our code for mapping an iteration returns an iterable that can iterate over the squares of our numbers, not an array or stack of the squares. Same with `.filter`, we get an iterable that can iterate over the even squares, but not an actual stack or array.
 
@@ -839,7 +839,7 @@ Finally, we take the first element of that filtered, squared iterable and now Ja
 
 We can confirm this:
 
-{% highlight javascript %}
+```javascript
 Stack.from([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
             10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
             20, 21, 22, 23, 24, 25, 26, 27, 28, 29])
@@ -859,11 +859,11 @@ Stack.from([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
   squaring 28
   filtering 784
   784
-{% endhighlight %}
+```
 
 If we write the almost identical thing with an array, we get a different behaviour:
 
-{% highlight javascript %}
+```javascript
 [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
  10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
  20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
@@ -892,13 +892,13 @@ If we write the almost identical thing with an array, we get a different behavio
   filtering 784
   filtering 841
   784
-{% endhighlight %}
+```
 
 Arrays copy-on-read, so every time we perform a map or filter, we get a new array and perform all the computations. This might be expensive.
 
 You recall we briefly touched on the idea of infinite collections? Let's make iterable numbers. They *have* to be lazy, otherwise we couldn't write things like:
 
-{% highlight javascript %}
+```javascript
 const Numbers = extend({
   [Symbol.iterator]: () => {
     let n = 0;
@@ -917,7 +917,7 @@ const firstCubeOver1234 =
     .first()
 
 //=> 1331
-{% endhighlight %}
+```
 
 Balanced against their flexibility, our "lazy iterables" use structure sharing. If we mutate a collection after taking an iterable, we might get an unexpected result. This is why "pure" functional languages like Haskell combine lazy semantics with immutable collections, and why even "impure" languages like Clojure emphasize the use of immutable collections.
 
@@ -925,7 +925,7 @@ Balanced against their flexibility, our "lazy iterables" use structure sharing. 
 
 Arrays have *eager* semantics for `.map`, `.filter`, `.rest` and `.take`. They return another array, not a lazy iterable. Whereas, the `Stack` and `Pair` collections we wrote have *lazy* semantics: They return a lazy iterable and when we want a true collection, we have to gather the elements into an array or another collection using `.from`:
 
-{% highlight javascript %}
+```javascript
 const evenSquares = Pair.from(
   Pair.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     .map((x) => x * x)
@@ -934,11 +934,11 @@ const evenSquares = Pair.from(
 
 [...evenSquares]
   //=> [4,16,36,64,100]
-{% endhighlight %}
+```
 
 Or if we want to design a collection with eager semantics for `.map`, `.filter`, `.rest` and `.take`, we can do that:
 
-{% highlight javascript %}
+```javascript
 const EagerIterable = (gatherable) =>
   ({
      map: function (fn) {
@@ -1016,7 +1016,7 @@ EagerStack
   .map((x) => x * 2)
   
 //=> {"array":[10,8,6,4,2],"index":4}
-{% endhighlight %}
+```
 
 And we can go back and forth between them. For example, if we want a lazy map of an array, we can use the `mapIterableWith` function to return a lazy iterable. And as we just noted, we can use `.from` to eagerly gather any iterable into a collection.
 

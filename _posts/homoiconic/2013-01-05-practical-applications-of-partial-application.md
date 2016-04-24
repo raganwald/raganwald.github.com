@@ -12,19 +12,19 @@ First, a quick recap (You can skip this if you're familiar with functions in Jav
 
 The functions we're going to discuss look like this:
 
-{% highlight javascript %}
+```javascript
 function add (a, b) {
   return a + b;
 }
-{% endhighlight %}
+```
   
 Or this:
 
-{% highlight javascript %}
+```javascript
 var something = function (a, b) {
   return a + b;
 };
-{% endhighlight %}
+```
   
 ### arity and higher-order functions
 
@@ -54,7 +54,7 @@ Here'a very simple higher-order function that takes a number and a function as a
 
 For the purposes of this article, assume the presence of the helper function `variadic` (or `ellipsis`) that converts any variadic function into a unary function taking an array of parameters. It saves us the drudgery of slicing `arguments`:
 
-{% highlight javascript %}
+```javascript
 var __slice = Array.prototype.slice;
 
 function ellipsis (fn) {
@@ -92,7 +92,7 @@ binary('why', 'hello', 'there')
 
 variadic(binary)('why', 'hello', 'there')
   //=> [ 'why', [ 'hello', 'there' ] ]
-{% endhighlight %}
+```
   
 Variadic is a *function decorator*, it "decorates" a function with some additional functionality while remaining true to its underlying purpose.
 
@@ -102,14 +102,14 @@ Variadic is a *function decorator*, it "decorates" a function with some addition
 
 Partial application is an operation that we can apply to polyadic (arity two or more) functions. Normally, function application is a single operation:
 
-{% highlight javascript %}
+```javascript
 function greet (me, you) {
   return "Hello, " + you + ", my name is " + me
 }
 
 greet('Helios', 'Eartha')
   //=> 'Hello, Eartha, my name is Helios'
-{% endhighlight %}
+```
   
 Partial application allows us to break that single operation into two applications, one "here and right away," and one possibly elsewhere and possibly later. How do we do something elsewhere and possibly later in JavaScript? With a function, of course, and elaborate architectures are built around this idea using techniques such as Continuation-Passing Style (a/k/a Callbacks) and Promises.
 
@@ -117,7 +117,7 @@ But for our purposes, we understand partial application to be an operation that 
 
 Let's do it by hand. Working backwards, we want a function that looks like this:
 
-{% highlight javascript %}
+```javascript
 var heliosGreets = function (you) {
   var me = 'Helios';
   
@@ -126,11 +126,11 @@ var heliosGreets = function (you) {
 
 heliosGreets('Eartha')
   //=> 'Hello, Eartha, my name is Helios'
-{% endhighlight %}
+```
   
 We can't have `'Helios'` hard-coded, so we'll hoist it out into an Immediately Invoked Function Expression:
 
-{% highlight javascript %}
+```javascript
 var heliosGreets = (function (me) {
   return function (you) {
     return greet(me, you)
@@ -139,11 +139,11 @@ var heliosGreets = (function (me) {
 
 heliosGreets('Eartha')
   //=> 'Hello, Eartha, my name is Helios'
-{% endhighlight %}
+```
   
 Let's hoist the `greet` function too, and genericize the names a bit:
 
-{% highlight javascript %}
+```javascript
 var heliosGreets = (function (fn, first) {
   return function (second) {
     return fn(first, second);
@@ -152,11 +152,11 @@ var heliosGreets = (function (fn, first) {
 
 heliosGreets('Eartha')
   //=> 'Hello, Eartha, my name is Helios'
-{% endhighlight %}
+```
   
 Now our inner function is a bit generalized. Some of the functions it may use might require the current context. Let's preserve it:
 
-{% highlight javascript %}
+```javascript
 var heliosGreets = (function (fn, first) {
   return function (second) {
     return fn.apply(this, [first, second]);
@@ -165,11 +165,11 @@ var heliosGreets = (function (fn, first) {
 
 heliosGreets('Eartha')
   //=> 'Hello, Eartha, my name is Helios'
-{% endhighlight %}
+```
   
 And you know what else? Some functions we might apply have more than two arguments. Let's make the inner function variadic:
 
-{% highlight javascript %}
+```javascript
 var heliosGreets = (function (fn, first) {
   return variadic( function (args) {
     return fn.apply(this, [first].concat(args));
@@ -178,11 +178,11 @@ var heliosGreets = (function (fn, first) {
 
 heliosGreets('Eartha')
   //=> 'Hello, Eartha, my name is Helios'
-{% endhighlight %}
+```
   
 There's only one thing left to do, extract our IIFE and give it a name:
 
-{% highlight javascript %}
+```javascript
 function applyFirst (fn, first) {
   return variadic( function (args) {
     return fn.apply(this, [first].concat(args))
@@ -193,7 +193,7 @@ var heliosGreets = applyFirst(greet, 'Helios');
 
 heliosGreets('Eartha')
   //=> 'Hello, Eartha, my name is Helios'
-{% endhighlight %}
+```
   
 In essence, we have split one function (greet) into two pieces, one taking the first argument when we called `applyFirst(greet, 'Helios')`, and one taking  the rest, which we put in the variable `heliosGreets` and indeed when we called it with `'Eartha'`, we got back the completed application of the greet function.
 
@@ -207,7 +207,7 @@ If we think of partial application as a kind of decomposition, something interes
 
 Before we go further, here is a more general version of `applyFirst` that takes a variable number of arguments. `applyFirst` is simpler and executes faster when you only need one argument, but `applyLeft` allows you to partially apply any number of arguments.
 
-{% highlight javascript %}
+```javascript
 var applyLeft = variadic( function (fnAndLeftArguments) {
   var fn = fnAndLeftArguments[0],
       leftArguments = fnAndLeftArguments.slice(1);
@@ -216,7 +216,7 @@ var applyLeft = variadic( function (fnAndLeftArguments) {
     return fn.apply(this, leftArguments.concat(rightArguments))
   })
 });
-{% endhighlight %}
+```
   
 JavaScript's `.bind` function looks a lot like `applyLeft`, however `.bind` forces you to bind the context, `applyLeft` allows you to skip binding the context. It's useful when writing combinators and other higher-order functions. Again, these are function that could very well live in a library, it's how to use them that matters.
 
@@ -226,21 +226,21 @@ JavaScript's `.bind` function looks a lot like `applyLeft`, however `.bind` forc
 
 Lots of libraries include a `map` function. Modern JavaScript includes a map method for arrays, but that obviously won't work with array-like data structures (`arguments` and so forth). Typically, they look like this:
 
-{% highlight javascript %}
+```javascript
 var results = map(array, function (element) {
   // ...
 }, this);
-{% endhighlight %}
+```
   
 Note the third parameter (`this`) that specifies the context for the function applications. If you don't supply it, the function being applied to each element cannot access anything in the current context. This is especially important if we're using a map inside of a method. Depending on how `map` is written, the context will be the global context, `null`, or even some array (yecch!).
 
 Before we go any further, let's get rid of `this`. We can bind our function to `this` so that it always evaluates in the current context:
 
-{% highlight javascript %}
+```javascript
 var results = map(array, function (element) {
   // ...
 }.bind(this));
-{% endhighlight %}
+```
   
 Now it doesn't matter how `map` deals with not supplying a context. Hey, this seems vaguely familiar. This is a function to be evaluated when given a context and an element: `function (element) { ... }`. And this applies  the context now and waits for the element later: `function (element) { ... }.bind(this)`.
 
@@ -254,7 +254,7 @@ Mapping (and folding/reducing) is extremely common. After fooling around with `f
 
 Before we illustrate that, let's introduce another partial application function in both single and general form:
 
-{% highlight javascript %}
+```javascript
 function applyLast (fn, last) {
   return variadic( function (args) {
     return fn.apply(this, args.concat([last]))
@@ -269,11 +269,11 @@ var applyRight = variadic( function (fnAndRightArguments) {
     return fn.apply(this, leftArguments.concat(rightArguments))
   })
 });
-{% endhighlight %}
+```
   
 Now we can do something interesting. Let's say we have a collection of reference objects representing something in a cache. We are doing some reference counting so we can do cache eviction. Incrementing a reference and decrementing a reference are rather obvious: `ref.incrementReferenceCount()` and `ref.decrementReferenceCount()`. Each `ref` contains a list of dependents `this.dependentRefs()`. Here's our implementation of `decrementReferenceCount`:
 
-{% highlight javascript %}
+```javascript
 Reference.prototype.decrementReferenceCount = function () {
   --this.referenceCount;
   if (referenceCount === 0)
@@ -285,25 +285,25 @@ Reference.prototype.decrementDependentCounts = function () {
     dependent.decrementReferenceCount();
   });
 };
-{% endhighlight %}
+```
   
 We use our `applyLast` function on `map`:
 
-{% highlight javascript %}
+```javascript
 Reference.decrementCounts = applyLast(map, function (ref) {
   ref.decrementReferenceCount();
 });
-{% endhighlight %}
+```
   
 Now we have a so-called class method that can decrement the counts of any list. Let's use it to refactor things:
 
-{% highlight javascript %}
+```javascript
 Reference.prototype.decrementReferenceCount = function () {
   --this.referenceCount;
   if (referenceCount === 0)
     Reference.decrementCounts(this.dependentRefs());
 };
-{% endhighlight %}
+```
   
 We still have two functions, but one of them is now a general decrementer that can be used elsewhere. Is this important? Possibly! Is it handy? Very much so when DRYing up code. And you can use this technique with filter/select, with reduce, and anything else working over collections.
 
@@ -313,7 +313,7 @@ We still have two functions, but one of them is now a general decrementer that c
 
 Languages that don't do anything special with `this` are quite happy with a few forms of partial application. JavaScript needs a few more in very large part because of the importance of managing `this` when working with objects. This function, `send`, is useful for mapping over objects by sending them a message. It emulates Ruby's `Symbol#to_proc` with some extra partial application goodness. For our purposes, the implementation is:
 
-{% highlight javascript %}
+```javascript
 var send = variadic( function (nameAndArgs) {
   var methodName = nameAndArgs[0],
       leftArguments = nameAndArgs.slice(1);
@@ -324,21 +324,21 @@ var send = variadic( function (nameAndArgs) {
     return receiver[methodName].apply(receiver, leftArguments.concat(rightArguments))
   })
 })
-{% endhighlight %}
+```
   
 We use `send` like this. Instead of:
 
-{% highlight javascript %}
+```javascript
 Reference.decrementCounts = applyLast(map, function (ref) {
   ref.decrementReferenceCount();
 });
-{% endhighlight %}
+```
   
 We write:
 
-{% highlight javascript %}
+```javascript
 Reference.decrementCounts = applyLast(map, send('decrementReferenceCount'));
-{% endhighlight %}
+```
   
 And people complain JavaScript is verbose. *JavaScript is not verbose, attempting to write Java code in JavaScript is verbose*. JavaScript is a functional language. When you use functional programming idioms in JavaScript, you are "cutting with the grain."
 
@@ -346,20 +346,20 @@ Speaking of which... When you're holding the partial application hammer, every p
 
 Yes you can:
 
-{% highlight javascript %}
+```javascript
 var splat = applyFirst(applyLast, map);
 
 var squareAll = splat(function (n) { return n * n });
 
 squareAll([1, 2, 3, 4, 5])
   //=> [1, 4, 9, 16, 25]
-{% endhighlight %}
+```
   
 Which leads us to:
 
-{% highlight javascript %}
+```javascript
 Reference.decrementCounts = splat(send('decrementReferenceCount'));
-{% endhighlight %}
+```
   
 ![What are the applications?](http://i.minus.com/ibweUTQ6MzlKIm.png)
 

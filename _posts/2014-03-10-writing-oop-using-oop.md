@@ -169,7 +169,7 @@ p.s. A few people have pointed out that if you want a subset of classes to share
 
 ---
 
-{% highlight javascript %}
+```javascript
 var MetaObjectPrototype = {
   create: function () {
     var instance = Object.create(this.prototype);
@@ -246,4 +246,4 @@ Counter
   .defineMethod('initialize', function () { this._count = 0; })
   .defineMethod('increment', function () { ++this._count; })
   .defineMethod('count', function () { return this._count; });
-{% endhighlight %}
+```

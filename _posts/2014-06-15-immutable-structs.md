@@ -8,7 +8,7 @@ Sometimes we want to share objects by reference for performance and space reason
 
 JavaScript provides a way to make properties *immutable*:
 
-{% highlight javascript %}
+```javascript
 var rentAmount = {};
 
 Object.defineProperty(rentAmount, 'dollars', {
@@ -43,13 +43,13 @@ rentAmount.dollars = 600;
 
 rentAmount.dollars
   //=> 420
-{% endhighlight %}
+```
 
 `Object.defineProperty` is a general-purpose method for providing fine-grained control over the properties of any object. When we make a property `enumerable`, it shows up whenever we list the object's properties or iterate over them. When we make it writable, assignments to the property change its value. If the property isn't writable, assignments are ignored.
 
 When we want to define multiple properties, we can also write:
 
-{% highlight javascript %}
+```javascript
 var rentAmount = {};
 
 Object.defineProperties(rentAmount, {
@@ -73,11 +73,11 @@ rentAmount.dollars = 600;
 
 rentAmount.dollars
   //=> 420
-{% endhighlight %}
+```
 
 We can make properties immutable, but that doesn't prevent us from adding properties to an object:
 
-{% highlight javascript %}
+```javascript
 rentAmount.feedbackComments = []
 rentAmount.feedbackComments.push("The rent is too damn high.")
 rentAmount
@@ -85,11 +85,11 @@ rentAmount
     { dollars: 420,
       cents: 0,
       feedbackComments: [ 'The rent is too damn high.' ] }
-{% endhighlight %}
+```
 
 Immutable properties make an object *closed for modification*. This is a separate matter from making it *closed for extension*. But we can do that too:
 
-{% highlight javascript %}
+```javascript
 Object.preventExtensions(rentAmount);
 
 function addCurrency(amount, currency) {
@@ -101,13 +101,13 @@ function addCurrency(amount, currency) {
 
 addCurrency(rentAmount, "CAD")
   //=> TypeError: Can't add property currency, object is not extensible
-{% endhighlight %}
+```
 
 ### structs
 
 Many other languages have a formal data structure that has one or more named properties that are open for modification, but closed for extension. Here's a function that makes a Struct:
 
-{% highlight javascript %}
+```javascript
 function Struct (template) {
   if (Struct.prototype.isPrototypeOf(this)) {
     var struct = this;
@@ -128,11 +128,11 @@ var rentAmount2 = Struct({dollars: 420, cents: 0});
 
 addCurrency(rentAmount2, "ISK");
   //=> TypeError: Can't add property currency, object is not extensible
-{% endhighlight %}
+```
 
 And when you need an `ImmutableStruct`:
 
-{% highlight javascript %}
+```javascript
 function ImmutableStruct (template) {
 
   if (ImmutableStruct.prototype.isPrototypeOf(this)) {
@@ -164,7 +164,7 @@ var immutableRent = ImmutableStruct({dollars: 1000, cents: 0});
 
 copyAmount(immutableRent, rentAmount);
   //=> TypeError: Cannot assign to read only property 'dollars' of #<Struct>
-{% endhighlight %}
+```
 
 Structs and Immutable Structs are a handy way to prevent inadvertent errors and to explicitly communicate that an object is intended to be used as a struct and not as a dictionary.[^freeze]
 
@@ -174,7 +174,7 @@ Structs and Immutable Structs are a handy way to prevent inadvertent errors and 
 
 A long-cherished principle of dynamic languages is that programs employ "Duck" or "Structural" typing. So if we write:
 
-{% highlight javascript %}
+```javascript
 function deposit (account, instrument) {
   account.dollars += instrument.dollars;
   account.cents   += instrument.cents;
@@ -182,11 +182,11 @@ function deposit (account, instrument) {
   account.cents    = account.cents % 100;
   return account;
 }
-{% endhighlight %}
+```
 
 This works for things that look like cheques, and for things that look like money orders:[^wellactually]
 
-{% highlight javascript %}
+```javascript
 cheque = {
   dollars: 100,
   cents: 0,
@@ -202,7 +202,7 @@ moneyOrder = {
 }
 
 deposit(currentAccount, moneyOrder);
-{% endhighlight %}
+```
 
 [^wellactually]: There're good things we can say about why we should consider making an `amount` property, and/or encapsulate these structs so they behave like objects, but this gives the general idea of structural typing.
 
@@ -214,7 +214,7 @@ There is no checking of this in advance, like some other languages, but there al
 
 This maximizes flexibility, in that it encourages the creation of small, independent pieces work seamlessly together. It also makes it easy to refactor to small, independent pieces. The code above could easily be changed to something like this:
 
-{% highlight javascript %}
+```javascript
 cheque = {
   amount: {
     dollars: 100,
@@ -234,13 +234,13 @@ moneyOrder = {
 }
 
 deposit(currentAccount, moneyOrder.amount);
-{% endhighlight %}
+```
 
 ### drawbacks
 
 This flexibility has a cost. With our ridiculously simple example above, we can easy deposit new kinds of instruments. But we can also do things like this:
 
-{% highlight javascript %}
+```javascript
 var backTaxesOwed = {
   dollars: 10,874,
   cents: 06
@@ -255,7 +255,7 @@ var rentReceipt = {
 }
 
 deposit(backTaxesOwed, rentReceipt);
-{% endhighlight %}
+```
 
 Structurally, `deposit` is compatible with any two things that `haveDollarsAndCents`. But not all things that `haveDollarsAndCents` are semantically appropriate for deposits. This is why some OO language communities work very hard developing and using type systems that incorporate semantics.
 
@@ -267,7 +267,7 @@ This is not just a theoretical concern. Numbers and strings are the ultimate in 
 
 We've already seen structs, above. `Struct` is a structural type, not a semantic type. But it can be extended to incorporate the notion of semantic types by turning it from and object factory into a "factory-factory." Here's a completely new version of `Struct`, we give it a name and the keys we want, and it gives us a JavaScript constructor function:
 
-{% highlight javascript %}
+```javascript
 function Struct () {
   var name = arguments[0],
       keys = [].slice.call(arguments, 1),
@@ -304,7 +304,7 @@ cheque instanceof Depositable;
   //=> true
 cheque instanceof RecordOfPayment;
   //=> false
-{% endhighlight %}
+```
 
 Although `Depositable` and `RecordOfPayment` have the same structural type, they are different semantic types, and we can detect the difference with `instanceof` (and `Object.isPrototypeOf`).
 
@@ -312,7 +312,7 @@ We can also bake this test into our constructors. The code above uses a pattern 
 
 [Effective JavaScript]: http://effectivejs.com
 
-{% highlight javascript %}
+```javascript
 function Struct () {
   var name = arguments[0],
       keys = [].slice.call(arguments, 1),
@@ -358,11 +358,11 @@ Depositable(cheque);
 
 RecordOfPayment.assertIsPrototypeOf(cheque);
   //=> Type Error: [object Object] is not a RecordOfPayment
-{% endhighlight %}
+```
 
 We can use these "semantic" structs by adding assertions to critical functions:
 
-{% highlight javascript %}
+```javascript
 function deposit (account, instrument) {
   Depositable.assertIsPrototypeOf(instrument);
 
@@ -372,7 +372,7 @@ function deposit (account, instrument) {
   account.cents    = account.cents % 100;
   return account;
 }
-{% endhighlight %}
+```
 
 This prevents us from accidentally trying to deposit a rent receipt.
 

@@ -9,7 +9,7 @@ In [Tortoises, Teleporting Turtles, and Iterators](http://raganwald.com/2013/02/
 1. The mechanism for iterating over a list.
 2. The algorithm for detecting a loop in a list.
 
-{% highlight javascript %}
+```javascript
 var LinkedList = (function() {
 
   function LinkedList(content, next) {
@@ -43,7 +43,7 @@ function tortoiseAndHareLoopDetector (list) {
   }
   return false;
 };
-{% endhighlight %}
+```
 
 ### functional iterators
 
@@ -51,14 +51,14 @@ We then went on to discuss how to use functional iterators to untangle concerns 
 
 For example, here is a function that takes an array and returns a functional iterator over the array:
 
-{% highlight javascript %}
+```javascript
 function ArrayIterator (array) {
   var index = 0;
   return function() {
     return array[index++];
   };
 };
-{% endhighlight %}
+```
 
 Iterators allow us to write (or refactor) functions to operate on iterators instead of data structures. That increases reuse. We can also write higher-order functions that operate directly on iterators such as mapping and selecting. That allows us to write lazy algorithms.
 
@@ -66,7 +66,7 @@ Iterators allow us to write (or refactor) functions to operate on iterators inst
 
 In [the previous post](http://raganwald.com/2013/02/15/turtles-and-iterators.js.html), we refactored other algorithms, but not the Tortoise and Hare. Let's do that now: We'll refactor it to use iterators instead of directly operate on linked lists. We'll add an `.iterator()` method to linked lists, and we'll rewrite our loop detector function to take an "iterable" instead of a list:
 
-{% highlight javascript %}
+```javascript
 LinkedList.prototype.iterator = function() {
   var list = this;
   return function() {
@@ -88,7 +88,7 @@ function tortoiseAndHareLoopDetector (iterable) {
   }
   return false;
 };
-{% endhighlight %}
+```
 
 We now have a function that will operate on anything that responds to the `.iterate()` method.[^not-exactly] It's classic "Duck Typed" Object-Orientation. So, how shall we put it to work?
 
@@ -104,7 +104,7 @@ We now have a function that will operate on anything that responds to the `.iter
 
 You'll need a "Board" and/or "Game" class that acts as iterable, along with some notion of directions. Here's one possible implementation:
 
-{% highlight javascript %}
+```javascript
 var DIRECTIONS = [
                    {
                      delta: [1, 0],
@@ -167,11 +167,11 @@ var Game = (function () {
   return Game;
   
 })();
-{% endhighlight %}
+```
 
 In [Tortoises, Teleporting Turtles, and Iterators](http://raganwald.com/2013/02/15/turtles-and-iterators.js.html), we saw the `fold` function that converts a finite iterator into a value:
 
-{% highlight javascript %}
+```javascript
 function fold (iter, binaryFn, seed) {
   var acc, element;
   acc = seed;
@@ -182,11 +182,11 @@ function fold (iter, binaryFn, seed) {
   }
   return acc;
 };
-{% endhighlight %}
+```
 
 There's a similar function that works with finite or infinite iterators, `accumulate`:
 
-{% highlight javascript %}
+```javascript
 function accumulate (iter, binaryFn, seed) {
   var acc = seed;
   return function () {
@@ -199,11 +199,11 @@ function accumulate (iter, binaryFn, seed) {
     }
   }
 };
-{% endhighlight %}
+```
 
 `accumulate` can be very handy for solving this problem. Like `fold`, accumulate takes an iterator, a binary function, and a seed. But instead of returning the final, accumulated value, it returns an iterator over the accumulated values. Compare and contrast:
 
-{% highlight javascript %}
+```javascript
 function sum (x, y) { return x + y; }
 
 fold(ArrayIterator([1, 2, 3, 4, 5]), sum, 0);
@@ -222,7 +222,7 @@ i();
   //=> 15
 i();
   //=> undefined
-{% endhighlight %}
+```
   
 `accumulate` can be thought of as iterating over the steps of a fold. Accumulate can also be thought of as a stateful map from one iterator to another.
 

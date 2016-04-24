@@ -8,34 +8,34 @@ tags: [spessore]
 
 As you know, you can create new objects in JavaScript using a *Constructor Function*, like this:
 
-{% highlight javascript %}
+```javascript
 function Fubar (foo, bar) {
   this._foo = foo;
   this._bar = bar;
 }
 
 var snafu = new Fubar("Situation Normal", "All Fsked Up");
-{% endhighlight %}
+```
 
 When you "call" the constructor with the `new` keyword, you get a new object allocated, and the constructor is called with the new object as the current context. If you don't explicitly return anything from the constructor, you get the new object as the result.
 
 Thus, the body of the constructor function is used to initialize the newly created object. There's another thing: The newly created object is initialized to have a prototype. What prototype? The contents of the constructor's `prototype` property. So we can write:
 
-{% highlight javascript %}
+```javascript
 Fubar.prototype.concatenated = function () {
   return this._foo + " " + this._bar;
 }
 
 snafu.concatenated()
   //=> 'Situation Normal All Fsked Up'
-{% endhighlight %}
+```
 
 Thanks to the internal mechanics of JavaScript's `instanceof` operator, we can use it to test whether an object is likely to have been created with a particular constructor:
 
-{% highlight javascript %}
+```javascript
 snafu instanceof Fubar
   //=> true
-{% endhighlight %}
+```
 
 (It's possible to "fool" `instanceof` when working with more advanced idioms, or if you're the kind of malicious troglodyte who collects language corner cases and enjoys inflicting them on candidates in job interviews. But it works well enough for our purposes.)
 
@@ -43,23 +43,23 @@ snafu instanceof Fubar
 
 What happens if we call the constructor, but accidentally omit the `new` keyword?
 
-{% highlight javascript %}
+```javascript
 var fubar = Fubar("Fsked Up", "Beyond All Recognition");
 
 fubar
   //=> undefined
-{% endhighlight %}
+```
 
 William-Thomas-Fredreich!? We've called an ordinary function that doesn't return anything. so `fubar` is undefined. That's not what we want. Actually, it's worse than that:
 
-{% highlight javascript %}
+```javascript
 _foo
   //=> 'Fsked Up'
-{% endhighlight %}
+```
 
 JavaScript sets `this` to the global environment by default for calling an ordinary function, so we've just blundered about in the global environment. We can fix that somewhat:
 
-{% highlight javascript %}
+```javascript
 function Fubar (foo, bar) {
   "use strict"
 
@@ -69,7 +69,7 @@ function Fubar (foo, bar) {
 
 Fubar("Situation Normal", "All Fsked Up");
   //=> TypeError: Cannot set property '_foo' of undefined
-{% endhighlight %}
+```
 
 Although `"use strict"` might be omitted from code in blog posts and books (mea culpa!), in production it is very nearly mandatory for reasons just like this. But nevertheless, constructors that do not take into account the possibility of being called without the `new` keyword are a potential problem.
 
@@ -79,7 +79,7 @@ So what can we do?
 
 In [Effective JavaScript], David Herman describes *auto-instantiation*. When we call a constructor with `new`, The pseudo-variable `this` is set to a new instance of our "class," so-to-speak. We can use this to detect whether our constructor has been called with `new`:
 
-{% highlight javascript %}
+```javascript
 function Fubar (foo, bar) {
   "use strict"
 
@@ -97,13 +97,13 @@ Fubar("Situation Normal", "All Fsked Up");
   //=>
     { _foo: 'Situation Normal',
       _bar: 'All Fsked Up' }
-{% endhighlight %}
+```
 
 [Effective JavaScript]: http://effectivejs.com
 
 Why bother making it work without `new`? One problem this solves is that `new Fubar(...)` does not *compose*. Consider:
 
-{% highlight javascript %}
+```javascript
 function logsArguments (fn) {
   return function () {
     console.log.apply(this, arguments);
@@ -121,11 +121,11 @@ logsSum(2, 2)
   //=>
     2 2
     4
-{% endhighlight %}
+```
 
 `logsArguments` decorates a function by returning a version of the function that logs its arguments. Let's try it on the original `Fubar`:
 
-{% highlight javascript %}
+```javascript
 function Fubar (foo, bar) {
   this._foo = foo;
   this._bar = bar;
@@ -141,11 +141,11 @@ var snafu = new LoggingFubar("Situation Normal", "All Fsked Up");
 
 snafu.concatenated()
   //=> TypeError: Object [object Object] has no method 'concatenated'
-{% endhighlight %}
+```
 
 This doesn't work because `snafu` is actually an instance of `LoggingFubar`, not of `Fubar`. But if we use the auto-instantiating version of `Fubar`:
 
-{% highlight javascript %}
+```javascript
 function Fubar (foo, bar) {
   "use strict"
 
@@ -175,7 +175,7 @@ var snafu = new LoggingFubar("Situation Normal", "All Fsked Up");
 
 snafu.concatenated()
   //=> 'Situation Normal All Fsked Up'
-{% endhighlight %}
+```
 
 Now it works, but of course `snafu` is an instance of `Fubar`, not of `LoggingFubar`. Is that what you want? Who knows!? This isn't a justification for the pattern, as much as an explanation that it is a useful, but leaky abstraction. It's doesn't "just work," but it can make certain things possible (like decorating constructors) that are otherwise even more awkward to implement.
 
@@ -183,7 +183,7 @@ Now it works, but of course `snafu` is an instance of `Fubar`, not of `LoggingFu
 
 It can be very handy to have a function that tests for an object being an instance of a particular class. If we can stomach the idea of one function doing two different things, we can make the constructor its own `instanceof` test:
 
-{% highlight javascript %}
+```javascript
 function Fubar (foo, bar) {
   "use strict"
 
@@ -205,13 +205,13 @@ Fubar({})
   //=> false
 Fubar(snafu)
   //=> true
-{% endhighlight %}
+```
 
 This allows us to use the constructor as an argument in [predicate and multiple dispatch][2], or as a filter:
 
-{% highlight javascript %}
+```javascript
 var arrayOfSevereProblems = problems.filter(Fubar);
-{% endhighlight %}
+```
 
 [2]:http://raganwald.com/2014/06/23/multiple-dispatch.html "Greenspunning Predicate and Multiple Dispatch in JavaScript"
 
@@ -223,7 +223,7 @@ Perhaps it's better to take matters into our own hands. Olivier Scherrer [sugges
 
 [1]: http://podefr.tumblr.com/post/75666281033/the-auto-instantiating-javascript-constructor-is-an "The auto-instantiating JavaScript constructor is an anti-pattern"
 
-{% highlight javascript %}
+```javascript
 function Fubar (foo, bar) {
   "use strict"
 
@@ -237,17 +237,17 @@ function Fubar (foo, bar) {
 
 Fubar("Situation Normal", "All Fsked Up");
   //=> Error: Fubar needs to be called with the new keyword
-{% endhighlight %}
+```
 
 Simple and safer than only relying on `"use strict"`. If you like having a simple `instanceof` test, you can bake it into the constructor as a function method:
 
-{% highlight javascript %}
+```javascript
 Fubar.is = function (obj) {
   return obj instanceof Fubar;
 }
 
 var arrayOfSevereProblems = problems.filter(Fubar.is);
-{% endhighlight %}
+```
 
 ---
 

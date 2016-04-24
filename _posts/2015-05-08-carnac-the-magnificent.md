@@ -41,7 +41,7 @@ And if you solve it without recursion, you don't grasp elegance. And if you do s
 
 Here's the most naïve code I can think of:
 
-{% highlight javascript %}
+```javascript
 for (let o1 of ["", "+", "-"]) {
   for (let o2 of ["", "+", "-"]) {
     for (let o3 of ["", "+", "-"]) {
@@ -63,7 +63,7 @@ for (let o1 of ["", "+", "-"]) {
     }
   }
 }
-{% endhighlight %}
+```
 
 ([es6fiddle](http://www.es6fiddle.net/i9fp5ur2/))
 
@@ -71,7 +71,7 @@ Every single thing you can say negatively about this solution represents an unst
 
 Likewise, here's a recursive solution:
 
-{% highlight javascript %}
+```javascript
 function solutions (accumulatedOutput, runningTotal, ...numbers) {
   if (numbers.length === 0) {
     if (runningTotal == 100) console.log(accumulatedOutput);
@@ -100,13 +100,13 @@ function solutions (accumulatedOutput, runningTotal, ...numbers) {
 }
 
 solutions("", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-{% endhighlight %}
+```
 
 ([es6fiddle](http://www.es6fiddle.net/i9h7385g/))
 
 It's faster, and more beautiful mathematically, but it's actually harder to understand how it works than the iterative solution. And it took me a lot longer to write. As did this one, based on Generators and Iterators:
 
-{% highlight javascript %}
+```javascript
 // Utility function from https://leanpub.com/javascriptallongesix
 
 const filterIterableWith = (fn, iterable) =>
@@ -155,7 +155,7 @@ const is100 = (expr) =>
 
 const solutions = filterIterableWith(is100,
     expressions([1, 2, 3, 4, 5, 6, 7, 8, 9]));
-{% endhighlight %}
+```
 
 ([es6fiddle](http://www.es6fiddle.net/i9hhvyp0/))
 

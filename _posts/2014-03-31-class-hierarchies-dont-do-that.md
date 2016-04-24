@@ -6,7 +6,7 @@ tags: spessore
 
 *In theory*, JavaScript does not have classes. *In practice*, the following snippet of code is widely considered to be an example of a "class" in JavaScript:
 
-{% highlight javascript %}
+```javascript
 function Account () {
   this._currentBalance = 0;
 }
@@ -23,11 +23,11 @@ Account.prototype.deposit = function (howMuch) {
 // ...
 
 var account = new Account();
-{% endhighlight %}
+```
 
 The pattern can be extended to provide the notion of subclassing:
 
-{% highlight javascript %}
+```javascript
 function ChequingAccount () {
   Account.call(this);
 }
@@ -42,7 +42,7 @@ ChequingAccount.prototype.process = function (cheque) {
   this._currentBalance = this._currentBalance - cheque.amount();
   return this;
 }
-{% endhighlight %}
+```
 
 These classes and subclasses provide most of the features of classes we find in languages like [Smalltalk]:
 
@@ -107,7 +107,7 @@ Obviously, code will have dependencies. `A` will depend on `B`, and `B` will dep
 
 So far so good. or at least, it is if `A`, `B` and `C` are objects and/or functions. For example:
 
-{% highlight javascript %}
+```javascript
 function depositAndReturnBalance(account, amount) {
   return account.deposit(amount).balance();
 }
@@ -115,11 +115,11 @@ function depositAndReturnBalance(account, amount) {
 var account = new Account();
 depositAndReturnBalance(account, 100)
   //=> 100
-{% endhighlight %}
+```
 
 `depositAndReturnBalance` obviously depends on passing in an object that implements both the `.deposit` and `.balance` methods. But it doesn't depend on how those methods are implemented: we could write this for `Account` and get the same behaviour:
 
-{% highlight javascript %}
+```javascript
 function Account () {
   this._transactionHistory = [];
 }
@@ -142,7 +142,7 @@ function depositAndReturnBalance(account, amount) {
 var account = new Account();
 depositAndReturnBalance(account, 100)
   //=> 100
-{% endhighlight %}
+```
 
 Completely different implementation of `.deposit` and `.balance`, but `depositAndReturnBalance` does not depend upon the implementation.
 
@@ -156,12 +156,12 @@ It turns out, the relationship between classes in a hierarchy is *not* encapsula
 
 Here's the way our `ChequingAccount` subclass implements the `.process` method:
 
-{% highlight javascript %}
+```javascript
 ChequingAccount.prototype.process = function (cheque) {
   this._currentBalance = this._currentBalance - cheque.amount();
   return this;
 }
-{% endhighlight %}
+```
 
 If we rewrite the `Account` class to use a transaction history instead of a current balance, it breaks the code in `ChequingAccount`. In JavaScript (and other languages in the same family), classes and subclasses share access to the object's private properties. It is not possible to change an implementation detail for `Account` without carefully checking every single subclass and the code depending on those subclasses to see if our internal, "private" change will break them.
 

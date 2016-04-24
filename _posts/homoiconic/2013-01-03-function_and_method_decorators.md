@@ -18,7 +18,7 @@ tags : [homoiconic, javascript]
 
 In [Part I][I], we compared and contrasted two versions of function composition. The first version is more-or-less a direct port of `compose` in functional languages that don't have any notion of a context:
 
-{% highlight javascript %}
+```javascript
 function compose (fn1, fn2) {
   return function compose_ (something) {
     return fn1(fn2(something));
@@ -33,19 +33,19 @@ var collatz = compose(add1, times3);
 
 collatz(5);
   //=> 16
-{% endhighlight %}
+```
   
 It simply calls functions. It works with functions that don't have a context or are bound to a specific context. It doesn't work if you're trying to pass a context. That happens when you're calling methods, so this version of `compose` doesn't work with functions that are used as method implementations.
 
 Here's one that does work. It uses `.call` to carefully pass the current context along:
 
-{% highlight javascript %}
+```javascript
 function compose (fn1, fn2) {
   return function compose_ (something) {
     return fn1.call(this, fn2.call(this, something));
   }
 }
-{% endhighlight %}
+```
   
 The second version of compose is *context-agnostic*. It doesn't interfere with the context by erasing it or injecting a context. In this second part, we're going to take a short look at the concept and its relation to the *Function Decorator Pattern*.
 
@@ -53,15 +53,15 @@ The second version of compose is *context-agnostic*. It doesn't interfere with t
 
 A "function decorator" is a function that consumes a function and returns a decorated version of the function it consumes. For example, the [Underscore][u] and [allong.es] libraries both include the "once" function decorator. Here's a function you might want to call:
 
-{% highlight javascript %}
+```javascript
 function preloadLotsOfStuff () {
   // ...
 };
-{% endhighlight %}
+```
   
 What if you only want to execute it once but you might want to call it from multiple points in the code? You can do something like this:
 
-{% highlight javascript %}
+```javascript
 var hasntRun = true;
 
 function preloadLotsOfStuff () {
@@ -70,7 +70,7 @@ function preloadLotsOfStuff () {
     // ...
   }
 };
-{% endhighlight %}
+```
   
 Now we're cluttering up the code with two orthogonal concerns:
 
@@ -79,17 +79,17 @@ Now we're cluttering up the code with two orthogonal concerns:
 
 The better way forward is with a function decorator, like this:
 
-{% highlight javascript %}
+```javascript
 var _ = require('underscore');
 
 var preloadLotsOfStuff = _.once( function () {
   // ...
 });
-{% endhighlight %}
+```
   
 As you can see from the [source code](http://underscorejs.org/docs/underscore.html), `once` is simple:
 
-{% highlight javascript %}
+```javascript
 _.once = function(func) {
   var ran = false, memo;
   return function() {
@@ -100,7 +100,7 @@ _.once = function(func) {
     return memo;
   };
 };
-{% endhighlight %}
+```
   
 Notice that `_.once` takes a function as an argument, and returns a new function wrapping the original with the "decoration" behaviour. We call `_.once` the function decorator, and the anonymous wrapper function the *decoration*.
 
@@ -110,18 +110,18 @@ That's the function decorator pattern in a nutshell. You have three pieces: a fu
 
 We can write our own function decorators very easily. Let's take an extremely simple example: logging the result of a function. Instead of:
 
-{% highlight javascript %}
+```javascript
 function numberOfLoginAttempts (user) {
   var attempts;
   //...
   console.log(attempts);
   return attempts;
 };
-{% endhighlight %}
+```
   
 We want a decorator that does the logging for us. Like this:
 
-{% highlight javascript %}
+```javascript
 function logsItsResult (fn) {
   return function () {
     var result = fn.apply(this, arguments);
@@ -129,21 +129,21 @@ function logsItsResult (fn) {
     return result;
   }
 };
-{% endhighlight %}
+```
   
 Now, whenever we wish to log the result of a function, we write:
 
-{% highlight javascript %}
+```javascript
 var numberOfLoginAttempts = logsItsResult( function (user) {
   var attempts;
   //...
   return attempts;
 });
-{% endhighlight %}
+```
   
 This post is ostensibly about "this." Well, what are the functions that care the most about "this?" Methods! Can we use our decorator on a method? Yes. Instead of:
 
-{% highlight javascript %}
+```javascript
 function User (name, passwordHash, salt) {
   if (!(this instanceof User)) {
     return new User(name, passwordHash, salt);
@@ -159,17 +159,17 @@ User.prototype.isAnAdministrator = function () {
   console.log(hasAdminPrivs);
   return hasAdminPrivs;
 };
-{% endhighlight %}
+```
   
 We can use our decorator on the method's function just as we used it on a "global" function:
 
-{% highlight javascript %}
+```javascript
 User.prototype.isAnAdministrator = logsItsResult( function () {
   var hasAdminPrivs;
   //...
   return hasAdminPrivs;
 });
-{% endhighlight %}
+```
   
 The key is to always write function decorators so that they are context agnostic: They need to call the decorated function with `.call` or `.apply`, passing the current context.
 

@@ -26,7 +26,7 @@ Partial application is straightforward. We could start with addition or some suc
 
 As a preamble, let's make ourselves a `map` function that maps another function over a list:
 
-{% highlight javascript %}
+```javascript
 var __map = [].map;
 
 function map (list, unaryFn) {
@@ -39,7 +39,7 @@ function square (n) {
 
 map([1, 2, 3], square);
   //=> [1, 4, 9]
-{% endhighlight %}
+```
 
 `map` is obviously a binary function, `square` is a unary function. When we called `map` with arguments `[1, 2, 3]` and `square`, we *applied* the arguments to the function and got our result.
 
@@ -49,32 +49,32 @@ Now what happens if we supply one argument to `map`? We can't get a result witho
 
 If we're going to apply one argument to `map`, let's make it the `unaryFn`. We'll start with the end result and work backwards. First thing we do, is set up a wrapper around map:
 
-{% highlight javascript %}
+```javascript
 function mapWrapper (list, unaryFn) {
   return map(list, unaryFn);
 };
-{% endhighlight %}
+```
 
 Next we'll break our binary wrapper function into two nested unary functions:
 
-{% highlight javascript %}
+```javascript
 function mapWrapper (unaryFn) {
   return function (list) {
     return map(list, unaryFn);
   };
 };
-{% endhighlight %}
+```
 
 Now we can supply our arguments one at a time:
 
-{% highlight javascript %}
+```javascript
 mapWrapper(square)([1, 2, 3]);
   //=> [1, 4, 9]
-{% endhighlight %}
+```
 
 Instead of a binary `map` function that returns our result, we now have a unary function that returns a unary function that returns our result. So where's the partial application? Let's get our hands on the second unary function:
 
-{% highlight javascript %}
+```javascript
 var squareAll = mapWrapper(square);
   //=> [function]
 
@@ -82,7 +82,7 @@ squareAll([1, 2, 3]);
   //=> [1, 4, 9]
 squareAll([5, 7, 5]);
   //=> [25, 49, 25]
-{% endhighlight %}
+```
 
 We've just partially applied the value `square` to the function `map`. We got back a unary function, `squareAll`, that we could use as we liked. Partially applying `map` in this fashion is handy, so much so that the [allong.es] library includes a function called `mapWith` that does this exact thing.
 
@@ -94,27 +94,27 @@ If we had to physically write ourselves a wrapper function every time we want to
 
 First up, we can write a function that returns a wrapper function. Sticking with binary function, we start with this:
 
-{% highlight javascript %}
+```javascript
 function wrapper (unaryFn) {
   return function (list) {
     return map(list, unaryFn);
   };
 };
-{% endhighlight %}
+```
 
 Rename `map` and the two arguments:
 
-{% highlight javascript %}
+```javascript
 function wrapper (secondArg) {
   return function (firstArg) {
     return binaryFn(firstArg, secondArg);
   };
 };
-{% endhighlight %}
+```
 
 And now we can wrap the whole thing in a function that takes `binaryFn` as an argument:
 
-{% highlight javascript %}
+```javascript
 function rightmostCurry (binaryFn) {
   return function (secondArg) {
     return function (firstArg) {
@@ -122,11 +122,11 @@ function rightmostCurry (binaryFn) {
     };
   };
 };
-{% endhighlight %}
+```
 
 So now we've 'abstracted' our little pattern. We can use it like this:
 
-{% highlight javascript %}
+```javascript
 var rightmostCurriedMap = rightmostCurry(map);
 
 var squareAll = rightmostCurriedMap(square);
@@ -135,7 +135,7 @@ squareAll([1, 4, 9]);
   //=> [1, 4, 9]
 squareAll([5, 7, 5]);
   //=> [25, 49, 25]
-{% endhighlight %}
+```
 
 Converting a polyadic function into a nested series of unary functions is called **currying**, after Haskell Curry, who popularized the technique. He actually rediscovered the combinatory logic work of [Moses Schönfinkel][moses], so we could easily call it "schönfinkeling."[^birds]
 
@@ -146,7 +146,7 @@ Our `rightmostCurry` function curries any binary function into a chain of unary 
 
 The opposite order would be a "leftmost" curry. Most logicians work with leftmost currying, so when we write a leftmost curry, most people just call it "curry:"
 
-{% highlight javascript %}
+```javascript
 function curry (binaryFn) {
   return function (firstArg) {
     return function (secondArg) {
@@ -164,7 +164,7 @@ oneToThreeEach(square);
   //=> [1, 4, 9]
 oneToThreeEach(double);
   //=> [2, 4, 6]
-{% endhighlight %}
+```
 
 When would you use a regular curry and when would you use a rightmost curry? It really depends on your usage. In our binary function example, we're emulating a kind of subject-object grammar. The first argument we want to use is going to be the subject, the second is going to be the object.
 
@@ -180,7 +180,7 @@ So many words about currying! What about "partial application?" Well, if you hav
 
 Let's look at our rightmost curry again:
 
-{% highlight javascript %}
+```javascript
 function rightmostCurry (binaryFn) {
   return function (secondArg) {
     return function (firstArg) {
@@ -188,14 +188,14 @@ function rightmostCurry (binaryFn) {
     };
   };
 };
-{% endhighlight %}
+```
 
 You might find yourself writing code like this over and over again:
 
-{% highlight javascript %}
+```javascript
 var squareAll = rightmostCurry(map)(square),
     doubleAll = rightmostCurry(map)(double);
-{% endhighlight %}
+```
 
 This business of making a rightmost curry and then immediately applying an argument to it is extremely common, and when something's common we humans like to name it. And it has a name, it's called a *rightmost unary partial application of the map function*.
 
@@ -210,46 +210,46 @@ So what we're really doing is applying one argument to the map function. It's a 
 
 We *could* build one out of a rightmost curry:
 
-{% highlight javascript %}
+```javascript
 function rightmostUnaryPartialApplication (binaryFn, secondArg) {
   return rightmostCurry(binaryFn)(secondArg);
 };
-{% endhighlight %}
+```
 
 However it is usually implemented in more direct fashion:[^caveat]
 
-{% highlight javascript %}
+```javascript
 function rightmostUnaryPartialApplication (binaryFn, secondArg) {
   return function (firstArg) {
     return binaryFn(firstArg, secondArg);
   };
 };
-{% endhighlight %}
+```
 
 [^caveat]: All of our implementations are grossly simplified. Full implementations can handle polyadic functions with more than two arguments and are context-agnostic.
 
 `rightmostUnaryPartialApplication` is a bit much, so we'll alias it `applyLast`:
 
-{% highlight javascript %}
+```javascript
 var applyLast = rightmostUnaryPartialApplication;
-{% endhighlight %}
+```
 
 And here're our `squareAll` and `doubleAll` functions built with `applyLast`:
 
-{% highlight javascript %}
+```javascript
 var squareAll = applyLast(map, square),
     doubleAll = applyLast(map, double);
-{% endhighlight %}
+```
 
 You can also make an `applyFirst` function (we'll skip calling it "leftmostUnaryPartialApplication"):
 
-{% highlight javascript %}
+```javascript
 function applyFirst (binaryFn, firstArg) {
   return function (secondArg) {
     return binaryFn(firstArg, secondArg);
   };
 };
-{% endhighlight %}
+```
 
 As with leftmost and rightmost currying, you want to have both in your toolbox so that you can choose what you are naming and/or reusing.
 

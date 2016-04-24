@@ -53,7 +53,7 @@ And thus, we can always work with three elements instead of four. Let's express 
 
 Which we can code in Ruby:
 
-{% highlight ruby %}
+```ruby
 def times(*ems)
   ems.inject do |product, matrix|
   	a,b,c = product; d,e,f = matrix
@@ -66,11 +66,11 @@ times([1,1,0], [1,1,0]) # => [2, 1, 1]
 times([1,1,0], [1,1,0], [1,1,0]) # => [3, 2, 1]
 times([1,1,0], [1,1,0], [1,1,0], [1,1,0]) # => [5, 3, 2]
 times([1,1,0], [1,1,0], [1,1,0], [1,1,0], [1,1,0]) # => [8, 5, 3]
-{% endhighlight %}
+```
 	
 Very interesting. We could write out a naive implementation that constructs a long array of copies of `[1,1,0]` and then calls `times`:
 
-{% highlight ruby %}
+```ruby
 def naive_power(m, n)
   times(*(1..n).map { |n| m })
 end
@@ -84,7 +84,7 @@ naive_power([1,1,0], 5) # => [8, 5, 3]
 
 Now let's make an observation: instead of accumulating a product by iterating over the list, let's [Divide and Conquer](http://www.cs.berkeley.edu/~vazirani/algorithms/chap2.pdf). Let's take the easy case: Don't you agree that `times([1,1,0], [1,1,0], [1,1,0], [1,1,0])` is equal to `times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))`? And that this saves us an operation, since `times([1,1,0], [1,1,0], [1,1,0], [1,1,0])` is implemented as:
 
-{% highlight ruby %}
+```ruby
 times([1,1,0],
 	times([1,1,0],
 		times([1,1,0],[1,1,0]))
@@ -92,7 +92,7 @@ times([1,1,0],
 
 Whereas `times(times([1,1,0], [1,1,0]), times([1,1,0], [1,1,0]))` can be implemented as:
 
-{% highlight ruby %}
+```ruby
 begin
 	double = times([1,1,0], [1,1,0])
 	times(double, double)
@@ -101,7 +101,7 @@ end
 
 This only requires two operations rather than three. Furthermore, it is recursive. `naive_power([1,1,0], 8)` requires seven operations. However, it can be formulated as:
 
-{% highlight ruby %}
+```ruby
 begin
 	quadruple = begin
 		double = times([1,1,0], [1,1,0])
@@ -113,7 +113,7 @@ end
 
 Now we only need three operations compared to seven. Of course, we left out how to deal with odd numbers. Fixing that also fixes how to deal with even numbers that aren't neat powers of two:
 
-{% highlight ruby %}
+```ruby
 def power(m, n)
   if n == 1
     m
@@ -136,7 +136,7 @@ power([1,1,0], 5) # => [8, 5, 3]
 
 And we can write our complete fibonacci function:
 
-{% highlight ruby %}
+```ruby
 def fib(n)
   return n if n < 2
   power([1,1,0], n - 1).first
@@ -145,7 +145,7 @@ end
 
 And dress things up in idiomatic Ruby using the anonymous module pattern:
 
-{% highlight ruby %}
+```ruby
 class Integer
 
   include(Module.new do

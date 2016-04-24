@@ -10,7 +10,7 @@ tags: allonge
 
 We have always been able to create a JavaScript class like this:
 
-{% highlight javascript %}
+```javascript
 function Person (first, last) {
   this.rename(first, last);
 }
@@ -25,13 +25,13 @@ Person.prototype.rename = function rename (first, last) {
   this.lastName = last;
   return this;
 }
-{% endhighlight %}
+```
 
 `Person` is a constructor function, and it's also a class, in the JavaScript sense of the word "[class][class]." As we've written it here, it's a *function declaration*. But let's rewrite it as a *function expression*. We'll use `let` just to get into the ECMAScript 2015 swing of things (many people would use `const`, that doesn't matter here):
 
 [class]: http://raganwald.com/2015/05/11/javascript-classes.html
 
-{% highlight javascript %}
+```javascript
 let Person = function (first, last) {
   this.rename(first, last);
 }
@@ -46,13 +46,13 @@ Person.prototype.rename = function rename (first, last) {
   this.lastName = last;
   return this;
 }
-{% endhighlight %}
+```
 
 ### classes with `class`
 
 ECMAScript 2015 provides the `class` keyword and "compact method notation" as syntactic sugar for writing a function and assigning methods to its prototype (there is a little more involved, but that isn't relevant here). So we can now write our `Person` class like this:
 
-{% highlight javascript %}
+```javascript
 class Person {
   constructor (first, last) {
     this.rename(first, last);
@@ -66,11 +66,11 @@ class Person {
     return this;
   }
 };
-{% endhighlight %}
+```
 
 Just like a function declaration, we can also write a *class expression*:
 
-{% highlight javascript %}
+```javascript
 let Person = class {
   constructor (first, last) {
     this.rename(first, last);
@@ -84,7 +84,7 @@ let Person = class {
     return this;
   }
 };
-{% endhighlight %}
+```
 
 This is interesting, because it shows that creating a class in JavaScript (whether we write constructor functions or use the `class` keyword) is evaluating an expression. In this case, our class is created anonymously, we just happen to bind it to `Person`.[^infer] We can create classes, assign them to variables, pass them to functions, or return them from functions, just like any other value in JavaScript.
 
@@ -98,33 +98,33 @@ Like what? I'm glad you asked. First, let's review the ECMAScript 2015 `Symbol`:
 
 In its simplest form, `Symbol` is a function that returns a unique entity. No two symbols are alike, ever:
 
-{% highlight javascript %}
+```javascript
 Symbol() !=== Symbol()
-{% endhighlight %}
+```
 
 Symbols have string representations, although they may appear cryptic:[^impl]
 
 [^impl]: The exact representation depends upon the implementation
 
-{% highlight javascript %}
+```javascript
 Symbol().toString()
   //=> Symbol(undefined)_u.mwf0blvw5
 Symbol().toString()
   //=> Symbol(undefined)_s.niklxrko8m
 Symbol().toString()
   //=> Symbol(undefined)_s.mbsi4nduh
-{% endhighlight %}
+```
 
 You can add your own text to help make it intelligible:
 
-{% highlight javascript %}
+```javascript
 Symbol("Allongé").toString()
   //=> Symbol(Allongé)_s.52x692eab
 Symbol("Allongé").toString()
   //=> Symbol(Allongé)_s.q6hq5lx01p
 Symbol("Allongé").toString()
   //=> Symbol(Allongé)_s.jii7eyiyza
-{% endhighlight %}
+```
 
 There are some ways that JavaScript makes symbols especially handy. Using symbols as property names, for example.
 
@@ -134,7 +134,7 @@ One of the huge problems with OOP in JavaScript is that it is very easy for code
 
 The usual argument against other code reading or writing `.firstName` and `.lastName` directly is that makes it difficult to modify the `Person` class. Imagine that we wish to accommodate an optional middle name:
 
-{% highlight javascript %}
+```javascript
 class Person {
   constructor (first, last, middle) {
     this.rename(first, last, middle);
@@ -151,11 +151,11 @@ class Person {
     return this;
   }
 };
-{% endhighlight %}
+```
 
 How awkward, but so far nothing breaks, not even the code that directly accesses `.firstName` and `.lastName`. Now we refactor:
 
-{% highlight javascript %}
+```javascript
 class Person {
   constructor (...names) {
     this.rename(...names);
@@ -168,7 +168,7 @@ class Person {
     return this;
   }
 };
-{% endhighlight %}
+```
 
 Presto, we just broke everything that depends directly upon `.firstName` and `.lastName`.
 
@@ -188,7 +188,7 @@ In ECMAScript 2015, a symbol can be a property name. So if we arrange things suc
 
 As you probably know, writing `foo.bar` is synonymous with `foo['bar']`. Same thing semantically. So let's begin by rewriting `Person` to use strings for property keys:
 
-{% highlight javascript %}
+```javascript
 class Person {
   constructor (first, last) {
     this.rename(first, last);
@@ -202,11 +202,11 @@ class Person {
     return this;
   }
 };
-{% endhighlight %}
+```
 
 So far, exactly the same behaviour, any code that wants to, can access a person's `.firstName` or `.lastName`. Next, we'll extract some variables:
 
-{% highlight javascript %}
+```javascript
 let firstNameProperty = 'firstName',
     lastNameProperty  = 'lastName';
 
@@ -223,11 +223,11 @@ class Person {
     return this;
   }
 };
-{% endhighlight %}
+```
 
 Same thing, but we aren't done yet. Let's use symbols instead of strings:
 
-{% highlight javascript %}
+```javascript
 let firstNameProperty = Symbol('firstName'),
     lastNameProperty  = Symbol('lastName');
 
@@ -244,7 +244,7 @@ class Person {
     return this;
   }
 };
-{% endhighlight %}
+```
 
 This is different. Instances of `Person` won't have properties like `.lastName`, they will be properties like `['Symbol(lastName)_v.cn3u8ad08']`. Furthermore, JavaScript automatically makes these properties non-enumerable, so they won't show up should we use things like `for...in` loops.
 
@@ -254,7 +254,7 @@ So it will be difficult for other code to directly manipulate the properties we 
 
 Recall that we said a class is a value that can be assigned to a variable or *returned from a function*. Functions are excellent mechanisms for encapsulating code. Let's start by changing our class declaration into a class expression. We'll make this one a *named class expression* to help with debugging and what-not:
 
-{% highlight javascript %}
+```javascript
 let firstNameProperty = Symbol('firstName'),
     lastNameProperty  = Symbol('lastName');
 
@@ -271,11 +271,11 @@ let Person = class Person {
     return this;
   }
 };
-{% endhighlight %}
+```
 
 Now we wrap the class in an IIFE[^iife]:
 
-{% highlight javascript %}
+```javascript
 let firstNameProperty = Symbol('firstName'),
     lastNameProperty  = Symbol('lastName');
 
@@ -294,11 +294,11 @@ let Person = (() = > {
     }
   };
 )();
-{% endhighlight %}
+```
 
 And finally, we move the property name variables inside the IIFE:
 
-{% highlight javascript %}
+```javascript
 let Person = (() = > {
   let firstNameProperty = Symbol('firstName'),
       lastNameProperty  = Symbol('lastName');
@@ -317,7 +317,7 @@ let Person = (() = > {
     }
   };
 )();
-{% endhighlight %}
+```
 
 Now this is different. Code outside the IIFE cannot see the property names. We construct a class and return it from the IIFE. We then assign it to the `Person` variable. Its mechanism has been completely encapsulated.
 

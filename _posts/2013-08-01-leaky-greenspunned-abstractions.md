@@ -21,7 +21,7 @@ In Ruby, for example, [Benjamin Stein] and I wrote a little thing called [andand
 
 But let's draw the curtain back, shall we? The `andand` method that's mixed into all objects is not too tough to parse once you realize there's a special case for passing a block:
 
-{% highlight ruby %}
+```ruby
 def andand (p = nil)
   if self
     if block_given?
@@ -49,7 +49,7 @@ class MockReturningMe < BlankSlate
     @me
   end
 end
-{% endhighlight %}
+```
 
 But what is this `MockReturningMe` thingummy? Well, if the receiver of `.andand` is falsey, the method `.andand` returns a special proxy object that returns the original object no matter what method you send it. This works just fine for the "normal case" of writing something like `raganwald.andand.braythwayt`, but introduces icky[^icky] edge cases.
 
@@ -76,7 +76,7 @@ If you're somewhat familiar with JavaScript and Lisp, you'll recognize the secon
 
 It's an interesting mechanism, and it has been borrowed for the CoffeeScript language's `do` keyword. JavaScript programmers are often tempted to use it to implement block scoping. In JavaScript, a new scope is only introduced by functions. Take this terrible code:
 
-{% highlight javascript %}
+```javascript
 function whatDoesThisDo (n) {
   result = '';
   for (var i = 0; i < n; ++i ) {
@@ -91,13 +91,13 @@ function whatDoesThisDo (n) {
 
 whatDoesThisDo(6)
   //=> "xxxxxx"
-{% endhighlight %}
+```
 
 It seems contrived for the purpose of hazing University graduates that interview for programming jobs. The key point for our purposes is that despite the `var` declaration and the fact that `for (var i = 0; i < result.length; ++i )` is nested inside of `if (i % 2 === 0) { ... }`, the `i` indexing the inner loop is the exact same `i` as the one that indexes the outer loop, and that is going to produce problems.
 
 Some languages have [block scope]: The introduction of a block like `{ ... }` introduces a new scope, and therefore you can create a new `i` that *shadows* the original. This is possible in Scheme with the `let` form, and if you have a taste for having one variable mean different things in different places, you can *appear* to create the same effect in JavaScript with an IIFE:
 
-{% highlight javascript %}
+```javascript
 function whatDoesThisDo (n) {
   result = '';
   for (var i = 0; i < n; ++i ) {
@@ -112,7 +112,7 @@ function whatDoesThisDo (n) {
 
 whatDoesThisDo(6)
   //=> "xxxxxxxxxxxxxxxxxx"
-{% endhighlight %}
+```
 
 [iife]: https://en.wikipedia.org/wiki/Immediately-invoked_function_expression
 [block scope]: https://en.wikipedia.org/wiki/Scope_(programming)#Block_scope
@@ -125,7 +125,7 @@ Almost.
 
 Once again, we have a leaky abstraction. The enthusiastic programmer, having rediscovered how to implement block scope in JavaScript with IIFEs, might decide that IIFEs are the new go-to idiom for block scoping:
 
-{% highlight javascript %}
+```javascript
 function oddsAndEvens (n) {
   var result;
   if (n % 2 == 0) {
@@ -148,25 +148,25 @@ function oddsAndEvens (n) {
 
 oddsAndEvens(4)
   //=> undefined
-{% endhighlight %}
+```
 
 The reasoning behind this code is beyond dubious, but the problem is apparent: The intention was that `return result` return the result from the `oddsAndEvens` function, but in reality it returns the result from the anonymous function enclosing it. In languages like Ruby and C++, blocks are lighter weight than lambdas precisely because the semantics of things like `return` are different from within a block than from within a function body.
 
 It doesn't matter that `let` is implemented with a lambda in our toy Scheme because our toy Scheme doesn't have a `return` form. But it matters greatly in JavaScript. Imagine, for example, that you use [Esprima] to write a preprocessor. You could lose all grip with reality and translate ES5 code like this:
 
-{% highlight javascript %}
+```javascript
 let(x = 1, y = 2) do {
   x + y;
 } while(true);
-{% endhighlight %}
+```
 
 into:
 
-{% highlight javascript %}
+```javascript
 (function (x, y) {
   return x + y;
 })(1, 2);
-{% endhighlight %}
+```
 
 Besides the vestigial `while(true)`, this will break badly whenever someone tries to use a `return` inside our pretend-let, just as we saw above. And it gets worse: What is the meaning of `this` inside our so-called blocks?
 

@@ -12,51 +12,51 @@ Arrays are JavaScript's "native" representation of lists. Lists are important be
 
 JavaScript has a literal syntax for creating an array: The `[` and `]` characters. We can create an empty array:
 
-{% highlight javascript %}
+```javascript
 []
   //=> []
-{% endhighlight %}
+```
       
 We can create an array with one or more *elements* by placing them between the brackets and separating the items with commas. Whitespace is optional:
 
-{% highlight javascript %}
+```javascript
 [1]
   //=> [1]
   
 [2, 3, 4]
   //=> [2,3,4]
-{% endhighlight %}
+```
 
 Any expression will work:
 
-{% highlight javascript %}
+```javascript
 [ 2,
   3,
   2 + 2
 ]
   //=> [2,3,4]
-{% endhighlight %}
+```
       
 Including an expression denoting another array:
 
-{% highlight javascript %}
+```javascript
 [[[[[]]]]]
-{% endhighlight %}
+```
     
 This is an array with one element that is an array array with one element this an array with one element that is an array with one element that is an empty array. Although that seems like something nobody would ever construct, many students have worked with almost the exact same thing when they explored various means of constructing arithmetic from Set Theory.
 
 Any expression will do, including names:
 
-{% highlight javascript %}
+```javascript
 const wrap = (something) => [something];
 
 wrap("lunch")
   //=> ["lunch"]
-{% endhighlight %}
+```
 
 Array literals are expressions, and arrays are *reference types*. We can see that each time an array literal is evaluated, we get a new, distinct array, even if it contains the exact same elements:
 
-{% highlight javascript %}
+```javascript
 [] === []
   //=> false
   
@@ -67,19 +67,19 @@ const array_of_one = () => [1];
 
 array_of_one() === array_of_one()
   //=> false
-{% endhighlight %}
+```
       
 ### destructuring arrays
 
 *Destructuring* is a feature going back to Common Lisp, if not before. We saw how to construct an array literal using `[`, expressions, `,` and `]`. Here's an example of an array literal that uses a name:
 
-{% highlight javascript %}
+```javascript
 const wrap = (something) => [something];
-{% endhighlight %}
+```
     
 Let's expand it to use a block and an extra name:
 
-{% highlight javascript %}
+```javascript
 const wrap = (something) => {
   const wrapped = [something];
   
@@ -88,13 +88,13 @@ const wrap = (something) => {
 
 wrap("package")
   //=> ["package"]
-{% endhighlight %}
+```
 
 The line `const wrapped = [something];` is interesting. On the left hand is a name to be bound, and on the right hand is an array literal, a template for constructing an array, very much like a quasi-literal string.
 
 In JavaScript, we can actually *reverse* the statement and place the template on the left and a value on the right:
 
-{% highlight javascript %}
+```javascript
 const unwrap = (wrapped) => {
   const [something] = wrapped;
   
@@ -103,11 +103,11 @@ const unwrap = (wrapped) => {
 
 unwrap(["present"])
   //=> "present"
-{% endhighlight %}
+```
 
 The statement `const [something] = wrapped;` *destructures* the array represented by `wrapped`, binding the value of its single element to the name `something`. We can do the same thing with more than one element:
 
-{% highlight javascript %}
+```javascript
 const surname = (name) => {
   const [first, last] = name;
   
@@ -116,13 +116,13 @@ const surname = (name) => {
 
 surname(["Reginald", "Braithwaite"])
   //=> "Braithwaite"
-{% endhighlight %}
+```
       
 We could do the same thing with `(name) => name[1]`, but destructuring is code that resembles the data it consumes, a valuable coding style.
 
 Destructuring can nest:
 
-{% highlight javascript %}
+```javascript
 const description = (nameAndOccupation) => {
   const [[first, last], occupation] = nameAndOccupation;
   
@@ -131,20 +131,20 @@ const description = (nameAndOccupation) => {
 
 description([["Reginald", "Braithwaite"], "programmer"])
   //=> "Reginald is a programmer"
-{% endhighlight %}
+```
       
 ### gathering
 
 Sometimes we need to extract arrays from arrays. Here is the most common pattern: Extracting the head and gathering everything but the head from an array:
 
-{% highlight javascript %}
+```javascript
 const [car, ...cdr] = [1, 2, 3, 4, 5];
 
 car
   //=> 1
 cdr
   //=> [2, 3, 4, 5]
-{% endhighlight %}
+```
       
 [`car` and `cdr`](https://en.wikipedia.org/wiki/CAR_and_CDR) are archaic terms that go back to an implementation of Lisp running on the IBM 704 computer. Some other languages call them `first` and `butFirst`, or `head` and `tail`. We will use a common convention and call variables we gather `rest`, but refer to the `...` operation as a "gather," follow Kyle Simpson's example.[^getify]
 
@@ -152,52 +152,52 @@ cdr
 
 Alas, the `...` notation does not provide a universal patten-matching capability. For example, we cannot write
 
-{% highlight javascript %}
+```javascript
 const [...butLast, last] = [1, 2, 3, 4, 5];
   //=> ERROR
   
 const [first, ..., last] = [1, 2, 3, 4, 5];
   //=> ERROR
-{% endhighlight %}
+```
 
 Also it's important to note that the `...` can be at the beginning, for example in case of constructors like:
 
-{% highlight javascript %}
+```javascript
 const date = new Date(...[2015, 1, 1]);
-{% endhighlight %}
+```
       
 Now, when we introduced destructuring, we saw that it is kind-of-sort-of the reverse of array literals. So if
 
-{% highlight javascript %}
+```javascript
 const wrapped = [something];
-{% endhighlight %}
+```
     
 Then:
 
-{% highlight javascript %}
+```javascript
 const [unwrapped] = something;
-{% endhighlight %}
+```
     
 What is the reverse of gathering? We know that:
 
-{% highlight javascript %}
+```javascript
 const [car, ...cdr] = [1, 2, 3, 4, 5];
-{% endhighlight %}
+```
     
 What is the reverse? It would be:
 
-{% highlight javascript %}
+```javascript
 const cons = [car, ...cdr];
-{% endhighlight %}
+```
     
 Let's try it:
 
-{% highlight javascript %}
+```javascript
 const oneTwoThree = ["one", "two", "three"];
 
 ["zero", ...oneTwoThree]
   //=> ["zero","one","two","three"]
-{% endhighlight %}
+```
       
 It works! We can use `...` to place the elements of an array inside another array. We say that using `...` to destructure is gathering, and using it in a literal to insert elements is called "spreading."
        
@@ -205,23 +205,23 @@ It works! We can use `...` to place the elements of an array inside another arra
 
 Consider the way we pass arguments to parameters:
 
-{% highlight javascript %}
+```javascript
 foo()
 bar("smaug")
 baz(1, 2, 3)
-{% endhighlight %}
+```
     
 It is very much like an array literal. And consider how we bind values to parameter names:
 
-{% highlight javascript %}
+```javascript
 const foo = () => ...
 const bar = (name) => ...
 const baz = (a, b, c) => ...
-{% endhighlight %}
+```
    
 It *looks* like destructuring. It acts like destructuring. There is only one difference: We have not tried gathering. Let's do that:
 
-{% highlight javascript %}
+```javascript
 const numbers = (...nums) => nums;
 
 numbers(1, 2, 3, 4, 5)
@@ -231,7 +231,7 @@ const headAndTail = (head, ...tail) => [head, tail];
 
 headAndTail(1, 2, 3, 4, 5)
   //=> [1,[2,3,4,5]]
-{% endhighlight %}
+```
       
 Gathering works with parameters! This is very useful indeed, and we'll see more of it in a moment.[^rest]
 
@@ -254,7 +254,7 @@ But we can also define a list by describing a rule for building lists. One of th
 
 Let's convert our rules to array literals. The first rule is simple: `[]` is a list. How about the second rule? We can express that using a spread. Given an element `e` and a list `list`, `[e, ...list]` is a list. We can test this manually by building up a list:
 
-{% highlight javascript %}
+```javascript
 []
 //=> []
 
@@ -266,11 +266,11 @@ Let's convert our rules to array literals. The first rule is simple: `[]` is a l
 
 ["foo", ...["bar", "baz"]]
 //=> ["foo","bar","baz"]
-{% endhighlight %}
+```
   
 Thanks to the parallel between array literals + spreads with destructuring + rests, we can also use the same rules to decompose lists:
 
-{% highlight javascript %}
+```javascript
 const [first, ...rest] = [];
 first
   //=> undefined
@@ -294,11 +294,11 @@ first
   //=> "foo"
 rest
   //=> ["bar","baz"]
-{% endhighlight %}
+```
 
 For the purpose of this exploration, we will presume the following:[^wellactually]
 
-{% highlight javascript %}
+```javascript
 const isEmpty = ([first, ...rest]) => first === undefined;
 
 isEmpty([])
@@ -309,7 +309,7 @@ isEmpty([0])
 
 isEmpty([[]])
   //=> false
-{% endhighlight %}
+```
     
 [^wellactually]: Well, actually, this does not work for arrays that contain `undefined` as a value, but we are not going to see that in our examples. A more robust implementation would be `(array) => array.length === 0`, but we are doing backflips to keep this within a very small and contrived playground.
     
@@ -317,25 +317,25 @@ Armed with our definition of an empty list and with what we've already learned, 
 
 First, we pick what we call a *terminal case*. What is the length of an empty array? `0`. So let's start our function with the observation that if an array is empty, the length is `0`:
 
-{% highlight javascript %}
+```javascript
 const length = ([first, ...rest]) =>
   first === undefined
     ? 0
     : // ???
-{% endhighlight %}
+```
       
 We need something for when the array isn't empty. If an array is not empty, and we break it into two pieces, `first` and `rest`, the length of our array is going to be `length(first) + length(rest)`. Well, the length of `first` is `1`, there's just one element at the front. But we don't know the length of `rest`. If only there was a function we could call... Like `length`!
 
-{% highlight javascript %}
+```javascript
 const length = ([first, ...rest]) =>
   first === undefined
     ? 0
     : 1 + length(rest);
-{% endhighlight %}
+```
     
 Let's try it!
 
-{% highlight javascript %}
+```javascript
 length([])
   //=> 0
   
@@ -344,7 +344,7 @@ length(["foo"])
   
 length(["foo", "bar", "baz"])
   //=> 3
-{% endhighlight %}
+```
       
 Our `length` function is *recursive*, it calls itself. This makes sense because our definition of a list is recursive, and if a list is self-similar, it is natural to create an algorithm that is also self-similar.
 
@@ -373,19 +373,19 @@ A very good recursive algorithm is one that parallels the recursive nature of th
 
 We already know how to divide arrays into smaller pieces. How do we decide whether a smaller problem is solvable? We need a test for the terminal case. Happily, there is something along these lines provided for us:
 
-{% highlight javascript %}
+```javascript
 Array.isArray("foo")
   //=> false
   
 Array.isArray(["foo"])
   //=> true
-{% endhighlight %}
+```
       
 The usual "terminal case" will be that flattening an empty array will produce an empty array. The next terminal case is that if an element isn't an array, we don't flatten it, and can put it together with the rest of our solution directly. Whereas if an element is an array, we'll flatten it and put it together with the rest of our solution.
 
 So our first cut at a `flatten` function will look like this:
 
-{% highlight javascript %}
+```javascript
 const flatten = ([first, ...rest]) => {
   if (first === undefined) {
     return [];
@@ -400,7 +400,7 @@ const flatten = ([first, ...rest]) => {
 
 flatten(["foo", [3, 4, []]])
   //=> ["foo",3,4]
-{% endhighlight %}
+```
       
 Once again, the solution directly displays the important elements: Dividing a problem into subproblems, detecting terminal cases, solving the terminal cases, and composing a solution from the solved portions.
 
@@ -410,7 +410,7 @@ Another common problem is applying a function to every element of an array. Java
 
 If we want to square each number in a list, we could write:
 
-{% highlight javascript %}
+```javascript
 const squareAll = ([first, ...rest]) =>
   first === undefined
   ? []
@@ -418,11 +418,11 @@ const squareAll = ([first, ...rest]) =>
                                             
 squareAll([1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
-{% endhighlight %}
+```
 
 And if we wanted to "truthify" each element in a list, we could write:
 
-{% highlight javascript %}
+```javascript
 const truthyAll = ([first, ...rest]) =>
   first === undefined
     ? []
@@ -430,19 +430,19 @@ const truthyAll = ([first, ...rest]) =>
 
 truthyAll([null, true, 25, false, "foo"])
   //=> [false,true,true,false,true]
-{% endhighlight %}
+```
                                                 
 This specific case of linear recursion is called "mapping," and it is not necessary to constantly write out the same pattern again and again. Functions can take functions as arguments, so let's "extract" the thing to do to each element and separate it from the business of taking an array apart, doing the thing, and putting the array back together.
 
 Given the signature:
 
-{% highlight javascript %}
+```javascript
 const mapWith = (fn, array) => // ...
-{% endhighlight %}
+```
     
 We can write it out using a ternary operator. Even in this small function, we can identify the terminal condition, the piece being broken off, and recomposing the solution.
 
-{% highlight javascript %}
+```javascript
 const mapWith = (fn, [first, ...rest]) => 
   first === undefined
     ? []
@@ -453,13 +453,13 @@ mapWith((x) => x * x, [1, 2, 3, 4, 5])
   
 mapWith((x) => !!x, [null, true, 25, false, "foo"])
   //=> [false,true,true,false,true]
-{% endhighlight %}
+```
 
 ### folding
 
 With the exception of the `length` example at the beginning, our examples so far all involve rebuilding a solution using spreads.  But they needn't. A function to compute the sum of the squares of a list of numbers might look like this:
 
-{% highlight javascript %}
+```javascript
 const sumSquares = ([first, ...rest]) =>
   first === undefined
     ? 0
@@ -467,7 +467,7 @@ const sumSquares = ([first, ...rest]) =>
                                          
 sumSquares([1, 2, 3, 4, 5])
   //=> 55
-{% endhighlight %}
+```
 
 There are two differences between `sumSquares` and our maps above:
 
@@ -476,51 +476,51 @@ There are two differences between `sumSquares` and our maps above:
 
 Let's rewrite `mapWith` so that we can use it to sum squares.
 
-{% highlight javascript %}
+```javascript
 const foldWith = (fn, terminalValue, [first, ...rest]) =>
   first === undefined
     ? terminalValue
     : fn(first, foldWith(fn, terminalValue, rest));
-{% endhighlight %}
+```
                                                            
 And now we supply a function that does slightly more than our mapping functions:
 
-{% highlight javascript %}
+```javascript
 foldWith((number, rest) =>
   number * number + rest, 0, [1, 2, 3, 4, 5])
   //=> 55
-{% endhighlight %}
+```
 
 Our `foldWith` function is a generalization of our `mapWith` function. We can represent a map as a fold, we just need to supply the array rebuilding code:
 
-{% highlight javascript %}
+```javascript
 const squareAll = (array) =>
   foldWith((first, rest) => [first * first, ...rest], [], array);
 
 squareAll([1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
-{% endhighlight %}
+```
 
 And if we like, we can write `mapWith` using `foldWith`:
 
-{% highlight javascript %}
+```javascript
 const mapWith = (fn, array) =>
   foldWith((first, rest) => [fn(first), ...rest], [], array);
 const squareAll = (array) => mapWith((x) => x * x, array);
 
 squareAll([1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
-{% endhighlight %}
+```
           
 And to return to our first example, our version of `length` can be written as a fold:
 
-{% highlight javascript %}
+```javascript
 const length = (array) =>
   foldWith((first, rest) => 1 + rest, 0, array);
 
 length([1, 2, 3, 4, 5])
   //=> 5
-{% endhighlight %}
+```
     
 ### what does it all mean?
 

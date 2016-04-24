@@ -38,7 +38,7 @@ There was no way to decorate such operations with cross-cutting concerns like lo
 
 Meanwhile, JavaScript programmers were also writing `currentUser.id = 42`, and eventually they too discovered that this was a terrible idea. One of the catalysts for change was the arrival of frameworks for client-side JavaScript applications. Let's say we have a ridiculously simple person class:
 
-{% highlight javascript %}
+```javascript
 class Person {
   constructor (first, last) {
     this.first = first;
@@ -49,11 +49,11 @@ class Person {
     return `${this.first} ${this.last}`;
   }
 };
-{% endhighlight %}
+```
 
 And an equally ridiculous view:
 
-{% highlight javascript %}
+```javascript
 class PersonView {
   constructor (person) {
     this.model = person;
@@ -67,11 +67,11 @@ class PersonView {
       .text(person.fullName())
   }
 }
-{% endhighlight %}
+```
 
 Every time we update the person class, we have to remember to redraw the view:
 
-{% highlight javascript %}
+```javascript
 const currentUser = new Person('Reginald', 'Braithwaite');
 const currentUserView = new PersonView(currentUser);
 
@@ -79,7 +79,7 @@ currentUserView.redraw();
 
 currentUser.first = 'Ragnvald';
 currentUserView.redraw();
-{% endhighlight %}
+```
 
 Why does this matter?
 
@@ -93,7 +93,7 @@ And that's the whole thing about programming: Organizing the functionality. *Dir
 
 It didn't take long for JavaScript library authors to figure out how to make this go away by using a `get` and `set` method. Stripped down to the bare essentials for illustrative purposes, we could write this:
 
-{% highlight javascript %}
+```javascript
 class Model {
   constructor () {
     this.listeners = new Set();
@@ -156,24 +156,24 @@ class PersonView extends View {
       .text(this.model.fullName())
   }
 }
-{% endhighlight %}
+```
 
 Our new `Model` superclass manually manages allowing objects to listen to the `get` and `set` methods on a model. If they are called, the "listeners" are notified via the `.notifyAll` method. We use that to have the `PersonView` listen to its `Person` and call its own `.redraw` method when a property is set via the `.set` method.
 
 So we can write:
 
-{% highlight javascript %}
+```javascript
 const currentUser = new Person('Reginald', 'Braithwaite');
 const currentUserView = new PersonView(currentUser);
 
 currentUser.set('first', 'Ragnvald');
-{% endhighlight %}
+```
 
 And we don't need to call `currentUserView.redraw()`, because the notification built into `.set` does it for us.
 
 We can do other things with `.get` and `.set`, of course. Now that they are methods, we can decorate them with logging or validation if we choose. Methods make our code flexible and open to extension. For example, we can use an [ES.later decorator](http://raganwald.com/2015/08/05/method-advice.html) to add logging advice to `.set`:
 
-{% highlight javascript %}
+```javascript
 const after = (behaviour, ...methodNames) =>
   (clazz) => {
     for (let methodName of methodNames) {
@@ -208,7 +208,7 @@ class Person extends Model {
     return `${this.get('first')} ${this.get('last')}`;
   }
 };
-{% endhighlight %}
+```
 
 Whereas we can't do anything like that with direct property access. Mediating property access with methods is more flexible than directly accessing properties, and this allows us to organize our program and distribute responsibility properly.
 
@@ -220,7 +220,7 @@ Whereas we can't do anything like that with direct property access. Mediating pr
 
 The problem with getters and setters was well-understood, and the stewards behind JavaScript's evolution responded by introducing a special way to turn direct property access into a kind of method. Here's how we'd write our `Person` class using "getters" and "setters:"
 
-{% highlight javascript %}
+```javascript
 class Model {
   constructor () {
     this.listeners = new Set();
@@ -275,18 +275,18 @@ class Person extends Model {
     return `${this.first} ${this.last}`;
   }
 };
-{% endhighlight %}
+```
 
 When we preface a method with the keyword `get`, we are defining a getter, a method that will be called when code attempts to read from the property. And when we preface a method with `set`, we are defining a setter, a method that will be called when code attempts to write to the property.
 
 Getters and setters needn't actually read or write any properties, they can do anything. But in this essay, we'll talk about using them to mediate property access. With getters and setters, we can write:
 
-{% highlight javascript %}
+```javascript
 const currentUser = new Person('Reginald', 'Braithwaite');
 const currentUserView = new PersonView(currentUser);
 
 currentUser.first = 'Ragnvald';
-{% endhighlight %}
+```
 
 And everything still works just as if we'd written `currentUser.set('first', 'Ragnvald')` with the `.set`-style code.
 
@@ -304,7 +304,7 @@ For this reason, the naïve `after` decorator given above won't work for getters
 
 [^mixin]: Neither will the `mixin` recipe we've evolved in previous posts like [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html). It can be enhanced to add a special case for getters, setters, and other concerns like working with POJOs. For example, Andrea Giammarchi's [Universal Mixin](https://github.com/WebReflection/universal-mixin).
 
-{% highlight javascript %}
+```javascript
 function getPropertyDescriptor (obj, property) {
   if (obj == null) return null;
 
@@ -359,11 +359,11 @@ const after = (behaviour, ...methodNames) =>
     }
     return clazz;
   }
-{% endhighlight %}
+```
 
 *Now* we can write:
 
-{% highlight javascript %}
+```javascript
 const notify = (name) =>
   function (...args) {
     this.notifyAll(name, ...args);
@@ -398,13 +398,13 @@ class Person extends Model {
     return `${this.first} ${this.last}`;
   }
 };
-{% endhighlight %}
+```
 
 We have now decoupled the code for notifying listeners from the code for getting and setting values. Which provokes a simple question: If the code that tracks listeners is already decoupled in `Model`, why shouldn't the code for triggering notifications be in the same entity?
 
 There are a few ways to do that. We'll use a [universal mixin](https://github.com/WebReflection/universal-mixin) instead of stuffing that logic into a superclass:
 
-{% highlight javascript %}
+```javascript
 const Notifier = mixin({
   init () {
     this.listeners = new Set();
@@ -430,11 +430,11 @@ const Notifier = mixin({
     }
   }
 });
-{% endhighlight %}
+```
 
 This permits us to write:
 
-{% highlight javascript %}
+```javascript
 @Notifier
 @after(Notifier.notify('set'), 'set first', 'set last')
 @after(Notifier.notify('get'), 'get first', 'get last')
@@ -465,7 +465,7 @@ class Person {
     return `${this.first} ${this.last}`;
   }
 };
-{% endhighlight %}
+```
 
 What have we done? **We have incorporated getters and setters into our code, while maintaining the ability to decorate them with added functionality as if they were ordinary methods**.
 
@@ -493,7 +493,7 @@ Getters and setters allow us to maintain the legacy style of writing code that a
 
 Rubyists scoff at:
 
-{% highlight javascript %}
+```javascript
 get first () {
   return this[_first];
 }
@@ -509,11 +509,11 @@ get last () {
 set last (value) {
   return this[_last] = value;
 }
-{% endhighlight %}
+```
 
 Rubyists would use the built-in class method `attr_accessor` to write them for us. So just for kicks, we'll write a decorator that writes getters and setters. The raw values will be stored in an `attributes` map:
 
-{% highlight javascript %}
+```javascript
 function attrAccessor (...propertyNames) {
   return function (clazzOrObject) {
     const target = clazzOrObject.prototype || clazzOrObject;
@@ -537,11 +537,11 @@ function attrAccessor (...propertyNames) {
     return clazzOrObject;
   }
 }
-{% endhighlight %}
+```
 
 Now we can write:
 
-{% highlight javascript %}
+```javascript
 @Notifier
 @attrAccessor('first', 'last')
 @after(Notifier.notify('set'), 'set first', 'set last')
@@ -557,7 +557,7 @@ class Person {
     return `${this.first} ${this.last}`;
   }
 };
-{% endhighlight %}
+```
 
 `attrAccessor` takes a list of property names and returns a decorator for a class. It writes a plain getter or setter function for each property, and all the properties defined are stored in the `.attributes` hash. This is very convenient for serialization or other persistance mechanisms.
 

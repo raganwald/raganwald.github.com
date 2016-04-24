@@ -5,33 +5,33 @@ title: "Repost: Captain Obvious on JavaScript"
 
 In JavaScript, anywhere you find yourself writing:
 
-{% highlight javascript %}
+```javascript
 function (x) { return foo(x); }
-{% endhighlight %}
+```
 
 You can [usually][awb] substitute just `foo`. For example, this code:
 
 [awb]: http://www.wirfs-brock.com/allen/posts/166 "A JavaScript Optional Argument Hazard"
 
-{% highlight javascript %}
+```javascript
 var floats = someArray.map(function (value) {
   return parseFloat(value);
 });
-{% endhighlight %}
+```
 
 Could be written:
 
-{% highlight javascript %}
+```javascript
 var floats = someArray.map(parseFloat);
-{% endhighlight %}
+```
 
 This understanding is *vital*. Without it, you can be led astray into thinking that this code:
 
-{% highlight javascript %}
+```javascript
 array.forEach(function (element) {
   // do something
 });
-{% endhighlight %}
+```
 
 ...Is just a funny way of writing a for loop. It's not!
 
@@ -41,15 +41,15 @@ Once you have internalized the fact that *any* function will do, you can refacto
 
 [j]: http://jquery.org
 
-{% highlight javascript %}
+```javascript
 $('input').toArray().map(function (domElement) {
   return parseFloat(domElement.value);
 })
-{% endhighlight %}
+```
 
 Let's turn that into:
 
-{% highlight javascript %}
+```javascript
 $('input').toArray()
   .map(function (domElement) {
     return domElement.value;
@@ -57,32 +57,32 @@ $('input').toArray()
   .map(function (value) {
     return parseFloat(value);
   })
-{% endhighlight %}
+```
 
 And thus:
 
-{% highlight javascript %}
+```javascript
 $('input').toArray()
   .map(function (domElement) {
     return domElement.value;
   })
   .map(parseFloat)
-{% endhighlight %}
+```
 Once you get started turning function literals into other expressions, you can't stop. The next step on the road to addiction is using functions that return functions:
 
-{% highlight javascript %}
+```javascript
 function get (attr) {
   return function (object) { return object[attr]; }
 }
-{% endhighlight %}
+```
 
 Which permits us to write:
 
-{% highlight javascript %}
+```javascript
 $('input').toArray()
   .map(get('value'))
   .map(parseFloat)
-{% endhighlight %}
+```
 
 Which really means, "Get the `.value` from every `input` DOM element, and map the `parseFloat` function over the result."
 
@@ -98,7 +98,7 @@ As usual, finding the right question to ask is half the battle. Familiarity with
 
 [fj]: http://osteele.com/sources/javascript/functional/
 
-{% highlight javascript %}
+```javascript
 var naiveSequence = function (a, b) {
   return function (c) {
     return b(a(c));
@@ -110,20 +110,20 @@ var naiveCompose = function (a, b) {
     return a(b(c));
   };
 }
-{% endhighlight %}
+```
 
 (`Functional.sequence` and `Functional.compose` are far more thorough than these naive examples, of course.)
 
 Given this, you could expect that:
 
-{% highlight javascript %}
+```javascript
 Functional.sequence(get('value'), parseFloat)({ value: '1.5' })
   // => 1.5
-{% endhighlight %}
+```
 
 Thus, we can rewrite our map as:
 
-{% highlight javascript %}
+```javascript
 $('input').toArray()
   .map(
     Functional.sequence(
@@ -131,7 +131,7 @@ $('input').toArray()
       parseFloat
     )
   )
-{% endhighlight %}
+```
 
 Now the code iterates over the array just once, mapping it to the composition of the two functions while still preserving the new character of the code where the elements of an expression have been factored into separate functions. Is this better than the original? It is if you want to refactor the code to do interesting things like memoize one of the functions. But that is no longer obvious.
 

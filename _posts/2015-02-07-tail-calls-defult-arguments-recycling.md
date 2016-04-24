@@ -8,7 +8,7 @@ The `mapWith` and `foldWith` functions we wrote in [Destructuring and Recursion 
 
 Let's look at how. Here's our extremely simple `mapWith` function again:
 
-{% highlight javascript %}
+```javascript
 const mapWith = (fn, [first, ...rest]) =>
   first === undefined
     ? []
@@ -16,13 +16,13 @@ const mapWith = (fn, [first, ...rest]) =>
                                               
 mapWith((x) => x * x, [1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
-{% endhighlight %}
+```
 
 Let's step through its execution. First, `mapWith((x) => x * x, [1, 2, 3, 4, 5])` is invoked. `first` is not `undefined`, so it evaluates [fn(first), ...mapWith(fn, rest)]. To do that, it has to evaluate `fn(first)` and `mapWith(fn, rest)`, then evaluate `[fn(first), ...mapWith(fn, rest)]`.
 
 This is roughly equivalent to writing:
 
-{% highlight javascript %}
+```javascript
 const mapWith = function (fn, [first, ...rest]) {
   if (first === undefined) {
     return [];
@@ -35,7 +35,7 @@ const mapWith = function (fn, [first, ...rest]) {
     return _temp3;
   }
 }
-{% endhighlight %}
+```
 
 Note that while evaluating `mapWith(fn, rest)`, JavaScript must retain the value `first` or `fn(first)`, plus some housekeeping information so it remembers what to do with `mapWith(fn, rest)` when it has a result. JavaScript cannot throw `first` away. So we know that JavaScript is going to hang on to `1`.
 
@@ -47,7 +47,7 @@ That information is saved on a *call stack*, and it is quite expensive. Furtherm
 
 In practice, using a method like this with more than about 50 items in an array may cause some implementations to run very slow, run out of memory and freeze, or cause an error.
 
-{% highlight javascript %}                                                  
+```javascript                                                  
 mapWith((x) => x * x, [
    0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
   10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -71,7 +71,7 @@ mapWith((x) => x * x, [
   90, 91, 92, 93, 94, 95, 96, 97, 98, 99
 ])
   //=> ???
-{% endhighlight %}
+```
 
 Is there a better way? Several, in fact, fast algorithms is a very highly studied field of computer science. The one we're going to look at here is called *tail-call optimization*, or "TCO."
 
@@ -79,7 +79,7 @@ Is there a better way? Several, in fact, fast algorithms is a very highly studie
 
 A "tail-call" occurs when a function's last act is to invoke another function, and then return whatever the other function returns. For example, consider the `maybe` function decorator:
 
-{% highlight javascript %}
+```javascript
 const maybe = (fn) =>
   function (...args) {
     if (args.length === 0) {
@@ -92,7 +92,7 @@ const maybe = (fn) =>
       return fn.apply(this, args);
     }
   }
-{% endhighlight %}
+```
 
 There are three places it returns. The first two don't return anything, they don't matter. But the third is `fn.apply(this, args)`. This is a tail-call, because it invokes another function and returns its result. This is interesting, because after sorting out what to supply as arguments (`this`, `args`), JavaScript can throw away everything in its current stack frame. It isn't going to do any more work, so it can throw its existing stack frame away.
 
@@ -100,12 +100,12 @@ And in fact, it does exactly that: It throws the stack frame away, and does not 
 
 That is excellent, but one wrapping is not a big deal. When would we really care? Consider this implementation of `length`:
 
-{% highlight javascript %}
+```javascript
 const length = ([first, ...rest]) =>
   first === undefined
     ? 0
     : 1 + length(rest);
-{% endhighlight %}
+```
         
 The `length` function calls itself, but it is not a tail-call, because it returns `1 + length(rest)`, not `length(rest)`.
 
@@ -117,7 +117,7 @@ The obvious solution?
 
 The obvious solution is push the `1 +` work into the call to `length`. Here's our first cut:
 
-{% highlight javascript %}
+```javascript
 const lengthDelaysWork = ([first, ...rest], numberToBeAdded) =>
   first === undefined
     ? 0 + numberToBeAdded
@@ -125,11 +125,11 @@ const lengthDelaysWork = ([first, ...rest], numberToBeAdded) =>
 
 lengthDelaysWork(["foo", "bar", "baz"], 0)
   //=> 3
-{% endhighlight %}
+```
       
 This `lengthDelaysWork` function calls itself in tail position. The `1 +` work is done before calling itself, and by the time it reaches the terminal position, it has the answer. Now that we've seen how it works, we can clean up the `0 + numberToBeAdded` business. But while we're doing that, it's annoying to remember to call it with a zero. Let's fix that:
 
-{% highlight javascript %}
+```javascript
 const lengthDelaysWork = ([first, ...rest], numberToBeAdded) =>
   first === undefined
     ? numberToBeAdded
@@ -137,11 +137,11 @@ const lengthDelaysWork = ([first, ...rest], numberToBeAdded) =>
   
 const length = (n) =>
   lengthDelaysWork(n, 0);
-{% endhighlight %}
+```
       
 Or we could use partial application:
 
-{% highlight javascript %}
+```javascript
 const callLast = (fn, ...args) =>
     (...remainingArgs) =>
       fn(...remainingArgs, ...args);
@@ -150,11 +150,11 @@ const length = callLast(lengthDelaysWork, 0);
 
 length(["foo", "bar", "baz"])
   //=> 3
-{% endhighlight %}
+```
       
 This version of `length` calls uses `lengthDelaysWork`, and JavaScript optimizes that not to take up memory proportional to the length of the string. We can use this technique with `mapWith`:
 
-{% highlight javascript %}
+```javascript
 const mapWithDelaysWork = (fn, [first, ...rest], prepend) =>
   first === undefined
     ? prepend
@@ -164,11 +164,11 @@ const mapWith = callLast(mapWithDelaysWork, []);
                                               
 mapWith((x) => x * x, [1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
-{% endhighlight %}
+```
       
 We can use it with ridiculously large arrays:
 
-{% highlight javascript %}
+```javascript
 mapWith((x) => x * x, [
      0,    1,    2,    3,    4,    5,    6,    7,    8,    9,  
     10,   11,   12,   13,   14,   15,   16,   17,   18,   19,  
@@ -187,7 +187,7 @@ mapWith((x) => x * x, [
   2990, 2991, 2992, 2993, 2994, 2995, 2996, 2997, 2998, 2999 ])
   
   //=> [0,1,4,9,16,25,36,49,64,81,100,121,144,169,196, ...
-{% endhighlight %}
+```
     
 Brilliant! We can map over large arrays without incurring all the memory and performance overhead of non-tail-calls. And this basic transformation from a recursive function that does not make a tail call, into a recursive function that calls itself in tail position, is a bread-and-butter pattern for programmers using a language that incorporates tail-call optimization.
 
@@ -197,13 +197,13 @@ Introductions to recursion often mention calculating factorials:
 
 > In mathematics, the factorial of a non-negative integer `n`, denoted by `n!`, is the product of all positive integers less than or equal to `n`. For example:
 
-{% highlight javascript %}
+```javascript
 5! = 5  x  4  x  3  x  2  x  1 = 120.
-{% endhighlight %}
+```
 
 The naïve function for calculating the factorial of a positive integer follows directly from the definition:
 
-{% highlight javascript %}
+```javascript
 const factorial = (n) =>
   n == 1
   ? n
@@ -214,7 +214,7 @@ factorial(1)
   
 factorial(5)
   //=> 120
-{% endhighlight %}
+```
 
 While this is mathematically elegant, it is computational [filigree]. 
 
@@ -222,7 +222,7 @@ While this is mathematically elegant, it is computational [filigree].
 
 Once again, it is not tail-recursive, it needs to save the stack with each invocation so that it can take the result returned and compute `n * factorial(n - 1)`. We can do the same conversion, pass in the work to be done:
 
-{% highlight javascript %}
+```javascript
 const factorialWithDelayedWork = (n, work) =>
   n === 1
   ? work
@@ -230,11 +230,11 @@ const factorialWithDelayedWork = (n, work) =>
   
 const factorial = (n) =>
   factorialWithDelayedWork(n, 1);
-{% endhighlight %}
+```
       
 Or we could use partial application:
 
-{% highlight javascript %}
+```javascript
 const callLast = (fn, ...args) =>
     (...remainingArgs) =>
       fn(...remainingArgs, ...args);
@@ -246,7 +246,7 @@ factorial(1)
   
 factorial(5)
   //=> 120
-{% endhighlight %}
+```
 
 As before, we wrote a `factorialWithDelayedWork` function, then used partial application (`callLast`) to make a `factorial` function that took just the one argument and supplied the initial work value.
 
@@ -254,7 +254,7 @@ As before, we wrote a `factorialWithDelayedWork` function, then used partial app
 
 Our problem is that we can directly write:
 
-{% highlight javascript %}
+```javascript
 const factorial = (n, work) =>
   n === 1
   ? work
@@ -265,7 +265,7 @@ factorial(1, 1)
   
 factorial(5, 1)
   //=> 120
-{% endhighlight %}
+```
 
 But it is hideous to have to always add a `1` parameter, we'd be demanding that everyone using the `factorial` function know that we are using a tail-recursive implementation.
 
@@ -273,7 +273,7 @@ What we really want is this: We want to write something like `factorial(6)`, and
 
 JavaScript provides this exact syntax, it's called a *default argument*, and it looks like this:
 
-{% highlight javascript %}
+```javascript
 const factorial = (n, work = 1) =>
   n === 1
   ? work
@@ -284,11 +284,11 @@ factorial(1)
   
 factorial(6)
   //=> 720
-{% endhighlight %}
+```
 
 By writing our parameter list as `(n, work = 1) =>`, we're stating that if a second parameter is not provided, `work` is to be bound to `1`. We can do similar thngs with our other tail-recursive functions:
 
-{% highlight javascript %}
+```javascript
 const length = ([first, ...rest], numberToBeAdded = 0) =>
   first === undefined
     ? numberToBeAdded
@@ -304,7 +304,7 @@ const mapWith = (fn, [first, ...rest], prepend = []) =>
                                               
 mapWith((x) => x * x, [1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
-{% endhighlight %}
+```
 
 Now we don't need to use two functions. A default argument is concise and readable.
 
@@ -314,7 +314,7 @@ Now we don't need to use two functions. A default argument is concise and readab
     
 We have now seen how to use [Tail Calls](#tail) to execute `mapWith` in constant space:
 
-{% highlight javascript %}
+```javascript
 const mapWith = (fn, [first, ...rest], prepend = []) =>
   first === undefined
     ? prepend
@@ -322,7 +322,7 @@ const mapWith = (fn, [first, ...rest], prepend = []) =>
                                                   
 mapWith((x) => x * x, [1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
-{% endhighlight %}
+```
 
 But when we try it on very large arrays, we discover that it is *still* very slow. Much slower than the built-in `.map` method for arrays. The right tool to discover why it's still slow is a memory profiler, but a simple inspection of the program will reveal the following:
 
@@ -362,24 +362,24 @@ Lists were represented as linked lists of cons cells, with each cell's head poin
 
 Here's the scheme in JavaScript, using two-element arrays to represent cons cells:
 
-{% highlight javascript %}
+```javascript
 const cons = (a, d) => [a, d],
       car  = ([a, d]) => a,
       cdr  = ([a, d]) => d;
-{% endhighlight %}
+```
       
 We can make a list by calling `cons` repeatedly, and terminating it with `null`:
 
-{% highlight javascript %}
+```javascript
 const oneToFive = cons(1, cons(2, cons(3, cons(4, cons(5, null)))));
 
 oneToFive
   //=> [1,[2,[3,[4,[5,null]]]]]
-{% endhighlight %}
+```
 
 Notice that though JavaScript displays our list as if it is composed of arrays nested within each other like Russian Dolls, in reality the arrays refer to each other with references, so `[1,[2,[3,[4,[5,null]]]]]` is actually more like:
 
-{% highlight javascript %}
+```javascript
 const node5 = [5,null],
       node4 = [4, node5],
       node3 = [3, node4],
@@ -387,23 +387,23 @@ const node5 = [5,null],
       node1 = [1, node2];
     
 const oneToFive = node1;
-{% endhighlight %}
+```
 
 This is a [Linked List](https://en.wikipedia.org/wiki/Linked_list), it's just that those early Lispers used the names `car` and `cdr` after the hardware instructions, whereas today we use words like `data` and `reference`. But it works the same way: If we want the head of a list, we call `car` on it:
 
-{% highlight javascript %}
+```javascript
 car(oneToFive)
   //=> 1
-{% endhighlight %}
+```
       
 `car` is very fast, it simply extracts the first element of the cons cell.
 
 But what about the rest of the list? `cdr` does the trick:
 
-{% highlight javascript %}
+```javascript
 cdr(oneToFive)
   //=> [2,[3,[4,[5,null]]]]
-{% endhighlight %}
+```
       
 Again, it's just extracting a reference from a cons cell, it's very fast. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed. In JavaScript, it's still much, much, much faster to get all the elements except the head from a linked list than from an array. Getting one reference to a structure that already exists is faster than copying a bunch of elements.
 

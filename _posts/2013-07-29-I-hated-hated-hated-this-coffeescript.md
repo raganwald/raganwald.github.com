@@ -12,7 +12,7 @@ I discussed the failure modes of each language. Then, in the conclusion, I offer
 
 A direct translation of JavaScript to CoffeeScript will be ugly, so much so that people will hate, hate, hate it. And even worse, it is much more likely to contain errors than idiomatic CoffeeScript. Take this JavaScript from the previous post:
 
-{% highlight javascript %}
+```javascript
 function table (numberOfRows, numberOfColumns) {
   var i,
       str = '';
@@ -30,11 +30,11 @@ function table (numberOfRows, numberOfColumns) {
     return '<tr>' + str + '</tr>';
   }
 }
-{% endhighlight %}
+```
 
 The literal translation to CoffeeScript is horrible and definitely not idiomatic:
 
-{% highlight coffeescript %}
+```coffeescript
 table = (numberOfRows, numberOfColumns) ->
   row = (numberOfCells) ->
     str = ""
@@ -52,11 +52,11 @@ table = (numberOfRows, numberOfColumns) ->
   
 table(3,3)
   #=> "<table><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>"
-{% endhighlight %}
+```
 
 One way to write this same thing in idiomatic CoffeeScript is to use a *comprehension*. Comprehensions are familiar to Python programmers (as is CoffeeScript's significant whitespace). Here's a comprehension-based implementation with the debug line that was a failure mode in the previous code by "capturing" a local variable:
 
-{% highlight coffeescript %}
+```coffeescript
 console.log('here') for i in [1..5]
 
 table = (numberOfRows, numberOfColumns) ->
@@ -66,7 +66,7 @@ table = (numberOfRows, numberOfColumns) ->
 
 table(3,3)
   #=> "<table><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>"
-{% endhighlight %}
+```
 
 It works because CoffeeScript creates a safe for loop behind the scenes for us, and using string interpolation we avoid having to use extra variables for catenation. This code is possible in CoffeeScript because everything, including comprehensions, is an expression on CoffeeScript. JavaScript has lots of statements, such as its for loops, that do not produce values. So in JavaScript, we have to manually collect the values with extra variables.
 

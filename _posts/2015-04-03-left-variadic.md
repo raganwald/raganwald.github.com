@@ -10,7 +10,7 @@ A **variadic function** is designed to accept a variable number of arguments.[^e
 
 [^eng]: English is about as inconsistent as JavaScript: Functions with a fixed number of arguments can be unary, binary, ternary, and so forth. But can they be "variary?" No! They have to be "variadic."
 
-{% highlight javascript %}
+```javascript
 const abccc = (a, b, ...c) => {
   console.log(a);
   console.log(b);
@@ -21,11 +21,11 @@ abccc(1, 2, 3, 4, 5)
   1
   2
   [3,4,5]
-{% endhighlight %}
+```
 
 This can be useful when writing certain kinds of destructuring algorithms. For example, we might want to have a function that builds some kind of team record. It accepts a coach, a captain, and an arbitrary number of players. Easy in ECMAScript 2015:
 
-{% highlight javascript %}
+```javascript
 function team(coach, captain, ...players) {
   console.log(`${captain} (captain)`);
   for (let player of players) {
@@ -41,11 +41,11 @@ team('Luis Enrique', 'Xavi Hernández', 'Marc-André ter Stegen', 'Martín Monto
     Martín Montoya
     Gerard Piqué
     squad coached by Luis Enrique
-{% endhighlight %}
+```
 
 But we can't go the other way around:
 
-{% highlight javascript %}
+```javascript
 function team2(...players, captain, coach) {
   console.log(`${captain} (captain)`);
   for (let player of players) {
@@ -54,7 +54,7 @@ function team2(...players, captain, coach) {
   console.log(`squad coached by ${coach}`);
 }
 //=> Unexpected token
-{% endhighlight %}
+```
 
 ECMAScript 2015 only permits gathering parameters from the *end* of the parameter list. Not the beginning. What to do?
 
@@ -64,7 +64,7 @@ In "Ye Olde Days,"[^ye] JavaScript could not gather parameters, and we had to ei
 
 [^ye]: Another history lesson. "Ye" in "Ye Olde," was not actually spelled with a "Y" in days of old, it was spelled with a [thorn](https://en.wikipedia.org/wiki/Thorn_(letter)), and is pronounced "the." Another word, "Ye" in "Ye of little programming faith," is pronounced "ye," but it's a different word altogether.
 
-{% highlight javascript %}
+```javascript
 var __slice = Array.prototype.slice;
 
 function rightVariadic (fn) {
@@ -87,23 +87,23 @@ var firstAndButFirst = rightVariadic(function test (first, butFirst) {
 
 firstAndButFirst('why', 'hello', 'there', 'little', 'droid')
   //=> ["why",["hello","there","little","droid"]]
-{% endhighlight %}
+```
 
 We don't need `rightVariadic` any more, because instead of:
 
-{% highlight javascript %}
+```javascript
 var firstAndButFirst = rightVariadic(
   function test (first, butFirst) {
     return [first, butFirst]
   });
-{% endhighlight %}
+```
 
 We now simply write:
 
-{% highlight javascript %}
+```javascript
 const firstAndButFirst = (first, ...butFirst) =>
   [first, butFirst];
-{% endhighlight %}
+```
 
 This is a *right-variadic function*, meaning that it has one or more fixed arguments, and the rest are gathered into the rightmost argument.
 
@@ -111,16 +111,16 @@ This is a *right-variadic function*, meaning that it has one or more fixed argum
 
 It's nice to have progress. But as noted above, we can't write:
 
-{% highlight javascript %}
+```javascript
 const butLastAndLast = (...butLast, last) =>
   [butLast, last];
-{% endhighlight %}
+```
 
 That's a *left-variadic function*. All left-variadic functions have one or more fixed arguments, and the rest are gathered into the leftmost argument. JavaScript doesn't do this. But if we wanted to write left-variadic functions, could we make ourselves a `leftVariadic` decorator to turn a function with one or more arguments into a left-variadic function?
 
 We sure can, by using the techniques from `rightVariadic`. Mind you, we can take advantage of modern JavaScript to simplify the code:
 
-{% highlight javascript %}
+```javascript
 const leftVariadic = (fn) => {
   if (fn.length < 1) {
     return fn;
@@ -142,7 +142,7 @@ const butLastAndLast = leftVariadic((butLast, last) =>
 
 butLastAndLast('why', 'hello', 'there', 'little', 'droid')
   //=> [["why","hello","there","little"],"droid"]
-{% endhighlight %}
+```
 
 Our `leftVariadic` function is a decorator that turns any function into a function that gathers parameters *from the left*, instead of from the right.
 
@@ -150,25 +150,25 @@ Our `leftVariadic` function is a decorator that turns any function into a functi
 
 Gathering arguments for functions is one of the ways JavaScript can *destructure* arrays. Another way is when assigning variables, like this:
 
-{% highlight javascript %}
+```javascript
 const [first, ...butFirst] = ['why', 'hello', 'there', 'little', 'droid'];
 
 first
   //=> 'why'
 butFirst
   //=> ["hello","there","little","droid"]
-{% endhighlight %}
+```
 
 As with parameters, we can't gather values from the left when destructuring an array:
 
-{% highlight javascript %}
+```javascript
 const [...butLast, last] = ['why', 'hello', 'there', 'little', 'droid'];
   //=> Unexpected token
-{% endhighlight %}
+```
 
 We could use `leftVariadic` the hard way:
 
-{% highlight javascript %}
+```javascript
 const [butLast, last] = leftVariadic((butLast, last) =>
   [butLast, last])(...['why', 'hello', 'there', 'little', 'droid']);
 
@@ -177,11 +177,11 @@ butLast
 
 last
   //=> 'droid'
-{% endhighlight %}
+```
 
 But we can write our own left-gathering function utility using the same principles without all the tedium:
 
-{% highlight javascript %}
+```javascript
 const leftGather = (outputArrayLength) => {
   return function (inputArray) {
     const gathered = inputArray.slice(0, inputArray.length - outputArrayLength + 1),
@@ -198,7 +198,7 @@ butLast
 
 last
   //=> 'droid'
-{% endhighlight %}
+```
 
 With `leftGather`, we have to supply the length of the array we wish to use as the result, and it gathers excess arguments into it from the left, just like `leftVariadic` gathers excess parameters for a function.
 

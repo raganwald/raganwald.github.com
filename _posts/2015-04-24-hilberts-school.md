@@ -22,7 +22,7 @@ Well, an infinite number of students show up on the first day. "Line up please!"
 
 Bertie quickly whips out a JavaScript IDE he has devised, and he writes himself a generator. Instead of iterating over a data structure in memory, it generates seat numbers on demand:
 
-{% highlight javascript %}
+```javascript
 function* Numbers (from = 0) {
   let number = from;
   while (true)
@@ -41,7 +41,7 @@ for (let seat of seats) {
   2
   3
   ...
-{% endhighlight %}
+```
 
 He simply calls out the numbers as they are printed, and the students file into the auditorium in an orderly fashion, filling it completely. Well, the first day is very long indeed. But Bertie has an infinite supply of bitcoins and things go well.
 
@@ -55,7 +55,7 @@ In fact, a few people liked the lecture so much that they recommended it to thei
 
 Out comes the IDE and the bullhorn. This time, he digs into his copy of [JavaScript Allonge, The "Six" Edition](https://leanpub.com/b/buyjavascriptallongthesixeditiongetjavascriptallongfree) and writes the following:
 
-{% highlight javascript %}
+```javascript
 const zipIterables = (...iterables) =>
   ({
     [Symbol.iterator]: function * () {
@@ -87,7 +87,7 @@ for (let pair of correspondence) {
   2 -> 1000002
   3 -> 1000003
   ...
-{% endhighlight %}
+```
 
 He's constructed an iterable with instructions for moving seats. Bertie tells the first person to move from seat zero to seat one million, the second from one to one million and one, and so forth. This means that seats 0 through 999,999 become vacant, so the 1,000,000 new students have a place to sit. Day Two goes well, and he is very pleased with his venture.
 
@@ -97,7 +97,7 @@ His fame spreads, and Jeff Atwood starts a discussion about Bertie's JavaScript 
 
 All of the students from Day Two have returned, so the auditorium is already full. Bertie is perplexed, but after scratching his head for a few moments, whips out his bullhorn and write the following JavaScript:
 
-{% highlight javascript %}
+```javascript
 const mapIterableWith = (fn, iterable) =>
   ({
     [Symbol.iterator]: function* () {
@@ -124,11 +124,11 @@ for (let pair of correspondence) {
   4 -> 8
   5 -> 10
   ...
-{% endhighlight %}
+```
 
 Now all the existing students are in the even numbered seats, so he's ready to seat Jeff's fans:
 
-{% highlight javascript %}
+```javascript
 
 const oldSeats = Numbers(0),
       newSeats = mapIterableWith(n => n * 2 + 1, Numbers(0)),
@@ -147,7 +147,7 @@ for (let pair of correspondence) {
   4 -> 9
   5 -> 11
   ...
-{% endhighlight %}
+```
 
 Bertie calls out the seat numbers on Jeff's bus and the number of an odd-numbered (and therefore vacant) seat in the auditorium for them to occupy. Bertie has managed to add an infinite number of students to an infinitely large but full auditorium.
 
@@ -169,7 +169,7 @@ Bertie has to seat an infinite number of infinite groups of people, in an infini
 
 He starts with the obvious: If you have three buses with three seats each, you can put the students into a one-to-one correspondence with the odd numbers by nesting iterators, like this:
 
-{% highlight javascript %}
+```javascript
 function * seatsOnBuses(buses, seats) {
   for (let bus of buses) {
     for (let seat of seats) {
@@ -177,11 +177,11 @@ function * seatsOnBuses(buses, seats) {
     }
   }
 };
-{% endhighlight %}
+```
 
 He writes a quick test:
 
-{% highlight javascript %}
+```javascript
 const seatAndBus = seatsOnBuses([0, 1, 2], [0, 1, 2]),
       newSeats = mapIterableWith(n => n * 2 + 1, Numbers(0)),
       correspondence = zipIterables(seatAndBus, newSeats);
@@ -201,11 +201,11 @@ for (let pair of correspondence) {
   bus 2, seat 0 -> seat 13
   bus 2, seat 1 -> seat 15
   bus 2, seat 2 -> seat 17
-{% endhighlight %}
+```
 
 Looks good, he grabs the bullhorn and writes:
 
-{% highlight javascript %}
+```javascript
 const seatAndBus = seatsOnBuses(Numbers(), Numbers()),
       newSeats = mapIterableWith(n => n * 2 + 1, Numbers(0)),
       correspondence = zipIterables(seatAndBus, newSeats);
@@ -227,13 +227,13 @@ for (let pair of correspondence) {
   bus 0, seat 8 -> seat 17
   bus 0, seat 9 -> seat 19
   ...
-{% endhighlight %}
+```
 
 After he has been seating people from bus `0` for a good long while, people from the other buses get restless. When will they be seated? What seat will they have? Bertie realizes that although there are infinite numbers of people involved, up to this point, he could point to any one student and tell them exactly where they would end up being seated.
 
 But with this scheme, he can't really put anyone from any of the other buses into a particular seat. He calls for order, and tries again:
 
-{% highlight javascript %}
+```javascript
 function * Diagonals () {
   for (let n of Numbers()) {
     for (let i = 0; i <= n; ++i) {
@@ -263,7 +263,7 @@ for (let pair of correspondence) {
   bus 2, seat 1 -> seat 17
   bus 3, seat 0 -> seat 19
   ...
-{% endhighlight %}
+```
 
 If you think of the buses and seats forming a square, the diagonals iterator makes a path from one corner and works its way out, enumerating over every possible combination of bus and seat. Thus, given countably infinite time, it will list every one of the countably infinite number of Redditors on each of the countably infinite number of buses.
 

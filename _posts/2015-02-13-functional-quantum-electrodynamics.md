@@ -10,7 +10,7 @@ In our code so far ([Destructuring and Recursion in ES-6](http://raganwald.com/2
 
 For example, this `length` function uses a functions to bind values to names, POJOs to structure nodes, and the ternary function to detect the base case, the empty list.
 
-{% highlight javascript %}
+```javascript
 const EMPTY = {};
 const OneTwoThree = { first: 1, rest: { first: 2, rest: { first: 3, rest: EMPTY } } };
 
@@ -30,7 +30,7 @@ const length = (node, delayed = 0) =>
 
 length(OneTwoThree)
   //=> 3
-{% endhighlight %}
+```
 
 A very long time ago, mathematicians like Alonzo Church, Moses Schönfinkel, Alan Turing, and Haskell Curry and asked themselves if we really needed all these features to perform computations. They searched for a radically simpler set of tools that could accomplish all of the same things.
 
@@ -45,11 +45,11 @@ They established that arbitrary computations could be represented a small set of
 
 Let's start with some of the building blocks of combinatory logic, the K, I, and V combinators, nicknamed the "Kestrel", the "Idiot Bird", and the "Vireo:"
 
-{% highlight javascript %}
+```javascript
 const K = (x) => (y) => x;
 const I = (x) => (x);
 const V = (x) => (y) => (z) => z(x)(y);
-{% endhighlight %}
+```
 
 ### the kestrel and the idiot
 
@@ -57,7 +57,7 @@ A *constant function* is a function that always returns the same thing, no matte
 
 For example:
 
-{% highlight javascript %}
+```javascript
 const K = (x) => (y) => x;
 
 const fortyTwo = K(42);
@@ -67,19 +67,19 @@ fortyTwo(6)
 
 fortyTwo("Hello")
   //=> 42
-{% endhighlight %}
+```
 
 The *identity function* is a function that evaluates to whatever parameter you pass it. So `I(42) => 42`. Very simple, but useful. Now we'll take it one more step forward: Passing a value to `K` gets a function back, and passing a value to that function gets us a value.
 
 Like so:
 
-{% highlight javascript %}
+```javascript
 K(6)(7)
   //=> 6
   
 K(12)(24)
   //=> 12
-{% endhighlight %}
+```
 
 This is very interesting. Given two values, we can say that `K` always returns the *first* value: `K(x)(y) => x` (that's not valid JavaScript, but it's essentially how it works).
 
@@ -87,27 +87,27 @@ Now, an interesting thing happens when we pass functions to each other. Consider
 
 Therefore, `K(I)(x)(y) => y`:
 
-{% highlight javascript %}
+```javascript
 K(I)(6)(7)
   //=> 7
   
 K(I)(12)(24)
   //=> 24
-{% endhighlight %}
+```
 
 Aha! Given two values, `K(I)` always returns the *second* value.
 
-{% highlight javascript %}
+```javascript
 K("primus")("secundus")
   //=> "primus"
   
 K(I)("primus")("secundus")
   //=> "secundus"
-{% endhighlight %}
+```
 
 If we are not feeling particularly academic, we can name our functions:
 
-{% highlight javascript %}
+```javascript
 const first = K,
       second = K(I);
       
@@ -116,7 +116,7 @@ first("primus")("secundus")
   
 second("primus")("secundus")
   //=> "secundus"
-{% endhighlight %}
+```
 
 > This is very interesting. Given two values, we can say that `K` always returns the *first* value, and given two values, `K(I)` always returns the *second* value.
 
@@ -124,7 +124,7 @@ second("primus")("secundus")
 
 Our `first` and `second` functions are a little different than what most people are used to when we talk about functions that access data. If we represented a pair of values as an array, we'd write them like this:
 
-{% highlight javascript %}
+```javascript
 const first = ([first, second]) => first,
       second = ([first, second]) => second;
       
@@ -135,11 +135,11 @@ first(latin)
   
 second(latin)
   //=> "secundus"
-{% endhighlight %}
+```
 
 Or if we were using a POJO, we'd write them like this:
 
-{% highlight javascript %}
+```javascript
 const first = ({first, second}) => first,
       second = ({first, second}) => second;
       
@@ -150,7 +150,7 @@ first(latin)
   
 second(latin)
   //=> "secundus"
-{% endhighlight %}
+```
 
 In both cases, the functions `first` and `second` know how the data is represented, whether it be an array or an object. You pass the data to these functions, and they extract it.
 
@@ -158,7 +158,7 @@ But the `first` and `second` we built out of `K` and `I` don't work that way. Yo
 
 Here's the first cut:
 
-{% highlight javascript %}
+```javascript
 const first = K,
       second = K(I);
       
@@ -169,7 +169,7 @@ latin(first)
   
 latin(second)
   //=> "secundus"
-{% endhighlight %}
+```
 
 Our `latin` data structure is no longer a dumb data structure, it's a function. And instead of passing `latin` to `first` or `second`, we pass `first` or `second` to `latin`. It's *exactly backwards* of the way we write functions that operate on data.
 
@@ -179,21 +179,21 @@ Given that our `latin` data is represented as the function `(selector) => select
 
 For "data" we access with `K` and `K(I)`, our "structure" is the function `(selector) => selector("primus")("secundus")`. Let's extract those into parameters:
 
-{% highlight javascript %}
+```javascript
 (first, second) => (selector) => selector(first)(second)
-{% endhighlight %}
+```
 
 For consistency with the way combinators are written as functions taking just one parameter, we'll [curry] the function:
 
-{% highlight javascript %}
+```javascript
 (first) => (second) => (selector) => selector(first)(second)
-{% endhighlight %}
+```
 
 [curry]: https://en.wikipedia.org/wiki/Currying
 
 Let's try it, we'll use the word `pair` for the function that makes data (When we need to refer to a specific pair, we'll use the name `aPair` by default):
 
-{% highlight javascript %}
+```javascript
 const first = K,
       second = K(I),
       pair = (first) => (second) => (selector) => selector(first)(second);
@@ -205,11 +205,11 @@ latin(first)
   
 latin(second)
   //=> "secundus"
-{% endhighlight %}
+```
 
 It works! Now what is this `node` function? If we change the names to `x`, `y`, and `z`, we get: `(x) => (y) => (z) => z(x)(y)`. That's the V combinator, the Vireo! So we can write:
 
-{% highlight javascript %}
+```javascript
 const first = K,
       second = K(I),
       pair = V;
@@ -221,7 +221,7 @@ latin(first)
   
 latin(second)
   //=> "secundus"
-{% endhighlight %}
+```
 
 > As an aside, the Vireo is a little like JavaScript's `.apply` function. It says, "take these two values and apply them to this function." There are other, similar combinators that apply values to functions. One notable example is the "thrush" or T combinator: It takes one value and applies it to a function. It is known to most programmers as `.tap`.
 
@@ -231,7 +231,7 @@ Armed with nothing more than `K`, `I`, and `V`, we can make a little data struct
 
 Here's another look at linked lists using POJOs. We use the term `rest` instead of `second`, but it's otherwise identical to what we have above:
 
-{% highlight javascript %}
+```javascript
 const first = ({first, rest}) => first,
       rest  = ({first, rest}) => rest,
       pair = (first, rest) => ({first, rest}),
@@ -247,11 +247,11 @@ first(rest(l123))
 
 first(rest(rest(l123)))
   //=3
-{% endhighlight %}
+```
 
 We can write `length` and `mapWith` functions over it:
 
-{% highlight javascript %}
+```javascript
 const length = (aPair) =>
   aPair === EMPTY
     ? 0
@@ -280,11 +280,11 @@ first(rest(doubled))
 
 first(rest(rest(doubled)))
   //=> 6
-{% endhighlight %}
+```
 
 Can we do the same with the linked lists we build out of functions? Yes:
 
-{% highlight javascript %}
+```javascript
 const first = K,
       rest  = K(I),
       pair = V,
@@ -300,11 +300,11 @@ l123(rest)(first)
 
 return l123(rest)(rest)(first)
   //=> 3
-{% endhighlight %}
+```
 
 We write them in a backwards way, but they seem to work. How about `length`?
 
-{% highlight javascript %}
+```javascript
 const length = (aPair) =>
   aPair === EMPTY
     ? 0
@@ -312,11 +312,11 @@ const length = (aPair) =>
     
 length(l123)
   //=> 3
-{% endhighlight %}
+```
 
 And `mapWith`?
 
-{% highlight javascript %}
+```javascript
 const reverse = (aPair, delayed = EMPTY) =>
   aPair === EMPTY
     ? delayed
@@ -337,7 +337,7 @@ doubled(rest)(first)
 
 doubled(rest)(rest)(first)
   //=> 6
-{% endhighlight %}
+```
 
 Presto, **we can use pure functions to represent a linked list**. And with care, we can do amazing things like use functions to represent numbers, build more complex data structures like trees, and in fact, anything that can be computed can be computed using just functions and nothing else.
 
@@ -351,25 +351,25 @@ We keep using the same pattern in our functions: `aPair === EMPTY ? doSomething 
 
 We can reverse this: Instead of asking a pair if it is empty and then deciding what to do, we can ask the pair to do it for us. Here's `length` again:
 
-{% highlight javascript %}
+```javascript
 const length = (aPair) =>
   aPair === EMPTY
     ? 0
     : 1 + length(aPair(rest));
-{% endhighlight %}
+```
 
 Let's presume we are working with a slightly higher abstraction, we'll call it a `list`. Instead of writing `length(list)` and examining a list, we'll write something like:
 
-{% highlight javascript %}
+```javascript
 const length = (list) => list(
   () => 0,
   (aPair) => 1 + length(aPair(rest)))
 );
-{% endhighlight %}
+```
 
 Now we'll need to write `first` and `rest` functions for a list, and those names will collide with the `first` and `rest` we wrote for pairs. So let's disambiguate our names:
 
-{% highlight javascript %}
+```javascript
 const pairFirst = K,
       pairRest  = K(I),
       pair = V;
@@ -388,42 +388,42 @@ const length = (list) => list(
     () => 0,
     (aPair) => 1 + length(aPair(pairRest)))
   );
-{% endhighlight %}
+```
 
 We'll also write a handy list printer:
 
-{% highlight javascript %}
+```javascript
 const print = (list) => list(
     () => "",
     (aPair) => `${aPair(pairFirst)} ${print(aPair(pairRest))}`
   );
-{% endhighlight %}
+```
 
 How would all this work? Let's start with the obvious. What is an empty list?
 
-{% highlight javascript %}
+```javascript
 const EMPTYLIST = (whenEmpty, unlessEmpty) => whenEmpty()
-{% endhighlight %}
+```
 
 And what is a node of a list?
 
-{% highlight javascript %}
+```javascript
 const node = (x) => (y) =>
   (whenEmpty, unlessEmpty) => unlessEmpty(pair(x)(y));
-{% endhighlight %}
+```
 
 Let's try it:
 
-{% highlight javascript %}
+```javascript
 const l123 = node(1)(node(2)(node(3)(EMPTYLIST)));
 
 print(l123)
   //=> 1 2 3
-{% endhighlight %}
+```
 
 We can write `reverse` and `mapWith` as well. We aren't being super-strict about emulating combinatory logic, we'll use default parameters:
 
-{% highlight javascript %}
+```javascript
 const reverse = (list, delayed = EMPTYLIST) => list(
   () => delayed,
   (aPair) => reverse(aPair(pairRest), node(aPair(pairFirst))(delayed))
@@ -440,7 +440,7 @@ const mapWith = (fn, list, delayed = EMPTYLIST) =>
   
 print(mapWith(x => x * x, reverse(l123)))
   //=> 941
-{% endhighlight %}
+```
 
 We have managed to provide the exact same functionality that `===` and `?:` provided, but using functions and nothing else.
 
@@ -471,7 +471,7 @@ But we could have done something completely different. We could have written a p
 
 The exact implementation of a pair is hidden from the code that uses a pair. Here, we'll prove it:
 
-{% highlight javascript %}
+```javascript
 const first = K,
       second = K(I),
       pair = (first) => (second) => {
@@ -487,29 +487,29 @@ latin(first)
   
 latin(second)
   //=> "secundus"
-{% endhighlight %}
+```
 
 This is a little gratuitous, but it makes the point: The code that uses the data doesn't reach in and touch it: The code that uses the data provides some code and asks the data to do something with it.
 
 The same thing happens with our lists. Here's `length` for lists:
 
-{% highlight javascript %}
+```javascript
 const length = (list) => list(
     () => 0,
     (aPair) => 1 + length(aPair(pairRest)))
   );
-{% endhighlight %}
+```
 
 We're passing `list` what we want done with an empty list, and what we want done with a list that has at least one element. We then ask `list` to do it, and provide a way for `list` to call the code we pass in.
 
 We won't bother here, but it's easy to see how to swap our functions out and replace them with an array. Or a column in a database. This is fundamentally *not* the same thing as this code for the length of a linked list:
 
-{% highlight javascript %}
+```javascript
 const length = (node, delayed = 0) =>
   node === EMPTY
     ? delayed
     : length(node.rest, delayed + 1);
-{% endhighlight %}
+```
 
 The line `node === EMPTY` presumes a lot of things. It presumes there is one canonical empty list value. It presumes you can compare these things with the `===` operator. We can fix this with an `isEmpty` function, but now we're pushing even more knowledge about the structure of lists into the code that uses them.
 

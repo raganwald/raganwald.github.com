@@ -6,7 +6,7 @@ published: false
 
 Consider this simple function, well-known to Lispers, Rubyists, and JavaScripters everywhere:
 
-{% highlight javascript %}
+```javascript
 function map (array, fn) {
   var result = [];
   for (var index in array) {
@@ -14,11 +14,11 @@ function map (array, fn) {
   }
   return result;
 }
-{% endhighlight %}
+```
 
 Given an array and a function, it returns an array populated with the results of applying the function to each element of the array. If you are to believe function-oriented-programmers ("FOPs"), `map` is a wonderful construct, to be admired and used everywhere, along with its partner `foldl` (a/k/a `reduce`):
 
-{% highlight javascript %}
+```javascript
 function foldl (array, fn, acc) {
   if (optionalSeed === void 0) {
     acc = array[0];
@@ -29,7 +29,7 @@ function foldl (array, fn, acc) {
   }
   return acc;
 }
-{% endhighlight %}
+```
 
 Let's take it as a given that mapping and folding are Good Things (because they are), and let's not spend many paragraphs explaining why. However, they may be good ideas but poor designs. Here's why:
 

@@ -16,7 +16,7 @@ But it reminded me of an open issue in my own [allong.es] library that I'm going
 
 [allong.es]: http://allong.es
 
-{% highlight javascript %}
+```javascript
 function greet (whom) {
   return this.greeting + " " + whom;
 };
@@ -25,25 +25,25 @@ var polite = greet.bind({ greeting: "hello" });
 
 polite("bind");
   //=> 'hello bind'
-{% endhighlight %}
+```
 
 And `Function.prototype.attach`:
 
-{% highlight javascript %}
+```javascript
 var casual = greet.attach({ greeting: "howdy" });
 
 casual("attach");
   //=> 'howdy attach'
-{% endhighlight %}
+```
 
 What's the difference? Let's check the function arity:
 
-{% highlight javascript %}
+```javascript
 polite.length;
   //=> 1
 casual.length;
   //=> 0
-{% endhighlight %}
+```
 
 `Function.prototype.bind` returns a new function with the correct arity. `Function.prototype.attach` returns a function that declares no arguments and instead extracts them from the `arguments` pseudo-variable, therefore it has no arity. `Function.prototype.partial` does the exact same thing.
 
@@ -57,7 +57,7 @@ I noticed this [a few weeks ago][5] when I started to work with some functions t
 
 But here's why I am looking at changing [allong.es]. Consider `curry`, a function that turns a polyadic function into a chained or nested series of unary functions:
 
-{% highlight javascript %}
+```javascript
 var curry = require('allong.es').curry;
 
 function introduction (a, b, c) {
@@ -71,11 +71,11 @@ var curried = curry(introduction);
 
 curried('hello')('alice')('bob');
   //=> 'hello, alice, may I introduce you to bob'
-{% endhighlight %}
+```
 
 The trouble is that the current implementation of `curry` relies on checking the arity of the function you are currying. So we would expect that if we were to use `applyFirst` to partially apply the first argument of `introduction`, we should be able to curry the remaining two arguments:
 
-{% highlight javascript %}
+```javascript
 var applyLeft = require('allong.es').applyLeft;
 
 function introduction (a, b, c) {
@@ -90,13 +90,13 @@ var curried = curry(casual);
 
 curried('ted')('carol');
   //=> ???
-{% endhighlight %}
+```
 
 But no:
 
-{% highlight javascript %}
+```javascript
 TypeError: string is not a function
-{% endhighlight %}
+```
 
 The problem is that `applyFirst`, like Craft's `Function.prototype.attach`, returns a function with arity zero. But `curry` relies on the function having the proper arity. So they each work separately, but not together.
 

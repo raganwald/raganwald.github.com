@@ -18,7 +18,7 @@ Let's start with the technical bits, because that's what many commenters fixate 
 
 The Carpenter's solution is not correct. This is partly deliberate, partly accidental. When I wrote the problem, I deliberately inserted a rather obvious flaw. Here's his complete solution:
 
-{% highlight javascript %}
+```javascript
 const Game = (size = 8) => {
   
   // initialize the board
@@ -115,11 +115,11 @@ const tortoiseAndHare = (iterable) => {
 
 const terminates = (game) =>
   tortoiseAndHare(positionsOf(game))
-{% endhighlight %}
+```
 
 The obvious flaw is that `tortoiseAndHare` reports `true` when there is a cycle, while the function `terminates` implies that `true` would mean the game's moves have no cycle. IMO, this is an error best solved with naming. The correct function would be:
 
-{% highlight javascript %}
+```javascript
 // implements Tortoise and Hare cycle
 // detection algorithm.
 const hasCycle = (iterable) => {
@@ -151,7 +151,7 @@ const hasCycle = (iterable) => {
 
 const terminates = (game) =>
   !hasCycle(positionsOf(game))
-{% endhighlight %}
+```
 
 I left that flaw in because I wanted to create the dynamic where Christine dislikes the code for other reasons, but fails him for getting one character wrong.
 
@@ -159,7 +159,7 @@ There is another, more subtle "flaw," namely that the Carpenter treats the game 
 
 There is at least one more flaw in the code as presented in the post, but I can say outright that *all other flaws are my fault as an imperfect author*, not the fictitious Carpenter's fault. FWIW, here is how I could clean up the Carpenter's solution, with a little refactoring to make it easier to test:
 
-{% highlight javascript %}
+```javascript
 const MOVE = {
   "←": ([x, y]) => [x - 1, y],
   "→": ([x, y]) => [x + 1, y],
@@ -275,7 +275,7 @@ terminates(Game({board: test, position: [0, 3]}))
   //=> false
 terminates(Game({board: test, position: [3, 3]}))
   //=> false
-{% endhighlight %}
+```
 
 Some people would say that there were errors precisely because it's a longer bit of code, and that is correct. But I wouldn't judge that in a vacuum. OOP code is often more convoluted than simple procedural code. Is it unnecessary `AbstractFacadefactoryArchitectureAstronatics`? Or is it separating concerns in a way that makes the code easier to understand and maintain? Sometimes you have to have a conversation to decide.
 
@@ -295,7 +295,7 @@ Many people commented that he was trying to be a show-off, but I'd like to point
 
 The simplest solution to the problem as given is to keep a set of positions that have already been visited. That takes finite space, and can be written either entirely within the original template, or can be bolted onto the iteratable answer:
 
-{% highlight javascript %}
+```javascript
 const repeatsItself = (orderedCollection) => {
   const visited = new Set();
   
@@ -310,7 +310,7 @@ const repeatsItself = (orderedCollection) => {
 
 const terminates = (game) =>
   !repeatsItself(positionsOf(game))
-{% endhighlight %}
+```
 
 This is the answer Christine was looking for. A brilliant answer that takes constant space was suggested by [alisey](https://news.ycombinator.com/user?id=alisey) on Hacker News: Track the rectangle representing the maximum distance travelled from the start. If the number of steps exceeds the height times width, you are cycling.
 

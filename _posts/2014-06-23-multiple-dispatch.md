@@ -12,7 +12,7 @@ A famous example is the naïve expression of the [factorial] function. The facto
 
 The algorithm to compute it can be expressed as two cases. Let's pretend that JavaScript has pattern-matching baked in:
 
-{% highlight javascript %}
+```javascript
 function factorial (1) {
   return 1;
 }
@@ -20,7 +20,7 @@ function factorial (1) {
 function factorial (n > 1) {
   return n * factorial(n - 1);
 }
-{% endhighlight %}
+```
 
 This can be done with an `if` statement, of course, but the benefit of breaking problems down by cases is that we can combine small pieces of code in a way that does not tightly couple them.
 
@@ -32,7 +32,7 @@ Let's start with a convention: Methods and functions must return *something* if 
 
 For example:
 
-{% highlight javascript %}
+```javascript
 // returns a value, so it is successful
 function sum (a, b) {
   return a + b;
@@ -59,13 +59,13 @@ function dont (fn) {
 function logToConsole () {
   console.log.apply(null, arguments);
 }
-{% endhighlight %}
+```
 
 ### guarded functions
 
 We can write ourself a simple method decorator that *guards* a function or method, and fails if the guard function fails on the arguments provided. It's self-currying to facilitate writing utility guards:
 
-{% highlight javascript %}
+```javascript
 function when (guardFn, optionalFn) {
   function guarded (fn) {
     return function () {
@@ -83,11 +83,11 @@ when(function (x) {return x != null; })(function () { return "hello world"; })()
 
 when(function (x) {return x != null; })(function () { return "hello world"; })(1);
   //=> 'hello world'
-{% endhighlight %}
+```
 
 `when` is useful independently of our work here, and that's a good thing: Whenever possible, we don't just make complicated things out of simpler things, we make them out of *reusable* simpler things. Now we can compose our guarded functions. `Match` takes a list of methods, and apply them in order, stopping when one of the methods returns a value that is not `undefined`.
 
-{% highlight javascript %}
+```javascript
 function Match () {
   var fns = [].slice.call(arguments, 0);
 
@@ -119,7 +119,7 @@ var factorial = Match(
 
 factorial(5);
   //=> 120
-{% endhighlight %}
+```
 
 This is called [predicate dispatch], we're dispatching a function call to another function based on a series of predicates we apply to the arguments. Predicate dispatch declutters individual cases and composes functions and methods from smaller, simpler components that are decoupled from each other.
 
@@ -137,7 +137,7 @@ The [Expression Problem] is a programming design challenge: Given two orthogonal
 
 An example given in the [c2 wiki] concerns a set of shapes (circle, square) and a set of calculations on those shapes (circumference, area).  We could write this using metaobjects:
 
-{% highlight javascript %}
+```javascript
 var Square = encapsulate({
 	constructor: function (length) {
 		this.length = length;
@@ -161,11 +161,11 @@ var Circle = encapsulate({
 		return Math.PI * this.radius * this.radius;
 	}
 });
-{% endhighlight %}
+```
 
 Or functions on structs:
 
-{% highlight javascript %}
+```javascript
 var Square = Struct('Square', 'length');
 var Circle = Struct('Circle', 'radius');
 
@@ -186,7 +186,7 @@ function area (shape) {
 		return Math.PI * this.radius * this.radius;
 	}
 }
-{% endhighlight %}
+```
 
 Both of these operations make one thing a first-class citizen and the the other a second-class citizen. The object solution makes shapes first-class, and operations second-class. The function solution makes operations first-class, and shapes second-class. We can see this by adding new functionality:
 
@@ -225,7 +225,7 @@ In languages with no other option, we're forced to do things like have one objec
 
 Over time, various ways to handle this problem with single dispatch have arisen. One way is to have a polymorphic method invoke another object's polymorphic methods. For example:
 
-{% highlight javascript %}
+```javascript
 var FighterPrototype = {
 	crashInto: function (otherObject) {
 		this.collide();
@@ -240,7 +240,7 @@ var FighterPrototype = {
 		// ...
 	}
 }
-{% endhighlight %}
+```
 
 In this scheme, each object knows how to `collide` and how to destroy itself. So a fighter doesn't have to know about meteors, just to trust that they implement `.collide()` and `.destroyYourself()`. Of course, this presupposes that a collisions between objects can be subdivided into independent behaviour.
 
@@ -250,7 +250,7 @@ A pattern for handling this is called [double-dispatch]. It is a little more ele
 
 [double-dispatch]: https://en.wikipedia.org/wiki/Double_dispatch
 
-{% highlight javascript %}
+```javascript
 var FighterPrototype = {
 	crashInto: function (objectThatCrashesIntoFighters) {
 		return objectThatCrashesIntoFighters.isStruckByAFighter(this)
@@ -279,7 +279,7 @@ var someFighter = Object.create(FighterPrototype),
     someMeteor  = Object.create(MeteorPrototype);
 
 someFighter.crashInto(someMeteor);
-{% endhighlight %}
+```
 
 In this scheme, when we call `someFighter.crashInto(someMeteor)`, `FighterPrototype.crashInto` invokes `someMeteor.isStruckByAFighter(someFighter)`, and that handles the specific case of a meteor being struck by a fighter.
 
@@ -295,19 +295,19 @@ Languages such as [Common Lisp] bake support for this problem right in, by suppo
 
 [Common Lisp]: https://en.wikipedia.org/wiki/Common_Lisp
 
-{% highlight lisp %}
+```lisp
 (defmethod collide ((object-1 meteor) (object-2 fighter))
    (format t "meteor ~a collides with fighter ~a" object-1 object-2))
 
 (defmethod collide ((object-1 meteor) (object-2 meteor))
    (format t "meteor ~a collides with another meteor ~a" object-1 object-2))
-{% endhighlight %}
+```
 
 Common Lisp's generic functions use dynamic dispatch on both `object-1` and `object-2` to determine which body of `collide` to evaluate. Meaning, both types are checked at run time, at the time when the function is invoked. Since more than one argument is checked dynamically, we say that Common Lisp has *multiple dispatch*.
 
 Manifestly typed OO languages like Java *appear* to support multiple dispatch. You can create one method with several signatures, something like this:
 
-{% highlight javascript %}
+```javascript
 interface Collidable {
   public void crashInto(Meteor meteor);
   public void crashInto(Fighter fighter);
@@ -322,16 +322,16 @@ class Fighter implements Collidable {
   public void crashInto(Meteor meteor);
   public void crashInto(Fighter fighter);
 }
-{% endhighlight %}
+```
 
 Alas this won't work. Although we can specialize `crashInto` by the type of its argument, the Java compiler resolves this specialization at compile time, not run time. It's *early bound*. Thus, if we write something like this pseudo-Java:
 
-{% highlight javascript %}
+```javascript
 Collidable thingOne = Math.random() < 0.5 ? new Meteor() : new Fighter(),
 Collidable thingTwo = Math.random() < 0.5 ? new Meteor() : new Fighter();
 
 thingOne.crashInto(thingTwo);
-{% endhighlight %}
+```
 
 It won't even compile! The compiler can figure out that `thingOne` is a `Collidable` and that it has two different signatures for the `crashInto` method, but all it knows about `thingTwo` is that it's a `Collidable`, the compiler doesn't know if it should be compiling an invocation of `crashInto(Meteor meteor)` or `crashInto(Fighter fighter)`, so it refuses to compile this code.
 
@@ -349,7 +349,7 @@ Recall that this allowed us to write the `Match` function that took a serious of
 
 What we want is to write guards for each argument. So we'll write `whenArgsAre`, a guard that takes predicates for each argument as well as the body of the function case:
 
-{% highlight javascript %}
+```javascript
 function whenArgsAre () {
   var matchers = [].slice.call(arguments, 0, arguments.length - 1),
       body     = arguments[arguments.length - 1];
@@ -422,11 +422,11 @@ handlesManyCases(new Meteor(),  new Meteor());
   //=> 'a meteor has hit another meteor'
 handlesManyCases(new Fighter(), new Meteor());
   //=> 'a fighter has hit a meteor'
-{% endhighlight %}
+```
 
 Our `Match` function now allows us to build generic functions that dynamically dispatch on all of their arguments. They work just fine for creating multiply dispatched methods:
 
-{% highlight javascript %}
+```javascript
 var FighterPrototype = {},
     MeteorPrototype  = {};
 
@@ -465,7 +465,7 @@ var someFighter = Object.create(FighterPrototype),
 
 someFighter.crashInto(someMeteor);
   //=> 'fighter(meteor)'
-{% endhighlight %}
+```
 
 We now have usable dynamic multiple dispatch for generic functions and for methods. It's built on predicate dispatch, so it plays well with other kinds of predicates for each argument.
 
@@ -475,7 +475,7 @@ Consider the following problem:
 
 We wish to create a specialized entity, an `ArmoredFighter` that behaves just like a regular fighter, only when it strikes another fighter it has some special behaviour.
 
-{% highlight javascript %}
+```javascript
 var ArmoredFighterPrototype = Object.create(FighterPrototype);
 
 ArmoredFighterPrototype.crashInto = Match(
@@ -486,13 +486,13 @@ ArmoredFighterPrototype.crashInto = Match(
     }
   )
 );
-{% endhighlight %}
+```
 
 Our thought is that we are "overriding" the behaviour of `crashInto` when an armored fighter crashes into any other kind of fighter. But we wish to retain the behaviour we have already designed when an armored fighter crashes into a meteor.
 
 This is not going to work. Although we have written our code such that the various cases and predicates are laid out separately, at run time they are composed opaquely into functions. As far as JavaScript is concerned, we've written:
 
-{% highlight javascript %}
+```javascript
 var FighterPrototype = {};
 
 FighterPrototype.crashInto = function (q) {
@@ -504,7 +504,7 @@ var ArmoredFighterPrototype = Object.create(FighterPrototype);
 ArmoredFighterPrototype.crashInto = function (q) {
   // black box
 };
-{% endhighlight %}
+```
 
 We've written code that composes, but it doesn't *decompose*. We've made it easy to manually take the code for these functions apart, inspect their contents, and put them back together in new ways, but it's impossible for us to write code that inspects and decomposes the code.
 
@@ -520,7 +520,7 @@ Our `Match` function is fairly simple, but it has a drawback: The functions it c
 
 To fix that, we can add some extra bits that extract the name and length from the cases we provide:
 
-{% highlight javascript %}
+```javascript
 // "nameAndLength" and "imitate" are not strictly necessary to understand what we're
 // doing, but they do help us write functions that preserve the name and arity
 // of functions we work with. This is very helpful if we combine these techniques
@@ -650,6 +650,6 @@ function whenArgsAre () {
 
   return imitate(body, typeChecked);
 }
-{% endhighlight %}
+```
 
 [reddit]: http://www.reddit.com/r/programming/comments/28wwab/greenspunning_patternmatching_and_multiple/

@@ -18,7 +18,7 @@ Another issue is that production code often has to cover a number of use cases t
 
 Whereas for the purpose of illustration, a snippet of code here might simply be written as:
 
-{% highlight javascript %}
+```javascript
 const maybe = (fn) =>
   (...args) => {
     for (let arg of args) {
@@ -26,7 +26,7 @@ const maybe = (fn) =>
     }
     return fn(...args);
   }
-{% endhighlight %}
+```
 
 This implementation omits consideration of everything except for showing the idea behind a combinator. Extending it to handle methods, or explaining how a stateful combinator would work, or dealing with arity, are all ignored. And the performance implications of using `for(let arg of args)` is not a consideration.
 

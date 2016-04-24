@@ -8,13 +8,13 @@ tags: allonge
 
 In some programming languages, there is a style of "monkey-patching" classes in order to add convenience methods. For example, let's say that we're using [Ruby on Rails][rails], and we have an array called `chain_of_command`. Although Ruby's `Array` class does not define a special method for obtaining the second element of an array, we can still write:
 
-{% highlight ruby %}
+```ruby
 second_in_command = chain_of_command.second()
-{% endhighlight %}
+```
 
 This is possible because deep within ActiveSupport is [this](https://github.com/rails/rails/blob/ed03d4eaa89a7b4ab09e7f5da76b522d04650daf/activesupport/lib/active_support/core_ext/array/access.rb#L33-L35) snippet of code:
 
-{% highlight ruby %}
+```ruby
 class Array
 
   # ...
@@ -23,28 +23,28 @@ class Array
     self[1]
   end
 end
-{% endhighlight %}
+```
 
 This code adds a `second` method to *every* instance of Array, everywhere in our running instance of Ruby. (There are also word methods for getting the `third`, `fourth`, `fifth`, and `forty_two` of an array. The code does not document why the last one isn't called `forty_second`).
 
 We also get methods like `days` and `from_now` added to `Number`, so we can write:
 
-{% highlight ruby %}
+```ruby
 access.expires_at(14.days.from_now)
-{% endhighlight %}
+```
 
 And it goes on and on with all kinds of methods added to all kinds of classes. These kinds of methods are generally thought to provide readability, convenience, or both, and it is one of the reasons why Rails became popular.
 
 We can do the same kind of thing in JavaScript, of course. Here's a `.second` extension method for `Array`:
 
-{% highlight javascript %}
+```javascript
 Array.prototype.second = function () {
   return this[1];
 };
 
 ['a', 'b', 'c'].second()
   //=> 'b'
-{% endhighlight %}
+```
 
 A method added to a class from a place other than the class's primary definition is called an *extension method*. Note that methods defines in modules/mixins are not extension methods, we are referring to a method added completely orthogonally from the code or library or built-in that defines the standard behaviour of the class.
 
@@ -54,19 +54,19 @@ People call this *Monkey patching*, but to be precise, the phrase "monkey patchi
 
 The obvious alternative to extension methods is to write utility functions, or methods in utility classes. So instead of writing `chain_of_command.second()` we write `second(chain_of_command)`. Functions are easy in languages like JavaScript:
 
-{% highlight javascript %}
+```javascript
 const second = indexed => indexed[1];
-{% endhighlight %}
+```
 
 In Ruby, we can make a method that reads like a function call:
 
-{% highlight ruby %}
+```ruby
 module Kernel
   def second (indexed)
     indexed[1]
   end
 end
-{% endhighlight %}
+```
 
 Close enough for government work! So, the key question is, *Why should we write extension methods instead of functions?*
 
@@ -92,16 +92,16 @@ If `.second` isn't an object's primary responsibility, then why implement someth
 
 There are two syntactic arguments for extension methods. First, there is the question of consistency. This Ruby reads in a consistent way:
 
-{% highlight ruby %}
+```ruby
 chain_of_command
   .select { |officer| officer.belongs_to(club) }
   .map(&:salary)
   .reduce(&:+)
-{% endhighlight %}
+```
 
 Likewise, this JavaScript reads in a consistent way:
 
-{% highlight javascript %}
+```javascript
 sum(
   pluck(
     select(
@@ -111,17 +111,17 @@ sum(
     'salary'
   )
 );
-{% endhighlight %}
+```
 
 But *this* JavaScript can't make up its mind which way to go:
 
-{% highlight javascript %}
+```javascript
 sum(
   chain_of_command
     .find(officer => belongs_to(officer, club))
     .map(get('salary'))
 );
-{% endhighlight %}
+```
 
 Ugh.
 
@@ -155,7 +155,7 @@ Various mechanisms have been proposed to permit writing expressions syntacticall
 
 In C#, we can write an extension method for a class like this:
 
-{% highlight C# %}
+```
 public static class Something
 {
   // ...
@@ -172,7 +172,7 @@ public static class Something
     return "abcdefghijklmnopqrstuvwxyz".Reverse();
   }
 }
-{% endhighlight %}
+```
 
 The compiler knows that `Reverse` is to be implemented as an extension method on strings, by virtue of the `this string` portion of the signature. And since it's defined as a static member of the `Something` class, it is not actually changing strings in any way.
 
@@ -194,18 +194,18 @@ Its uses for abbreviating code where we are already using `.bind`, `.call`, and 
 
 Whereas, when we write `bar.call(foo, baz)`, we're saying something different: "Send the `.call` method to the entity `bar` with the parameters `foo` and `baz`." And that speaks *directly* to our exploration of extension methods. Consider:
 
-{% highlight javascript %}
+```javascript
 Array.prototype.second = function () {
   return this[1];
 };
 
 ['a', 'b', 'c'].second()
   //=> 'b'
-{% endhighlight %}
+```
 
 With the bind operator, we can write:
 
-{% highlight javascript %}
+```javascript
 function second () {
   return this[1];
 };
@@ -214,7 +214,7 @@ const abc = ['a', 'b', 'c'];
 
 abc::second()
   //=> 'b'
-{% endhighlight %}
+```
 
 Now we're writing `abc::second()` instead of `abc.second()`. But we aren't modifying `Array`'s prototype in any way. And we still have syntax that puts the subject of the operation first, like a method.
 

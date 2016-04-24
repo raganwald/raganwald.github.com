@@ -50,12 +50,12 @@ But here on [http://raganwald.com](http://raganwald.com), I use the basic (and f
 
 New posts go into a `_posts` folder, with a special name. This one is `2013-02-20-twenty-thirteen.md`. The top of each post has some YAML junk:
 
-{% highlight yaml %}
+```yaml
 ---
 title: Twenty Thirteen
 layout: default
 ---
-{% endhighlight %}
+```
 
 If both of those things are set up correctly, the post is automatically published when I push to Github. It's poured into the "tactile" layout, and the resulting HTML is available at  [http://raganwald.com/2013/02/20/twenty-thirteen.html](http://raganwald.com/2013/02/20/twenty-thirteen.html). I can preview my work by running `jekyll` on the command line, `jekyll --auto` if I want it to rebuild the site locally whenever it detects changes, or `jekyll --server 3333` if I want to run a preview web server on port 3333.
 
@@ -87,13 +87,13 @@ I drop a `CNAME` file into the repo. For [http://raganwald.com](http://raganwald
 
 A nice thing about Jekyll is that you can control the Markdown rendering with the `_config.yaml` file:
 
-{% highlight yaml %}
+```yaml
 pygments: true
 lsi: false
 safe: false
 markdown: kramdown
 exclude: config.rb, README.md
-{% endhighlight %}
+```
 
 As you can see, I've turned pygments on to do source highlighting. I also use Kramdown because that's what Leanpub uses when it renders my books, so I want the maximum possible compatibility between the two. And I like being able to use footnotes.[^pg]
 

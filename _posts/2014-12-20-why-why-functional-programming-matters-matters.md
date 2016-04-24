@@ -76,7 +76,7 @@ Structured Pascal programming is straightforward both in theory and in practice.
 
 Consider this snippet of iterative code:
 
-{% highlight java %}
+```java
 int numberOfOldTimers = 0;
 for (Employee emp: employeeList) {
     for (Department dept: departmentsInCompany) {
@@ -85,7 +85,7 @@ for (Employee emp: employeeList) {
         }
     }
 }
-{% endhighlight %}
+```
 
 This is an improvement on older practices.[^5] [^6] For one thing, the `for` loops hide the implementation details of iterating over `employeeList` and `departmentsInCompany`. Is this better because you have less to type? Yes. Is it better because you eliminate the fence-post errors associated with loop variables? Of course.
 
@@ -98,12 +98,12 @@ No, we say, &#8220;We want to count the number of employees that have been with 
 
 In this case, a limitation of our tool has caused our concerns to intermingle again. The concern of &#8220;How to find the employees that have been with the company longer than their departments have existed&#8221; is intertwined with the concern of &#8220;count them.&#8221; Let&#8217;s try a different notation that separates the details of _how to find_ from the detail of _counting what we&#8217;ve found_:
 
-{% highlight ruby %}
+```ruby
 old_timers = (employees * departments).select do |emp, dept|
   emp.department_id == dept.id && emp.years_of_service > dept.age
 end
 number_of_old_timers = old_timers.size
-{% endhighlight %}
+```
 
 Now we have separated the concern of finding from counting. And we have hidden the nesting by using the `*` operator to create a Cartesian product of the two lists. Now let&#8217;s look at what we used to filter the combined list, `select`. The difference is more than just semantics, or counting characters, or the alleged pleasure of fooling around with closures.
 
@@ -119,7 +119,7 @@ But sometimes you have to write the _how_ as well as the _what_. It isn&#8217;t 
 
 I recently separated the concern of describing &#8220;how to generate sample curves for some data mining&#8221; from the concern of &#8220;managing memory when generating the curves.&#8221; I did so by writing my own lazy evaluation code (Both the [story](http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html) and the [code](http://raganwald.com/assets/media/source/lazy_lists.html) are on line). Here&#8217;s the key &#8220;what&#8221; code that generates an infinite list of parameters for sample bezi&eacute;r curves:
 
-{% highlight ruby %}
+```ruby
 def magnitudes
   LazyList.binary_search(0.0, 1.0)
 end
@@ -145,7 +145,7 @@ def order_one_flows args = {}
     )
   end
 end
-{% endhighlight %}
+```
 
 That&#8217;s it. Just as I might tell you on the phone: &#8220;Magnitudes&#8221; is a list of numbers between zero and one created by repeatedly dividing the intervals in half, like a binary search. &#8220;Control Points&#8221; is a list of the Cartesian product of magnitudes with itself, with one magnitude assigned to `x` and the other to `y`. And so forth.
 

@@ -13,7 +13,7 @@ One of JavaScript's defining characteristics is its treatment of functions as fi
 
 Here's an example of passing a reference to a function around. This simple array-backed stack has an `undo` function. It works by creating a function representing the action of undoing the last update, and then pushing that onto a stack of actions to be undone:
 
-{% highlight javascript %}
+```javascript
 var stack = {
   array: [],
   undoStack: [],
@@ -45,7 +45,7 @@ stack.undo();
 stack.undo();
 stack.pop();
   //=> 'hello'
-{% endhighlight %}
+```
 
 Functions-as-values is a powerful idea. And people often look at the idea of functions-as-values and think, "Oh, JavaScript is a functional programming language." No.
 
@@ -69,7 +69,7 @@ One example concerns [state machines][ssm]. We *could* implement a cell in [Conw
 [^4r]: This exercise was snarfed from [The Four Rules of Simple Design](https://leanpub.com/4rulesofsimpledesign)
 [gol]: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
-{% highlight javascript %}
+```javascript
 var __slice = [].slice;
 
 function extend () {
@@ -122,13 +122,13 @@ var someCell = extend({
   state: Alive,
   location: {x: -15, y: 12}
 }, Cell);
-{% endhighlight %}
+```
 
 You could say that the "state" of the cell is represented by the primitive value `'alive'` for alive, or `'dead'` for dead. But that isn't modeling the state in any way, that's just a name. The true state of the object is *implicit* in the object's behaviour, not *explicit* in the value of the `.state` property.
 
 Here's a design where we make the state explicit instead of implicit:
 
-{% highlight javascript %}
+```javascript
 function delegateToOwn (receiver, propertyName, methods) {
   var temporaryMetaobject;
 
@@ -182,7 +182,7 @@ var someCell = extend({
   state: Alive,
   location: {x: -15, y: 12}
 }, Cell);
-{% endhighlight %}
+```
 
 In this design, `delegateToOwn` delegates the methods `.alive` and `.stateInNextGeneration` to whatever object is the value of a `Cell`'s `state` property.
 
@@ -204,7 +204,7 @@ Consider these functions, `begin1` and `begin`. They're handy for writing [funct
 
 [advice]: https://en.wikipedia.org/wiki/Advice_(programming)
 
-{% highlight javascript %}
+```javascript
 var __slice = [].slice;
 
 function begin1 () {
@@ -242,7 +242,7 @@ function begin () {
     }
   }
 }
-{% endhighlight %}
+```
 
 Both `begin1` and `begin` take one or more functions, and turn them into a third function. This is much the same as `+` taking two numbers, and turning them into a third number.[^exercise]
 
@@ -262,7 +262,7 @@ But just as we created an algebra of functions, we can write an algebra of objec
 
 Here's a function that transforms an object into a proxy for that object:
 
-{% highlight javascript %}
+```javascript
 function proxy (baseObject, optionalPrototype) {
   var proxyObject = Object.create(optionalPrototype || null),
       methodName;
@@ -280,11 +280,11 @@ function proxy (baseObject, optionalPrototype) {
   }
   return proxyObject;
 }
-{% endhighlight %}
+```
 
 Have you ever wanted to make an object's properties private while making its methods public? You wanted a proxy for the object:
 
-{% highlight javascript %}
+```javascript
 var stackWithPrivateState = proxy(stack);
 
 stack.array
@@ -299,11 +299,11 @@ stackWithPrivateState.undo();
 stackWithPrivateState.undo();
 stackWithPrivateState.pop();
   //=> 'hello'
-{% endhighlight %}
+```
 
 The `proxy` function transforms an object into another object with a similar purpose. Functions can compose objects as well, here's one of the simplest examples:
 
-{% highlight javascript %}
+```javascript
 var __slice = [].slice;
 
 function meld () {
@@ -356,7 +356,7 @@ var PersonWithCareer = meld(Person, HasCareer);
       career: [Function],
       setCareer: [Function],
       describe: [Function] }
-{% endhighlight %}
+```
 
 Functions that transform objects or compose objects act at a higher level than functions that query objects or update objects. They form an algebra that allows us to build objects by transformation and composition, just as we can use functions like `begin` to build functions by composition.
 
@@ -376,7 +376,7 @@ This applies to transforming and composing functions, and it also applies to tra
 
 First, some helper functions:
 
-{% highlight javascript %}
+```javascript
 var __slice = [].slice;
 
 // extend
@@ -486,11 +486,11 @@ function extendWithProxy (baseObject, behaviour) {
 
   return baseObject;
 }
-{% endhighlight %}
+```
 
 The `Prototype` function builds prototypes out of an optional super-prototype (or `null`) and one or more behaviours, objects with functions to mix in.
 
-{% highlight javascript %}
+```javascript
 function Prototype () {
   var superPrototype = arguments[0],
       baseObject = Object.create(superPrototype),
@@ -500,11 +500,11 @@ function Prototype () {
     return extendWithProxy(prototype, behaviour);
   }, baseObject);
 }
-{% endhighlight %}
+```
 
 Examples:
 
-{% highlight javascript %}
+```javascript
 var HasName = {
   // private property, initialized to null
   _name: null,
@@ -561,13 +561,13 @@ michael.description()
   //=> 'Michael Sam is a Athlete'
 bewitched.description()
   //=> 'Samantha Stephens is a Thaumaturge'
-{% endhighlight %}
+```
 
 ### appendix 2: a function for safely composing behaviour
 
 Helpers:
 
-{% highlight javascript %}
+```javascript
 // policies for resolving methods
 
 var policies = {
@@ -613,13 +613,13 @@ function resolve(mixin, policySpecification) {
 
   return result;
 }
-{% endhighlight %}
+```
 
 The `Prototype` function above can mix more than one behaviour into a prototype, but sometimes you want to make a new behaviour out of two or more existing behaviours without turning them into a prototype. `composeBehaviour` does that.
 
 It is involved because it must check for conflicts and resolve them at the time of composition. The `Prototype` method above is simpler because the individual behaviours each get their own proxy with private state. `composeBehaviour` wires behaviours up so they can share a proxy.
 
-{% highlight javascript %}
+```javascript
 function composeBehaviour () {
   var mixins = __slice.call(arguments, 0),
       dummy  = function () {};
@@ -691,11 +691,11 @@ function composeBehaviour () {
     }, acc1);
   }, {});
 }
-{% endhighlight %}
+```
 
 Examples:
 
-{% highlight javascript %}
+```javascript
 // composing compatible mixins
 
 composeBehaviour(
@@ -802,7 +802,7 @@ henry.setName('Seal Henry Samuel');
 henry.setCareer('Singer');
 henry.addSong('Kiss from a Rose');
 henry.addAward('Best British Male');
-{% endhighlight %}
+```
 
 ---
 
