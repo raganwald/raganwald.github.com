@@ -6,7 +6,7 @@ tags: [allonge]
 
 ### melissa e. o'neill
 
-![Melissa E. O'Neill lecturing at Stanford](/assets/images/melissaoneill.jpg)
+[![Prime Numbers](/assets/images/primes.jpg)](http://www.geek.com/science/geek-answers-why-should-we-care-about-prime-numbers-1574269/)
 
 ---
 
