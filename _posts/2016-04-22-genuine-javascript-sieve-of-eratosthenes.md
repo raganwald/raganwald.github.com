@@ -16,7 +16,7 @@ Althea and Ben were sipping feature espressos at their local indie coffee shop. 
 
 "Oh?" Althea tried to discourage Bob with overt disinterest. It was futile, of course: Bob carried on.
 
-"Well, they have five or six slots that they run, one phone screen and then the rest in a single-day onslaught." Althea nodded. Regardless of the content of each slot, having a selection of interviewers work with a candidtae could be helpful in getting a balanced perspective.
+"Well, they have five or six slots that they run, one phone screen and then the rest in a single-day onslaught." Althea nodded. Regardless of the content of each slot, having a selection of interviewers work with a candidate could be helpful in getting a balanced perspective.
 
 "So one of the slots is algorithms, and one of the posters on `trapdoor.jobs` said they asked about generating streams of primes."
 
@@ -30,9 +30,9 @@ Ben nodded. "I saw something to that effect in the comments, but since the artic
 
 [^OP]: OP: Short for *Original Poster*. Used on online message boards and forums.
 
-Althea frowned. "It's never ok to post terrible code. Somebody can and will ship it to prduction. Or foist it on impressionable interns as the Gospel Truth. Stuff like this is why the industry ignores forty years of CS research, and..."
+Althea frowned. "It's never ok to post terrible code. Somebody can and will ship it to production. Or foist it on impressionable interns as the Gospel Truth. Stuff like this is why the industry ignores forty years of CS research, and..."
 
-Ben tuned out of Althea's rant, then resumed his anecdote:
+Ben tuned out the rest of Althea's rant, then resumed his anecdote when the storm subsided:
 
 "I quietly got in touch with a buddy that works there, and they told me that they do a lot of stuff with streaming events, and that while they don't think there's a direct correlation between generating primes and job performance, they do take the attitude that manipulating lazy lists is sufficiently close to working with streams to be relevant."
 
@@ -130,11 +130,11 @@ Althea chimed in: "Naïve is right! This mimics what a child does when the sieve
 
 ### ben's sieve
 
-Ben continued. "Yes, it's naïve, but it's terrible for other reasons: I dislike how everything is jumbed together. And it looks to me like the author was focused on showing how carelessly using an eager version of `compact` would break everything, rather than writing a good lazy sieve."
+Ben continued. "Yes, it's naïve, but it's terrible for other reasons: I dislike how everything is jumbled together. And it looks to me like the author was focused on showing how carelessly using an eager version of `compact` would break everything, rather than writing a good lazy sieve."
 
 "I figured I'd rewrite it from scratch. The main decision I made was to extract the sieve into its own object. In this day and age, there's no need to be all fussy about pure functional programming if you aren't actually using a pure functional language."
 
-"The important thing is to avoid terrible stateful antipatterns and action-at-a-distance. So I created a `Sieve`, an object with a constructor and two methods of note:
+"The important thing is to avoid terrible stateful anti-patterns and action-at-a-distance. So I created a `Sieve`, an object with a constructor and two methods of note:
 
 0. `addAll(iterable)` adds all the elements of `iterable` to our sieve. It is required that the elements of `iterable` be ordered, and that the first element of `iterable` be larger than the lowest number of any iterable already added.<br/><br/>
 0. `has(number)` tests whether `number` is present in our sieve. It is required that successive calls to `has` must provide numbers that increase. In other words, calls to `has` are also ordered. Since calls to `has` are ordered by definition, the sieve is free to internally discard `number` if it returns `true`.
@@ -238,7 +238,7 @@ function * multiplesOf (startingWith, n) {
 
 "By successively merging them together, we get a list of numbers that aren't prime. The merge of the composites above is `4, 6, 8, 9, 10, 12, 12, 14, 15, 16, 18, 18, 20, 21, 22, 24, 24, 25, ...`, which we can pass to `unique` to get `4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, ...`."
 
-WIth a flourish, Ben finally revealed his work. "Here is my `MergeSieve` class. It implements `addAll` by merging the new iterator with its existing iterator of composite numbers, and it implements `has` by checking whether the number provided is equal to the first number in its list. If it is, it removes the first."
+With a flourish, Ben finally revealed his work. "Here is my `MergeSieve` class. It implements `addAll` by merging the new iterator with its existing iterator of composite numbers, and it implements `has` by checking whether the number provided is equal to the first number in its list. If it is, it removes the first."
 
 ```javascript
 class MergeSieve {
@@ -337,15 +337,15 @@ Bob looked a little glum. "Well, at least I'm hearing this from you and not from
 
 They both laughed wryly. It's almost impossible to interview for tech jobs without encountering the phenomena of an interviewer who thinks the purpose of an interview is to make other people feel stupid.[^ridiculous]
 
-[^ridiculous]: This is a ridiculous practise. First and foremost, interviews exist to find and flter people, not to boldster the egos of interviewers. Second, an interview question is carefully selected beforehand, and the interviewer has the luxury of knowing and studying the question beforehand. It is not a level playing field for comparing the experience and knowledge of interviewer and interviewee.
+[^ridiculous]: This is a ridiculous practise. First and foremost, interviews exist to find and filter people, not to bolster the egos of interviewers. Second, an interview question is carefully selected beforehand, and the interviewer has the luxury of knowing and studying the question beforehand. It is not a level playing field for comparing the experience and knowledge of interviewer and interviewee.
 
 ---
 
 ### althea and bob pair
 
-Espressos finished, Althea and Bob ordered another round and started pairing in teh coffee shop.
+Espressos finished, Althea and Bob ordered another round and started pairing in the coffee shop.
 
-Althea pointed out that the merge algorithm is useful if you always need the lowest composite number. But in truth, the sive does not *need* the lowest composite number, it merely needs to know if the number it is testing is *any* of the lowest multiples of the primes seen so far.
+Althea pointed out that the merge algorithm is useful if you always need the lowest composite number. But in truth, the sieve does not *need* the lowest composite number, it merely needs to know if the number it is testing is *any* of the lowest multiples of the primes seen so far.
 
 So when testing `26`, we need to know if it is any of `26 (2x13)`, `27 (3x9)`, `30 (5x10)`, `49 (7x7)`, `121 (11x11)`, `169 (13x13)`, `289 (17x17)`, `361 (19x19)`,` or `529 (23x23)` (the smallest of each of our `multiplesOf` iterators). It's true that if we know that `26` is the smallest of the nine iterators seen so far, it is very cheap to test whether `26 === 26`.
 
@@ -355,9 +355,9 @@ Bob thought about Althea's revelation. "We could use a set! Checking for member 
 
 Althea nodded and suggested Bob try coding that.
 
-"But wait!" A thought struck Bob. "A set is great, but after finding that `26` is in the set, we need to remove `26` from the set and insert `28`, the next multiple of two. We'd need to assocaite iterators with each of the values... So we need a dictionary."
+"But wait!" A thought struck Bob. "A set is great, but after finding that `26` is in the set, we need to remove `26` from the set and insert `28`, the next multiple of two. We'd need to associate iterators with each of the values... So we need a dictionary."
 
-Bob started coding, with Althea providing feedback. Fueled by an excellent Blue Mountain pour-over, the code flowed from keyboard to screen.
+Bob started coding, with Althea providing feedback. Fuelled by an excellent Blue Mountain pour-over, the code flowed from keyboard to screen.
 
 ---
 
@@ -454,7 +454,7 @@ Althea congratulated him. "You've got it!"
 
 "What's there to discuss?" Bob was self-congratulatory: "This is way faster. Given the number of broken sieves on the internet, I'll bet this is better than anything the interviewer can write."
 
-Althea tried her best Han Solo impersonation: "Don't get cocky, kid! After all, if I could read [The Genuine Sieve of Eratosthenes][g] by Melissa E. O'Neill, so could the interviewer. And there's lots more that could be done. But this is probabbly good enough for the purposes of a interview."
+Althea tried her best Han Solo impersonation: "Don't get cocky, kid! After all, if I could read [The Genuine Sieve of Eratosthenes][g] by Melissa E. O'Neill, so could the interviewer. And there's lots more that could be done. But this is probably good enough for the purposes of a interview."
 
 [g]: https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf
 
