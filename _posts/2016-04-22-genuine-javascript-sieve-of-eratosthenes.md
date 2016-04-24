@@ -465,7 +465,7 @@ Althea tried her best Han Solo impersonation: "Don't get cocky, kid! After all, 
 [g]: https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf
 
 
-(discuss on [hacker news](https://news.ycombinator.com/item?id=11561641) or [edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-04-22-genuine-javascript-sieve-of-eratosthenes.md))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=11561641), or [edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-04-22-genuine-javascript-sieve-of-eratosthenes.md))
 
 ---
 
