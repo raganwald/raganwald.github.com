@@ -26,7 +26,7 @@ Althea laughed. "If they did, prepare for a terrible interview. If you're thinki
 
 [last]: http://raganwald.com/2016/04/15/laziness-is-a-virtue.html "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
 
-Ben nodded. "I saw something to that effect in the comments, but since the article wasn't precisely about prime numbers, I guess the [OP][^OP] thought it was ok."
+Ben nodded. "I saw something to that effect in the comments, but since the article wasn't precisely about prime numbers, I guess the OP[^OP] thought it was ok."
 
 [^OP]: OP: Short for *Original Poster*. Used on online message boards and forums.
 
@@ -42,7 +42,7 @@ Ben went on. "So I took a crack at it as an exercise. I stressed the use of iter
 
 ### the unfaithful sieve
 
-Ben started off. "I had a look at the `tweaker.news` post. It described its algorithm as the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). The definition of which is:"
+"I had a look at the `tweaker.news` post. It described its algorithm as the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). The definition of which is:"
 
 > We start with a table of numbers (e.g., 2, 3, 4, 5, . . . ) and progressively cross off numbers in the table until the only numbers left are primes. Specifically, we begin with the first number, p, in the table, and:
 >
