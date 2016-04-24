@@ -18,9 +18,9 @@ Althea and Ben were sharing an espresso. "Althea," Ben began, "I'm prepping for 
 
 "Well, they have five or six slots that they run, one phone screen and then the rest in a single-day onslaught." Althea nodded. Regardless of the content of each slot, having a selection of interviewers work with a candidtae could be helpful in getting a balanced perspective.
 
-"So one of them is an algorithms slot, and one of the posters on trapdoor.jobs said they asked about generating streams of primes."
+"So one of them is an algorithms slot, and one of the posters on `trapdoor.jobs` said they asked about generating streams of primes."
 
-"In a strange coïncidence, I was just reading a blog post about lazily generating prime numbers on tweaker.news, I wonder if they read the same article and turned it into an interview question?"
+"In a strange coïncidence, I was just reading a blog post about lazily generating prime numbers on `tweaker.news`, I wonder if they read the same article and turned it into an interview question?"
 
 Althea laughed. "If they did, prepare for a terrible interview. If you're thinking of [the same post that I read][last], the algorithm is wrong! Or at least, terrible."
 
@@ -40,7 +40,7 @@ Ben went on. "So I took a crack at it as an exercise. I stressed the use of iter
 
 ### the unfaithful sieve
 
-Ben started off. "I had a look at the tweaker.news post. It described its algorithm as the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). The definition of which is:"
+Ben started off. "I had a look at the `tweaker.news` post. It described its algorithm as the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). The definition of which is:"
 
 > We start with a table of numbers (e.g., 2, 3, 4, 5, . . . ) and progressively cross off numbers in the table until the only numbers left are primes. Specifically, we begin with the first number, p, in the table, and:
 >
@@ -124,20 +124,20 @@ Althea chimed in: "Naïve is right! This mimics what a child does when the sieve
 >
 > One two three four FIVE (cross out), one two three four FIVE (cross out), one two three four FIVE (cross out), ...
 
-"But Ben," Althea asked, "Do you see the problem with this code? It has the performance characteristics of [Trial Division](https://en.wikipedia.org/wiki/Trial_division): Every number, whether prime or not, must be 'touched' by every prime smaller than it, whether it is divisible by that prime or not. Melissa O'Neill calls this an 'Unfaithful Sieve' in her paper [The Genuine Sieve of Eratosthenes][g]."
-
 ---
 
 ### ben's sieve
 
-Ben agreed. "Yes, it's terrible. I dislike how everything is jumbed together, so I extracted the sieve into its own object. In this day and age, there's no need to be all fussy about pure functional programming if you aren't actually using a pure functional language."
+Ben continued. "Yes, it's naïve, but it's terrible for other reasons: I dislike how everything is jumbed together. And it looks to me like the author was focused on showing how carelessly using an eager version of `compact` would break everything, rather than writing a good lazy sieve."
+
+"I figured I'd rewrite it from scratch. The main decision I made was to extract the sieve into its own object. In this day and age, there's no need to be all fussy about pure functional programming if you aren't actually using a pure functional language."
 
 "The important thing is to avoid terrible stateful antipatterns and action-at-a-distance. So I created a `Sieve`, an object with a constructor and two methods of note:
 
 0. `addAll(iterable)` adds all the elements of `iterable` to our sieve. It is required that the elements of `iterable` be ordered, and that the first element of `iterable` be larger than the lowest number of any iterable already added.
 0. `has(number)` tests whether `number` is present in our sieve. It is required that successive calls to `has` must provide numbers that increase. In other words, calls to `has` are also ordered. Since calls to `has` are ordered by definition, the sieve is free to internally discard `number` if it returns `true`.
 
-"Given a sive object, my generator for primes is much simpler:"
+"Given a sieve object, my generator for primes is much simpler:"
 
 {% highlight javascript %}
 function * Primes () {
@@ -155,7 +155,9 @@ function * Primes () {
 }
 {% endhighlight %}
 
-So let's write a `Sieve` class. Our first crack will actually use the same "unfaithful" approach. Only instead of "crossing out" numbers in a list, we'll *merge* lists of composite numbers together. Here is a generator that takes two ordered lists and merges them naïvely:
+Althea nodded and Ben cracked his knuckles metaphorically.
+
+"So now to write the `Sieve` class. Instead of "crossing out" numbers in a list, I decided to *merge* lists of composite numbers together. Here is a generator that takes two ordered lists and merges them naïvely:"
 
 {% highlight javascript %}
 function * merge (aIterable, bIterable) {
@@ -186,7 +188,7 @@ function * merge (aIterable, bIterable) {
 }
 {% endhighlight %}
 
-We want to work with ordered lists that are also unique, so this function eliminates duplicates:
+"We need to work with ordered lists that are also unique, so this generator lazily eliminates duplicates in a stream:"
 
 {% highlight javascript %}
 function * unique (iterable) {
@@ -204,7 +206,7 @@ function * unique (iterable) {
 }
 {% endhighlight %}
 
-We need to get the `first` element of a list and the `rest` of a list on a regular basis. Here's a helper that works very nicely with JavaScript's destructuring assignment:
+"As I worked, I needed to to get the `first` element of a list and the `rest` of a list on a regular basis. Here's a helper that works very nicely with JavaScript's destructuring assignment:"
 
 {% highlight javascript %}
 function destructure (iterable) {
@@ -217,7 +219,9 @@ function destructure (iterable) {
 }
 {% endhighlight %}
 
-With these in hand, we can write our sieve in the new way. As we collect primes, we create a list of composite numbers by collecting the multiples of each primes, starting with the prime squared. So for two, our composites are `4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, ...`. For three, they're `9, 12, 15, 18, 21, 24, ...`, and for five they're `25, 30, 35, 40, 45, ...`.
+Althea chafed at Ben's style of going through all the preliminaries before getting to the main business. It was very *academic*, but not the most effective way to communicate how code is written and what it does.
+
+Ben continued "With these in hand, we can write our sieve in the new way. As we collect primes, we create a list of composite numbers by collecting the multiples of each primes, starting with the prime squared. So for two, our composites are `4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, ...`. For three, they're `9, 12, 15, 18, 21, 24, ...`, and for five they're `25, 30, 35, 40, 45, ...`."
 
 {% highlight javascript %}
 function * multiplesOf (startingWith, n) {
@@ -230,9 +234,9 @@ function * multiplesOf (startingWith, n) {
 }
 {% endhighlight %}
 
-By successively merging them together, we get a list of numbers that aren't prime. The merge of the composites above is `4, 6, 8, 9, 10, 12, 12, 14, 15, 16, 18, 18, 20, 21, 22, 24, 24, 25, ...`, which we can pass to `unique` to get `4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, ...``.
+"By successively merging them together, we get a list of numbers that aren't prime. The merge of the composites above is `4, 6, 8, 9, 10, 12, 12, 14, 15, 16, 18, 18, 20, 21, 22, 24, 24, 25, ...`, which we can pass to `unique` to get `4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, ...``."
 
-Here is our `MergeSieve` class. It implements `addAll` by merging the new iterator with its existing iterator of composite numbers, and it implements `has` by checking whether the number provided is equal to the first number in its list. If it is, it removes the first.
+WIth a flourish, Ben finally revealed his work. "Here is my `MergeSieve` class. It implements `addAll` by merging the new iterator with its existing iterator of composite numbers, and it implements `has` by checking whether the number provided is equal to the first number in its list. If it is, it removes the first."
 
 {% highlight javascript %}
 class MergeSieve {
@@ -269,7 +273,11 @@ class MergeSieve {
     } = destructure(this._rest));
   }
 }
+{% endhighlight %}
 
+"And it works flawlessly!"
+
+{% highlight javascript %}
 function * Primes () {
   let prime = 2;
   const composites = new MergeSieve();
@@ -296,6 +304,13 @@ take(100, Primes())
      433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491,
      499, 503, 509, 521, 523, 541]
 {% endhighlight %}
+
+The exposition ran out of steam like a clock winding down. Ben looked at Althea, anxiously. "What do you think?"
+
+"Ben," Althea began, "This is much cleaner than the code from the blog." Ben nodded. "But," Althea continued, "If you were to show this to me in an interview, I would ask you about performance. Does this improve on the original? Or is it the same thing, dressed up in nicer code?"
+
+
+"Do you see the problem with this code? It has the performance characteristics of [Trial Division](https://en.wikipedia.org/wiki/Trial_division): Every number, whether prime or not, must be 'touched' by every prime smaller than it, whether it is divisible by that prime or not. Melissa O'Neill calls this an 'Unfaithful Sieve' in her paper [The Genuine Sieve of Eratosthenes][g]."
 
 So far so good, but looking at our implementation of `merge`, we can see that the way it works is that as we take things from a collection of lists merged together, we're invoking a series of comparisons, one for each list. So every time we come across a composite number, we're invoking one comparison for each prime less than the composite number.
 
