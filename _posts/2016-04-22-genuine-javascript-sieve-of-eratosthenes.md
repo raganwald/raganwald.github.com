@@ -12,13 +12,13 @@ tags: [allonge]
 
 ### the trap door
 
-Althea and Ben were sharing an espresso. "Althea," Ben began, "I'm prepping for my interview with XL, and I did some googling for their interview questions..." Althea died a little inside *That conversation*, they thought. Programmers were notorious for taking interview questions extremely personally.
+Althea and Ben were sipping feature espressos at their local indie coffee shop. "Althea," Ben began, "I'm prepping for my interview with RealTime, and I did some googling for their interview questions..." Althea died a little inside *That conversation*, they thought. Programmers were notorious for taking interview questions extremely personally.
 
-"Oh?" Althea said aloud, trying not to encourage the conversation along those lines.
+"Oh?" Althea tried to discourage Bob with overt disinterest. It was futile, of course: Bob carried on.
 
 "Well, they have five or six slots that they run, one phone screen and then the rest in a single-day onslaught." Althea nodded. Regardless of the content of each slot, having a selection of interviewers work with a candidtae could be helpful in getting a balanced perspective.
 
-"So one of them is an algorithms slot, and one of the posters on `trapdoor.jobs` said they asked about generating streams of primes."
+"So one of the slots is algorithms, and one of the posters on `trapdoor.jobs` said they asked about generating streams of primes."
 
 "In a strange coïncidence, I was just reading a blog post about lazily generating prime numbers on `tweaker.news`, I wonder if they read the same article and turned it into an interview question?"
 
