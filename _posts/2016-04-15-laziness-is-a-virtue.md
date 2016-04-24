@@ -1,5 +1,5 @@
 ---
-title: "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris!”"
+title: "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
 layout: default
 tags: [allonge]
 ---
