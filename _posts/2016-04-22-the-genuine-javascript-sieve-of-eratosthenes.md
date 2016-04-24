@@ -1,7 +1,7 @@
 ---
 title: "The Genuine JavaScript Sieve of Eratosthenes"
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 ### melissa e. o'neill
