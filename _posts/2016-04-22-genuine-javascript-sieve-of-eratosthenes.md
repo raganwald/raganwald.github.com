@@ -460,7 +460,7 @@ Althea congratulated him. "You've got it!"
 
 "What's there to discuss?" Bob was self-congratulatory: "This is way faster. Given the number of broken sieves on the internet, I'll bet this is better than anything the interviewer can write."
 
-Althea tried her best Han Solo impersonation: "Don't get cocky, kid! After all, if I could read [The Genuine Sieve of Eratosthenes][g] by Melissa E. O'Neill, so could the interviewer. And there's lots more that could be done. But this is probably good enough for the purposes of a interview."
+Althea tried her best Han Solo impersonation: "Don't get cocky, kid! After all, if I could read [The Genuine Sieve of Eratosthenes][g], so could the interviewer. And there's lots more that could be done. But this is probably good enough for the purposes of a interview."
 
 [g]: https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf
 
