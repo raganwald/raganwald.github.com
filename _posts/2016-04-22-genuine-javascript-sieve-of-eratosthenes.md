@@ -339,7 +339,7 @@ Bob looked a little glum. "Well, at least I'm hearing this from you and not from
 
 They both laughed wryly. It's almost impossible to interview for tech jobs without encountering the phenomena of an interviewer who thinks the purpose of an interview is to make other people feel stupid.[^ridiculous]
 
-[^ridiculous]: This is a ridiculous practise. First and foremost, interviews exist to find and filter people, not to bolster the egos of interviewers. Second, an interview question is carefully selected beforehand, and the interviewer has the luxury of knowing and studying the question beforehand. It is not a level playing field for comparing the experience and knowledge of interviewer and interviewee.
+[^ridiculous]: Belittling interviewees on the basis of the interviewer's superior understanding f a contrived problem is a ridiculous practise. First and foremost, interviews exist to find and filter people, not to bolster the egos of interviewers. Second, an interview question is carefully selected beforehand, and the interviewer has the luxury of knowing and studying the question in advance. It is not a level playing field for comparing the experience and knowledge of interviewer and interviewee.
 
 ---
 
