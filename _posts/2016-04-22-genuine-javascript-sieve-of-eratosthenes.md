@@ -10,7 +10,7 @@ tags: [allonge]
 
 ---
 
-### the trap door
+### althea and ben have espressos
 
 Althea and Ben were sipping feature espressos at their local indie coffee shop. "Althea," Ben began, "I'm prepping for my interview with RealTime, and I did some googling for their interview questions..." Althea died a little inside *That conversation*, they thought. Programmers were notorious for taking interview questions extremely personally.
 
@@ -26,11 +26,13 @@ Althea laughed. "If they did, prepare for a terrible interview. If you're thinki
 
 [last]: http://raganwald.com/2016/04/15/laziness-is-a-virtue.html "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
 
-Ben nodded. "I saw something to that effect in the comments, but since the article wasn't precisely about prime numbers, I guess the author thought it was ok."
+Ben nodded. "I saw something to that effect in the comments, but since the article wasn't precisely about prime numbers, I guess the [OP][^OP] thought it was ok."
+
+[^OP]: OP: Short for *Original Poster*. Used on online message boards and forums.
 
 Althea frowned. "It's never ok to post terrible code. Somebody can and will ship it to prduction. Or foist it on impressionable interns as the Gospel Truth. Stuff like this is why the industry ignores forty years of CS research, and..."
 
-Ben tuned out of Althea's rant for a moment. When they finally ran out of steam, Ben resumed:
+Ben tuned out of Althea's rant, then resumed his anecdote:
 
 "I quietly got in touch with a buddy that works there, and they told me that they do a lot of stuff with streaming events, and that while they don't think there's a direct correlation between generating primes and job performance, they do take the attitude that manipulating lazy lists is sufficiently close to working with streams to be relevant."
 
