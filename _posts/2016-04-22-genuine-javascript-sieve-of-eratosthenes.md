@@ -4,7 +4,7 @@ layout: default
 tags: [allonge]
 ---
 
-[![Espresso](/assets/images/prime-espresso-jpg)](https://www.flickr.com/photos/cahadikincreations/8459301889)
+[![Espresso](/assets/images/prime-espresso.jpg)](https://www.flickr.com/photos/cahadikincreations/8459301889)
 
 ---
 
