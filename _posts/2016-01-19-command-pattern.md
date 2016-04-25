@@ -136,7 +136,7 @@ This is the canonical way to "do commands" in OOP: Make them instances of a clas
 
 ![](/assets/images/command/012.png)
 
-We can also query commends. Naturally, we do this by implementing methods that report on some critical characteristic, like a command's scope. For simplicity, we won't implement a `.scope()` method that reports the extent of an edit's election, since JavaScript encourages unencapsulated direct property access.
+We can also query commands. Naturally, we do this by implementing methods that report on some critical characteristic, like a command's scope. For simplicity, we won't implement a `.scope()` method that reports the extent of an edit's selection, since JavaScript encourages unencapsulated direct property access.
 
 But we can report on the amount by which an edit lengthens or shortens a buffer:
 
