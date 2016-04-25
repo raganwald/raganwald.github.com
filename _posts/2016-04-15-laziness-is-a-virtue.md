@@ -368,7 +368,9 @@ Many other things work this way, for example escaped and unescaped strings. Or o
 
 We need to ensure that our programs work with each of the types, using the correct operations, even if the incorrect operations are also "duck compatible" and appear to work at first glance.
 
-(discuss on [hacker news](https://news.ycombinator.com/item?id=11516215))
+---
+
+Follow-up: [The Hubris of Impatient Sieves of Eratosthenes](http://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html)
 
 ---
 
