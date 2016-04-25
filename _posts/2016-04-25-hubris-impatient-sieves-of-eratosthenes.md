@@ -32,7 +32,7 @@ Ben tuned out the rest of Althea's rant, then resumed his anecdote when the stor
 
 ### the unfaithful sieve
 
-Bob pulled up the blog post on a laptop. "The code in the blog post was the most naïve possible mapping from the writtens description of the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes) to code:"
+Bob pulled up the blog post on a laptop. "The code in the blog post was the most naïve possible mapping from the written description of the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes) to code:"
 
 ```javascript
 function * nullEveryNth (skipFirst, n, iterable) {
@@ -443,19 +443,21 @@ Althea congratulated him. "You've got it!"
 
 ---
 
-### the point
+### the final point
 
 Althea tried her best Han Solo impersonation: "Don't get cocky, kid! After all, if I could read [The Genuine Sieve of Eratosthenes][g], so could anybody else looking for a job. And besides, that's not the point."
 
-"The point," Althea said patiently--Bob was, after all, a friend--"The point is that even when setting out to implement an algorithm with the best of intentions, a small error in the slection of a data structure can have a major effect on its behaviour."
+"The point," Althea said patiently--Bob was, after all, a friend--"The point is that even when setting out to implement an algorithm with the best of intentions, a small error in the selection of a data structure can have a major effect on its behaviour."
 
 "Software is built in layers of abstractions. In the OP's case, using a counter to null out the composite numbers was the right abstraction but the wrong implementation. And in *your* case, Bob, using a naïve merge to was also the right abstraction: You were able to write a prime sieve that used `===` for comparisons, it ought to have been wicked fast. But the implementation of the merge let you down, it was as slow as the OP's counting."
 
 "So the lesson is, studying algorithms is not about studying abstractions. It's about the implementations, at every level of detail."
 
-Bob considered. "Ok, fair enough. In that case, how do I know whether the Hash table implementation is fast enough?"
+Bob considered. "Ok, fair enough. In that case, how do I know whether the hash table implementation is fast enough?"
 
 Althea grinned: "If you do some more research, you will discover that this is not the fast-*est* implementation. But for production code, with all of the requirements and trade-offs that come into play, it may be fast *enough*."
+
+"After all, we can't keep tweaking the same thing over and over again for diminishing returns. We need to move on and find big gains somewhere else. That's why impatience can be a virtue: We programmers should always be hungry for important work to do."
 
 ---
 
