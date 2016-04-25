@@ -1,7 +1,7 @@
 ---
 title: "The Genuine JavaScript Sieve of Eratosthenes"
 layout: default
-tags: [allonge]
+tags: [allonge, noindex]
 ---
 
 [![Espresso](/assets/images/prime-espresso.jpg)](https://www.flickr.com/photos/cahadikincreations/8459301889)
