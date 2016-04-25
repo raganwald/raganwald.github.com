@@ -12,9 +12,9 @@ tags: [allonge]
 
 Althea and Ben were sipping feature espressos at their local indie coffee shop. "Althea," Ben began, "I'm prepping for interviews with you-know-who, so I've been trying to read as many algorithm blog posts as I can, just to catch up on all the stuff I've forgotten now that Ive been working for a few years..." Althea died a little inside. *That conversation*. Programmers were notorious for taking interview questions extremely personally.
 
-"Oh?" Althea tried to discourage Bob with overt disinterest. It was futile, of course: Bob carried on.
+"Oh?" Althea tried to discourage Ben with overt disinterest. It was futile, of course: Ben carried on.
 
-"Well, I was just reading a blog post about [lazily generating prime numbers][last], and I remember being asked to write a program to generate primes back when I first entered the industry. I wonder if they read the same article and turned it into an interview question?"
+"Well, I was just reading a blog post about [lazily generating prime numbers][last], and I remember being asked to write a program to generate primes back when I first entered the industry."
 
 [last]: http://raganwald.com/2016/04/15/laziness-is-a-virtue.html "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
 
@@ -32,7 +32,7 @@ Ben tuned out the rest of Althea's rant, then resumed his anecdote when the stor
 
 ### the unfaithful sieve
 
-Bob pulled up the blog post on a laptop. "The code in the blog post was the most naïve possible mapping from the written description of the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes) to code:"
+Ben pulled up the blog post on a laptop. "The code in the blog post was the most naïve possible mapping from the written description of the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes) to code:"
 
 ```javascript
 function * nullEveryNth (skipFirst, n, iterable) {
@@ -308,9 +308,9 @@ Ben nodded. "But," Althea continued, "If you were to show this to me in an inter
 
 [g]: https://www.cs.hmc.edu/~oneill/papers/Sieve-JFP.pdf
 
-Bob thought about this, then agreed that for every number `n`, the OP's code required an operation for each prime smaller than `n`. In the OP's naïve sieve, checking a number like `26` required a comparison for the multiples of `2`, `3`, `5`, `7`, `11` and so on up to `23` even though `26` is only divisible by `2` and `13`.
+Ben thought about this, then agreed that for every number `n`, the OP's code required an operation for each prime smaller than `n`. In the OP's naïve sieve, checking a number like `26` required a comparison for the multiples of `2`, `3`, `5`, `7`, `11` and so on up to `23` even though `26` is only divisible by `2` and `13`.
 
-Althea switched to Bob's code.
+Althea switched to Ben's code.
 
 "Now let's look at this implementation of `merge`. The way it works is that as we take things from a collection of lists merged together, we're invoking a series of comparisons, one for each list. So every time we come across a composite number, we're invoking one comparison for each prime less than the composite number."
 
@@ -320,7 +320,7 @@ Althea switched to Bob's code.
 
 "So what we want is an algorithm where we only have to check a composite's prime factors, and even then only those less than its square root."
 
-Bob looked a little glum. "Well, at least I'm hearing this from you and not from an interviewer trying to impress themselves by tearing me down!"
+Ben looked a little glum. "Well, at least I'm hearing this from you and not from an interviewer trying to impress themselves by tearing me down!"
 
 They both laughed wryly. It's almost impossible to interview for tech jobs without encountering the phenomena of an interviewer who thinks the purpose of an interview is to make other people feel stupid.[^ridiculous]
 
@@ -330,7 +330,7 @@ They both laughed wryly. It's almost impossible to interview for tech jobs witho
 
 ### althea and bob pair
 
-Espressos finished, Althea and Bob ordered another round and started pairing in the coffee shop.
+Espressos finished, Althea and Ben ordered another round and started pairing in the coffee shop.
 
 Althea pointed out that the merge algorithm is useful if you always need the lowest composite number. But in truth, the sieve does not *need* the lowest composite number, it merely needs to know if the number it is testing is *any* of the lowest multiples of the primes seen so far.
 
@@ -338,13 +338,13 @@ So when testing `26`, we need to know if it is any of the smallest of each of ou
 
 But as we've seen, the naïve merge means we need eight tests to determine that `26` is the smallest. What if it was cheaper to check whether `26` is anywhere in the set `26, 27, 30, 49, 121, 169, 289, 361, 529`?
 
-Bob thought about Althea's revelation. "We could use a set! Checking for membership in a set is more expensive than `===`, but once we have a lot of primes, it'll be way cheaper than doing comparisons."
+Ben thought about Althea's revelation. "We could use a set! Checking for membership in a set is more expensive than `===`, but once we have a lot of primes, it'll be way cheaper than doing comparisons."
 
-Althea nodded and suggested Bob try coding that.
+Althea nodded and suggested Ben try coding that.
 
-"But wait!" A thought struck Bob. "A set is great, but after finding that `26` is in the set, we need to remove `26` from the set and insert `28`, the next multiple of two. We'd need to associate iterators with each of the values... So we need a dictionary."
+"But wait!" A thought struck Ben. "A set is great, but after finding that `26` is in the set, we need to remove `26` from the set and insert `28`, the next multiple of two. We'd need to associate iterators with each of the values... So we need a dictionary."
 
-Bob started coding, with Althea providing feedback. Fuelled by an excellent Blue Mountain pour-over, the code flowed from keyboard to screen.
+Ben started coding, with Althea providing feedback. Fuelled by an excellent Blue Mountain pour-over, the code flowed from keyboard to screen.
 
 ---
 
@@ -354,7 +354,7 @@ Bob started coding, with Althea providing feedback. Fuelled by an excellent Blue
 
 ### the hash merge
 
-Bob placed the prime iterators into a hash table, indexed by the next value for the iterator. Thus, the keys of the table were composites, and the values of the table were lists of iterators (a single composite might have two or more iterators, for example `12`).
+Ben placed the prime iterators into a hash table, indexed by the next value for the iterator. Thus, the keys of the table were composites, and the values of the table were lists of iterators (a single composite might have two or more iterators, for example `12`).
 
 He spoke aloud as he walked through his new implementation:
 
@@ -435,11 +435,11 @@ take(100, Primes())
 
 Althea congratulated him. "You've got it!"
 
-"So," Bob smiled, "I guess the problem as that the OP had the hubris to write about a lazy algorithm, but not one that was impatient enough to run quickly!"
+"So," Ben smiled, "I guess the problem as that the OP had the hubris to write about a lazy algorithm, but not one that was impatient enough to run quickly!"
 
 "Absolutely!" Althea was reassuring. "This has improved on the OP's code style *and* performance. And now you're ready to discuss the Sieve of Eratosthenes with greater rigour."
 
-"What's there to discuss?" For someone who had only hours before written their own Unfaithful Sieve, Bob was was exhibiting some hubris of his own: "This is way faster. Given the number of broken sieves on the internet, I'll bet this is better than anything the interviewer sees from anyone else."
+"What's there to discuss?" For someone who had only hours before written their own Unfaithful Sieve, Ben was was exhibiting some hubris of his own: "This is way faster. Given the number of broken sieves on the internet, I'll bet this is better than anything the interviewer sees from anyone else."
 
 ---
 
@@ -447,13 +447,13 @@ Althea congratulated him. "You've got it!"
 
 Althea tried her best Han Solo impersonation: "Don't get cocky, kid! After all, if I could read [The Genuine Sieve of Eratosthenes][g], so could anybody else looking for a job. And besides, that's not the point."
 
-"The point," Althea said patiently--Bob was, after all, a friend--"The point is that even when setting out to implement an algorithm with the best of intentions, a small error in the selection of a data structure can have a major effect on its behaviour."
+"The point," Althea said patiently--Ben was, after all, a friend--"The point is that even when setting out to implement an algorithm with the best of intentions, a small error in the selection of a data structure can have a major effect on its behaviour."
 
-"Software is built in layers of abstractions. In the OP's case, using a counter to null out the composite numbers was the right abstraction but the wrong implementation. And in *your* case, Bob, using a naïve merge to was also the right abstraction: You were able to write a prime sieve that used `===` for comparisons, it ought to have been wicked fast. But the implementation of the merge let you down, it was as slow as the OP's counting."
+"Software is built in layers of abstractions. In the OP's case, using a counter to null out the composite numbers was the right abstraction but the wrong implementation. And in *your* case, Ben, using a naïve merge to was also the right abstraction: You were able to write a prime sieve that used `===` for comparisons, it ought to have been wicked fast. But the implementation of the merge let you down, it was as slow as the OP's counting."
 
 "So the lesson is, studying algorithms is not about studying abstractions. It's about the implementations, at every level of detail."
 
-Bob considered. "Ok, fair enough. In that case, how do I know whether the hash table implementation is fast enough?"
+Ben considered. "Ok, fair enough. In that case, how do I know whether the hash table implementation is fast enough?"
 
 Althea grinned: "If you do some more research, you will discover that this is not the fast-*est* implementation. But for production code, with all of the requirements and trade-offs that come into play, it may be fast *enough*."
 
