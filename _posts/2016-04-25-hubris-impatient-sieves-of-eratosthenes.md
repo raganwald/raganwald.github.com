@@ -461,6 +461,10 @@ Althea grinned: "If you do some more research, you will discover that this is no
 
 ---
 
+([edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-04-25-hubris-impatient-sieves-of-eratosthenes.md))
+
+---
+
 ### source code
 
 <script src="https://gist.github.com/raganwald/78b086166c0712b49e5160edca5ebadd.js"></script>
