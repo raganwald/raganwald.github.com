@@ -6,6 +6,8 @@ tags: [homoiconic]
 
 In this business, you meet more than your fair share of eccentric developers with their own idiosyncratic ideas about software development. (If you're like me, you need go no further than a mirror to see what one looks like.) One of the most iconoclastic fellows I ever met was a grizzled veteran named Jim Kelly. For reasons of interest only to cultural antiques, everyone called him "Williams."
 
+![Jim Kelly as "Williams"](/assets/images/williams.jpg)
+
 Williams claimed to have gotten started when using punch cards and random access memory was considered effete by the [drum memory wizards of the previous generation][mel]. Like many retro-grouches, he would fondly recall rites of passage such as booting computers by toggling the three bootstrap instructions into a CPU's front panel. If his eccentricity stopped at recounting tales from days of yore, I'd probably have forgotten him years ago.
 
 [mel]: http://www.pbm.com/~lindahl/mel.html "The Story of Mel"
@@ -38,7 +40,7 @@ However, once Williams delivered a feature, he liked to move on to the next feat
 # wall_post.rb
 
 class WallPost < ActiveRecord::Model
-	# ...
+  # ...
 end
 ```
 
@@ -48,8 +50,8 @@ Once the Wall Posts were delivered with tests, he might work on comments. But in
 # wall_post.rb
 
 class WallPost < ActiveRecord::Model
-	has_many :comments
-	# ...
+  has_many :comments
+  # ...
 end
 ```
 
@@ -59,8 +61,8 @@ Williams would isolate all of the code for comments into a module or plugin, and
 # vendor/plugins/comments/lib/railtie.rb
 
 WallPost.class_eval do
-	has_many :comments
-	# ...
+  has_many :comments
+  # ...
 end
 ```
 
@@ -77,11 +79,11 @@ Features are fairly coarse-grained, so after getting over the shock of Williams'
 
 class WallPost < ActiveRecord::Model
 
-	def doSomething
-		WallPost.transaction do
-			# ...
-		end
-	end
+  def doSomething
+    WallPost.transaction do
+      # ...
+    end
+  end
 
 end
 ```
@@ -93,9 +95,9 @@ Williams would write:
 
 class WallPost < ActiveRecord::Model
 
-	def do_something
-		# ...
-	end
+  def do_something
+    # ...
+  end
 
 end
 ```
@@ -107,13 +109,13 @@ And:
 
 WallPost.class_eval do
 
-	def do_something_with_db_transaction
-		WallPost.transaction do
-			do_something_without_db_transaction
-		end
-	end
+  def do_something_with_db_transaction
+    WallPost.transaction do
+      do_something_without_db_transaction
+    end
+  end
 
-	alias_method_chain :do_something, :db_transaction
+  alias_method_chain :do_something, :db_transaction
 
 end
 ```
