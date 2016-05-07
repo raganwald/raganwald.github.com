@@ -51,7 +51,9 @@ for (const something of Empty()) console.log(something);
   //=> nothing happens!
 ```
 
-So our empty generator acts like and empty collection. Can we make a generator that acts like a collection with a value? Yes, with `yield`:
+We call something you can iterate over, an *Iterable*. There's another, lowever level way to iterate over things that we'll seee a little later.
+
+So our empty generator acts like an empty collection. Can we make a generator that acts like a collection with a value? Yes, with `yield`:
 
 ```javascript
 const One = function * () {
@@ -81,7 +83,7 @@ for (const something of OneTwo()) console.log(something);
        2
 ```
 
-Interestingly, yielding is titally dynamic. For example, we can yield three values like this:
+Interestingly, yielding can be dynamic. For example, we can yield three values like this:
 
 ```javascript
 const OneTwoThree = function * () {
@@ -107,6 +109,58 @@ for (const something of OneTwoThree()) console.log(something);
        3
 ```
 
+### composing generators
+
+Generators can take arguments. We've already seen the simplest possible generator:
+
+```javascript
+const Empty = function * () {};
+```
+
+Here's the second simplest, a generator that takes an iterable as its argument:
+
+```javascript
+const None = function * (iterable) {};
+
+[...None(OneTwoThree())]
+  //=> []
+
+for (const something of None(OneTwoThree())) console.log(something);
+  //=> nothing happens!
+```
+
+`None` always produces an empty iterable, no matter what you give it. You recall `OneTwoThree` from above? Here's another take on it:
+
+```javascript
+const OneTwoThreeII = function * () {
+  const iterable = [1, 2, 3];
+  for (const i of iterable) yield i;
+};
+
+[...OneTwoThreeII()]
+  //=> [1, 2, 3]
+
+for (const something of OneTwoThreeII()) console.log(something);
+  //=> 1
+       2
+       3
+```
+
+Which leads us to:
+
+```javascript
+const I = function * (iterable) {
+  for (const i of iterable) yield i;
+};
+
+[...I(OneTwoThree())]
+  //=> [1, 2, 3]
+
+for (const something of I([3, 2, 1])) console.log(something);
+  //=> 3
+       2
+       1
+```
 
 ---
 
