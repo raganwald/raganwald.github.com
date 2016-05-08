@@ -4,7 +4,9 @@ layout: default
 tags: [allonge]
 ---
 
-[![Plasma Generator](/assets/images/plasma-generator.jpg)](https://www.flickr.com/photos/willfolsom/6951127040)
+(*This is a work-in-progress, feel free to read and even submit an edit, but do not post on Reddit or Hacker News, thank you.*)
+
+[![Generators](/assets/images/generators.jpg)](https://www.flickr.com/photos/zabowski/2633434038)
 
 ---
 
@@ -117,7 +119,7 @@ let { done, value } = iterator.next();
   //=> {"done":true}
 ```
 
-We can *flatten* an iterator with `yield *`:
+And we can *flatten* an iterator with `yield *`:
 
 ```javascript
 const catenate = function * (...iterables) {
@@ -164,101 +166,140 @@ for (const something of rest(OneTwoThree()))
        3
 ```
 
-[![Generators](/assets/images/generators.jpg)](https://www.flickr.com/photos/zabowski/2633434038)
+That's it, we're ready to talk about "Generators for People Who Don't Give a Shit About GettingStuffDone™."
 
 ---
 
-### composing generators
+[![Plasma Generator](/assets/images/plasma-generator.jpg)](https://www.flickr.com/photos/willfolsom/6951127040)
+
+---
+
+### basic building blocks for generators
 
 Generators can take arguments. We've already seen the simplest possible generator:
 
 ```javascript
-const Empty = function * () {};
+function * Empty () {};
 ```
 
-Here's the second simplest, a generator that takes an iterable as its argument:
+Here's the second simplest, a generator that takes a value and returns an iterator over that value:
 
 ```javascript
-const None = function * (iterable) {};
-
-[...None(OneTwoThree())]
-  //=> []
-
-for (const something of None(OneTwoThree())) console.log(something);
-  //=> nothing happens!
-```
-
-`None` always produces an empty iterable, no matter what you give it. You recall `OneTwoThree` from above? Here's another take on it:
-
-```javascript
-const OneTwoThreeII = function * () {
-  const iterable = [1, 2, 3];
-  for (const i of iterable) yield i;
+function * just (value) {
+  yield value;
 };
 
-[...OneTwoThreeII()]
-  //=> [1, 2, 3]
+for (const something of just('Hello')) console.log(something);
+  //=> 'Hello'
+```
 
-for (const something of OneTwoThreeII()) console.log(something);
+A slightly more flexible implementation encompasses the functionality of `Empty`:
+
+```javascript
+function * just (...values) {
+  yield * values;
+};
+
+for (const something of just()) console.log(something);
+  //=> nothing happens!
+
+for (const something of just('Hello')) console.log(something);
+  //=> 'Hello'
+```
+
+We already saw `rest`:
+
+```javascript
+function * rest (iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  iterator.next()
+  yield * iterator;
+};
+
+for (const something of rest(['Hello', 'Java', 'Script'])) console.log(something);
+  //=> Java
+       Script
+```
+
+The inverse is `first`, it's an ordinary function:
+
+```javascript
+function first (iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  const { done, value } = iterator.next();
+  if (!done) return value;
+};
+
+first(['Hello', 'Java', 'Script'])
+```
+
+Sometimes you need both the `first` and the `rest` of an iterable, and you don't want to call them in succession because iterables are stateful. So it's convenient to use destructuring to get both at once:
+
+```javascript
+function split (iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  const { done, value: first } = iterator.next();
+  if (!done) {
+    return { first, rest: iterator };
+  }
+};
+
+const { first, rest } = split([1, 2, 3, 4, 5]);
+
+console.log(first);
+  //=> 1
+for (const something of rest) console.log(something);
+  //=> 2
+       3
+       4
+       5
+```
+
+The inverse of splitting an iterable into `first` and `rest` is to `join` them. We'll use a generator:
+
+```javascript
+function * join (first, rest) {
+  yield first;
+  yield * rest;
+};
+
+const iterable = join(5, [4, 3, 2, 1]);
+
+for (const something of iterable) console.log(something);
+  //=> 5
+       4
+       3
+       2
+       1
+```
+
+We saw how to split the first element from a generator, we can `take` multiple elements:
+
+```javascript
+function * take (numberToTake, iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  for (let i = 0; i < numberToTake; ++i) {
+    const { done, value } = iterator.next();
+    if (done) return;
+    else yield value;
+  }
+}
+
+const iterable = take(3, [1, 2, 3, 4, 5]);
+
+for (const something of iterable) console.log(something);
   //=> 1
        2
        3
 ```
 
-Which leads us to:
+### recursive generators
 
-```javascript
-const I = function * (iterable) {
-  for (const i of iterable) yield i;
-};
-
-[...I(OneTwoThree())]
-  //=> [1, 2, 3]
-
-for (const something of I([3, 2, 1])) console.log(something);
-  //=> 3
-       2
-       1
-```
-
-Yielding all the values of an iterable is called *flattening* it in functional terms. It is so useful, there is a shortcut:
-
-```javascript
-const I = function * (iterable) {
-  yield * iterable;
-};
-
-[...I(OneTwoThree())]
-  //=> [1, 2, 3]
-
-for (const something of I([3, 2, 1])) console.log(something);
-  //=> 3
-       2
-       1
-```
-
-You recall that we could take an iterable and extract an iterator from it? This can be useful:
-
-```javascript
-const rest = function * (iterable) {
-  const iterator = iterable[Symbol.iterator]();
-
-  iterator.next();
-  yield * iterator;
-};
-
-[...rest(OneTwoThree())]
-  //=> [2, 3]
-
-for (const something of rest([3, 2, 1])) console.log(something);
-  //=> 2
-       1
-```
-
-`rest` gives us an iterable that iterates over all the elements of an iterable except the first (if it has one).
-
-We can make generators that take two or more iterables as arguments. Here's a very useful tool, `zipWith`
-
+We can use what we have to
 
 ---
 
