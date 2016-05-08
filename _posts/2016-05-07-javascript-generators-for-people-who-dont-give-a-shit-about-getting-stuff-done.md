@@ -14,59 +14,35 @@ In JavaScript, a **generator** is a function declared with an `*`. Here's the si
 const Empty = function * () {};
 ```
 
-If you invoke a generator, you get an object back:
+If you invoke a generator, you get an object back, and you don't need to use a `return` keyword:
 
 ```javascript
 Empty()
   //=> {}
 ```
 
-This is completely unlike a normal function! Compare and contrast:
-
-```javascript
-Empty()
-  //=> {}
-
-const fEmpty = function () {};
-
-fEmpty()
-  //=> undefined
-```
-
-Generators return something even though they don't have a `return` statement. What can we do with this thing they return?
-
-We can spread it into an Array:
-
-```javascript
-[...Empty()]
-  //=> []
-```
-
-Hmmm, we can spread it, but we don't get any values. We can also iterate over it, but there's nothing to iterate over:
+This is completely unlike a normal function. What can we do with this thing they return? We can iterate over it, but there's nothing to iterate over:
 
 ```javascript
 for (const something of Empty()) console.log(something);
   //=> nothing happens!
 ```
 
-We call something you can iterate over, an *Iterable*. There's another, lower level way to iterate over things that we'll see a little later. Iterables are values, so we can stick them in a variable, pass them to functions, and so forth:
+If you can iterate over something with a `for... of` loop, we call it an *iterable*. Iterables are values, so we can stick them in a variable, pass them to functions, and so forth:
 
 ```javascript
 const nothing = Empty();
 
-[...nothing]
-  //=> []
+for (const something of nothing) console.log(something);
+  //=> nothing happens!
 ```
 
-So our empty generator makes iterables that act like an empty collections. Can we make a generator that makes iterables that act like collections with a value? Yes, with `yield`:
+So our empty generator makes iterables that act like an empty arrays. Can we make a generator that makes iterables that act like arrays with a value? Yes, with `yield`:
 
 ```javascript
 const One = function * () {
   yield 1;
 }
-
-[...One()]
-  //=> [1]
 
 for (const something of One()) console.log(something);
   //=> 1
@@ -79,9 +55,6 @@ const OneTwo = function * () {
   yield 1;
   yield 2;
 }
-
-[...OneTwo()]
-  //=> [1, 2]
 
 for (const something of OneTwo()) console.log(something);
   //=> 1
@@ -105,18 +78,212 @@ const OneTwoThree = function * () {
   for (let i = 1; i <= 3; ++i) yield i;
 }
 
-[...OneTwoThree()]
-  //=> [1, 2, 3]
-
 for (const something of OneTwoThree()) console.log(something);
   //=> 1
        2
        3
 ```
 
-When we yield multiple values, we get an iterable that acts like a collection with multiple values.
+When we yield multiple values, we get an iterable that acts like an array with multiple values.
 
-### iterables are like collections, but they aren't collections
+---
+
+### iterables
+
+So what is an iterable, anyways? We have two examples, we can make our own iterable with a generator:
+
+```javascript
+const OneTwoThree = function * () {
+  for (let i = 1; i <= 3; ++i) yield i;
+}
+```
+
+And every array is an iterable: `[1, 2, 3]`. What do they have in common? Let's perform an experiment: What happens if we take something that isn't an iterable and try to use it as an iterable? In a strict language, the compiler would complain before we even tried to execute this code, but JavaScript is far more forgiving, it won't complain until we try to evaluate our code:
+
+```javascript
+const atom = Object.create(null);
+
+for (const something of atom) console.log(something);
+  //=> atom[Symbol.iterator] is not a function
+```
+
+When we use a `for... of` loop, JavaScript seems to be invoking a hidden method bound to `Symbol.iterator`. Does an array have one?
+
+```javascript
+typeof [][Symbol.iterator]
+  //=> function
+```
+
+Indeed it does. How about the iterable we get from a generator?
+
+```javascript
+const Empty = function * () {};
+
+typeof Empty()[Symbol.iterator]
+  //=> function
+```
+
+Indeed it does. So now we know: *An iterable is an object with a* `[Symbol.iterator]` *method*. What does the `[Symbol.iterator]` method return? *An iterator*.
+
+---
+
+### array iterators
+
+What is an iterator? An iterator is a stateful object with a `.next()` method. An array is an iterable, but it is not an iterator:
+
+```javascript
+const array = [1, 2, 3];
+typeof array.next
+  //=> undefined
+
+const iterator = array[Symbol.iterator];
+typeof iterator.next
+  //=> function
+```
+
+What does this `.next` method do? It repeatedly returns the next value as we iterate over the values in the array:
+
+```javascript
+let { done, value } = iterator.next();
+
+{ done, value }
+  //=> {"done":false,"value":1}
+
+({ done, value } = iterator.next());
+
+{ done, value }
+  //=> {"done":false,"value":2}
+
+({ done, value } = iterator.next());
+
+{ done, value }
+  //=> {"done":false,"value":3}
+
+({ done, value } = iterator.next());
+
+{ done, value }
+  //=> {"done":true}
+```
+
+We iterate over an iterator by repeatedly calling `.next()`. Every time we do so, we get back an object with a `done` property. While the iterator has values to yield, `done` is `false`, and it passes `value` along. When there are no more values to yield, `done` will be `true`.
+
+Iterables could hold none or many values, and we don't know what those values are until we actually iterate. There is no `.length` property, no ability to access an arbitrary value, just the ability to serially fetch the next value until we're told that we are done.
+
+Iterators are stateful. If we want to iterate over an array again, we need to fetch another iterator by calling the array's `[Symbol.iterator]` method again:
+
+```javascript
+const anotherIterator = array[Symbol.iterator];
+
+let { done, value } = another_iterator.next();
+
+{ done, value }
+  //=> {"done":false,"value":1}
+
+({ done, value } = another_iterator.next());
+
+{ done, value }
+  //=> {"done":false,"value":2}
+
+({ done, value } = another_iterator.next());
+
+{ done, value }
+  //=> {"done":false,"value":3}
+
+({ done, value } = another_iterator.next());
+
+{ done, value }
+  //=> {"done":true}
+```
+
+To summarize, arrays are iterables, because they have a `[Symbol.iterator]` method, but they are not iterators, because they don't have a `.next` method. The `for... of` loop requires an iterable.
+
+### generated iterators
+
+So what about our generators? Generator functions are neither iterables nor iterators themselves:
+
+```javascript
+const OneTwoThree = function * () {
+  for (let i = 1; i <= 3; ++i) yield i;
+}
+
+typeof OneTwoThree[Symbol.iterator]
+  //=> undefined
+
+typeof OneTwoThree.next
+  //=> undefined
+```
+
+But when *invoked*, they return iterables:
+
+```javascript
+const OneTwoThree = function * () {
+  for (let i = 1; i <= 3; ++i) yield i;
+}
+
+const iterable = OneTwoThree();
+
+typeof iterable[Symbol.iterator]
+  //=> function
+
+for (const something of iterable) console.log(something);
+  //=> 1
+       2
+       3
+```
+
+Now, the iterable returned by a generator isn't exactly like an array, even though they both have a `[Symbol.iterator]` method. How can we tell? Well, the iterators returned by calling `[Symbol.iterator]` on an array aren't themselves iterable:
+
+```javascript
+const array = [1, 2, 3];
+
+const arrayIterator = array[Symbol.iterator]();
+
+typeof arrayIterator.next
+  //=> function
+
+typeof arrayIterator[Symbol.iterator]
+  //=> function
+```
+
+What about the iterators produced by calling
+
+So when we call `for (const something of iterable) console.log(something)`, what actually happens is that JavaScript translates it into something like:
+
+```javascript
+let done, value;
+const iterator = iterable[Symbol.iterator]();
+
+while (({done, value} = iterator.next()), !done) {
+  const something = value;
+
+  console.log(something);
+}
+```
+
+Can something be an iterator *and* iterable? Yes! And this is an excellent practice. Note:
+
+```javascript
+let done, value;
+
+const iterateOver123 = [1, 2, 3][Symbol.iterator]();
+
+({done, value} = iterateOver123.next());
+
+console.log(value)
+  //=> 1
+```
+
+Now let's treat `iterateOver123` as an iterable:
+
+```javascript
+for(const something of iterateOver123) console.log(something);
+  //=> 2
+       3
+```
+
+Fundamentally, iterators are iterable, and they return themselves when you ask them for an iterator.
+
+
 
 Like collections, we can iterate over an iterable. But they are unlike collections in several important ways. At its deepest level, an iterable isn't a collection of fixed values. When we write:
 
@@ -187,7 +354,7 @@ for (const something of MaybeOneTwoThree()) console.log(something);
   //=> nothing happens
 ```
 
-We get a different set of values each tie we run it, sometimes we get no values at all!
+We get a different set of values each time we run it, sometimes we get no values at all!
 
 Now, we might thing that this is the same thing as making a function that dynamically generates an array. It isn't because the values are generated *when we actually iterate over the iterator*.
 
@@ -277,69 +444,6 @@ How about using `.next()`?
 ```
 
 Nope. What's going on? Let's try to find out why a `for... of` loop works for both arrays and iterables, but `.next()` does not. Here's something interesting:
-
-```javascript
-const atom = Object.create(null);
-
-for (const something of atom) console.log(something);
-  //=> atom[Symbol.iterator] is not a function
-```
-
-When we use a `for... of` loop, JavaScript seems to be invoking a hidden method bound to `Symbol.iterator`. Does an array have one?
-
-```javascript
-typeof [][Symbol.iterator]
-  //=> function
-```
-
-Indeed it does. How about the iterable we get from a generator?
-
-```javascript
-const Empty = function * () {};
-
-typeof Empty()[Symbol.iterator]
-  //=> function
-```
-
-Indeed it does. So now we know: *An iterable is an object with a* `[Symbol.iterator]` *method*.
-
-What does the `[Symbol.iterator]` method return? *An iterator*. What is an iterator? An object with a `.next()` method.
-
-So when we call `for (const something of iterable) console.log(something)`, what actually happens is that JavaScript translates it into something like:
-
-```javascript
-let done, value;
-const iterator = iterable[Symbol.iterator]();
-
-while (({done, value} = iterator.next()), !done) {
-  const something = value;
-
-  console.log(something);
-}
-```
-
-Can something be an iterator *and* iterable? Yes! And this is an excellent practice. Note:
-
-```javascript
-let done, value;
-
-const iterateOver123 = [1, 2, 3][Symbol.iterator]();
-
-({done, value} = iterateOver123.next());
-
-console.log(value)
-  //=> 1
-```
-
-Now let's treat `iterateOver123` as an iterable:
-
-```javascript
-for(const something of iterateOver123) console.log(something);
-  //=> 2
-       3
-```
-
-Fundamentally, iterators are iterable, and they return themselves when you ask them for an iterator.
 
 ### composing generators
 
