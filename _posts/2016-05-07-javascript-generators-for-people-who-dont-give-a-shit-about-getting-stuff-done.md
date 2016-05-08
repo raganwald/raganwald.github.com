@@ -1,7 +1,7 @@
 ---
 title: "JavaScript Generators for People Who Don't Give a Shit About GettingStuffDone™"
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 [![Plasma Generator](/assets/images/plasma-generator.jpg)](https://www.flickr.com/photos/willfolsom/6951127040)
