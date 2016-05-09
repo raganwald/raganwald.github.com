@@ -276,7 +276,7 @@ for (const something of iterable) console.log(something);
        1
 ```
 
-We saw how to split the first element from a generator, we can `take` multiple elements:
+We saw how to split the first element from a generator, we can also `take` multiple elements. We use a generator so that we can iterate over the elements we take:
 
 ```javascript
 function * take (numberToTake, iterable) {
@@ -297,19 +297,93 @@ for (const something of iterable) console.log(something);
        3
 ```
 
-### recursive generators
+---
 
-We can use what we have to
+[![Mirror, mirror](/assets/images/mirror.jpg)](https://www.flickr.com/photos/elsie/3878943067)
+
+---
+
+### self-referential generators
+
+We have seen that generators can `yield *` iterators... Even those produced by other generators. What about themselves? Can a generator yield itself? Consider:
+
+```javascript
+function * ones () {
+  yield * join(1, ones());
+}
+
+for (const something of ones()) console.log(something);
+  //=> 1
+       1
+       1
+       ...
+```
+
+`ones` yields an iterator formed by joining `1` with what it generates. Which is the join of `1` with hat it generates. Which us the join of `1` with... And so on *ad infinitum*. Of course, it needn't be just `1`:
+
+```javascript
+function * infiniteNumberOf (something) {
+  yield * join(something, infiniteNumberOf(something));
+}
+
+for (const something of infiniteNumberOf(1)) console.log(something);
+  //=> 1
+       1
+       1
+       ...
+```
+
+`infiniteNumberOf` yields an iterator that yields `something` an infinite number of times. So if we want an infinite number of `1`s, we can use `infiniteNumberOf(1)`. Taking an argument for a generator that refers to itself is interesting. For example, we could write:
+
+```javascript
+function * from (first, increment = 1) {
+  yield * join(first, from(first + increment, increment));
+}
+
+for (const something of from(1)) console.log(something);
+  //=> 1
+       2
+       3
+       ...
+```
+
+Handy. What we have here is a sequence that calculates each element based on the element before it and an amount to increment. What if we wanted to apply some other function?
+
+```javascript
+function * sequence1 (first, nextFn = (x) => x) {
+  yield * join(first, sequence1(nextFn(first), nextFn));
+}
+
+for (const something of sequence1(2, (x) => x * 2)) console.log(something);
+  //=> 2
+       4
+       8
+       16
+       ...
+```
+
+Or what if we want to use a function that works on the trailing two elements, instead of the last element yielded so far?
+
+```javascript
+function * sequence2 (first, second, nextFn = (x, y) => y) {
+  yield * join(first, sequence2(second, nextFn(first, second), nextFn));
+}
+
+for (const something of sequence2(0, 1, (x, y) => x + y)) console.log(something);
+  //=> 0
+       1
+       1
+       2
+       3
+       5
+       8
+       13
+       ...
+```
 
 ---
 
 ([edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-05-07-javascript-generators-for-people-who-dont-give-a-shit-about-getting-stuff-done.md))
-
----
-
-### source code
-
-<script src="https://gist.github.com/raganwald/78b086166c0712b49e5160edca5ebadd.js"></script>
 
 ---
 
