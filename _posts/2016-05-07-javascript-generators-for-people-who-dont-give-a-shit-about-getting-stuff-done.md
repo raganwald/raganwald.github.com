@@ -399,6 +399,98 @@ for (const something of sequence2(0, 1, (x, y) => x + y))
        ...
 ```
 
+We will come back to this sequence, but first, let's look at generators that take generators as arguments.
+
+---
+
+[![Body/Frame Assembly Line](/assets/images/body-frame.jpg)](https://www.flickr.com/photos/kojach/4082970890)
+
+---
+
+### generators that transform other generators
+
+Our "self-referential generators" yield values that are derived from the values they've already yielded. In a sense, these generators transform themselves. Generators can, in fact, transform other generators (or more generally, transform any iterable).
+
+The simplest example is `mapWith`:
+
+```javascript
+function * mapWith (fn, iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  while (true) {
+    const { done, value } = iterator.next();
+
+    if (done) {
+      return;
+    }
+    else yield fn(value);
+  }
+}
+
+const squares = mapWith((x) => x*x, from(1));
+
+for (const something of squares)
+  console.log(something);
+  //=> 1
+       4
+       9
+       16
+       25
+       ...
+```
+
+Another simple generator that transforms an iterator is `filterWith`:
+
+```javascript
+function * filterWith (fn, iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  while (true) {
+    const { done, value } = iterator.next();
+
+    if (done) {
+      return;
+    }
+    else if (fn(value)) {
+      yield value;
+    }
+  }
+}
+
+const odds = filterWith((x) => x % 2 === 1, from(1));
+
+for (const something of odds)
+  console.log(something);
+  //=> 1
+       3
+       5
+       7
+       9
+       ...
+```
+
+We can use `filterWith` and a self-referential generator to make an [Unfaithful Sieve of Eratosthenes][1]:
+
+```javascript
+function * primes (numbers = from(2)) {
+  const { first, rest } = split(numbers);
+
+  yield * join(first, filterWith((n) => n % first !== 0, rest));
+}
+
+for (const something of primes())
+  console.log(something);
+  //=> 2
+       3
+       5
+       7
+       11
+       13
+       ...
+```
+
+[1]: http://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html "The Hubris of Impatient Sieves of Eratosthenes"
+
 ---
 
 ([edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-05-07-javascript-generators-for-people-who-dont-give-a-shit-about-getting-stuff-done.md))
