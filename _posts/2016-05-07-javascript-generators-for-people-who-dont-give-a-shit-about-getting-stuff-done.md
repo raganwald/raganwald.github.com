@@ -186,19 +186,7 @@ Generators can take arguments. We've already seen the simplest possible generato
 function * Empty () {};
 ```
 
-Here's the second simplest, a generator that takes a value and returns an iterator over that value:
-
-```javascript
-function * just (value) {
-  yield value;
-};
-
-for (const something of just('Hello'))
-  console.log(something);
-  //=> 'Hello'
-```
-
-A slightly more flexible implementation encompasses the functionality of `Empty`:
+Here's another simple generator, it takes zero or more values and returns an iterator over the values (if any):
 
 ```javascript
 function * just (...values) {
@@ -366,11 +354,13 @@ for (const something of from(1))
 Handy. What we have here is a sequence that calculates each element based on the element before it and an amount to increment. What if we wanted to apply some other function?
 
 ```javascript
-function * sequence1 (first, nextFn = (x) => x) {
-  yield * join(first, sequence1(nextFn(first), nextFn));
+function * sequence (first, nextFn = (x) => x) {
+  yield * join(first, sequence(nextFn(first), nextFn));
 }
 
-for (const something of sequence1(2, (x) => x * 2))
+const powersOfTwo = sequence(2, (x) => x * 2);
+
+for (const something of powersOfTwo)
   console.log(something);
   //=> 2
        4
@@ -386,7 +376,9 @@ function * sequence2 (first, second, nextFn = (x, y) => y) {
   yield * join(first, sequence2(second, nextFn(first, second), nextFn));
 }
 
-for (const something of sequence2(0, 1, (x, y) => x + y))
+const fibonacci = sequence2(0, 1, (x, y) => x + y);
+
+for (const something of fibonacci)
   console.log(something);
   //=> 0
        1
@@ -496,5 +488,9 @@ for (const something of primes())
 ([edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-05-07-javascript-generators-for-people-who-dont-give-a-shit-about-getting-stuff-done.md))
 
 ---
+
+### source code
+
+<script src="https://gist.github.com/raganwald/702d4a24b1bdff9f9c1789c85b1f6979.js"></script>
 
 ### notes
