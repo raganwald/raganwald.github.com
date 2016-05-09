@@ -28,7 +28,8 @@ Empty()
 What can we do with this thing they return? We can iterate over it (even though there's nothing to iterate over in an empty generator):
 
 ```javascript
-for (const something of Empty()) console.log(something);
+for (const something of Empty())
+  console.log(something);
   //=> nothing happens!
 ```
 Generators can `yield` values:
@@ -38,7 +39,8 @@ const One = function * () {
   yield 1;
 }
 
-for (const something of One()) console.log(something);
+for (const something of One())
+  console.log(something);
   //=> 1
 ```
 
@@ -50,7 +52,8 @@ const OneTwo = function * () {
   yield 2;
 }
 
-for (const something of OneTwo()) console.log(something);
+for (const something of OneTwo())
+  console.log(something);
   //=> 1
        2
 ```
@@ -72,7 +75,8 @@ const OneTwoThree = function * () {
   for (let i = 1; i <= 3; ++i) yield i;
 }
 
-for (const something of OneTwoThree()) console.log(something);
+for (const something of OneTwoThree())
+  console.log(something);
   //=> 1
        2
        3
@@ -189,7 +193,8 @@ function * just (value) {
   yield value;
 };
 
-for (const something of just('Hello')) console.log(something);
+for (const something of just('Hello'))
+  console.log(something);
   //=> 'Hello'
 ```
 
@@ -200,10 +205,12 @@ function * just (...values) {
   yield * values;
 };
 
-for (const something of just()) console.log(something);
+for (const something of just())
+  console.log(something);
   //=> nothing happens!
 
-for (const something of just('Hello')) console.log(something);
+for (const something of just('Hello'))
+  console.log(something);
   //=> 'Hello'
 ```
 
@@ -217,7 +224,8 @@ function * rest (iterable) {
   yield * iterator;
 };
 
-for (const something of rest(['Hello', 'Java', 'Script'])) console.log(something);
+for (const something of rest(['Hello', 'Java', 'Script']))
+  console.log(something);
   //=> Java
        Script
 ```
@@ -251,7 +259,8 @@ const { first, rest } = split([1, 2, 3, 4, 5]);
 
 console.log(first);
   //=> 1
-for (const something of rest) console.log(something);
+for (const something of rest)
+  console.log(something);
   //=> 2
        3
        4
@@ -268,7 +277,8 @@ function * join (first, rest) {
 
 const iterable = join(5, [4, 3, 2, 1]);
 
-for (const something of iterable) console.log(something);
+for (const something of iterable)
+  console.log(something);
   //=> 5
        4
        3
@@ -291,11 +301,14 @@ function * take (numberToTake, iterable) {
 
 const iterable = take(3, [1, 2, 3, 4, 5]);
 
-for (const something of iterable) console.log(something);
+for (const something of iterable)
+  console.log(something);
   //=> 1
        2
        3
 ```
+
+With these basic building blocks in place, we can look at some interesting generators: Generators that `yield *` themselves.
 
 ---
 
@@ -312,21 +325,23 @@ function * ones () {
   yield * join(1, ones());
 }
 
-for (const something of ones()) console.log(something);
+for (const something of ones())
+  console.log(something);
   //=> 1
        1
        1
        ...
 ```
 
-`ones` yields an iterator formed by joining `1` with what it generates. Which is the join of `1` with hat it generates. Which us the join of `1` with... And so on *ad infinitum*. Of course, it needn't be just `1`:
+`ones` yields an iterator formed by joining `1` with what it generates. Which is the join of `1` with what it generates. Which us the join of `1` with... And so on *ad infinitum*. Of course, it needn't be just `1`:
 
 ```javascript
 function * infiniteNumberOf (something) {
   yield * join(something, infiniteNumberOf(something));
 }
 
-for (const something of infiniteNumberOf(1)) console.log(something);
+for (const something of infiniteNumberOf(1))
+  console.log(something);
   //=> 1
        1
        1
@@ -340,7 +355,8 @@ function * from (first, increment = 1) {
   yield * join(first, from(first + increment, increment));
 }
 
-for (const something of from(1)) console.log(something);
+for (const something of from(1))
+  console.log(something);
   //=> 1
        2
        3
@@ -354,7 +370,8 @@ function * sequence1 (first, nextFn = (x) => x) {
   yield * join(first, sequence1(nextFn(first), nextFn));
 }
 
-for (const something of sequence1(2, (x) => x * 2)) console.log(something);
+for (const something of sequence1(2, (x) => x * 2))
+  console.log(something);
   //=> 2
        4
        8
@@ -369,7 +386,8 @@ function * sequence2 (first, second, nextFn = (x, y) => y) {
   yield * join(first, sequence2(second, nextFn(first, second), nextFn));
 }
 
-for (const something of sequence2(0, 1, (x, y) => x + y)) console.log(something);
+for (const something of sequence2(0, 1, (x, y) => x + y))
+  console.log(something);
   //=> 0
        1
        1
