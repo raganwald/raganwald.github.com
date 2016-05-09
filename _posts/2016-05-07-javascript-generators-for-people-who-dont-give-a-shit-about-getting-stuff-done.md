@@ -407,16 +407,9 @@ The simplest example is `mapWith`:
 
 ```javascript
 function * mapWith (fn, iterable) {
-  const iterator = iterable[Symbol.iterator]();
+  const { first, rest } = split(iterable);
 
-  while (true) {
-    const { done, value } = iterator.next();
-
-    if (done) {
-      return;
-    }
-    else yield fn(value);
-  }
+  yield * join(fn(first), mapWith(fn, rest));
 }
 
 const squares = mapWith((x) => x*x, from(1));
@@ -435,17 +428,13 @@ Another simple generator that transforms an iterator is `filterWith`:
 
 ```javascript
 function * filterWith (fn, iterable) {
-  const iterator = iterable[Symbol.iterator]();
+  const { first, rest } = split(iterable);
 
-  while (true) {
-    const { done, value } = iterator.next();
-
-    if (done) {
-      return;
-    }
-    else if (fn(value)) {
-      yield value;
-    }
+  if (fn(first)) {
+    yield * join(first, filterWith(fn, rest));
+  }
+  else {
+    yield * filterWith(fn, rest);
   }
 }
 
@@ -480,6 +469,40 @@ for (const something of primes())
        13
        ...
 ```
+
+People who are fussy about GettingStuffDone™ will go on a bit about whether linearly recursive functions call themselves in tail position, then pore over language implementations debating whether optimization is available to generators. Such people will often convert generators like `mapWith` and `filterWith` by hand into loops:
+
+```javascript
+function * mapWith (fn, iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  while (true) {
+    const { done, value } = iterator.next();
+
+    if (done) {
+      return;
+    }
+    else yield fn(value);
+  }
+}
+
+function * filterWith (fn, iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  while (true) {
+    const { done, value } = iterator.next();
+
+    if (done) {
+      return;
+    }
+    else if (fn(value)) {
+      yield value;
+    }
+  }
+}
+```
+
+We don't, of course, care about that here.
 
 [1]: http://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html "The Hubris of Impatient Sieves of Eratosthenes"
 
