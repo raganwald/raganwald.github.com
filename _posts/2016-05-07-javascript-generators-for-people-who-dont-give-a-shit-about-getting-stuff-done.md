@@ -277,12 +277,8 @@ for (const something of rest)
 The inverse of splitting an iterable into `first` and `rest` is to `join` them. We'll use a generator for this. To maintain symmetry with `split`, we'll fake named keywords with destructuring, and use the same rule: If you don't supply a `first`, it won't join a `first`:
 
 ```javascript
-function * join (unjoined) {
-  const {first, rest} = unjoined;
-
-  if (unjoined.hasOwnProperty('first')) {
-    yield first;
-  }
+function * join (first, rest) {
+  yield first;
   yield * rest;
 };
 
@@ -332,26 +328,8 @@ With these basic building blocks in place, we can look at some interesting gener
 We have seen that generators can `yield *` iterators... Even those produced by other generators. What about themselves? Can a generator yield itself? Consider:
 
 ```javascript
-function * ones () {
-  yield * join({ first: 1, rest: ones()});
-}
-
-for (const something of ones())
-  console.log(something);
-  //=> 1
-       1
-       1
-       ...
-```
-
-`ones` yields an iterator formed by joining `1` with what it generates. Which is the join of `1` with what it generates. Which us the join of `1` with... And so on *ad infinitum*. Of course, it needn't be just `1`:
-
-```javascript
 function * infiniteNumberOf (something) {
-  yield * join({
-    first: something,
-    rest: infiniteNumberOf(something)
-  });
+  yield * join(something, infiniteNumberOf(something));
 }
 
 for (const something of infiniteNumberOf(1))
@@ -366,7 +344,7 @@ for (const something of infiniteNumberOf(1))
 
 ```javascript
 function * from (first, increment = 1) {
-  yield * join({first, rest: from(first + increment, increment)});
+  yield * join(first, from(first + increment, increment));
 }
 
 for (const something of from(1))
@@ -381,7 +359,7 @@ Handy. What we have here is a sequence that calculates each element based on the
 
 ```javascript
 function * sequence (first, nextFn = (x) => x) {
-  yield * join({first, rest: sequence(nextFn(first), nextFn)});
+  yield * join(first, sequence(nextFn(first), nextFn));
 }
 
 const powersOfTwo = sequence(2, (x) => x * 2);
@@ -399,7 +377,7 @@ Or what if we want to use a function that works on the trailing two elements, in
 
 ```javascript
 function * sequence2 (first, second, nextFn = (x, y) => y) {
-  yield * join({first, rest: sequence2(second, nextFn(first, second), nextFn)});
+  yield * join(first, sequence2(second, nextFn(first, second), nextFn));
 }
 
 const fibonacci = sequence2(0, 1, (x, y) => x + y);
@@ -438,10 +416,7 @@ function * mapWith (fn, iterable) {
   if (asSplit.hasOwnProperty('first')) {
     const { first, rest } = asSplit;
 
-    yield * join({
-      first: fn(first),
-      rest: mapWith(fn, rest)
-    });
+    yield * join(fn(first),mapWith(fn, rest));
   }
 }
 
@@ -493,7 +468,7 @@ We can use `filterWith` and a self-referential generator to make an [Unfaithful 
 function * primes (numbers = from(2)) {
   const { first, rest } = split(numbers);
 
-  yield * join({first, rest: filterWith((n) => n % first !== 0, rest)});
+  yield * join(first, filterWith((n) => n % first !== 0, primes(rest)));
 }
 
 for (const something of primes())
@@ -551,28 +526,76 @@ We don't, of course, care about that here.
 
 `mapWith` was a generator that transformed an iterable by mapping its values with a unary function. Thus, `mapWith((x) => x*3, from(1))` gives us an iterator over the multiples of three.
 
-But what about mapping over *two* iterables? How would that work? The simplest method is to iterate over both iterables simultaneously, taking an element from each one, and mapping the pair of elements to a value.
-
-Like this:
+But what about mapping over *two or more* iterables? How would that work? The simplest method is to iterate over all the iterables simultaneously, taking an element from each one, and mapping the pair of elements to a value. If any of them run out of values, stop:
 
 ```javascript
-function * zipWith (fn, iterableA, iterableB) {
-  const { first, rest } = split(iterable);
+function * zipWith (fn, ...iterables) {
+  const asSplits = iterables.map(split);
 
-  yield * join(fn(first), mapWith(fn, rest));
+  if (asSplits.every((asSplit) => asSplit.hasOwnProperty('first'))) {
+    const firsts = asSplits.map((asSplit) => asSplit.first);
+    const rests = asSplits.map((asSplit) => asSplit.rest);
+
+    yield * join(fn(...firsts), zipWith(fn, ...rests));
+  }
 }
 
-const squares = mapWith((x) => x*x, from(1));
+const greetings = zipWith(
+    (x, y) => `${x} ${y}`,
+    ['hello', 'bonjour', 'hej'],
+    ['frank', 'pascal', 'rognvoldr']
+  );
 
-for (const something of squares)
+for (const something of greetings)
+  console.log(something);
+  //=> "hello frank"
+       "bonjour pascal"
+       "hej rognvoldr"
+```
+
+This has an interesting possibility. We used `sequence2` to arrange things so that we could do a computation on successive elements of a self-referential sequence. What if we use `zipWith` self-referentially?
+
+```javascript
+function * fibonacci () {
+  yield 0;
+  yield 1;
+  yield * zipWith(
+      (x, y) => x + y,
+      fibonacci(),
+      rest(fibonacci())
+    );
+};
+```
+
+In this case, we zip an iterator with itself, but use `rest` to offset it by one. Thus, each element is zipped with the element preceding it. Let's use that trick again:
+
+```javascript
+function * phi () {
+  yield * rest(
+    zipWith(
+      (x, y) => x / y,
+      rest(fibonacci()),
+      fibonacci()
+    )
+  );
+};
+
+for (const something of phi())
   console.log(something);
   //=> 1
-       4
-       9
-       16
-       25
+       2
+       1.5
+       1.6666666666666667
+       1.6
+       1.625
+       1.6153846153846154
+       1.619047619047619
+       1.6176470588235294
+       1.6181818181818182
        ...
 ```
+
+We are converging (slowly) on the Golden Ratio, `1.6180339...`.
 
 ---
 
