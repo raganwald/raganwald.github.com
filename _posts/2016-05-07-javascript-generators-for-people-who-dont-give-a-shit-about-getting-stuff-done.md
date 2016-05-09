@@ -10,6 +10,21 @@ tags: [allonge, noindex]
 
 ---
 
+### author's note
+
+The title is, of course, a joke. Everyone cares about getting stuff done, that's how we make the world a better place. But alongside progress and productivity, there is also room for pleasure and whimsey and light-hearted joking.
+
+An alternate title could just as easily be, "JavaScript Generators for People Who Enjoy the Pleasure of Working Things Out." I'm one of those people, and I enjoyed writing this post. I hope you enjoy reading it and perhaps you'll even try a few whimsical JavaScript generators of your own.
+
+If you do, please share them with me.
+
+---
+
+[![RadioShack 20-242: Hand crank for charging the battery pack. Also charges cell phones.
+](/assets/images/radio-shack.jpg)](https://www.flickr.com/photos/capcase/10632896854)
+
+---
+
 ### prerequisites
 
 Before we get to the main bit of business, here's what we presume we understand: In JavaScript, a **generator** is a function declared with an `*`. Here's the simplest possible generator:
@@ -391,7 +406,7 @@ for (const something of fibonacci)
        ...
 ```
 
-We will come back to this sequence, but first, let's look at generators that take generators as arguments.
+We will come back to this sequence, but first, let's look at generators that transform other generators.
 
 ---
 
@@ -431,11 +446,9 @@ function * filterWith (fn, iterable) {
   const { first, rest } = split(iterable);
 
   if (fn(first)) {
-    yield * join(first, filterWith(fn, rest));
+    yield first;
   }
-  else {
-    yield * filterWith(fn, rest);
-  }
+  yield * filterWith(fn, rest);
 }
 
 const odds = filterWith((x) => x % 2 === 1, from(1));
@@ -451,6 +464,8 @@ for (const something of odds)
 ```
 
 We can use `filterWith` and a self-referential generator to make an [Unfaithful Sieve of Eratosthenes][1]:
+
+[1]: http://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html "The Hubris of Impatient Sieves of Eratosthenes"
 
 ```javascript
 function * primes (numbers = from(2)) {
@@ -504,9 +519,42 @@ function * filterWith (fn, iterable) {
 
 We don't, of course, care about that here.
 
-[1]: http://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html "The Hubris of Impatient Sieves of Eratosthenes"
+---
+
+[![Zipper](/assets/images/zipper.jpg)](https://www.flickr.com/photos/southpaw2305/3474989098)
 
 ---
+
+### generators that transform more than one generator
+
+`mapWith` was a generator that transformed an iterable by mapping its values with a unary function. Thus, `mapWith((x) => x*3, from(1))` gives us an iterator over the multiples of three.
+
+But what about mapping over *two* iterables? How would that work? The simplest method is to iterate over both iterables simultaneously, taking an element from each one, and mapping the pair of elements to a value.
+
+Like this:
+
+```javascript
+function * zipWith (fn, iterableA, iterableB) {
+  const { first, rest } = split(iterable);
+
+  yield * join(fn(first), mapWith(fn, rest));
+}
+
+const squares = mapWith((x) => x*x, from(1));
+
+for (const something of squares)
+  console.log(something);
+  //=> 1
+       4
+       9
+       16
+       25
+       ...
+```
+
+---
+
+(*This is a work-in-progress, feel free to read and even submit an edit, but do not post on Reddit or Hacker News, thank you.*)
 
 ([edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-05-07-javascript-generators-for-people-who-dont-give-a-shit-about-getting-stuff-done.md))
 
