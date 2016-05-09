@@ -251,9 +251,11 @@ Sometimes you need both the `first` and the `rest` of an iterable, and you don't
 ```javascript
 function split (iterable) {
   const iterator = iterable[Symbol.iterator]();
-
   const { done, value: first } = iterator.next();
-  if (!done) {
+
+  if (done) {
+    return { rest: [] };
+  } else {
     return { first, rest: iterator };
   }
 };
@@ -270,11 +272,17 @@ for (const something of rest)
        5
 ```
 
-The inverse of splitting an iterable into `first` and `rest` is to `join` them. We'll use a generator:
+(Note that if you don't *have* a `first`, you don't *get* a first.)
+
+The inverse of splitting an iterable into `first` and `rest` is to `join` them. We'll use a generator for this. To maintain symmetry with `split`, we'll fake named keywords with destructuring, and use the same rule: If you don't supply a `first`, it won't join a `first`:
 
 ```javascript
-function * join (first, rest) {
-  yield first;
+function * join (unjoined) {
+  const {first, rest} = unjoined;
+
+  if (unjoined.hasOwnProperty('first')) {
+    yield first;
+  }
   yield * rest;
 };
 
@@ -325,7 +333,7 @@ We have seen that generators can `yield *` iterators... Even those produced by o
 
 ```javascript
 function * ones () {
-  yield * join(1, ones());
+  yield * join({ first: 1, rest: ones()});
 }
 
 for (const something of ones())
@@ -340,7 +348,10 @@ for (const something of ones())
 
 ```javascript
 function * infiniteNumberOf (something) {
-  yield * join(something, infiniteNumberOf(something));
+  yield * join({
+    first: something,
+    rest: infiniteNumberOf(something)
+  });
 }
 
 for (const something of infiniteNumberOf(1))
@@ -355,7 +366,7 @@ for (const something of infiniteNumberOf(1))
 
 ```javascript
 function * from (first, increment = 1) {
-  yield * join(first, from(first + increment, increment));
+  yield * join({first, rest: from(first + increment, increment)});
 }
 
 for (const something of from(1))
@@ -370,7 +381,7 @@ Handy. What we have here is a sequence that calculates each element based on the
 
 ```javascript
 function * sequence (first, nextFn = (x) => x) {
-  yield * join(first, sequence(nextFn(first), nextFn));
+  yield * join({first, rest: sequence(nextFn(first), nextFn)});
 }
 
 const powersOfTwo = sequence(2, (x) => x * 2);
@@ -388,7 +399,7 @@ Or what if we want to use a function that works on the trailing two elements, in
 
 ```javascript
 function * sequence2 (first, second, nextFn = (x, y) => y) {
-  yield * join(first, sequence2(second, nextFn(first, second), nextFn));
+  yield * join({first, rest: sequence2(second, nextFn(first, second), nextFn)});
 }
 
 const fibonacci = sequence2(0, 1, (x, y) => x + y);
@@ -422,9 +433,16 @@ The simplest example is `mapWith`:
 
 ```javascript
 function * mapWith (fn, iterable) {
-  const { first, rest } = split(iterable);
+  const asSplit = split(iterable);
 
-  yield * join(fn(first), mapWith(fn, rest));
+  if (asSplit.hasOwnProperty('first')) {
+    const { first, rest } = asSplit;
+
+    yield * join({
+      first: fn(first),
+      rest: mapWith(fn, rest)
+    });
+  }
 }
 
 const squares = mapWith((x) => x*x, from(1));
@@ -443,12 +461,16 @@ Another simple generator that transforms an iterator is `filterWith`:
 
 ```javascript
 function * filterWith (fn, iterable) {
-  const { first, rest } = split(iterable);
+  const asSplit = split(iterable);
 
-  if (fn(first)) {
-    yield first;
+  if (asSplit.hasOwnProperty('first')) {
+    const { first, rest } = asSplit;
+
+    if (fn(first)) {
+      yield first;
+    }
+    yield * filterWith(fn, rest);
   }
-  yield * filterWith(fn, rest);
 }
 
 const odds = filterWith((x) => x % 2 === 1, from(1));
@@ -471,7 +493,7 @@ We can use `filterWith` and a self-referential generator to make an [Unfaithful 
 function * primes (numbers = from(2)) {
   const { first, rest } = split(numbers);
 
-  yield * join(first, filterWith((n) => n % first !== 0, rest));
+  yield * join({first, rest: filterWith((n) => n % first !== 0, rest)});
 }
 
 for (const something of primes())
