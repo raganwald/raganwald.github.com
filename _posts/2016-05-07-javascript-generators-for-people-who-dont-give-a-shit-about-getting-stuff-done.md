@@ -649,6 +649,44 @@ function * mapWith (fn, ...iterables) {
 
 ---
 
+### generators that transform iterables against themselves
+
+Recall `fibonacci` (now written with our new `mapWith`), which maps itself against itself:
+
+```javascript
+function * fibonacci () {
+  yield 0;
+  yield 1;
+  yield * mapWith(
+      (x, y) => x + y,
+      fibonacci(),
+      rest(fibonacci())
+    );
+};
+```
+
+And `phi`, which uses teh same technique of mapping `fibonacci` against itself:
+
+```javascript
+function * phi () {
+  yield * rest(
+    zipWith(
+      (x, y) => x / y,
+      rest(fibonacci()),
+      fibonacci()
+    )
+  );
+};
+```
+
+These look like we're mapping iterables against themselves, but more accurately, we are comparing *generators* against themselves, which gives us the ability to write `fibonacci()` and generate a brand-new iterator whenever we want.
+
+This distinction is important. If we have an iterator, we can't restart it at the beginning whenever we like. That's not how iterators work: They statefully progress from beginning to end, you can't restart them or move backwards.
+
+So the geneators we wrote above only work because we can invoke `fibonacci()` and make new iterators whenever we want. If we tried to use a similar pattern with an iterable, it would break.
+
+---
+
 (*This is a work-in-progress, feel free to read and even submit an edit, but do not post on Reddit or Hacker News, thank you.*)
 
 ([edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-05-07-javascript-generators-for-people-who-dont-give-a-shit-about-getting-stuff-done.md))
