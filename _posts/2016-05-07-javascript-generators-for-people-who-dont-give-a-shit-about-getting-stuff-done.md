@@ -610,7 +610,7 @@ function * zipWith (fn, ...iterables) {
 }
 ```
 
-`zipWith` slpits all of the iterables we supply. If we have a `first` for each iterable, it `yield *`'s the result of `join` the result of applying the `fn` to the `firsts` with the `zipWith` of the `rests`.
+`zipWith` splits all of the iterables we supply. If we have a `first` for each iterable, it `yield *`'s the result of `join` the result of applying the `fn` to the `firsts` with the `zipWith` of the `rests`.
 
 What happens if we only provide *one* iterable to `zipWith`?
 
@@ -649,7 +649,142 @@ function * mapWith (fn, ...iterables) {
 
 ---
 
-### generators that transform iterables against themselves
+[![Image of the front of a generator, credit www.cwcs.co.uk](/assets/images/415-volts.jpg)](https://www.flickr.com/photos/122969584@N07/13780794954)
+
+---
+
+### writing generators in generator style
+
+Let's pause for a moment and look at the way we've been writing our generators that transform other generators. Once more, `mapWith`:
+
+```javascript
+function * mapWith (fn, ...iterables) {
+  const asSplits = iterables.map(split);
+
+  if (asSplits.every((asSplit) => asSplit.hasOwnProperty('first'))) {
+    const firsts = asSplits.map((asSplit) => asSplit.first);
+    const rests = asSplits.map((asSplit) => asSplit.rest);
+
+    yield * join(fn(...firsts), mapWith(fn, ...rests));
+  }
+}
+```
+
+Notice that we've written this to:
+
+1. Be recursive, and;
+2. To compose a new iterator with `join`, and;
+3. To `yield *` the new iterator it composes.
+
+This is written in *pure functional style*. It reads as if it was a function that only has to return one value for each invocation. Furthermore, its mental model is of transforming one generator into another:
+
+> The mapped generator consists of the function applied to the firsts of the argument iterables, joined with a mapping of the function to the rests of the iterables.
+
+But that's not the only way that generators have to work. We can just as easily write:
+
+```javascript
+function * mapWith (fn, ...iterables) {
+  const asSplits = iterables.map(split);
+
+  if (asSplits.every((asSplit) => asSplit.hasOwnProperty('first'))) {
+    const firsts = asSplits.map((asSplit) => asSplit.first);
+    const rests = asSplits.map((asSplit) => asSplit.rest);
+
+    yield fn(...firsts);
+    yield * mapWith(fn, ...rests);
+  }
+}
+```
+
+Now we're saying:
+
+> Yield the result of applying the function to the firsts of the argument iterables, then yield the values of mapping the function over the rests of the iterables.
+
+Removing the `join` mean we're yielding something, suspending the generator, then yielding the remainder later. This is stateful, which is mentally the opposite of the way that functional programming works. But that doesn't mean it's wrong.
+
+Let's keep going with statefulness. Why not iterate instead of writing a recursive generator?
+
+```javascript
+function * mapWith (fn, ...iterables) {
+  const iterators = iterables.map((iterable) => iterable[Symbol.iterator]());
+
+  while (true) {
+    const pairs = iterators.map((iterator) => iterator.next());
+    const values = pairs.map((pair) => pair.value);
+    const dones = pairs.map((pair) => pair.done);
+
+    if (dones.find((done) => done)) {
+      return;
+    } else {
+      yield fn(...values);
+    }
+  }
+}
+```
+
+This reads in a different way:
+
+> Get iterators for all the iterables, then repeat the following: Get all the values for all the iterators. If any iterator is done, we're done. If not, yield the result of applying the function to the values, and repeat.
+
+This is exactly what generators were designed to do: To execute code while yielding values as we go. We can rewrite our other generators in iterative style:
+
+```javascript
+function * filterWith (fn, iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  while (true) {
+    const { value, done } = iterator.next();
+
+    if (done) {
+      return;
+    } else if (fn(value)) {
+      yield value;
+    }
+  }
+}
+
+function * infiniteNumberOf (something) {
+  while (true) {
+    yield something;
+  }
+}
+
+function * from (number, increment = 1) {
+  while (true) {
+    yield number;
+    number = number + increment;
+  }
+}
+
+function * sequence (value, nextFn = (x) => x) {
+  while (true) {
+    yield value;
+    value = nextFn(value);
+  }
+}
+
+function * primes (numbers = from(2)) {
+  const { first, rest } = split(numbers);
+
+  yield first;
+  yield * filterWith((n) => n % first !== 0, primes(rest));
+}
+
+function * sequence2 (first, second, nextFn = (x, y) => y) {
+  yield first;
+  while (true) {
+    yield second;
+    [first, second] = [second, nextFn(first, second)]
+  }
+  yield * join(first, sequence2(second, nextFn(first, second), nextFn));
+}
+```
+
+These no longer have the mathematical "purity" of the functional-style implementations, but then again, generators are not really functions, aren't really used like functions, and perhaps we shouldn't try to write them like functions.
+
+---
+
+### the problem with mapping generators with themselves
 
 Recall `fibonacci` (now written with our new `mapWith`), which maps itself against itself:
 
@@ -665,7 +800,7 @@ function * fibonacci () {
 };
 ```
 
-And `phi`, which uses teh same technique of mapping `fibonacci` against itself:
+And `phi`, which uses the same technique of mapping `fibonacci` against itself:
 
 ```javascript
 function * phi () {
@@ -683,7 +818,7 @@ These look like we're mapping iterables against themselves, but more accurately,
 
 This distinction is important. If we have an iterator, we can't restart it at the beginning whenever we like. That's not how iterators work: They statefully progress from beginning to end, you can't restart them or move backwards.
 
-So the geneators we wrote above only work because we can invoke `fibonacci()` and make new iterators whenever we want. If we tried to use a similar pattern with an iterable, it would break.
+So the generators we wrote above only work because we can invoke `fibonacci()` and make new iterators whenever we want. If we tried to use a similar pattern with an iterable, it would break. We can't use an iterator twice. What we need is a way to *clone* iterators.
 
 ---
 
