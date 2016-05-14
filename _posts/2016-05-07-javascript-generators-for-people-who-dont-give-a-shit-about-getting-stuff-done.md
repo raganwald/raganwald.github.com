@@ -165,27 +165,9 @@ for (const something of catenate(OneTwoThree(), FourFive()))
        5
 ```
 
-Or:
-
-```javascript
-const rest = function * (iterable) {
-  const iterator = iterable[Symbol.iterator]();
-
-  const { value, done } = iterator.next();
-
-  if (done) {
-    return;
-  }
-  else yield * iterator;
-}
-
-for (const something of rest(OneTwoThree()))
-  console.log(something);
-  //=> 2
-       3
-```
-
 That's it, we're ready to talk about "Generators for People Who Don't Give a Shit About GettingStuffDone™."
+
+# Generators for People Who Don’t Give a Shit About GettingStuffDone™
 
 ---
 
@@ -195,13 +177,7 @@ That's it, we're ready to talk about "Generators for People Who Don't Give a Shi
 
 ### basic building blocks for generators
 
-Generators can take arguments. We've already seen the simplest possible generator:
-
-```javascript
-function * Empty () {};
-```
-
-Here's another simple generator, it takes zero or more values and returns an iterator over the values (if any):
+Let's start at the beginning. Generators can take arguments. Here's a simple generator, it takes zero or more values and returns an iterator over the values (if any):
 
 ```javascript
 function * just (...values) {
@@ -217,7 +193,20 @@ for (const something of just('Hello'))
   //=> 'Hello'
 ```
 
-We already saw `rest`:
+Here's `first`, it's an ordinary function that returns the first value yielded by an iterable:
+
+```javascript
+function first (iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  const { done, value } = iterator.next();
+  if (!done) return value;
+};
+
+first(['Hello', 'Java', 'Script'])
+```
+
+The inverse of `first` is `rest`, a generator that takes an `iterable` and returns all but the first value:
 
 ```javascript
 function * rest (iterable) {
@@ -231,19 +220,6 @@ for (const something of rest(['Hello', 'Java', 'Script']))
   console.log(something);
   //=> Java
        Script
-```
-
-The inverse is `first`, it's an ordinary function:
-
-```javascript
-function first (iterable) {
-  const iterator = iterable[Symbol.iterator]();
-
-  const { done, value } = iterator.next();
-  if (!done) return value;
-};
-
-first(['Hello', 'Java', 'Script'])
 ```
 
 Sometimes you need both the `first` and the `rest` of an iterable, and you don't want to call them in succession because iterables are stateful. So it's convenient to use destructuring to get both at once:
