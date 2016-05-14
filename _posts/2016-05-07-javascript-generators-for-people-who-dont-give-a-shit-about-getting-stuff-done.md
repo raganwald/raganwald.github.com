@@ -522,7 +522,7 @@ We don't, of course, care about that here.
 
 ---
 
-### generators that transform more than one generator
+### generators that transform one or more generators
 
 `mapWith` was a generator that transformed an iterable by mapping its values with a unary function. Thus, `mapWith((x) => x*3, from(1))` gives us an iterator over the multiples of three.
 
@@ -595,7 +595,57 @@ for (const something of phi())
        ...
 ```
 
-We are converging (slowly) on the Golden Ratio, `1.6180339...`.
+We have written a generator that converges (slowly) on the Golden Ratio, `1.6180339...`. But let's look at `zipWith` more closely:
+
+```javascript
+function * zipWith (fn, ...iterables) {
+  const asSplits = iterables.map(split);
+
+  if (asSplits.every((asSplit) => asSplit.hasOwnProperty('first'))) {
+    const firsts = asSplits.map((asSplit) => asSplit.first);
+    const rests = asSplits.map((asSplit) => asSplit.rest);
+
+    yield * join(fn(...firsts), zipWith(fn, ...rests));
+  }
+}
+```
+
+`zipWith` slpits all of the iterables we supply. If we have a `first` for each iterable, it `yield *`'s the result of `join` the result of applying the `fn` to the `firsts` with the `zipWith` of the `rests`.
+
+What happens if we only provide *one* iterable to `zipWith`?
+
+```javascript
+cont reciprocals = zipWith((n) => 1/n, phi());
+
+for (const something of reciprocals)
+  console.log(something);
+  //=> 1
+       0.5
+       0.6666666666666666
+       0.6
+       0.625
+       0.6153846153846154
+       0.6190476190476191
+       0.6176470588235294
+       0.6181818181818182
+       0.6179775280898876
+       ...
+```
+
+It behaves just like `mapWith`! Now we understand that `mapWith` is a special case of `zipWith`! So let's consolidate our understanding, and call it `mapWith`:
+
+```javascript
+function * mapWith (fn, ...iterables) {
+  const asSplits = iterables.map(split);
+
+  if (asSplits.every((asSplit) => asSplit.hasOwnProperty('first'))) {
+    const firsts = asSplits.map((asSplit) => asSplit.first);
+    const rests = asSplits.map((asSplit) => asSplit.rest);
+
+    yield * join(fn(...firsts), zipWith(fn, ...rests));
+  }
+}
+```
 
 ---
 
