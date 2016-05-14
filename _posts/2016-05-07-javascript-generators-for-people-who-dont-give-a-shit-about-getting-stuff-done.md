@@ -165,7 +165,7 @@ for (const something of catenate(OneTwoThree(), FourFive()))
        5
 ```
 
-That's it, we're ready to talk about "Generators for People Who Don't Give a Shit About GettingStuffDone™."
+That's it, we're ready to talk about...
 
 # Generators for People Who Don’t Give a Shit About GettingStuffDone™
 
@@ -457,40 +457,6 @@ for (const something of primes())
        13
        ...
 ```
-
-People who are fussy about GettingStuffDone™ will go on a bit about whether linearly recursive functions call themselves in tail position, then pore over language implementations debating whether optimization is available to generators. Such people will often convert generators like `mapWith` and `filterWith` by hand into loops:
-
-```javascript
-function * mapWith (fn, iterable) {
-  const iterator = iterable[Symbol.iterator]();
-
-  while (true) {
-    const { done, value } = iterator.next();
-
-    if (done) {
-      return;
-    }
-    else yield fn(value);
-  }
-}
-
-function * filterWith (fn, iterable) {
-  const iterator = iterable[Symbol.iterator]();
-
-  while (true) {
-    const { done, value } = iterator.next();
-
-    if (done) {
-      return;
-    }
-    else if (fn(value)) {
-      yield value;
-    }
-  }
-}
-```
-
-We don't, of course, care about that here.
 
 ---
 
