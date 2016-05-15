@@ -859,5 +859,3 @@ estimate
 ### source code
 
 <script src="https://gist.github.com/raganwald/702d4a24b1bdff9f9c1789c85b1f6979.js"></script>
-
-### notes
