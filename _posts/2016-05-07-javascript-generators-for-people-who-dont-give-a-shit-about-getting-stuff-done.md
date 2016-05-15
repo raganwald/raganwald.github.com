@@ -392,11 +392,11 @@ function * mapWith (fn, iterable) {
   if (asSplit.hasOwnProperty('first')) {
     const { first, rest } = asSplit;
 
-    yield * join(fn(first),mapWith(fn, rest));
+    yield * join(fn(first), mapWith(fn, rest));
   }
 }
 
-const squares = mapWith((x) => x*x, from(1));
+const squares = mapWith((x) => x * x, from(1));
 
 for (const something of squares)
   console.log(something);
