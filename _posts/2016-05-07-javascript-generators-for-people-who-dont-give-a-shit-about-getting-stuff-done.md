@@ -751,7 +751,7 @@ And `phi`, which uses the same technique of mapping `fibonacci` against itself:
 ```javascript
 function * phi () {
   yield * rest(
-    zipWith(
+    mapWith(
       (x, y) => x / y,
       rest(fibonacci()),
       fibonacci()
