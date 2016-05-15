@@ -272,7 +272,7 @@ for (const something of rest)
        5
 ```
 
-If we already have an iterator, we don't need `split`: Once you take teh `first` value, the iterator will return the rest of the values automatically. But as we see in this example, we might have an expression that provides an iterator, so `split` lets us bind both values at once.
+If we already have an iterator, we don't need `split`: Once you take the `first` value, the iterator will return the rest of the values automatically. But as we see in this example, we might have an expression that provides an iterator, so `split` lets us bind both values at once.
 
 The inverse of splitting an iterable into `first` and `rest` is to `join` them:
 
@@ -292,8 +292,6 @@ for (const something of iterable)
        2
        1
 ```
-
-We saw how to split the first element from a generator, w
 
 With these basic building blocks in place, we can look at some interesting generators: Generators that `yield *` themselves.
 
@@ -770,7 +768,7 @@ These look like we're mapping iterables against themselves, but more accurately,
 
 This distinction is important. If we have an iterator, we can't restart it at the beginning whenever we like. That's not how iterators work: They statefully progress from beginning to end, you can't restart them or move backwards.
 
-So the generators we wrote above only work because we can invoke `fibonacci()` and make new iterators whenever we want. If we tried to use a similar pattern with an iterable, it would break, becasue we can't use an iterator twice.
+So the generators we wrote above only work because we can invoke `fibonacci()` and make new iterators whenever we want. If we tried to use a similar pattern with an iterable, it would break, because we can't use an iterator twice.
 
 One approach is to rethink the way iterators work. As supplied, they operate on one value at a time. Fine. But what if they operated on more than one element at a time, in slices of a particular length?
 
@@ -806,7 +804,7 @@ for (const something of numberAndNext)
        ...
 ```
 
-Now we can revist our recursive `fibonacci2`:
+Now we can revisit our recursive `fibonacci2`:
 
 ```javascript
 function * fibonacci3 () {
@@ -819,7 +817,7 @@ function * fibonacci3 () {
 };
 ```
 
-We're still recursively callying `fibonacci`, but we are no longer trying to invoke it twice for each element we evaluate. Instead, we map over `slices` of `finbonacci`. We can do the same thing with `phi`:
+We're still recursively calling `fibonacci`, but we are no longer trying to invoke it twice for each element we evaluate. Instead, we map over `slices` of `finbonacci`. We can do the same thing with `phi`:
 
 ```javascript
 function * phi2 () {
@@ -850,6 +848,173 @@ const [_, estimate] = firstPairWithinTolerance;
 
 estimate
   //=> 1.6180339901755971
+```
+
+But hang on, something's not quite right.
+
+---
+
+[![Sanyo bottom-bracket generator](/assets/images/sanyo-generator.jpg)](https://www.flickr.com/photos/tsackett/111598117)
+
+---
+
+### composition
+
+---
+
+Let's look at two lines from our phi-calculating code:
+
+```javascript
+const pairsWithinTolerance = filterWith(within(0.00000001), pairsOfPhi);
+const firstPairWithinTolerance = first(pairsWithinTolerance);
+```
+
+The core logic is: `first(filterWith(...))`. What does it mean? "Take the first element of all the elements tat pass the filter." We can make that a function:
+
+```javascript
+function firstWhen (filterFn, iterable) {
+  return first(filterWith(filterFn, iterable));
+}
+```
+
+This is almost identical to the built-in array method `#find`. If we were writing our own `find`, we could *in theory* write:
+
+```javascript
+function find(filterFn, array) {
+  return array.filter(filterFn)[0]
+}
+```
+
+But *in practice*, we write it using a loop, because the array `#filter` method is eager. So if we have a million elements, this code will first iterate over all million elements, then take the first element that passes the filter. For example:
+
+```javascript
+function factors (n) {
+  const f = [];
+  for (let i = 1; i <= (n / 2); ++i) {
+    if (n % i == 0) f.push(i);
+  }
+  console.log(`${n} has factors ${f.join(', ')}`);
+  return f;
+}
+
+function isPerfect (n) {
+  const f = factors(n);
+  const sumFactors = f.reduce((x,y) => x + y);
+
+  return n === sumFactors;
+}
+
+const oneMillionNumbers = [...take(1000000, from(2))];
+
+firstWhen(isPerfect, oneMillionNumbers)
+  //=> 2 has factors 1
+       3 has factors 1
+       4 has factors 1, 2
+       5 has factors 1
+       6 has factors 1, 2, 3
+       6
+```
+
+Now let's use `find`. There's plenty of time, grab a drink and catch up on your reading while it factors one million numbers, just to tell us that `6` is the first perfect square:
+
+```javascript
+find(isPerfect, oneMillionNumbers)
+  //=> 2 has factors 1
+       3 has factors 1
+       4 has factors 1, 2
+       5 has factors 1
+       6 has factors 1, 2, 3
+       7 has factors 1
+       8 has factors 1, 2, 4
+       9 has factors 1, 3
+       10 has factors 1, 2, 5
+       ...
+       999999 has factors 1, 3, 7, 9, 11, 13, 21, 27, 33, 37, 39, 63,
+         77, 91, 99, 111, 117, 143, 189, 231, 259, 273, 297, 333, 351,
+         407, 429, 481, 693, 777, 819, 999, 1001, 1221, 1287, 1443,
+         2079, 2331, 2457, 2849, 3003, 3367, 3663, 3861, 4329, 5291,
+         6993, 8547, 9009, 10101, 10989, 12987, 15873, 25641, 27027,
+         30303, 37037, 47619, 76923, 90909, 111111, 142857, 333333
+       1000000 has factors 1, 2, 4, 5, 8, 10, 16, 20, 25, 32, 40, 50,
+         64, 80, 100, 125, 160, 200, 250, 320, 400, 500, 625, 800,
+         1000, 1250, 1600, 2000, 2500, 3125, 4000, 5000, 6250, 8000,
+         10000, 12500, 15625, 20000, 25000, 31250, 40000, 50000, 62500,
+         100000, 125000, 200000, 250000, 500000 1000001 has factors 1,
+         101, 9901
+       6
+```
+
+As we expect, we have to create a new array with all of the perfect numbers between `2` and `1000001` in order to report that `6` is the first. This we already know about generators and iterators: They are evaluated on-demand, and thus are much more efficient than working with arrays.
+
+So this `firstWhen` we wrote seems vaguely important, we should keep it around. But remember when we were writing everything "functionally" above? Why can't we do the same with `firstWhen`? In functional programming, `compose` is a function that, well, *composes* two functions together. Thus `compose(a, b)(c) === a(b(c))`.
+
+There are lots of examples around the internet, or in books like [JavaScript Allongé]:[^js]
+
+[^js]: Shameless plug: https://leanpub.com/javascriptallongesix
+
+```javascript
+function compose(a, b) {
+  return function (...args) {
+    return a.call(this, b.apply(this, args));
+  }
+}
+
+const a = (n) => `the result is ${n}`;
+const b = (n) => n * n;
+const c = compose(a, b);
+
+c(16)
+  //=> the result is 256
+```
+
+Looks good. Let's use it with `first` and `filterWith` to produce `firstWhen`:
+
+```javascript
+const firstWhen = compose(first, filterWith);
+
+const pairsOfPhi = slices(2, phi());
+const firstPairWithinTolerance = firstWhen(within(0.00000001), pairsOfPhi);
+const [_, estimate] = firstPairWithinTolerance;
+
+estimate
+  //=> 1.6180339901755971
+```
+
+Fantastic! Let's use compose again, we're on a roll. If we have `firstWhen`, eventually we'll want `restWhen`:
+
+```javascript
+function * restWhen (filterFn, iterable) {
+  yield * rest(filterWith(filterFn, iterable));
+}
+
+const squares = mapWith((x) => x * x, from(1));
+const isOdd = (n) => n % 2 === 1;
+
+restWhen(isOdd, squares)
+  //=> 9
+       25
+       49
+       81
+       121
+       169
+       225
+       ...
+```
+
+So let's use `compose` to do the same thing:
+
+```javascript
+const restWhen = compose(rest, filterWith);
+
+restWhen(isOdd, squares)
+  //=> 9
+       25
+       49
+       81
+       121
+       169
+       225
+       ...
 ```
 
 ---
