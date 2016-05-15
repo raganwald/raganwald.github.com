@@ -208,6 +208,28 @@ function first (iterable) {
 first(['Hello', 'Java', 'Script'])
 ```
 
+We can also `take` multiple elements. We use a generator so that we can iterate over the elements we take:
+
+```javascript
+function * take (numberToTake, iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  for (let i = 0; i < numberToTake; ++i) {
+    const { done, value } = iterator.next();
+    if (done) return;
+    else yield value;
+  }
+}
+
+const iterable = take(3, [1, 2, 3, 4, 5]);
+
+for (const something of iterable)
+  console.log(something);
+  //=> 1
+       2
+       3
+```
+
 The inverse of `first` is `rest`, a generator that takes an `iterable` and yields all but the first value:
 
 ```javascript
@@ -271,27 +293,7 @@ for (const something of iterable)
        1
 ```
 
-We saw how to split the first element from a generator, we can also `take` multiple elements. We use a generator so that we can iterate over the elements we take:
-
-```javascript
-function * take (numberToTake, iterable) {
-  const iterator = iterable[Symbol.iterator]();
-
-  for (let i = 0; i < numberToTake; ++i) {
-    const { done, value } = iterator.next();
-    if (done) return;
-    else yield value;
-  }
-}
-
-const iterable = take(3, [1, 2, 3, 4, 5]);
-
-for (const something of iterable)
-  console.log(something);
-  //=> 1
-       2
-       3
-```
+We saw how to split the first element from a generator, w
 
 With these basic building blocks in place, we can look at some interesting generators: Generators that `yield *` themselves.
 
@@ -354,11 +356,11 @@ for (const something of powersOfTwo)
 Or what if we want to use a function that works on the trailing two elements, instead of the last element yielded so far?
 
 ```javascript
-function * sequence2 (first, second, nextFn = (x, y) => y) {
-  yield * join(first, sequence2(second, nextFn(first, second), nextFn));
+function * sequencePairs (first, second, nextFn = (x, y) => y) {
+  yield * join(first, sequencePairs(second, nextFn(first, second), nextFn));
 }
 
-const fibonacci = sequence2(0, 1, (x, y) => x + y);
+const fibonacci = sequencePairs(0, 1, (x, y) => x + y);
 
 for (const something of fibonacci)
   console.log(something);
@@ -499,7 +501,7 @@ for (const something of greetings)
        "hej rognvoldr"
 ```
 
-This has an interesting possibility. We used `sequence2` to arrange things so that we could do a computation on successive elements of a self-referential sequence. What if we use `zipWith` self-referentially?
+This has an interesting possibility. We used `sequencePairs` to arrange things so that we could do a computation on successive elements of a self-referential sequence. What if we use `zipWith` self-referentially?
 
 ```javascript
 function * fibonacci2 () {
@@ -721,7 +723,7 @@ function * primes (numbers = from(2)) {
   }
 }
 
-function * sequence2 (first, second, nextFn = (x, y) => y) {
+function * sequencePairs (first, second, nextFn = (x, y) => y) {
   yield first;
   while (true) {
     yield second;
