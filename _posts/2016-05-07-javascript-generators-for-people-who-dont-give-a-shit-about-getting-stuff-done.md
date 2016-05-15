@@ -458,6 +458,8 @@ for (const something of primes())
        ...
 ```
 
+These are great, but sometimes we want to transform more than one generator.
+
 ---
 
 [![Zipper](/assets/images/zipper.jpg)](https://www.flickr.com/photos/southpaw2305/3474989098)
@@ -588,6 +590,8 @@ function * mapWith (fn, ...iterables) {
   }
 }
 ```
+
+This is good stuff, but let's take a moment and have a look at our programming style.
 
 ---
 
