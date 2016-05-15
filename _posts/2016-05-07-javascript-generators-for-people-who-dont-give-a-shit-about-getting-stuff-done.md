@@ -500,13 +500,13 @@ for (const something of greetings)
 This has an interesting possibility. We used `sequence2` to arrange things so that we could do a computation on successive elements of a self-referential sequence. What if we use `zipWith` self-referentially?
 
 ```javascript
-function * fibonacci () {
+function * fibonacci2 () {
   yield 0;
   yield 1;
   yield * zipWith(
       (x, y) => x + y,
-      fibonacci(),
-      rest(fibonacci())
+      fibonacci2(),
+      rest(fibonacci2())
     );
 };
 ```
@@ -518,8 +518,8 @@ function * phi () {
   yield * rest(
     zipWith(
       (x, y) => x / y,
-      rest(fibonacci()),
-      fibonacci()
+      rest(fibonacci2()),
+      fibonacci2()
     )
   );
 };
@@ -710,10 +710,13 @@ function * sequence (value, nextFn = (x) => x) {
 }
 
 function * primes (numbers = from(2)) {
-  const { first, rest } = split(numbers);
 
-  yield first;
-  yield * filterWith((n) => n % first !== 0, primes(rest));
+  while (true) {
+    const { first, rest } = split(numbers);
+
+    yield first;
+    numbers = filterWith((n) => n % first !== 0, rest);
+  }
 }
 
 function * sequence2 (first, second, nextFn = (x, y) => y) {
@@ -722,7 +725,6 @@ function * sequence2 (first, second, nextFn = (x, y) => y) {
     yield second;
     [first, second] = [second, nextFn(first, second)]
   }
-  yield * join(first, sequence2(second, nextFn(first, second), nextFn));
 }
 ```
 
@@ -732,16 +734,16 @@ These no longer have the mathematical "purity" of the functional-style implement
 
 ### the problem with mapping generators with themselves
 
-Recall `fibonacci` (now written with our new `mapWith`), which maps itself against itself:
+Recall `fibonacci2` (now written with our new `mapWith`), which maps itself against itself:
 
 ```javascript
-function * fibonacci () {
+function * fibonacci2 () {
   yield 0;
   yield 1;
   yield * mapWith(
       (x, y) => x + y,
-      fibonacci(),
-      rest(fibonacci())
+      fibonacci2(),
+      rest(fibonacci2())
     );
 };
 ```
@@ -753,8 +755,8 @@ function * phi () {
   yield * rest(
     mapWith(
       (x, y) => x / y,
-      rest(fibonacci()),
-      fibonacci()
+      rest(fibonacci2()),
+      fibonacci2()
     )
   );
 };
@@ -764,7 +766,87 @@ These look like we're mapping iterables against themselves, but more accurately,
 
 This distinction is important. If we have an iterator, we can't restart it at the beginning whenever we like. That's not how iterators work: They statefully progress from beginning to end, you can't restart them or move backwards.
 
-So the generators we wrote above only work because we can invoke `fibonacci()` and make new iterators whenever we want. If we tried to use a similar pattern with an iterable, it would break. We can't use an iterator twice. What we need is a way to *clone* iterators.
+So the generators we wrote above only work because we can invoke `fibonacci()` and make new iterators whenever we want. If we tried to use a similar pattern with an iterable, it would break, becasue we can't use an iterator twice.
+
+One approach is to rethink the way iterators work. As supplied, they operate on one value at a time. Fine. But what if they operated on more than one element at a time, in slices of a particular length?
+
+```javascript
+function * slices (length, iterable) {
+  const iterator = iterable[Symbol.iterator]();
+  let buffer = [...take(length, iterator)];
+
+  if (buffer.length < length) return;
+
+  let nextElementIndex = 0;
+
+  while (true) {
+    yield buffer;
+
+    const { value, done } = iterator.next();
+
+    if (done) return;
+
+    buffer = buffer.slice(1);
+    buffer.push(value);
+  }
+}
+
+const numberAndNext = slices(2, from(1));
+
+for (const something of numberAndNext)
+  console.log(something);
+  //=> [1,2]
+       [2,3]
+       [3,4]
+       [4,5]
+       ...
+```
+
+Now we can revist our recursive `fibonacci2`:
+
+```javascript
+function * fibonacci3 () {
+  yield 0;
+  yield 1;
+  yield * mapWith(
+      ([x, y]) => x + y,
+      slices(2, fibonacci3())
+    );
+};
+```
+
+We're still recursively callying `fibonacci`, but we are no longer trying to invoke it twice for each element we evaluate. Instead, we map over `slices` of `finbonacci`. We can do the same thing with `phi`:
+
+```javascript
+function * phi2 () {
+  yield * rest(
+    mapWith(
+      ([x, y]) => x / y,
+      slices(2, fibonacci3())
+    )
+  );
+};
+```
+
+How do we know when we've converged?
+
+```javascript
+function within (tolerance) {
+  return (([x, y]) => Math.abs(x - y) <= tolerance);
+}
+```
+
+Let's apply it:
+
+```javascript
+const pairsOfPhi = slices(2, phi2());
+const pairsWithinTolerance = filterWith(within(0.00000001), pairsOfPhi);
+const firstPairWithinTolerance = first(pairsWithinTolerance);
+const [_, estimate] = firstPairWithinTolerance;
+
+estimate
+  //=> 1.6180339901755971
+```
 
 ---
 
