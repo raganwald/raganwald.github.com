@@ -167,6 +167,8 @@ for (const something of catenate(OneTwoThree(), FourFive()))
 
 That's it, we're ready to talk about...
 
+---
+
 # Generators for People Who Don’t Give a Shit About GettingStuffDone™
 
 ---
@@ -177,7 +179,7 @@ That's it, we're ready to talk about...
 
 ### basic building blocks for generators
 
-Let's start at the beginning. Generators can take arguments. Here's a simple generator, it takes zero or more values and returns an iterator over the values (if any):
+Let's start with a simple generator, it takes zero or more values and returns an iterator over the values (if any):
 
 ```javascript
 function * just (...values) {
@@ -193,7 +195,7 @@ for (const something of just('Hello'))
   //=> 'Hello'
 ```
 
-Here's `first`, it's an ordinary function that returns the first value yielded by an iterable:
+`just` makes a generator out of values. How do we get values out of a generator? We know about iterating over a generator's values, but here's `first`, it's an ordinary function that returns the first value yielded by an iterable:
 
 ```javascript
 function first (iterable) {
@@ -206,7 +208,7 @@ function first (iterable) {
 first(['Hello', 'Java', 'Script'])
 ```
 
-The inverse of `first` is `rest`, a generator that takes an `iterable` and returns all but the first value:
+The inverse of `first` is `rest`, a generator that takes an `iterable` and yields all but the first value:
 
 ```javascript
 function * rest (iterable) {
@@ -222,7 +224,7 @@ for (const something of rest(['Hello', 'Java', 'Script']))
        Script
 ```
 
-Sometimes you need both the `first` and the `rest` of an iterable, and you don't want to call them in succession because iterables are stateful. So it's convenient to use destructuring to get both at once:
+Sometimes you need both the `first` and the `rest` of an iterable, and you don't want to call them in succession because iterables are stateful. So it's convenient to use destructuring to get both at once:[^rest]
 
 ```javascript
 function split (iterable) {
@@ -248,9 +250,9 @@ for (const something of rest)
        5
 ```
 
-(Note that if you don't *have* a `first`, you don't *get* a first.)
+If we already have an iterator, we don't need `split`: Once you take teh `first` value, the iterator will return the rest of the values automatically. But as we see in this example, we might have an expression that provides an iterator, so `split` lets us bind both values at once.
 
-The inverse of splitting an iterable into `first` and `rest` is to `join` them. We'll use a generator for this. To maintain symmetry with `split`, we'll fake named keywords with destructuring, and use the same rule: If you don't supply a `first`, it won't join a `first`:
+The inverse of splitting an iterable into `first` and `rest` is to `join` them:
 
 ```javascript
 function * join (first, rest) {
