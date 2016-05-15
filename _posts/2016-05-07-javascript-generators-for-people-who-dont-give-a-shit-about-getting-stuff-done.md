@@ -246,7 +246,7 @@ for (const something of rest(['Hello', 'Java', 'Script']))
        Script
 ```
 
-Sometimes you need both the `first` and the `rest` of an iterable, and you don't want to call them in succession because iterables are stateful. So it's convenient to use destructuring to get both at once:[^rest]
+Sometimes you need both the `first` and the `rest` of an iterable, and you don't want to call them in succession because iterables are stateful. So it's convenient to use destructuring to get both at once:
 
 ```javascript
 function split (iterable) {
