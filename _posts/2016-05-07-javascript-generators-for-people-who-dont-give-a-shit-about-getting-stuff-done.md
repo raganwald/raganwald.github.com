@@ -881,7 +881,7 @@ function firstWhen (filterFn, iterable) {
 
 `firstWhen` is useful, it's just like `Array.prototype.find`. We should keep it around. But remember when we were writing everything "functionally" above? Why can't we do the same with `firstWhen`? In functional programming, `compose` is a function that, well, *composes* two functions together. Thus `compose(a, b)(c) === a(b(c))`.
 
-There are lots of examples around the internet, or in books like [JavaScript Allongé]:[^js]
+There are lots of examples around the internet, or in books like JavaScript Allongé:[^js]
 
 [^js]: Shameless plug: https://leanpub.com/javascriptallongesix
 
@@ -999,3 +999,7 @@ The lesson is that we can write functions that return generators, but we must be
 (*This is a work-in-progress, feel free to read and even submit an edit, but do not post on Reddit or Hacker News, thank you.*)
 
 ([edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-05-07-javascript-generators-for-people-who-dont-give-a-shit-about-getting-stuff-done.md))
+
+---
+
+### notes
