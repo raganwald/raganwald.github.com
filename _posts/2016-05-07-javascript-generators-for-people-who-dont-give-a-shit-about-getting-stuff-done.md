@@ -27,27 +27,29 @@ If you do, please share them with me.
 
 ### prerequisites
 
-Before we get to the main bit of business, here's what we presume we understand: In JavaScript, a **generator** is a function declared with an `*`. Here's the simplest possible generator:
+Before we get to the main bit of business, here's what we presume we understand: In JavaScript, a **generator function** is a function declared with an `*`. Here's the simplest possible generator function:
 
 ```javascript
 const Empty = function * () {};
 ```
 
-If you invoke a generator, you get an object back, and you don't need to use a `return` keyword:
+If you invoke a generator function, you get an object back, and you don't need to use a `return` keyword:
 
 ```javascript
 Empty()
   //=> {}
 ```
 
-What can we do with this thing they return? We can iterate over it (even though there's nothing to iterate over in an empty generator):
+This object is a **generator**. Generator functions always return generators.
+
+What can we do with a generator? We can iterate over it (even though there's nothing to iterate over in an empty generator function):
 
 ```javascript
 for (const something of Empty())
   console.log(something);
   //=> nothing happens!
 ```
-Generators can `yield` values:
+Generator functions can `yield` values. When we iterate over the resulting generator, we get that value:
 
 ```javascript
 const One = function * () {
@@ -59,7 +61,7 @@ for (const something of One())
   //=> 1
 ```
 
-If a generator yield more than one value, it iterates over the values successively:
+If a generator function yields more than one value, the generator iterates over the values successively:
 
 ```javascript
 const OneTwo = function * () {
@@ -97,7 +99,7 @@ for (const something of OneTwoThree())
        3
 ```
 
-The object returned when we invoke a generator is an iterable because it implements the `[Symbol.iterator]` method:
+Generators are *iterable* because they implements the `[Symbol.iterator]` method:
 
 ```javascript
 const Empty = function * () {};
@@ -108,7 +110,7 @@ typeof iterable[Symbol.iterator]
   //=> function
 ```
 
-The iterables returned by generators are actually *iterators*, because they implement the `.next` method:
+Generators are actually *iterators*, because they implement the `.next` method:
 
 ```javascript
 const OneTwoThree = function * () {
@@ -138,7 +140,7 @@ let { done, value } = iterator.next();
   //=> {"done":true}
 ```
 
-And we can *flatten* an iterator with `yield *`:
+Generator functions can *flatten* an iterable with `yield *`:
 
 ```javascript
 const catenate = function * (...iterables) {
@@ -179,7 +181,7 @@ That's it, we're ready to talk about...
 
 ### basic building blocks for generators
 
-Let's start with a simple generator, it takes zero or more values and returns an iterator over the values (if any):
+Let's start with a simple generator function, it takes zero or more values and returns an iterator over the values (if any):
 
 ```javascript
 function * just (...values) {
@@ -195,7 +197,7 @@ for (const something of just('Hello'))
   //=> 'Hello'
 ```
 
-`just` makes a generator out of values. How do we get values out of a generator? We know about iterating over a generator's values, but here's `first`, it's an ordinary function that returns the first value yielded by an iterable:
+`just` makes an iterable out of values. How do we get values out of an iterable? Here's `first`, it's an ordinary function that returns the first value yielded by an iterable:
 
 ```javascript
 function first (iterable) {
@@ -208,7 +210,7 @@ function first (iterable) {
 first(['Hello', 'Java', 'Script'])
 ```
 
-We can also `take` multiple elements. We use a generator so that we can iterate over the elements we take:
+We can also `take` multiple elements. We use a generator function so that we can iterate over the elements we take:
 
 ```javascript
 function * take (numberToTake, iterable) {
@@ -230,7 +232,7 @@ for (const something of iterable)
        3
 ```
 
-The inverse of `first` is `rest`, a generator that takes an `iterable` and yields all but the first value:
+The inverse of `first` is `rest`, a generator function that takes an `iterable` and yields all but the first value:
 
 ```javascript
 function * rest (iterable) {
@@ -293,7 +295,7 @@ for (const something of iterable)
        1
 ```
 
-With these basic building blocks in place, we can look at some interesting generators: Generators that `yield *` themselves.
+With these basic building blocks in place, we can look at some interesting generator functions: Generator functions that `yield *` themselves.
 
 ---
 
@@ -303,7 +305,7 @@ With these basic building blocks in place, we can look at some interesting gener
 
 ### self-referential generators
 
-We have seen that generators can `yield *` iterators... Even those produced by other generators. What about themselves? Can a generator yield itself? Consider:
+We have seen that generator functions can `yield *` iterators... Even those produced by other generator functions. What about themselves? Can a generator function yield itself? Consider:
 
 ```javascript
 function * infiniteNumberOf (something) {
@@ -318,7 +320,7 @@ for (const something of infiniteNumberOf(1))
        ...
 ```
 
-`infiniteNumberOf` yields an iterator that yields `something` an infinite number of times. So if we want an infinite number of `1`s, we can use `infiniteNumberOf(1)`. Taking an argument for a generator that refers to itself is interesting. For example, we could write:
+`infiniteNumberOf` yields an iterator that yields `something` an infinite number of times. So if we want an infinite number of `1`s, we can use `infiniteNumberOf(1)`. Taking an argument for a generator function that refers to itself is interesting. For example, we could write:
 
 ```javascript
 function * from (first, increment = 1) {
@@ -373,7 +375,7 @@ for (const something of fibonacci)
        ...
 ```
 
-We will come back to this sequence, but first, let's look at generators that transform other generators.
+We will come back to this sequence, but first, let's look at generator functions that transform other generators.
 
 ---
 
@@ -381,9 +383,9 @@ We will come back to this sequence, but first, let's look at generators that tra
 
 ---
 
-### generators that transform other generators
+### generator functions that transform other generators
 
-Our "self-referential generators" yield values that are derived from the values they've already yielded. In a sense, these generators transform themselves. Generators can, in fact, transform other generators (or more generally, transform any iterable).
+Our "self-referential generator functions" yield values that are derived from the values they've already yielded. In a sense, these generator functions transform themselves. Generator functions can, in fact, transform other generators (or more generally, transform any iterable).
 
 The simplest example is `mapWith`:
 
@@ -410,7 +412,7 @@ for (const something of squares)
        ...
 ```
 
-Another simple generator that transforms an iterator is `filterWith`:
+Another simple generator function that transforms an iterator is `filterWith`:
 
 ```javascript
 function * filterWith (fn, iterable) {
@@ -438,7 +440,7 @@ for (const something of odds)
        ...
 ```
 
-We can use `filterWith` and a self-referential generator to make an [Unfaithful Sieve of Eratosthenes][1]:
+We can use `filterWith` and a self-referential generator function to make an [Unfaithful Sieve of Eratosthenes][1]:
 
 [1]: http://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html "The Hubris of Impatient Sieves of Eratosthenes"
 
@@ -468,9 +470,9 @@ These are great, but sometimes we want to transform more than one generator.
 
 ---
 
-### generators that transform one or more generators
+### generator functions that transform one or more generators
 
-`mapWith` was a generator that transformed an iterable by mapping its values with a unary function. Thus, `mapWith((x) => x*3, from(1))` gives us an iterator over the multiples of three.
+`mapWith` was a generator function that transformed an iterable by mapping its values with a unary function. Thus, `mapWith((x) => x*3, from(1))` gives us an iterator over the multiples of three.
 
 But what about mapping over *two or more* iterables? How would that work? The simplest method is to iterate over all the iterables simultaneously, taking an element from each one, and mapping the pair of elements to a value. If any of them run out of values, stop:
 
@@ -541,7 +543,7 @@ for (const something of phi())
        ...
 ```
 
-We have written a generator that converges (slowly) on the Golden Ratio, `1.6180339...`. But let's look at `zipWith` more closely:
+We have written a generator function that converges (slowly) on the Golden Ratio, `1.6180339...`. But let's look at `zipWith` more closely:
 
 ```javascript
 function * zipWith (fn, ...iterables) {
@@ -601,9 +603,9 @@ This is good stuff, but let's take a moment and have a look at our programming s
 
 ---
 
-### writing generators in generator style
+### writing generator functions in generator style
 
-Let's pause for a moment and look at the way we've been writing our generators that transform other generators. Once more, `mapWith`:
+Let's pause for a moment and look at the way we've been writing our generator functions that transform other generators. Once more, `mapWith`:
 
 ```javascript
 function * mapWith (fn, ...iterables) {
@@ -624,11 +626,11 @@ Notice that we've written this to:
 2. To compose a new iterator with `join`, and;
 3. To `yield *` the new iterator it composes.
 
-This is written in *pure functional style*. It reads as if it was a function that only has to return one value for each invocation. Furthermore, its mental model is of transforming one generator into another:
+This is written in *pure functional style*. It reads as if it was a function that only has to return one value for each invocation. Furthermore, its mental model is of transforming one generator function into another:
 
 > The mapped generator consists of the function applied to the firsts of the argument iterables, joined with a mapping of the function to the rests of the iterables.
 
-But that's not the only way that generators have to work. We can just as easily write:
+But that's not the only way that generator functions have to work. We can just as easily write:
 
 ```javascript
 function * mapWith (fn, ...iterables) {
@@ -648,9 +650,9 @@ Now we're saying:
 
 > Yield the result of applying the function to the firsts of the argument iterables, then yield the values of mapping the function over the rests of the iterables.
 
-Removing the `join` mean we're yielding something, suspending the generator, then yielding the remainder later. This is stateful, which is mentally the opposite of the way that functional programming works. But that doesn't mean it's wrong.
+Removing the `join` mean we're yielding something, suspending the generator function, then yielding the remainder later. This is stateful, which is mentally the opposite of the way that functional programming works. But that doesn't mean it's wrong.
 
-Let's keep going with statefulness. Why not iterate instead of writing a recursive generator?
+Let's keep going with statefulness. Why not iterate instead of writing a recursive generator function?
 
 ```javascript
 function * mapWith (fn, ...iterables) {
@@ -674,7 +676,7 @@ This reads in a different way:
 
 > Get iterators for all the iterables, then repeat the following: Get all the values for all the iterators. If any iterator is done, we're done. If not, yield the result of applying the function to the values, and repeat.
 
-This is exactly what generators were designed to do: To execute code while yielding values as we go. We can rewrite our other generators in iterative style:
+This is exactly what generator functions were designed to do: To execute code while yielding values as we go. We can rewrite our other generator functions in iterative style:
 
 ```javascript
 function * filterWith (fn, iterable) {
@@ -730,11 +732,11 @@ function * sequencePairs (first, second, nextFn = (x, y) => y) {
 }
 ```
 
-These no longer have the mathematical "purity" of the functional-style implementations, but then again, generators are not really functions, aren't really used like functions, and perhaps we shouldn't try to write them like functions.
+These no longer have the mathematical "purity" of the functional-style implementations, but then again, generator functions are not really functions, aren't really used like functions, and perhaps we shouldn't try to write them like functions.
 
 ---
 
-### the problem with mapping generators with themselves
+### the problem with mapping generator functions with themselves
 
 Recall `fibonacci2` (now written with our new `mapWith`), which maps itself against itself:
 
@@ -764,11 +766,11 @@ function * phi () {
 };
 ```
 
-These look like we're mapping iterables against themselves, but more accurately, we are comparing *generators* against themselves, which gives us the ability to write `fibonacci()` and generate a brand-new iterator whenever we want.
+These look like we're mapping iterables against themselves, but more accurately, we are comparing *generator functions* against themselves, which gives us the ability to write `fibonacci()` and generate a brand-new generator whenever we want.
 
 This distinction is important. If we have an iterator, we can't restart it at the beginning whenever we like. That's not how iterators work: They statefully progress from beginning to end, you can't restart them or move backwards.
 
-So the generators we wrote above only work because we can invoke `fibonacci()` and make new iterators whenever we want. If we tried to use a similar pattern with an iterable, it would break, because we can't use an iterator twice.
+So the generator functions we wrote above only work because we can invoke `fibonacci()` and make new iterators whenever we want. If we tried to use a similar pattern with an iterable, it would break, because we can't use an iterator twice.
 
 One approach is to rethink the way iterators work. As supplied, they operate on one value at a time. Fine. But what if they operated on more than one element at a time, in slices of a particular length?
 
@@ -858,7 +860,7 @@ But hang on, something's not quite right.
 
 ---
 
-### composition
+### composing generator functions
 
 ---
 
@@ -869,7 +871,7 @@ const pairsWithinTolerance = filterWith(within(0.00000001), pairsOfPhi);
 const firstPairWithinTolerance = first(pairsWithinTolerance);
 ```
 
-The core logic is: `first(filterWith(...))`. What does it mean? "Take the first element of all the elements tat pass the filter." We can make that a function:
+The core logic is: `first(filterWith(...))`. What does it mean? "Take the first element of all the elements that pass the filter." We can make that a function:
 
 ```javascript
 function firstWhen (filterFn, iterable) {
@@ -877,76 +879,7 @@ function firstWhen (filterFn, iterable) {
 }
 ```
 
-This is almost identical to the built-in array method `#find`. If we were writing our own `find`, we could *in theory* write:
-
-```javascript
-function find(filterFn, array) {
-  return array.filter(filterFn)[0]
-}
-```
-
-But *in practice*, we write it using a loop, because the array `#filter` method is eager. So if we have a million elements, this code will first iterate over all million elements, then take the first element that passes the filter. For example:
-
-```javascript
-function factors (n) {
-  const f = [];
-  for (let i = 1; i <= (n / 2); ++i) {
-    if (n % i == 0) f.push(i);
-  }
-  console.log(`${n} has factors ${f.join(', ')}`);
-  return f;
-}
-
-function isPerfect (n) {
-  const f = factors(n);
-  const sumFactors = f.reduce((x,y) => x + y);
-
-  return n === sumFactors;
-}
-
-const oneMillionNumbers = [...take(1000000, from(2))];
-
-firstWhen(isPerfect, oneMillionNumbers)
-  //=> 2 has factors 1
-       3 has factors 1
-       4 has factors 1, 2
-       5 has factors 1
-       6 has factors 1, 2, 3
-       6
-```
-
-Now let's use `find`. There's plenty of time, grab a drink and catch up on your reading while it factors one million numbers, just to tell us that `6` is the first perfect square:
-
-```javascript
-find(isPerfect, oneMillionNumbers)
-  //=> 2 has factors 1
-       3 has factors 1
-       4 has factors 1, 2
-       5 has factors 1
-       6 has factors 1, 2, 3
-       7 has factors 1
-       8 has factors 1, 2, 4
-       9 has factors 1, 3
-       10 has factors 1, 2, 5
-       ...
-       999999 has factors 1, 3, 7, 9, 11, 13, 21, 27, 33, 37, 39, 63,
-         77, 91, 99, 111, 117, 143, 189, 231, 259, 273, 297, 333, 351,
-         407, 429, 481, 693, 777, 819, 999, 1001, 1221, 1287, 1443,
-         2079, 2331, 2457, 2849, 3003, 3367, 3663, 3861, 4329, 5291,
-         6993, 8547, 9009, 10101, 10989, 12987, 15873, 25641, 27027,
-         30303, 37037, 47619, 76923, 90909, 111111, 142857, 333333
-       1000000 has factors 1, 2, 4, 5, 8, 10, 16, 20, 25, 32, 40, 50,
-         64, 80, 100, 125, 160, 200, 250, 320, 400, 500, 625, 800,
-         1000, 1250, 1600, 2000, 2500, 3125, 4000, 5000, 6250, 8000,
-         10000, 12500, 15625, 20000, 25000, 31250, 40000, 50000, 62500,
-         100000, 125000, 200000, 250000, 500000 1000001 has factors 1,
-         101, 9901
-       6
-```
-
-As we expect, we have to create a new array with all of the perfect numbers between `2` and `1000001` in order to report that `6` is the first. This we already know about generators and iterators: They are evaluated on-demand, and thus are much more efficient than working with arrays.
-
-So this `firstWhen` we wrote seems vaguely important, we should keep it around. But remember when we were writing everything "functionally" above? Why can't we do the same with `firstWhen`? In functional programming, `compose` is a function that, well, *composes* two functions together. Thus `compose(a, b)(c) === a(b(c))`.
+`firstWhen` is useful, it's just like `Array.prototype.find`. We should keep it around. But remember when we were writing everything "functionally" above? Why can't we do the same with `firstWhen`? In functional programming, `compose` is a function that, well, *composes* two functions together. Thus `compose(a, b)(c) === a(b(c))`.
 
 There are lots of examples around the internet, or in books like [JavaScript Allongé]:[^js]
 
@@ -1016,6 +949,38 @@ restWhen(isOdd, squares)
        225
        ...
 ```
+
+It is handy to be able to compose generator functions, but using `compose` to create generator functions teaches us something: **We can make generators with ordinary functions that invoke generator functions**.
+
+But not always! Recall our recursive generator functions, like `infiniteNumberOf`:
+
+```javascript
+function * infiniteNumberOf (something) {
+  yield * join(something, infiniteNumberOf(something));
+}
+
+[...take(10, infiniteNumberOf('spam'))]
+  //=> ["spam","spam","spam","spam","spam","spam","spam","spam","spam","spam"]
+```
+
+We know we can also rewrite it as an ordinary function that returns a generator. Or can we?
+
+```javascript
+function infiniteNumberOf2 (something) {
+  return join(something, infiniteNumberOf2(something));
+}
+
+[...take(10, infiniteNumberOf2('spam'))]
+  //=> Maximum call stack size exceeded.
+```
+
+When invoked, a generator function immediately returns a generator. When we ask for the first value with with `.next`, it executes until it reaches a `yield`, then suspends its execution until we ask for another value with `.next`.
+
+Thus, our `infiniteNumberOf` generator function returns a generator immediately. When we invoke `.next` on it, it invokes `.join`, and the `yield *` invokes `.next` on that generator. Which executes until it reaches a `yield` and yields `'spam'`. When we invoke `.next` again, it starts to evaluate he nested `infiniteNumberOf(something)`.
+
+But when we invoke `infiniteNumberOf2`, an ordinary function, things are very different. Right away, it evaluates `join(something, infiniteNumberOf2(something))`. To do that, it evaluates the variable reference `something`, and the function invocation `infiniteNumberOf2(something)`. Which starts the cycle all over again and continues to infinity, or until we un out of stack.
+
+The lesson is that we can write functions that return generators, but we must be careful lest the eager evaluation of ordinary functions destroys the lazy evaluation semantics we expect from generator functions.
 
 ---
 
