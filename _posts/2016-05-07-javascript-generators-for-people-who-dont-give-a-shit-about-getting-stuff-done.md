@@ -883,7 +883,7 @@ function firstWhen (filterFn, iterable) {
 
 There are lots of examples around the internet, or in books like JavaScript Allongé:[^js]
 
-[^js]: Shameless plug: https://leanpub.com/javascriptallongesix
+[^js]: Shameless plug: [https://leanpub.com/javascriptallongesix](https://leanpub.com/javascriptallongesix)
 
 ```javascript
 function compose(a, b) {
