@@ -1200,7 +1200,116 @@ function numbers() {
   }, _marked[9], this);
 ```
 
-Although this is not a particularly stellar example, it does illustrate the idea that sometimes, if we want a stateful function that can be called multiple times, a generator that suspends and resumes can provide a clearer way to express the statefulness versus a function or object that stores state in properties or variables.
+There are a lot of moving parts we cannot see, but fundamentally what has happened is that the generator function that proceeds form `yield` to `yield` has been turned into a state machine. Each time it is invoked, it executes some code, then changes to another state. We can no longer see the linear execution.
+
+If we write a more complex generator with if statements and other control flow constructs, it will likewise be transformed into a state machine, with more complex rules for transitioning from state to state.
+
+Although this is not a particularly stellar example, it does illustrate the idea that sometimes, if we want a stateful function that can be called multiple times, a generator that suspends and resumes can provide a clearer way to express the statefulness versus a function or object that stores state in properties or variables outside of the function.
+
+---
+
+[![Controllers](/assets/images/controllers.jpg)](https://www.flickr.com/photos/officialgdc/16500591377)
+
+---
+
+### interactive functions
+
+So far, our generators and functions have not been interactive. We have initialized some of them, but thereafter, whenever we have invoked them, we have called `.next()` or `()` and obtained a value in return.
+
+We have seen that generators and functions do similar things when invoked without arguments. But functions can also be invoked with arguments. For example:
+
+```javascript
+function accumulator () {
+  let sum = 0;
+
+  return (n) => (sum = sum + n);
+}
+
+const acc = accumulator();
+
+acc(1)
+  //=> 1
+
+acc(2)
+  //=> 3
+
+acc(3)
+  //=> 6
+
+acc(4)
+  //=> 10
+```
+
+If generators really were equivalent to functions, we could call them with `.next(...)` and get a similar behaviour. And as it happens, we can do that:
+
+```javascript
+function * accumulator () {
+  let sum = 0;
+  while (true) {
+    const n = yield(sum);
+    sum += n;
+  }
+}
+
+const acc = accumulator();
+
+acc.next();
+
+acc.next(1)
+  //=> {"value":1,"done":false}
+
+acc.next(2)
+  //=> {"value":3,"done":false}
+
+acc.next(3)
+  //=> {"value":6,"done":false}
+
+acc.next(4)
+  //=> {"value":10,"done":false}
+```
+
+Now let's analyze what happens. When we first call `.next()`, the iterator runs up to the first `yield` it encounters. We don't pass a value in, but if we did, it would be ignored. So our iterator runs right up to `const n = yield(sum);`. At that point, `sum` is zero, and the expression `yield(sum)` yields `{"value":0,"done":false}`. We ignore that in our code. The iterator then suspends execution until we invoke `.next(1)`.
+
+Note that at this point, the iterator is in the middle of `const n = yield(sum)`. It yielded the value, but is waiting for a value to come back so it can be assigned to `n`. `yield` is aptly named: It *yields* the flow of control to another piece of code.
+
+Now we invoke `acc.next(1)`. This passes `1` to the iterator, which resumes execution. `1` is now the value of `yield(sum)` within the iterator, so `const n = yield(sum)` at that point is equivalent to `const n = 1`, and on the next line, `sum += n` means that `sum` becomes `1`.
+
+The iterator continues to run, and loops around to `const n = yield(sum)` again. Now it yields `{"value":1,"done":false}` and suspends execution again, waiting for the code to call `.next(2)`. And so it goes until we stop calling `.next(…)`.
+
+Thus, interactive generators are not exactly like interactive functions: We always need to call `.next()` to advance an interactive generator to the point where it can accept a value from `.next(…)`. This is a crucial difference from interactive functions: With an interactive function, you don't need to call it once before passing values in.
+
+Interactive generators are crucially different in another respect: When you write something like `let foo = yield(bar)`, the sequence of events is that `bar` is yielded, and then the iterator suspends its execution until the code that is calling the iterator invokes it again with `.next()`.
+
+That is different from an ordinary function, because in an ordinary function, the *caller* suspends its execution when it calls a function or invokes a method. The invoked function calls `return` and, well, *returns* a value and resumes the caller's execution.
+
+Thus, in ordinary functions, the act of invoking another function or method suspends execution and waits for a value, and the `return` statement resumes the caller's execution. Whereas in an iterator, calling `.next(…)` suspends execution and waits for the iterator to yield a value, but within the iterator, `yield` acts just like a function call as well: It suspends execution and waits for a value.
+
+This is very interesting! Ordinary functions suspend execution and wait for values, but there is no easy way for two functions to suspend execution and wait for each other. But with an iterator, we can have this piece of code:
+
+```javascript
+const acc = accumulator();
+acc.next();
+
+let n = 1;
+
+while (true) {
+  acc.next(n++);
+}
+```
+
+And it suspends execution and waits for this piece of code:
+
+```javascript
+function * accumulator () {
+  let sum = 0;
+  while (true) {
+    const n = yield(sum);
+    sum += n;
+  }
+}
+```
+
+Which also suspends execution and waits for the first piece of code. We have pieces of code that *interleave* their execution instead of neatly invoking functions in a hierarchal manner.
 
 
 ---
