@@ -1311,6 +1311,13 @@ function * accumulator () {
 
 Which also suspends execution and waits for the first piece of code. We have pieces of code that *interleave* their execution instead of neatly invoking functions in a hierarchal manner.
 
+---
+
+# miscellanea
+
+---
+
+[![Vulcan Airborne Auxiliary Power Unit](/assets/images/vulcan.jpg)](https://www.flickr.com/photos/tweakie-cnc/6264031126)
 
 ---
 
