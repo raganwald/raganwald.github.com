@@ -1125,21 +1125,84 @@ function * numbers () {
     ++tens;
   }
 }
-
-const exponents = exponentsOfTwo();
-
-exponents.next()
-  //=> {"value":1,"done":false}
-
-exponents.next()
-  //=> {"value":2,"done":false}
-
-exponents.next()
-  //=> {"value":4,"done":false}
-
-exponents.next()
-  //=> {"value":8,"done":false}
 ```
+
+As we can see, it suspends and resumes its execution, moving on to the next yield statement each time. This is not the same thing as a function: Functions start a new invocation each time, with execution beginning at the top and moving to the end or to a return statement, which ends the invocation.
+
+In fact, when a compiler translates ECMAScript 2015 code into ECMAScript 5, it has to translate the generators into functions. Since functions cannot suspend and resume their operation, the compiler has to transform generators into objects that act as state machines.
+
+Here's how Babel translates our function (as of June, 2016):
+
+```javascript
+function numbers() {
+  var tens;
+  return regeneratorRuntime.wrap(function numbers$(_context10) {
+    while (1) {
+      switch (_context10.prev = _context10.next) {
+        case 0:
+          tens = 0;
+
+        case 1:
+          if (!true) {
+            _context10.next = 25;
+            break;
+          }
+
+          _context10.next = 4;
+          return tens + 0;
+
+        case 4:
+          _context10.next = 6;
+          return tens + 1;
+
+        case 6:
+          _context10.next = 8;
+          return tens + 2;
+
+        case 8:
+          _context10.next = 10;
+          return tens + 3;
+
+        case 10:
+          _context10.next = 12;
+          return tens + 4;
+
+        case 12:
+          _context10.next = 14;
+          return tens + 5;
+
+        case 14:
+          _context10.next = 16;
+          return tens + 6;
+
+        case 16:
+          _context10.next = 18;
+          return tens + 7;
+
+        case 18:
+          _context10.next = 20;
+          return tens + 8;
+
+        case 20:
+          _context10.next = 22;
+          return tens + 9;
+
+        case 22:
+          ++tens;
+          _context10.next = 1;
+          break;
+
+        case 25:
+        case "end":
+          return _context10.stop();
+      }
+    }
+  }, _marked[9], this);
+```
+
+Although this is not a particularly stellar example, it does illustrate the idea that sometimes, if we want a stateful function that can be called multiple times, a generator that suspends and resumes can provide a clearer way to express the statefulness versus a function or object that stores state in properties or variables.
+
+
 ---
 
 ### source code
