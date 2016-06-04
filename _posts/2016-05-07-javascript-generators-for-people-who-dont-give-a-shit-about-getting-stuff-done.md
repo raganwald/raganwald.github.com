@@ -1105,7 +1105,7 @@ This is because every time we invoke the function, we start with a fresh invocat
 
 ### suspension and resumption
 
-Let's look at suspending and resuming again. Here's a generator that gratitously makes this explicit:
+Let's look at suspending and resuming again. Here's a generator that gratuitously makes this explicit:
 
 ```javascript
 function * numbers () {
