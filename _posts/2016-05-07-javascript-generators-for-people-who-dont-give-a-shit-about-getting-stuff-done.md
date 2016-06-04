@@ -736,6 +736,10 @@ These no longer have the mathematical "purity" of the functional-style implement
 
 ---
 
+[![Points Forever](/assets/images/points-forever.jpg)](https://www.flickr.com/photos/doomkitty/9111742097)
+
+---
+
 ### the problem with mapping generator functions with themselves
 
 Recall `fibonacci2` (now written with our new `mapWith`), which maps itself against itself:
@@ -862,8 +866,6 @@ But hang on, something's not quite right.
 
 ### composing generator functions
 
----
-
 Let's look at two lines from our phi-calculating code:
 
 ```javascript
@@ -982,6 +984,162 @@ But when we invoke `infiniteNumberOf2`, an ordinary function, things are very di
 
 The lesson is that we can write functions that return generators, but we must be careful lest the eager evaluation of ordinary functions destroys the lazy evaluation semantics we expect from generator functions.
 
+---
+
+# Generalizing Generators
+
+---
+
+[![Oware](/assets/images/oware.jpg)](https://www.flickr.com/photos/elpadawan/8479297425)
+
+---
+
+### invocations
+
+Let's back up a bit. Consider this ridiculously simple generator, written in generator style:
+
+```javascript
+function * infiniteNumberOf (something) {
+  while (true) {
+    yield something;
+  }
+}
+```
+
+When we invoke it, we get back an *iterator*:
+
+```javascript
+const iterator = infiniteNumberOf('JavaScript Allongé');
+```
+
+From that point on, whenever we invoke `.next()` on the iterator, we get a "Plain Old JavaScript Object" back, with a `value` property:
+
+```javascript
+iterator.next();
+  //=> {"value":"JavaScript Allongé", "done":false}
+
+iterator.next();
+  //=> {"value":"JavaScript Allongé", "done":false}
+
+iterator.next();
+  //=> {"value":"JavaScript Allongé", "done":false}
+```
+
+We can do the semantically same thing with plain-old-functions:
+
+```javascript
+function plentyOf (something) {
+  return () => something;
+}
+
+const fn = plentyOf('JavaScript Allongé');
+
+fn()
+  //=> "JavaScript Allongé"
+
+fn()
+  //=> "JavaScript Allongé"
+
+fn()
+  //=> "JavaScript Allongé"
+```
+
+A generator makes a thingummy that when invoked, returns a value, and you can invoke it more than once, and you get a value each time. And we can make a function-making-function that returns a function, and you can invoke that function more than once, and you get a value each time.
+
+Of course, you don't need to get the *same* value each time. Here's a generator and an equivalent function-making-function that produce squares of two:
+
+```javascript
+function * exponentsOfTwo () {
+  let exponent = 0;
+
+  while (true) {
+    yield Math.pow(2, exponent++);
+  }
+}
+
+const exponents = exponentsOfTwo();
+
+exponents.next()
+  //=> {"value":1,"done":false}
+
+exponents.next()
+  //=> {"value":2,"done":false}
+
+exponents.next()
+  //=> {"value":4,"done":false}
+
+exponents.next()
+  //=> {"value":8,"done":false}
+
+
+function powersOfTwo () {
+  let exponent = 0;
+
+  return () => Math.pow(2, exponent++);
+}
+
+const fn = powersOfTwo();
+
+fn()
+  //=> 1
+
+fn()
+  //=> 2
+
+fn()
+  //=> 4
+
+fn()
+  //=> 8
+```
+
+We can see that internally, the fundamental difference between invoking a generator with `.next()` and invoking a function with `()`, is that if we want the function to maintain state, we do it by storing the state as bindings in an enclosing scope.
+
+This is because every time we invoke the function, we start with a fresh invocation of the function, whereas with the iterator we have the same invocation, its just that when it yields a value, we suspend its invocation until we call `.next()` again.
+
+---
+
+[![Play](/assets/images/play.jpg)](https://www.flickr.com/photos/annieroi/4421442720)
+
+---
+
+### suspension and resumption
+
+Let's look at suspending and resuming again. Here's a generator that gratitously makes this explicit:
+
+```javascript
+function * numbers () {
+  let tens = 0;
+
+  while (true) {
+    yield tens + 0;
+    yield tens + 1;
+    yield tens + 2;
+    yield tens + 3;
+    yield tens + 4;
+    yield tens + 5;
+    yield tens + 6;
+    yield tens + 7;
+    yield tens + 8;
+    yield tens + 9;
+    ++tens;
+  }
+}
+
+const exponents = exponentsOfTwo();
+
+exponents.next()
+  //=> {"value":1,"done":false}
+
+exponents.next()
+  //=> {"value":2,"done":false}
+
+exponents.next()
+  //=> {"value":4,"done":false}
+
+exponents.next()
+  //=> {"value":8,"done":false}
+```
 ---
 
 ### source code
