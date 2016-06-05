@@ -1212,7 +1212,7 @@ Although this is not a particularly stellar example, it does illustrate the idea
 
 ---
 
-### interactive functions
+### interactive functions and generators
 
 So far, our generators and functions have not been interactive. We have initialized some of them, but thereafter, whenever we have invoked them, we have called `.next()` or `()` and obtained a value in return.
 
@@ -1297,7 +1297,7 @@ while (true) {
 }
 ```
 
-And it suspends execution and waits for this piece of code:
+And it will suspend execution and wait for this piece of code:
 
 ```javascript
 function * accumulator () {
@@ -1310,6 +1310,38 @@ function * accumulator () {
 ```
 
 Which also suspends execution and waits for the first piece of code. We have pieces of code that *interleave* their execution instead of neatly invoking functions in a hierarchal manner.
+
+---
+
+[![Generators inside the Hoover Dam](/assets/images/hoover-generators.jpg)](https://www.flickr.com/photos/bevrichardmartin/6958818282)
+
+---
+
+### coroutines
+
+Functions and methods are units of execution that can suspend themselves, allow other units to run, then resume where they left off. But strictly speaking, functions only do so in a very rigid, hierarchal way. There is no way for two functions to interleave their execution as we saw is possible with an iterator created by a generator.
+
+Functions can suspend themselves and resume, but they cannot "yield" to another suspended function, they can only invoke another function from its beginning, and that function attempts to run to its end. Even when we have recursive functions that invoke themselves, they are always creating new invocations of themselves, they never yield to a suspended function, they can only return to a function that invoked them.
+
+Not all languages have this restriction. Some languages have units of execution that can yield to any arbitrary suspended unit of execution. The general term for a unit of execution that can suspend itself and yield to another suspended unit of execution is a [coroutine].
+
+[coroutine]: https://en.wikipedia.org/wiki/Coroutine
+
+JavaScript's generators are more like coroutines than functions. They can suspend themselves and resume execution, but they cannot arbitrarily choose which unit of execution to invoke. Let's look at an example problem to be solved with coroutines: The [Prisoner's Dilemma].
+
+[Prisoner's Dilemma]: https://en.wikipedia.org/wiki/Prisoner%27s_dilemma
+
+> Two members of a criminal gang are arrested and imprisoned. Each prisoner is in solitary confinement with no means of communicating with the other. The prosecutors lack sufficient evidence to convict the pair on the principal charge. They hope to get both sentenced to a year in prison on a lesser charge. Simultaneously, the prosecutors offer each prisoner a bargain. Each prisoner is given the opportunity either to: betray the other by testifying that the other committed the crime, or to cooperate with the other by remaining silent.
+>
+> The offer is: If A and B each betray the other, each of them serves 2 years in prison; If A betrays B but B remains silent, A will be set free and B will serve 3 years in prison (and vice versa); If A and B both remain silent, both of them will only serve 1 year in prison (on the lesser charge).
+
+In game theory parlance, remaining silent is called "coöperating," and betraying the other player is called "defecting." The payoff matrix for the game (presuming that a lower score is better) is:
+
+|---|---|---|
+|   |B coöperates|B defects|
+|A coöperates|A: 1, B: 1|A: 3, B: 0|
+|A defects|A: 0, B: 3|A: 2, B: 2|
+
 
 ---
 
