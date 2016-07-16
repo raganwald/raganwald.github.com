@@ -1,7 +1,7 @@
 ---
 title: "On Babies and Bathwater: Are Mixins Considered Harmful?"
 layout: default
-tags: [allonge]
+tags: [allonge, noindex]
 ---
 
 (*This is a work-in-progress, feel free to read and even submit an edit, but do not post on Reddit or Hacker News, thank you.*)
