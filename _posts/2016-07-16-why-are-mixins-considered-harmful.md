@@ -195,6 +195,135 @@ It turns out that with class hierarchies, we have a fragile base class problem a
 
 We can reduce the surface area with encapsulation techniques, but if we want to eliminate the implicit dependencies problem, we need a whole new mechanism for mixing in behaviour. Concatenative sharing simply doesn't scale over time, space, and teams.
 
+## So what can we do about mixins?
+
+The first and simplest thing to do about mixins doesn't solve the problems of implicit dependencies and name clashes, but it will reduce the rate at which they increase complexity. Thus, your architecture will fail to scale, but fail at a much slower rate.
+
+Sometimes, that's enough! Sometimes, software development is about being lean, about tightening the conjecture-experiment-feedback cycle. Doing "the minimum" to get to the next cycle is sometimes a big win.
+
+The first and simplest thing to do is to create some encapsulation for classes and mixins. Do not have all your "private" properties and methods intermingled. This will reduce the number of accidental (or deliberate) dependencies and eliminate a number of accidental name clashes.
+
+There are a few techniques. The first is to use helper functions instead of private methods. Let's say we have:
+
+```javascript
+export default class Widget {
+
+  // __public methods__
+  foo (baz) {
+    this._bar(baz);
+  },
+
+  // __private methods__
+  _bar(baz) {
+    return this.snaf = baz;
+  }
+
+  // ...
+}
+```
+
+`_bar` is obviously a private method, and we have signalled this with a naming convention. However, we can still have someone make a dependency on it, and we can accidentally define a `_bar` in a mixin by accident.
+
+We can refactor `_bar` into a helper function by extracting its body from the class, and then changing our invocations from `this._bar(baz)` to `bar.call(this, baz)`:
+
+```javascript
+export default class Widget {
+
+  // __public methods__
+  foo (baz) {
+    bar.call(this, baz);
+  },
+
+  // ...
+}
+
+function bar(baz) {
+  return this.snaf = baz;
+}
+```
+
+By invoking helper functions like `bar` with `.call(this, baz)`, we give them access to the instance's private state just like a method. However, because helper functions are explicitly _not_ exported, they are private to our class.
+
+If we use this technique with classes and with methods, we limit the dependencies and potential name clashes to those we explicitly have decided ought to be public methods. Helper functions can never name clash because they exist in separate scopes.
+
+The syntax looks a little unusual, but it is better to get all your work done in 40 hours a week using something that looks odd than to work 70 hours a week dealing with ugly consequences of code that looks simple but has terrible consequences.
+
+The only disadvantage of this approach is that while it solves the problem of dependencies and name clashes between methods, it does nothing for properties. Someone can write a mixin that depends on the `snaf` property or accidentally collides with it.
+
+To fix that problem, we either wait until JavaScript introduces private properties, or we use symbols for method and property names.
+
+### using symbols for method and property names
+
+With an extra level of indirection, we can use symbols for method and property names instead of strings. Here's how to refactor our class above to use symbols as method and property names.
+
+We start with our base class or mixin. We'll rewrite the above example to look like a [subclass factory](http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html) for the sake of argument:
+
+```javascript
+export default subclassFactory({
+
+  // __public methods__
+  foo (baz) {
+    this._bar(baz);
+  },
+
+  // __private methods__
+  _bar(baz) {
+    return this.snaf = baz;
+  }
+
+  // ...
+});
+```
+
+The first step is to replace the names of our private methods and properties with string constants:
+
+```javascript
+const bar = 'bar';
+const snaf = 'snaf';
+
+export default subclassFactory({
+
+  // __public methods__
+  foo (baz) {
+    this[bar](baz);
+  },
+
+  // __private methods__
+  [bar](baz) {
+    return this[snaf] = baz;
+  }
+
+  // ...
+});
+```
+
+Next, we replace the strings with symbols:
+
+```javascript
+const bar = Symbol.'bar';
+const snaf = 'snaf';
+
+export default subclassFactory({
+
+  // __public methods__
+  foo (baz) {
+    this[bar](baz);
+  },
+
+  // __private methods__
+  [bar](baz) {
+    return this[snaf] = baz;
+  }
+
+  // ...
+});
+```
+
+Now our `bar` private method and `snaf` property are still properties of our subclass factory object and instance respectively, but their actual names are not shared with the class or other mixins and will not every result in a name clash.
+
+Using either helper functions or symbols for private methods and properties will cut down on dependencies, but if we want to do something about _implicit_ dependencies, we need to rethink mixins altogether.
+
+We'll do that in the next post.
 
 ---
 
