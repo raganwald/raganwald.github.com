@@ -199,7 +199,7 @@ The first and simplest thing to do about mixins doesn't solve the problems of im
 
 Sometimes, that's enough! Sometimes, software development is about being lean, about tightening the conjecture-experiment-feedback cycle. Doing "the minimum" to get to the next cycle is sometimes a big win.
 
-The first and simplest thing to do is to create some encapsulation for classes and mixins. Do not have all your "private" properties and methods intermingled. This will reduce the number of accidental (or deliberate) dependencies and eliminate a number of accidental name clashes.
+The first and simplest thing to do is to impose some encapsulation for classes and mixins. Do not have all your "private" properties and methods intermingled. This will reduce the number of accidental (or deliberate) dependencies and eliminate a number of accidental name clashes.
 
 There are a few techniques. The first is to use helper functions instead of private methods. Let's say we have:
 
