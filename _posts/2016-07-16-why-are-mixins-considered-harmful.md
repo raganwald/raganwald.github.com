@@ -4,11 +4,7 @@ layout: default
 tags: [allonge]
 ---
 
-(*This is a work-in-progress, feel free to read and even submit an edit, but do not post on Reddit or Hacker News, thank you.*)
-
-Are [Mixins Considered Harmful](https://facebook.github.io/react/blog/2016/07/13/mixins-considered-harmful.html)?
-
-Dan Abramov wrote something that sounds familiar to everyone[^everyone] who works with legacy applications:
+In [Mixins Considered Harmful](https://facebook.github.io/react/blog/2016/07/13/mixins-considered-harmful.html), Dan Abramov wrote something that sounds familiar to everyone[^everyone] who works with legacy applications:
 
 [^everyone]: Yes, I said _everyone_, I didn't cover my ass with a phrase like "many people." Everyone.
 
@@ -244,7 +240,7 @@ function bar(baz) {
 
 By invoking helper functions like `bar` with `.call(this, baz)`, we give them access to the instance's private state just like a method. However, because helper functions are explicitly _not_ exported, they are private to our class.
 
-If we use this technique with classes and with methods, we limit the dependencies and potential name clashes to those we explicitly have decided ought to be public methods. Helper functions can never name clash because they exist in separate scopes.
+If we use this technique with classes and with mixins, we limit the dependencies and potential name clashes to those we explicitly have decided ought to be public methods. Helper functions can never name clash because they exist in separate scopes.
 
 The syntax looks a little unusual, but it is better to get all your work done in 40 hours a week using something that looks odd than to work 70 hours a week dealing with ugly consequences of code that looks simple but has terrible consequences.
 
@@ -327,11 +323,9 @@ We'll do that in the next post.
 
 ---
 
-### important message
+### have your say
 
-(*This is a work-in-progress, feel free to read and even submit an edit, but do not post on Reddit or Hacker News, thank you.*)
-
-([edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-07-16-why-are-mixins-considered-harmful.md))
+(you can [edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-07-16-why-are-mixins-considered-harmful.md))
 
 ---
 
