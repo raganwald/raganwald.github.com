@@ -323,7 +323,9 @@ export default subclassFactory({
 });
 ```
 
-Now our `bar` private method and `snaf` property are still properties of our subclass factory object and instance respectively, but their actual names are not shared with the class or other mixins and will not every result in a name clash.
+Now our `bar` private method and `snaf` property are still properties of our subclass factory object and instance respectively, but their actual names are not shared with the class or other mixins and will not every result in a name clash.[^prefixes]
+
+[^prefixes]: Redditor [mlamers](https://www.reddit.com/user/mlamers) mentioned that instead of symbols, we could use custom prefixes for names, e.g. `this.mixin_1_bar(baz)`. This technique has the benefit for working with older versions of JavaScript, and if we don't want to use an ES6 -> ES5 compiler & shim in our build pipeline, that is a reasonable choice. Countered against that are some technical benefits of symbols, mostly with respect to meta-programming we might write or encounter in a library. There is also the argument that it is much easier to break encapsulation (and thus drive up coupling) with a prefixed method. That leads to a conversation about the purpose of code review and of developing team practises.
 
 Using either helper functions or symbols for private methods and properties will cut down on dependencies, but if we want to do something about _implicit_ dependencies, we need to rethink mixins altogether.
 
