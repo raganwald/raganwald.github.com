@@ -28,7 +28,9 @@ He's 100% right!
 
 ### dependencies
 
-Mixins absolutely introduce dependencies. Let's look at how this happens. The simplest form of mixin uses `Object.assign` to mix a template object into a class's prototype. For example, here's a class of todo items:
+Mixins absolutely introduce dependencies. Let's look at how this happens. The simplest form of mixin uses `Object.assign` to mix a template object into a class's prototype.[^perf2] For example, here's a class of todo items:
+
+[^perf2]: At this time, the most common JavaScript engines have a slower implementation for prototypes that have been modified with `Object.assign` than those that are initialized and thereafter do not change. Thus, in practice, people often use other approaches like subclass factories. But that is tangential to the explanation for why mixins introduce dependencies, as implementations like subclass factories have the same software engineering problems.
 
 ```javascript
 class Todo {
@@ -123,7 +125,7 @@ import { getWith, dict } from 'foo/bar/utils';
 /// ...
 ```
 
-The dependencies are _explicit_, not implicit. We can see the dependencies declared in the source, and we can even write tools for statically checking that the dependencies are fulfilled.[^static] If mixin dependencies were explicit, we would know which methods were being mixed into a class because they would be declared. And likewise, there would be some mechanism for declaring which methods and/or properties that a mixin depends upon when it is mixed int a class.
+The dependencies are _explicit_, not implicit. We can see the dependencies declared in the source, and we can even write tools for statically checking that the dependencies are fulfilled.[^static] If mixin dependencies were explicit, we would know which methods were being mixed into a class because they would be declared. And likewise, there would be some mechanism for declaring which methods and/or properties that a mixin depends upon when it is mixed into a class.
 
 [^static]: being able to statically check dependencies is marvellously useful, but it solves a problem that is entirely orthogonal to the software engineering problem we are discussing here.
 
@@ -252,7 +254,9 @@ If we use this technique with classes and with mixins, we limit the dependencies
 
 The syntax looks a little unusual, but it is better to get all your work done in 40 hours a week using something that looks odd than to work 70 hours a week dealing with ugly consequences of code that looks simple but has terrible consequences.
 
-The only disadvantage of this approach is that while it solves the problem of dependencies and name clashes between methods, it does nothing for properties. Someone can write a mixin that depends on the `snaf` property or accidentally collides with it.
+The disadvantage of this approach is that while it solves the problem of dependencies and name clashes between methods, it does nothing for properties.[^perf] Someone can write a mixin that depends on the `snaf` property or accidentally collides with it.
+
+[^perf]: At this time, the most common JavaScript engines also implement helper functions more slowly than helper methods. However, when you actually measure your actual code in production, you may discover that the benefit of using a different approach is negligible. Or it may be that in one place, it matters, and you refactor that one thing, and leave the others as-is.
 
 To fix that problem, we either wait until JavaScript introduces private properties, or we use symbols for method and property names.
 
