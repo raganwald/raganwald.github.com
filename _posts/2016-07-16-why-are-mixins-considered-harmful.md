@@ -187,7 +187,7 @@ If this seems very familiar, congratulations. Like me, you wrote Java in the 199
 
 When you have classes depending upon superclasses, you have implicit dependencies and name clashes caused by the lack of encapsulation. A subclass has access by default to all of the private properties and methods of its superclass, just as a class has access by default to all of the private properties and methods of its superclass.
 
-Languages like Java, Ruby, and C++ provide mechanisms for minimizing these dependencies in the form of access controls. A superclass has a way of making certain properties and methods `private`, and such properties and methods are not only walled off from access by the outside world, they are not accessible by subclass code either.
+Languages like Java and C++ provide mechanisms for minimizing these dependencies in the form of access controls. A superclass has a way of making certain properties and methods `private`, and such properties and methods are not only walled off from access by the outside world, they are not accessible by subclass code either.
 
 Such access mechanisms help control dependencies and eliminate some of the name clashes by reducing the "surface area" of implicit dependencies. But such languages still have the implicit dependencies problem, and experience has shown that over time, class hierarchies snowball in complexity just as Dan describes mixin architectures as snowballing in complexity.
 
@@ -304,8 +304,8 @@ export default subclassFactory({
 Next, we replace the strings with symbols:
 
 ```javascript
-const bar = Symbol.for('bar');
-const snaf = Symbol.for('snaf');
+const bar = Symbol('bar');
+const snaf = Symbol('snaf');
 
 export default subclassFactory({
 
@@ -333,7 +333,7 @@ We'll do that in the next post.
 
 ### have your say
 
-(you can [discuss on reddit](https://www.reddit.com/r/javascript/comments/4tccmx/why_are_mixins_considered_harmful_raganwald/), [file and issue](https://github.com/raganwald/raganwald.github.com/issues/new) or even [edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-07-16-why-are-mixins-considered-harmful.md))
+(you can [discuss on reddit](https://www.reddit.com/r/javascript/comments/4tccmx/why_are_mixins_considered_harmful_raganwald/), [file an issue](https://github.com/raganwald/raganwald.github.com/issues/new) or even [edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-07-16-why-are-mixins-considered-harmful.md))
 
 ---
 
