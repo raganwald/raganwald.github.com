@@ -327,7 +327,7 @@ We'll do that in the next post.
 
 ### have your say
 
-(you can [file and issue](https://github.com/raganwald/raganwald.github.com/issues/new) or even [edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-07-16-why-are-mixins-considered-harmful.md))
+(you can [discuss on reddit](https://www.reddit.com/r/javascript/comments/4tccmx/why_are_mixins_considered_harmful_raganwald/), [file and issue](https://github.com/raganwald/raganwald.github.com/issues/new) or even [edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-07-16-why-are-mixins-considered-harmful.md))
 
 ---
 
