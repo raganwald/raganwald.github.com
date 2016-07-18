@@ -10,7 +10,11 @@ In [Mixins Considered Harmful](https://facebook.github.io/react/blog/2016/07/13/
 
 > Some of our code using React gradually became incomprehensible. Occasionally, the React team would see groups of components in different projects that people were afraid to touch. These components were too easy to break accidentally, were confusing to new developers, and eventually became just as confusing to the people who wrote them in the first place.
 
-This is not specific to "React:" All legacy applications exhibit this behaviour: They accumulate chunks of code that are easy to break and confusing to everyone, even the original authors. Worse, such chunks of code tend to grow over time, they are infectious: People write code to work around the incomprehensible code instead of refactoring it, and the workarounds become easy to break accidentally and confusing in their own right. The problems grow over time.
+This is not specific to "React:" All legacy applications exhibit this behaviour: They accumulate chunks of code that are easy to break and confusing to everyone, even the original authors. Worse, such chunks of code tend to grow over time, they are infectious: People write code to work around the incomprehensible code instead of refactoring it, and the workarounds become easy to break accidentally and confusing in their own right.
+
+The problems grow over time.
+
+---
 
 [![bikes on queen street west in toronto](/assets/images/bikes.jpg)](https://www.flickr.com/photos/55828065@N05/8294796797)
 
