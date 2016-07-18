@@ -195,7 +195,9 @@ In classes, this is known as a [fragile base class problem](https://en.wikipedia
 
 It turns out that with class hierarchies, we have a fragile base class problem and a many-to-many dependencies problem. Mixins solve the many-to-many dependencies problem, but spread out the fragile base class problem and introduce new vectors for dependencies between mixins.
 
-We can reduce the surface area with encapsulation techniques, but if we want to eliminate the implicit dependencies problem, we need a whole new mechanism for mixing in behaviour. Concatenative sharing simply doesn't scale over time, space, and teams.
+We can reduce the surface area with encapsulation techniques, but if we want to eliminate the implicit dependencies problem, we need a whole new mechanism for mixing in behaviour.
+
+Concatenative sharing doesn't scale over time, space, and teams.
 
 ## So what can we do about mixins?
 
@@ -302,8 +304,8 @@ export default subclassFactory({
 Next, we replace the strings with symbols:
 
 ```javascript
-const bar = Symbol.'bar';
-const snaf = 'snaf';
+const bar = Symbol.for('bar');
+const snaf = Symbol.for('snaf');
 
 export default subclassFactory({
 
