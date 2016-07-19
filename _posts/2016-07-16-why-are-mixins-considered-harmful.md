@@ -160,7 +160,7 @@ const Coloured = {
 Oops. We just broke `Todo`. The name clash problem is a second-order consequence of concatenative sharing. JavaScript solved this problem for modules: When you import a module, you explicitly name your dependencies as we saw above. You can also rename them to avoid conflicts:
 
 ```javascript
-import { getWith: squareBracketAccessWith } from 'foo/bar/lists';
+import { getWith as squareBracketAccessWith } from 'foo/bar/lists';
 
 function getWith (key) {
   return (gettable) => gettable.get(key);
