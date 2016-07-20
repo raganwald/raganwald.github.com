@@ -264,10 +264,10 @@ To fix that problem, we either wait until JavaScript introduces private properti
 
 With an extra level of indirection, we can use symbols for method and property names instead of strings. Here's how to refactor our class above to use symbols as method and property names.
 
-We start with our base class or mixin. We'll rewrite the above example to look like a [subclass factory](http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html) for the sake of argument:
+We start with a completely abstract mixin:
 
 ```javascript
-export default subclassFactory({
+export default {
 
   // __public methods__
   foo (baz) {
@@ -280,7 +280,7 @@ export default subclassFactory({
   }
 
   // ...
-});
+};
 ```
 
 The first step is to replace the names of our private methods and properties with string constants:
@@ -289,7 +289,7 @@ The first step is to replace the names of our private methods and properties wit
 const bar = 'bar';
 const snaf = 'snaf';
 
-export default subclassFactory({
+export default {
 
   // __public methods__
   foo (baz) {
@@ -302,7 +302,7 @@ export default subclassFactory({
   }
 
   // ...
-});
+};
 ```
 
 Next, we replace the strings with symbols:
@@ -311,7 +311,7 @@ Next, we replace the strings with symbols:
 const bar = Symbol('bar');
 const snaf = Symbol('snaf');
 
-export default subclassFactory({
+export default {
 
   // __public methods__
   foo (baz) {
@@ -324,10 +324,10 @@ export default subclassFactory({
   }
 
   // ...
-});
+};
 ```
 
-Now our `bar` private method and `snaf` property are still properties of our subclass factory object and instance respectively, but their actual names are not shared with the class or other mixins and will not every result in a name clash.[^prefixes]
+Now our `bar` private method and `snaf` property are still properties of our mixin object , but their actual names are not shared with any class we mix it into or other mixins, and cannot cause a name clash.[^prefixes]
 
 [^prefixes]: Redditor [mlamers](https://www.reddit.com/user/mlamers) mentioned that instead of symbols, we could use custom prefixes for names, e.g. `this.mixin_1_bar(baz)`. This technique has the benefit for working with older versions of JavaScript, and if we don't want to use an ES6 -> ES5 compiler & shim in our build pipeline, that is a reasonable choice. Likewise, we might be using some marvellous framework with its own [MOP](http://c2.com/cgi/wiki?MetaObjectProtocol) that doesn't support symbols. Countered against that are some technical benefits of symbols, mostly with respect to meta-programming we might write or encounter in a library. There is also the argument that it is technically easier to break encapsulation (and thus drive up coupling) with a prefixed method name. That leads to a conversation about the purpose of code review and of developing team practises.
 
