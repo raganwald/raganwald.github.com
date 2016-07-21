@@ -1,4 +1,5 @@
 ---
+title: "From Mixins to Object Composition"
 layout: default
 tags: [allonge]
 ---
