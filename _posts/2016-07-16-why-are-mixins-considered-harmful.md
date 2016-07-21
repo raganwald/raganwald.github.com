@@ -4,6 +4,10 @@ layout: default
 tags: [allonge]
 ---
 
+**update**: Part II, [From Mixins to Object Composition](http://raganwald.com/2016/07/20/prefer-composition-to-inheritance.html) is now available.
+
+---
+
 In [Mixins Considered Harmful](https://facebook.github.io/react/blog/2016/07/13/mixins-considered-harmful.html), Dan Abramov wrote something that sounds familiar to everyone[^everyone] who works with legacy applications:
 
 [^everyone]: Yes, I said _everyone_, I didn't cover my ass with a phrase like "many people." Everyone.
