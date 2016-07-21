@@ -21,6 +21,22 @@ For many projects, mixins are the right choice right now, the important thing is
 
 It is more important to know how to refactor to a particular architecture, than to know in advance which architecture can serve all of our needs now, and in the future.
 
+---
+
+### what mixins have in common with inheritance
+
+The problems outlined with mixins are the same as the problems we have discovered with inheritance over the last 30+ years. Subclasses have implicit dependencies on their superclasses. This makes superclasses extremely fragile: One little change could break code in a subclass that is in an entirely different file, what we call "action at a distance," or its more pejorative term, "coupling." Likewise, naming conflicts can easily occur between subclasses and superclasses.
+
+the root cause is the lack of encapsulation in the relationship between subclasses and superclasses. This is the exact same problem between classes and mixins: The lack of encapsulation.
+
+In OOP, the unit of encapsulation is the object. An object has a defined interface of public methods, and behind this public interface, it has methods and properties that implement its interface. Other objects are supposed to interact only with the public methods.
+
+JavaScript, by design, makes the interface/implementation barrier extremely porous. But we have techniques for making it difficult to circumvent the interface. And this is usually enough: After all, if some future developer wants, they can always rewrite the code to open up any interface yoy may design. So the key is to document your intent and make it extremely obvious when code violates the documented intent.
+
+Mixins can encapsulate
+
+---
+
 ### encapsulating mixins
 
 Although mixins make it very easy to separate responsibilities, mixins permit--or even encourage--snowballing complexity as code grows in time, space, and team. Today we are going to look at how we can separate responsibilities using composition, and how that can be engineered to solve the encapsulation, implicit dependencies, and name clash problems.
@@ -174,7 +190,7 @@ For the rest of this essay, we will presume that we are using the functional mix
 
 ---
 
-
+### prefe
 
 ---
 
