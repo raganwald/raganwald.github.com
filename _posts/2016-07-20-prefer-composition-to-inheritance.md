@@ -688,7 +688,7 @@ Let's step back and look at what we have: We have a way to make something that l
 
 Our example code here is dense but small, showing us that JavaScript can be powerful when we choose to put it to work. And now we have the tools to tame growing dependencies, implicit dependencies, and name clashes.
 
-And that's enough for us to make sensible decisions about whether to use mixins now and refactor in teh future, stick with mixins, or go for composition right off the bat.
+And that's enough for us to make sensible decisions about whether to use mixins now and refactor in the future, stick with mixins, or go for composition right off the bat.
 
 ---
 
