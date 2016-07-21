@@ -3,6 +3,10 @@ layout: default
 tags: [allonge, noindex]
 ---
 
+**This is a work-in-progress: Please do not share it on Reddit, Hacker News, and so forth until this message is removed. Feel free to share the github link on Twitter for those who are interested in looking over my shoulder and/or commenting as I write. Your feedback is very much welcome.**
+
+---
+
 ### preamble
 
 In [Why Are Mixins Considered Harmful][harmful], we saw that concatenative sharing--as exemplified by mixins--leads to snowballing complexity because of three effects:
@@ -190,13 +194,13 @@ For the rest of this essay, we will presume that we are using the functional mix
 
 ---
 
-### prefe
+**This is a work-in-progress: Please do not share it on Reddit, Hacker News, and so forth until this message is removed. Feel free to share the github link on Twitter for those who are interested in looking over my shoulder and/or commenting as I write. Your feedback is very much welcome.**
 
 ---
 
 ### have your say
 
-...
+Have an observation? Spot an error? You can [file an issue](https://github.com/raganwald/raganwald.github.com/issues/new) or even [edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-07-20-prefer-composition-to-inheritance.md)
 
 ---
 
