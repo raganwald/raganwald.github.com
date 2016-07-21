@@ -21,6 +21,8 @@ It is more important to know how to refactor to a particular architecture, than 
 
 ---
 
+[![mixing deck](/assets/images/mixing-deck.jpg)](https://www.flickr.com/photos/sparetomato/2641114425)
+
 ### what mixins have in common with inheritance
 
 The problems outlined with mixins are the same as the problems we have discovered with inheritance over the last 30+ years. Subclasses have implicit dependencies on their superclasses. This makes superclasses extremely fragile: One little change could break code in a subclass that is in an entirely different file, what we call "action at a distance," or its more pejorative term, "coupling." Likewise, naming conflicts can easily occur between subclasses and superclasses.
@@ -536,6 +538,8 @@ I do not condone these Americanized misspellings, of course, but they demonstrat
 [^error]: We can also extend this function to report if we are accidentally overwriting an existing method. Whether we wish to do so is an interesting discussion we will not have here. Some feel that permitting overriding is excellent OOP practise, others dissent. A very good practise is to only permit it when signalling that you intend to do so, e.g. to write `'override setColourRGB'`. We will leave those details for another day.
 
 ---
+
+[![recursive surface](/assets/images/recursive-surface.jpg)](https://www.flickr.com/photos/elijahporter/8056518708)
 
 ### going deeper
 
