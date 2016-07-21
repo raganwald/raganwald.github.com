@@ -50,11 +50,11 @@ const Coloured = {
   getColourRGB () {
     return this.colourCode;
   },
-
-  // __Private Methods__
   getColourHex () {
     return this.rgbToHex(this.colourCode);
   },
+
+  // __Private Methods__
   componentToHex(c) {
     const hex = c.toString(16);
 
@@ -69,6 +69,9 @@ class Todo {
   constructor (name) {
     this.name = name || 'Untitled';
     this.done = false;
+  }
+  title () {
+    return name;
   }
   do () {
     this.done = true;
@@ -126,6 +129,9 @@ class Todo {
   constructor (name) {
     this.name = name || 'Untitled';
     this.done = false;
+  }
+  title () {
+    return name;
   }
   do () {
     this.done = true;
@@ -262,6 +268,9 @@ const Todo = Coloured(class {
     this.name = name || 'Untitled';
     this.done = false;
   }
+  title () {
+    return name;
+  }
   do () {
     this.done = true;
     return this;
@@ -288,6 +297,9 @@ class Todo {
     this.name = name || 'Untitled';
     this.done = false;
   }
+  title () {
+    return name;
+  }
   do () {
     this.done = true;
     return this;
@@ -305,9 +317,9 @@ Now, if we write our mixins like this, what about refactoring mixins into object
 const ObjectComposer = (behaviour) =>
   target => {
     const composedObject = Symbol('composedObject');
-    const methodNames = Object.keys(behaviour);
+    const exportedMethodNames = Object.keys(behaviour);
 
-    for (const methodName of methodNames) {
+    for (const methodName of exportedMethodNames) {
       Object.defineProperty(target.prototype, methodName, {
         value: function (...args) {
           if (this[composedObject] == null) {
@@ -350,6 +362,9 @@ const Todo = Coloured(class {
     this.name = name || 'Untitled';
     this.done = false;
   }
+  title () {
+    return name;
+  }
   do () {
     this.done = true;
     return this;
@@ -375,11 +390,11 @@ Sure thing! Here's a new version of `ObjectComposer`:
 
 ```javascript
 const ObjectComposer = (behaviour) =>
-  (...methodNames) =>
+  (...exportedMethodNames) =>
     target => {
       const composedObject = Symbol('composedObject');
 
-      for (const methodName of methodNames) {
+      for (const methodName of exportedMethodNames) {
         Object.defineProperty(target.prototype, methodName, {
           value: function (...args) {
             if (this[composedObject] == null) {
@@ -401,11 +416,11 @@ const Coloured = ObjectComposer({
   getColourRGB () {
     return this.colourCode;
   },
-
-  // __Private Methods__
   getColourHex () {
     return this.rgbToHex(this.colourCode);
   },
+
+  // __Private Methods__
   componentToHex(c) {
     const hex = c.toString(16);
 
@@ -420,6 +435,9 @@ const Todo = Coloured('setColourRGB', 'setColourRGB')(class {
   constructor (name) {
     this.name = name || 'Untitled';
     this.done = false;
+  }
+  title () {
+    return name;
   }
   do () {
     this.done = true;
@@ -441,8 +459,8 @@ That is correct! We didn't explicitly say that we wanted to "import" the `getCol
 
 ```javascript
 const ObjectComposer = (behaviour) =>
-  (...methodNames) => {
-    const methodNameMap = methodNames.reduce((acc, name) => {
+  (...exportedMethodNames) => {
+    const methodNameMap = exportedMethodNames.reduce((acc, name) => {
       const splits = name.split(' as ');
 
       if (splits.length === 1) {
@@ -480,11 +498,11 @@ const Coloured = ObjectComposer({
   getColourRGB () {
     return this.colourCode;
   },
-
-  // __Private Methods__
   getColourHex () {
     return this.rgbToHex(this.colourCode);
   },
+
+  // __Private Methods__
   componentToHex(c) {
     const hex = c.toString(16);
 
@@ -499,6 +517,9 @@ const Todo = Coloured('setColourRGB as setColorRGB', 'getColourRGB as getColorRG
   constructor (name) {
     this.name = name || 'Untitled';
     this.done = false;
+  }
+  title () {
+    return name;
   }
   do () {
     this.done = true;
@@ -520,6 +541,145 @@ I do not condone these Americanized misspellings, of course, but they demonstrat
 
 [^error]: We can also extend this function to report if we are accidentally overwriting an existing method. Whether we wish to do so is an interesting discussion we will not have here. Some feel that permitting overriding is excellent OOP practise, others dissent. A very good practise is to only permit it when signalling that you intend to do so, e.g. to write `'override setColourRGB'`. We will leave those details for another day.
 
+---
+
+### going deeper
+
+Our naïve mixins can do a few things that our object composition cannot. For one thing, we can write a method that returns `this`. Our composed objects should not return `this`, because their `this` is not the same thing as the target instance's `this`.
+
+A related issue is that our composed objects cannot call any of the class's methods. We can write completely independent standalone functionality like `Coloured` above, but we can't write functionality that "decorates" existing functionality.
+
+For example, what if we want to compose this behaviour with `Todo`?
+
+```javascript
+const Coloured = {
+  // __Public Methods__
+  setColourRGB ({r, g, b}) {
+    return this.colourCode = {r, g, b};
+  },
+  getColourRGB () {
+    return this.colourCode;
+  },
+  getColourHex () {
+    return this.rgbToHex(this.colourCode);
+  },
+  colouredTitle () {
+    return `<span font-color=${this.getColourHex()}>${this.title()}</span>`;
+  },
+
+  // __Private Methods__
+  componentToHex(c) {
+    const hex = c.toString(16);
+
+    return hex.length == 1 ? "0" + hex : hex;
+  },
+  rgbToHex({r, g, b}) {
+    return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+  }
+};
+```
+
+The `colouredTitle` method isn't going to work, because we want to access the instance's `title` method, not the composed object (which doesn't have one). What to do?
+
+Well, if we can use delegation to "export" a bunch of methods, perhaps we can use delegation to import them as well:
+
+```javascript
+const ObjectComposer =
+  (...importedMethodNames) =>
+    (behaviour) =>
+      (...exportedMethodNames) =>
+        target => {
+          const composedObject = Symbol('composedObject');
+          const instance = Symbol('instance');
+
+          for (const methodName of exportedMethodNames) {
+            Object.defineProperty(target.prototype, methodName, {
+              value: function (...args) {
+                if (this[composedObject] == null) {
+                  this[composedObject] = Object.assign({}, behaviour);
+                  this[composedObject][instance] = this;
+                  for (const methodName of importedMethodNames) {
+                    this[composedObject][methodName] = function (...args) {
+                      return this[instance][methodName](...args);
+                    }
+                  }
+                }
+                return this[composedObject][methodName](...args);
+              },
+              writeable: true
+            });
+          }
+          return target;
+        };
+```
+
+Now we can write:
+
+```javascript
+const Coloured = ObjectComposer('title')({
+  // __Public Methods__
+  setColourRGB ({r, g, b}) {
+    return this.colourCode = {r, g, b};
+  },
+  getColourRGB () {
+    return this.colourCode;
+  },
+  getColourHex () {
+    return this.rgbToHex(this.colourCode);
+  },
+  colouredTitle () {
+    return `<span font-color=${this.getColourHex()}>${this.title()}</span>`;
+  },
+
+  // __Private Methods__
+  componentToHex(c) {
+    const hex = c.toString(16);
+
+    return hex.length == 1 ? "0" + hex : hex;
+  },
+  rgbToHex({r, g, b}) {
+    return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+  }
+});
+
+const Todo = Coloured('setColourRGB', 'colouredTitle')(class {
+  constructor (name) {
+    this.name = name || 'Untitled';
+    this.done = false;
+  }
+  title () {
+    return this.name;
+  }
+  do () {
+    this.done = true;
+    return this;
+  }
+  undo () {
+    this.done = false;
+    return this;
+  }
+});
+
+let t = new Todo('test');
+
+t.setColourRGB({r: 1, g: 2, b: 3});
+t.colouredTitle();
+  //=> <span font-color=#010203>test</span>
+```
+
+Note that we are explicit about our dependencies in both directions.[^error2]
+
+[^error2]: As already noted, we can also add lots of error checking, like noting when a dependency doesn't exist. The `Coloured` function should raise an error if it depends on `title` but is being mixed into a class that doesn't have a `title` method.
+
+---
+
+### can we go even deeper?
+
+Sure. We could use the [subclass factory] pattern, this would allow us to override methods and call `super`. It also has some performance advantages in a modern JIT. We usually don't need to prematurely optimize for performance, but sometimes we care deeply about that.
+
+[subclass factory]:
+
+Now that we have the beginnings of a protocol for declaring our dependencies in both directions, we can start thinking about other kinds of behaviour we'd like to mix in, like decorating individual methods with before or after advice, e.g. `updateLastModified after setColourRGB`.
 
 ---
 
