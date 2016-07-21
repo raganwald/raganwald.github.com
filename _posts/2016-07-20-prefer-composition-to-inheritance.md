@@ -384,6 +384,8 @@ This is a bit more complex, but it gives us almost everything mixins already gav
 
 ---
 
+[![list](/assets/images/list.jpg)](https://www.flickr.com/photos/liste1/4389738706)
+
 ### making delegation explicit
 
 Sure thing! Here's a new version of `ObjectComposer`:
