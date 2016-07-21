@@ -3,7 +3,7 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-**This is a work-in-progress: Please do not share it on Reddit, Hacker News, and so forth until this message is removed. Feel free to share the github link on Twitter for those who are interested in looking over my shoulder and/or commenting as I write. Your [feedback](#have-your-say) is very much welcome.**
+**This is a work-in-progress: Please do not share it on Reddit, Hacker News, and so forth until this message is removed. Feel free to share the Github link on Twitter for those who are interested in looking over my shoulder and/or commenting as I write. Your [feedback](#have-your-say) is very much welcome.**
 
 ---
 
@@ -35,21 +35,91 @@ the root cause is the lack of encapsulation in the relationship between subclass
 
 In OOP, the unit of encapsulation is the object. An object has a defined interface of public methods, and behind this public interface, it has methods and properties that implement its interface. Other objects are supposed to interact only with the public methods.
 
-JavaScript, by design, makes the interface/implementation barrier extremely porous. But we have techniques for making it difficult to circumvent the interface. And this is usually enough: After all, if some future developer wants, they can always rewrite the code to open up any interface yoy may design. So the key is to document your intent and make it extremely obvious when code violates the documented intent.
+JavaScript, by design, makes the interface/implementation barrier extremely porous. But we have techniques for making it difficult to circumvent the interface. And this is usually enough: After all, if some future developer wants, they can always rewrite the code to open up any interface you may design. So the key is to document your intent and make it extremely obvious when code violates the documented intent.
 
-Mixins can encapsulate
+### encapsulation for mixins
 
----
+Mixins can encapsulate methods and properties too. We saw in the previous post how we can use symbols (or pseudo-random strings) to separate methods intended to be a part of the interface from those intended to be part of the implementation (a/k/a "private"). Take this mixin where we have just used a comment to indicate our preferences:
 
-### encapsulating mixins
+```javascript
+const Coloured = {
+  // __Public Methods__
+  setColourRGB ({r, g, b}) {
+    return this.colourCode = {r, g, b};
+  },
+  getColourRGB () {
+    return this.colourCode;
+  },
 
-Although mixins make it very easy to separate responsibilities, mixins permit--or even encourage--snowballing complexity as code grows in time, space, and team. Today we are going to look at how we can separate responsibilities using composition, and how that can be engineered to solve the encapsulation, implicit dependencies, and name clash problems.
+  // __Private Methods__
+  getColourHex () {
+    return this.rgbToHex(this.colourCode);
+  },
+  componentToHex(c) {
+    const hex = c.toString(16);
 
-And because we are interested in refactoring mixins to composition, we will emphasize an architecture that makes the migration from mixin to composition smooth.
+    return hex.length == 1 ? "0" + hex : hex;
+  },
+  rgbToHex({r, g, b}) {
+    return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+  }
+};
 
-In [Why Are Mixins Considered Harmful][harmful], we illustrated the simplest and most naïve mixin pattern, using `Object.assign` to copy mixin properties into a class' prototype. This is not ho mixins are normally incorporated in the wild. Typically, there are two approaches.
+class Todo {
+  constructor (name) {
+    this.name = name || 'Untitled';
+    this.done = false;
+  }
+  do () {
+    this.done = true;
+    return this;
+  }
+  undo () {
+    this.done = false;
+    return this;
+  }
+}
 
-First, sometimes people use a `mixin` function that mixes a mixin into a class. So instead of:
+Object.assign(Todo.prototype, Coloured);
+```
+
+We write `Coloured` as:
+
+```javascript
+const colourCode = Symbol('colourCode');
+const componentToHex = Symbol('componentToHex');
+const rgbToHex = Symbol('rgbToHex');
+
+const Coloured = {
+  setColourRGB ({r, g, b}) {
+    return this[colourCode] = {r, g, b};
+  },
+  getColourRGB () {
+    return this[colourCode];
+  },
+  getColourHex () {
+    return this[rgbToHex](this.getColourRGB());
+  },
+  [componentToHex](c) {
+    const hex = c.toString(16);
+
+    return hex.length == 1 ? "0" + hex : hex;
+  },
+  [rgbToHex]({r, g, b}) {
+    return "#" + this[componentToHex](r) + this[componentToHex](g) + this[componentToHex](b);
+  }
+};
+```
+
+We can use this exact same technique with superclasses and subclasses, of course. Its limitation is that while it reduces the "surface area" of dependencies, and thus lowers the rate at which dependencies grow and names clash, it still relies on implicit dependencies, so it is hard to disentangle which code is responsible for which methods.
+
+But let's move along a bit and we'll see how to fix the implicit/explicit problem. First, let's look at another way to create encapsulation, using composition.
+
+### encapsulating behaviour with object composition
+
+"Composition" is a general term for any mixing of behaviour from two entities. Mixins as described above is a form of composition. Functional composition is another. Object composition is when we mix two objects.
+
+Lets do it by hand. We start with Our `Todo` class as usual:
 
 ```javascript
 class Todo {
@@ -66,53 +136,42 @@ class Todo {
     return this;
   }
 }
-
-const Coloured = {
-  setColourRGB ({r, g, b}) {
-    this.colourCode = {r, g, b};
-    return this;
-  },
-  getColourRGB () {
-    return this.colourCode;
-  }
-};
-
-Object.assign(Todo.prototype, Coloured);
-
-new Todo('test')
-  .setColourRGB({r: 1, g: 2, b: 3})
-  //=> {"name":"test","done":false,"colourCode":{"r":1,"g":2,"b":3}}
 ```
 
-We write something like:
+We'll give it a `colouredObject` property, using the `Symbol` pattern from above:
 
 ```javascript
+const colourCode = Symbol('colourCode');
+const componentToHex = Symbol('componentToHex');
+const rgbToHex = Symbol('rgbToHex');
+
 const Coloured = {
   setColourRGB ({r, g, b}) {
-    this.colourCode = {r, g, b};
-    return this;
+    return this[colourCode] = {r, g, b};
   },
   getColourRGB () {
-    return this.colourCode;
+    return this[colourCode];
+  },
+  getColourHex () {
+    return this[rgbToHex](this.getColourRGB());
+  },
+  [componentToHex](c) {
+    const hex = c.toString(16);
+
+    return hex.length == 1 ? "0" + hex : hex;
+  },
+  [rgbToHex]({r, g, b}) {
+    return "#" + this[componentToHex](r) + this[componentToHex](g) + this[componentToHex](b);
   }
 };
 
-function mixin (...mixinsAndClass) {
-  const numberOfMixins = mixinsAndClass.length - 1;
-  const clazz = mixinsAndClass[numberOfMixins];
-  const mixins = mixinsAndClass.slice(0, numberOfMixins);
+const colouredObject = Symbol('colouredObject');
 
-  for (const mixin of mixins) {
-    Object.assign(clazz.prototype, mixin);
-  }
-
-  return clazz;
-}
-
-const Todo = mixin(Coloured, class {
+class Todo {
   constructor (name) {
     this.name = name || 'Untitled';
     this.done = false;
+    this[colouredObject] = Object.assign({}, Coloured);
   }
   do () {
     this.done = true;
@@ -122,14 +181,49 @@ const Todo = mixin(Coloured, class {
     this.done = false;
     return this;
   }
-});
+}
 ```
 
-Typically, there is more functionality than just `Object.assign` at work. For example, the mixing in may be performed using a [`subclassFactory`][subclassFactory] to permit the use of `super` and for performance reasons with optimizing JITs. Methods may be made non-enumerable. Or there may be support for `instanceof` baked in. But the basic principle to note here is that the mixin itself is just a plain object, the functionality of mixing in happens in a single `mixin` function.
+Now we have a copy of `Coloured` in every `Todo` instance. But we haven't actually added any behaviour to `Todo`. To do that, we'll delegate some methods from `Todo` to `Coloured`:
 
-[subclassFactory]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
+```javascript
+class Todo {
+  constructor (name) {
+    this.name = name || 'Untitled';
+    this.done = false;
+    this[colouredObject] = Object.assign({}, Coloured);
+  }
+  do () {
+    this.done = true;
+    return this;
+  }
+  undo () {
+    this.done = false;
+    return this;
+  }
+  setColourRGB ({r, g, b}) {
+    return this[colouredObject].setColourRGB({r, g, b});
+  }
+  getColourRGB () {
+    return this[colouredObject].getColourRGB();
+  }
+  getColourHex () {
+    return this[colouredObject].getColourHex();
+  }
+}
+```
 
-The other way forward is to turn the mixin into a function that is applied to transform a class, like this:
+Presto, we have the `setColourRGB`, `getColourRGB`, and `getColourHex` methods added to `Todo`, but we delegate them to a separate object, `this[colouredObject]`, to implement. All of `this[colouredObject]`'s properties and other methods are somewhat encapsulated away.
+
+As a bonus, we have what we might call "weak explicit dependencies:" Looking at `Todo`, it's quite easy to see that we have delegated the `setColourRGB`, `getColourRGB`, and `getColourHex` methods. If we had a much bigger and more complex class with lots of object compositions, we could easily see which methods were delegated to which objects.
+
+All the same, this has an awful lot of moving parts compared to `Object.assign`. Do we have to type all of this? Or is there an easier way?
+
+---
+
+### automating object composition
+
+Let's automate the process. To begin with, let's recognize that although `Object.assign` can be all you need for naïve mixins, a better way to write them is to turn the mixin definition into a function that transforms a class, like this:
 
 ```javascript
 const FunctionalMixin = (behaviour) =>
@@ -138,15 +232,30 @@ const FunctionalMixin = (behaviour) =>
     return target;
   };
 
-const Coloured = FunctionalMixin({
+const colourCode = Symbol('colourCode');
+const componentToHex = Symbol('componentToHex');
+const rgbToHex = Symbol('rgbToHex');
+
+
+const Coloured = {
   setColourRGB ({r, g, b}) {
-    this.colourCode = {r, g, b};
-    return this;
+    return this[colourCode] = {r, g, b};
   },
   getColourRGB () {
-    return this.colourCode;
+    return this[colourCode];
+  },
+  getColourHex () {
+    return this[rgbToHex](this.getColourRGB());
+  },
+  [componentToHex](c) {
+    const hex = c.toString(16);
+
+    return hex.length == 1 ? "0" + hex : hex;
+  },
+  [rgbToHex]({r, g, b}) {
+    return "#" + this[componentToHex](r) + this[componentToHex](g) + this[componentToHex](b);
   }
-});
+};
 
 const Todo = Coloured(class {
   constructor (name) {
@@ -190,11 +299,231 @@ class Todo {
 };
 ```
 
-For the rest of this essay, we will presume that we are using the functional mixin approach. For those code cases using other approaches, the good news is that these refactorings can be applied with minimal modification: The underlying ideas are the same regardless of the implementation details.
+Now, if we write our mixins like this, what about refactoring mixins into object composition?
+
+```javascript
+const ObjectComposer = (behaviour) =>
+  target => {
+    const composedObject = Symbol('composedObject');
+    const methodNames = Object.keys(behaviour);
+
+    for (const methodName of methodNames) {
+      Object.defineProperty(target.prototype, methodName, {
+        value: function (...args) {
+          if (this[composedObject] == null) {
+            this[composedObject] = Object.assign({}, behaviour);
+          }
+          return this[composedObject][methodName](...args);
+        },
+        writeable: true
+      });
+    }
+    return target;
+  };
+
+const colourCode = Symbol('colourCode');
+const componentToHex = Symbol('componentToHex');
+const rgbToHex = Symbol('rgbToHex');
+
+const Coloured = ObjectComposer({
+  setColourRGB ({r, g, b}) {
+    return this[colourCode] = {r, g, b};
+  },
+  getColourRGB () {
+    return this[colourCode];
+  },
+  getColourHex () {
+    return this[rgbToHex](this.getColourRGB());
+  },
+  [componentToHex](c) {
+    const hex = c.toString(16);
+
+    return hex.length == 1 ? "0" + hex : hex;
+  },
+  [rgbToHex]({r, g, b}) {
+    return "#" + this[componentToHex](r) + this[componentToHex](g) + this[componentToHex](b);
+  }
+});
+
+const Todo = Coloured(class {
+  constructor (name) {
+    this.name = name || 'Untitled';
+    this.done = false;
+  }
+  do () {
+    this.done = true;
+    return this;
+  }
+  undo () {
+    this.done = false;
+    return this;
+  }
+});
+```
+
+If we look carefully at the `ObjectComposer` function, we see that for each method of the behaviour we want to compose, it makes a method in the target's prototype that delegates the method to the composed object. In our hand-rolled example, we initialized the object in the target's constructor. For simplicity here, we lazily initialize it.
+
+And wonder of wonders, because `Object.keys` does not enumerate symbols, every method we bind to a symbol in the behaviour is kept "private."
+
+This is a bit more complex, but it gives us almost everything mixins already gave us. But we wanted more, specifically explicit dependencies. Can we do that?
 
 ---
 
-**This is a work-in-progress: Please do not share it on Reddit, Hacker News, and so forth until this message is removed. Feel free to share the github link on Twitter for those who are interested in looking over my shoulder and/or commenting as I write. Your [feedback](#have-your-say) is very much welcome.**
+### making delegation explicit
+
+Sure thing! Here's a new version of `ObjectComposer`:
+
+```javascript
+const ObjectComposer = (behaviour) =>
+  (...methodNames) =>
+    target => {
+      const composedObject = Symbol('composedObject');
+
+      for (const methodName of methodNames) {
+        Object.defineProperty(target.prototype, methodName, {
+          value: function (...args) {
+            if (this[composedObject] == null) {
+              this[composedObject] = Object.assign({}, behaviour);
+            }
+            return this[composedObject][methodName](...args);
+          },
+          writeable: true
+        });
+      }
+      return target;
+    };
+
+const Coloured = ObjectComposer({
+  // __Public Methods__
+  setColourRGB ({r, g, b}) {
+    return this.colourCode = {r, g, b};
+  },
+  getColourRGB () {
+    return this.colourCode;
+  },
+
+  // __Private Methods__
+  getColourHex () {
+    return this.rgbToHex(this.colourCode);
+  },
+  componentToHex(c) {
+    const hex = c.toString(16);
+
+    return hex.length == 1 ? "0" + hex : hex;
+  },
+  rgbToHex({r, g, b}) {
+    return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+  }
+});
+
+const Todo = Coloured('setColourRGB', 'setColourRGB')(class {
+  constructor (name) {
+    this.name = name || 'Untitled';
+    this.done = false;
+  }
+  do () {
+    this.done = true;
+    return this;
+  }
+  undo () {
+    this.done = false;
+    return this;
+  }
+});
+
+let t = new Todo('test');
+t.setColourRGB({r: 1, g: 2, b: 3});
+t.getColourHex();
+  //=> t.getColourHex is not a function
+```
+
+That is correct! We didn't explicitly say that we wanted to "import" the `getColourHex` method, so we didn't get it. This is fun! What about resolving name conflicts? Let's make a general-purpose renaming option:
+
+```javascript
+const ObjectComposer = (behaviour) =>
+  (...methodNames) => {
+    const methodNameMap = methodNames.reduce((acc, name) => {
+      const splits = name.split(' as ');
+
+      if (splits.length === 1) {
+        acc[name] = name;
+      } else if (splits.length == 2) {
+        acc[splits[0]] = splits[1]
+      }
+      return acc;
+    }, {});
+    return target => {
+      const composedObject = Symbol('composedObject');
+
+      for (const methodName of Object.keys(methodNameMap)) {
+        const targetName = methodNameMap[methodName];
+
+        Object.defineProperty(target.prototype, targetName, {
+          value: function (...args) {
+            if (this[composedObject] == null) {
+              this[composedObject] = Object.assign({}, behaviour);
+            }
+            return this[composedObject][methodName](...args);
+          },
+          writeable: true
+        });
+      }
+      return target;
+    };
+  }
+
+const Coloured = ObjectComposer({
+  // __Public Methods__
+  setColourRGB ({r, g, b}) {
+    return this.colourCode = {r, g, b};
+  },
+  getColourRGB () {
+    return this.colourCode;
+  },
+
+  // __Private Methods__
+  getColourHex () {
+    return this.rgbToHex(this.colourCode);
+  },
+  componentToHex(c) {
+    const hex = c.toString(16);
+
+    return hex.length == 1 ? "0" + hex : hex;
+  },
+  rgbToHex({r, g, b}) {
+    return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+  }
+});
+
+const Todo = Coloured('setColourRGB as setColorRGB', 'getColourRGB as getColorRGB', 'getColourHex as getColorHex')(class {
+  constructor (name) {
+    this.name = name || 'Untitled';
+    this.done = false;
+  }
+  do () {
+    this.done = true;
+    return this;
+  }
+  undo () {
+    this.done = false;
+    return this;
+  }
+});
+
+let t = new Todo('test');
+t.setColorRGB({r: 1, g: 2, b: 3});
+t.getColorHex()
+  //=> #010203
+```
+
+I do not condone these Americanized misspellings, of course, but they demonstrate a facility that can be used to resolve unavoidable naming conflicts.[^error]
+
+[^error]: We can also extend this function to report if we are accidentally overwriting an existing method. Whether we wish to do so is an interesting discussion we will not have here. Some feel that permitting overriding is excellent OOP practise, others dissent. A very good practise is to only permit it when signalling that you intend to do so, e.g. to write `'override setColourRGB'`. We will leave those details for another day.
+
+
+---
+
+**This is a work-in-progress: Please do not share it on Reddit, Hacker News, and so forth until this message is removed. Feel free to share the Github link on Twitter for those who are interested in looking over my shoulder and/or commenting as I write. Your [feedback](#have-your-say) is very much welcome.**
 
 ---
 
