@@ -333,7 +333,9 @@ Now our `bar` private method and `snaf` property are still properties of our mix
 
 Using either helper functions or symbols for private methods and properties will cut down on dependencies, but if we want to do something about _implicit_ dependencies, we need to rethink mixins altogether.
 
-We'll do that in the next post.
+We'll do that in [the next post][next].
+
+[next]: http://raganwald.com/2016/07/20/prefer-composition-to-inheritance.html "From Mixins to Object Composition"
 
 ---
 
