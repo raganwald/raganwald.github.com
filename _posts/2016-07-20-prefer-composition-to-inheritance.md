@@ -3,7 +3,7 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-**This is a work-in-progress: Please do not share it on Reddit, Hacker News, and so forth until this message is removed. Feel free to share the github link on Twitter for those who are interested in looking over my shoulder and/or commenting as I write. Your feedback is very much welcome.**
+**This is a work-in-progress: Please do not share it on Reddit, Hacker News, and so forth until this message is removed. Feel free to share the github link on Twitter for those who are interested in looking over my shoulder and/or commenting as I write. Your [feedback](#have-your-say) is very much welcome.**
 
 ---
 
@@ -194,7 +194,7 @@ For the rest of this essay, we will presume that we are using the functional mix
 
 ---
 
-**This is a work-in-progress: Please do not share it on Reddit, Hacker News, and so forth until this message is removed. Feel free to share the github link on Twitter for those who are interested in looking over my shoulder and/or commenting as I write. Your feedback is very much welcome.**
+**This is a work-in-progress: Please do not share it on Reddit, Hacker News, and so forth until this message is removed. Feel free to share the github link on Twitter for those who are interested in looking over my shoulder and/or commenting as I write. Your [feedback](#have-your-say) is very much welcome.**
 
 ---
 
