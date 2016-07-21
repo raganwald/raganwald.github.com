@@ -708,6 +708,8 @@ And that's enough for us to make sensible decisions about whether to use mixins 
 
 ---
 
+[![the composition](/assets/images/composition.jpg)](https://www.flickr.com/photos/nickwebb/3734989365)
+
 ### afterword: "prefer composition to inheritance"
 
 The problems outlined with mixins are the same as the problems we have discovered with inheritance over the last 30+ years. Subclasses have implicit dependencies on their superclasses. This makes superclasses extremely fragile: One little change could break code in a subclass that is in an entirely different file, what we call "action at a distance," or its more pejorative term, "coupling." Likewise, naming conflicts can easily occur between subclasses and superclasses.
