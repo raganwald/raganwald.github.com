@@ -682,7 +682,7 @@ If we whole-heartedly embrace object composition, we can even go from composing 
 
 [![the finish line](/assets/images/finish-line.gif)](https://www.flickr.com/photos/seattlemunicipalarchives/2677136693)
 
-### so what have we got?
+### so where do we finish?
 
 Let's step back and look at what we have: We have a way to make something that looks a lot like  functional mixin, but behind the scenes it implements object composition. Unlike a mixin, we get explicit dependencies. This adds some declarations to our code, but we win in the long run by having code that is easier to trace when we need to work out what is going on or how to refactor something that has grown.
 
@@ -705,6 +705,18 @@ const Todo = Coloured('setColourRGB', 'colouredTitle as htmlTitle')(class {
 Our example implementation is dense but small, showing us that JavaScript can be powerful when we choose to put it to work. And now we have the tools to tame growing dependencies, implicit dependencies, and name clashes.
 
 And that's enough for us to make sensible decisions about whether to use mixins now and refactor in the future, stick with mixins, or go for composition right off the bat.
+
+---
+
+### afterword: "prefer composition to inheritance"
+
+The problems outlined with mixins are the same as the problems we have discovered with inheritance over the last 30+ years. Subclasses have implicit dependencies on their superclasses. This makes superclasses extremely fragile: One little change could break code in a subclass that is in an entirely different file, what we call "action at a distance," or its more pejorative term, "coupling." Likewise, naming conflicts can easily occur between subclasses and superclasses.
+
+The root cause is the lack of encapsulation in the relationship between subclasses and superclasses. This is the exact same problem between classes and mixins: The lack of encapsulation.
+
+In OOP, the unit of encapsulation is the object. An object has a defined interface of public methods, and behind this public interface, it has methods and properties that implement its interface. Other objects are supposed to interact only with the public methods.
+
+For this reason, the mature OOP community has migrated away from "inheritance" as the primary way to share behaviour, towards object composition and delegation. The revelations we are having about mixins are a sign that as the JavaScript community matures, it will inevitably rediscover what OOP languages already know.
 
 ---
 
