@@ -1,13 +1,7 @@
 ---
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
-
-**This is a work-in-progress: Please do not share it on Reddit, Hacker News, and so forth until this message is removed. Feel free to share the Github link on Twitter for those who are interested in looking over my shoulder and/or commenting as I write. Your [feedback](#have-your-say) is very much welcome.**
-
----
-
-### preamble
 
 In [Why Are Mixins Considered Harmful][harmful], we saw that concatenative sharing--as exemplified by mixins--leads to snowballing complexity because of three effects:
 
@@ -675,15 +669,21 @@ Note that we are explicit about our dependencies in both directions.[^error2]
 
 ### can we go even deeper?
 
-Sure. We could use the [subclass factory] pattern, this would allow us to override methods and call `super`. It also has some performance advantages in a modern JIT. We usually don't need to prematurely optimize for performance, but sometimes we care deeply about that.
+Sure. We could use the [subclass factory] pattern, this would allow us to override methods, and call `super`. It also has some performance advantages in a modern JIT. We usually don't need to prematurely optimize for performance, but sometimes we care deeply about that.
 
-[subclass factory]:
+[subclass factory]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
 
 Now that we have the beginnings of a protocol for declaring our dependencies in both directions, we can start thinking about other kinds of behaviour we'd like to mix in, like decorating individual methods with before or after advice, e.g. `updateLastModified after setColourRGB`.
 
+If we whole-heartedly embrace object composition, we can even go from composing objects with classes to composing classes with each other: This would allow us to write constructors for our composed objects.
+
 ---
 
-**This is a work-in-progress: Please do not share it on Reddit, Hacker News, and so forth until this message is removed. Feel free to share the Github link on Twitter for those who are interested in looking over my shoulder and/or commenting as I write. Your [feedback](#have-your-say) is very much welcome.**
+### so what have we got?
+
+Let's step back and look at what we have: We have a way to make something that looks a lot like  functional mixin, but behind the scenes it implements object composition. Unlike a mixin, we get explicit dependencies. This adds some declarations to our code, but we win in the long run by having code that is easier to trace when we need to work out what is going on or how to refactor something that has grown.
+
+Our example code here is dense but small, showing us that JavaScript can be powerful when we choose to put it to work. And now we have the tools to tame growing dependencies, implicit dependencies, and name clashes.
 
 ---
 
