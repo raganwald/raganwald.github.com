@@ -686,7 +686,23 @@ If we whole-heartedly embrace object composition, we can even go from composing 
 
 Let's step back and look at what we have: We have a way to make something that looks a lot like  functional mixin, but behind the scenes it implements object composition. Unlike a mixin, we get explicit dependencies. This adds some declarations to our code, but we win in the long run by having code that is easier to trace when we need to work out what is going on or how to refactor something that has grown.
 
-Our example code here is dense but small, showing us that JavaScript can be powerful when we choose to put it to work. And now we have the tools to tame growing dependencies, implicit dependencies, and name clashes.
+```javascript
+// create an object composition function.
+// this object depends upon the class defining
+// a `title` method:
+const Coloured = ObjectComposer('title')({
+  // ...
+});
+
+// compose `Coloured` with `Todo`, including the
+// `setColouredRGB` method and the `colouredTitle`
+// method, renamed `htmlTitle`:
+const Todo = Coloured('setColourRGB', 'colouredTitle as htmlTitle')(class {
+  // ...
+});
+```
+
+Our example implementation is dense but small, showing us that JavaScript can be powerful when we choose to put it to work. And now we have the tools to tame growing dependencies, implicit dependencies, and name clashes.
 
 And that's enough for us to make sensible decisions about whether to use mixins now and refactor in the future, stick with mixins, or go for composition right off the bat.
 
