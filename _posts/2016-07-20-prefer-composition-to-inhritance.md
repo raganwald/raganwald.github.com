@@ -7,7 +7,7 @@ tags: [allonge, noindex]
 
 In [Why Are Mixins Considered Harmful][harmful], we saw that concatenative sharing--as exemplified by mixins--leads to snowballing complexity because of three effects:
 
-[hamrful]: http://raganwald.com/2016/07/16/why-are-mixins-considered-harmful.html)
+[harmful]: http://raganwald.com/2016/07/16/why-are-mixins-considered-harmful.html)
 
 0. Lack of Encapsulation
 0. Implicit Dependencies
