@@ -114,6 +114,10 @@ We can use this exact same technique with superclasses and subclasses, of course
 
 But let's move along a bit and we'll see how to fix the implicit/explicit problem. First, let's look at another way to create encapsulation, using composition.
 
+---
+
+[![stone wall](/assets/images/stone-wall.jpg)](https://www.flickr.com/photos/79586895@N00/2361224966)
+
 ### encapsulating behaviour with object composition
 
 "Composition" is a general term for any mixing of behaviour from two entities. Mixins as described above is a form of composition. Functional composition is another. Object composition is when we mix two objects.
