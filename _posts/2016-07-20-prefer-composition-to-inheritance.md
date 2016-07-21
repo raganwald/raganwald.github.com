@@ -19,23 +19,15 @@ For many projects, mixins are the right choice right now, the important thing is
 
 It is more important to know how to refactor to a particular architecture, than to know in advance which architecture can serve all of our needs now, and in the future.
 
+In this post, we are going to look at _object composition_, a technique that has a few more moving parts than mixins, but opens up the opportunity to make dependencies explicit, enforce a stronger level of encapsulation, and can be built upon for richer forms of method decoration.
+
 ---
 
 [![mixing deck](/assets/images/mixing-deck.jpg)](https://www.flickr.com/photos/sparetomato/2641114425)
 
-### what mixins have in common with inheritance
-
-The problems outlined with mixins are the same as the problems we have discovered with inheritance over the last 30+ years. Subclasses have implicit dependencies on their superclasses. This makes superclasses extremely fragile: One little change could break code in a subclass that is in an entirely different file, what we call "action at a distance," or its more pejorative term, "coupling." Likewise, naming conflicts can easily occur between subclasses and superclasses.
-
-the root cause is the lack of encapsulation in the relationship between subclasses and superclasses. This is the exact same problem between classes and mixins: The lack of encapsulation.
-
-In OOP, the unit of encapsulation is the object. An object has a defined interface of public methods, and behind this public interface, it has methods and properties that implement its interface. Other objects are supposed to interact only with the public methods.
-
-JavaScript, by design, makes the interface/implementation barrier extremely porous. But we have techniques for making it difficult to circumvent the interface. And this is usually enough: After all, if some future developer wants, they can always rewrite the code to open up any interface you may design. So the key is to document your intent and make it extremely obvious when code violates the documented intent.
-
 ### encapsulation for mixins
 
-Mixins can encapsulate methods and properties too. We saw in the previous post how we can use symbols (or pseudo-random strings) to separate methods intended to be a part of the interface from those intended to be part of the implementation (a/k/a "private"). Take this mixin where we have just used a comment to indicate our preferences:
+Mixins can encapsulate methods and properties. We saw in [the previous post][harmful] how we can use symbols (or pseudo-random strings) to separate methods intended to be a part of the interface from those intended to be part of the implementation (a/k/a "private"). Take this mixin where we have just used a comment to indicate our preferences:
 
 ```javascript
 const Coloured = {
@@ -110,8 +102,6 @@ const Coloured = {
 };
 ```
 
-We can use this exact same technique with superclasses and subclasses, of course. Its limitation is that while it reduces the "surface area" of dependencies, and thus lowers the rate at which dependencies grow and names clash, it still relies on implicit dependencies, so it is hard to disentangle which code is responsible for which methods.
-
 But let's move along a bit and we'll see how to fix the implicit/explicit problem. First, let's look at another way to create encapsulation, using composition.
 
 ---
@@ -120,7 +110,7 @@ But let's move along a bit and we'll see how to fix the implicit/explicit proble
 
 ### encapsulating behaviour with object composition
 
-"Composition" is a general term for any mixing of behaviour from two entities. Mixins as described above is a form of composition. Functional composition is another. Object composition is when we mix two objects.
+"Composition" is a general term for any mixing of behaviour from two entities. Mixins as described above is a form of composition. Functional composition is another. Object composition is when we mix two objects, not an object and a prototype or two functions.
 
 Lets do it by hand. We start with Our `Todo` class as usual:
 
@@ -689,11 +679,15 @@ If we whole-heartedly embrace object composition, we can even go from composing 
 
 ---
 
+[![the finish line](/assets/images/finish-line.gif)](https://www.flickr.com/photos/seattlemunicipalarchives/2677136693)
+
 ### so what have we got?
 
 Let's step back and look at what we have: We have a way to make something that looks a lot like  functional mixin, but behind the scenes it implements object composition. Unlike a mixin, we get explicit dependencies. This adds some declarations to our code, but we win in the long run by having code that is easier to trace when we need to work out what is going on or how to refactor something that has grown.
 
 Our example code here is dense but small, showing us that JavaScript can be powerful when we choose to put it to work. And now we have the tools to tame growing dependencies, implicit dependencies, and name clashes.
+
+And that's enough for us to make sensible decisions about whether to use mixins now and refactor in teh future, stick with mixins, or go for composition right off the bat.
 
 ---
 
