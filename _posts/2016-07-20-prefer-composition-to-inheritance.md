@@ -55,8 +55,8 @@ const Coloured = {
 };
 
 class Todo {
-  constructor (name) {
-    this.name = name || 'Untitled';
+  constructor (name = 'Untitled') {
+    this.name = name;
     this.done = false;
   }
   title () {
