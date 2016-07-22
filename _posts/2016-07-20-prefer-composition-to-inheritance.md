@@ -724,7 +724,7 @@ For this reason, the mature OOP community has migrated away from "inheritance" a
 
 ### have your say
 
-Have an observation? Spot an error? You can [file an issue](https://github.com/raganwald/raganwald.github.com/issues/new), [discuss this on reddit](https://www.reddit.com/r/javascript/comments/4u243o/from_mixins_to_object_composition_raganwaldcom/), or even [edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-07-20-prefer-composition-to-inheritance.md)
+Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss this on [reddit](https://www.reddit.com/r/javascript/comments/4u243o/from_mixins_to_object_composition_raganwaldcom/), or even [edit this post yourself](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-07-20-prefer-composition-to-inheritance.md)
 
 ---
 
