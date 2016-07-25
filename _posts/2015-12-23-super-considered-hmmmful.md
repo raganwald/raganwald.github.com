@@ -9,7 +9,7 @@ tags: [allonge]
 I highly recommend reading Justin Fagnani's ["Real" Mixins with JavaScript Classes](http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/). To summarize my understanding, Justin likes using "mixins," but takes issue with the way they are implemented as described in things like [Using ES7 Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html).[^personal]
 
 - Justin wants to be able to have a fully open many-to-many relationship between meta-objects and objects.
-- Justin also wants to have mixins be much more equivalent to classes, especially with respect to being able to override a method from either a mixin or a class, and to be able to call `super()` in such a method to call the mixin's original definition, just as you would for a class.
+- Justin also wants to have mixins be much more equivalent to classes, especially with respect to being able to override a method from either a mixin or a class, and to be able to invoke the  the mixin's original definition of a emthod within an overridden method, just as you can invoke a superclass's definiotion of a method from within a class's method.
 - Finally, Justin wants to create code that existing engines can optimize easily, and avoid changing the "shape" of prototypes.
 
 [^personal]: I don't treat these objections as personal criticism: They describe what Justin needs from a tool they intend to use in production, while I am giving examples of tools for the purpose of understanding how pieces of the language can fit together in extremely simple and elegant ways.
@@ -22,7 +22,9 @@ The second debate is more subtle, and it concerns overriding methods. It's a mas
 
 In languages like Smalltalk and almost every other "dynamically typed" OO descendent, including JavaScript, you can override any method at any level in the class hierarchy. In languages like Javascript and Ruby, you can even override a method within a single object.
 
-When the method is invoked on an object, the most-specific version of the method is invoked. The other versions are available via various methods, from denoting them by absolute name (e.g. `SomeSuperclassName.prototype.foo.call(this, 'bar', 'baz')`) or using a magic keyword, `super` (e.g. `super('bar', 'baz')`).
+When the method is invoked on an object, the most-specific version of the method is invoked. The other versions are available via various methods, from denoting them by absolute name (e.g. `SomeSuperclassName.prototype.foo.call(this, 'bar', 'baz')`) or using a magic keyword, `super`, e.g. `super('bar', 'baz')` in most languages, or `super.baz('bar', 'baz')` in JavaScript ES6.[^superjs]
+
+[^superjs]: In most OO languages, if you have a class `Bar` that extends `Foo`, and both implement a method called `baz`, within `Bar`'s definition of `baz`, you can invoke `Foo`'s definition of `baz` with `super(...)`. The language knows that `super(...)` refers to the superclass's definition of that same method, `baz`. JavaScript is different. Within a method, JavaScript ES6's `super` is a kind of reference to the protoype of a class's superclass, rather than a reference to the superclass's definition of that same method. Thus, if you have a class `Bar` that extends `Foo`, and both implement a method called `baz`, within `Bar`'s definition of `baz`, you can invoke `Foo`'s definition of `baz` with `super.baz(...)`. This is roughly equivalent to writing `Foo.prototype.baz.call(this, ...)`. There are a number of ramifications of this design choice that go beyond the scope of this post, but we will stick to discussing the aspects of this behaviour that are the same as when other langauges call `super(...)` within a method.
 
 The canonical name for this is [Dynamic Dispatch], because the method invocation is dynamically dispatched to the most appropriate method implementation. Such methods or functions are often called [virtual functions][virtual function], and thus a language where methods are automatically virtual is called "virtual-by-default."
 
@@ -205,7 +207,7 @@ The "final-by-default" tribe of OO programmers like their programs to confirm to
 
 If you're a member of the final-by-default tribe, you don't want a lot of overriding of methods. You don't want mixins to blindly copy over an existing prototype's methods just as you don't want a classes' methods to will-nilly override a superclass's methods or a mixin's methods.
 
-If you're a member of the final-by-default tribe, every time you see the `super()` keyword, you stare at it long and hard, and work out the tradeoff of convenience now versus potential for bugs down the road.
+If you're a member of the final-by-default tribe, every time you see the `super` keyword, you stare at it long and hard, and work out the tradeoff of convenience now versus potential for bugs down the road.
 
 If you're a member of the final-by-default tribe, your `mixin` implementation will throw an error if a mixin and a class's method clash:
 
@@ -238,7 +240,7 @@ let HappyObjects = subclass_factory_mixin({
 
 class HappyFoo extends HappyObjects(Object) {
   toString () {
-    return `${super()} foo`;
+    return `${super.toString()} foo`;
   }
 };
 
@@ -306,15 +308,15 @@ Traits are very much from the "final by default" school, but instead of simply p
 
 ### is super() considered hmmm-ful?
 
-The expression `super()` is how ES6 denotes a method that overrides another method, and invokes the method it overrides from within its body. Overriding any arbitrary method and calling the overridden method when and how you like obviously provides maximum flexibility and convenience. It's characteristic of the virtual-by-default mindset: Everything can be overridden, in any arbitrary way.
+In JavaScript ES6, we car write `super.baz()` within a method `baz`, to denote that we wish to invokes the method it overrides. Overriding any arbitrary method and calling the overridden method when and how you like obviously provides maximum flexibility and convenience. It's characteristic of the virtual-by-default mindset: Everything can be overridden, in any arbitrary way.
 
-Replacing `super()` with method advice, for example, requires careful design, but offers an easier way to reason about the code: Looking at a `Foo` class, you can have confidence that instances of `Foo` might extend its methods, but you will have a higher degree of confidence how they will behave.
+Replacing `super.baz()` with method advice, for example, requires careful design, but offers an easier way to reason about the code: Looking at a `Foo` class, you can have confidence that instances of `Foo` might extend its methods, but you will have a higher degree of confidence how they will behave.
 
 The "Liskov Substitution" and "Open/Closed" principles are guidelines for writing software that is extensible and maintainable, just as "Prefer Composition over Inheritance" expresses a preference, not an ironclad rule to never inherit when you could compose.
 
 [considered harmful]: http://meyerweb.com/eric/comment/chech.html
 
-So: Is [`super()` considered harmful][considered harmful]? No. Like anything else, it depends upon how you use it. Pragmatically, we shouldn't reject all uses of `super()`. But we can always stop for a moment and ask ourselves if it's the best way to accomplish a particular objective. And we ought to understand the alternatives available to us.
+So: Is [`super()` considered harmful][considered harmful]? No. Like anything else, it depends upon how you use it. Pragmatically, we shouldn't reject all uses of `super.baz()` (or as noted, `super()` in other languages). But we can always stop for a moment and ask ourselves if it's the best way to accomplish a particular objective. And we ought to understand the alternatives available to us.
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=10786168))
 
