@@ -113,7 +113,7 @@ But let's move along a bit and we'll see how to fix the implicit/explicit proble
 
 "Composition" is a general term for any mixing of behaviour from two entities. Mixins as described above is a form of composition. Functional composition is another. Object composition is when we mix two objects, not an object and a prototype or two functions.
 
-Lets do it by hand. We start with Our `Todo` class as usual:
+Let's do it by hand: We'll start with Our `Todo` class as usual:
 
 ```javascript
 class Todo {
@@ -234,7 +234,7 @@ const componentToHex = Symbol('componentToHex');
 const rgbToHex = Symbol('rgbToHex');
 
 
-const Coloured = {
+const Coloured = FunctionalMixin({
   setColourRGB ({r, g, b}) {
     return this[colourCode] = {r, g, b};
   },
@@ -252,7 +252,7 @@ const Coloured = {
   [rgbToHex]({r, g, b}) {
     return "#" + this[componentToHex](r) + this[componentToHex](g) + this[componentToHex](b);
   }
-};
+});
 
 const Todo = Coloured(class {
   constructor (name) {
