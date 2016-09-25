@@ -9,7 +9,7 @@ Once upon a time, I went for a round of job interviews with an interesting compa
 
 [^interview]: Yes, I have been to a lot of job interviews. That happens when you spend three decades working in a high-turnover, volatile industry. It happens even more to some people in this industry than others. As Mark Cuban boasts, "I have been fired more times than most people have had jobs." Mind you, he's a billionaire, and I often find myself gathering up all the change in my house to buy lunch.
 
-"I see you worked at LeMondCo?"[^pseudonyms] Of course I had, my referral to these interviews was from a colleague there.
+"I see you worked at LeMond?"[^pseudonyms] Of course I had, my referral to these interviews was from a colleague there.
 
 [^pseudonyms]: All names are pseudonyms, of course, and some other details have been fictionalized.
 
@@ -33,13 +33,13 @@ Leo was one of LeMond's first hires, and he quickly earned a reputation for turn
 
 Then the IBM PC arrived, and LeMond had its first real test of maturity as a company. Their existing customers were all very happy with their Unix systems, and most of the software they were running would not run on a PC: It was either too big and sophisticated, or was multi-user.
 
-Serious businesses considered the PC a toy, even if it was backed by IBM. Oh sure, they bought a few, and stuied it, and someobody was assigned to write up a report about the opportunities and costs of adopting PC technology. But absolutely none of LeMond's customers were asking LeMond to write PC software.
+Serious businesses considered the PC a toy, even if it was backed by IBM. Oh sure, businesses bought a few PCs, and paid analysts for case studies and white papers, and somebody would be assigned to write up a report about the opportunities and costs of adopting PC technology. But absolutely none of LeMond's customers were asking LeMond to write PC software.
 
 So they didn't. They carried on working on a long list of features and enhancements dictated by perfectly rational win/loss marketing analysis, feedback from customers, and the dictates of industry analysts.
 
 ### leo
 
-But a funny thing happened. Leo bought themself a PC. I don't know the story behind it, they might have wanted to play with its "Flight Simulator," or maybe they thought they could run Unix on the Desktop. But however it came to be, Leo had a PC and actually set it up in the office.
+But a funny thing happened. Leo bought themselves a PC. I don't know the story behind it, they might have wanted to play with its "Flight Simulator," or maybe they thought they could run Unix on the Desktop. But however it came to be, Leo had a PC and actually set it up in the office.
 
 It wasn't long before Leo was fooling around with writing software for the PC. Coffee break conversations began to include monologues from Leo about somebody called Philippe Kahn, and debates about the benefits of coding in C and assembler versus the UCSD p-system.
 
@@ -49,7 +49,7 @@ One day, the company founders decided that Leo simply had to get back to work, a
 
 Leo left the conference room and returned with the PC. Leo needed a few more trips, but after some fiddling the PC was set up in the conference room and everyone was clustered around the 12-inch colour display.
 
-Leo booted everything up and then typed the magic incantaction: `LeMond.exe`.
+Leo booted everything up and then typed the magic incantation: `LeMond.exe`.
 
 With much squeaking and grinding, the PC laboriously booted... A programming editor!
 
@@ -59,7 +59,7 @@ The founders were silent. At long last, one spoke: "What is this good for?"
 
 Leo was enthusiastic. "Well, I wanted to see if we could get our suite of Business Components running on a PC. But frankly, the tooling is TERRIBLE, just awful. Nobody can work like this. So before I could write a business component, I had to write a programming editor."
 
-The founders were, well, dumbfounded. There were so many reasons why this was a terrible waste of time that they crowded the mind liek a traffic jam, shtting down the ability to pick one and speak. Leo, oblivious to their body language, continued.
+The founders were, well, dumbfounded. There were so many reasons why this was a terrible waste of time that they crowded the mind like a traffic jam, shutting down the ability to pick one and speak. Leo, oblivious to their body language, continued.
 
 "I mean, the PC is such a terrible platform, there is no way anybody is going to do any serious programming on it without a programming editor. And without serious programmers, there is won't be anybody to buy our Business Components. So I wrote one."
 
@@ -67,7 +67,7 @@ Finally, one of the founders managed to speak. "This is all very nice, but what 
 
 Leo beamed. "Oh, that's no problem. I mentioned it on a BBS, and I have ten preorders already. Well, not invoices or anything, but they say they'll buy it, and even if only half of them want it, that's five sales."
 
-The other founder, who hadn't spoken yet, wanted to ask wahat a "BBS" was, but decided that things were surreal enough, and there was a definite risk that the conversation would veer even further off base.
+The other founder, who hadn't spoken yet, wanted to ask what a "BBS" was, but decided that things were surreal enough, and there was a definite risk that the conversation would veer even further off base.
 
 Now it would be nice if the founders in this story clapped Leo on the back, broke open a bottle of champagne, and then devoted 40% of their marketing budged to `lemond.exe`, but that's not what really happened. There was much back-and-forth, much hand-wringing, and yes, five sales, but `lemond.exe` became a product, and it had modest sales.
 
