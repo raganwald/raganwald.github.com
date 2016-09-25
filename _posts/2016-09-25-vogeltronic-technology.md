@@ -3,7 +3,7 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-True Story:
+### a true story
 
 Once upon a time, I went for a round of job interviews with an interesting company.[^interview] Things went well in the behavioural and technical segments, then I sat down with the President, who introduced themselves as being an industry veteran who provided the "adult supervision" for the company.
 
