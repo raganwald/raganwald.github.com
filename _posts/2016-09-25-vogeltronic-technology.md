@@ -27,11 +27,13 @@ LeMond had been formed by two college roommates. They had been taught that busin
 
 Unix was clearly inferior for business processing purposes, but LeMond's founders mixed a little idealism, with a dash of "If programmers are more productive, businesses will buy it," topped with "We want to play with this stuff, so let's try it and see if we can make a go of a company."
 
-As things worked out, minicomputers running Unix were becoming a thing, and LeMond did well making software for business processing, called "Business Components." Leo was one of their first hires, and he quickly earned a reputation for turning assignments around very, very quickly.
+As things worked out, minicomputers running Unix were becoming a thing, and LeMond did well making software for business processing, called "Business Components." Programmers writing software for minicomputers would integrate LeMond's "business components" into their code and save themselves some time and trouble.
+
+Leo was one of LeMond's first hires, and he quickly earned a reputation for turning assignments around very, very quickly.
 
 Then the IBM PC arrived, and LeMond had its first real test of maturity as a company. Their existing customers were all very happy with their Unix systems, and most of the software they were running would not run on a PC: It was either too big and sophisticated, or was multi-user.
 
-Serious businesses considered the PC a toy, even if it was backed by IBM. Oh sure, they bought a few, and stuied it, and someobody was assigned to write up a report about the opportunities and costs of adopting PC technology. But absolutely none of LeMonds customers were asking LeMond to write PC software.
+Serious businesses considered the PC a toy, even if it was backed by IBM. Oh sure, they bought a few, and stuied it, and someobody was assigned to write up a report about the opportunities and costs of adopting PC technology. But absolutely none of LeMond's customers were asking LeMond to write PC software.
 
 So they didn't. They carried on working on a long list of features and enhancements dictated by perfectly rational win/loss marketing analysis, feedback from customers, and the dictates of industry analysts.
 
