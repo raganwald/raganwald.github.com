@@ -5,19 +5,17 @@ tags: [allonge, noindex]
 
 ### a true story
 
-Once upon a time, I went for a round of job interviews with an interesting company.[^interview] Things went well in the behavioural and technical segments, then I sat down with the President, who introduced themselves as being an industry veteran who provided the "adult supervision" for the company.
-
-[^interview]: Yes, I have been to a lot of job interviews. That happens when you spend three decades working in a high-turnover, volatile industry. It happens even more to some people in this industry than others. As Mark Cuban boasts, "I have been fired more times than most people have had jobs." Mind you, he's a billionaire, and I often find myself gathering up all the change in my house to buy lunch.
+Once upon a time, I went for a round of job interviews with an interesting company. Things went well in the behavioural and technical segments, then I sat down with the President, who introduced themselves as an industry veteran who provided the "adult supervision" for the company.
 
 "I see you worked at LeMond?"[^pseudonyms] Of course I had, my referral to these interviews was from a colleague there.
 
 [^pseudonyms]: All names are pseudonyms, of course, and some other details have been fictionalized.
 
-"Do you know a programmer named Richard Byrd?" Everyone at LeMond knew Richard. Yes I did.
+"Do you know a programmer named Richard Byrd?" Everyone at LeMond knew Richard. So yes I did.
 
 "Then tell me: What do you think about Richard? Be as specific as possible." I felt a yawning chasm open up under my feet, and my sixth, seventh, and eighth senses were all screaming that this question was a trap.
 
-I took a long sip from my water to buy myself time, composed my emotions, and decided, as usual, to be truthful.
+I took a long sip from my water to buy myself time, composed my emotions, and decided, as usual, to be truthful. But Richard's story was far from simple.
 
 ### lemond
 
@@ -49,9 +47,7 @@ One day, the company founders decided that Richard simply had to get back to wor
 
 Richard left the conference room and returned with the PC. Richard needed a few more trips, but after some fiddling the PC was set up in the conference room and everyone was clustered around the 12-inch colour display.
 
-Richard booted everything up and then typed the magic incantation: `lemond.exe`.
-
-With much squeaking and grinding, the PC laboriously booted... A programming editor!
+Richard booted everything up and then typed the magic incantation: `lemond.exe`. With much squeaking and grinding, the PC laboriously booted... A programming editor!
 
 The founders were silent. At long last, one spoke: "What is this good for?"
 
@@ -79,11 +75,17 @@ And then Windows happened.
 
 ### the windows adventure
 
-LeMond had very purposely avoided writing software for Macintosh, because all of their customers agreed that nobody wanted a Mac. And people tried to bring weird [Graphical User Interfaces] to PCs, and the results were uninspiring. [TopView], [GEM], [OS/2 Presentation Manager]... None got any traction. Microsoft's own first forays into
+LeMond had very purposely avoided writing software for Macintosh, because all of their customers agreed that nobody wanted a Mac. And people tried to bring weird [Graphical User Interfaces] to PCs, and the results were uninspiring. [TopView], [GEM], [OS/2 Presentation Manager]... None got any traction.
 
 [GUI]: https://en.wikipedia.org/wiki/History_of_the_graphical_user_interface
 [TopView]: https://en.wikipedia.org/wiki/IBM_TopView
 [GEM]: https://en.wikipedia.org/wiki/Graphical_Environment_Manager
 [OS/2 Presentation Manager]: https://en.wikipedia.org/wiki/Presentation_Manager
+
+Microsoft's own forays into a graphical user interfaces were widely acknowledged as being terrible clones of Mac OS. It was obvious to everyone that their strategy was to produce something, andything, no matter how embarassing, just so that they could reassure customers that if they wanted mice and clicking, they could have mice and clicking.
+
+Most customers on IBM-PCs gave it a try, and went back to using the command line, unimpressed by this "WIMP" metaphor. This has been played out many times in the technology world: Somebody brings out something revolutionary, the legacy players make a terrible copy of it, and customers judge the new idea on the terrible copy, but not on the original.
+
+
 
 ### notes
