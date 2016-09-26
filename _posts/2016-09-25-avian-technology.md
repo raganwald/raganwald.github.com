@@ -109,6 +109,40 @@ Privately, the product managers correctly forecasted that this process would als
 
 Meanwhile, oblivious to all that was happening, the Windows Technology group was working on version 1.1 of Business Components for Windows.
 
-###
+### a byrd hits the windows
+
+Although Richard had initially been excluded from the Windows Technology Group, he found himself roped into helping out. what happened was that despite their best intentions to use predictable developers to create a predictable, sustainable delivery pace, they reckoned without the pragmatic realities of the product management and sales teams.
+
+While they were trying to simultaneously ship version 1.1 of the Business Components for Windows and Programming Tools for Windows, they were dealing with bug reports from the few customers they had, as well as a stream of "urgent and critical" feature requests from prodct management and sales.
+
+It seemed that once a product escaped the pure development environment and was shown to the marketplace, the only thing we could forsee with certainty, is that we would be unable to forsee what would happen, with certainty.
+
+Faced with constant interruptions, the development manager had Richard transferred onto the team, and piped all non-scheduled work to Richard. That way, the origianlly planned releases could proceed on schedule, and Richard could work on everything else in whatever capricious order product management and sales dictated.
+
+Richard dived into the code with relish, and as was his wont, quickly became dissatisfied with the development environment. He was very familiar with the company's Business Components, but the Windows technology Group had implemented them using some new-fangled greenspunned pseudo-OO code. There were these synthetic classes and dispatch functions and it was very hard to keep track of what was going on.
+
+As Dr. Adele Goldberg famously said (about Smalltalk): "In OO, everything happens somewhere else."
+
+Richard thought about it, and then set about coding up his own solution to the problem: He wrote a visual viewer for the company's proprietary OO code. He had written a rudimentary [Entity-relationship Model][ERM] Viewer. In Windows 95. In a little over a week-end.
+
+[ERM]: https://en.wikipedia.org/wiki/Entity-relationship_model
+
+And while the requests for "actual work" piled up, Richard embellished his viewer and turned it into an editor: Making changes to the model in the viewer would write changes to the source code.
+
+This state of affairs could not continue indefinitely, and it wasn't long before Steve "Sax-Man" Stronglimb was at Richard's demanding to know when he could expect to see some customer-requested features for Business Components.
+
+Richard was pleased to see Steve. "Tell me," Richard asked, "what are those changes again?"
+
+Steve was not pleased to have to repeat what had already been entered into the company's task and time tracking application, but he knew that honey would catch more flies than vinegar. As Steve explained the change request point-by-point, Richard was making the changes, live, in the diagram on his PC.
+
+When they were done, Steve asked Richard to validate that things were as they should be. There were a few missed points, and Richard corrected those on the spot. Finally, Steve agreed that the diagram was correct.
+
+"This diagram is really helpful. When can I expect you to implement the changes?"
+
+Richard grinned. "They're done! Of course, we need to run some tests and so on, but..."
+
+The news that Richard had made the changes by editing a diagram on the screen went off like a bombshell, and it took some time for Steve to reassemble the major pieces of his brain. When he left Richard's office, he was already planning a new line of OO analysis tools that would play very nicely with the rage for OO programming that LeMond's product management had ignored in their enthusiasm for getting Windows products out the door.
+
+---
 
 ### notes
