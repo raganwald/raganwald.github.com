@@ -1,4 +1,5 @@
 ---
+title: "Avian Technology, a Long and Winding Story"
 layout: default
 tags: [allonge, noindex]
 ---
@@ -86,6 +87,28 @@ Microsoft's own forays into a graphical user interfaces were widely acknowledged
 
 Most customers on IBM-PCs gave it a try, and went back to using the command line, unimpressed by this "WIMP" metaphor. This has been played out many times in the technology world: Somebody brings out something revolutionary, the legacy players make a terrible copy of it, and customers judge the new idea on the terrible copy, but not on the original.
 
+Manwhile, LeMond had matured as a company. It had people called "product managers," who were busy producing "win-loss" reports and "segmentation diagams." The product managers were not ignorant of the technology market, and they were not going to allow LeMond's "Next Big Thing" to emerge from somebody's hobby.
 
+So they were constantly watching developments, trying to sort out what was going to be the Next Big Platform, so that LeMond could get in on the ground floor, as it had with its programming editor and other tools for IBM-PC programmers.
+
+When [Windows 95] finally dropped, LeMond correctly guessed that the full-court press by Microsoft's marketing machine and developer evangelists was a signal that they were finally serious about GUIs. They sprang into action, recruiting many of the company's more talented developers for a new "Windows Technology" group.
+
+[Windows 95]: https://en.wikipedia.org/wiki/Windows_95
+
+In an action unprecedented for LeMond, simultaneous releases were planned for Windows 95 versions of its Business Components and Programming Tool products. Richard, who had a reputation for being able to either turn something around in a few days or not at all, was left off the project. They wanted to optimize for reliabile and predictabile team delivery.
+
+With much fanfare, marketecture, glossy brochures, advertising, golden discs, trade show booths, and paid advertorials, the launch went almost exactly as planned. Thousands of Trial Version discs were distributed. Major customers signed up for betas. Everything went according to plan.
+
+Except for the sales. Sales were tepid. The marketplace yawned. Windows 95 urned out to be a consumer release. Solitaire and Minesweeper were all the rage. People played with [CompuServe]. But nobody wanted to pay serious money for Business Components or WIMP-based programming tools.
+
+[CompuServe]: http://news.microsoft.com/1996/06/04/access-to-compuserve-online-services-to-be-included-in-windows-95-operating-system/#sm.0016um7b212pvf11yvu2r7qhgbr8x
+
+LeMond licked its wounds. The founders huddled at an executive offsite and formulated plans for a new product development pipeline festooned with "gates" and other process features designed to prevent the risk of ever launching something so big without a 100% guarantee of success.
+
+Privately, the product managers correctly forecasted that this process would also prevent the risk of launching anything except minor variations of things LeMond was already making. But this was no time to argue, so they put their heads down and schemed for ways to route around the rapidly growing bureaucracy.
+
+Meanwhile, oblivious to all that was happening, the Windows Technology group was working on version 1.1 of Business Components for Windows.
+
+###
 
 ### notes
