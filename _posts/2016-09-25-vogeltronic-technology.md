@@ -39,17 +39,17 @@ So they didn't. They carried on working on a long list of features and enhanceme
 
 ### leo
 
-But a funny thing happened. Leo bought themselves a PC. I don't know the story behind it, they might have wanted to play with its "Flight Simulator," or maybe they thought they could run Unix on the Desktop. But however it came to be, Leo had a PC and actually set it up in the office.
+But a funny thing happened. Leo bought an IBM-PC. I don't know the story behind it, maybe it was for playing with "Flight Simulator," or maybe there was a thought that a PC could support "Unix on the Desktop." But however it came to be, Leo had a PC and actually set it up in the office.
 
-It wasn't long before Leo was fooling around with writing software for the PC. Coffee break conversations began to include monologues from Leo about somebody called Philippe Kahn, and debates about the benefits of coding in C and assembler versus the UCSD p-system.
+It wasn't long before Leo was fooling around with writing software for the PC. Coffee break conversations began to include monologues from Leo about somebody called Philippe Kahn, and debates about the benefits of coding in C and assembler versus the UCSD p-system. Leo's regular work suffered, and it wasn't long before Leo was programming the PC full time.
 
-One day, the company founders decided that Leo simply had to get back to work, and they called them onto the carpet. They were nice people, so instead of chewing Leo out about their PC obsession, the founders decided to begin diplomatically by asking what the PC was doing to make LeMond money.
+One day, the company founders decided that Leo simply had to get back to work. They were nice people, so instead of chewing Leo out about the IBM-PC obsession, the founders decided to begin diplomatically by asking what the PC was doing to make LeMond money.
 
 "Ah!" Leo beamed, finally someone was listening. "I'll be right back!"
 
 Leo left the conference room and returned with the PC. Leo needed a few more trips, but after some fiddling the PC was set up in the conference room and everyone was clustered around the 12-inch colour display.
 
-Leo booted everything up and then typed the magic incantation: `LeMond.exe`.
+Leo booted everything up and then typed the magic incantation: `lemond.exe`.
 
 With much squeaking and grinding, the PC laboriously booted... A programming editor!
 
@@ -69,12 +69,21 @@ Leo beamed. "Oh, that's no problem. I mentioned it on a BBS, and I have ten preo
 
 The other founder, who hadn't spoken yet, wanted to ask what a "BBS" was, but decided that things were surreal enough, and there was a definite risk that the conversation would veer even further off base.
 
-Now it would be nice if the founders in this story clapped Leo on the back, broke open a bottle of champagne, and then devoted 40% of their marketing budged to `lemond.exe`, but that's not what really happened. There was much back-and-forth, much hand-wringing, and yes, five sales, but `lemond.exe` became a product, and it had modest sales.
+Now it would be nice if the founders in this story clapped Leo on the back, broke open a bottle of champagne, and then devoted 40% of their marketing budged to `lemond.exe`, but that's not what really happened. There was much back-and-forth, much hand-wringing, and yes, five sales.
 
-And no, Business Components did not become a big thing on the PC, a funny thing called VisiCalc did, and then another funny thing called Excel, but `lemond.exe` spawned a few other programming tools for PC programmers, and LeMond was happy, and Leo went back to working on things that everybody agreed were priorities.
+And `lemond.exe` became a product, and from those five sales there were more sales, and then LeMond put some money into marketing it, and there were more sales, and `lemond.exe` became a modest hit, and as the PC market grew, sales grew.
+
+And no, Business Components did not become a big thing on the PC, a funny thing called VisiCalc did, and then another funny thing called Excel, but `lemond.exe` spawned a few other programming tools for PC programmers, and LeMond was happy making money from Business Components for Unix, and from programming tools for PCs, and Leo went back to working on things that everybody agreed were priorities.
 
 And then Windows happened.
 
----
+### the windows adventure
+
+LeMond had very purposely avoided writing software for Macintosh, because all of their customers agreed that nobody wanted a Mac. And people tried to bring weird [Graphical User Interfaces] to PCs, and the results were uninspiring. [TopView], [GEM], [OS/2 Presentation Manager]... None got any traction. Microsoft's own first forays into 
+
+[GUI]: https://en.wikipedia.org/wiki/History_of_the_graphical_user_interface
+[TopView]: https://en.wikipedia.org/wiki/IBM_TopView
+[GEM]: https://en.wikipedia.org/wiki/Graphical_Environment_Manager
+[OS/2 Presentation Manager]: https://en.wikipedia.org/wiki/Presentation_Manager
 
 ### notes
