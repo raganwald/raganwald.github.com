@@ -12,11 +12,11 @@ Once upon a time, I went for a round of job interviews with an interesting compa
 
 [^pseudonyms]: All names are pseudonyms, of course, and some other details have been fictionalized.
 
-"Do you know a programmer named Richard Byrd?" Everyone at LeMond knew Richard. So yes I did.
+"Do you know a programmer named Rijkert Byrd?" Everyone at LeMond knew Rijkert. So yes I did.
 
-"Then tell me: What do you think about Richard? Be as specific as possible." I felt a yawning chasm open up under my feet, and my sixth, seventh, and eighth senses were all screaming that this question was a trap.
+"Then tell me: What do you think about Rijkert? Be as specific as possible." I felt a yawning chasm open up under my feet, and my sixth, seventh, and eighth senses were all screaming that this question was a trap.
 
-I took a long sip from my water to buy myself time, composed my emotions, and decided, as usual, to be truthful. But Richard's story was far from simple.
+I took a long sip from my water to buy myself time, composed my emotions, and decided, as usual, to be truthful. But Rijkert's story was far from simple.
 
 ### lemond
 
@@ -28,7 +28,7 @@ Unix was clearly inferior for business processing purposes, but LeMond's founder
 
 As things worked out, minicomputers running Unix were becoming a thing, and LeMond did well making software for business processing, called "Business Components." Programmers writing software for minicomputers would integrate LeMond's "business components" into their code and save themselves some time and trouble.
 
-Richard was one of LeMond's first hires, and he quickly earned a reputation for turning assignments around very, very quickly.
+Rijkert was one of LeMond's first hires, and he quickly earned a reputation for turning assignments around very, very quickly.
 
 Then the IBM PC arrived, and LeMond had its first real test of maturity as a company. Their existing customers were all very happy with their Unix systems, and most of the software they were running would not run on a PC: It was either too big and sophisticated, or was multi-user.
 
@@ -36,41 +36,41 @@ Serious businesses considered the PC a toy, even if it was backed by IBM. Oh sur
 
 So they didn't. They carried on working on a long list of features and enhancements dictated by perfectly rational win/loss marketing analysis, feedback from customers, and the dictates of industry analysts.
 
-### richard byrd
+### rijkert byrd
 
-But a funny thing happened. Richard bought an IBM-PC. I don't know the story behind it, maybe it was for playing with "Flight Simulator," or maybe there was a thought that a PC could support "Unix on the Desktop." But however it came to be, Richard had a PC and actually set it up in the office.
+But a funny thing happened. Rijkert bought an IBM-PC. I don't know the story behind it, maybe it was for playing with "Flight Simulator," or maybe there was a thought that a PC could support "Unix on the Desktop." But however it came to be, Rijkert had a PC and actually set it up in the office.
 
-It wasn't long before Richard was fooling around with writing software for the PC. Coffee break conversations began to include monologues from Richard about somebody called Philippe Kahn, and debates about the benefits of coding in C and assembler versus the UCSD p-system. Richard's regular work suffered, and it wasn't long before Richard was programming the PC full time.
+It wasn't long before Rijkert was fooling around with writing software for the PC. Coffee break conversations began to include monologues from Rijkert about somebody called Philippe Kahn, and debates about the benefits of coding in C and assembler versus the UCSD p-system. Rijkert's regular work suffered, and it wasn't long before Rijkert was programming the PC full time.
 
-One day, the company founders decided that Richard simply had to get back to work. They were nice people, so instead of chewing Richard out about the IBM-PC obsession, the founders decided to begin diplomatically by asking what the PC was doing to make LeMond money.
+One day, the company founders decided that Rijkert simply had to get back to work. They were nice people, so instead of chewing Rijkert out about the IBM-PC obsession, the founders decided to begin diplomatically by asking what the PC was doing to make LeMond money.
 
-"Ah!" Richard beamed, finally someone was listening. "I'll be right back!"
+"Ah!" Rijkert beamed, finally someone was listening. "I'll be right back!"
 
-Richard left the conference room and returned with the PC. Richard needed a few more trips, but after some fiddling the PC was set up in the conference room and everyone was clustered around the 12-inch colour display.
+Rijkert left the conference room and returned with the PC. Rijkert needed a few more trips, but after some fiddling the PC was set up in the conference room and everyone was clustered around the 12-inch colour display.
 
-Richard booted everything up and then typed the magic incantation: `lemond.exe`. With much squeaking and grinding, the PC laboriously booted... A programming editor!
+Rijkert booted everything up and then typed the magic incantation: `lemond.exe`. With much squeaking and grinding, the PC laboriously booted... A programming editor!
 
 The founders were silent. At long last, one spoke: "What is this good for?"
 
 ### lemond.exe
 
-Richard was enthusiastic. "Well, I wanted to see if we could get our suite of Business Components running on a PC. But frankly, the tooling is TERRIBLE, just awful. Nobody can work like this. So before I could write a business component, I had to write a programming editor."
+Rijkert was enthusiastic. "Well, I wanted to see if we could get our suite of Business Components running on a PC. But frankly, the tooling is TERRIBLE, just awful. Nobody can work like this. So before I could write a business component, I had to write a programming editor."
 
-The founders were, well, dumbfounded. There were so many reasons why this was a terrible waste of time that they crowded the mind like a traffic jam, shutting down the ability to pick one and speak. Richard, oblivious to their body language, continued.
+The founders were, well, dumbfounded. There were so many reasons why this was a terrible waste of time that they crowded the mind like a traffic jam, shutting down the ability to pick one and speak. Rijkert, oblivious to their body language, continued.
 
 "I mean, the PC is such a terrible platform, there is no way anybody is going to do any serious programming on it without a programming editor. And without serious programmers, there is won't be anybody to buy our Business Components. So I wrote one."
 
 Finally, one of the founders managed to speak. "This is all very nice, but what made you think it would sell?"
 
-Richard beamed. "Oh, that's no problem. I mentioned it on a BBS, and I have ten preorders already. Well, not invoices or anything, but they say they'll buy it, and even if only half of them want it, that's five sales."
+Rijkert beamed. "Oh, that's no problem. I mentioned it on a BBS, and I have ten preorders already. Well, not invoices or anything, but they say they'll buy it, and even if only half of them want it, that's five sales."
 
 The other founder, who hadn't spoken yet, wanted to ask what a "BBS" was, but decided that things were surreal enough, and there was a definite risk that the conversation would veer even further off base.
 
-Now it would be nice if the founders in this story clapped Richard on the back, broke open a bottle of champagne, and then devoted 40% of their marketing budged to `lemond.exe`, but that's not what really happened. There was much back-and-forth, much hand-wringing, and yes, five sales.
+Now it would be nice if the founders in this story clapped Rijkert on the back, broke open a bottle of champagne, and then devoted 40% of their marketing budged to `lemond.exe`, but that's not what really happened. There was much back-and-forth, much hand-wringing, and yes, five sales.
 
 And `lemond.exe` became a product, and from those five sales there were more sales, and then LeMond put some money into marketing it, and there were more sales, and `lemond.exe` became a modest hit, and as the PC market grew, sales grew.
 
-And no, Business Components did not become a big thing on the PC, a funny thing called VisiCalc did, and then another funny thing called Excel, but `lemond.exe` spawned a few other programming tools for PC programmers, and LeMond was happy making money from Business Components for Unix, and from programming tools for PCs, and Richard went back to working on things that everybody agreed were priorities.
+And no, Business Components did not become a big thing on the PC, a funny thing called VisiCalc did, and then another funny thing called Excel, but `lemond.exe` spawned a few other programming tools for PC programmers, and LeMond was happy making money from Business Components for Unix, and from programming tools for PCs, and Rijkert went back to working on things that everybody agreed were priorities.
 
 And then Windows happened.
 
@@ -95,7 +95,7 @@ When [Windows 95] finally dropped, LeMond correctly guessed that the full-court 
 
 [Windows 95]: https://en.wikipedia.org/wiki/Windows_95
 
-In an action unprecedented for LeMond, simultaneous releases were planned for Windows 95 versions of its Business Components and Programming Tool products. Richard, who had a reputation for being able to either turn something around in a few days or not at all, was left off the project. They wanted to optimize for reliabile and predictabile team delivery.
+In an action unprecedented for LeMond, simultaneous releases were planned for Windows 95 versions of its Business Components and Programming Tool products. Rijkert, who had a reputation for being able to either turn something around in a few days or not at all, was left off the project. They wanted to optimize for reliabile and predictabile team delivery.
 
 With much fanfare, marketecture, glossy brochures, advertising, golden discs, trade show booths, and paid advertorials, the launch went almost exactly as planned. Thousands of Trial Version discs were distributed. Major customers signed up for betas. Everything went according to plan.
 
@@ -111,37 +111,37 @@ Meanwhile, oblivious to all that was happening, the Windows Technology group was
 
 ### a byrd hits the windows
 
-Although Richard had initially been excluded from the Windows Technology Group, he found himself roped into helping out. what happened was that despite their best intentions to use predictable developers to create a predictable, sustainable delivery pace, they reckoned without the pragmatic realities of the product management and sales teams.
+Although Rijkert had initially been excluded from the Windows Technology Group, he found himself roped into helping out. what happened was that despite their best intentions to use predictable developers to create a predictable, sustainable delivery pace, they reckoned without the pragmatic realities of the product management and sales teams.
 
 While they were trying to simultaneously ship version 1.1 of the Business Components for Windows and Programming Tools for Windows, they were dealing with bug reports from the few customers they had, as well as a stream of "urgent and critical" feature requests from prodct management and sales.
 
 It seemed that once a product escaped the pure development environment and was shown to the marketplace, the only thing we could forsee with certainty, is that we would be unable to forsee what would happen, with certainty.
 
-Faced with constant interruptions, the development manager had Richard transferred onto the team, and piped all non-scheduled work to Richard. That way, the origianlly planned releases could proceed on schedule, and Richard could work on everything else in whatever capricious order product management and sales dictated.
+Faced with constant interruptions, the development manager had Rijkert transferred onto the team, and piped all non-scheduled work to Rijkert. That way, the origianlly planned releases could proceed on schedule, and Rijkert could work on everything else in whatever capricious order product management and sales dictated.
 
-Richard dived into the code with relish, and as was his wont, quickly became dissatisfied with the development environment. He was very familiar with the company's Business Components, but the Windows technology Group had implemented them using some new-fangled greenspunned pseudo-OO code. There were these synthetic classes and dispatch functions and it was very hard to keep track of what was going on.
+Rijkert dived into the code with relish, and as was his wont, quickly became dissatisfied with the development environment. He was very familiar with the company's Business Components, but the Windows technology Group had implemented them using some new-fangled greenspunned pseudo-OO code. There were these synthetic classes and dispatch functions and it was very hard to keep track of what was going on.
 
 As Dr. Adele Goldberg famously said (about Smalltalk): "In OO, everything happens somewhere else."
 
-Richard thought about it, and then set about coding up his own solution to the problem: He wrote a visual viewer for the company's proprietary OO code. He had written a rudimentary [Entity-relationship Model][ERM] Viewer. In Windows 95. In a little over a week-end.
+Rijkert thought about it, and then set about coding up his own solution to the problem: He wrote a visual viewer for the company's proprietary OO code. He had written a rudimentary [Entity-relationship Model][ERM] Viewer. In Windows 95. In a little over a week-end.
 
 [ERM]: https://en.wikipedia.org/wiki/Entity-relationship_model
 
-And while the requests for "actual work" piled up, Richard embellished his viewer and turned it into an editor: Making changes to the model in the viewer would write changes to the source code.
+And while the requests for "actual work" piled up, Rijkert embellished his viewer and turned it into an editor: Making changes to the model in the viewer would write changes to the source code.
 
-This state of affairs could not continue indefinitely, and it wasn't long before Steve "Sax-Man" Stronglimb was at Richard's demanding to know when he could expect to see some customer-requested features for Business Components.
+This state of affairs could not continue indefinitely, and it wasn't long before Steve "Sax-Man" Stronglimb was at Rijkert's demanding to know when he could expect to see some customer-requested features for Business Components.
 
-Richard was pleased to see Steve. "Tell me," Richard asked, "what are those changes again?"
+Rijkert was pleased to see Steve. "Tell me," Rijkert asked, "what are those changes again?"
 
-Steve was not pleased to have to repeat what had already been entered into the company's task and time tracking application, but he knew that honey would catch more flies than vinegar. As Steve explained the change request point-by-point, Richard was making the changes, live, in the diagram on his PC.
+Steve was not pleased to have to repeat what had already been entered into the company's task and time tracking application, but he knew that honey would catch more flies than vinegar. As Steve explained the change request point-by-point, Rijkert was making the changes, live, in the diagram on his PC.
 
-When they were done, Steve asked Richard to validate that things were as they should be. There were a few missed points, and Richard corrected those on the spot. Finally, Steve agreed that the diagram was correct.
+When they were done, Steve asked Rijkert to validate that things were as they should be. There were a few missed points, and Rijkert corrected those on the spot. Finally, Steve agreed that the diagram was correct.
 
 "This diagram is really helpful. When can I expect you to implement the changes?"
 
-Richard grinned. "They're done! Of course, we need to run some tests and so on, but..."
+Rijkert grinned. "They're done! Of course, we need to run some tests and so on, but..."
 
-The news that Richard had made the changes by editing a diagram on the screen went off like a bombshell, and it took some time for Steve to reassemble the major pieces of his brain. When he left Richard's office, he was already planning a new line of OO analysis tools that would play very nicely with the rage for OO programming that LeMond's product management had ignored in their enthusiasm for getting Windows products out the door.
+The news that Rijkert had made the changes by editing a diagram on the screen went off like a bombshell, and it took some time for Steve to reassemble the major pieces of his brain. When he left Rijkert's office, he was already planning a new line of OO analysis tools that would play very nicely with the rage for OO programming that LeMond's product management had ignored in their enthusiasm for getting Windows products out the door.
 
 ---
 
