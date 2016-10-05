@@ -16,27 +16,27 @@ Once upon a time, I went for a round of job interviews with an interesting compa
 
 "Then tell me: What do you think about Rijkert? Be as specific as possible." I felt a yawning chasm open up under my feet, and my sixth, seventh, and eighth senses were all screaming that this question was a trap.
 
-I took a long sip from my water to buy myself time, composed my emotions, and decided, as usual, to be truthful. But Rijkert's story was far from simple.
+I took a long sip from my water to buy myself time, composed my emotions, and decided, as usual, to be truthful. But Rijkert's story was far from simple. Before answering, I cast my mind back over Rijkert's history with the company.
 
-### lemond
+---
+
+## LeMond
 
 LeMond was an interesting company. It made software tools for businesses and other organizations, and it had survived, even thrived, as several waves of technology had washed over the business computing industry.
 
 LeMond had been formed by two college roommates. They had been taught that businesses used IBM and DEC hardware, but in the university everyone used Unix, and programmers seemed to vastly prefer working in "The Unix Style."
 
-Unix was clearly inferior for business processing purposes, but LeMond's founders mixed a little idealism, with a dash of "If programmers are more productive, businesses will buy it," topped with "We want to play with this stuff, so let's try it and see if we can make a go of a company."
+The marketplace seemed to feel that Unix was inferior for business processing purposes, but LeMond's founders mixed a little idealism with a dash of "If programmers are more productive, businesses will buy it," and topped it all off with, "We want to play with this stuff, so let's try it and see if we can make a go of a company."
 
-As things worked out, minicomputers running Unix were becoming a thing, and LeMond did well making software for business processing, called "Business Components." Programmers writing software for minicomputers would integrate LeMond's "business components" into their code and save themselves some time and trouble.
+As things worked out, minicomputers running Unix became a small but significant thing, and LeMond did well making something called "Business Components" for businesses writing their own in-house software. Rijkert was one of LeMond's first hires, and he quickly earned a reputation for turning assignments around very, very quickly.
 
-Rijkert was one of LeMond's first hires, and he quickly earned a reputation for turning assignments around very, very quickly.
-
-Then the IBM PC arrived, and LeMond had its first real test of maturity as a company. Their existing customers were all very happy with their Unix systems, and most of the software they were running would not run on a PC: It was either too big and sophisticated, or was multi-user.
+Things went well for quite a while, until the IBM PC arrived, and LeMond had its first real test of maturity as a company. Their existing customers were all very happy with their Unix systems, and most of the software they were running would not run on a PC: It was either too big and sophisticated, or was multi-user.
 
 Serious businesses considered the PC a toy, even if it was backed by IBM. Oh sure, businesses bought a few PCs, and paid analysts for case studies and white papers, and somebody would be assigned to write up a report about the opportunities and costs of adopting PC technology. But absolutely none of LeMond's customers were asking LeMond to write PC software.
 
 So they didn't. They carried on working on a long list of features and enhancements dictated by perfectly rational win/loss marketing analysis, feedback from customers, and the dictates of industry analysts.
 
-### rijkert byrd
+### rijkert 's pc
 
 But a funny thing happened. Rijkert bought an IBM-PC. I don't know the story behind it, maybe it was for playing with "Flight Simulator," or maybe there was a thought that a PC could support "Unix on the Desktop." But however it came to be, Rijkert had a PC and actually set it up in the office.
 
@@ -58,11 +58,13 @@ Rijkert was enthusiastic. "Well, I wanted to see if we could get our suite of Bu
 
 The founders were, well, dumbfounded. There were so many reasons why this was a terrible waste of time that they crowded the mind like a traffic jam, shutting down the ability to pick one and speak. Rijkert, oblivious to their body language, continued.
 
-"I mean, the PC is such a terrible platform, there is no way anybody is going to do any serious programming on it without a programming editor. And without serious programmers, there is won't be anybody to buy our Business Components. So I wrote one."
+"I mean, the PC is such a terrible platform, there is no way anybody is going to do any serious programming on it without a programming editor. And without serious programmers, there won't be anybody to buy Business Components. So I wrote one. Obvious, really."
 
 Finally, one of the founders managed to speak. "This is all very nice, but what made you think it would sell?"
 
-Rijkert beamed. "Oh, that's no problem. I mentioned it on a BBS, and I have ten preorders already. Well, not invoices or anything, but they say they'll buy it, and even if only half of them want it, that's five sales."
+Rijkert beamed. "Oh, that's no problem. I mentioned it on a BBS, and I have ten preorders already. Well, not invoices or anything, but they say they'll buy it, and even if only half of them want it, that's five sales."[^five]
+
+[^five]: Five sales isn't very much, but in those days, software on a PC might sell for $400, $500, $700, $900, even $1,100, $1,400, or more. I recall paying nearly $3,000 for a certain programming environment to run on a Macintosh. So five presales was evidence that somebody was taking `lemond.exe` seriously, a lot more evidence than if there were five presales at a more modern price like $9.99.
 
 The other founder, who hadn't spoken yet, wanted to ask what a "BBS" was, but decided that things were surreal enough, and there was a definite risk that the conversation would veer even further off base.
 
@@ -129,19 +131,51 @@ Rijkert thought about it, and then set about coding up his own solution to the p
 
 And while the requests for "actual work" piled up, Rijkert embellished his viewer and turned it into an editor: Making changes to the model in the viewer would write changes to the source code.
 
-This state of affairs could not continue indefinitely, and it wasn't long before Steve "Sax-Man" Stronglimb was at Rijkert's demanding to know when he could expect to see some customer-requested features for Business Components.
+This state of affairs could not continue indefinitely, and it wasn't long before Adam Strong, LeMond's head of product management, was at Rijkert's demanding to know when he could expect to see some customer-requested features for Business Components.
 
-Rijkert was pleased to see Steve. "Tell me," Rijkert asked, "what are those changes again?"
+Rijkert was pleased to see Adam. "Tell me," Rijkert asked, "What are those changes again?"
 
-Steve was not pleased to have to repeat what had already been entered into the company's task and time tracking application, but he knew that honey would catch more flies than vinegar. As Steve explained the change request point-by-point, Rijkert was making the changes, live, in the diagram on his PC.
+Adam was not pleased to have to repeat what had already been entered into the company's task and time tracking application, but he knew that honey would catch more flies than vinegar. As Adam explained the change request point-by-point, Rijkert was making the changes, live, in the diagram on his PC.
 
-When they were done, Steve asked Rijkert to validate that things were as they should be. There were a few missed points, and Rijkert corrected those on the spot. Finally, Steve agreed that the diagram was correct.
+When they were done, Adam asked Rijkert to validate that things were as they should be. There were a few missed points, and Rijkert corrected those on the spot. Finally, Adam agreed that the diagram was correct.
 
 "This diagram is really helpful. When can I expect you to implement the changes?"
 
 Rijkert grinned. "They're done! Of course, we need to run some tests and so on, but..."
 
-The news that Rijkert had made the changes by editing a diagram on the screen went off like a bombshell, and it took some time for Steve to reassemble the major pieces of his brain. When he left Rijkert's office, he was already planning a new line of OO analysis tools that would play very nicely with the rage for OO programming that LeMond's product management had ignored in their enthusiasm for getting Windows products out the door.
+The news that Rijkert had made the changes by editing a diagram on the screen went off like a bombshell, and it took some time for Adam to reassemble the major pieces of his brain. When he left Rijkert's office, he was already planning a new line of OO analysis tools.
+
+### adam's generation
+
+While LeMond had been busy trying to make business components a success in the Windows 95 world, a different revolution was sweeping businesses. The [Unified Modelling Language][UML] ("UML") was becoming a standard way for businesses to visualize system designs, and the related [Rational Unified Process][RUP] was all the rage amongst LeMond's market.
+
+[UML]: https://en.wikipedia.org/wiki/Unified_Modeling_Language
+[RUP]: https://en.wikipedia.org/wiki/Rational_Unified_Process
+
+Adam quickly realized that providing components to plug into hand-written code was not particularly exciting to companies in the midst of trying to adopt a standardized process and tooling. But if LeMond could get into the tooling and code generation business, and sell it as being compatible with UML, then they could sell some diagrammers, and make LeMond's business components particularly easy to integrate from within the tool.
+
+Adam managed to talk the founders into making amodest bet on this, and a new team was formed to productize Rijkert's work as the "LeMond Business Modelling Suite." The team's experience getting to 1.0 becamame a legend within the company. The founders took one look at Rijkert's prototype and figured that shipping a product was, if not a slam dunk, and easy layup.
+
+So the team was given constrained resources, a tight timeline, and a list of new features to add, not the least of which was a nearly complete redesign of the terminology and visualization to match UML. Meanwhile, they struggled to even read Rijkert's code, much less work with it.
+
+The tech lead would later lament that had they known what they were up against, they would have considered Rijkert's code to be a proof-of-concept, thrown it right out, and written the LeMond Business Modelling Suite from scratch.
+
+Several death marches and missed dealines later, LeMond's Business Modelling Suite shipped, and the company had another hit on its hand. Customers gobbled it up, and it worked like a charm to sell business components licenses.
+
+There was more to LeMond's story, and Rijkert's involvement, but as I turned events over in my head, the theme was consistent: Rijkert had real trouble focusing on the company's priorities. Teams didn't really like working with Rijkert, and they hated working with Rijkert's code.
+
+---
+
+## Rijkert Byrd
+
+But behind closed doors, the founders once summed Rijkert up by pointing out that one way or another, Rijkert had kickstarted every single success they had since they wrote the original business components. Lots of programmers would "yak-shave" and spend a lot of time trying to make their work more efficient. But Rijkert had a bias for productizing his yak shaving.
+
+When he discovered some defect in the way things were done, he'd make a tool for doing things "The Right Way." As with `lemond.exe` and the Business Modelling Suite, sometimes those tools became successful products. Sometimes, as with his continuous integration testing tools, they became internal tools.
+
+Meanwhile, the company's product management
+
+
+The trick was to give him work to do
 
 ---
 
