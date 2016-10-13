@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "The Quantum Electrodynamics of Functional JavaScript"
+title: "Success and Failure in Functional JavaScript"
 tags: [allonge]
 ---
 
