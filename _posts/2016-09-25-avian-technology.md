@@ -162,11 +162,15 @@ The tech lead would later lament that had they known what they were up against, 
 
 Several death marches and missed dealines later, LeMond's Business Modelling Suite shipped, and the company had another hit on its hand. Customers gobbled it up, and it worked like a charm to sell business components licenses.
 
-There was more to LeMond's story, and Rijkert's involvement, but as I turned events over in my head, the theme was consistent: Rijkert had real trouble focusing on the company's priorities. Teams didn't really like working with Rijkert, and they hated working with Rijkert's code.
+### barbarians at the gates
+
+While all this was happening, LeMond had been building up its Product Management expertise. Every team had its own PM assigned to aligning the product's feature set with specific revenue opportunities. A "Product Portfolio Management" council was set up to allocate development resources to LeMond's products. The council would speak in jargon, talking of "Cows and Stars" one day, and of "Defensible ROI" another.
 
 ---
 
 ## Rijkert Byrd
+
+There was more to LeMond's story, and Rijkert's involvement, but as I turned events over in my head, the theme was consistent: Rijkert had real trouble focusing on the company's priorities. Teams didn't really like working with Rijkert, and they hated working with Rijkert's code.
 
 But behind closed doors, the founders once summed Rijkert up by pointing out that one way or another, Rijkert had kickstarted every single success they had since they wrote the original business components. Lots of programmers would "yak-shave" and spend a lot of time trying to make their work more efficient. But Rijkert had a bias for productizing his yak shaving.
 
