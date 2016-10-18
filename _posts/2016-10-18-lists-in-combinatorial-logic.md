@@ -72,24 +72,22 @@ V('fu')('bar')(K(I))
 
 The Vireo is useful because an expression like `V('sna')('fu')` yields a function that is a first-class value in JavaScript that we can use with all the other combinators to build things. For example, we can construct a list.
 
-Since everything in combinatorial logic seems to be a function, we'll make our list a function as well. It will take two arguments: A function to evaluate if the list os not empty, and a function to evaluate if the list is empty, like this:
+Since everything in combinatorial logic seems to be a function, we'll make our list a function as well. It will take two arguments: A function to evaluate if the list is not empty, and a function to evaluate if the list is empty, like this:
 
 ```javascript
 someList(fnWhenNotEmpty)(fnWhenEmpty)
 ```
 
-If the list is empty, what will we pass `fnWhenEmpty`? Anything will do, but we'll use the Kite for now.
-
-We can construct the empty list:
+If the list is empty, what will we pass `fnWhenEmpty`? Anything will do, but we'll use the Kite for now. We can construct the empty list:
 
 ```javascript
 const Empty =
   (fnWhenNotEmpty) =>
     (fnWhenEmpty) =>
-      fnWhenEmpty(Kite)
+      fnWhenEmpty(Kite);
 ```
 
-How about non-empty lists? We need a function that takes two arguments, a head of the list, and a tail, and it returns a function taking arguments `fnWhenNotEmpty` and `fnWhenEmpty`:
+How about non-empty lists? We need a function that takes two arguments, a head of the list, and a tail, and it returns a function taking arguments `fnWhenNotEmpty` and `fnWhenEmpty`. If the list is not empty, what will we pass `fnWhenNotEmpty`? The value at the head of the list, and the rest of the list. How will we pass them? With a Vireo:
 
 ```javascript
 const List =
@@ -97,10 +95,10 @@ const List =
     (tail) =>
       (fnWhenNotEmpty) =>
         (fnWhenEmpty) =>
-          fnWhenNotEmpty(V(head)(tail))
+          fnWhenNotEmpty(V(head)(tail));
 ```
 
-If the list is not empty, what will we pass `fnWhenNotEmpty`? The value at the head of the list, and the rest of the list. How will we pass them? With a Vireo.
+
 
 
 A very long time ago, mathematicians like Alonzo Church, Moses Schönfinkel, Alan Turing, and Haskell Curry and asked themselves if we really needed all these features to perform computations. They searched for a radically simpler set of tools that could accomplish all of the same things.
