@@ -34,7 +34,7 @@ This model has been discussed many times form the perspective of product managem
 
 ### have your say
 
-Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss this on [reddit](https://www.reddit.com/r/javascript/comments/4u243o/from_mixins_to_object_composition_raganwaldcom/), or even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-07-20-prefer-composition-to-inheritance.md) yourself!
+Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), or even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-11-12-engineering-for-lean-product-development.md) yourself!
 
 ---
 
