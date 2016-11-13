@@ -4,10 +4,9 @@ layout: default
 tags: [allonge]
 ---
 
-![Lean Product Development](/assets/images/henrikkniberg.png)
+In "[Making sense of MVP (Minimum Viable Product)—and why I prefer Earliest Testable/Usable/Lovable][mvp]," [Henrik Kniberg] explains the salient distinction between fake-agile and real-agile development by contrasting two ways of developing a product, "Not like this…" and "Like this."
 
-Many people get an "aha!" moment when they look at that illustration by [Henrik Kniberg].
-
+[mvp]: http://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp
 [Henrik Kniberg]: https://www.crisp.se/konsulter/henrik-kniberg
 
 ### not like this…
@@ -26,9 +25,9 @@ Whereas, the "Like this" way to develop software consists of building an approxi
 
 Unlike the "Not like this…" way, at each step the "Like this" way delivers *realized* value. Each "iteration" is potentially shippable, potentially loveable, and can be usefully critiqued.
 
-This model has been discussed many times form the perspective of product management. Henrik explains it particularly well in [Making sense of MVP (Minimum Viable Product) – and why I prefer Earliest Testable/Usable/Lovable][mvp]. All "engineers" building products should appreciate it from a product perspective, because everyone who builds a product is in the product management business, not just those with the words "product" or "manager" on their business card.
+### engineering like this
 
-[mvp]: http://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp
+All "engineers" building products should appreciate the "Like this" way from a product perspective, because everyone who builds a product is in the product management business, not just those with the words "product" or "manager" on their business card.
 
 ---
 
