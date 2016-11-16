@@ -76,7 +76,7 @@ From an engineering perspective, the construction of the skateboard and scooter 
 
 [![Wright Brothers Unpowered Prototype](/assets/images/wright-brothers.jpg)](https://www.flickr.com/photos/tjc/324416163)
 
-*Wright Brothers Unpowered Prototype, © 2006, Timothy J. [some rights reserved][ccby2.0]*
+*Wright Brothers Unpowered Prototype, © 2006 Timothy J, [some rights reserved][ccby2.0]*
 
 [ccby2.0]: https://creativecommons.org/licenses/by/2.0/
 
@@ -89,6 +89,12 @@ The Wright Brothers famously built many models and prototypes, then tested them 
 From a variable scope perspective, the skateboard is valuable if it teaches the team something about the needs of customers. In other words, if the team can learn something about the scope. Thus, it needs to make contact with a customer (or customer surrogate such as a product manager).
 
 From an engineering perspective, the skateboard is valuable if it teaches the team something about transportation engineering. In a variable scope, "Like This" project, it is sometimes possible to create an incremental release that helps the team learn about the product and about the engineering.
+
+### lean iterative development
+
+From the above, we infer that iterations are valuable to engineering if they teach the team something. We do not leave this to chance, of course. The best way to learn something from an iteration is to treat it as an *experiment*, rather than as a set of requirements to be fulfilled.
+
+A simple way to accomplish this is to articulate a question the development of the iteration is intended to answer, and to articulate the value that answering the question will confer on the team.
 
 ### deleting code
 
