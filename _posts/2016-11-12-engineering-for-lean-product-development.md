@@ -45,8 +45,6 @@ Let's begin by reviewing the seven principles of [Lean Software Development]. Le
 [^lsd]: No relationship whatsoever to [Lysergic acid diethylamide][lsd]
 [lsd]: https://en.wikipedia.org/wiki/Lysergic_acid_diethylamide
 
-[![Lysergic acid diethylamide](/assets/images/lsd.png)][lsd]
-
 1. Eliminate waste
 2. Amplify learning
 3. Decide as late as possible
