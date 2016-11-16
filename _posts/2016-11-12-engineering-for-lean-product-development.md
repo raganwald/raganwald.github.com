@@ -4,57 +4,67 @@ layout: default
 tags: [allonge]
 ---
 
-## Introduction: Let's Make Software "Like this."
+## Introduction: Developing Products Like This
 
-In "[Making sense of MVP (Minimum Viable Product)—and why I prefer Earliest Testable/Usable/Lovable][mvp]," [Henrik Kniberg] explains the salient distinction between fake-agile and real-agile development by contrasting two ways of developing a product, *Not Like This* and "Like this."
+In "[Making sense of MVP (Minimum Viable Product)][mvp]," [Henrik Kniberg] explains the salient distinction between fake-agile and real-agile development by contrasting two ways of developing a product, *Not Like This* and "Like this."
 
 [mvp]: http://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp
 [Henrik Kniberg]: https://www.crisp.se/konsulter/henrik-kniberg
 
-### not like this…
-
 ![Not like this…](/assets/images/not-like-this.png)
 
-The *Not Like This* way to develop software is to work in increments, each of which represents a portion of what we plan to build. In this way, nothing is expected to be "wasted," since everything we build is a necessary part of the finished work.
+The **Not Like This** way to develop software is to work in increments, each of which represents a portion of what we plan to build. In this way, nothing is expected to be "wasted," since everything we build is a necessary part of the finished work.
 
 However, at each step along the way, we have *potential* value, but not realized value: Until the very end, the unfinished work does not actually represent value to the customer. It is not potentially shippable, potentially lovable, or even criticizable.
 
-### like this
+The *Not Like This* way is often called "fixed scope" development, since its axiomatic assumption is that we know exacty what we want to build, and that there is no value to be had building anything less, or anything else.
 
 ![Like this…](/assets/images/like-this.png)
 
-Whereas, the *Like This* way to develop software consists of building an approximation of what we plan to build, then successively refining and adding value to it with each iteration. Much is intentionally "disposable" along the way.
+Whereas, the **Like This** way to develop software consists of building an approximation of what we plan to build, then successively refining and adding value to it with each iteration. Much is intentionally "disposable" along the way.
 
 Unlike the *Not Like This* way, at each step the *Like This* way delivers *realized* value. Each "iteration" is potentially shippable, potentially lovable, and can be usefully critiqued.
 
-The *Like This* way is derived form the principles of [Lean Product Development].
+The *Like This* way is derived from the principles of [Lean Product Development]. It is often called "variable scope" development, since its axiomatic assumption is that through the process of building and shipping successive increments of value, we will learn more about what we can build to deliver more value.
 
 [Lean Product Development]: https://en.wikipedia.org/wiki/Lean_product_development
 
 ### engineering like this
 
-All "engineers" building products should appreciate the *Like This* way from a product perspective, because everyone who builds a product is in the product management business, not just those with the words "product" or "manager" on their business card.
+All "engineers" building products should appreciate developing products *Like This*, because everyone who builds a product is in the product management business, not just those with the words "product" or "manager" on their business card.
 
-But what about building software from an *engineering* perspective? How can we design software to facilitate building things the *Like This* way?
+But what about building software from an *engineering* perspective? Can "Lean Product Development" teach us something about engineering?
 
-## Lean Software Development
+The answer is that yes, engineering ahs much to learn from Lean Product Development, although not always in a literal, direct translation. The core of Lean Product Development was derived from the principles of Lean Manufacturing, then practitioners refined and evolved its practices and values from experience.
 
-Let's begin by reviewing the seven principles of [Lean Software Development]. Lean Software Development (or "LSD")[^lsd] is a translation of lean manufacturing and lean IT principles and practices to the software development domain. LSD can be summarized by seven principles, four of which have direct impacts on technical decisions:
+Software developers have also mined Lean Manufacturing for principles, and the result is a set of principles and values known as [Lean Software Development], or "LSD." LSD can be summarized by seven principles, four of which have direct impacts on engineering decisions:
 
 [Lean Software Development]: https://en.wikipedia.org/wiki/Lean_software_development
-[^lsd]: No relationship whatsoever to [Lysergic acid diethylamide][lsd]
-[lsd]: https://en.wikipedia.org/wiki/Lysergic_acid_diethylamide
 
 1. Eliminate waste
 2. Amplify learning
 3. Decide as late as possible
 4. Deliver as fast as possible
 
-### eliminating waste
+Today, we are going to look at how the principle of eliminating waste can guide our engineering choices. We will focus on engineering to support Lean Product Development, but we will see how we can apply LSD to more traditional fixed scope projects.
 
-The key principle of LSD is to *eliminate waste*. Waste includes "Partially done coding eventually abandoned during the development process." In our *Like This* example, we build a skateboard, then attach handlebars to make it a scooter, then we abandon the deck and build a bicycle. Are we wasting work by building a skateboard and a scooter before starting again from scratch to build a bicycle?
+## Eliminating Waste
+
+The key principle of LSD is to eliminate waste. **Waste in software development is any work we do that does not contribute to realized value**. It is not limited to coding: Other activities--such as meetings--that do not help the team deliver value are also considered waste.
+
+### is lean product development wasteful?
+
+In our *Like This* example, we build a skateboard, then attach handlebars to make it a scooter, then we abandon the deck and build a bicycle. Are we wasting work by building a skateboard and a scooter before starting again from scratch to build a bicycle?
 
 From an engineering perspective, the construction of the skateboard and scooter are not wasted if they are not *abandoned*. By "abandoned," we mean discarded without producing value. In product development, if we ship the skateboard to customers today, we gain money (if we can charge for it), goodwill, and/or feedback about customer needs now, knowledge. Thus, the skateboard does not represent "product waste." Writing software that realizes value is not wasteful.
+
+What if we don't deliver the skateboard to customers?
+
+The Wright Brothers famously built many models and prototypes, then tested them to gather knowledge that enabled them to leapfrog their competitors and become the first to achieve heavier-than-air flight. If a team builds a skateboard, and learns something from the skateboard that contributes to a subsequent release that relizes value, then the skateboard generated potential value.
+
+From a variable scope perspective, the skateboard is valuable if it teaches the team something about the needs of customers. In other words, if the team can learn something about the scope. Thus, it needs to make contact with a customer (or customer surrogate such as a product manager).
+
+From an engineering perspective, the skateboard is valuable if it teaches the team something about transportation engineering.
 
 Many developers fetishize the idea that somehow, code should never be deleted, that things should be written in such a way that they can be extended without rewriting anything. This is a misguided practice based on a misunderstanding of waste. And in their pursuit of code that will never be rewritten, they actually *create* waste. Imagine, for a moment, that we set out to build a car.
 
