@@ -11,7 +11,13 @@ In "[Making sense of MVP (Minimum Viable Product)][mvp]," [Henrik Kniberg] expla
 [mvp]: http://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp
 [Henrik Kniberg]: https://www.crisp.se/konsulter/henrik-kniberg
 
+---
+
 ![Not like this…](/assets/images/not-like-this.png)
+
+*Not Like This…*
+
+---
 
 The **Not Like This** way to develop software is to work in increments, each of which represents a portion of what we plan to build. In this way, nothing is expected to be "wasted," since everything we build is a necessary part of the finished work.
 
@@ -19,7 +25,13 @@ However, at each step along the way, we have *potential* value, but not realized
 
 The *Not Like This* way is often called "fixed scope" development, since its axiomatic assumption is that we know exactly what we want to build, and that there is no value to be had building anything less, or anything else.
 
-![Like this…](/assets/images/like-this.png)
+---
+
+![Like This](/assets/images/like-this.png)
+
+*Like This*
+
+---
 
 Whereas, the **Like This** way to develop software consists of building an approximation of what we plan to build, then successively refining and adding value to it with each iteration. Much is intentionally "disposable" along the way.
 
@@ -58,7 +70,15 @@ In our *Like This* example, we build a skateboard, then attach handlebars to mak
 
 From an engineering perspective, the construction of the skateboard and scooter are not wasted if they are not *abandoned*. By "abandoned," we mean discarded without producing value. In product development, if we ship the skateboard to customers today, we gain money (if we can charge for it), goodwill, and/or feedback about customer needs now, knowledge. Thus, the skateboard does not represent "product waste." Writing software that realizes value is not wasteful.
 
+---
+
 [![Wright Brothers Unpowered Prototype](/assets/images/wright-brothers.jpg)](https://www.flickr.com/photos/tjc/324416163)
+
+*Wright Brothers Unpowered Prototype, © 2006, Timothy J. [some rights reserved][ccby2.0]*
+
+[ccby2.0]: https://creativecommons.org/licenses/by/2.0/
+
+---
 
 What if we don't deliver the skateboard to customers?
 
@@ -70,17 +90,19 @@ From an engineering perspective, the skateboard is valuable if it teaches the te
 
 ### deleting code
 
-[![car breaker's yard](/assets/images/car-breakers-yard.jpg)](https://www.flickr.com/photos/picksfromoutthere/14249719506)
-
 Many developers fetishize the idea that somehow, code should never be deleted, that things should be written in such a way that they can be extended without rewriting anything. This is a misguided practice based on a misunderstanding of waste. And in their pursuit of code that will never be rewritten, they actually *create* waste. Consider our project to build a car.
 
 But we know from experience that customers are never satisfied with cars. They often come back and say they want a car that can fly. But if we build a car that cannot fly, we cannot bolt wings on after the fact, we would need to reëngineer our car. We need to design the car from the start to allow wings, that will eliminate the pesky waste of building a car, then rebuilding it to fly.
 
 So we deliver this, a car that flies:
 
+---
+
 ![Flying car](/assets/images/flying-car.jpg)
 
-*Definitely not like this*
+*Definitely Not Like This*
+
+---
 
 Now there is zero doubt that all the features for making the car fly—its shape, its lightweight construction, its wings—are waste. They may or may not be wanted in the future, but they are *unnecessary* for satisfying the requirement of delivering a car. In the absence of a stated need for flying, we are building functionality that when shipped, has zero value. That is engineering waste.
 
