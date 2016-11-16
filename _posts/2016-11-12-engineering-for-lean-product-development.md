@@ -62,6 +62,8 @@ Software developers have also mined Lean Manufacturing for principles, and the r
 
 Today, we are going to look at how the principle of eliminating waste can guide our engineering choices. We will focus on engineering to support Lean Product Development, but we will see how we can apply LSD to more traditional fixed scope projects.
 
+[![car breaker's yard](/assets/images/car-breakers-yard.jpg)](https://www.flickr.com/photos/picksfromoutthere/14249719506)
+
 ## Eliminating Waste
 
 The key principle of LSD is to eliminate waste. **Waste in software development is any work we do that does not contribute to realized value**. It is not limited to coding: Other activities--such as meetings--that do not help the team deliver value are also considered waste.
