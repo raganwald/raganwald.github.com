@@ -66,9 +66,46 @@ Today, we are going to look at how the principle of eliminating waste can guide 
 
 The key principle of LSD is to eliminate waste. **Waste in software development is any work we do that does not contribute to realized value**. It is not limited to coding: Other activities--such as meetings--that do not help the team deliver value are also considered waste.
 
-### is lean product development wasteful?
+### wasted code
 
-In our *Like This* example, we build a skateboard, then attach handlebars to make it a scooter, then we abandon the deck and build a bicycle. Are we wasting work by building a skateboard and a scooter before starting again from scratch to build a bicycle?
+Many developers feel that things should be written in such a way that they can be extended without rewriting anything. This is a misguided belief based on a misunderstanding of waste. In fact, a careless pursuit of code that will never be rewritten can actually *create* waste. Consider our project to build a car.
+
+We know from experience that customers are never satisfied with just cars. They often come back and say they want a car that can fly. But if we build a car that cannot fly, we cannot later easily just bolt wings and an engine onto our car-that-was-not-designd-to-fly. We would need to reëngineer our car.
+
+Likewise, cars contain speedometers that report a single measurement, ground speed in kilometres per hour. The typical mechanism for computing speed uses the rotation of the tires. Aircraft report two measurements, air speed and ground speed. Air speed is typically computed using a pilot tube, while groundspeed is typically computed using triangulation.
+
+Thus, putting an automotive speedometer into our car works when we ship the car, but we must "throw it away" should we decide to build a flying car. So we might decide to get clever, and make a speedometer that uses GPS instead of tire rotation.
+
+But a GPS unit is more expensive and complicated than a tire rotation unit. It does more than we need. So from the perspective of shipping a car, a GPS-based speedometer represents wasteful engineering. Of course, such a decision begins by trying to avoid waste in the future, by creating waste *now*.
+
+taken to a ridiculous extreme, we will end up delivering a car that flies:
+
+---
+
+![Flying car](/assets/images/flying-car.jpg)
+
+*Definitely Not Like This*
+
+---
+
+Now this seems very funny, we would never deliver a flying car. But consider that we can easily overbuild a car without bolting wings onto it. Our example was a GPS-based speedometer. But let us consider another way to create engineering waste: We can build our car with excess architecture.
+
+Many engineers, when faced with a car to build, begin by selecting a framework, one that promises us unparalleled flexibility. With a framework in hand we can build cars, trains, or aeroplanes. Plug-ins are provided for cruise ships and hovercrafts. We don't have to actually build wings right now, but it will be so easy to add them later.
+
+Even if we don't add wings now, or use a GPS-based speedometer, the price of such flexibility is that we build our car out of layers of abstraction. We don't write speedometer code directly, we implement `IVelocityGauge` and configure it with an `IDataSource` that is a wheel today but can be a GPS tomorrow.
+
+Everything we do must be done via an abstraction, through a layer of indirection. Such abstractions are a win for framework and library authors, because they allow the framework to serve a wider audience. But each framework user is now paying an abstraction tax.
+
+That abstraction tax is waste, albeit a more hidden waste than using GPS for a speedometer, or bolting wings onto a car.
+
+Thus, the lean software developer can build software in variable scope style (skateboard, scooter, bicycle, motorcycle, car), or in a fixed scope style (wheels, transmission, chassis, car). But when building in either style, the lean software developer eschews hidden or visible waste, building only what is necessary for the most immediate release.
+
+
+---
+
+### placeholder: amplify learning
+
+In our *Like This* example, we build a skateboard, then attach handlebars to make it a scooter, then we abandon the deck and build a bicycle. Are we wasting work by throwing away our skateboard and scooter when we start again from scratch to build a bicycle?
 
 From an engineering perspective, the construction of the skateboard and scooter are not wasted if they are not *abandoned*. By "abandoned," we mean discarded without producing value. In product development, if we ship the skateboard to customers today, we gain money (if we can charge for it), goodwill, and/or feedback about customer needs now, knowledge. Thus, the skateboard does not represent "product waste." Writing software that realizes value is not wasteful.
 
@@ -96,33 +133,11 @@ From the above, we infer that iterations are valuable to engineering if they tea
 
 A simple way to accomplish this is to articulate a question the development of the iteration is intended to answer, and to articulate the value that answering the question will confer on the team.
 
-### deleting code
+When developing a skateboard, a hypothetical product question might be, "Will people pay for saving time on urban travel?" A hypothetical engineering question might be, "What are the minimum dimensions of the wheel layout to provide acceptable stability for vehicles in real-world conditions?"
 
-Many developers fetishize the idea that somehow, code should never be deleted, that things should be written in such a way that they can be extended without rewriting anything. This is a misguided practice based on a misunderstanding of waste. And in their pursuit of code that will never be rewritten, they actually *create* waste. Consider our project to build a car.
+Engineering should articulate what the team intends to learn from an iteration before designing and implementing the code, and circle back to the intended learning as part of the iteration retrospective.
 
-But we know from experience that customers are never satisfied with cars. They often come back and say they want a car that can fly. But if we build a car that cannot fly, we cannot bolt wings on after the fact, we would need to reëngineer our car. We need to design the car from the start to allow wings, that will eliminate the pesky waste of building a car, then rebuilding it to fly.
-
-So we deliver this, a car that flies:
-
----
-
-![Flying car](/assets/images/flying-car.jpg)
-
-*Definitely Not Like This*
-
----
-
-Now there is zero doubt that all the features for making the car fly—its shape, its lightweight construction, its wings—are waste. They may or may not be wanted in the future, but they are *unnecessary* for satisfying the requirement of delivering a car. In the absence of a stated need for flying, we are building functionality that when shipped, has zero value. That is engineering waste.
-
-Now this seems very funny, we would never deliver a flying car. But consider that we can easily overbuild a car without bolting wings onto it. We can build it with a framework, one that promises us unparalleled flexibility, we can build cars, trains, or aeroplanes. Plug-ins are provided for cruise ships and hovercrafts. We don't have to actually build wings right now, but it will be so easy to add them later.
-
-The price of such flexibility is that we build our car out of layers of abstraction. You can't just write a speedometer directly, you must implement `IVelocityGauge` and configure it to deal with kilometres per hour instead of knots. Abstractions are a win for framework and library authors, because they allow the framework to serve a wider audience. But each framework user is now paying an abstraction tax.
-
-When we use or construct abstractions that are designed to do more than just what we need for this one car, we are creating waste. So while the lean software developer can be agnostic about whether to build the car in a lean product style or not, even when building wheels, then a transmission, then a chassis, the lean software developer eschews the waste of unnecessary abstraction and indirections.
-
-Thus, the lean software developer can build software in a lean product style (skateboard, scooter, bicycle, motorcycle, car), or in a big design up front style (wheels, transmission, chassis, car). But when building in either style, the lean software developer eschews hidden or visible waste, building only what is necessary for the most immediate release.
-
----
+With this practise, engineering can support both fixed and variable scope practises. A transmission with four wheels is a valuable *engineering* iteration, provided the team learns something. Even better, a scooter can be a valuable product *and* engineering iteration.
 
 ### have your say
 
