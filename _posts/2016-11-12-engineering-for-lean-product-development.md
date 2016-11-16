@@ -62,6 +62,8 @@ Software developers have also mined Lean Manufacturing for principles, and the r
 
 Today, we are going to look at how the principle of eliminating waste can guide our engineering choices. We will focus on engineering to support Lean Product Development, but we will see how we can apply LSD to more traditional fixed scope projects.
 
+---
+
 [![car breaker's yard](/assets/images/car-breakers-yard.jpg)](https://www.flickr.com/photos/picksfromoutthere/14249719506)
 
 ## Eliminating Waste
@@ -70,17 +72,17 @@ The key principle of LSD is to eliminate waste. **Waste in software development 
 
 ### wasted code
 
-Many developers feel that things should be written in such a way that they can be extended without rewriting anything. This is a misguided belief based on a misunderstanding of waste. In fact, a careless pursuit of code that will never be rewritten can actually *create* waste. Consider our project to build a car.
+Many developers feel that things should be written in such a way that they can be extended without rewriting anything. This is a misguided belief based on a misunderstanding of waste. In fact, a careless pursuit of code that will never be rewritten can actually *create* waste.
 
-We know from experience that customers are never satisfied with just cars. They often come back and say they want a car that can fly. But if we build a car that cannot fly, we cannot later easily just bolt wings and an engine onto our car-that-was-not-designd-to-fly. We would need to reëngineer our car.
+Consider our project to build a car: We know from bitter experience that customers are never satisfied with just cars. They often come back and say they want a car that can fly. But if we build a car that cannot fly, we cannot later easily just bolt wings and an engine onto our car-that-was-not-designd-to-fly. We would need to reëngineer our car.
 
-Likewise, cars contain speedometers that report a single measurement, ground speed in kilometres per hour. The typical mechanism for computing speed uses the rotation of the tires. Aircraft report two measurements, air speed and ground speed. Air speed is typically computed using a pilot tube, while groundspeed is typically computed using triangulation.
+For example, cars contain speedometers that report a single measurement, ground speed in kilometres per hour. The typical mechanism for computing speed uses the rotation of the tires. But aircraft report two measurements, air speed and ground speed. Air speed is typically computed using a pilot tube, while groundspeed is typically computed using triangulation.
 
 Thus, putting an automotive speedometer into our car works when we ship the car, but we must "throw it away" should we decide to build a flying car. So we might decide to get clever, and make a speedometer that uses GPS instead of tire rotation.
 
-But a GPS unit is more expensive and complicated than a tire rotation unit. It does more than we need. So from the perspective of shipping a car, a GPS-based speedometer represents wasteful engineering. Of course, such a decision begins by trying to avoid waste in the future, by creating waste *now*.
+But a GPS unit is more expensive and complicated than a tire rotation unit. So from the perspective of shipping a car, a GPS-based speedometer represents wasteful engineering. Deciding to ship a GPS speedometer began by trying to avoid waste in the future, but it ended with creating waste *now*.
 
-taken to a ridiculous extreme, we will end up delivering a car that flies:
+Taken to a ridiculous extreme, such thinking will result with us delivering a car that flies:
 
 ---
 
