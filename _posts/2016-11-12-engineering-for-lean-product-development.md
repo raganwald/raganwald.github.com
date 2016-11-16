@@ -70,7 +70,7 @@ Today, we are going to look at how the principle of eliminating waste can guide 
 
 The key principle of LSD is to eliminate waste. **Waste in software development is any work we do that does not contribute to realized value**. It is not limited to coding: Other activities--such as meetings--that do not help the team deliver value are also considered waste.
 
-### wasted code
+### wasteful code
 
 Many developers feel that things should be written in such a way that they can be extended without rewriting anything. This is a misguided belief based on a misunderstanding of waste. In fact, a careless pursuit of code that will never be rewritten can actually *create* waste.
 
@@ -100,10 +100,25 @@ Even if we don't add wings now, or use a GPS-based speedometer, the price of suc
 
 Everything we do must be done via an abstraction, through a layer of indirection. Such abstractions are a win for framework and library authors, because they allow the framework to serve a wider audience. But each framework user is now paying an abstraction tax.
 
-That abstraction tax is waste, albeit a more hidden waste than using GPS for a speedometer, or bolting wings onto a car.
+That abstraction tax is waste, albeit a more hidden waste than using GPS for a speedometer, or bolting wings onto a car. From an engineering perspective, eschewing that waste is lean software development, whether building software in variable scope style (skateboard, scooter, bicycle, motorcycle, car), or in a fixed scope style (wheels, transmission, chassis, car). But when building in either style, the lean software developer eschews hidden or visible waste, building only what is necessary for the most immediate release.
 
-Thus, the lean software developer can build software in variable scope style (skateboard, scooter, bicycle, motorcycle, car), or in a fixed scope style (wheels, transmission, chassis, car). But when building in either style, the lean software developer eschews hidden or visible waste, building only what is necessary for the most immediate release.
+---
 
+[![Four in a row](/assets/images/four-in-a-row.jpg)](https://www.flickr.com/photos/seenbychris/5603331883)
+
+*Four in a row, © 2011 Chris Parker, [some rights reserved][cc-by-sa-2.0]*
+
+[cc-by-sa-2.0]: https://creativecommons.org/licenses/by-sa/2.0/
+
+### wasteful communications
+
+Engineers often resist attending meetings, reasoning that they are a waste of time that could be spent more productively. They are usually correct about this: It is much faster and more accurate to read written communications, than to listen to a spoken presentation.
+
+Some companies go well out of their way to avoid meetings, emphasizing asynchronous communications tools, and report very good results.
+
+But there is another, more insidious type of wasteful aspect of communication. No matter how effectively Alice writes, and no matter how good Bob is at reading and reasoning about what is read, any communication from Alice to Bob about something Alice knows is going to "lose something in translation." Communication in all forms involves some loss of fidelity. We simply cannot achieve 100% knowledge transfer.
+
+We can say that communication is a tax on team knowledge, and the more our project relies on team communication, the more tax must be paid.
 
 ---
 
@@ -117,9 +132,9 @@ From an engineering perspective, the construction of the skateboard and scooter 
 
 [![Wright Brothers Unpowered Prototype](/assets/images/wright-brothers.jpg)](https://www.flickr.com/photos/tjc/324416163)
 
-*Wright Brothers Unpowered Prototype, © 2006 Timothy J, [some rights reserved][ccby2.0]*
+*Wright Brothers Unpowered Prototype, © 2006 Timothy J, [some rights reserved][cc-by-2.0]*
 
-[ccby2.0]: https://creativecommons.org/licenses/by/2.0/
+[cc-by-2.0]: https://creativecommons.org/licenses/by/2.0/
 
 ---
 
