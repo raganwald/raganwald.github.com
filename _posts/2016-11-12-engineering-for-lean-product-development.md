@@ -86,9 +86,9 @@ Taken to a ridiculous extreme, such thinking will result with us delivering a ca
 
 ---
 
-![Flying car](/assets/images/flying-car.jpg)
+[![The Terrafugia Flying Car](/assets/images/terrafugia.jpg)](https://www.flickr.com/photos/lotprocars/7048759525)
 
-*Definitely Not Like This*
+*The Terrafugia Flying Car, © 2012 Steve Cypher [some rights reserved][cc-by-sa-2.0]*
 
 ---
 
@@ -109,6 +109,8 @@ That abstraction tax is waste, albeit a more hidden waste than using GPS for a s
 *Four in a row, © 2011 Chris Parker, [some rights reserved][cc-by-sa-2.0]*
 
 [cc-by-sa-2.0]: https://creativecommons.org/licenses/by-sa/2.0/
+
+---
 
 ### wasteful communications
 
