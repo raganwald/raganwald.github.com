@@ -1,5 +1,5 @@
 ---
-title: "Engineering for Lean Product Development"
+title: "Eliminating Waste with Lean Software Development"
 layout: default
 tags: [allonge]
 ---
