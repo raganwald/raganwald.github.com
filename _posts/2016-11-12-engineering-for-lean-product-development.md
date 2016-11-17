@@ -88,7 +88,7 @@ Taken to a ridiculous extreme, such thinking will result with us delivering a ca
 
 [![The Terrafugia Flying Car](/assets/images/terrafugia.jpg)](https://www.flickr.com/photos/lotprocars/7048759525)
 
-*The Terrafugia Flying Car, © 2012 Steve Cypher [some rights reserved][cc-by-sa-2.0]*
+*The Terrafugia Flying Car, © 2012 Steve Cypher, [some rights reserved][cc-by-sa-2.0]*
 
 ---
 
@@ -120,7 +120,11 @@ Some companies go well out of their way to avoid meetings, emphasizing asynchron
 
 But there is another, more insidious type of wasteful aspect of communication. No matter how effectively Alice writes, and no matter how good Bob is at reading and reasoning about what is read, any communication from Alice to Bob about something Alice knows is going to "lose something in translation." Communication in all forms involves some loss of fidelity. We simply cannot achieve 100% knowledge transfer.
 
-We can say that communication is a tax on team knowledge, and the more our project relies on team communication, the more tax must be paid.
+Is this tax on knowledge transfer engineering waste? It is when it affects the quality or quantity of value we can deliver within an iteration or project.
+
+Consider the classic whipping-boy pf project management, the "throw-it-over-the-wall" method of delivering requirements to engineering. In this model, one team, headed by Alan, researches requirements and may even specific the solution in the form of mockups and specifications, while another team, headed by Barbara, implements the specifications.
+
+The "knowledge" is then "thrown over the wall" as a monolithic, one-time communication from Alan's team to Barabara's team.
 
 ---
 
