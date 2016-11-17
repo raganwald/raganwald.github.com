@@ -92,7 +92,9 @@ Taken to a ridiculous extreme, such thinking will result with us delivering a ca
 
 ---
 
-Now this seems very funny, we would never deliver a flying car. But consider that we can easily overbuild a car without bolting wings onto it. Our example was a GPS-based speedometer. But let us consider another way to create engineering waste: We can build our car with excess architecture.
+Now this seems like hyperbole, would we *really* deliver a flying car when asked to build a car? But consider that we can easily overbuild a car without bolting wings onto it. Our example was a GPS-based speedometer. But let us consider another way to create engineering waste: We can build our car with excess architecture.
+
+### wasteful architecture
 
 Many engineers, when faced with a car to build, begin by selecting a framework, one that promises us unparalleled flexibility. With a framework in hand we can build cars, trains, or aeroplanes. Plug-ins are provided for cruise ships and hovercrafts. We don't have to actually build wings right now, but it will be so easy to add them later.
 
@@ -104,6 +106,16 @@ That abstraction tax is waste, albeit a more hidden waste than using GPS for a s
 
 ---
 
+[![debt](/assets/images/debt.jpg)](https://www.flickr.com/photos/dreamsjung/4013593640)
+
+*Debt, © 2009 Jason Taellious, [some rights reserved][cc-by-sa-2.0]
+
+---
+
+### waste and technical debt
+
+---
+
 [![Four in a row](/assets/images/four-in-a-row.jpg)](https://www.flickr.com/photos/seenbychris/5603331883)
 
 *Four in a row, © 2011 Chris Parker, [some rights reserved][cc-by-sa-2.0]*
@@ -112,7 +124,7 @@ That abstraction tax is waste, albeit a more hidden waste than using GPS for a s
 
 ---
 
-### wasteful communications
+### placeholder: wasteful communications
 
 Engineers often resist attending meetings, reasoning that they are a waste of time that could be spent more productively. They are usually correct about this: It is much faster and more accurate to read written communications, than to listen to a spoken presentation.
 
@@ -122,9 +134,9 @@ But there is another, more insidious type of wasteful aspect of communication. N
 
 Is this tax on knowledge transfer engineering waste? It is when it affects the quality or quantity of value we can deliver within an iteration or project.
 
-Consider the classic whipping-boy pf project management, the "throw-it-over-the-wall" method of delivering requirements to engineering. In this model, one team, headed by Alan, researches requirements and may even specific the solution in the form of mockups and specifications, while another team, headed by Barbara, implements the specifications.
+Consider the classic whipping-boy of project management, the "throw-it-over-the-wall" method of delivering requirements to engineering. In this model, one team, headed by Alan, researches requirements and may even specific the solution in the form of mockups and specifications, while another team, headed by Barbara, implements the specifications.
 
-The "knowledge" is then "thrown over the wall" as a monolithic, one-time communication from Alan's team to Barabara's team.
+The "knowledge" is then "thrown over the wall" as a monolithic, one-time communication from Alan's team to Barbara's team.
 
 ---
 
