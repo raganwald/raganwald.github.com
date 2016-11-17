@@ -118,9 +118,11 @@ That abstraction tax is waste, albeit a more hidden waste than using GPS for a s
 
 ### waste and technical debt
 
-Developers easily grasp the notion that developing features we do not need is wasteful, and that developing with abstractions and layers of indirection we do not need is wasteful. The trouble arises when determining what, exactly, is *needed*.
+Developers easily grasp the notion that developing features we do not need is wasteful, and that developing with abstractions and layers of indirection we do not need is wasteful. But there is another kind of waste that engineers struggle with every day, [technical debt].
 
-Let's revisit our example of the flying car.. If we have a high expectation that the customer will eventually request a fl
+Technical debt arises when in the haste to optimize for a very short term result, choices are made that sacrifice the long-term effectiveness of the team. For example, code that is poorly factored may have been quickest to develop in the first place, but subsequent modification and extension is slowed by the presence of anti-patterns such as tightly coupled code and "God Objects."
+
+Work we perform to overcome the friction and obstruction of technical debt, is waste.
 
 ---
 
@@ -134,3 +136,4 @@ Have an observation? Spot an error? You can open an [issue](https://github.com/r
 
 [cc-by-2.0]: https://creativecommons.org/licenses/by/2.0/
 [cc-by-sa-2.0]: https://creativecommons.org/licenses/by-sa/2.0/
+[technical debt]: https://en.wikipedia.org/wiki/Technical_debt
