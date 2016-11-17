@@ -64,7 +64,11 @@ Today, we are going to look at how the principle of eliminating waste can guide 
 
 ---
 
-[![car breaker's yard](/assets/images/car-breakers-yard.jpg)](https://www.flickr.com/photos/picksfromoutthere/14249719506)
+[![car breaker's yard](/assets/images/banner/car-breakers-yard.jpg)](https://www.flickr.com/photos/picksfromoutthere/14249719506)
+
+*Car breaker's yard, © 2014 Picturepest, [some rights reserved][cc-by-2.0]*
+
+---
 
 ## Eliminating Waste
 
@@ -86,7 +90,7 @@ Taken to a ridiculous extreme, such thinking will result with us delivering a ca
 
 ---
 
-[![The Terrafugia Flying Car](/assets/images/terrafugia.jpg)](https://www.flickr.com/photos/lotprocars/7048759525)
+[![The Terrafugia Flying Car](/assets/images/banner/terrafugia.jpg)](https://www.flickr.com/photos/lotprocars/7048759525)
 
 *The Terrafugia Flying Car, © 2012 Steve Cypher, [some rights reserved][cc-by-sa-2.0]*
 
@@ -106,7 +110,7 @@ That abstraction tax is waste, albeit a more hidden waste than using GPS for a s
 
 ---
 
-[![debt](/assets/images/debt.jpg)](https://www.flickr.com/photos/dreamsjung/4013593640)
+[![debt](/assets/images/banner/debt.jpg)](https://www.flickr.com/photos/dreamsjung/4013593640)
 
 *Debt, © 2009 Jason Taellious, [some rights reserved][cc-by-sa-2.0]*
 
@@ -127,3 +131,6 @@ Have an observation? Spot an error? You can open an [issue](https://github.com/r
 ---
 
 ### notes
+
+[cc-by-2.0]: https://creativecommons.org/licenses/by/2.0/
+[cc-by-sa-2.0]: https://creativecommons.org/licenses/by-sa/2.0/
