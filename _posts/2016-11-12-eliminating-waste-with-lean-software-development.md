@@ -108,7 +108,7 @@ That abstraction tax is waste, albeit a more hidden waste than using GPS for a s
 
 [![debt](/assets/images/debt.jpg)](https://www.flickr.com/photos/dreamsjung/4013593640)
 
-*Debt, © 2009 Jason Taellious, [some rights reserved][cc-by-sa-2.0]
+*Debt, © 2009 Jason Taellious, [some rights reserved][cc-by-sa-2.0]*
 
 ---
 
