@@ -1,7 +1,7 @@
 ---
 title: "Eliminating Waste with Lean Software Development"
 layout: default
-tags: [allonge]
+tags: [allonge, noindex]
 ---
 
 ## Introduction: Developing Products Like This
@@ -114,67 +114,11 @@ That abstraction tax is waste, albeit a more hidden waste than using GPS for a s
 
 ### waste and technical debt
 
----
+Developers easily grasp the notion that developing features we do not need is wasteful, and that developing with abstractions and layers of indirection we do not need is wasteful. The trouble arises when determining what, exactly, is *needed*.
 
-[![Four in a row](/assets/images/four-in-a-row.jpg)](https://www.flickr.com/photos/seenbychris/5603331883)
-
-*Four in a row, © 2011 Chris Parker, [some rights reserved][cc-by-sa-2.0]*
-
-[cc-by-sa-2.0]: https://creativecommons.org/licenses/by-sa/2.0/
+Let's revisit our example of the flying car.. If we have a high expectation that the customer will eventually request a fl
 
 ---
-
-### placeholder: wasteful communications
-
-Engineers often resist attending meetings, reasoning that they are a waste of time that could be spent more productively. They are usually correct about this: It is much faster and more accurate to read written communications, than to listen to a spoken presentation.
-
-Some companies go well out of their way to avoid meetings, emphasizing asynchronous communications tools, and report very good results.
-
-But there is another, more insidious type of wasteful aspect of communication. No matter how effectively Alice writes, and no matter how good Bob is at reading and reasoning about what is read, any communication from Alice to Bob about something Alice knows is going to "lose something in translation." Communication in all forms involves some loss of fidelity. We simply cannot achieve 100% knowledge transfer.
-
-Is this tax on knowledge transfer engineering waste? It is when it affects the quality or quantity of value we can deliver within an iteration or project.
-
-Consider the classic whipping-boy of project management, the "throw-it-over-the-wall" method of delivering requirements to engineering. In this model, one team, headed by Alan, researches requirements and may even specific the solution in the form of mockups and specifications, while another team, headed by Barbara, implements the specifications.
-
-The "knowledge" is then "thrown over the wall" as a monolithic, one-time communication from Alan's team to Barbara's team.
-
----
-
-### placeholder: amplify learning
-
-In our *Like This* example, we build a skateboard, then attach handlebars to make it a scooter, then we abandon the deck and build a bicycle. Are we wasting work by throwing away our skateboard and scooter when we start again from scratch to build a bicycle?
-
-From an engineering perspective, the construction of the skateboard and scooter are not wasted if they are not *abandoned*. By "abandoned," we mean discarded without producing value. In product development, if we ship the skateboard to customers today, we gain money (if we can charge for it), goodwill, and/or feedback about customer needs now, knowledge. Thus, the skateboard does not represent "product waste." Writing software that realizes value is not wasteful.
-
----
-
-[![Wright Brothers Unpowered Prototype](/assets/images/wright-brothers.jpg)](https://www.flickr.com/photos/tjc/324416163)
-
-*Wright Brothers Unpowered Prototype, © 2006 Timothy J, [some rights reserved][cc-by-2.0]*
-
-[cc-by-2.0]: https://creativecommons.org/licenses/by/2.0/
-
----
-
-What if we don't deliver the skateboard to customers?
-
-The Wright Brothers famously built many models and prototypes, then tested them to gather knowledge that enabled them to leapfrog their competitors and become the first to achieve heavier-than-air flight. If a team builds a skateboard, and learns something from the skateboard that contributes to a subsequent release that realizes value, then the skateboard generated potential value.
-
-From a variable scope perspective, the skateboard is valuable if it teaches the team something about the needs of customers. In other words, if the team can learn something about the scope. Thus, it needs to make contact with a customer (or customer surrogate such as a product manager).
-
-From an engineering perspective, the skateboard is valuable if it teaches the team something about transportation engineering. In a variable scope, "Like This" project, it is sometimes possible to create an incremental release that helps the team learn about the product and about the engineering.
-
-### lean iterative development
-
-From the above, we infer that iterations are valuable to engineering if they teach the team something. We do not leave this to chance, of course. The best way to learn something from an iteration is to treat it as an *experiment*, rather than as a set of requirements to be fulfilled.
-
-A simple way to accomplish this is to articulate a question the development of the iteration is intended to answer, and to articulate the value that answering the question will confer on the team.
-
-When developing a skateboard, a hypothetical product question might be, "Will people pay for saving time on urban travel?" A hypothetical engineering question might be, "What are the minimum dimensions of the wheel layout to provide acceptable stability for vehicles in real-world conditions?"
-
-Engineering should articulate what the team intends to learn from an iteration before designing and implementing the code, and circle back to the intended learning as part of the iteration retrospective.
-
-With this practise, engineering can support both fixed and variable scope practises. A transmission with four wheels is a valuable *engineering* iteration, provided the team learns something. Even better, a scooter can be a valuable product *and* engineering iteration.
 
 ### have your say
 
