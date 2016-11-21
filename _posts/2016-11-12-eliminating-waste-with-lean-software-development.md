@@ -41,8 +41,6 @@ Unlike the *Not Like This* way, at each step the *Like This* way delivers *reali
 
 The *Like This* way is derived from the principles of [Lean Product Development]. It is often called "variable scope" development, since its axiomatic assumption is that through the process of building and shipping successive increments of value, we will learn more about what we can build to deliver more value.
 
-[Lean Product Development]: https://en.wikipedia.org/wiki/Lean_product_development
-
 ### engineering like this
 
 All "engineers" building products should appreciate developing products *Like This*, because everyone who builds a product is in the product management business, not just those with the words "product" or "manager" on their business card.
@@ -78,7 +76,7 @@ The key principle of LSD is to eliminate waste. **Waste in software development 
 
 Many developers feel that things should be written in such a way that they can be extended without rewriting anything. This is a misguided belief based on a misunderstanding of waste. In fact, a careless pursuit of code that will never be rewritten can actually *create* waste.
 
-Consider our project to build a car: We know from bitter experience that customers are never satisfied with just cars. They often come back and say they want a car that can fly. But if we build a car that cannot fly, we cannot later easily just bolt wings and an engine onto our car-that-was-not-designd-to-fly. We would need to reëngineer our car.
+Consider our project to build a car: We know from bitter experience that customers are never satisfied with just cars. They often come back and say they want a car that can fly. But if we build a car that cannot fly, we cannot later easily just bolt wings and an engine onto our car-that-was-not-designed-to-fly. We would need to reëngineer our car.
 
 For example, cars contain speedometers that report a single measurement, ground speed in kilometres per hour. The typical mechanism for computing speed uses the rotation of the tires. But aircraft report two measurements, air speed and ground speed. Air speed is typically computed using a pilot tube, while groundspeed is typically computed using triangulation.
 
@@ -130,7 +128,7 @@ What makes technical debt a special case is that eliminating the waste of techni
 
 When faced with a new task, we are tempted weigh the architectural waste in the present, against the expected future value of the technical debt waste, then "make the calculation" and decide how much architecture will result in the least waste over the lifetime of the code.
 
-This is sensible in theory, but not in practise.
+This is sensible in theory, but not in practice.
 
 ---
 
@@ -140,11 +138,24 @@ This is sensible in theory, but not in practise.
 
 ---
 
-### local waste, global fixes
+### local, global, short-term, long-term
 
-The practical problem with balancing architectural waste on a single task against technical debt is that architectural waste is a *local* concern, while technical debt is a *global* concern.
+The practical problem with balancing architectural waste on a task against technical debt, is that architectural waste is a *local* and *immediate* concern, while technical debt is a *global* and *long-term* concern.
 
-Consider the example from above of building software with a framework. When first adopted, a framework imposes waste in the form of additional learning required to get up to speed on how to do things within the framework's model. Thereafter, it continues to impose waste in the form of the abstraction tax.
+First, let's consider what happens when we decide that it is fastest and simplest to write "Vanilla JS" to implement a feature. But every developer has their own particular idea of what constitutes "Vanilla JS," thus an application or service written in "Vanilla JS" can wind up being a hodgepodge of barely compatible piles of code, with much overlap and duplication of functionality, precariously glued together.
+
+So we might decide that we should invest our time learning and implementing an application framework. The framework will impose a standard way to solve many problems, and while we will lose some time on our individual feature, but if everyone programs to the same framework, we'll all eliminate the waste of working with a badly integrated set of idiosyncratic features. Many teams consider this an excellent choice.
+
+But it is a choice that affects every programmer on every team that works with the code base. Frameworks are *global* choices.
+
+Second, let's consider the question of whether to write a particular feature using [bog standard] imperative JavaScript, or to write it in a more functional, immutable data style.
+
+We might reason that the team we have today is familiar with functional programming style, and that an immutable data style will allow the team today to have more confidence in getting a feature written quickly without sacrificing reliability. (Other teams might have a different perspective, but let's go with this one for the sake of argument.) But we might also fear that in the future, we may have individually moved on to other projects. Will our replacements be as comfortable working with ideas like copy-on-write semantics? If not, we might be shipping faster topday, but creating waste in the future as our new colleagues have to get up to speed on our programming style.
+
+Decisions about programming style, patterns, and paradigms are *long-term* concerns.
+
+As a rule, the tension between eliminating waste in a lean programming fashion and managing technical debt is the tension between optimizing for local, short-term results against optimizing for global, long-term results.
+
 
 ---
 
@@ -156,6 +167,8 @@ Have an observation? Spot an error? You can open an [issue](https://github.com/r
 
 ### notes
 
+[Lean Product Development]: https://en.wikipedia.org/wiki/Lean_product_development
 [cc-by-2.0]: https://creativecommons.org/licenses/by/2.0/
 [cc-by-sa-2.0]: https://creativecommons.org/licenses/by-sa/2.0/
 [technical debt]: https://en.wikipedia.org/wiki/Technical_debt
+[bog standard]: http://www.phrases.org.uk/meanings/bog-standard.html
