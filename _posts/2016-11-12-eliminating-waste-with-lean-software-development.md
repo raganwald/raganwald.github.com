@@ -134,6 +134,20 @@ This is sensible in theory, but not in practise.
 
 ---
 
+[![Junkyard](/assets/images/banners/junkyard.jpg)](https://www.flickr.com/photos/16460291@N06/4732461933)
+
+*Junkyard, © 2010 barz51, [some rights reserved][cc-by-2.0]*
+
+---
+
+### local waste, global fixes
+
+The practical problem with balancing architectural waste on a single task against technical debt is that architectural waste is a *local* concern, while technical debt is a *global* concern.
+
+Consider the example from above of building software with a framework. When first adopted, a framework imposes waste in the form of additional learning required to get up to speed on how to do things within the framework's model. Thereafter, it continues to impose waste in the form of the abstraction tax.
+
+---
+
 ### have your say
 
 Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), or even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-11-12-eliminating-waste-with-lean-software-development.md) yourself!
