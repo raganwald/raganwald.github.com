@@ -134,7 +134,7 @@ This is sensible in theory, but not in practise.
 
 ---
 
-[![Junkyard](/assets/images/banners/junkyard.jpg)](https://www.flickr.com/photos/16460291@N06/4732461933)
+[![Junkyard](/assets/images/banner/junkyard.jpg)](https://www.flickr.com/photos/16460291@N06/4732461933)
 
 *Junkyard, © 2010 barz51, [some rights reserved][cc-by-2.0]*
 
