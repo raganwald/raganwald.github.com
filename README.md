@@ -1,3 +1,3 @@
 # raganwald.github.com
 
-raganwald.com jekyll source
+jekyll source for raganwald.com 
