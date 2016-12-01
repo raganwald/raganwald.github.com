@@ -98,7 +98,7 @@ product(oneTo(5))
 const factorial = (n) => product(oneTo(n));
 ```
 
-The two problems we have with `.reduce` are that first, it takes multiple arguments, and second, it is a method on arrays. But it's a useful pattern, and we can reproduce it by hand. Here we create a `foldWith` function that takes a folding function and a seed value, and gives us back a fold function. We use that to make our own `product` fold:
+The two problems we have with `.reduce` are that first, it takes multiple arguments, and second, it is a method on arrays and not on everything iterable. But it's a useful pattern, and we can reproduce it by hand. Here we create a `foldWith` function that takes a folding function and a seed value, and gives us back a fold function. We use that to make our own `product` fold:
 
 ```javascript
 function foldWithFnAndSeed(fn, seed) {
@@ -161,7 +161,7 @@ product(downToOne(5))
   //=> 120
 ```
 
-### traversals
+### traversals, part one
 
 A traversal, or _path_, is a function that takes a structure and returns its elements as an iterator. JavaScript gives us built-in traversals for returning the values in arrays, we just iterate over them. But sometimes we want to iterate in another order. For that, we need a traversal.
 
@@ -198,9 +198,97 @@ const inReverse = traverseWith(
 
 This does make a new object containing a reference to the original array and an integer on each iteration, so it is not nearly as compact as an ordinary function, but we see the idea that we can make traversals out of unfolds, and that we can either do it in a really pure way, or with a little finagling, we can use a cursor to save excess copying.
 
-### more complex traversals
+### recursive unfolds
 
-Lists are very simple data structures, but we can build from there.
+For a moment, let's close our eyes very tightly, plug our ears with our fingers, and murmur "la-la-la-la-la" at the thought of performance costs or implementation limits. Ready? Ok. Here's our basic `unfoldWith`:
+
+```javascript
+function unfoldWith(fn) {
+  return function * unfold (value) {
+    let [acc, element] = fn(value);
+
+    while (acc !== undefined) {
+      yield element;
+      [acc, element] = fn(acc);
+    }
+  }
+}
+```
+
+If we didn't have a looping construct like `while`, we could write it recusively:
+
+```javascript
+function unfoldWith(fn) {
+  return function * unfold (value) {
+    let [acc, element] = fn(value);
+
+    if (acc !== undefined) {
+      yield element;
+      yield * unfold(acc);
+    }
+  }
+}
+
+const downToOne = unfoldWith((acc) => acc > 0 ? [acc - 1, acc] : []);
+
+product(downToOne(5))
+  //=> 120
+```
+
+It works just the same up until JavaScript's stack overflows.
+
+> Reminder: `yield *` yields all the elements of an iterable, so `yield * unfold(acc)` will yield the remining elements.
+
+### traversals, part two
+
+Consider this binary tree:
+
+[![Binary Tree](/assets/images/balanced-binary-tree-graph-1.png)](http://www.byte-by-byte.com/balancedtree/)
+
+> Image © Sam Gavis-Hughson, [Coding Interview Question: Balanced Binary Tree](http://www.byte-by-byte.com/balancedtree/)
+
+We will represent this with POJOs:
+
+```javascript
+const tree = {
+  label: '1',
+  children: [
+    {
+      label: '2',
+      children: [
+        {
+          label: '4',
+          children: []
+        },
+        {
+          label: '5',
+          children: []
+        }
+      ]
+    },
+    {
+      label: '3',
+      children: [
+        {
+          label: '6',
+          children: []
+        }
+      ]
+    }
+  ]
+}
+```
+
+We can use `unfoldWith` to write a depth-first traversal of a tree:
+
+```javascript
+const depthFirst = unfoldWith(
+  (node) =>
+)
+
+[...inReverse(['a', 'b', 'c'])]
+  //=> ['c', 'b', 'a']
+```
 
 ### unfolding in higher dimensions
 
