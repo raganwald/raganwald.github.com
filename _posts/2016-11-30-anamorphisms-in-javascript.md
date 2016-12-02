@@ -114,7 +114,9 @@ product(oneTo(5))
 const factorial = (n) => product(oneTo(n));
 ```
 
-The two problems we have with `.reduce` are that first, it takes multiple arguments, and second, it is a method on arrays and not on everything iterable. But it's a useful pattern, and we can reproduce it by hand. Here we create a `foldWith` function that takes a folding function and a seed value, and gives us back a fold function. We use that to make our own `product` fold:
+The two problems we have with `.reduce` are that first, it takes multiple arguments, and second, it is a method on arrays and not on everything iterable. But it's a useful pattern, and we can reproduce it by hand.
+
+Here we create a `foldWithFnAndSeed` function that takes a folding function and a seed value, and gives us back a fold function. We use that to make our own `product` fold:
 
 ```javascript
 function foldWithFnAndSeed(fn, seed) {
