@@ -12,7 +12,9 @@ tags: [allonge]
 
 ### preamble: unfolds and folds
 
-[Anamorphisms][anamorphism] are functions that map from some object to a more complex structure containing the type of the object. For example, mapping from an integer to a list of integers. Here's such an anamorphism:
+[Anamorphisms][anamorphism] are functions that map from some object to a more complex structure containing the type of the object. For example, mapping from an integer to a list of integers.
+
+Here's an anamorphism:
 
 ```javascript
 function oneTo(n) {
@@ -29,12 +31,16 @@ oneTo(5)
   //=> [ 1, 2, 3, 4, 5 ]
 ```
 
-An integer is our object, and the array containing integers is our "structure containing integers." Maps from integers to arrays of integers are anamorphisms. "Anamorphism" is a very long word, and using it implies that we are going to be strict about following category theory. So let's use a simpler word that has some poetic value: **Unfold**. Anamorphisms "unfold" values. I like to think of the integer `5` has having all the whole numbers less than five folded up inside itself.
+An integer is our object, and the array containing integers is our "structure containing integers." Maps from integers to arrays of integers are anamorphisms. "Anamorphism" is a very long word, and using it implies that we are going to be strict about following category theory. So let's use a simpler word that has some poetic value: **Unfold**. Anamorphisms "unfold" values.
+
+> I like to think of the integer `5` as having all the whole numbers less than five folded up inside itself.
 
 So we'll use the word "unfold" from now on.
 
 
-Unfolds (or anamorphisms) are the dual—a fancy word for _complement_—of [Catamorphisms][catamorphism], functions that map from some complex structure down to a simpler object. Here's a catamorphism:
+Unfolds (or anamorphisms) are the dual—a fancy word for _complement_—of [Catamorphisms][catamorphism], functions that map from some complex structure down to a simpler object.
+
+Here's a catamorphism:
 
 ```javascript
 function product(list) {
@@ -51,7 +57,7 @@ product(oneTo(5))
   //=> 120
 ```
 
-"Catamorphism" is another long word that implies that we are going to be strict about following category theory. So let's call these things **folds* instead. We can think of `product` as _folding_ a list of integers into a single integer.
+"Catamorphism" is another long word that implies that we are going to be strict about following category theory. So let's call these things *folds* instead. We can think of `product` as _folding_ a list of integers into a single integer.
 
 So we can say that our `product` function "folds a list of integers into an integer."
 
