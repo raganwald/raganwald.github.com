@@ -57,7 +57,7 @@ product(oneTo(5))
   //=> 120
 ```
 
-"Catamorphism" is another long word that implies that we are going to be strict about following category theory. So let's call these things *folds* instead. We can think of `product` as _folding_ a list of integers into a single integer.
+"Catamorphism" is another long word that implies that we are going to be strict about following category theory. So let's call these things **folds** instead. We can think of `product` as _folding_ a list of integers into a single integer.
 
 So we can say that our `product` function "folds a list of integers into an integer."
 
