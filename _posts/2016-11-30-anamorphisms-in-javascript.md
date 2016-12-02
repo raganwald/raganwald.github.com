@@ -6,7 +6,7 @@ tags: [allonge]
 
 [![Eric Gjerde's Twist Star Unfolded](/assets/images/twist-star.jpg)](https://www.flickr.com/photos/georigami/7304363050)
 
-* Eric Gjerde's Twist Star Unfolded, © 2012 [Jorge Jaramillo](https://www.flickr.com/photos/georigami/), [Some rights reserved][cc-by-2.0]*
+*Eric Gjerde's Twist Star Unfolded, © 2012 [Jorge Jaramillo](https://www.flickr.com/photos/georigami/), [Some rights reserved][cc-by-2.0]*
 
 ---
 
