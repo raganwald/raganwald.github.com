@@ -4,9 +4,9 @@ layout: default
 tags: [allonge]
 ---
 
-[![Eric Gjerde's Twist Star Unfolded](/assets/images/twist-star.jpg)](https://www.flickr.com/photos/georigami/7304363050)
+[![Unfolded](/assets/images/unfolded.jpg)](https://www.flickr.com/photos/innovaticlab/5975300974)
 
-*Eric Gjerde's Twist Star Unfolded, © 2012 [Jorge Jaramillo](https://www.flickr.com/photos/georigami/), [Some rights reserved][cc-by-2.0]*
+*Unfolded, © 2011 [Regulla](https://www.flickr.com/photos/regulla/), [Some rights reserved][cc-by-2.0]*
 
 ---
 
