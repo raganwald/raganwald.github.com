@@ -223,7 +223,7 @@ Linear recursion is a special case of divide-and-conquer, where we break the sim
 
 A traversal, or _path_, is a function that takes a structure and returns its elements as an iterator. JavaScript gives us built-in traversals for returning the values in arrays, we just iterate over them. But sometimes we want to iterate in another order. For that, we need a traversal.
 
-One handy use for unfolds is to use them to express traversals. We can do that with an array. Here's one that uses our `unfoldWith` exactly as described: it dives a non-empty array into an element and the rest of the array to unfold:
+One handy use for unfolds is to use them to express traversals. We can do that with an array. Here's one that uses our `unfoldWith` exactly as described: it divides a non-empty array into an element and the rest of the array to unfold:
 
 ```javascript
 const butLast = (array) => array.slice(0, array.length - 1);
