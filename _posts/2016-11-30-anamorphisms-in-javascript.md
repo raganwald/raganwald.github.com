@@ -161,16 +161,18 @@ product(oneTo(5))
 
 ### generalizing unfolds
 
-Our `foldWith` function is handy, and we can use the same general idea for making unfolders. We want to end up with an `unfoldWith` function that takes, as its argument, a function for unfolding elements. What will this function look like? The opposite of the function we used to fold, in that it will take an accumulator (`acc`) as its argument, and return the next value of the accumulator and an element to yield. Unlike a fold, it has to know when to stop, so we return an empty list when there are no more values:
+Our `foldWith` function is handy, and we can use the same general idea for making unfolders. We want to end up with an `unfoldWith` function that takes, as its argument, a function for unfolding elements.
+
+What will this function look like? The opposite of the function we used to fold, in that it will take a value as its argument, and return the next value and an element to yield. Unlike a fold, it has to know when to stop, so we return an empty list when there are no more values:
 
 ```javascript
 function unfoldWith(fn) {
-  return function * unfold (input) {
-    let [remainder, element] = fn(input);
+  return function * unfold (value) {
+    let [nextValue, element] = fn(value);
 
-    while (remainder !== undefined) {
+    while (nextValue !== undefined) {
       yield element;
-      [remainder, element] = fn(remainder);
+      [nextValue, element] = fn(nextValue);
     }
   }
 }
@@ -187,12 +189,12 @@ If we didn't have a looping construct like `while`, we could write `unfoldWith` 
 
 ```javascript
 function unfoldWith(fn) {
-  return function * unfold (input) {
-    let [remainder, element] = fn(input);
+  return function * unfold (value) {
+    let [nextValue, element] = fn(value);
 
-    if (remainder !== undefined) {
+    if (nextValue !== undefined) {
       yield element;
-      yield * unfold(remainder);
+      yield * unfold(nextValue);
     }
   }
 }
@@ -247,11 +249,17 @@ function * inReverse(array, cursor = array.length - 1) {
   //=> ['c', 'b', 'a']
 ```
 
-We can easily write this with a `while` loop, but there is more interesting business afoot. Consider this binary tree:
+We can easily write this with a `while` loop, but there is more interesting business afoot.
+
+Consider this binary tree:
+
+---
 
 [![Binary Tree](/assets/images/balanced-binary-tree-graph-1.png)](http://www.byte-by-byte.com/balancedtree/)
 
 > Image © Sam Gavis-Hughson, [Coding Interview Question: Balanced Binary Tree](http://www.byte-by-byte.com/balancedtree/)
+
+---
 
 It can be represented as a nested POJO:
 
@@ -373,6 +381,8 @@ const rightToLeftBreadthFirst = unfoldWith(
 [...rightToLeftBreadthFirst([simpleForest])]
   //=> [ 1, 3, 2, 6, 5, 4 ]
 ```
+
+Writing traversals illustrates that not only can we can separate the way to iterate over a particular data structure from the things we do with its elements, but we can decompose the algorithm of traversing or unfolding such that we hide away questions like whether we are looping or recursing and focus on the traverse or unfold's pertinent logic.
 
 ---
 
