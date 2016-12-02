@@ -131,7 +131,9 @@ function foldWithFnAndSeed(fn, seed) {
   }
 }
 
-const product = foldWithFnAndSeed((acc, n) => acc * n, 1);
+const product = foldWithFnAndSeed(
+    (acc, n) => acc * n, 1
+  );
 
 product(downToOne(5))
 ```
@@ -152,7 +154,9 @@ function foldWith(fn) {
   }
 }
 
-const product = foldWith((acc, n) => acc * n);
+const product = foldWith(
+    (acc, n) => acc * n
+  );
 
 product(downToOne(5))
 ```
@@ -173,7 +177,9 @@ function foldWith(fn) {
   }
 }
 
-const product = foldWith(({ acc, element: n }) => acc * n);
+const product = foldWith(
+    ({ acc, element: n }) => acc * n
+  );
 
 product(downToOne(5))
 ```
@@ -198,7 +204,11 @@ function unfoldWith(fn) {
   }
 }
 
-const downToOne = unfoldWith((n) => n > 0 ? { nextValue: n - 1, element: n } : { done: true });
+const downToOne = unfoldWith(
+    (n) => n > 0
+    ? { nextValue: n - 1, element: n }
+    : { done: true }
+  );
 
 product(downToOne(5))
   //=> 120
@@ -220,7 +230,11 @@ function unfoldWith(fn) {
   }
 }
 
-const downToOne = unfoldWith((n) => n > 0 ? { nextValue: n - 1, element: n } : { done: true });
+const downToOne = unfoldWith(
+    (n) => n > 0
+      ? { nextValue: n - 1, element: n }
+      : { done: true }
+  );
 
 product(downToOne(5))
   //=> 120
@@ -251,7 +265,9 @@ const butLast = (array) => array.slice(0, array.length - 1);
 const last = (array) => array[array.length - 1];
 
 const inReverse = unfoldWith(
-    (array) => array.length > 0 ? { nextValue: butLast(array), element: last(array) } : { done: true }
+    (array) => array.length > 0
+      ? { nextValue: butLast(array), element: last(array) }
+      : { done: true }
   );
 
 [...inReverse(['a', 'b', 'c'])]
@@ -288,32 +304,32 @@ It can be represented as a nested POJO:
 
 ```javascript
 const tree = {
-  label: 1,
-  children: [
-    {
-      label: 2,
-      children: [
-        {
-          label: 4,
-          children: []
-        },
-        {
-          label: 5,
-          children: []
-        }
-      ]
-    },
-    {
-      label: 3,
-      children: [
-        {
-          label: 6,
-          children: []
-        }
-      ]
-    }
-  ]
-}
+    label: 1,
+    children: [
+      {
+        label: 2,
+        children: [
+          {
+            label: 4,
+            children: []
+          },
+          {
+            label: 5,
+            children: []
+          }
+        ]
+      },
+      {
+        label: 3,
+        children: [
+          {
+            label: 6,
+            children: []
+          }
+        ]
+      }
+    ]
+  };
 ```
 
 Let's write a traversal for it:
@@ -359,13 +375,13 @@ const first = (array) => array[0];
 const butFirst = (array) => array.slice(1);
 
 const depthFirst = unfoldWith(
-  (forest) => forest.length > 0
-              ? {
-                  nextValue: first(forest).children.concat(butFirst(forest)),
-                  element: first(forest).label
-                }
-              : { done: true }
-);
+    (forest) => forest.length > 0
+      ? {
+          nextValue: first(forest).children.concat(butFirst(forest)),
+          element: first(forest).label
+        }
+      : { done: true }
+  );
 
 [...depthFirst(simpleForest)]
   //=> [ 1, 2, 4, 5, 3, 6]
@@ -377,13 +393,13 @@ Here is a _breadth-first_ traversal of a forest:
 
 ```javascript
 const breadthFirst = unfoldWith(
-  (forest) => forest.length > 0
-              ? {
-                  nextValue: butFirst(forest).concat(first(forest).children),
-                  element: first(forest).label
-                }
-              : { done: true }
-);
+    (forest) => forest.length > 0
+      ? {
+          nextValue: butFirst(forest).concat(first(forest).children),
+          element: first(forest).label
+        }
+      : { done: true }
+  );
 
 [...breadthFirst(simpleForest)]
   //=> [ 1, 2, 3, 4, 5, 6 ]
@@ -393,13 +409,13 @@ Notice how it looks almost exactly identical to the depth-first expression. This
 
 ```javascript
 const rightToLeftBreadthFirst = unfoldWith(
-  (forest) => forest.length > 0
-              ? {
-                  nextValue: last(forest).children.concat(butLast(forest)),
-                  element: last(forest).label
-                }
-              : { done: true }
-);
+    (forest) => forest.length > 0
+      ? {
+          nextValue: last(forest).children.concat(butLast(forest)),
+          element: last(forest).label
+        }
+      : { done: true }
+  );
 
 [...rightToLeftBreadthFirst(simpleForest)]
   //=> [ 1, 3, 2, 6, 5, 4 ]
@@ -417,8 +433,8 @@ If we write a traversal for the collection, we turn it into an iterator, and we 
 
 ```javascript
 const sum = foldWith(
-  ({ acc, element }) => acc + element
-);
+    ({ acc, element }) => acc + element
+  );
 ```
 
 And it works with forests as easily as it works with lists:
