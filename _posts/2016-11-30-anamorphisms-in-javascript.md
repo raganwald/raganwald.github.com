@@ -161,7 +161,7 @@ const product = foldWith(
 product(downToOne(5))
 ```
 
-For historical reasons, `reduce` in JavaScript takes two positional arguments, and we have to remember what they are and what order they're in. Those reasons no longer exist: JavaSCRIPT, like nearly every other language in this century, has rediscovered what Smalltalk knew in 1980: **named parameters are better**. So we'll use destructuring to emulate named parameters:
+For historical reasons, `reduce` in JavaScript takes two positional arguments, and we have to remember what they are and what order they're in. Those reasons no longer exist: JavaScript, like nearly every other language in this century, has rediscovered what Smalltalk knew in 1980: **named parameters are better**. So we'll use destructuring to emulate named parameters:
 
 ```javascript
 function foldWith(fn) {
