@@ -307,7 +307,7 @@ function * depthFirst (tree) {
   //=> [ 1, 2, 4, 5, 3, 6]
 ```
 
-Note that the for of this traversal is almost identical to the form of our recursive linear unfold. The big difference is that we start with one element, but the "remainder" of our work is multiple elements.
+Note that the form of this traversal is almost identical to the form of our recursive linear unfold. The big difference is that we start with one element, but the "remainder" of our work is multiple elements.
 
 We can unify them. A tree is a divergent graph with a single root node. If we have a collection of root nodes, it's called a *forest*. The second-simplest possible forest is a collection with just root, and that's just like a tree.
 
