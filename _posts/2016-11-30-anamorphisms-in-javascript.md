@@ -6,7 +6,7 @@ tags: [allonge]
 
 [![Unfolded](/assets/images/unfolded.jpg)](https://www.flickr.com/photos/innovaticlab/5975300974)
 
-*Unfolded, © 2011 [Regulla](https://www.flickr.com/photos/regulla/), [Some rights reserved][cc-by-2.0]*
+<small><i>Unfolded, © 2011 [Regulla](https://www.flickr.com/photos/regulla/), [Some rights reserved][cc-by-2.0]</i></small>
 
 ---
 
@@ -257,7 +257,7 @@ Consider this binary tree:
 
 [![Binary Tree](/assets/images/balanced-binary-tree-graph-1.png)](http://www.byte-by-byte.com/balancedtree/)
 
-> Image © Sam Gavis-Hughson, [Coding Interview Question: Balanced Binary Tree](http://www.byte-by-byte.com/balancedtree/)
+<small><i>Image © Sam Gavis-Hughson, [Coding Interview Question: Balanced Binary Tree](http://www.byte-by-byte.com/balancedtree/)</i></small>
 
 ---
 
