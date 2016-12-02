@@ -390,7 +390,7 @@ Writing traversals illustrates that not only can we can separate the way to iter
 
 ### unfolds, wrapped up
 
-When working with data structures, we often want to provide certain common operations on their elements. For example, questions like "what is the set of unique elements of this collection?" or  "What is the sum of the numbers in this collection?"
+When working with data structures, we often want to provide certain common operations on their elements. For example, questions like "What is the set of unique elements of this collection?" or  "What is the sum of the numbers in this collection?"
 
 If we write a traversal for the collection, we turn it into an iterator, and we can write a single generic `fold` over the resulting iteration. We can write:
 
