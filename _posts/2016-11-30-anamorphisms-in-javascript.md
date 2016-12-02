@@ -213,7 +213,9 @@ Although it may be impractical for working at scale, what is interesting about t
 
 In the case of unfolding, we take a structure, and return an element and a structure representing the part we haven't unfolded yet. We then yield the element and the result of unfolding the rest of the structure.
 
-Divide-and-conquer algorithms all have this structure: Break the problem into parts, apply the algorithm to each part, then glue the results back together. Recursive divide-and-conquer applies the exact same algorithm at finer and finer scale until a simple case is reached. Linear recursion is a special case where we break the simple case off, solve it, and recursively apply our algorithm to the remainder of the input.
+Divide-and-conquer algorithms all have this structure: Break the problem into parts, apply the algorithm to each part, then glue the results back together. Recursive divide-and-conquer applies the exact same algorithm at finer and finer scale until a simple case is reached.
+
+Linear recursion is a special case of divide-and-conquer, where we break the simple case off, solve it, and recursively apply our algorithm to the remainder of the input.
 
 ---
 
