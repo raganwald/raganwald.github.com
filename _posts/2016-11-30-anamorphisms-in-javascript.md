@@ -300,7 +300,7 @@ Consider this binary tree:
 
 ---
 
-It can be represented as a nested POJO:
+This tree can be represented as a nested POJO:
 
 ```javascript
 const tree = {
