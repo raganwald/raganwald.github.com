@@ -195,18 +195,21 @@ What will this function look like? The opposite of the function we used to fold,
 ```javascript
 function unfoldWith(fn) {
   return function * unfold (value) {
-    let { nextValue, element, done } = fn(value);
+    let { next, element, done } = fn(value);
 
     while (!done) {
       yield element;
-      ({ nextValue, element, done } = fn(nextValue));
+      ({ next, element, done } = fn(next));
     }
   }
 }
 
 const downToOne = unfoldWith(
     (n) => n > 0
-    ? { nextValue: n - 1, element: n }
+    ? {
+        element: n,
+        next: n - 1
+      }
     : { done: true }
   );
 
@@ -221,18 +224,21 @@ If we didn't have a looping construct like `while`, we could write `unfoldWith` 
 ```javascript
 function unfoldWith(fn) {
   return function * unfold (value) {
-    let { nextValue, element, done } = fn(value);
+    let { next, element, done } = fn(value);
 
     if (!done) {
       yield element;
-      yield * unfold(nextValue);
+      yield * unfold(next);
     }
   }
 }
 
 const downToOne = unfoldWith(
     (n) => n > 0
-      ? { nextValue: n - 1, element: n }
+      ? {
+          element: n,
+          next: n - 1
+        }
       : { done: true }
   );
 
@@ -242,7 +248,7 @@ product(downToOne(5))
 
 It works just the same up until JavaScript's stack overflows.
 
-> Reminder: `yield *` yields all the elements of an iterable, so `yield * unfold(nextValue)` will yield the remaining elements.
+> Reminder: `yield *` yields all the elements of an iterable, so `yield * unfold(next)` will yield the remaining elements.
 
 Although it may be impractical for working at scale, what is interesting about the recursive unfold is that it encodes very directly how to do an unfold using linear recursion: _Given a structure, turn it into part of the result and a structure representing the rest of the work to do_.
 
@@ -266,7 +272,10 @@ const last = (array) => array[array.length - 1];
 
 const inReverse = unfoldWith(
     (array) => array.length > 0
-      ? { nextValue: butLast(array), element: last(array) }
+      ? {
+          element: last(array),
+          next: butLast(array)
+        }
       : { done: true }
   );
 
@@ -377,8 +386,8 @@ const butFirst = (array) => array.slice(1);
 const depthFirst = unfoldWith(
     (forest) => forest.length > 0
       ? {
-          nextValue: first(forest).children.concat(butFirst(forest)),
-          element: first(forest).label
+          element: first(forest).label,
+          next: first(forest).children.concat(butFirst(forest))
         }
       : { done: true }
   );
@@ -395,8 +404,8 @@ Here is a _breadth-first_ traversal of a forest:
 const breadthFirst = unfoldWith(
     (forest) => forest.length > 0
       ? {
-          nextValue: butFirst(forest).concat(first(forest).children),
-          element: first(forest).label
+          element: first(forest).label,
+          next: butFirst(forest).concat(first(forest).children)
         }
       : { done: true }
   );
@@ -411,8 +420,8 @@ Notice how it looks almost exactly identical to the depth-first expression. This
 const rightToLeftBreadthFirst = unfoldWith(
     (forest) => forest.length > 0
       ? {
-          nextValue: last(forest).children.concat(butLast(forest)),
-          element: last(forest).label
+          element: last(forest).label,
+          next: last(forest).children.concat(butLast(forest))
         }
       : { done: true }
   );
