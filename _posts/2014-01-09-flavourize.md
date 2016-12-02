@@ -8,7 +8,8 @@ A little something that has fallen out of writing [JavaScript Spessore][js]:
 
 [js]: https://leanpub.com/javascript-spessore
 
-```javascript
+{% highlight javascript %}
+
 function flavourize (body) {
 
   function flavoured (arg) {
@@ -63,11 +64,13 @@ function flavourize (body) {
 
   return flavoured;
 }
-```
+
+{% endhighlight %}
 
 Now you can take a function, and add flavours to taste:
 
-```javascript
+{% highlight javascript %}
+
 var double = flavourize(function (n) { return n * 2; });
 
 double(2)
@@ -91,7 +94,7 @@ double(2)
 
 double('two')
   //=> Argument Error, "two" is not a number
-```
+{% endhighlight %}
 
 The "API" is simple: `unshift` adds functions that are executed before the function body, `push` adds functions that are executed after the function body. Think of it like an array, you unshift things onto the begiing and push them onto the end.
 
