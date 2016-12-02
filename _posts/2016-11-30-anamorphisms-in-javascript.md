@@ -242,7 +242,7 @@ product(downToOne(5))
 
 It works just the same up until JavaScript's stack overflows.
 
-> Reminder: `yield *` yields all the elements of an iterable, so `yield * unfold(acc)` will yield the remaining elements.
+> Reminder: `yield *` yields all the elements of an iterable, so `yield * unfold(nextValue)` will yield the remaining elements.
 
 Although it may be impractical for working at scale, what is interesting about the recursive unfold is that it encodes very directly how to do an unfold using linear recursion: _Given a structure, turn it into part of the result and a structure representing the rest of the work to do_.
 
