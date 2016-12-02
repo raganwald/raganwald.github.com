@@ -17,18 +17,18 @@ tags: [allonge]
 Here's an anamorphism:
 
 ```javascript
-function oneTo(n) {
+function downToOne(n) {
   const list = [];
 
-  for (let i = 1; i <= n; ++i) {
+  for (let i = n; i > 0; --i) {
     list.push(i);
   }
 
   return list;
 }
 
-oneTo(5)
-  //=> [ 1, 2, 3, 4, 5 ]
+downToOne(5)
+  //=> [ 5, 4, 3, 2, 1 ]
 ```
 
 An integer is our object, and the array containing integers is our "structure containing integers." Maps from integers to arrays of integers are anamorphisms. "Anamorphism" is a very long word, and using it implies that we are going to be strict about following category theory. So let's use a simpler word that has some poetic value: **Unfold**. Anamorphisms "unfold" values.
@@ -53,7 +53,7 @@ function product(list) {
   return product;
 }
 
-product(oneTo(5))
+product(downToOne(5))
   //=> 120
 ```
 
@@ -68,13 +68,13 @@ So we can say that our `product` function "folds a list of integers into an inte
 Unfolding a number into a list is questionable practice. It takes up a lot of space, and we just want to iterate over it, as we did above with `factorial`. Well, we can unfold it into a finite iteration with a generator:
 
 ```javascript
-function * oneTo(n) {
-  for (let i = 1; i <= n; ++i) {
+function * downToOne(n) {
+  for (let i = n; i > 0; --i) {
     yield i;
   }
 }
 
-[...oneTo(5)]
+[...downToOne(5)]
   //=> [ 1, 2, 3, 4, 5 ]
 ```
 
@@ -91,7 +91,7 @@ function product(iterable) {
   return product;
 }
 
-product(oneTo(5))
+product(downToOne(5))
   //=> 120
 ```
 
@@ -108,10 +108,10 @@ function product(list) {
   return list.reduce((acc, n) => acc * n, 1);
 }
 
-product(oneTo(5))
+product(downToOne(5))
   //=> 120
 
-const factorial = (n) => product(oneTo(n));
+const factorial = (n) => product(downToOne(n));
 ```
 
 The two problems we have with `.reduce` are that first, it takes multiple arguments, and second, it is a method on arrays and not on everything iterable. But it's a useful pattern, and we can reproduce it by hand.
@@ -133,7 +133,7 @@ function foldWithFnAndSeed(fn, seed) {
 
 const product = foldWithFnAndSeed((acc, n) => acc * n, 1);
 
-product(oneTo(5))
+product(downToOne(5))
 ```
 
 A variation uses the first element of the iterable as the seed, then iterates over the remainder. This is adequate for many purposes, including `product`:
@@ -154,7 +154,28 @@ function foldWith(fn) {
 
 const product = foldWith((acc, n) => acc * n);
 
-product(oneTo(5))
+product(downToOne(5))
+```
+
+For historical reasons, `reduce` in JavaScript takes two positional arguments, and we have to remember what they are and what order they're in. Those reasons no longer exist: JavaScvript, like nearly every other language in thsi century, has drediscovered what Smalltalk knew in 1980: named parameters are better. So from now on, let's use named parameters whenever we need more than one:
+
+```javascript
+function foldWith(fn) {
+  return function fold (iterable) {
+    const iterator = iterable[Symbol.iterator]();
+    let { value: acc } = iterator.next();
+
+    for (const element of iterator) {
+      acc = fn({ acc, element });
+    }
+
+    return acc;
+  }
+}
+
+const product = foldWith(({ acc, element: n }) => acc * n);
+
+product(downToOne(5))
 ```
 
 ---
@@ -163,21 +184,21 @@ product(oneTo(5))
 
 Our `foldWith` function is handy, and we can use the same general idea for making unfolders. We want to end up with an `unfoldWith` function that takes, as its argument, a function for unfolding elements.
 
-What will this function look like? The opposite of the function we used to fold, in that it will take a value as its argument, and return the next value and an element to yield. Unlike a fold, it has to know when to stop, so we return an empty list when there are no more values:
+What will this function look like? The opposite of the function we used to fold, in that it will take a value as its argument, and return the next value, an element to yield, and whether it is done. Naturally, we'll use destructuring to extract multiple return values:
 
 ```javascript
 function unfoldWith(fn) {
   return function * unfold (value) {
-    let [nextValue, element] = fn(value);
+    let { nextValue, element, done } = fn(value);
 
-    while (nextValue !== undefined) {
+    while (!done) {
       yield element;
-      [nextValue, element] = fn(nextValue);
+      ({ nextValue, element, done } = fn(nextValue));
     }
   }
 }
 
-const downToOne = unfoldWith((n) => n > 0 ? [n - 1, n] : []);
+const downToOne = unfoldWith((n) => n > 0 ? { nextValue: n - 1, element: n } : { done: true });
 
 product(downToOne(5))
   //=> 120
@@ -190,16 +211,16 @@ If we didn't have a looping construct like `while`, we could write `unfoldWith` 
 ```javascript
 function unfoldWith(fn) {
   return function * unfold (value) {
-    let [nextValue, element] = fn(value);
+    let { nextValue, element, done } = fn(value);
 
-    if (nextValue !== undefined) {
+    if (!done) {
       yield element;
       yield * unfold(nextValue);
     }
   }
 }
 
-const downToOne = unfoldWith((n) => n > 0 ? [n - 1, n] : []);
+const downToOne = unfoldWith((n) => n > 0 ? { nextValue: n - 1, element: n } : { done: true });
 
 product(downToOne(5))
   //=> 120
@@ -230,7 +251,7 @@ const butLast = (array) => array.slice(0, array.length - 1);
 const last = (array) => array[array.length - 1];
 
 const inReverse = unfoldWith(
-    (array) => array.length > 0 ? [butLast(array), last(array)] : []
+    (array) => array.length > 0 ? { nextValue: butLast(array), element: last(array) } : { done: true }
   );
 
 [...inReverse(['a', 'b', 'c'])]
@@ -298,14 +319,14 @@ const tree = {
 Let's write a traversal for it:
 
 ```javascript
-function * depthFirst (tree) {
+function * elements (tree) {
   yield tree.label;
   for (const child of tree.children) {
-    yield * depthFirst(child);
+    yield * elements(child);
   }
 }
 
-[...depthFirst(tree)]
+[...elements(tree)]
   //=> [ 1, 2, 4, 5, 3, 6]
 ```
 
@@ -313,7 +334,7 @@ Note that the form of this traversal is almost identical to the form of our recu
 
 We can unify them. A tree is a divergent graph with a single root node. If we have a collection of root nodes, it's called a *forest*. The second-simplest possible forest is a collection with just root, and that's just like a tree.
 
-So if we write a traversal for forests, we also get one for trees:
+So if we write a traversal for forests, we also get one for trees. We'll give this a more descriptive name:
 
 ```javascript
 function * depthFirst (forest) {
@@ -327,7 +348,7 @@ function * depthFirst (forest) {
 
 const simpleForest = [tree];
 
-[...depthFirst([simpleForest])]
+[...depthFirst(simpleForest)]
   //=> [ 1, 2, 4, 5, 3, 6]
 ```
 
@@ -339,14 +360,14 @@ const butFirst = (array) => array.slice(1);
 
 const depthFirst = unfoldWith(
   (forest) => forest.length > 0
-              ? [
-                  first(forest).children.concat(butFirst(forest)),
-                  first(forest).label
-                ]
-              : []
+              ? {
+                  nextValue: first(forest).children.concat(butFirst(forest)),
+                  element: first(forest).label
+                }
+              : { done: true }
 );
 
-[...depthFirst([simpleForest])]
+[...depthFirst(simpleForest)]
   //=> [ 1, 2, 4, 5, 3, 6]
 ```
 
@@ -357,14 +378,14 @@ Here is a _breadth-first_ traversal of a forest:
 ```javascript
 const breadthFirst = unfoldWith(
   (forest) => forest.length > 0
-              ? [
-                  butFirst(forest).concat(first(forest).children),
-                  first(forest).label
-                ]
-              : []
+              ? {
+                  nextValue: butFirst(forest).concat(first(forest).children),
+                  element: first(forest).label
+                }
+              : { done: true }
 );
 
-[...breadthFirst([simpleForest])]
+[...breadthFirst(simpleForest)]
   //=> [ 1, 2, 3, 4, 5, 6 ]
 ```
 
@@ -373,14 +394,14 @@ Notice how it looks almost exactly identical to the depth-first expression. This
 ```javascript
 const rightToLeftBreadthFirst = unfoldWith(
   (forest) => forest.length > 0
-              ? [
-                  last(forest).children.concat(butLast(forest)),
-                  last(forest).label
-                ]
-              : []
+              ? {
+                  nextValue: last(forest).children.concat(butLast(forest)),
+                  element: last(forest).label
+                }
+              : { done: true }
 );
 
-[...rightToLeftBreadthFirst([simpleForest])]
+[...rightToLeftBreadthFirst(simpleForest)]
   //=> [ 1, 3, 2, 6, 5, 4 ]
 ```
 
@@ -396,7 +417,7 @@ If we write a traversal for the collection, we turn it into an iterator, and we 
 
 ```javascript
 const sum = foldWith(
-  (acc, element) => acc + element
+  ({ acc, element }) => acc + element
 );
 ```
 
