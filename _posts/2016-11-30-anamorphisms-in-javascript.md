@@ -65,7 +65,7 @@ So we can say that our `product` function "folds a list of integers into an inte
 
 ### folding and unfolding with generators
 
-Unfolding a number into a list is questionable practice. It takes up a lot of space, and we just want to iterate over it, as we did above with `factorial`. Well, we can unfold it into a finite iteration with a generator:
+Unfolding a number into a list is questionable practice. It takes up a lot of space, and we just want to iterate over it, as we did above with `product`. Well, we can unfold it into a finite iteration with a generator:
 
 ```javascript
 function * downToOne(n) {
