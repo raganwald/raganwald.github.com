@@ -138,7 +138,7 @@ This is sensible in theory, but not in practice.
 
 ### local, global, short-term, long-term
 
-The practical problem with balancing architectural waste on a task against technical debt, is that architectural waste is a *local* and *immediate* concern, while technical debt is a *global* and *long-term* concern.
+The practical problem with balancing architectural waste on a task against technical debt, is that architectural waste is a *local* and *short-term* concern, while technical debt is a *global* and *long-term* concern.
 
 To illustrate this, let's consider what a feature we are going to implement in JavaScript. We might decide that it is fastest and simplest to write "Vanilla JS" to implement a feature. However, every developer has their own particular idea of what constitutes "Vanilla JS." Thus an application or service written by several different developers, each of whom writes in their personal dialect of "Vanilla JS," can wind up being a hodgepodge of barely compatible piles of code, with much overlap and duplication of functionality, precariously glued together.
 
@@ -146,7 +146,7 @@ That would lead to waste, even though each developer was working to avoid waste.
 
 Given this reality, we might decide that to prevent the outcome being wasteful, we should invest our time learning and implementing an application framework. The framework will impose a standard way to solve many problems, and while we will lose some time on our individual feature, but if everyone programs to the same framework, we'll all eliminate the waste of working with a badly integrated set of idiosyncratic features. Many teams consider this an excellent choice.
 
-Choosing a Framework is a *global* chocie. Obviously, each developer cannot pick their own framework. is a choice that affects every programmer on every team that works with the code base. Frameworks are *global* choices.
+Choosing a Framework is a *global* choice. Obviously, each developer cannot pick their own framework. is a choice that affects every programmer on every team that works with the code base. Frameworks are *global* choices.
 
 Second, let's consider the question of whether to write a particular feature using [bog standard] imperative JavaScript, or to write it in a more functional, immutable data style.
 
@@ -167,8 +167,33 @@ As a rule, the tension between eliminating waste in a lean programming fashion a
 
 ---
 
-### Managing the impedence mismatch between scopes
+### Managing the impedance mismatch between scopes
 
+So as we've seen, the problem with balancing architectural waste on tasks against technical debt, is that architectural waste is a local and short-term concern, while technical debt is a global and long-term concern.
+
+Our experience from all walks of life (not just software development, and not even just business), is that it is ineffective to make decisions about global or general issues, on the basis of local or specific symptoms. To make good decisions about global issues, we need to use global information. We have to step back and look at all of the costs and impacts across all of the affected projects and people.
+
+Likewise, our experience from all walks of life, is also that it is ineffective to make decisions with long-term consequences, on the basis of short-term impact. To make good decisions about long-term issues, we need to think about the lifetime of the costs and consequences, not just in terms of how we will be affected in the short term.
+
+The inverses of these two observations are also true: It is ineffective to make decisions that have local consequences on a global basis. And it is ineffective to make decisions that have short-term consequences, by weighing long-term outcomes.
+
+The appropriate way to make all decisions is to determine the scope of the decision, and then make the decision within the context of its scope.
+
+Decisions with local and short-term impact should be made on a local basis—by the people affected, and on a short-term time scale. We do this in software development by making some decisions within the team, and by making and revisiting decisions on a short-term basis. This is the principle behind developers using the [Pomodoro Technique], behind agile teams having daily stand-ups, and behind iterative development disciplines such as Scrum. Developers are encouraged to exercise autonomy over decisions that have only personal consequences. Those that have a team and very short-term impact are discussed at stand-ups, and decisions that have a two-week or monthly impact are made by the team during sprint planning and review ceremonies.
+
+The key to making good local and short-term decisions is to exercise judgment about whether an issue is scoped to a developer, a team, or the broader engineering organization, and to make sure that there are mechanisms in place to make developer-specific and team-specific decisions on the appropriate short-term time-scale.
+
+Global and long-term decisions should not be made by developers or teams, nor should they be made in a daily stand-up or iteration-specific ceremony. Global decisions should be made by people familiar with the ramifications for all the teams involved, be they managers in a hierarchal organization, or team ambassadors in a flat organization. Likewise, they should be made on a long-term rhythm, not on an ad hoc basis when teams feel they have an itch they want to scratch.
+
+---
+
+![Wasted Money](/assets/images/banner/wasted-money.jpg)
+
+*Wasted Money, © 2009 Karl Birrane, [Some rights reverved][cc-by-sa-2.0]*
+
+---
+
+### Pay yourself first
 
 ---
 
@@ -188,3 +213,5 @@ Have an observation? Spot an error? You can open an [issue](https://github.com/r
 [cc-by-sa-2.0]: https://creativecommons.org/licenses/by-sa/2.0/
 [technical debt]: https://en.wikipedia.org/wiki/Technical_debt
 [bog standard]: http://www.phrases.org.uk/meanings/bog-standard.html
+[Pomodoro Technique]: http://cirillocompany.de/pages/pomodoro-technique/
+[Scrum]: https://en.wikipedia.org/wiki/Scrum_%28development%29
