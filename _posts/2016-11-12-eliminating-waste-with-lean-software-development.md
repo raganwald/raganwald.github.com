@@ -4,7 +4,7 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-## Introduction: Developing Products Like This
+## Preamble: Developing Products "Like This"
 
 In "[Making sense of MVP][mvp]," [Henrik Kniberg] explains the salient distinction between fake-agile and real-agile development by contrasting two ways of developing a product iteratively, *Not Like This* and *Like this*.
 
@@ -47,7 +47,19 @@ All "engineers" building products should appreciate developing products *Like Th
 
 But what about building software from an *engineering* perspective? Can "Lean Product Development" teach us something about engineering?
 
-The answer is that yes, engineering has much to learn from Lean Product Development, although not always in a literal, direct translation. The core of Lean Product Development was derived from the principles of Lean Manufacturing, then practitioners refined and evolved its practices and values from experience.
+Yes.
+
+---
+
+[![Abandoned Factory](/assets/images/banner/abandoned-factory.jpg)](https://www.flickr.com/photos/55229469@N07/9991497634)
+
+*Abandoned Factory, © 2013 Forsaken Fotos, [Some rights reserved][cc-by-2.0]*
+
+---
+
+## Lean Engineering
+
+Engineering has much to learn from Lean Product Development, although not always in a literal, direct translation. The core of Lean Product Development was derived from the principles of Lean Manufacturing, then practitioners refined and evolved its practices and values from experience.
 
 Software developers have also mined Lean Manufacturing for principles, and the result is a set of principles and values known as [Lean Software Development], or "LSD." LSD can be summarized by seven principles, four of which have direct impacts on engineering decisions:
 
@@ -136,7 +148,7 @@ This is sensible in theory, but not in practice.
 
 ---
 
-### local, global, short-term, long-term
+## Decision-making Scope
 
 The practical problem with balancing architectural waste on a task against technical debt, is that architectural waste is a *local* and *short-term* concern, while technical debt is a *global* and *long-term* concern.
 
@@ -181,9 +193,7 @@ The appropriate way to make all decisions is to determine the scope of the decis
 
 Decisions with local and short-term impact should be made on a local basis—by the people affected, and on a short-term time scale. We do this in software development by making some decisions within the team, and by making and revisiting decisions on a short-term basis. This is the principle behind developers using the [Pomodoro Technique], behind agile teams having daily stand-ups, and behind iterative development disciplines such as Scrum. Developers are encouraged to exercise autonomy over decisions that have only personal consequences. Those that have a team and very short-term impact are discussed at stand-ups, and decisions that have a two-week or monthly impact are made by the team during sprint planning and review ceremonies.
 
-The key to making good local and short-term decisions is to exercise judgment about whether an issue is scoped to a developer, a team, or the broader engineering organization, and to make sure that there are mechanisms in place to make developer-specific and team-specific decisions on the appropriate short-term time-scale.
-
-Global and long-term decisions should not be made by developers or teams, nor should they be made in a daily stand-up or iteration-specific ceremony. Global decisions should be made by people familiar with the ramifications for all the teams involved, be they managers in a hierarchal organization, or team ambassadors in a flat organization. Likewise, they should be made on a long-term rhythm, not on an ad hoc basis when teams feel they have an itch they want to scratch.
+The key to making good local and short-term decisions is to exercise judgment about whether an issue is scoped to a developer, a team, or the broader engineering organization, and to make sure that there are mechanisms in place to make developer-specific and team-specific decisions on the appropriate short-term time-scale. This is in keeping with the third principle of lean development, **making decisions as late as possible**. Short-term decisions are made as close as possible to when we need to make them.
 
 ---
 
@@ -193,7 +203,13 @@ Global and long-term decisions should not be made by developers or teams, nor sh
 
 ---
 
-### Pay yourself first
+### Playing the Long Game
+
+Global and long-term decisions should not be made by developers or teams, nor should they be made in a daily stand-up or iteration-specific ceremony. Global decisions should be made by people familiar with the ramifications for all the teams involved, be they managers in a hierarchal organization, or team ambassadors in a flat organization. Likewise, they should be made on a long-term rhythm, not on an ad hoc basis when teams feel they have an itch they want to scratch.
+
+Whn global and long-term decisions are made on a small scope and when teh decision is dominated by short-term concerns, the risk of making a poor decision is very high. Statistically, consequences ar enot evenly spread across an organization, or evenly spread over time. Asa  result, some teams may not see the need for making a crucial investment in adopting a new programming language. Another team may suffer from so much short-term pain tha they are tempted to rewrite an entire application. Another team may bein an expensive investment in a reasonably good idea, and thus be too busy to consider an even better idea that arises in the next iteration.
+
+Globally scoped decisions with long-term consequences need to be weighed and judged against other globally scoped decisions with long-term consequences. They must be made infrequently enough that we have gathered enough information to avoid wastful thrashing or missed opportunities.
 
 ---
 
