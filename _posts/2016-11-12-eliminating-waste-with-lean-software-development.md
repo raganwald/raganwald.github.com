@@ -6,7 +6,7 @@ tags: [allonge, noindex]
 
 ## Introduction: Developing Products Like This
 
-In "[Making sense of MVP (Minimum Viable Product)][mvp]," [Henrik Kniberg] explains the salient distinction between fake-agile and real-agile development by contrasting two ways of developing a product, *Not Like This* and "Like this."
+In "[Making sense of MVP (Minimum Viable Product)][mvp]," [Henrik Kniberg] explains the salient distinction between fake-agile and real-agile development by contrasting two ways of developing a product iteratively, *Not Like This* and *Like this*.
 
 [mvp]: http://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp
 [Henrik Kniberg]: https://www.crisp.se/konsulter/henrik-kniberg
@@ -118,15 +118,13 @@ That abstraction tax is waste, albeit a more hidden waste than using GPS for a s
 
 Developers easily grasp the notion that developing features we do not need, is wasteful, and that developing with abstractions and layers of indirection we do not need, is also wasteful. But there is another kind of waste that engineers struggle with every day, [technical debt].
 
-Technical debt arises when we optimize for a short term result, making choices that sacrifice the long-term effectiveness of the team. For example, code that is poorly factored may have been quickest to develop in the first place, but subsequent modification and extension is slowed by the presence of anti-patterns such as tightly coupled code, or "God Objects."
-
-"Technical debt" isn't an exact metaphor, in that financial debt must nearly always be repaid, and the amount to be repaid is known with certainty. Whereas technical debt might or might not need to be repaid, and the amount of friction caused by technical debt is not know with certainty.
+Technical debt arises when we optimize for a short term result, making choices that sacrifice the long-term effectiveness of the team. For example, code that is poorly factored may have been quickest to develop in the first place, but subsequent modification and extension is slowed by the presence of anti-patterns such as tightly coupled code, or "God Objects."[^well-actually]
 
 Work we perform to overcome the friction and obstruction of technical debt, is waste.
 
 What makes technical debt a special case is that eliminating the waste of technical debt is often in tension with eliminating architectural waste. If we write code such that it is easy to read by ourselves or others in the future, if we optimize for making it easy to modify and extend, we need more time to write it than if we optimize for making it work now, for the specific use case in front of us.
 
-When faced with a new task, we are tempted weigh the architectural waste in the present, against the expected future value of the technical debt waste, then "make the calculation" and decide how much architecture will result in the least waste over the lifetime of the code.
+When faced with a new task, we are tempted to weigh the architectural waste in the present, against the expected future value of the technical debt waste, then "make the calculation" and decide how much architecture will result in the least waste over the lifetime of the code.
 
 This is sensible in theory, but not in practice.
 
@@ -142,19 +140,34 @@ This is sensible in theory, but not in practice.
 
 The practical problem with balancing architectural waste on a task against technical debt, is that architectural waste is a *local* and *immediate* concern, while technical debt is a *global* and *long-term* concern.
 
-First, let's consider what happens when we decide that it is fastest and simplest to write "Vanilla JS" to implement a feature. But every developer has their own particular idea of what constitutes "Vanilla JS," thus an application or service written in "Vanilla JS" can wind up being a hodgepodge of barely compatible piles of code, with much overlap and duplication of functionality, precariously glued together.
+To illustrate this, let's consider what a feature we are going to implement in JavaScript. We might decide that it is fastest and simplest to write "Vanilla JS" to implement a feature. However, every developer has their own particular idea of what constitutes "Vanilla JS." Thus an application or service written by several different developers, each of whom writes in their personal dialect of "Vanilla JS," can wind up being a hodgepodge of barely compatible piles of code, with much overlap and duplication of functionality, precariously glued together.
 
-So we might decide that we should invest our time learning and implementing an application framework. The framework will impose a standard way to solve many problems, and while we will lose some time on our individual feature, but if everyone programs to the same framework, we'll all eliminate the waste of working with a badly integrated set of idiosyncratic features. Many teams consider this an excellent choice.
+That would lead to waste, even though each developer was working to avoid waste.
 
-But it is a choice that affects every programmer on every team that works with the code base. Frameworks are *global* choices.
+Given this reality, we might decide that to prevent the outcome being wasteful, we should invest our time learning and implementing an application framework. The framework will impose a standard way to solve many problems, and while we will lose some time on our individual feature, but if everyone programs to the same framework, we'll all eliminate the waste of working with a badly integrated set of idiosyncratic features. Many teams consider this an excellent choice.
+
+Choosing a Framework is a *global* chocie. Obviously, each developer cannot pick their own framework. is a choice that affects every programmer on every team that works with the code base. Frameworks are *global* choices.
 
 Second, let's consider the question of whether to write a particular feature using [bog standard] imperative JavaScript, or to write it in a more functional, immutable data style.
 
-We might reason that the team we have today is familiar with functional programming style, and that an immutable data style will allow the team today to have more confidence in getting a feature written quickly without sacrificing reliability. (Other teams might have a different perspective, but let's go with this one for the sake of argument.) But we might also fear that in the future, we may have individually moved on to other projects. Will our replacements be as comfortable working with ideas like copy-on-write semantics? If not, we might be shipping faster topday, but creating waste in the future as our new colleagues have to get up to speed on our programming style.
+We might reason that the team we have today is familiar with functional programming style, and that an immutable data style will allow the team today to have more confidence in getting a feature written quickly without sacrificing reliability. (Other teams might have a different perspective, but let's go with this one for the sake of argument.)
+
+But we might also fear that in the future, we may have individually moved on to other projects. Will our replacements be as comfortable working with ideas like copy-on-write semantics? If not, we might be shipping faster topday, but creating waste in the future as our new colleagues have to get up to speed on our programming style.
 
 Decisions about programming style, patterns, and paradigms are *long-term* concerns.
 
 As a rule, the tension between eliminating waste in a lean programming fashion and managing technical debt is the tension between optimizing for local, short-term results against optimizing for global, long-term results.
+
+---
+
+[![Recycle](/assets/images/banner/recyle.jpg)](https://www.flickr.com/photos/librariesrock/14937790854)
+
+
+*Recycle, © 2014 Carol VanHook, [Some rights reserved][cc-by-2.0]
+
+---
+
+### Managing the impedence mismatch between scopes
 
 
 ---
@@ -166,6 +179,9 @@ Have an observation? Spot an error? You can open an [issue](https://github.com/r
 ---
 
 ### notes
+
+
+[^well-actually]: "Technical debt" isn't an exact metaphor, in that financial debt must nearly always be repaid, and the amount to be repaid is known with certainty. Whereas technical debt might or might not need to be repaid, and the amount of friction caused by technical debt is not know with certainty.
 
 [Lean Product Development]: https://en.wikipedia.org/wiki/Lean_product_development
 [cc-by-2.0]: https://creativecommons.org/licenses/by/2.0/
