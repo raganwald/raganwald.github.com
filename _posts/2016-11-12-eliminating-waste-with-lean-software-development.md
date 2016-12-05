@@ -1,12 +1,12 @@
 ---
 title: "Eliminating Waste with Lean Software Development"
 layout: default
-tags: [allonge]
+tags: [allonge, noindex]
 ---
 
 ## Introduction: Developing Products Like This
 
-In "[Making sense of MVP (Minimum Viable Product)][mvp]," [Henrik Kniberg] explains the salient distinction between fake-agile and real-agile development by contrasting two ways of developing a product iteratively, *Not Like This* and *Like this*.
+In "[Making sense of MVP][mvp]," [Henrik Kniberg] explains the salient distinction between fake-agile and real-agile development by contrasting two ways of developing a product iteratively, *Not Like This* and *Like this*.
 
 [mvp]: http://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp
 [Henrik Kniberg]: https://www.crisp.se/konsulter/henrik-kniberg
@@ -160,10 +160,10 @@ As a rule, the tension between eliminating waste in a lean programming fashion a
 
 ---
 
-[![Recycle](/assets/images/banner/recyle.jpg)](https://www.flickr.com/photos/librariesrock/14937790854)
+[![Recycle](/assets/images/banner/recycle.jpg)](https://www.flickr.com/photos/librariesrock/14937790854)
 
 
-*Recycle, © 2014 Carol VanHook, [Some rights reserved][cc-by-2.0]
+*Recycle, © 2014 Carol VanHook, [Some rights reserved][cc-by-2.0]*
 
 ---
 
