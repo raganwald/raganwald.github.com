@@ -5,7 +5,9 @@ tags: [allonge, noindex]
 
 Let's look at a design principle: *Composition*. In its simplest form, composition is about making things out of smaller things. There can be so much more to it, of course.
 
-### graphs and compexity
+---
+
+### graphs and complexity
 
 Consider *Structured Programming*. In structured programming, we write procedures that call other procedures by name.  Structured programming allows us to decompose procedures, and it us to extract and share common procedures, DRY-ing up our code and allowing us to name concepts.
 
@@ -36,6 +38,13 @@ For example, Pascal had an idea of nesting a procedure inside of another procedu
 This idea of namespaces has carried forward to this day, in many forms. JavaScript's blocks create namespaces, and it has formal modules as well. It may soon have private object properties.
 
 Namespaces constrain large graphs into many smaller graphs, each of which has a constrained set of ways they can be connected to other graphs. It's still a large graph, but the number of possible ways to draw it is smaller, and by analogy, it is easier to sort out what it does, and how.
+
+What we have described is a heuristic for designing good software systems: **Provide the flexibility to use many-to-many relationships between entities, while simultaneously providing ways for programmers to intentionally limit the ways that entities can be connected**.
+
+---
+
+### higher-order functions
+
 
 
 
