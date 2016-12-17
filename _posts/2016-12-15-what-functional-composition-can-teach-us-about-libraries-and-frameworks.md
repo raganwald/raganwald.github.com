@@ -49,10 +49,55 @@ What we have described is a heuristic for designing good software systems: **Pro
 
 Functions that can accept functions as parameters and return functions as values are called *Higher-Order Functions*, or "HOFs." Languages that support HOFs also support the idea of *functions as first-class values*, and nearly always support the idea of *dynamically creating functions*.
 
-HOFs give programmers even more ways to decompose and compose programs. Let's look at an oft-quoted example, `map`:
+HOFs give programmers even more ways to decompose and compose programs. Let's look at an oft-quoted example, `map`. For kicks, here is a lazy version:
 
+```javascript
+function * map (fn, iterable) {
+  for (const element of iterable) {
+    yield fn(element);
+  }
+}
 
+[...map((x) => x * x, [1, 2, 3])]
+  //=> [1, 4, 9]
+```
 
+`map` takes a function as a parameter. If we curry it by hand, we get `mapWith`:
+
+```javascript
+function mapWith (fn) {
+  return function * (iterable) {
+    for (const element of iterable) {
+      yield fn(element);
+    }
+  };
+}
+
+[...mapWith((x) => x * x)(1, 2, 3])]
+  //=> [1, 4, 9]
+```
+
+`mapWith` takes a function as a parameter and returns a function. There are many such functions, but `mapWith` is a particularly interesting example of functions that take functions as arguments and return functions. Let's take another look at `mapWith`, with some spacing and parenthesis inserted:
+
+```javascript
+function mapWith (fn) { return(
+
+  function * (iterable) {
+    for (const element of iterable) {
+      yield fn(element);
+    }
+  }
+
+);}
+```
+
+We can see that `mapWith` is a kind of *Template Function*: It returns a function, with its parameters (one in this case) inserted into it. Templates are common in front-end development. Here's an example from [Ember]:
+
+[Ember]: http://emberjs.com/
+
+```hbs
+Hello, <strong>{{firstName}} {{lastName}}</strong>!
+```
 
 ---
 
