@@ -9,13 +9,15 @@ Let's look at a design principle: *Composition*. In its simplest form, compositi
 
 ### graphs and complexity
 
-Consider *Structured Programming*. In structured programming, we write procedures that call other procedures by name.  Structured programming allows us to decompose procedures, and it us to extract and share common procedures, DRY-ing up our code and allowing us to name concepts.
+Consider *Structured Programming*. In structured programming, we write procedures that call other procedures by name.  Structured programming allows us to decompose procedures, and to extract and share common procedures, DRY-ing up our code and allowing us to name concepts.
 
 When a function invokes other functions, and when one function can be invoked by more than one other function, we have a very good thing. We're going to focus on this idea today. When we have a *many-to-many* relationship between entities, we have a more expressive power than when we have a *one-to-many* relationship.
 
 We have the ability to give each procedure a single responsibility, and name that responsibility. We also have the ability to ensure that one and only one procedure has that responsibility. A many-to-many relationship between procedures is what enables us to create a one-to-one relationship between procedures and responsibilities.
 
-With great power comes great responsibility. The downside of a many-to-many relationship between procedures is that the 'space of things a program might do' grows very rapidly as the size increases.
+With great power comes great responsibility.[^quote] The downside of a many-to-many relationship between procedures is that the 'space of things a program might do' grows very rapidly as the size increases.
+
+[^quote]: "Ils doivent envisager qu’une grande responsabilité est la suite inséparable d’un grand pouvoir."—http://quoteinvestigator.com/2015/07/23/great-power/
 
 One way to think about this by analogy is to imagine we are drawing a graph. Each procedure is a vertex, and the calling relationship between them is an edge. Assuming that there is no "dead code," every structured program forms a [connected graph].
 
@@ -44,6 +46,10 @@ What we have described is a heuristic for designing good software systems: **Pro
 ---
 
 ### higher-order functions
+
+Functions that can accept functions as parameters and return functions as values are called *Higher-Order Functions*, or "HOFs." Languages that support HOFs also support the idea of *functions as first-class values*, and nearly always support the idea of *dynamically creating functions*.
+
+HOFs give programmers even more ways to decompose and compose programs. Let's look at an oft-quoted example, `map`:
 
 
 
