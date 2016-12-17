@@ -91,13 +91,15 @@ function mapWith (fn) { return(
 );}
 ```
 
-We can see that `mapWith` is a kind of *Template Function*: It returns a function, with its parameters (one in this case) inserted into it. Templates are common in front-end development. Here's an example from [Ember]:
+We can see that `mapWith` is a kind of *Template Function*: It returns a function, with its parameters (one in this case) inserted into it. Templates are common in front-end development. Here's a handlebars example from [Ember]:
 
 [Ember]: http://emberjs.com/
 
 ```hbs
 Hello, <strong>{{firstName}} {{lastName}}</strong>!
 ```
+
+Programming with templates makes for particularly readable code, because the form of the program resembles its output. The handlebars code looks a lot like the HTML it produces, and the core of the `mapWith` function looks a lot like the function it produces.
 
 ---
 
