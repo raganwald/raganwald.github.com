@@ -131,7 +131,7 @@ And while writing functions that make other functions may be unfamiliar for prog
 
 Rumour has it that there are excellent companies that ask coöp students to write code as part of the interview process. A typical problem will ask the student to demonstrate their facility solving a problem that ought to be familiar to a computer science or computer engineering student.
 
-For example, merging two sorted lists. This is something a student will have at least looked at, and it does have some applicability to modern service architectures. Here's a naîve implementation:
+For example, merging two sorted lists. This is something a student will have at least looked at, and it does have some applicability to modern service architectures. Here's a naïve implementation:
 
 ```javascript
 function merge ({ list1, list2 }) {
