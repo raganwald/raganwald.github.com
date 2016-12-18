@@ -121,6 +121,10 @@ Programming with templates of any kind makes for particularly readable code, bec
 
 And while writing functions that make other functions may be unfamiliar for programmers new to languages with functions-as-first-class-values, the idea of a "template" is particularly easy to grasp.
 
+[![brown Mandelbrot](/assets/images/banner/brown-mandelbrot.png)](https://www.flickr.com/photos/docnic/2656653586)
+
+*Brown Mandelbrot, © 2008 docnic, [Some rights reserved][cc-by-2.0]*
+
 ---
 
 ### linear recursion
