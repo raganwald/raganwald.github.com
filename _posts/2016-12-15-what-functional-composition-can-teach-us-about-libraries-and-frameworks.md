@@ -188,6 +188,8 @@ sum([42, 3, -1])
 
 We've written them so that both have the same structure, they are *linearly recursive*. Can we extract this structure and rewrite it as a template function?
 
+---
+
 ### linrec
 
 Linear recursion has a simple form:
@@ -349,26 +351,10 @@ And now we can exploit the similarities between `sum` and `merge`:
 
 ```javascript
 const merge = linrec({
-  indivisible: ({ list1, list2 }) => list1.length === 0 && list2.length === 0,
-  seed: () => [],
+  indivisible: ({ list1, list2 }) => list1.length === 0 || list2.length === 0,
+  seed: ({ list1, list2 }) => list1.concat(list2),
   divide: ({ list1, list2 }) => {
-    if (list1.length === 0) {
-      return {
-        atom: list2[0],
-        remainder: {
-          list1,
-          list2: list2.slice(1)
-        }
-      };
-    } else if (list2.length === 0) {
-      return {
-        atom: list1[0],
-        remainder: {
-          list1: list1.slice(1),
-          list2
-        }
-      };
-    } else if (list1[0] < list2[0]) {
+    if (list1[0] < list2[0]) {
       return {
         atom: list1[0],
         remainder: {
