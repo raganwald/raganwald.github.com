@@ -136,30 +136,27 @@ For example, merging two sorted lists. This is something a student will have at 
 ```javascript
 function merge ({ list1, list2 }) {
   if (list1.length === 0 || list2.length === 0) {
-    return [...list1, ...list2];
+    return list1.concat(list2);
   } else {
-    const [head1] = list1;
-    const [head2] = list2;
+    let atom, remainder;
 
-    if (head1 < head2) {
-      const remaining = {
+    if (list1[0] < list2[0]) {
+      atom = list1[0];
+      remainder = {
         list1: list1.slice(1),
         list2
-      }
-      const left = head1;
-      const right = merge(remaining);
-
-      return [left, ...right];
+      };
     } else {
-      const remaining = {
+      atom = list2[0],
+      remainder = {
         list1,
         list2: list2.slice(1)
-      }
-      const left = head2;
-      const right = merge(remaining);
-
-      return [left, ...right];
+      };
     }
+    const left = atom;
+    const right = merge(remainder);
+
+    return [left, ...right];
   }
 }
 
@@ -173,26 +170,239 @@ merge({
 And here's a function that finds the sum of a list of numbers:
 
 ```javascript
-function sum({ list }) {
+function sum(list) {
   if (list.length === 0) {
     return 0;
   } else {
-    const [left] = list;
-    const remaining = {
-      list: list.slice(1)
-    };
-    const right = sum(remaining);
+    const [atom, ...remainder] = list;
+    const left = atom;
+    const right = sum(remainder);
 
     return left + right;
   }
 }
 
-sum({ list: [42, 3, -1] })
+sum([42, 3, -1])
   //=> 44
 ```
 
 We've written them so that both have the same structure, they are *linearly recursive*. Can we extract this structure and rewrite it as a template function?
 
+### linrec
+
+Linear recursion has a simple form:
+
+1. Look at the input. Can we break an element off?
+2. If not, what value do we return?
+3. If we can break a chunk off, divide the input into the element and a remainder
+4. Run our linearly recursive function on the remainder, then
+5. Combine our chunk with the result of our linearly recursive function on the remainder
+
+Both of our examples above have this form, and we will write a template function to implement linear recursion. To write a template function, it helps to take an example of the function we want to implement, and extract its future parameters as constants.
+
+First, `indivisible` and `seed`:
+
+```javascript
+function sum(list) {
+  const indivisible = (list) => list.length === 0;
+  const seed = () => 0;
+
+  if (indivisible(list)) {
+    return seed(list);
+  } else {
+    const [atom, ...remainder] = list;
+    const left = atom;
+    const right = sum(remainder);
+
+    return left + right;
+  }
+}
+```
+
+The next one, `value`, seems superfluous, but we'll hang onto it for later:
+
+```javascript
+function sum(list) {
+  const indivisible = (list) => list.length === 0;
+  const seed = () => 0;
+  const value = (atom) => atom;
+
+  if (indivisible(list)) {
+    return seed(list);
+  } else {
+    const [atom, ...remainder] = list;
+    const left = value(atom);
+    const right = sum(remainder);
+
+    return left + right;
+  }
+}
+```
+
+`divide`:
+
+```javascript
+function sum(list) {
+  const indivisible = (list) => list.length === 0;
+  const seed = () => 0;
+  const value = (atom) => atom;
+  const divide = (list) => {
+    const [atom, ...remainder] = list;
+
+    return  { atom, remainder }
+  };
+
+  if (indivisible(list)) {
+    return seed(list);
+  } else {
+    const { atom, remainder } = divide(list);
+    const left = value(atom);
+    const right = sum(remainder);
+
+    return left + right;
+  }
+}
+```
+
+And then `combine`:
+
+```javascript
+function sum(list) {
+  const indivisible = (list) => list.length === 0;
+  const seed = () => 0;
+  const value = (atom) => atom;
+  const divide = (list) => {
+    const [atom, ...remainder] = list;
+
+    return  { atom, remainder }
+  };
+  const combine = ({ left, right }) => left + right;
+
+  if (indivisible(list)) {
+    return seed(list);
+  } else {
+    const { atom, remainder } = divide(list);
+    const left = value(atom);
+    const right = sum(remainder);
+
+    return combine({ left, right });
+  }
+}
+```
+
+we're just about ready to make a template function. Our penultimate step is to rename `sum` to `myself` and `list` to `input`:
+
+```javascript
+function myself (input) {
+  const indivisible = (list) => list.length === 0;
+  const seed = () => 0;
+  const value = (atom) => atom;
+  const divide = (list) => {
+    const [atom, ...remainder] = list;
+
+    return  { atom, remainder }
+  };
+  const combine = ({ left, right }) => left + right;
+
+  if (indivisible(input)) {
+    return seed(input);
+  } else {
+    const { atom, remainder } = divide(input);
+    const left = value(atom);
+    const right = myself(remainder);
+
+    return combine({ left, right });
+  }
+}
+```
+
+The final step is to turn our constant functions into parameters of a function that returns our `myself` function:
+
+```javascript
+function linrec({ indivisible, seed, value = (atom) => atom, divide, combine }) {
+  return function myself (input) {
+    if (indivisible(input)) {
+      return seed(input);
+    } else {
+      const { atom, remainder } = divide(input);
+      const left = value(atom);
+      const right = myself(remainder);
+
+      return combine({ left, right });
+    }
+  }
+}
+
+const sum = linrec({
+  indivisible: (list) => list.length === 0,
+  seed: () => 0,
+  divide: (list) => {
+    const [atom, ...remainder] = list;
+
+    return  { atom, remainder }
+  },
+  combine: ({ left, right }) => left + right
+});
+```
+
+And now we can exploit the similarities between `sum` and `merge`:
+
+```javascript
+const merge = linrec({
+  indivisible: ({ list1, list2 }) => list1.length === 0 && list2.length === 0,
+  seed: () => [],
+  divide: ({ list1, list2 }) => {
+    if (list1.length === 0) {
+      return {
+        atom: list2[0],
+        remainder: {
+          list1,
+          list2: list2.slice(1)
+        }
+      };
+    } else if (list2.length === 0) {
+      return {
+        atom: list1[0],
+        remainder: {
+          list1: list1.slice(1),
+          list2
+        }
+      };
+    } else if (list1[0] < list2[0]) {
+      return {
+        atom: list1[0],
+        remainder: {
+          list1: list1.slice(1),
+          list2
+        }
+      };
+    } else {
+      return {
+        atom: list2[0],
+        remainder: {
+          list1,
+          list2: list2.slice(1)
+        }
+      };
+    }
+  },
+  combine: ({ left, right }) => [left, ...right]
+});
+```
+
+---
+
+### the relationship between template functions, expressiveness, and complexity
+
+In structured programming, procedures call each other, and by creating many-to-many relationships between procedures, we increase expressiveness by making sure that one and only one procedure implements any one responsibility. If two procedures implement the same responsibility, we are less DRY, and less expressive.
+
+How do template functions come into this? Well, as we saw, `merge` and `sum` have different responsibilities in the solution domain--merging lists and summing lists. But they share a common implementation structure, linear recursion. Therefore, they both are responsible for implementing a linearly recursive algorithm.
+
+By extracting this algorithm into `linrec`, we once again make sure that one and only one entity--`linrec` is responsible for implementing linear recursion. If we wish to transform its implementation into an iteration, for example, we only need to change this in one place in our code. We don't have to rewrite both `merge` and `sum`.
+
+Thus, we find that a feature like first-class functions does give us the power of greater expressiveness, as it gives us at least one more way to create many-to-many relationships between functions.
+
+And we also know that this can increase perceived complexity if we do not also temper this increased expressiveness with language features or architectural designs that allow us to define groups of functions that have rich relationships within themselves, but only limited relationships with other groups.
 
 ---
 
