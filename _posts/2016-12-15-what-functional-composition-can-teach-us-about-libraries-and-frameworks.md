@@ -544,6 +544,10 @@ The others, namely `bisectLeftAndRight`, `mergeLeftAndRight`, and `mergeBisected
 
 ---
 
+### one-to-many and many-to-many
+
+---
+
 ### have your say
 
 Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss this on [reddit], or even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-12-15-what-functional-composition-can-teach-us-about-libraries-and-frameworks) yourself!
