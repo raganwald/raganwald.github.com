@@ -3,7 +3,7 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-Let's look at a design principle: *Composition*. In its simplest form, composition is about making things out of smaller things. There can be so much more to it, of course.
+*Sit facilis perferendis ea esse qui. Voluptas delectus voluptatem sunt magnam illo eveniet repellendus. Ducimus consequatur laboriosam id omnis accusamus. Ab ad mollitia ipsum omnis sed blanditiis.*
 
 [![ibm 360](/assets/images/banner/ibm-360.jpg)](https://www.flickr.com/photos/monchan/30781538732)
 
@@ -55,7 +55,9 @@ Namespaces constrain large graphs into many smaller graphs, each of which has a 
 
 What we have described is a heuristic for designing good software systems: **Provide the flexibility to use many-to-many relationships between entities, while simultaneously providing ways for programmers to intentionally limit the ways that entities can be connected**.
 
-Now let's look at something a little more contemporary, higher-order functions.
+Now let's look at something a little more contemporary, higher-order functions.[^well-actually]
+
+[^well-actually]: Well, actually, Higher-Order functions predate Structured Programming. They go back to the Lambda Calculus, and first appeared in Lisp in the early 1950s. So when we say they are a more contemporary idea, we mean that their mainstream acceptance is more contemporary.
 
 ---
 
