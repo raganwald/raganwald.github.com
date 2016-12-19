@@ -553,6 +553,26 @@ From this we can observe that many programming techniques, such as writing highl
 
 ### what template functions tell us about frameworks and libraries
 
+Roughly speaking, both frameworks and libraries are collections of classes, functions, and other code that we blend with our own code to write programs. But frameworks are designed to call our code, while libraries are designed to be called by our code.
+
+Frameworks typically expect us to write functions or create entities with very specific, proprietary interfaces and behavioural contracts. For example, [Ember] requires us to extend its own base classes for things like component classes, instead of using ordinary JavaScript ES-6 classes. As we noted above, when we have specific interfaces, we limit the expressiveness of our programs, but not the incidental complexity.
+
+[jsm]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html "JavaScript Mixins, Subclass Factories, and Method Advice"
+
+The underlying assumption is that we are writing code for the framework, so the framework's author is not concerned with setting-up a many-to-many relationship between the framework's code and our code. For example, we cannot use [JavaScript mixins, subclass factories, or method advice][jsm] with the classes we write in Ember. We have to use the specific, proprietary metaprogramming facilities that Ember provides, or are provided in specific plugins written for Ember.
+
+This leads framework code to be more one-to-many than many-to-many.
+
+Whereas, libraries are designed to be called by our code. And more importantly, by the code of many, many different teams, each of whom have their own programming style and approach. This leads library authors in general to write functions with generic interfaces and simple responsibilities.
+
+Thus, library-oriented code tends to be more many-to-many than one-to-many.
+
+Inexorably, framework-oriented code is less expressive than library-oriented code. It is constrained by the proprietary interfaces and behavioural contracts enforced by the framwework.
+
+Is that a bad thing? It's a tradeoff. Frameworks provide standard ways to do things. Frameworks hold out the promise of doing more things for us, and especially doing more complex things for us. Ideally, although our code may be less expressive with a framework, our goal should be that we write less code against a framework than we would using libraries, and that we use other mechanisms to limit the perceived complexity of our code.
+
+But from our exploration of `linrec`, `binrec`, and `multirec`, we can see that template functions teach us something about specific and general interfaces, and that teaches us something about frameworks and libraries.
+
 ---
 
 ### have your say
