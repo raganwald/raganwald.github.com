@@ -20,7 +20,7 @@ We have the ability to give each function a single responsibility, and name that
 
 Programmers often speak of languages as being *expressive*. Although there is no single universal definition for this word, most programmers agree that an important aspect of "expressiveness" is that the language makes it easy to write programs that are not *unnecessarily* verbose.
 
-Being able to create programs where you can write functions that have a single responsibility, where each responsibility is implemented by a single function, is one important way to avoid unnecessary verbosity: If functions have many responsibilities, they become large and unwieldy. If the same responsibility needs to be implemented more than once, there is de facto redundancy.
+**Programs where functions have single responsibilities, and where responsibilities are implemented by single functions, avoid unnecessary verbosity**. If functions have many responsibilities, they become large and unwieldy. If the same responsibility needs to be implemented more than once, there is de facto redundancy.
 
 Thus, facilitating the many-to-many relationship between functions makes it possible to write programs that are more expressive than those that do not have a many-to-many relationship between functions.
 
