@@ -512,24 +512,7 @@ const mergeSort2 = multirec({
 });
 ```
 
-The interesting thing for us are the functions we supply as arguments:
-
-```javascript
-(list) => list.length <= 1
-(list) => list
-(list) => ({
-  left: list.slice(0, list.length / 2),
-  right: list.slice(list.length / 2)
-})
-(list) => [
-    list.slice(0, list.length / 2),
-    list.slice(list.length / 2)
-  ]
-({ left: list1, right: list2 }) => merge({ list1, list2 })
-([list1, list2]) => merge({ list1, list2 })
-```
-
-Let's name them:
+The interesting thing for us are the functions we supply as arguments. Let's name them:
 
 ```javascript
 const hasAtMostOne = (list) => list.length <= 1'
@@ -554,7 +537,13 @@ We can also say that there is a *many-to-many* relationship between functions in
 
 And as noted in the beginning, this "many-to-many-ness" contributes to expressiveness and to ensuring that we can write software where there is a one-to-one relationship between entities and responsibilities. For example, `bisect` is the authority on bisecting lists. We can arrange to write all of our code to invoke `bisect`, rather than duplicating its functionality.
 
-We can also write functions like `bisectLeftAndRight` and `mergeLeftAndRight`. But when we do, there will be a one-to-many relationship, because we have little use for them outside of our specific merge application. This does allow us to structure our code and extract commonality like how to perform a binary recursion, but by limiting the many-to-many-ness of our program, we limit its expressiveness.
+Our heuristic is that the more general-purpose the interface and behavioural "contract" that a function provides, and the more focused and simple a responsibility it has, the greater its "many-to-many-ness." **Therefore, when we write template functions like `multirec`, we should strive to design them to accept general-purpose parameters with simple responsibilities.**
+
+But we can also write functions like `bisectLeftAndRight` and `mergeLeftAndRight`. But when we do, there will be a one-to-many relationship, because we have little use for them outside of our specific merge application. This does allow us to structure our code and extract commonality like how to perform a binary recursion, but by limiting the many-to-many-ness of our program, we limit its expressiveness.
+
+Unfortunately, this limitation of expressiveness does not directly translate to limiting the perceived complexity of our programs. We can tell from detailed inspection that a function like `bisectLeftAndRight` will not be useful elsewhere in the program, but if we do not employ a tool like module scoping to enforce this and make it obvious at a glance, we do not really limit its perceived complexity.
+
+From this we can observe that many programming techniques, such as writing highly specialized interfaces for functions, or having complex responsibilities, can serve to limit a program's expressiveness without providing the benefit of limiting its perceived complexity.
 
 ---
 
