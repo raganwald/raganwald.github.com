@@ -355,7 +355,7 @@ const sum = linrec({
 });
 ```
 
-And now we can exploit the similarities between `sum` and `merge`:
+And now we can exploit the similarities between `sum` and `merge`, by using `linrec` to write `merge` as well:
 
 ```javascript
 const merge = linrec({
@@ -383,6 +383,50 @@ const merge = linrec({
   combine: ({ left, right }) => [left, ...right]
 });
 ```
+
+But why stop there?
+
+---
+
+### binrec
+
+`binrec` is a template function for implementing *binary recursion*. Remember our coöp student implementing a merge between sorted lists? One of the cool things you can do with a merge function is write a [merge sort], and advanced students are often asked to at least sketch out how it would work.
+
+[merge sort]: https://en.wikipedia.org/wiki/Merge_sort
+
+`binrec` is actually simpler than `linrec` in at least one respect, because instead of having an element and a remainder, `binrec` divides a problem into two parts and applies the same algorithm to both halves:
+
+```javascript
+function binrec({ indivisible, seed, divide, combine }) {
+  return function myself (input) {
+    if (indivisible(input)) {
+      return seed(input);
+    } else {
+      let { left, right } = divide(input);
+
+      left = myself(left);
+      right = myself(right);
+
+      return combine({ left, right });
+    }
+  }
+}
+
+const mergeSort = binrec({
+  indivisible: (list) => list.length <= 1,
+  seed: (list) => list,
+  divide: (list) => ({
+    left: list.slice(0, list.length / 2),
+    right: list.slice(list.length / 2)
+  }),
+  combine: ({ left: list1, right: list2 }) => merge({ list1, list2 })
+});
+
+mergeSort([1, 42, 4, 5])
+  //=> [1, 4, 5, 42]
+```
+
+
 
 ---
 
