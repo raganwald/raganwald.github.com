@@ -311,7 +311,7 @@ function sum(list) {
 }
 ```
 
-we're just about ready to make a template function. Our penultimate step is to rename `sum` to `myself` and `list` to `input`:
+We're just about ready to make a template function. Our penultimate step is to rename `sum` to `myself`, and `list` to `input`:
 
 ```javascript
 function myself (input) {
@@ -520,6 +520,27 @@ The interesting thing for us are the functions we supply as arguments:
 ({ left: list1, right: list2 }) => merge({ list1, list2 })
 ([list1, list2]) => merge({ list1, list2 })
 ```
+
+Let's name them:
+
+```javascript
+const hasAtMostOne = (list) => list.length <= 1'
+const Identity = (list) => list'
+const bisectLeftAndRight = (list) => ({
+    left: list.slice(0, list.length / 2),
+    right: list.slice(list.length / 2)
+  });
+const bisect = (list) => [
+    list.slice(0, list.length / 2),
+    list.slice(list.length / 2)
+  ];
+const mergeLeftAndRight({ left: list1, right: list2 }) => merge({ list1, list2 })'
+const mergeBisected = ([list1, list2]) => merge({ list1, list2 })
+```
+
+Looking at the names and at what the functions do, it seems that some, namely `hasAtMostOne`, `Identity`, and `bisect` feel like general-purpose functions that we might find ourselves using throughout one or many programs. And in fact, they can often be found in general-purpose function utility libraries.
+
+The others, namely `bisectLeftAndRight`, `mergeLeftAndRight`, and `mergeBisected` seem more specialized. They are unlikely to be used anywhere else.
 
 ---
 
