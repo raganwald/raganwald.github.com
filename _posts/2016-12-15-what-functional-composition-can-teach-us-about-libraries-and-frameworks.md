@@ -65,16 +65,19 @@ Now let's look at something a little more contemporary, higher-order functions.[
 
 Functions that accept functions as parameters, and/or return functions as values, are called *Higher-Order Functions*, or "HOFs." Languages that support HOFs also support the idea of *functions as first-class values*, and nearly always support the idea of *dynamically creating functions*.
 
-HOFs give programmers even more ways to decompose and compose programs. Let's look at an oft-quoted example, `map`. For kicks, here is a lazy version:
+HOFs give programmers even more ways to decompose and compose programs. Let's look at an oft-quoted example, `map`:
 
 ```javascript
-function * map (fn, iterable) {
+function map (fn, iterable) {
+  const mapped = [];
+
   for (const element of iterable) {
-    yield fn(element);
+    mapped.push(fn(element));
   }
+  return mapped;
 }
 
-[...map((x) => x * x, [1, 2, 3])]
+map((x) => x * x, [1, 2, 3])
   //=> [1, 4, 9]
 ```
 
@@ -82,14 +85,17 @@ function * map (fn, iterable) {
 
 ```javascript
 function mapWith (fn) {
-  return function * (iterable) {
+  return function (iterable) {
+    const mapped = [];
+
     for (const element of iterable) {
-      yield fn(element);
+      mapped.push(fn(element));
     }
+    return mapped;
   };
 }
 
-[...mapWith((x) => x * x)(1, 2, 3])]
+mapWith((x) => x * x)([1, 2, 3])
   //=> [1, 4, 9]
 ```
 
@@ -98,16 +104,19 @@ function mapWith (fn) {
 ```javascript
 function mapWith (fn) { return(
 
-  function * (iterable) {
+  function (iterable) {
+    const mapped = [];
+
     for (const element of iterable) {
-      yield fn(element);
+      mapped.push(fn(element));
     }
+    return mapped;
   }
 
 );}
 ```
 
-We can see that `mapWith` is a kind of *Template Function*: It returns a function, with its parameters (one in this case) inserted into it. Template strings provide the same functionality for string expressions:
+We can see that `mapWith` is a kind of *Template Function*: It returns a function, with its parameters (one in this case) inserted into the template.[^a-kind-of] Template strings provide the same functionality for string expressions:
 
 ```javascript
 class User {
@@ -116,6 +125,8 @@ class User {
   }
 }
 ```
+
+[^a-kind-of]: It's only a *kind of* template, to be a 100% honest true-blue template, we would need a language with macros. But this is close enough for our purposes today.
 
 Templates are *de rigeur* in front-end development. Here's an example from [Ember], using the handlebars templating language:
 
@@ -426,7 +437,34 @@ mergeSort([1, 42, 4, 5])
   //=> [1, 4, 5, 42]
 ```
 
+From `binrec`, we can derive `multirec`, which divides the problem into an arbitrary number of symmetrical parts:
 
+```javascript
+function multirec({ indivisible, seed, divide, combine }) {
+  return function myself (input) {
+    if (indivisible(input)) {
+      return seed(input);
+    } else {
+      const parts = divide(input);
+      const solutions = mapWith(myself)(parts);
+
+      return combine(solutions);
+    }
+  }
+}
+
+const mergeSort = multirec({
+  indivisible: (list) => list.length <= 1,
+  seed: (list) => list,
+  divide: (list) => [
+    list.slice(0, list.length / 2),
+    list.slice(list.length / 2)
+  ],
+  combine: ([list1, list2]) => merge({ list1, list2 })
+});
+```
+
+There are an infinitude of template functions we could explore, but these are enough for now. Let's return to thinking about the relationship between expressiveness and perceived complexity.
 
 ---
 
@@ -441,6 +479,47 @@ By extracting this algorithm into `linrec`, we once again make sure that one and
 Thus, we find that a feature like first-class functions does give us the power of greater expressiveness, as it gives us at least one more way to create many-to-many relationships between functions.
 
 And we also know that this can increase perceived complexity if we do not also temper this increased expressiveness with language features or architectural designs that allow us to define groups of functions that have rich relationships within themselves, but only limited relationships with other groups.
+
+There's more to it than that. Let's compare `binrec` and `multirec`. Or rather, let's compare how we write `mergeSort` using `binrec` and `multirec`:
+
+```javascript
+const mergeSort = binrec({
+  indivisible: (list) => list.length <= 1,
+  seed: (list) => list,
+  divide: (list) => ({
+    left: list.slice(0, list.length / 2),
+    right: list.slice(list.length / 2)
+  }),
+  combine: ({ left: list1, right: list2 }) => merge({ list1, list2 })
+});
+
+const mergeSort = multirec({
+  indivisible: (list) => list.length <= 1,
+  seed: (list) => list,
+  divide: (list) => [
+    list.slice(0, list.length / 2),
+    list.slice(list.length / 2)
+  ],
+  combine: ([list1, list2]) => merge({ list1, list2 })
+});
+```
+
+The interesting thing for us are the functions we supply as arguments:
+
+```javascript
+(list) => list.length <= 1
+(list) => list
+(list) => ({
+  left: list.slice(0, list.length / 2),
+  right: list.slice(list.length / 2)
+})
+(list) => [
+    list.slice(0, list.length / 2),
+    list.slice(list.length / 2)
+  ]
+({ left: list1, right: list2 }) => merge({ list1, list2 })
+([list1, list2]) => merge({ list1, list2 })
+```
 
 ---
 
