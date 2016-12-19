@@ -5,11 +5,17 @@ tags: [allonge, noindex]
 
 Let's look at a design principle: *Composition*. In its simplest form, composition is about making things out of smaller things. There can be so much more to it, of course.
 
+[![ibm 360](/assets/images/banner/ibm-360.jpg)](https://www.flickr.com/photos/monchan/30781538732)
+
+*IBM 360, © 2016 lk T, [some rights reserved][cc-by-2.0]*
+
 ---
 
 ### introduction: expressiveness and complexity
 
-Consider *Structured Programming*. In structured programming, we write procedures that call other procedures by name.  Structured programming allows us to decompose procedures, and to extract and share common procedures, DRY-ing up our code and allowing us to name concepts.
+Consider [*Structured Programming*][sp], a technique arising in the late 1950s and exemplified in the ALGOL programming language. In structured programming, we write procedures that call other procedures by name.  Structured programming allows us to decompose procedures, and to extract and share common procedures, DRY-ing up our code and allowing us to name concepts.
+
+[sp]: https://en.wikipedia.org/wiki/Structured_programming
 
 When a function invokes other functions, and when one function can be invoked by more than one other function, we have a very good thing. We're going to focus on this idea today. When we have a *many-to-many* relationship between entities, we have a more expressive power than when we have a *one-to-many* relationship.
 
