@@ -519,8 +519,8 @@ const mergeSort2 = multirec({
 The interesting thing for us are the functions we supply as arguments. Let's name them:
 
 ```javascript
-const hasAtMostOne = (list) => list.length <= 1'
-const Identity = (list) => list'
+const hasAtMostOne = (list) => list.length <= 1;
+const Identity = (list) => list;
 const bisectLeftAndRight = (list) => ({
     left: list.slice(0, list.length / 2),
     right: list.slice(list.length / 2)
