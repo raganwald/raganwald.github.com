@@ -50,7 +50,7 @@ Namespaces constrain large graphs into many smaller graphs, each of which has a 
 
 What we have described is a heuristic for designing good software systems: **Provide the flexibility to use many-to-many relationships between entities, while simultaneously providing ways for programmers to intentionally limit the ways that entities can be connected**.
 
-Now that we've established our heuristic, let's look at some higher-order functions,a nd see what they can tell us about expressiveness and perceived complexity.
+Now that we've established our heuristic, let's look at some higher-order functions, and see what they can tell us about expressiveness and perceived complexity.
 
 ---
 
