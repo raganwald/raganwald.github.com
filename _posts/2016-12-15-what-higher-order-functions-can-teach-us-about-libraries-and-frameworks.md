@@ -20,9 +20,9 @@ We have the ability to give each function a single responsibility, and name that
 
 Programmers often speak of languages as being *expressive*. Although there is no single universal definition for this word, most programmers agree that an important aspect of "expressiveness" is that the language makes it easy to write programs that are not *unnecessarily* verbose.
 
-Being able to create programs where you can write functions that have a single responsibility, where each responsibility is implemented by a single function, is one important way to avoid unnecessary verbosity: If procedures have many responsibilities, they become large and unwieldy. If the same responsibility needs to be implemented more than once, there is de facto redundancy.
+Being able to create programs where you can write functions that have a single responsibility, where each responsibility is implemented by a single function, is one important way to avoid unnecessary verbosity: If functions have many responsibilities, they become large and unwieldy. If the same responsibility needs to be implemented more than once, there is de facto redundancy.
 
-Thus, facilitating the many-to-many relationship between procedures makes it possible to write programs that are more expressive than those that do not have a many-to-many relationship between procedures.
+Thus, facilitating the many-to-many relationship between functions makes it possible to write programs that are more expressive than those that do not have a many-to-many relationship between functions.
 
 ---
 
@@ -32,17 +32,17 @@ However, "With great power comes great responsibility."[^quote] The downside of 
 
 [^quote]: "Ils doivent envisager qu’une grande responsabilité est la suite inséparable d’un grand pouvoir."—http://quoteinvestigator.com/2015/07/23/great-power/
 
-One way to think about this by analogy is to imagine we are drawing a graph. Each procedure is a vertex, and the calling relationship between them is an edge. Assuming that there is no "dead code," every structured program forms a [connected graph].
+One way to think about this by analogy is to imagine we are drawing a graph. Each function is a vertex, and the calling relationship between them is an edge. Assuming that there is no "dead code," every structured program forms a [connected graph].
 
 [![connected graph](/assets/images/6n-graf.svg.png)][connected graph]
 
 [connected graph]: https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
 
-Given a known number of nodes, the number of different ways to draw a connected graph between them is the [A001187] integer sequence. Its first eleven terms are: `1, 1, 1, 4, 38, 728, 26704, 1866256, 251548592, 66296291072, 34496488594816`. Meaning that there are more than thirty-four *trillion* ways to organize a program with just ten procedures.
+Given a known number of nodes, the number of different ways to draw a connected graph between them is the [A001187] integer sequence. Its first eleven terms are: `1, 1, 1, 4, 38, 728, 26704, 1866256, 251548592, 66296291072, 34496488594816`. Meaning that there are more than thirty-four *trillion* ways to organize a program with just ten functions.
 
 [A001187]: http://oeis.org/A001187
 
-This explosion of flexibility is so great that programmers have to temper it. The benefits of creating one-to-one relationships between procedures and responsibilities can become overwhelmed by the difficulty of understanding programs with unconstrained potential complexity.
+This explosion of flexibility is so great that programmers have to temper it. The benefits of creating one-to-one relationships between functions and responsibilities can become overwhelmed by the difficulty of understanding programs with unconstrained potential complexity.
 
 JavaScript has tools to help. Its blocks create namespaces, and so do its formal modules. It may soon have private object properties.
 
