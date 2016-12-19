@@ -590,6 +590,10 @@ Have an observation? Spot an error? You can open an [issue](https://github.com/r
 
 And hey: If you like this essay, you'll love [JavaScript Allongé](https://leanpub.com/javascriptallongesix/). It's free to read online!
 
+---
+
+### notes
+
 [anamorphism]: https://en.wikipedia.org/wiki/Anamorphism
 [catamorphism]: https://en.wikipedia.org/wiki/Catamorphism
 [cc-by-2.0]: https://creativecommons.org/licenses/by/2.0/
