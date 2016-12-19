@@ -1,6 +1,6 @@
 ---
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 *In this essay, we will take a look at higher-order functions, with an eye to seeing how they can be used to make our programs more expressive, while balancing that against the need to limit the perceived complexity of our programs.*
@@ -575,9 +575,11 @@ But from our exploration of `linrec`, `binrec`, and `multirec`, we can see that 
 
 ---
 
-### have your say
+### afterward
 
-Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss this on [reddit], or even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-12-15-what-functional-composition-can-teach-us-about-libraries-and-frameworks) yourself!
+Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss this on [reddit], or even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-12-15-what-functional-composition-can-teach-us-about-libraries-and-frameworks) yourself.
+
+And hey: If you like this essay, you'll love [JavaScript Allongé](https://leanpub.com/javascriptallongesix/). It's free to read online!
 
 [anamorphism]: https://en.wikipedia.org/wiki/Anamorphism
 [catamorphism]: https://en.wikipedia.org/wiki/Catamorphism
