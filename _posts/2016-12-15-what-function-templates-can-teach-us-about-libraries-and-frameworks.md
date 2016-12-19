@@ -577,6 +577,8 @@ But from our exploration of `linrec`, `binrec`, and `multirec`, we can see that 
 
 ### afterward
 
+An early draft of this post was reviewed by [Jinny Kim](https://github.com/younjin) and [Peter Sobot](https://github.com/psobot). Thank you.
+
 Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss this on [reddit], or even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-12-15-what-functional-composition-can-teach-us-about-libraries-and-frameworks) yourself.
 
 And hey: If you like this essay, you'll love [JavaScript Allongé](https://leanpub.com/javascriptallongesix/). It's free to read online!
