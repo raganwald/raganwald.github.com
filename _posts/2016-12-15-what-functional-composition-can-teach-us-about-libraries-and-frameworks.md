@@ -545,6 +545,14 @@ Unfortunately, this limitation of expressiveness does not directly translate to 
 
 From this we can observe that many programming techniques, such as writing highly specialized interfaces for functions, or having complex responsibilities, can serve to limit a program's expressiveness without providing the benefit of limiting its perceived complexity.
 
+[![framework](/assets/images/banner/framework.jpg)](https://www.flickr.com/photos/kazk/198640938)
+
+*Framework, © 2006 kaz k, [some rights reserved][cc-by-2.0]*
+
+---
+
+### what template functions tell us about frameworks and libraries
+
 ---
 
 ### have your say
