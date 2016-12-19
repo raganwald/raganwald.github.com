@@ -1,4 +1,5 @@
 ---
+title: "What Higher-Order Functions Can Teach Us About Libraries And Frameworks"
 layout: default
 tags: [allonge]
 ---
@@ -577,7 +578,7 @@ Is fraekwrok-oriented code a bad thing? It's a tradeoff. Frameworks provide stan
 
 Ideally, although our code may be less expressive with a framework, our goal should be that we write less code against a framework than we would using libraries, and that we use other mechanisms to limit the perceived complexity of our code.
 
-But from our exploration of `linrec`, `binrec`, and `multirec`, we can see that template functions teach us something about specific and general interfaces, and that teaches us something about the tradeoffs between using frameworks and libraries.
+But from our exploration of `linrec`, `binrec`, and `multirec`, we can see that higher-order functions teach us something about specific and general interfaces, and that teaches us something about the tradeoffs between using frameworks and libraries.
 
 ---
 
