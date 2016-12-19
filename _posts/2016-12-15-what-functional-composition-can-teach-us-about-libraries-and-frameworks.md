@@ -3,7 +3,7 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-*Sit facilis perferendis ea esse qui. Voluptas delectus voluptatem sunt magnam illo eveniet repellendus. Ducimus consequatur laboriosam id omnis accusamus. Ab ad mollitia ipsum omnis sed blanditiis.*
+*In this essay, we will take a look at higher-order functions, with an eye to seeing how they can be used to make our programs more expressive, while balancing that against the need to limit the perceived complexity of our programs.*
 
 [![ibm 360](/assets/images/banner/ibm-360.jpg)](https://www.flickr.com/photos/monchan/30781538732)
 
