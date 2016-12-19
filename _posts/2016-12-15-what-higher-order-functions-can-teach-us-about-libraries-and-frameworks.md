@@ -8,23 +8,27 @@ tags: [allonge]
 
 ---
 
-### introduction: expressiveness and complexity
+### introduction: expressiveness
 
-Consider [*Structured Programming*][sp], a technique arising in the late 1950s and exemplified in the ALGOL programming language. In structured programming, we write procedures that call other procedures by name.  Structured programming allows us to decompose procedures, and to extract and share common procedures, DRY-ing up our code and allowing us to name concepts.
+One of the most basic ideas in programming is that functions can invoke other functions.[^methods]
 
-[sp]: https://en.wikipedia.org/wiki/Structured_programming
+[^methods]: Although this essay is going to talk about functions, everything we look at is applicable to methods and by analogy, to classes. We're just sticking to talking about functions for simplicity's sake.
 
-When a function invokes other functions, and when one function can be invoked by more than one other function, we have a very good thing. We're going to focus on this idea today. When we have a *many-to-many* relationship between entities, we have a more expressive power than when we have a *one-to-many* relationship.
+When a function invokes other functions, and when one function can be invoked by more than one other function, we have a very good thing. When we have a *many-to-many* relationship between functions, we have a more expressive power than when we have a *one-to-many* relationship.
 
-We have the ability to give each procedure a single responsibility, and name that responsibility. We also have the ability to ensure that one and only one procedure has that responsibility. A many-to-many relationship between procedures is what enables us to create a one-to-one relationship between procedures and responsibilities.
+We have the ability to give each function a single responsibility, and name that responsibility. We also have the ability to ensure that one and only one function has that responsibility. **A many-to-many relationship between functions is what enables us to create a one-to-one relationship between functions and responsibilities**.
 
 Programmers often speak of languages as being *expressive*. Although there is no single universal definition for this word, most programmers agree that an important aspect of "expressiveness" is that the language makes it easy to write programs that are not *unnecessarily* verbose.
 
-Being able to create programs where you can write procedures that have a single responsibility, where each responsibility is implemented by a single procedure, is one important way to avoid unnecessary verbosity: If procedures have many responsibilities, they become large and unwieldy. If the same responsibility needs to be implemented more than once, there is de facto redundancy.
+Being able to create programs where you can write functions that have a single responsibility, where each responsibility is implemented by a single function, is one important way to avoid unnecessary verbosity: If procedures have many responsibilities, they become large and unwieldy. If the same responsibility needs to be implemented more than once, there is de facto redundancy.
 
 Thus, facilitating the many-to-many relationship between procedures makes it possible to write programs that are more expressive than those that do not have a many-to-many relationship between procedures.
 
-However, "With great power comes great responsibility."[^quote] The downside of a many-to-many relationship between procedures is that the 'space of things a program might do' grows very rapidly as the size increases. "Expressiveness" is often in tension with "Perceived Complexity."
+---
+
+### the dark side: perceived complexity
+
+However, "With great power comes great responsibility."[^quote] The downside of a many-to-many relationship between functions is that the 'space of things a program might do' grows very rapidly as the size increases. "Expressiveness" is often in tension with "Perceived Complexity."
 
 [^quote]: "Ils doivent envisager qu’une grande responsabilité est la suite inséparable d’un grand pouvoir."—http://quoteinvestigator.com/2015/07/23/great-power/
 
@@ -40,21 +44,13 @@ Given a known number of nodes, the number of different ways to draw a connected 
 
 This explosion of flexibility is so great that programmers have to temper it. The benefits of creating one-to-one relationships between procedures and responsibilities can become overwhelmed by the difficulty of understanding programs with unconstrained potential complexity.
 
-Of course, it's not that a program of a certain size *is* complex, it's just that a program of a certain size *could be* complex, and sorting out what it does, and how, is hard work.
-
-So researchers looked for ways that programming languages could provide the benefits of structured programming, while limiting the potential complexity of programs. In the 1970s, there was an explosion of programming languages with mechanisms for limiting the possible many-to-many relationships.
-
-For example, Pascal had an idea of nesting a procedure inside of another procedure. Such an "inner" procedure could be invoked by other "inner" procedures nested within the same "outer" procedure, but could not be invoked by procedures defined outside the outer procedure. Procedures created *namespaces*.
-
-This idea of namespaces has carried forward to this day, in many forms. JavaScript's blocks create namespaces, and it has formal modules as well. It may soon have private object properties.
+JavaScript has tools to help. Its blocks create namespaces, and so do its formal modules. It may soon have private object properties.
 
 Namespaces constrain large graphs into many smaller graphs, each of which has a constrained set of ways they can be connected to other graphs. It's still a large graph, but the number of possible ways to draw it is smaller, and by analogy, it is easier to sort out what it does, and how.
 
 What we have described is a heuristic for designing good software systems: **Provide the flexibility to use many-to-many relationships between entities, while simultaneously providing ways for programmers to intentionally limit the ways that entities can be connected**.
 
-Now let's look at something a little more contemporary, higher-order functions.[^well-actually]
-
-[^well-actually]: Well, actually, Higher-Order functions predate Structured Programming. They go back to the Lambda Calculus, and first appeared in Lisp in the early 1950s. So when we say they are a more contemporary idea, we mean that their mainstream acceptance is more contemporary.
+Now that we've established our heuristic, let's look at some higher-order functions,a nd see what they can tell us about expressiveness and perceived complexity.
 
 ---
 
@@ -222,73 +218,7 @@ Linear recursion has a simple form:
 4. Run our linearly recursive function on the remainder, then
 5. Combine our chunk with the result of our linearly recursive function on the remainder
 
-Both of our examples above have this form, and we will write a template function to implement linear recursion. To write a template function, it helps to take an example of the function we want to implement, and extract its future parameters as constants.
-
-First, `indivisible` and `seed`:
-
-```javascript
-function sum(list) {
-  const indivisible = (list) => list.length === 0;
-  const seed = () => 0;
-
-  if (indivisible(list)) {
-    return seed(list);
-  } else {
-    const [atom, ...remainder] = list;
-    const left = atom;
-    const right = sum(remainder);
-
-    return left + right;
-  }
-}
-```
-
-The next one, `value`, seems superfluous, but we'll hang onto it for later:
-
-```javascript
-function sum(list) {
-  const indivisible = (list) => list.length === 0;
-  const seed = () => 0;
-  const value = (atom) => atom;
-
-  if (indivisible(list)) {
-    return seed(list);
-  } else {
-    const [atom, ...remainder] = list;
-    const left = value(atom);
-    const right = sum(remainder);
-
-    return left + right;
-  }
-}
-```
-
-`divide`:
-
-```javascript
-function sum(list) {
-  const indivisible = (list) => list.length === 0;
-  const seed = () => 0;
-  const value = (atom) => atom;
-  const divide = (list) => {
-    const [atom, ...remainder] = list;
-
-    return  { atom, remainder }
-  };
-
-  if (indivisible(list)) {
-    return seed(list);
-  } else {
-    const { atom, remainder } = divide(list);
-    const left = value(atom);
-    const right = sum(remainder);
-
-    return left + right;
-  }
-}
-```
-
-And then `combine`:
+Both of our examples above have this form, and we will write a template function to implement linear recursion. To write a template function, it helps to take an example of the function we want to implement, and extract its future parameters as constants:
 
 ```javascript
 function sum(list) {
@@ -473,13 +403,11 @@ There are an infinitude of template functions we could explore, but these are en
 
 ### the relationship between template functions, expressiveness, and complexity
 
-In structured programming, procedures call each other, and by creating many-to-many relationships between procedures, we increase expressiveness by making sure that one and only one procedure implements any one responsibility. If two procedures implement the same responsibility, we are less DRY, and less expressive.
+In typical programming, functions invoke each other, and by creating many-to-many relationships between functions, we increase expressiveness by making sure that one and only one functions implements any one responsibility. If two functions implement the same responsibility, we are less DRY, and less expressive.
 
 How do template functions come into this? Well, as we saw, `merge` and `sum` have different responsibilities in the solution domain--merging lists and summing lists. But they share a common implementation structure, linear recursion. Therefore, they both are responsible for implementing a linearly recursive algorithm.
 
-By extracting this algorithm into `linrec`, we once again make sure that one and only one entity--`linrec` is responsible for implementing linear recursion. If we wish to transform its implementation into an iteration, for example, we only need to change this in one place in our code. We don't have to rewrite both `merge` and `sum`.
-
-Thus, we find that a feature like first-class functions does give us the power of greater expressiveness, as it gives us at least one more way to create many-to-many relationships between functions.
+By extracting this algorithm into `linrec`, we once again make sure that one and only one entity--`linrec` is responsible for implementing linear recursion. Thus, we find that a feature like first-class functions does give us the power of greater expressiveness, as it gives us at least one more way to create many-to-many relationships between functions.
 
 And we also know that this can increase perceived complexity if we do not also temper this increased expressiveness with language features or architectural designs that allow us to define groups of functions that have rich relationships within themselves, but only limited relationships with other groups.
 
