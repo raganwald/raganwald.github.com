@@ -54,9 +54,9 @@ Now that we've established our heuristic, let's look at some higher-order functi
 
 ---
 
-[![ibm 360](/assets/images/banner/ibm-360.jpg)](https://www.flickr.com/photos/monchan/30781538732)
+[![brown Mandelbrot](/assets/images/banner/brown-mandelbrot.png)](https://www.flickr.com/photos/docnic/2656653586)
 
-*IBM 360, © 2016 lk T, [some rights reserved][cc-by-2.0]*
+*Brown Mandelbrot, © 2008 docnic, [Some rights reserved][cc-by-2.0]*
 
 ---
 
@@ -64,88 +64,7 @@ Now that we've established our heuristic, let's look at some higher-order functi
 
 Functions that accept functions as parameters, and/or return functions as values, are called *Higher-Order Functions*, or "HOFs." Languages that support HOFs also support the idea of *functions as first-class values*, and nearly always support the idea of *dynamically creating functions*.
 
-HOFs give programmers even more ways to decompose and compose programs. Let's look at an oft-quoted example, `map`:
-
-```javascript
-function map (fn, iterable) {
-  const mapped = [];
-
-  for (const element of iterable) {
-    mapped.push(fn(element));
-  }
-  return mapped;
-}
-
-map((x) => x * x, [1, 2, 3])
-  //=> [1, 4, 9]
-```
-
-`map` takes a function as a parameter. If we curry it by hand, we get `mapWith`:
-
-```javascript
-function mapWith (fn) {
-  return function (iterable) {
-    const mapped = [];
-
-    for (const element of iterable) {
-      mapped.push(fn(element));
-    }
-    return mapped;
-  };
-}
-
-mapWith((x) => x * x)([1, 2, 3])
-  //=> [1, 4, 9]
-```
-
-`mapWith` takes a function as a parameter and returns a function. There are many such functions, but `mapWith` is a particularly interesting example of functions that take functions as arguments and return functions. Let's take another look at `mapWith`, with some spacing and parenthesis inserted:
-
-```javascript
-function mapWith (fn) { return(
-
-  function (iterable) {
-    const mapped = [];
-
-    for (const element of iterable) {
-      mapped.push(fn(element));
-    }
-    return mapped;
-  }
-
-);}
-```
-
-We can see that `mapWith` is a kind of *Template Function*: It returns a function, with its parameters (one in this case) inserted into the template.[^a-kind-of] Template strings provide the same functionality for string expressions:
-
-```javascript
-class User {
-  fullName() {
-    return `${this.firstName()} ${this.lastName}`;
-  }
-}
-```
-
-[^a-kind-of]: It's only a *kind of* template, to be a 100% honest true-blue template, we would need a language with macros. But this is close enough for our purposes today.
-
-Templates are *de rigeur* in front-end development. Here's an example from [Ember], using the handlebars templating language:
-
-[Ember]: http://emberjs.com/
-
-```hbs
-Hello, <strong>{{firstName}} {{lastName}}</strong>!
-```
-
-Programming with templates of any kind makes for particularly readable code, because the form of the program resembles its output. The handlebars code looks a lot like the HTML it produces, and the core of the `mapWith` function looks a lot like the function it produces.
-
-And while writing functions that make other functions may be unfamiliar for programmers new to languages with functions-as-first-class-values, the idea of a "template" is particularly easy to grasp.
-
-[![brown Mandelbrot](/assets/images/banner/brown-mandelbrot.png)](https://www.flickr.com/photos/docnic/2656653586)
-
-*Brown Mandelbrot, © 2008 docnic, [Some rights reserved][cc-by-2.0]*
-
----
-
-### linear recursion
+HOFs give programmers even more ways to decompose and compose programs, and thus more ways to write programs where there is a one-to-one relationship between functions and responsibilities. Let's look at an example.
 
 Rumour has it that there are excellent companies that ask coöp students to write code as part of the interview process. A typical problem will ask the student to demonstrate their facility solving a problem that ought to be familiar to a computer science or computer engineering student.
 
@@ -204,7 +123,7 @@ sum([42, 3, -1])
   //=> 44
 ```
 
-We've written them so that both have the same structure, they are *linearly recursive*. Can we extract this structure and rewrite it as a template function?
+We've written them so that both have the same structure, they are *linearly recursive*. Can we extract this structure?
 
 ---
 
@@ -218,7 +137,7 @@ Linear recursion has a simple form:
 4. Run our linearly recursive function on the remainder, then
 5. Combine our chunk with the result of our linearly recursive function on the remainder
 
-Both of our examples above have this form, and we will write a template function to implement linear recursion. To write a template function, it helps to take an example of the function we want to implement, and extract its future parameters as constants:
+Both of our examples above have this form, and we will write a higher-order function to implement linear recursion. To get started with our extraction, it helps to take an example of the function we want to implement, and extract its future parameters as constants:
 
 ```javascript
 function sum(list) {
@@ -244,7 +163,7 @@ function sum(list) {
 }
 ```
 
-We're just about ready to make a template function. Our penultimate step is to rename `sum` to `myself`, and `list` to `input`:
+We're just about ready to make our higher-order function. Our penultimate step is to rename `sum` to `myself`, and `list` to `input`:
 
 ```javascript
 function myself (input) {
@@ -334,7 +253,7 @@ But why stop there?
 
 ### binrec
 
-`binrec` is a template function for implementing *binary recursion*. Remember our coöp student implementing a merge between sorted lists? One of the cool things you can do with a merge function is write a [merge sort], and advanced students are often asked to at least sketch out how it would work.
+`binrec` is a higher-order function for implementing *binary recursion*. Remember our coöp student implementing a merge between sorted lists? One of the cool things you can do with a merge function is write a [merge sort], and advanced students are often asked to at least sketch out how it would work.
 
 [merge sort]: https://en.wikipedia.org/wiki/Merge_sort
 
@@ -397,15 +316,15 @@ const mergeSort = multirec({
 });
 ```
 
-There are an infinitude of template functions we could explore, but these are enough for now. Let's return to thinking about the relationship between expressiveness and perceived complexity.
+There are an infinitude of higher-order functions we could explore, but these are enough for now. Let's return to thinking about the relationship between expressiveness and perceived complexity.
 
 ---
 
-### the relationship between template functions, expressiveness, and complexity
+### the relationship between higher-order functions, expressiveness, and complexity
 
 In typical programming, functions invoke each other, and by creating many-to-many relationships between functions, we increase expressiveness by making sure that one and only one functions implements any one responsibility. If two functions implement the same responsibility, we are less DRY, and less expressive.
 
-How do template functions come into this? Well, as we saw, `merge` and `sum` have different responsibilities in the solution domain--merging lists and summing lists. But they share a common implementation structure, linear recursion. Therefore, they both are responsible for implementing a linearly recursive algorithm.
+How do higher-order functions come into this? Well, as we saw, `merge` and `sum` have different responsibilities in the solution domain--merging lists and summing lists. But they share a common implementation structure, linear recursion. Therefore, they both are responsible for implementing a linearly recursive algorithm.
 
 By extracting this algorithm into `linrec`, we once again make sure that one and only one entity--`linrec` is responsible for implementing linear recursion. Thus, we find that a feature like first-class functions does give us the power of greater expressiveness, as it gives us at least one more way to create many-to-many relationships between functions.
 
@@ -470,7 +389,7 @@ We can also say that there is a *many-to-many* relationship between functions in
 
 And as noted in the beginning, this "many-to-many-ness" contributes to expressiveness and to ensuring that we can write software where there is a one-to-one relationship between entities and responsibilities. For example, `bisect` is the authority on bisecting lists. We can arrange to write all of our code to invoke `bisect`, rather than duplicating its functionality.
 
-Our heuristic is that the more general-purpose the interface and behavioural "contract" that a function provides, and the more focused and simple a responsibility it has, the greater its "many-to-many-ness." **Therefore, when we write template functions like `multirec`, we should strive to design them to accept general-purpose parameters with simple responsibilities.**
+Our heuristic is that the more general-purpose the interface and behavioural "contract" that a function provides, and the more focused and simple a responsibility it has, the greater its "many-to-many-ness." **Therefore, when we write higher-order functions like `multirec`, we should strive to design them to accept general-purpose parameters with simple responsibilities.**
 
 But we can also write functions like `bisectLeftAndRight` and `mergeLeftAndRight`. But when we do, there will be a one-to-many relationship, because we have little use for them outside of our specific merge application. This does allow us to structure our code and extract commonality like how to perform a binary recursion, but by limiting the many-to-many-ness of our program, we limit its expressiveness.
 
@@ -486,7 +405,7 @@ From this we can observe that many programming techniques, such as writing highl
 
 ---
 
-### what template functions tell us about frameworks and libraries
+### what higher-order functions tell us about frameworks and libraries
 
 Roughly speaking, both frameworks and libraries are collections of classes, functions, and other code that we blend with our own code to write programs. But frameworks are designed to call our code, while libraries are designed to be called by our code.
 
@@ -526,3 +445,4 @@ And hey: If you like this essay, you'll love [JavaScript Allongé](https://leanp
 [catamorphism]: https://en.wikipedia.org/wiki/Catamorphism
 [cc-by-2.0]: https://creativecommons.org/licenses/by/2.0/
 [reddit]: https://www.reddit.com/r/javascript/comments/5g4bmu/anamorphisms_in_javascript/
+[Ember]: http://emberjs.com/
