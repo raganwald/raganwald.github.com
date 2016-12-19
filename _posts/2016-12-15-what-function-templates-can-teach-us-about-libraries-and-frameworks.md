@@ -5,10 +5,6 @@ tags: [allonge]
 
 *In this essay, we will take a look at higher-order functions, with an eye to seeing how they can be used to make our programs more expressive, while balancing that against the need to limit the perceived complexity of our programs.*
 
-[![ibm 360](/assets/images/banner/ibm-360.jpg)](https://www.flickr.com/photos/monchan/30781538732)
-
-*IBM 360, © 2016 lk T, [some rights reserved][cc-by-2.0]*
-
 ---
 
 ### introduction: expressiveness and complexity
@@ -58,6 +54,10 @@ What we have described is a heuristic for designing good software systems: **Pro
 Now let's look at something a little more contemporary, higher-order functions.[^well-actually]
 
 [^well-actually]: Well, actually, Higher-Order functions predate Structured Programming. They go back to the Lambda Calculus, and first appeared in Lisp in the early 1950s. So when we say they are a more contemporary idea, we mean that their mainstream acceptance is more contemporary.
+
+[![ibm 360](/assets/images/banner/ibm-360.jpg)](https://www.flickr.com/photos/monchan/30781538732)
+
+*IBM 360, © 2016 lk T, [some rights reserved][cc-by-2.0]*
 
 ---
 
