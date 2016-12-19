@@ -480,10 +480,18 @@ Thus, we find that a feature like first-class functions does give us the power o
 
 And we also know that this can increase perceived complexity if we do not also temper this increased expressiveness with language features or architectural designs that allow us to define groups of functions that have rich relationships within themselves, but only limited relationships with other groups.
 
+[![web](/assets/images/banner/web.jpg)](https://www.flickr.com/photos/svintus2010/4806449294)
+
+*Photo © 2010 Denis Mihailov, [some rights reserved][cc-by-2.0]*
+
+---
+
+### one-to-many and many-to-many
+
 There's more to it than that. Let's compare `binrec` and `multirec`. Or rather, let's compare how we write `mergeSort` using `binrec` and `multirec`:
 
 ```javascript
-const mergeSort = binrec({
+const mergeSort1 = binrec({
   indivisible: (list) => list.length <= 1,
   seed: (list) => list,
   divide: (list) => ({
@@ -493,7 +501,7 @@ const mergeSort = binrec({
   combine: ({ left: list1, right: list2 }) => merge({ list1, list2 })
 });
 
-const mergeSort = multirec({
+const mergeSort2 = multirec({
   indivisible: (list) => list.length <= 1,
   seed: (list) => list,
   divide: (list) => [
@@ -538,13 +546,15 @@ const mergeLeftAndRight({ left: list1, right: list2 }) => merge({ list1, list2 }
 const mergeBisected = ([list1, list2]) => merge({ list1, list2 });
 ```
 
-Looking at the names and at what the functions do, it seems that some, namely `hasAtMostOne`, `Identity`, and `bisect` feel like general-purpose functions that we might find ourselves using throughout one or many programs. And in fact, they can often be found in general-purpose function utility libraries.
+Looking at the names and at what the functions do, it seems that some, namely `hasAtMostOne`, `Identity`, and `bisect` feel like general-purpose functions that we might find ourselves using throughout one or many programs. And in fact, they can often be found in general-purpose function utility libraries. They express universal operations on lists.
 
-The others, namely `bisectLeftAndRight`, `mergeLeftAndRight`, and `mergeBisected` seem more specialized. They are unlikely to be used anywhere else.
+Whereas, `bisectLeftAndRight`, and `mergeLeftAndRight`, seem more specialized. They are unlikely to be used anywhere else. `mergeBisected` is a toss-up. We might need it elsewhere, we might not.
 
----
+We can also say that there is a *many-to-many* relationship between functions in our programs and the `hasAtMostOne`, `Identity`, and `bisect` functions. Functions like `mergeSort2` call many other functions, and functions like `bisect` can be called by many other functions.
 
-### one-to-many and many-to-many
+And as noted in the beginning, this "many-to-many-ness" contributes to expressiveness and to ensuring that we can write software where there is a one-to-one relationship between entities and responsibilities. For example, `bisect` is the authority on bisecting lists. We can arrange to write all of our code to invoke `bisect`, rather than duplicating its functionality.
+
+We can also write functions like `bisectLeftAndRight` and `mergeLeftAndRight`. But when we do, there will be a one-to-many relationship, because we have little use for them outside of our specific merge application. This does allow us to structure our code and extract commonality like how to perform a binary recursion, but by limiting the many-to-many-ness of our program, we limit its expressiveness.
 
 ---
 
