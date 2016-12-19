@@ -55,6 +55,8 @@ Now let's look at something a little more contemporary, higher-order functions.[
 
 [^well-actually]: Well, actually, Higher-Order functions predate Structured Programming. They go back to the Lambda Calculus, and first appeared in Lisp in the early 1950s. So when we say they are a more contemporary idea, we mean that their mainstream acceptance is more contemporary.
 
+---
+
 [![ibm 360](/assets/images/banner/ibm-360.jpg)](https://www.flickr.com/photos/monchan/30781538732)
 
 *IBM 360, © 2016 lk T, [some rights reserved][cc-by-2.0]*
@@ -480,6 +482,8 @@ Thus, we find that a feature like first-class functions does give us the power o
 
 And we also know that this can increase perceived complexity if we do not also temper this increased expressiveness with language features or architectural designs that allow us to define groups of functions that have rich relationships within themselves, but only limited relationships with other groups.
 
+---
+
 [![web](/assets/images/banner/web.jpg)](https://www.flickr.com/photos/svintus2010/4806449294)
 
 *Photo © 2010 Denis Mihailov, [some rights reserved][cc-by-2.0]*
@@ -544,6 +548,8 @@ But we can also write functions like `bisectLeftAndRight` and `mergeLeftAndRight
 Unfortunately, this limitation of expressiveness does not directly translate to limiting the perceived complexity of our programs. We can tell from detailed inspection that a function like `bisectLeftAndRight` will not be useful elsewhere in the program, but if we do not employ a tool like module scoping to enforce this and make it obvious at a glance, we do not really limit its perceived complexity.
 
 From this we can observe that many programming techniques, such as writing highly specialized interfaces for functions, or having complex responsibilities, can serve to limit a program's expressiveness without providing the benefit of limiting its perceived complexity.
+
+---
 
 [![framework](/assets/images/banner/framework.jpg)](https://www.flickr.com/photos/kazk/198640938)
 
