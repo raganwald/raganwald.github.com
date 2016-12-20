@@ -16,11 +16,13 @@ One of the most basic ideas in programming is that functions can invoke other fu
 
 When a function invokes other functions, and when one function can be invoked by more than one other function, we have a very good thing. When we have a *many-to-many* relationship between functions, we have a more expressive power than when we have a *one-to-many* relationship.
 
-We have the ability to give each function a single responsibility, and name that responsibility. We also have the ability to ensure that one and only one function has that responsibility. **A many-to-many relationship between functions is what enables us to create a one-to-one relationship between functions and responsibilities**.
+We have the ability to give each function a single responsibility, and name that responsibility. We also have the ability to ensure that one and only one function has that responsibility.
 
-Programmers often speak of languages as being *expressive*. Although there is no single universal definition for this word, most programmers agree that an important aspect of "expressiveness" is that the language makes it easy to write programs that are not *unnecessarily* verbose.
+A many-to-many relationship between functions is what enables us to create a one-to-one relationship between functions and responsibilities.
 
-**Programs where functions have single responsibilities, and where responsibilities are implemented by single functions, avoid unnecessary verbosity**. If functions have many responsibilities, they become large and unwieldy. If the same responsibility needs to be implemented more than once, there is de facto redundancy.
+Programmers often speak of languages as being *expressive*. Although there is no single universal definition for this word, most programmers agree that an important aspect of "expressiveness" is that the language makes it easy to write programs that are not *unnecessarily* verbose. If functions have many responsibilities, they become large and unwieldy. If the same responsibility needs to be implemented more than once, there is de facto redundancy.
+
+Programs where functions have single responsibilities, and where responsibilities are implemented by single functions, avoid unnecessary verbosity.
 
 Thus, facilitating the many-to-many relationship between functions makes it possible to write programs that are more expressive than those that do not have a many-to-many relationship between functions.
 
