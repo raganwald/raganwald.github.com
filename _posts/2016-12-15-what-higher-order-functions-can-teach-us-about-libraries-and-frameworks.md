@@ -444,5 +444,5 @@ And hey: If you like this essay, you'll love [JavaScript Allongé](https://leanp
 [anamorphism]: https://en.wikipedia.org/wiki/Anamorphism
 [catamorphism]: https://en.wikipedia.org/wiki/Catamorphism
 [cc-by-2.0]: https://creativecommons.org/licenses/by/2.0/
-[reddit]: https://www.reddit.com/r/javascript/comments/5g4bmu/anamorphisms_in_javascript/
+[reddit]: https://www.reddit.com/r/javascript/comments/5jdjo6/from_higherorder_functions_to_libraries_and/
 [Ember]: http://emberjs.com/
