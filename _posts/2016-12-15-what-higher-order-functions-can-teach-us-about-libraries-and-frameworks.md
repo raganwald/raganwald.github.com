@@ -30,7 +30,7 @@ Thus, facilitating the many-to-many relationship between functions makes it poss
 
 However, "With great power comes great responsibility."[^quote] The downside of a many-to-many relationship between functions is that the 'space of things a program might do' grows very rapidly as the size increases. "Expressiveness" is often in tension with "Perceived Complexity."
 
-[^quote]: "Ils doivent envisager qu’une grande responsabilité est la suite inséparable d’un grand pouvoir."—http://quoteinvestigator.com/2015/07/23/great-power/
+[^quote]: "Ils doivent envisager qu’une grande responsabilité est la suite inséparable d’un grand pouvoir."—[quoteinvestigator.com](http://quoteinvestigator.com/2015/07/23/great-power/)
 
 One way to think about this by analogy is to imagine we are drawing a graph. Each function is a vertex, and the calling relationship between them is an edge. Assuming that there is no "dead code," every structured program forms a [connected graph].
 
@@ -50,9 +50,9 @@ Namespaces constrain large graphs into many smaller graphs, each of which has a 
 
 What we have described is a heuristic for designing good software systems: **Provide the flexibility to use many-to-many relationships between entities, while simultaneously providing ways for programmers to intentionally limit the ways that entities can be connected**.
 
-But notice that we're not saying that one mechanism does both jobs. No, we're saying that one mtool helps us increase expressivity, while another helps us limit the perceived complexity of our programs, and the two work in tension with each other.
+But notice that we're not saying that one mechanism does both jobs. No, we're saying that one tool helps us increase expressivity, while another helps us limit the perceived complexity of our programs, and the two work in tension with each other.
 
-Now that we've established our heuristic, let's look at some higher-order functions,a nd see what they can tell us about expressiveness and perceived complexity.
+Now that we've established our heuristic, let's look at some higher-order functions, and see what they can tell us about expressiveness and perceived complexity.
 
 ---
 
@@ -415,7 +415,7 @@ Frameworks typically expect us to write functions or create entities with very s
 
 [jsm]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html "JavaScript Mixins, Subclass Factories, and Method Advice"
 
-The underlying assumption is that we are writing code for the framework, so the framework's author is not concerned with setting-up a many-to-many relationship between the framework's code and our code. For example, we cannot use [JavaScript mixins, subclass factories, or method advice][jsm] with the classes we write in Ember. We have to use the specific, proprietary metaprogramming facilities that Ember provides, or are provided in specific plugins written for Ember.
+The underlying assumption is that we are writing code for the framework, so the framework's author is not concerned with setting-up a many-to-many relationship between the framework's code and our code. For example, we cannot use [JavaScript mixins, subclass factories, or method advice][jsm] with the classes we write in Ember. We have to use the specific, proprietary meta-programming facilities that Ember provides, or are provided in specific plugins written for Ember.
 
 **Framework-oriented code tends to be more one-to-many than many-to-many, and thus tends to be less expressive**.
 
@@ -423,7 +423,7 @@ Whereas, libraries are designed to be called by our code. And more importantly, 
 
 **Library-oriented code tends to be more many-to-many than one-to-many, and thus can be more expressive**.
 
-Is fraekwrok-oriented code a bad thing? It's a tradeoff. Frameworks provide standard ways to do things. Frameworks hold out the promise of doing more things for us, and especially doing more complex things for us.
+Is framework-oriented code a bad thing? It's a tradeoff. Frameworks provide standard ways to do things. Frameworks hold out the promise of doing more things for us, and especially doing more complex things for us.
 
 Ideally, although our code may be less expressive with a framework, our goal should be that we write less code against a framework than we would using libraries, and that we use other mechanisms to limit the perceived complexity of our code.
 
