@@ -14,9 +14,7 @@ One of the most basic ideas in programming is that functions can invoke other fu
 
 [^methods]: Although this essay is going to talk about functions, everything we look at is applicable to methods and by analogy, to classes. We're just sticking to talking about functions for simplicity's sake.
 
-When a function invokes other functions, and when one function can be invoked by more than one other function, we have a very good thing. When we have a *many-to-many* relationship between functions, we have a more expressive power than when we have a *one-to-many* relationship.
-
-We have the ability to give each function a single responsibility, and name that responsibility. We also have the ability to ensure that one and only one function has that responsibility.
+When a function invokes other functions, and when one function can be invoked by more than one other function, we have a very good thing. When we have a *many-to-many* relationship between functions, we have a more expressive power than when we have a *one-to-many* relationship. We have the ability to give each function a single responsibility, and name that responsibility. We also have the ability to ensure that one and only one function has that responsibility.
 
 A many-to-many relationship between functions is what enables us to create a one-to-one relationship between functions and responsibilities.
 
