@@ -1,10 +1,10 @@
 ---
-title: "What Higher-Order Functions Can Teach Us About Libraries And Frameworks"
+title: "From Higher-Order Functions to Libraries And Frameworks"
 layout: default
 tags: [allonge]
 ---
 
-*In this essay, we will take a look at higher-order functions, with an eye to seeing how they can be used to make our programs more expressive, while balancing that against the need to limit the perceived complexity of our programs.*
+*In this essay, we will take a look at some higher-order functions, with an eye to seeing how they can be used to make our programs more expressive, while balancing that against the need to limit the perceived complexity of our programs.*
 
 ---
 
