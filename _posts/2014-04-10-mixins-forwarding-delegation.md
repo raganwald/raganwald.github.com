@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Mixins, Forwarding, and Delegation in JavaScript"
-tags: [spessore, allonge]
+tags: [allonge]
 ---
 
 ### preface: where did the prototypes go?

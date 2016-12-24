@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Class Hierarchies? Don't Do That!"
-tags: spessore
+tags: [allonge]
 ---
 
 *In theory*, JavaScript does not have classes. *In practice*, the following snippet of code is widely considered to be an example of a "class" in JavaScript:

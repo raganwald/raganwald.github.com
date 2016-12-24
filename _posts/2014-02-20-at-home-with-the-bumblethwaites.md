@@ -1,6 +1,6 @@
 ---
 layout: default
-tags: [spessore]
+tags: [allonge]
 title: "At home with the Bumblethwaites"
 ---
 

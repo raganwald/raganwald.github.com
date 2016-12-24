@@ -1,7 +1,7 @@
 ---
 layout: default
 title: The New JavaScript Problem
-tags: [spessore, allonge]
+tags: [allonge]
 ---
 
 The `new` keyword in JavaScript is very straightforward to use:

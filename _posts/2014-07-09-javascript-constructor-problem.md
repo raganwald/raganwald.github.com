@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "A JavaScript Constructor Problem, and Three Solutions"
-tags: [spessore]
+tags: [allonge]
 ---
 
 ### preamble

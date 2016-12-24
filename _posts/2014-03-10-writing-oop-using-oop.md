@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Writing OOP using OOP
-tags: spessore
+tags: [allonge]
 ---
 
 As many people have pointed out, if you turn your head sideways and squint, the following JavaScript can be considered a "class:"

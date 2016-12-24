@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "JavaScript Values Algebra"
-tags: [spessore, allonge]
+tags: [allonge]
 published: true
 ---
 
