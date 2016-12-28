@@ -379,7 +379,7 @@ const bisect = (list) => [
     list.slice(0, list.length / 2),
     list.slice(list.length / 2)
   ];
-const mergeLeftAndRight({ left: list1, right: list2 }) => merge({ list1, list2 });
+const mergeLeftAndRight = ({ left: list1, right: list2 }) => merge({ list1, list2 });
 const mergeBisected = ([list1, list2]) => merge({ list1, list2 });
 ```
 
