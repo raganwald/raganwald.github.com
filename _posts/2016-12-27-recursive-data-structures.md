@@ -122,6 +122,15 @@ And we rotate all for squares to finish with:
 ⚫️⚫️ ⚪️⚪️
 ```
 
+Reassembled, it becomes this:
+
+```
+⚪️⚪️⚪️⚪️
+⚪️⚪️⚪️⚪️
+⚪️⚪️⚪️⚪️
+⚫️⚫️⚪️⚪️
+```
+
 How would we rotate the next size down?
 
 ```
@@ -137,7 +146,22 @@ Becomes:
 ⚫️ ⚫️
 ```
 
-Rotating an individual dot is a NOOP, so all we have to do is rotate the four dots around, just like we do above.
+Rotating an individual dot is a NOOP, so all we have to do is rotate the four dots around, just like we do above:
+
+```
+⚫️ ⚪️
+
+⚫️ ⚪️
+```
+
+Reassembled, it becomes this:
+
+```
+⚫️⚪️
+⚫️⚪️
+```
+
+Voila! Rotating a square consists of dividing it into four "quadrant" squares, rotating each one in place, then moving them one position clockwise.
 
 ### recursion, see recursion
 
