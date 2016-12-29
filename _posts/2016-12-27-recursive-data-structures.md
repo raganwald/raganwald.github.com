@@ -282,192 +282,163 @@ rotate(
     ['⚫️', '⚫️', '⚪️', '⚪️']]
 ```
 
-### isomorphic rotation
+Voila!
 
-Rotating a square in this recursive manner seems very elegant, but if we represented the dots as an array, the elegance would be encumbered by needing to write functions that extract a quadrant of an aarray of arrays, or build an array of arrays out of four quadrants.
+### accidental complexity
 
-If rotating quadrants was all we cared about, we could use a completely different representation, a [QuadTree]. Squares are represented as four quadrants, each of which is a smaller square or a cell:
+Rotating a square in this recursive manner is very elegant, but our code is encumbered with some accidental complexity. Here's a flashing strobe-and-neon hint of what it is:
+
+```javascript
+const firstHalf = (array) => array.slice(0, array.length / 2);
+const secondHalf = (array) => array.slice(array.length / 2);
+
+const divide = (square) => {
+  const upperHalf = firstHalf(square);
+  const lowerHalf = secondHalf(square);
+
+  const upperLeft = upperHalf.map(firstHalf);
+  const upperRight = upperHalf.map(secondHalf);
+  const lowerRight = lowerHalf.map(secondHalf);
+  const lowerLeft= lowerHalf.map(firstHalf);
+
+  return [upperLeft, upperRight, lowerRight, lowerLeft];
+};
+```
+
+`divide` is all about extracting quadrant squares from a bigger square, and while we've done our best to make it readable, it is rather busy. Likewise, here's the same thing in `combine`:
+
+```javascript
+const combine = ([upperLeft, upperRight, lowerRight, lowerLeft]) => {
+  // rotate
+  [upperLeft, upperRight, lowerRight, lowerLeft] =
+    [lowerLeft, upperLeft, upperRight, lowerRight];
+
+  // recombine
+  const upperHalf = [...zipWith(concat, upperLeft, upperRight)];
+  const lowerHalf = [...zipWith(concat, lowerLeft, lowerRight)];
+
+  return concat(upperHalf, lowerHalf);
+};
+```
+
+`combine` is a very busy function. The core thing we want to talk about is actually the rotation: Having divided things up into four quadrants, we want to rotate the quadrants. The zipping and concatenating is all about the implementation of quadrants as arrays.
+
+We can argue that this is _necessary_ complexity, because squares are arrays, and that's just what we programmers do for a living, write code that manipulates basic data structures to do our bidding.
+
+But what if our implementation wasn't an array of arrays? Maybe `divide` and `combine` could be simpler? Maybe that complexity would turn out to be unnecessary after all?
+
+### isomorphic data structures
+
+When we have what ought to be an elegant algorithm, but the interface between the algorithm and the data structure ends up being as complicated as the rest of teh algorithm put together, we can always ask ourselves, "What data structure would make this algorithm stupidly simple?"
+
+The answer can often be found by imagining a data structure that looks like the algorithm's basic form. If we follow that heuristic, our data structure would be recursive, rather than 'flat.' Since we do all kinds of work sorting out which squares form the four quadrants of a bigger square, our data structure would escribe  square as being composed of four quadrant squares.
+
+Such a data structure already exists, it's called a [QuadTree]. Squares are represented as four quadrants, each of which is a smaller square or a cell. The simplest implementation is an array: If the array has four elements, it's a square. If it has one element, it is an indivisible cell.
 
 [QuadTree]: https://en.wikipedia.org/wiki/Quadtree
 
-```javascript
-class Cell {
-  constructor(character) {
-    this.character = character;
-  }
-}
-
-class Square {
-  constructor([upperLeft, upperRight, lowerRight, lowerLeft]) {
-    Object.assign(this, { upperLeft, lowerLeft, upperRight, lowerRight });
-  };
-}
-```
-
-For convenience when trying things, we can write a function that converts a string to a square, presuming there is one character per cell, and lines are delimited by `\r`. Thus, the square:
+A square that looks like this:
 
 ```
-0123
-4567
-89AB
-CDEF
+⚪️⚫️⚪️⚪️
+⚪️⚪️⚫️⚪️
+⚫️⚫️⚫️⚪️
+⚪️⚪️⚪️⚪️
 ```
 
-Is represented by the JavaScript string `'0123\r4567\r89AB\rCDEF'`. Conversion is recursive: If the string is a single character, return a new cell. If not, extract the strings for each of the four quadrants and convert them, then recombine them by returning a square with the four converted quadrants.
-
-This is tailor-made for `multirec`:
+Would be encoded like this:
 
 ```javascript
-function mapWith (fn) {
-  return function * (iterable) {
-    for (const element of iterable) {
-      yield fn(element);
-    }
-  };
-}
+const quadTree = [
+    [
+      ['⚪️'], ['⚫️'], ['⚪️'], ['⚪️']
+    ],
+    [
+      ['⚪️'], ['⚪️'], ['⚪️'], ['⚫️']
+    ],
+    [
+      ['⚫️'], ['⚪️'], ['⚪️'], ['⚪️']
+    ],
+    [
+      ['⚫️'], ['⚫️'], ['⚪️'], ['⚪️']
+    ]
+  ];
+```
 
-function multirec({ indivisible, value, divide, combine }) {
-  return function myself (input) {
-    if (indivisible(input)) {
-      return value(input);
-    } else {
-      const parts = divide(input);
-      const solutions = mapWith(myself)(parts);
+It's easier to see if we number the cells in hexadecimal:
 
-      return combine(solutions);
-    }
-  }
-}
+```
+01 45
+32 76
 
-const squareFromString = multirec({
-  indivisible: (str) => str.length === 1,
-  value: (char) => new Cell(char),
-  divide: (str) => {
-    const lines = str.split('\r');
-    const halfSize = lines.length / 2;
+CD 89
+FE BA
+```
 
-    const upperHalfArray = lines.slice(0, halfSize);
-    const lowerHalfArray = lines.slice(halfSize);
+Now to our algorithm. Rotating a quadtree is simpler than rotating an array of arrays. First, our test for indivisibility and the value of an indivisible cell remain the same, a happy accident:
 
-    const upperLeftArray = upperHalfArray.map((line) => line.substr(0, halfSize));
-    const upperRightArray = upperHalfArray.map((line) => line.substr(halfSize));
-    const lowerRightArray = lowerHalfArray.map((line) => line.substr(halfSize));
-    const lowerLeftArray = lowerHalfArray.map((line) => line.substr(0, halfSize));
+```javascript
+const indivisible = (square) => square.length === 1;
+const value = (cell) => cell;
+```
 
-    const upperLeftString = upperLeftArray.join('\r');
-    const upperRightString = upperRightArray.join('\r');
-    const lowerRightString = lowerRightArray.join('\r');
-    const lowerLeftString = lowerLeftArray.join('\r');
+Our `divide` function is insanely simple: QuadTrees are already divided in the manner we require:
 
-    return [upperLeftString, upperRightString, lowerRightString, lowerLeftString];
-  },
-  combine: ([upperLeft, upperRight, lowerRight, lowerLeft]) => new Square([upperLeft, upperRight, lowerRight, lowerLeft])
+```javascript
+const divideQuadTree = (quadTree) => quadTree;
+```
+
+And finally, our combine function does away with all the unecessary faffing about with zipping and concatenating. Here it is, along with our finished function:
+
+```javascript
+const combineQuadTree = ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
+  [lowerLeft, upperLeft, upperRight, lowerRight];
+
+const rotateQuadTree = multirec({
+  indivisible,
+  value,
+  divide: divideQuadTree,
+  combine: combineQuadTree
 });
+```
 
-squareFromString('0123\r4567\r89AB\rCDEF')
+Let's put it to the test:
+
+```javascript
+rotateQuadTree(quadTree)
   //=>
-    Square {
-      "lowerLeft": Square {
-        "lowerLeft": Cell { "character": "C" },
-        "lowerRight": Cell { "character": "D" },
-        "upperLeft": Cell { "character": "8" },
-        "upperRight": Cell { "character": "9" }
-      },
-      "lowerRight": Square {
-        "lowerLeft": Cell { "character": "E" },
-        "lowerRight": Cell { "character": "F" },
-        "upperLeft": Cell { "character": "A" },
-        "upperRight": Cell { "character": "B" }
-      },
-      "upperLeft": Square {
-        "lowerLeft": Cell { "character": "4" },
-        "lowerRight": Cell { "character": "5" },
-        "upperLeft": Cell { "character": "0" },
-        "upperRight": Cell { "character": "1" }
-      },
-      "upperRight": Square {
-        "lowerLeft": Cell { "character": "6" },
-        "lowerRight": Cell { "character": "7" },
-        "upperLeft": Cell { "character": "2" },
-        "upperRight": Cell { "character": "3" }
-      }
-    }
+    [
+      [
+        ['⚪️'], ['⚫️'], ['⚫️'], ['⚪️']
+      ],
+      [
+        ['⚪️'], ['⚪️'], ['⚫️'], ['⚪️']
+      ],
+      [
+        ['⚫️'], ['⚪️'], ['⚪️'], ['⚪️']
+      ],
+      [
+        ['⚪️'], ['⚫️'], ['⚪️'], ['⚪️']
+      ]
+    ]
 ```
 
-Converting our squares to strings coul dbe done with `binrec`, but the very first thing we'd write would be something like `indivisible: (quadrant) => quadrant instanceof Cell`, and that's a sign that perhaps we should be using polymorphism. We like functions, but we like methods too.
+If we reasemble the square by hand, we see we have gotten:
 
-So we start with the easy case:
-
-```javascript
-class Cell {
-  constructor(character) {
-    this.character = character;
-  }
-
-  toString() {
-    return this.character;
-  }
-}
+```
+⚪️⚫️⚪️⚪️
+⚪️⚫️⚪️⚫️
+⚪️⚫️⚫️⚪️
+⚪️⚪️⚪️⚪️
 ```
 
-Then, with a little help from some functions we saw in [an essay about generators][jsg]:
+### separation of concerns
 
-[jsg]: http://raganwald.com/2016/05/07/javascript-generators-for-people-who-dont-give-a-shit-about-getting-stuff-done.html "JavaScript Generators for People Who Don't Give a Shit About GettingStuffDone™"
+Of course, all we've done so far is moved the "faffing about" out of our code and we're doing it by hand. That's bad,we don't want to retrain our eyes to read QuadTrees instead of flat arrays, and we don't want to sit at a computer all day manually translating QuadTrees to flat arrays and back.
 
-```javascript
-function split (iterable) {
-  const iterator = iterable[Symbol.iterator]();
-  const { done, value: first } = iterator.next();
+If only we could write some code to do it for us... Some recursive code...
 
-  if (done) {
-    return { rest: [] };
-  } else {
-    return { first, rest: iterator };
-  }
-};
 
-function * join (first, rest) {
-  yield first;
-  yield * rest;
-};
-
-function * zipWith (fn, ...iterables) {
-  const asSplits = iterables.map(split);
-
-  if (asSplits.every((asSplit) => asSplit.hasOwnProperty('first'))) {
-    const firsts = asSplits.map((asSplit) => asSplit.first);
-    const rests = asSplits.map((asSplit) => asSplit.rest);
-
-    yield * join(fn(...firsts), zipWith(fn, ...rests));
-  }
-}
-
-class Square {
-  constructor([upperLeft, upperRight, lowerRight, lowerLeft]) {
-    Object.assign(this, { upperLeft, lowerLeft, upperRight, lowerRight });
-  };
-
-  toString() {
-    const upperLeftString = this.upperLeft.toString();
-    const upperRightString = this.upperRight.toString();
-    const lowerRightString = this.lowerRight.toString();
-    const lowerLeftString = this.lowerLeft.toString();
-
-    const upperLeftArray = upperLeftString.split('\r');
-    const upperRightArray = upperRightString.split('\r');
-    const lowerRightArray = lowerRightString.split('\r');
-    const lowerLeftArray = lowerLeftString.split('\r');
-
-    const upperArray = [...zipWith((l, r) => l + r, upperLeftArray, upperRightArray)];
-    const lowerArray = [...zipWith((l, r) => l + r, lowerLeftArray, lowerRightArray)];
-    const array = upperArray.concat(lowerArray);
-
-    return array.join('\r');
-  }
-}
-```
-
-### so, what about rotating again?
 
 ### notes
 
