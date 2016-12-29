@@ -28,7 +28,7 @@ Here is a square composed of elements, perhaps pixels or cells that are on or of
 ⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️
 ```
 
-Consider the problem of *rotating* our square. There us a very elegant way to do this. First, we cut the squre into four smaller squares:
+Consider the problem of *rotating* our square. There us a very elegant way to do this. First, we cut the square into four smaller squares:
 
 ```
 ⚪️⚪️⚪️⚪️ ⚪️⚪️⚪️⚪️
@@ -83,7 +83,7 @@ Then reassemble:
 ⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️
 ```
 
-How do we roate each of the four smaller squares? Exactly the same way. For example,
+How do we rotate each of the four smaller squares? Exactly the same way. For example,
 
 ```
 ⚪️⚪️⚪️⚪️
@@ -167,7 +167,7 @@ Voila! Rotating a square consists of dividing it into four "quadrant" squares, r
 
 The algorithm we are describing is a classic recursive divide-and-conquer, and it's exactly what `multirec` was designed to do. So we'll implement it together.
 
-Let's begin with a naïve representation for squares, a two-demenional array. For example, we would represent the square:
+Let's begin with a naïve representation for squares, a two-dimensional array. For example, we would represent the square:
 
 ```
 ⚪️⚪️⚪️⚪️
@@ -187,9 +187,9 @@ With this array:
 
 To use `multirec`, we need four pieces:
 
-1. An `indivisible` predicate function. It should report whether an array is to small to be divided up. It's implicity itself: `(square) => square.length === 1`.
+1. An `indivisible` predicate function. It should report whether an array is to small to be divided up. It's simplicity itself: `(square) => square.length === 1`.
 2. A `value` function that determines what to do with a value that is indivisible. For rotation, we simply return what we are given: `(cell) => cell`
-3. A `divide` function that breaks a divisible problem into smaller pieces. Our function will break a sqare into four quadrants. We'll see how that works below.
+3. A `divide` function that breaks a divisible problem into smaller pieces. Our function will break a square into four quadrants. We'll see how that works below.
 4. A `combine` function that puts the result of rotating the smaller pieces back together. Our function will take four quadrant squares and put them back together into a big square.
 
 As noted, `indivisible` and `value` are trivial:
@@ -329,13 +329,13 @@ But what if our implementation wasn't an array of arrays? Maybe `divide` and `co
 
 ### isomorphic data structures
 
-When we have what ought to be an elegant algorithm, but the interface between the algorithm and the data structure ends up being as complicated as the rest of teh algorithm put together, we can always ask ourselves, "What data structure would make this algorithm stupidly simple?"
+When we have what ought to be an elegant algorithm, but the interface between the algorithm and the data structure ends up being as complicated as the rest of the algorithm put together, we can always ask ourselves, "What data structure would make this algorithm stupidly simple?"
 
-The answer can often be found by imagining a data structure that looks like the algorithm's basic form. If we follow that heuristic, our data structure would be recursive, rather than 'flat.' Since we do all kinds of work sorting out which squares form the four quadrants of a bigger square, our data structure would escribe  square as being composed of four quadrant squares.
+The answer can often be found by imagining a data structure that looks like the algorithm's basic form. If we follow that heuristic, our data structure would be recursive, rather than 'flat.' Since we do all kinds of work sorting out which squares form the four quadrants of a bigger square, our data structure would describe a square as being composed of four quadrant squares.
 
-Such a data structure already exists, it's called a [QuadTree]. Squares are represented as four quadrants, each of which is a smaller square or a cell. The simplest implementation is an array: If the array has four elements, it's a square. If it has one element, it is an indivisible cell.
+Such a data structure already exists, it's called a [quad tree]. Squares are represented as four quadrants, each of which is a smaller square or a cell. The simplest implementation is an array: If the array has four elements, it's a square. If it has one element, it is an indivisible cell.
 
-[QuadTree]: https://en.wikipedia.org/wiki/Quadtree
+[quad tree]: https://en.wikipedia.org/wiki/Quadtree
 
 A square that looks like this:
 
@@ -375,20 +375,20 @@ CD 89
 FE BA
 ```
 
-Now to our algorithm. Rotating a quadtree is simpler than rotating an array of arrays. First, our test for indivisibility and the value of an indivisible cell remain the same, a happy accident:
+Now to our algorithm. Rotating a quad tree is simpler than rotating an array of arrays. First, our test for indivisibility and the value of an indivisible cell remain the same, a happy accident:
 
 ```javascript
 const indivisible = (square) => square.length === 1;
 const value = (cell) => cell;
 ```
 
-Our `divide` function is insanely simple: QuadTrees are already divided in the manner we require:
+Our `divide` function is insanely simple: quad trees are already divided in the manner we require:
 
 ```javascript
 const divideQuadTree = (quadTree) => quadTree;
 ```
 
-And finally, our combine function does away with all the unecessary faffing about with zipping and concatenating. Here it is, along with our finished function:
+And finally, our combine function does away with all the unnecessary faffing about with zipping and concatenating. Here it is, along with our finished function:
 
 ```javascript
 const combineQuadTree = ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
@@ -423,7 +423,7 @@ rotateQuadTree(quadTree)
     ]
 ```
 
-If we reasemble the square by hand, we see we have gotten:
+If we reassemble the square by hand, we see we have gotten:
 
 ```
 ⚪️⚫️⚪️⚪️
@@ -434,7 +434,7 @@ If we reasemble the square by hand, we see we have gotten:
 
 ### separation of concerns
 
-Of course, all we've done so far is moved the "faffing about" out of our code and we're doing it by hand. That's bad,we don't want to retrain our eyes to read QuadTrees instead of flat arrays, and we don't want to sit at a computer all day manually translating QuadTrees to flat arrays and back.
+Of course, all we've done so far is moved the "faffing about" out of our code and we're doing it by hand. That's bad: we don't want to retrain our eyes to read quad trees instead of flat arrays, and we don't want to sit at a computer all day manually translating quad trees to flat arrays and back.
 
 If only we could write some code to do it for us... Some recursive code...
 
