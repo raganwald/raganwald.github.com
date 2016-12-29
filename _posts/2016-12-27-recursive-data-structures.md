@@ -3,87 +3,19 @@ layout: default
 tags: [allonge]
 ---
 
-In [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html), we had a look at `linrec` and `multirec`, two *recursive combinators*. Here's the example we gave of using `linrec` to merge two sorted lists, and `multirec` to implement the classic [merge sort]:
+In this essay, we are going to look at recursive algorithms, and how sometimes, we can organize an algorithm so that it resembles the data structure it manipulates, and organize a data structure so that it resembles the algorithms that manipulate it.
 
-[merge sort]: https://en.wikipedia.org/wiki/Merge_sort
+When algorithms and the data structures they manipulate are *isomorphic*,[^isomorphic] the code we write is easier to understand for exactly the same reason that code like template strings and regular expressions are easy to understand: The code resembles the data it consumes or produces.
 
-```javascript
-function linrec({ indivisible, seed, value = (atom) => atom, divide, combine }) {
-  return function myself (input) {
-    if (indivisible(input)) {
-      return seed(input);
-    } else {
-      const { atom, remainder } = divide(input);
-      const left = value(atom);
-      const right = myself(remainder);
+[^isomorphic]: In biology, two things are isomorphic if they resemble each other. In mathematics, two things are isomorphic if there is a structure-preserving map between them in both directions. In computer science, two things are isomorphic if the person explaining a concept wishes to seem educated.
 
-      return combine({ left, right });
-    }
-  }
-}
+In [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html), we had a look at `multirec`, a *recursive combinator*. We'll use `multirec` for our algorithms, to emphasize that all of our algorithms have the same form as our data structure.
 
-const merge = linrec({
-  indivisible: ({ list1, list2 }) => list1.length === 0 || list2.length === 0,
-  seed: ({ list1, list2 }) => list1.concat(list2),
-  divide: ({ list1, list2 }) => {
-    if (list1[0] < list2[0]) {
-      return {
-        atom: list1[0],
-        remainder: {
-          list1: list1.slice(1),
-          list2
-        }
-      };
-    } else {
-      return {
-        atom: list2[0],
-        remainder: {
-          list1,
-          list2: list2.slice(1)
-        }
-      };
-    }
-  },
-  combine: ({ left, right }) => [left, ...right]
-});
-
-function mapWith (fn) {
-  return function * (iterable) {
-    for (const element of iterable) {
-      yield fn(element);
-    }
-  };
-}
-
-function multirec({ indivisible, seed, divide, combine }) {
-  return function myself (input) {
-    if (indivisible(input)) {
-      return seed(input);
-    } else {
-      const parts = divide(input);
-      const solutions = mapWith(myself)(parts);
-
-      return combine(solutions);
-    }
-  }
-}
-
-const mergeSort = multirec({
-  indivisible: (list) => list.length <= 1,
-  seed: (list) => list,
-  divide: (list) => [
-    list.slice(0, list.length / 2),
-    list.slice(list.length / 2)
-  ],
-  combine: ([list1, list2]) => merge({ list1, list2 })
-});
-```
-
-There are lots of other interesting applications of `multirec`.
+Here we go.
 
 ### rotating a square
 
-Consider a square composed of elements, perhaps pixels or cells that are on or off. We could write them out like this:
+Here is a square composed of elements, perhaps pixels or cells that are on or off. We could write them out like this:
 
 ```
 ⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️
@@ -209,6 +141,125 @@ Rotating an individual dot is a NOOP, so all we have to do is rotate the four do
 
 ### recursion, see recursion
 
+The algorithm we are describing is a classic recursive divide-and-conquer, and it's exactly what `multirec` was designed to do. So we'll implement it together.
+
+Let's begin with a naïve representation for squares, a two-demenional array. For example, we would represent the square:
+
+```
+⚪️⚪️⚪️⚪️
+⚪️⚪️⚪️⚪️
+⚪️⚪️⚪️⚫️
+⚪️⚪️⚪️⚫️
+```
+
+With this array:
+
+```javascript
+[['⚪️', '⚪️', '⚪️', '⚪️'],
+ ['⚪️', '⚪️', '⚪️', '⚪️'],
+ ['⚪️', '⚪️', '⚪️', '⚫️'],
+ ['⚪️', '⚪️', '⚪️', '⚫️']]
+```
+
+To use `multirec`, we need four pieces:
+
+1. An `indivisible` predicate function. It should report whether an array is to small to be divided up. It's implicity itself: `(square) => square.length === 1`.
+2. A `value` function that determines what to do with a value that is indivisible. For rotation, we simply return what we are given: `(cell) => cell`
+3. A `divide` function that breaks a divisible problem into smaller pieces. Our function will break a sqare into four quadrants. We'll see how that works below.
+4. A `combine` function that puts the result of rotating the smaller pieces back together. Our function will take four quadrant squares and put them back together into a big square.
+
+As noted, `indivisible` and `value` are trivial:
+
+```javascript
+const indivisible = (square) => square.length === 1;
+const value = (cell) => cell;
+```
+
+`divide` involves no more than breaking arrays into halves, and then those halves again:
+
+```javascript
+const firstHalf = (array) => array.slice(0, array.length / 2);
+const secondHalf = (array) => array.slice(array.length / 2);
+
+const divide = (square) => {
+  const upperHalf = firstHalf(square);
+  const lowerHalf = secondHalf(square);
+
+  const upperLeft = upperHalf.map(firstHalf);
+  const upperRight = upperHalf.map(secondHalf);
+  const lowerRight = lowerHalf.map(secondHalf);
+  const lowerLeft= lowerHalf.map(firstHalf);
+
+  return [upperLeft, upperRight, lowerRight, lowerLeft];
+};
+```
+`combine` makes use of a little help from some functions we saw in [an essay about generators][jsg]:
+
+[jsg]: http://raganwald.com/2016/05/07/javascript-generators-for-people-who-dont-give-a-shit-about-getting-stuff-done.html "JavaScript Generators for People Who Don't Give a Shit About GettingStuffDone™"
+
+```javascript
+function split (iterable) {
+  const iterator = iterable[Symbol.iterator]();
+  const { done, value: first } = iterator.next();
+
+  if (done) {
+    return { rest: [] };
+  } else {
+    return { first, rest: iterator };
+  }
+};
+
+function * join (first, rest) {
+  yield first;
+  yield * rest;
+};
+
+function * zipWith (fn, ...iterables) {
+  const asSplits = iterables.map(split);
+
+  if (asSplits.every((asSplit) => asSplit.hasOwnProperty('first'))) {
+    const firsts = asSplits.map((asSplit) => asSplit.first);
+    const rests = asSplits.map((asSplit) => asSplit.rest);
+
+    yield * join(fn(...firsts), zipWith(fn, ...rests));
+  }
+}
+
+const concat = (...arrays) => arrays.reduce((acc, a) => acc.concat(a));
+
+const combine = ([upperLeft, upperRight, lowerRight, lowerLeft]) => {
+  // rotate
+  [upperLeft, upperRight, lowerRight, lowerLeft] =
+    [lowerLeft, upperLeft, upperRight, lowerRight];
+
+  // recombine
+  const upperHalf = [...zipWith(concat, upperLeft, upperRight)];
+  const lowerHalf = [...zipWith(concat, lowerLeft, lowerRight)];
+
+  return concat(upperHalf, lowerHalf);
+};
+```
+
+Armed with `indivisible`, `value`, `divide`, and `combine`, we can use `multirec` to write `rotate`:
+
+```javascript
+const rotate = multirec({ indivisible, value, divide, combine });
+
+rotate(
+   [['⚪️', '⚪️', '⚪️', '⚪️'],
+    ['⚪️', '⚪️', '⚪️', '⚪️'],
+    ['⚪️', '⚪️', '⚪️', '⚫️'],
+    ['⚪️', '⚪️', '⚪️', '⚫️']]
+ )
+ //=>
+   [['⚪️', '⚪️', '⚪️', '⚪️'],
+    ['⚪️', '⚪️', '⚪️', '⚪️'],
+    ['⚪️', '⚪️', '⚪️', '⚪️'],
+    ['⚫️', '⚫️', '⚪️', '⚪️']]
+```
+
+### isomorphic rotation
+
 Rotating a square in this recursive manner seems very elegant, but if we represented the dots as an array, the elegance would be encumbered by needing to write functions that extract a quadrant of an aarray of arrays, or build an array of arrays out of four quadrants.
 
 If rotating quadrants was all we cared about, we could use a completely different representation, a [QuadTree]. Squares are represented as four quadrants, each of which is a smaller square or a cell:
@@ -251,10 +302,10 @@ function mapWith (fn) {
   };
 }
 
-function multirec({ indivisible, seed, divide, combine }) {
+function multirec({ indivisible, value, divide, combine }) {
   return function myself (input) {
     if (indivisible(input)) {
-      return seed(input);
+      return value(input);
     } else {
       const parts = divide(input);
       const solutions = mapWith(myself)(parts);
@@ -266,7 +317,7 @@ function multirec({ indivisible, seed, divide, combine }) {
 
 const squareFromString = multirec({
   indivisible: (str) => str.length === 1,
-  seed: (char) => new Cell(char),
+  value: (char) => new Cell(char),
   divide: (str) => {
     const lines = str.split('\r');
     const halfSize = lines.length / 2;
