@@ -262,10 +262,10 @@ But why stop there?
 `binrec` is actually simpler than `linrec` in at least one respect, because instead of having an element and a remainder, `binrec` divides a problem into two parts and applies the same algorithm to both halves:
 
 ```javascript
-function binrec({ indivisible, seed, divide, combine }) {
+function binrec({ indivisible, value, divide, combine }) {
   return function myself (input) {
     if (indivisible(input)) {
-      return seed(input);
+      return value(input);
     } else {
       let { left, right } = divide(input);
 
@@ -279,7 +279,7 @@ function binrec({ indivisible, seed, divide, combine }) {
 
 const mergeSort = binrec({
   indivisible: (list) => list.length <= 1,
-  seed: (list) => list,
+  value: (list) => list,
   divide: (list) => ({
     left: list.slice(0, list.length / 2),
     right: list.slice(list.length / 2)
@@ -294,10 +294,10 @@ mergeSort([1, 42, 4, 5])
 From `binrec`, we can derive `multirec`, which divides the problem into an arbitrary number of symmetrical parts:
 
 ```javascript
-function multirec({ indivisible, seed, divide, combine }) {
+function multirec({ indivisible, value, divide, combine }) {
   return function myself (input) {
     if (indivisible(input)) {
-      return seed(input);
+      return value(input);
     } else {
       const parts = divide(input);
       const solutions = mapWith(myself)(parts);
@@ -309,7 +309,7 @@ function multirec({ indivisible, seed, divide, combine }) {
 
 const mergeSort = multirec({
   indivisible: (list) => list.length <= 1,
-  seed: (list) => list,
+  value: (list) => list,
   divide: (list) => [
     list.slice(0, list.length / 2),
     list.slice(list.length / 2)
@@ -347,7 +347,7 @@ There's more to it than that. Let's compare `binrec` and `multirec`. Or rather, 
 ```javascript
 const mergeSort1 = binrec({
   indivisible: (list) => list.length <= 1,
-  seed: (list) => list,
+  value: (list) => list,
   divide: (list) => ({
     left: list.slice(0, list.length / 2),
     right: list.slice(list.length / 2)
@@ -357,7 +357,7 @@ const mergeSort1 = binrec({
 
 const mergeSort2 = multirec({
   indivisible: (list) => list.length <= 1,
-  seed: (list) => list,
+  value: (list) => list,
   divide: (list) => [
     list.slice(0, list.length / 2),
     list.slice(list.length / 2)
