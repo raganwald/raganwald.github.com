@@ -434,6 +434,9 @@ Of course, all we've done so far is moved the "faffing about" out of our code an
 
 If only we could write some code to do it for us... Some recursive code...
 
+Here's a function that recursively turns a two-dimensional array into a quad tree:
+
+
 ```javascript
 const isOneByOneArray = (something) =>
   Array.isArray(something) && something.length === 1 &&
@@ -474,7 +477,7 @@ arrayToQuadTree([
     ]
 ```
 
-`multirec` helps us write a function that converts two-dimensional squares into quad trees. And naturally, we can use `multirec` to convert them back again:
+Naturally, we can also write a function to convert quad trees back into two-dimensional arrays again:
 
 ```javascript
 const isSmallestActualSquare = (square) => square.length === 4 && square[0].length === 1;
@@ -513,7 +516,7 @@ quadTreeToArray(
     ]
 ```
 
-And:
+And thus, we can take a two-dimensional array, turn it into a quad tree, rotate the quad tree, and convert it back to a two-dimensional array again:
 
 ```javascript
 quadTreeToArray(
@@ -534,6 +537,14 @@ quadTreeToArray(
       ["⚪️", "⚪️", "⚪️", "⚪️"]
     ]
 ```
+
+### why?
+
+Now, we argued above that we've neatly separated the concerns by making three separate functions, instead of interleaving dividing two-dimensional squares into quadrants, rotating quadrants, and then reassembling two-dimensional squares.
+
+But the converse side of this is that what we're doing is now a lot less efficient: We're recursing through our data structures three separate times, instead of once. And Frankly, `multirec` was designed such that the `divide` function breaks things up, and the `combine` function puts them back together, so these concerns are already mostly separate once we use `multirec` instead of a bespoke[^bespoke] recursive function.
+
+[^bespoke]: In American English, [bespoke](https://en.wikipedia.org/wiki/Bespoke) typically refers to a garment that is hand-crafted for its wearer. "Bespoke" has, in the last decade, been associated with various hipster endeavours, to the point where its use has become ironic. The turning point was likely when a popped-collar founder of a pre-revenue startup boasted of having two iPhones running a bespoke time management application. Today, it often refers to an item where the owner obtains more value from the status conferred by having a bespoke item, than from the item's fitness for their personalized purpose. Calling a function "bespoke" implies that it was written to display the author's trendy use of functional programming, rather than to efficiently rotate a square.
 
 ### notes
 
