@@ -192,20 +192,20 @@ To use `multirec`, we need four pieces:
 3. A `divide` function that breaks a divisible problem into smaller pieces. Our function will break a square into four quadrants. We'll see how that works below.
 4. A `combine` function that puts the result of rotating the smaller pieces back together. Our function will take four quadrant squares and put them back together into a big square.
 
-As noted, `indivisible` and `value` are trivial:
+As noted, `indivisible` and `value` are trivial. we'll call our functions `hasLengthOne` and `itself`:[^I]
 
 ```javascript
-const indivisible = (square) => square.length === 1;
-const value = (cell) => cell;
+const hasLengthOne = (square) => square.length === 1;
+const itself = (something) => something;
 ```
 
-`divide` involves no more than breaking arrays into halves, and then those halves again:
+`divide` involves no more than breaking arrays into halves, and then those halves again. We'll write a `divideSquareIntoQuadrants` function for this:
 
 ```javascript
 const firstHalf = (array) => array.slice(0, array.length / 2);
 const secondHalf = (array) => array.slice(array.length / 2);
 
-const divide = (square) => {
+const divideSquareIntoQuadrants = (square) => {
   const upperHalf = firstHalf(square);
   const lowerHalf = secondHalf(square);
 
@@ -217,7 +217,7 @@ const divide = (square) => {
   return [upperLeft, upperRight, lowerRight, lowerLeft];
 };
 ```
-`combine` makes use of a little help from some functions we saw in [an essay about generators][jsg]:
+Our `combine` function, `rotateAndCombineArrays`, makes use of a little help from some functions we saw in [an essay about generators][jsg]:
 
 [jsg]: http://raganwald.com/2016/05/07/javascript-generators-for-people-who-dont-give-a-shit-about-getting-stuff-done.html "JavaScript Generators for People Who Don't Give a Shit About GettingStuffDone™"
 
@@ -251,7 +251,7 @@ function * zipWith (fn, ...iterables) {
 
 const concat = (...arrays) => arrays.reduce((acc, a) => acc.concat(a));
 
-const combine = ([upperLeft, upperRight, lowerRight, lowerLeft]) => {
+const rotateAndCombineArrays = ([upperLeft, upperRight, lowerRight, lowerLeft]) => {
   // rotate
   [upperLeft, upperRight, lowerRight, lowerLeft] =
     [lowerLeft, upperLeft, upperRight, lowerRight];
@@ -264,10 +264,15 @@ const combine = ([upperLeft, upperRight, lowerRight, lowerLeft]) => {
 };
 ```
 
-Armed with `indivisible`, `value`, `divide`, and `combine`, we can use `multirec` to write `rotate`:
+Armed with `hasLengthOne`, `itself`, `divideSquareIntoQuadrants`, and `rotateAndCombineArrays`, we can use `multirec` to write `rotate`:
 
 ```javascript
-const rotate = multirec({ indivisible, value, divide, combine });
+const rotate = multirec({
+  indivisible : hasLengthOne,
+  value : itself,
+  divide: divideSquareIntoQuadrants,
+  combine: rotateAndCombineArrays
+});
 
 rotate(
    [['⚪️', '⚪️', '⚪️', '⚪️'],
@@ -292,7 +297,7 @@ Rotating a square in this recursive manner is very elegant, but our code is encu
 const firstHalf = (array) => array.slice(0, array.length / 2);
 const secondHalf = (array) => array.slice(array.length / 2);
 
-const divide = (square) => {
+const divideSquareIntoQuadrants = (square) => {
   const upperHalf = firstHalf(square);
   const lowerHalf = secondHalf(square);
 
@@ -305,10 +310,10 @@ const divide = (square) => {
 };
 ```
 
-`divide` is all about extracting quadrant squares from a bigger square, and while we've done our best to make it readable, it is rather busy. Likewise, here's the same thing in `combine`:
+`divideSquareIntoQuadrants` is all about extracting quadrant squares from a bigger square, and while we've done our best to make it readable, it is rather busy. Likewise, here's the same thing in `rotateAndCombineArrays`:
 
 ```javascript
-const combine = ([upperLeft, upperRight, lowerRight, lowerLeft]) => {
+const rotateAndCombineArrays = ([upperLeft, upperRight, lowerRight, lowerLeft]) => {
   // rotate
   [upperLeft, upperRight, lowerRight, lowerLeft] =
     [lowerLeft, upperLeft, upperRight, lowerRight];
@@ -321,7 +326,7 @@ const combine = ([upperLeft, upperRight, lowerRight, lowerLeft]) => {
 };
 ```
 
-`combine` is a very busy function. The core thing we want to talk about is actually the rotation: Having divided things up into four quadrants, we want to rotate the quadrants. The zipping and concatenating is all about the implementation of quadrants as arrays.
+`rotateAndCombineArrays` is a very busy function. The core thing we want to talk about is actually the rotation: Having divided things up into four quadrants, we want to rotate the quadrants. The zipping and concatenating is all about the implementation of quadrants as arrays.
 
 We can argue that this is _necessary_ complexity, because squares are arrays, and that's just what we programmers do for a living, write code that manipulates basic data structures to do our bidding.
 
@@ -346,7 +351,7 @@ A square that looks like this:
 ⚪️⚪️⚪️⚪️
 ```
 
-Would be encoded like this:
+Would be encoded as a quad tree like this:
 
 ```javascript
 const quadTree = [
@@ -375,30 +380,21 @@ CD 89
 FE BA
 ```
 
-Now to our algorithm. Rotating a quad tree is simpler than rotating an array of arrays. First, our test for indivisibility and the value of an indivisible cell remain the same, a happy accident:
+Now to our algorithm. Rotating a quad tree is simpler than rotating an array of arrays. First, our test for indivisibility and the value of an indivisible cell remain the same, `hasLengthOne` and `itself`.
 
-```javascript
-const indivisible = (square) => square.length === 1;
-const value = (cell) => cell;
-```
-
-Our `divide` function is insanely simple: quad trees are already divided in the manner we require:
-
-```javascript
-const divideQuadTree = (quadTree) => quadTree;
-```
+Our `divide` function is insanely simple: quad trees are already divided in the manner we require, so we can use `itself` again.
 
 And finally, our combine function does away with all the unnecessary faffing about with zipping and concatenating. Here it is, along with our finished function:
 
 ```javascript
-const combineQuadTree = ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
+const rotateQuadrants = ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
   [lowerLeft, upperLeft, upperRight, lowerRight];
 
 const rotateQuadTree = multirec({
-  indivisible,
-  value,
-  divide: divideQuadTree,
-  combine: combineQuadTree
+  indivisible : hasLengthOne,
+  value : itself,
+  divide: itself,
+  combine: rotateQuadrants
 });
 ```
 
@@ -438,7 +434,106 @@ Of course, all we've done so far is moved the "faffing about" out of our code an
 
 If only we could write some code to do it for us... Some recursive code...
 
+```
+const isOneByOneArray = (something) =>
+  Array.isArray(something) && something.length === 1 &&
+  Array.isArray(something[0]) && something[0].length === 1;
 
+const first = (array) => array[0];
+
+const quadrantsToQuadTree = ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
+  [upperLeft, upperRight, lowerRight, lowerLeft];
+
+const arrayToQuadTree = multirec({
+  indivisible: isOneByOneArray,
+  value: first,
+  divide: divideSquareIntoQuadrants,
+  combine: quadrantsToQuadTree
+});
+
+arrayToQuadTree([
+  ['⚪️', '⚪️', '⚪️', '⚪️'],
+  ['⚪️', '⚫️', '⚪️', '⚪️'],
+  ['⚫️', '⚪️', '⚪️', '⚪️'],
+  ['⚫️', '⚫️', '⚫️', '⚪️']
+])
+  //=>
+    [
+      [
+        ["⚪️"], ["⚪️"], ["⚫️"], ["⚪️"]
+      ],
+      [
+        ["⚪️"], ["⚪️"], ["⚪️"], ["⚪️"]
+      ],
+      [
+        ["⚪️"], ["⚪️"], ["⚪️"], ["⚫️"]
+      ],
+      [
+        ["⚫️"], ["⚪️"], ["⚫️"], ["⚫️"]
+      ]
+    ]
+```
+
+`multirec` helps us write a function that converts two-dimensional squares into quad trees. And naturally, we can use `multirec` to convert them back again:
+
+```javascript
+const isSmallestActualSquare = (square) => square.length === 4 && square[0].length === 1;
+
+const asFlatArray = ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
+  [[upperLeft[0], upperRight[0]], [lowerLeft[0], lowerRight[0]]];
+
+const combineFlatArrays = ([upperLeft, upperRight, lowerRight, lowerLeft]) => {
+  const upperHalf = [...zipWith(concat, upperLeft, upperRight)];
+  const lowerHalf = [...zipWith(concat, lowerLeft, lowerRight)];
+
+  return concat(upperHalf, lowerHalf);
+}
+
+const quadTreeToArray = multirec({
+  indivisible: isSmallestActualSquare,
+  value: asFlatArray,
+  divide: itself,
+  combine: combineFlatArrays
+});
+
+quadTreeToArray(
+  arrayToQuadTree([
+    ['⚪️', '⚪️', '⚪️', '⚪️'],
+    ['⚪️', '⚫️', '⚪️', '⚪️'],
+    ['⚫️', '⚪️', '⚪️', '⚪️'],
+    ['⚫️', '⚫️', '⚫️', '⚪️']
+  ])
+)
+  //=>
+    [
+      ["⚪️", "⚪️", "⚪️", "⚪️"],
+      ["⚪️", "⚫️", "⚪️", "⚪️"],
+      ["⚫️", "⚪️", "⚪️", "⚪️"],
+      ["⚫️", "⚫️", "⚫️", "⚪️"]
+    ]
+```
+
+And:
+
+```javascript
+quadTreeToArray(
+  rotateQuadTree(
+    arrayToQuadTree([
+      ['⚪️', '⚪️', '⚪️', '⚪️'],
+      ['⚪️', '⚫️', '⚪️', '⚪️'],
+      ['⚫️', '⚪️', '⚪️', '⚪️'],
+      ['⚫️', '⚫️', '⚫️', '⚪️']
+    ])
+  )
+)
+  //=>
+    [
+      ["⚫️", "⚫️", "⚪️", "⚪️"],
+      ["⚫️", "⚪️", "⚫️", "⚪️"],
+      ["⚫️", "⚪️", "⚪️", "⚪️"],
+      ["⚪️", "⚪️", "⚪️", "⚪️"]
+    ]
+```
 
 ### notes
 
