@@ -434,7 +434,7 @@ Of course, all we've done so far is moved the "faffing about" out of our code an
 
 If only we could write some code to do it for us... Some recursive code...
 
-```
+```javascript
 const isOneByOneArray = (something) =>
   Array.isArray(something) && something.length === 1 &&
   Array.isArray(something[0]) && something[0].length === 1;
