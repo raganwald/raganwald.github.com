@@ -514,14 +514,14 @@ const isOneByOneArray = (something) =>
   Array.isArray(something) && something.length === 1 &&
   Array.isArray(something[0]) && something[0].length === 1;
 
-const first = (array) => array[0];
+const contentsOfOneByOneArray = (array) => array[0][0];
 
-const regionsToQuadTree = ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
-  [upperLeft, upperRight, lowerRight, lowerLeft];
+const regionsToQuadTree = ([ul, ur, lr, ll]) =>
+  ({ ul, ur, lr, ll });
 
 const arrayToQuadTree = multirec({
   indivisible: isOneByOneArray,
-  value: first,
+  value: contentsOfOneByOneArray,
   divide: divideSquareIntoRegions,
   combine: regionsToQuadTree
 });
@@ -533,20 +533,12 @@ arrayToQuadTree([
   ['⚫️', '⚫️', '⚫️', '⚪️']
 ])
   //=>
-    [
-      [
-        ["⚪️"], ["⚪️"], ["⚫️"], ["⚪️"]
-      ],
-      [
-        ["⚪️"], ["⚪️"], ["⚪️"], ["⚪️"]
-      ],
-      [
-        ["⚪️"], ["⚪️"], ["⚪️"], ["⚫️"]
-      ],
-      [
-        ["⚫️"], ["⚪️"], ["⚫️"], ["⚫️"]
-      ]
-    ]
+    {
+      ul:  { ul: "⚪️", ur: "⚪️", lr: "⚫️", ll: "⚪️" },
+      ur:  { ul: "⚪️", ur: "⚪️", lr: "⚪️", ll: "⚪️" },
+      lr:  { ul: "⚪️", ur: "⚪️", lr: "⚪️", ll: "⚫️" },
+      ll:  { ul: "⚫️", ur: "⚪️", lr: "⚫️", ll: "⚫️" }
+    }
 ```
 
 Naturally, we can also write a function to convert quadtrees back into two-dimensional arrays again:
