@@ -144,8 +144,7 @@ Both of our examples above have this form, and we will write a higher-order func
 ```javascript
 function sum(list) {
   const indivisible = (list) => list.length === 0;
-  const seed = () => 0;
-  const value = (atom) => atom;
+  const value = () => 0;
   const divide = (list) => {
     const [atom, ...remainder] = list;
 
@@ -154,10 +153,10 @@ function sum(list) {
   const combine = ({ left, right }) => left + right;
 
   if (indivisible(list)) {
-    return seed(list);
+    return value(list);
   } else {
     const { atom, remainder } = divide(list);
-    const left = value(atom);
+    const left = atom;
     const right = sum(remainder);
 
     return combine({ left, right });
@@ -170,8 +169,7 @@ We're just about ready to make our higher-order function. Our penultimate step i
 ```javascript
 function myself (input) {
   const indivisible = (list) => list.length === 0;
-  const seed = () => 0;
-  const value = (atom) => atom;
+  const value = () => 0;
   const divide = (list) => {
     const [atom, ...remainder] = list;
 
@@ -180,10 +178,10 @@ function myself (input) {
   const combine = ({ left, right }) => left + right;
 
   if (indivisible(input)) {
-    return seed(input);
+    return value(input);
   } else {
     const { atom, remainder } = divide(input);
-    const left = value(atom);
+    const left = atom;
     const right = myself(remainder);
 
     return combine({ left, right });
@@ -194,13 +192,13 @@ function myself (input) {
 The final step is to turn our constant functions into parameters of a function that returns our `myself` function:
 
 ```javascript
-function linrec({ indivisible, seed, value = (atom) => atom, divide, combine }) {
+function linrec({ indivisible, value, divide, combine }) {
   return function myself (input) {
     if (indivisible(input)) {
-      return seed(input);
+      return value(input);
     } else {
       const { atom, remainder } = divide(input);
-      const left = value(atom);
+      const left = atom;
       const right = myself(remainder);
 
       return combine({ left, right });
@@ -210,7 +208,7 @@ function linrec({ indivisible, seed, value = (atom) => atom, divide, combine }) 
 
 const sum = linrec({
   indivisible: (list) => list.length === 0,
-  seed: () => 0,
+  value: () => 0,
   divide: (list) => {
     const [atom, ...remainder] = list;
 
@@ -225,7 +223,7 @@ And now we can exploit the similarities between `sum` and `merge`, by using `lin
 ```javascript
 const merge = linrec({
   indivisible: ({ list1, list2 }) => list1.length === 0 || list2.length === 0,
-  seed: ({ list1, list2 }) => list1.concat(list2),
+  value: ({ list1, list2 }) => list1.concat(list2),
   divide: ({ list1, list2 }) => {
     if (list1[0] < list2[0]) {
       return {
@@ -294,6 +292,14 @@ mergeSort([1, 42, 4, 5])
 From `binrec`, we can derive `multirec`, which divides the problem into an arbitrary number of symmetrical parts:
 
 ```javascript
+function mapWith (fn) {
+  return function * (iterable) {
+    for (const element of iterable) {
+      yield fn(element);
+    }
+  };
+}
+
 function multirec({ indivisible, value, divide, combine }) {
   return function myself (input) {
     if (indivisible(input)) {
