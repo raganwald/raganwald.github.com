@@ -9,9 +9,11 @@ When algorithms and the data structures they manipulate are *isomorphic*,[^isomo
 
 [^isomorphic]: In biology, two things are isomorphic if they resemble each other. In mathematics, two things are isomorphic if there is a structure-preserving map between them in both directions. In computer science, two things are isomorphic if the person explaining a concept wishes to seem educated.
 
-In [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html), we had a look at `multirec`, a *recursive combinator*. We'll use `multirec` for our algorithms, to emphasize that all of our algorithms have the same form as our data structure.
-
 Here we go.
+
+# Part The First: Quadtrees
+
+---
 
 ### rotating a square
 
@@ -161,13 +163,42 @@ Reassembled, it becomes this:
 ⚫️⚪️
 ```
 
-Voila! Rotating a square consists of dividing it into four "quadrant" squares, rotating each one in place, then moving them one position clockwise.
+Voila! Rotating a square consists of dividing it into four "region" squares, rotating each one clockwise, then moving the regions one position clockwise.
+
+---
 
 ### recursion, see recursion
 
-The algorithm we are describing is a classic recursive divide-and-conquer, and it's exactly what `multirec` was designed to do. So we'll implement it together.
+In [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html), we had a look at `multirec`, a *recursive combinator*.
 
-Let's begin with a naïve representation for squares, a two-dimensional array. For example, we would represent the square:
+```javascript
+function mapWith (fn) {
+  return function * (iterable) {
+    for (const element of iterable) {
+      yield fn(element);
+    }
+  };
+}
+
+function multirec({ indivisible, value, divide, combine }) {
+  return function myself (input) {
+    if (indivisible(input)) {
+      return value(input);
+    } else {
+      const parts = divide(input);
+      const solutions = mapWith(myself)(parts);
+
+      return combine(solutions);
+    }
+  }
+}
+```
+
+With `multirec`, we can write functions that perform computation using divide-and-conquer algorithms. `multirec` handles the structure of divide-and-conquer, we just have to write four smaller functions that implement the parts specific to the problem we are solving.
+
+> In computer science, divide and conquer (D&C) is an algorithm design paradigm based on multi-branched recursion. A divide and conquer algorithm works by recursively breaking down a problem into two or more sub-problems of the same or related type, until these become simple enough to be solved directly. The solutions to the sub-problems are then combined to give a solution to the original problem.—[Wikipedia](https://en.wikipedia.org/wiki/Divide_and_conquer_algorithm)
+
+We'll implement rotating a square using `multirec`. Let's begin with a naïve representation for squares, a two-dimensional array. For example, we would represent the square:
 
 ```
 ⚪️⚪️⚪️⚪️
@@ -188,9 +219,9 @@ With this array:
 To use `multirec`, we need four pieces:
 
 1. An `indivisible` predicate function. It should report whether an array is to small to be divided up. It's simplicity itself: `(square) => square.length === 1`.
-2. A `value` function that determines what to do with a value that is indivisible. For rotation, we simply return what we are given: `(cell) => cell`
-3. A `divide` function that breaks a divisible problem into smaller pieces. Our function will break a square into four quadrants. We'll see how that works below.
-4. A `combine` function that puts the result of rotating the smaller pieces back together. Our function will take four quadrant squares and put them back together into a big square.
+2. A `value` function that determines what to do with a value that is indivisible. For rotation, we simply return what we are given: `(something) => something`
+3. A `divide` function that breaks a divisible problem into smaller pieces. Our function will break a square into four regions. We'll see how that works below.
+4. A `combine` function that puts the result of rotating the smaller pieces back together. Our function will take four region squares and put them back together into a big square.
 
 As noted, `indivisible` and `value` are trivial. we'll call our functions `hasLengthOne` and `itself`:[^I]
 
@@ -199,13 +230,13 @@ const hasLengthOne = (square) => square.length === 1;
 const itself = (something) => something;
 ```
 
-`divide` involves no more than breaking arrays into halves, and then those halves again. We'll write a `divideSquareIntoQuadrants` function for this:
+`divide` involves no more than breaking arrays into halves, and then those halves again. We'll write a `divideSquareIntoRegions` function for this:
 
 ```javascript
 const firstHalf = (array) => array.slice(0, array.length / 2);
 const secondHalf = (array) => array.slice(array.length / 2);
 
-const divideSquareIntoQuadrants = (square) => {
+const divideSquareIntoRegions = (square) => {
   const upperHalf = firstHalf(square);
   const lowerHalf = secondHalf(square);
 
@@ -264,13 +295,13 @@ const rotateAndCombineArrays = ([upperLeft, upperRight, lowerRight, lowerLeft]) 
 };
 ```
 
-Armed with `hasLengthOne`, `itself`, `divideSquareIntoQuadrants`, and `rotateAndCombineArrays`, we can use `multirec` to write `rotate`:
+Armed with `hasLengthOne`, `itself`, `divideSquareIntoRegions`, and `rotateAndCombineArrays`, we can use `multirec` to write `rotate`:
 
 ```javascript
 const rotate = multirec({
   indivisible : hasLengthOne,
   value : itself,
-  divide: divideSquareIntoQuadrants,
+  divide: divideSquareIntoRegions,
   combine: rotateAndCombineArrays
 });
 
@@ -289,6 +320,8 @@ rotate(
 
 Voila!
 
+---
+
 ### accidental complexity
 
 Rotating a square in this recursive manner is very elegant, but our code is encumbered with some accidental complexity. Here's a flashing strobe-and-neon hint of what it is:
@@ -297,7 +330,7 @@ Rotating a square in this recursive manner is very elegant, but our code is encu
 const firstHalf = (array) => array.slice(0, array.length / 2);
 const secondHalf = (array) => array.slice(array.length / 2);
 
-const divideSquareIntoQuadrants = (square) => {
+const divideSquareIntoRegions = (square) => {
   const upperHalf = firstHalf(square);
   const lowerHalf = secondHalf(square);
 
@@ -310,7 +343,7 @@ const divideSquareIntoQuadrants = (square) => {
 };
 ```
 
-`divideSquareIntoQuadrants` is all about extracting quadrant squares from a bigger square, and while we've done our best to make it readable, it is rather busy. Likewise, here's the same thing in `rotateAndCombineArrays`:
+`divideSquareIntoRegions` is all about extracting region squares from a bigger square, and while we've done our best to make it readable, it is rather busy. Likewise, here's the same thing in `rotateAndCombineArrays`:
 
 ```javascript
 const rotateAndCombineArrays = ([upperLeft, upperRight, lowerRight, lowerLeft]) => {
@@ -326,21 +359,24 @@ const rotateAndCombineArrays = ([upperLeft, upperRight, lowerRight, lowerLeft]) 
 };
 ```
 
-`rotateAndCombineArrays` is a very busy function. The core thing we want to talk about is actually the rotation: Having divided things up into four quadrants, we want to rotate the quadrants. The zipping and concatenating is all about the implementation of quadrants as arrays.
+`rotateAndCombineArrays` is a very busy function. The core thing we want to talk about is actually the rotation: Having divided things up into four regions, we want to rotate the regions. The zipping and concatenating is all about the implementation of regions as arrays.
 
 We can argue that this is _necessary_ complexity, because squares are arrays, and that's just what we programmers do for a living, write code that manipulates basic data structures to do our bidding.
 
 But what if our implementation wasn't an array of arrays? Maybe `divide` and `combine` could be simpler? Maybe that complexity would turn out to be unnecessary after all?
 
+---
+
 ### isomorphic data structures
 
 When we have what ought to be an elegant algorithm, but the interface between the algorithm and the data structure ends up being as complicated as the rest of the algorithm put together, we can always ask ourselves, "What data structure would make this algorithm stupidly simple?"
 
-The answer can often be found by imagining a data structure that looks like the algorithm's basic form. If we follow that heuristic, our data structure would be recursive, rather than 'flat.' Since we do all kinds of work sorting out which squares form the four quadrants of a bigger square, our data structure would describe a square as being composed of four quadrant squares.
+The answer can often be found by imagining a data structure that looks like the algorithm's basic form. If we follow that heuristic, our data structure would be recursive, rather than 'flat.' Since we do all kinds of work sorting out which squares form the four regions of a bigger square, our data structure would describe a square as being composed of four region squares.
 
-Such a data structure already exists, it's called a [quad tree]. Squares are represented as four quadrants, each of which is a smaller square or a cell. The simplest implementation is an array: If the array has four elements, it's a square. If it has one element, it is an indivisible cell.
+Such a data structure already exists, it's called a [quadtree].[^regionquadtree] Squares are represented as four regions, each of which is a smaller square or a cell. The simplest implementation is an array: If the array has four elements, it's a square. If it has one element, it is an indivisible cell.
 
-[quad tree]: https://en.wikipedia.org/wiki/Quadtree
+[quadtree]: https://en.wikipedia.org/wiki/Quadtree
+[^regionquadtree]: More specifically, the data structure we are going to use is called a [region quadtree](https://en.wikipedia.org/wiki/Quadtree#Region_quadtree). But we'll just call it a quadtree.
 
 A square that looks like this:
 
@@ -351,50 +387,82 @@ A square that looks like this:
 ⚪️⚪️⚪️⚪️
 ```
 
-Would be encoded as a quad tree like this:
+Is composed of four regions, the `ul` ("upper left"), `ur` ("upper right"), `lr` ("lower right"), and `ll` ("lower left"), something like this:
+
+```
+ul | ur
+---+---
+ll | lr
+```
+
+Thus, for example, the `ul` is:
+
+```
+⚪️⚫️
+⚪️⚪️
+```
+
+And the `ur` is:
+
+```
+⚪️⚪️
+⚫️⚪️
+```
+
+And so forth. Each of those regions is itself composed of four regions. Thus, the `ul` of the `ul` is `⚪️`, and the `ur` of the `ul` is `⚫️`.
+
+The quadtree could be expressed in JavaScript like this:
 
 ```javascript
-const quadTree = [
-    [
-      ['⚪️'], ['⚫️'], ['⚪️'], ['⚪️']
-    ],
-    [
-      ['⚪️'], ['⚪️'], ['⚪️'], ['⚫️']
-    ],
-    [
-      ['⚫️'], ['⚪️'], ['⚪️'], ['⚪️']
-    ],
-    [
-      ['⚫️'], ['⚫️'], ['⚪️'], ['⚪️']
-    ]
-  ];
+const quadTree = {
+  ul: { ul: '⚪️', ur: '⚫️', lr: '⚪️', ll: '⚪️' },
+  ur: { ul: '⚪️', ur: '⚪️', lr: '⚪️', ll: '⚫️' },
+  lr: { ul: '⚫️', ur: '⚪️', lr: '⚪️', ll: '⚪️' },
+  ll: { ul: '⚫️', ur: '⚫️', lr: '⚪️', ll: '⚪️' }
+};
 ```
 
-It's easier to see if we number the cells in hexadecimal:
-
-```
-01 45
-32 76
-
-CD 89
-FE BA
-```
-
-Now to our algorithm. Rotating a quad tree is simpler than rotating an array of arrays. First, our test for indivisibility and the value of an indivisible cell remain the same, `hasLengthOne` and `itself`.
-
-Our `divide` function is insanely simple: quad trees are already divided in the manner we require, so we can use `itself` again.
-
-And finally, our combine function does away with all the unnecessary faffing about with zipping and concatenating. Here it is, along with our finished function:
+It's easier to see how it maps to our picture if we get a little creative with indentation and ignore JavaScript's syntax rules:
 
 ```javascript
-const rotateQuadrants = ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
-  [lowerLeft, upperLeft, upperRight, lowerRight];
+{
+  ul: { ul: '⚪️', ur: '⚫️',    ur: { ul: '⚪️', ur: '⚪️',
+        ll: '⚪️', lr: '⚪️'  },       ll: '⚫️', lr: '⚪️' },
+  ll: { ul: '⚫️', ur: '⚫️',    lr: { ul: '⚫️', ur: '⚪️',
+        ll: '⚪️', lr: '⚪️' },        ll: '⚪️', lr: '⚪️' }
+}
+```
 
+Now to our algorithm. Rotating a quadtree is simpler than rotating an array of arrays. First, our test for indivisibility is now whether something is a `string` or not:
+
+```javascript
+const isString = (something) => typeof something === 'string';
+```
+
+The value of an indivisible cell remain the same, `itself`.
+
+Our `divide` function is simple: quadtrees are already divided in the manner we require, we just have to turn them into an array of regions:
+
+```javascript
+const quadTreeToRegions = (qt) =>
+  [qt.ul, qt.ur, qt.lr, qt.ll];
+```
+
+And finally, our combine function reassembles the rotated regions into a POJO ("plain Old JavaScript Object"), rotating them in the process:
+
+```javascript
+const regionsToRotatedQuadTree = ([ur, lr, ll, ul]) =>
+  ({ ul, ur, lr, ll });
+```
+
+And here's our function for rotating a quadtree:
+
+```javascript
 const rotateQuadTree = multirec({
-  indivisible : hasLengthOne,
+  indivisible : isString,
   value : itself,
-  divide: itself,
-  combine: rotateQuadrants
+  divide: quadTreeToRegions,
+  combine: regionsToRotatedQuadTree
 });
 ```
 
@@ -403,23 +471,26 @@ Let's put it to the test:
 ```javascript
 rotateQuadTree(quadTree)
   //=>
-    [
-      [
-        ['⚪️'], ['⚫️'], ['⚫️'], ['⚪️']
-      ],
-      [
-        ['⚪️'], ['⚪️'], ['⚫️'], ['⚪️']
-      ],
-      [
-        ['⚫️'], ['⚪️'], ['⚪️'], ['⚪️']
-      ],
-      [
-        ['⚪️'], ['⚫️'], ['⚪️'], ['⚪️']
-      ]
-    ]
+    {
+       ul:{ ll: "⚪️", lr: "⚫️", ul: "⚪️", ur: "⚫️" },
+       ur:{ ll: "⚪️", lr: "⚫️", ul: "⚪️", ur: "⚪️" },
+       lr:{ ll: "⚪️", lr: "⚪️", ul: "⚫️", ur: "⚪️" },
+       ll:{ ll: "⚪️", lr: "⚪️", ul: "⚪️", ur: "⚫️" }
+     }
 ```
 
-If we reassemble the square by hand, we see we have gotten:
+Or if we reorganize things as above to see the pattern:
+
+```javascript
+{
+  ul:{ ul: "⚪️", ur: "⚫️",   ur:{ ul: "⚪️", ur: "⚪️",
+       ll: "⚪️", lr: "⚫️" },      ll: "⚪️", lr: "⚫️" },
+  ll:{ ul: "⚪️", ur: "⚫️",   lr:{ ul: "⚫️", ur: "⚪️",
+       ll: "⚪️", lr: "⚪️" },      ll: "⚪️", lr: "⚪️" }
+}
+```
+
+If we reassemble the square by hand, it's what we expect:
 
 ```
 ⚪️⚫️⚪️⚪️
@@ -428,14 +499,15 @@ If we reassemble the square by hand, we see we have gotten:
 ⚪️⚪️⚪️⚪️
 ```
 
+---
+
 ### separation of concerns
 
-Of course, all we've done so far is moved the "faffing about" out of our code and we're doing it by hand. That's bad: we don't want to retrain our eyes to read quad trees instead of flat arrays, and we don't want to sit at a computer all day manually translating quad trees to flat arrays and back.
+Of course, all we've done so far is moved the "faffing about" out of our code and we're doing it by hand. That's bad: we don't want to retrain our eyes to read quadtrees instead of flat arrays, and we don't want to sit at a computer all day manually translating quadtrees to flat arrays and back.
 
 If only we could write some code to do it for us... Some recursive code...
 
-Here's a function that recursively turns a two-dimensional array into a quad tree:
-
+Here's a function that recursively turns a two-dimensional array into a quadtree:
 
 ```javascript
 const isOneByOneArray = (something) =>
@@ -444,14 +516,14 @@ const isOneByOneArray = (something) =>
 
 const first = (array) => array[0];
 
-const quadrantsToQuadTree = ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
+const regionsToQuadTree = ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
   [upperLeft, upperRight, lowerRight, lowerLeft];
 
 const arrayToQuadTree = multirec({
   indivisible: isOneByOneArray,
   value: first,
-  divide: divideSquareIntoQuadrants,
-  combine: quadrantsToQuadTree
+  divide: divideSquareIntoRegions,
+  combine: regionsToQuadTree
 });
 
 arrayToQuadTree([
@@ -477,7 +549,7 @@ arrayToQuadTree([
     ]
 ```
 
-Naturally, we can also write a function to convert quad trees back into two-dimensional arrays again:
+Naturally, we can also write a function to convert quadtrees back into two-dimensional arrays again:
 
 ```javascript
 const isSmallestActualSquare = (square) => square.length === 4 && square[0].length === 1;
@@ -516,7 +588,7 @@ quadTreeToArray(
     ]
 ```
 
-And thus, we can take a two-dimensional array, turn it into a quad tree, rotate the quad tree, and convert it back to a two-dimensional array again:
+And thus, we can take a two-dimensional array, turn it into a quadtree, rotate the quadtree, and convert it back to a two-dimensional array again:
 
 ```javascript
 quadTreeToArray(
@@ -538,13 +610,112 @@ quadTreeToArray(
     ]
 ```
 
-### why?
+---
 
-Now, we argued above that we've neatly separated the concerns by making three separate functions, instead of interleaving dividing two-dimensional squares into quadrants, rotating quadrants, and then reassembling two-dimensional squares.
+### but why?
+
+Now, we argued above that we've neatly separated the concerns by making three separate functions, instead of interleaving dividing two-dimensional squares into regions, rotating regions, and then reassembling two-dimensional squares.
 
 But the converse side of this is that what we're doing is now a lot less efficient: We're recursing through our data structures three separate times, instead of once. And Frankly, `multirec` was designed such that the `divide` function breaks things up, and the `combine` function puts them back together, so these concerns are already mostly separate once we use `multirec` instead of a bespoke[^bespoke] recursive function.
 
 [^bespoke]: In American English, [bespoke](https://en.wikipedia.org/wiki/Bespoke) typically refers to a garment that is hand-crafted for its wearer. "Bespoke" has, in the last decade, been associated with various hipster endeavours, to the point where its use has become ironic. The turning point was likely when a popped-collar founder of a pre-revenue startup boasted of having two iPhones running a bespoke time management application. Today, it often refers to an item where the owner obtains more value from the status conferred by having a bespoke item, than from the item's fitness for their personalized purpose. Calling a function "bespoke" implies that it was written to display the author's trendy use of functional programming, rather than to efficiently rotate a square.
+
+One reason to break the logic up into three separate functions would be if we want to do lots of different kinds of things with quadtrees. Here's one thing we can do with quadtrees:
+
+We can get the 'depth' of a quadtree:
+
+```javascript
+const depth = multirec({
+  indivisible: hasLengthOne,
+  value: (something) => 0,
+  divide: ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
+    [upperLeft],
+  combine: ([depthOfUpperLeft]) => 1 + depthOfUpperLeft
+});
+```
+
+Or create a quadtree filled with a particular cell, to a particular depth:
+
+```javascript
+const fillWith = ({ cell, depth }) =>
+  linrec({
+    indivisible: (depth) => depth === 0,
+    value: () => [cell],
+    divide: (depth) => ({atom: 1, remainder: depth - 1}),
+    combine: ({left, right: region}) => [region, region, region, region]
+  })(depth);
+```
+
+With `depth` and `fillWith`, we can double the size of a particular quadtree, placing the original contents in the centre of the new tree:
+
+```javascript
+const double = ({ cell, quadTree: [upperLeft, upperRight, lowerRight, lowerLeft] }) => {
+  const regionDepth = depth(upperLeft);
+
+  if (regionDepth >= 0) {
+    const paddingQuadTree = fillWith({ cell, depth: regionDepth});
+
+    const upperLeftDoubled = [paddingQuadTree, paddingQuadTree, upperLeft, paddingQuadTree];
+    const upperRightDoubled = [paddingQuadTree, paddingQuadTree, paddingQuadTree, upperRight];
+    const lowerRightDoubled = [lowerRight, paddingQuadTree, paddingQuadTree, paddingQuadTree];
+    const lowerLeftDoubled = [paddingQuadTree, lowerLeft, paddingQuadTree, paddingQuadTree];
+
+    return [upperLeftDoubled, upperRightDoubled, lowerRightDoubled, lowerLeftDoubled];
+  } else {
+    throw('quadTree must be a square');
+  }
+}
+
+quadTreeToArray(
+  double({
+      cell: "⚪️",
+      quadTree: arrayToQuadTree([
+          ['🔵', '🔴'],
+          ['🔘', '⚫️']
+        ])
+  })
+)
+  //=>
+    [
+      ["⚪️", "⚪️", "⚪️", "⚪️"],
+      ["⚪️", "🔵", "🔴", "⚪️"],
+      ["⚪️", "🔘", "⚫️", "⚪️"],
+      ["⚪️", "⚪️", "⚪️", "⚪️"]
+    ]
+```
+
+And:
+
+```javascript
+quadTreeToArray(
+  double({
+      cell: "⚪️",
+      quadTree: arrayToQuadTree([
+          ["⚪️", "⚪️", "⚪️", "⚪️"],
+          ["⚪️", "🔵", "🔴", "⚪️"],
+          ["⚪️", "🔘", "⚫️", "⚪️"],
+          ["⚪️", "⚪️", "⚪️", "⚪️"]
+        ])
+  })
+)
+  //=>
+     [
+       ["⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️"],
+       ["⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️"],
+       ["⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️"],
+       ["⚪️", "⚪️", "⚪️", "🔵", "🔴", "⚪️", "⚪️", "⚪️"],
+       ["⚪️", "⚪️", "⚪️", "🔘", "⚫️", "⚪️", "⚪️", "⚪️"],
+       ["⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️"],
+       ["⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️"],
+       ["⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️"]
+    ]
+```
+
+This second example is interesting:
+
+
+
+---
 
 ### notes
 
