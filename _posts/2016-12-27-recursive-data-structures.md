@@ -544,10 +544,13 @@ arrayToQuadTree([
 Naturally, we can also write a function to convert quadtrees back into two-dimensional arrays again:
 
 ```javascript
-const isSmallestActualSquare = (square) => square.length === 4 && square[0].length === 1;
+const isSmallestActualSquare = (square) => isString(square.ul);
 
-const asFlatArray = ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
-  [[upperLeft[0], upperRight[0]], [lowerLeft[0], lowerRight[0]]];
+const asTwoDimensionalArray = ({ ul, ur, lr, ll }) =>
+  [[ul, ur], [ll, lr]];
+
+const regions = ({ ul, ur, lr, ll }) =>
+  [ul, ur, lr, ll];
 
 const combineFlatArrays = ([upperLeft, upperRight, lowerRight, lowerLeft]) => {
   const upperHalf = [...zipWith(concat, upperLeft, upperRight)];
@@ -558,8 +561,8 @@ const combineFlatArrays = ([upperLeft, upperRight, lowerRight, lowerLeft]) => {
 
 const quadTreeToArray = multirec({
   indivisible: isSmallestActualSquare,
-  value: asFlatArray,
-  divide: itself,
+  value: asTwoDimensionalArray,
+  divide: regions,
   combine: combineFlatArrays
 });
 
