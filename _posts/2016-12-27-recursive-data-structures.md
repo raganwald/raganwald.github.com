@@ -39,7 +39,7 @@ Here is a square[^square] composed of elements, perhaps pixels or cells that are
 ⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️
 ```
 
-Consider the problem of *rotating* our square. There is a very elegant way to do this. First, we cut the square into four smaller squares:
+Consider the problem of *rotating* our square. There is an uncommon, but particularly delightful way to do this. First, we cut the square into four smaller squares:
 
 ```
 ⚪️⚪️⚪️⚪️ ⚪️⚪️⚪️⚪️
@@ -172,7 +172,9 @@ Reassembled, it becomes this:
 ⚫️⚪️
 ```
 
-Voila! Rotating a square consists of dividing it into four "region" squares, rotating each one clockwise, then moving the regions one position clockwise.
+Voila! Rotating a square consists of dividing it into four "region" squares, rotating each one clockwise, then moving the regions one position clockwise. It brings whirling dervishes to mind.[^delightful]
+
+[^delightful]: There are other interesting, and elegant ways to rotate a square 90 degrees clockwise, the simplest being `zip(square)`. They each have their own set of trade-offs to consider. For example, the 'whirling regions' approach can also be generalized to handle rotating squares in 180- and 270- degree increments, not to mention reflections on either axis. But for the purpose of this essay, 'whirling regions' is the one we will consider most interesting.
 
 ---
 
@@ -706,6 +708,10 @@ quadTreeToArray(
 
 Again, this feels like faffing about just so we can be recursive. But we are in position to do something interesting!
 
+---
+
+### optimizing recursive algorithms with isomorphic data structures
+
 Many images have large regions that are entirely white or black. When superimposing one region on another, if either region is entirely white, we know the result must be the same as the other region. When superimposing one region on another, if either region is entirely black, the result must be entirely black.
 
 We can use the quadtree's hierarchal representation to exploit this. We'll store some extra information in each quadtree, its colour: If it is entirely white, its colour will be white. If it is entirely black, its colour will be black. And if it contains a mix of white and black cells, its colour will be a question mark.
@@ -826,6 +832,22 @@ In the case of comparing the 4x4 `canvas` and `glider` images above, the `superi
 If we were writing an image manipulation application, we'd provide much snappier behaviour using coloured quadtrees to represent images on screen.
 
 The interesting thing about this optimization is that it is tuned to the characteristics of both the data structure and the algorithm: It is not something that is easy to perform in the algorithm without the data structure, or in the data structure without the algorithm.
+
+And it's not the only optimization. Remember our 'whirling regions' implementation of `rotateQuadTree`? Here's `rotateColouredQuadTree`:
+
+```javascript
+const isEntirelyColoured = (something) =>
+  colour(something) !== '❓' ;
+
+const rotateColouredQuadTree = multirec({
+  indivisible : isEntirelyColoured,
+  value : itself,
+  divide: quadTreeToRegions,
+  combine: regionsToRotatedQuadTree
+});
+```
+
+Any region that is entirely white or entirely black is its own rotation, so no further dividing and conquering need be done. For images that have large black regions, the "whirling regions" algorithm is not just aesthetically delightful, it's faster than a brute-force transposition of array elements.
 
 Optimizations like this can only be implemented when the algorithm and the data structure are isomorphic to each other.
 
