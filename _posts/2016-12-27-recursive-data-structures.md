@@ -871,7 +871,7 @@ So back to, "Why convert data into a structure that is isomorphic to our algorit
 
 The first reason to do so, is that the code is clearer and easier to read if we convert, then perform operations on the data structure, and then convert it back (if need be).
 
-The second reason do do so, is that if we want to do lots of different operations on the data structure, it is much more efficient to keep it in the form that is isomorphic to the operations we are going to perform on it.
+The second reason to do so, is that if we want to do lots of different operations on the data structure, it is much more efficient to keep it in the form that is isomorphic to the operations we are going to perform on it.
 
 The example we saw was that if we were building a hypothetical image processing application, we could convert an image into quad trees, then rotate or superimpose images at will. We would only need to convert our quadtrees when we need to save or display the image in a rasterized (i.e. array-like) format.
 
