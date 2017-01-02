@@ -14,6 +14,8 @@ We'll finish up by observing that we also can employ optimizations that are only
 
 Here we go.
 
+---
+
 [![GEB recursive](/assets/images/banner/geb-recursive.jpg)](https://www.flickr.com/photos/gadl/279433682)
 
 *GEB Recursive, © 2006 Alexandre Duret-Lutz, [some rights reserved][cc-by-sa-2.0]*
@@ -371,6 +373,8 @@ const rotateAndCombineArrays = ([upperLeft, upperRight, lowerRight, lowerLeft]) 
 We can argue that this is _necessary_ complexity, because squares are arrays, and that's just what we programmers do for a living, write code that manipulates basic data structures to do our bidding.
 
 But what if our implementation wasn't an array of arrays? Maybe `divide` and `combine` could be simpler? Maybe that complexity would turn out to be unnecessary after all?
+
+---
 
 [![Recursive Chessboard](/assets/images/banner/recursive-chess.jpg)](https://www.flickr.com/photos/fdecomite/746945551)
 
@@ -820,6 +824,8 @@ If we were writing an image manipulation application, we'd provide much snappier
 The interesting thing about this optimization is that it is tuned to the characteristics of both the data structure and the algorithm: It is not something that is easy to perform in the algorithm without the data structure, or in the data structure without the algorithm.
 
 Optimizations like this can only be implemented when the algorithm and the data structure are isomorphic to each other.
+
+---
 
 [![Game of Life 6](/assets/images/glider.jpg)](https://www.flickr.com/photos/oskay/6838125520)
 
