@@ -728,7 +728,7 @@ const colour = (something) => {
   } else if (something === '⚫️') {
     return '⚫️';
   } else {
-    throw `Can't get the colour of ${something}`;
+    throw "Can't get the colour of this thing";
   }
 };
 
@@ -785,7 +785,7 @@ const superimposeColoured = ({ left, right }) => {
     } else if (colour(left) === '⚫️' || colour(right) === '⚪️') {
       return left;
     } else {
-      throw `Can't superimpose ${left} and ${right}`;
+      throw "Can't superimpose these things";
     }
   };
 
