@@ -847,7 +847,7 @@ const rotateColouredQuadTree = multirec({
 });
 ```
 
-Any region that is entirely white or entirely black is its own rotation, so no further dividing and conquering need be done. For images that have large black regions, the "whirling regions" algorithm is not just aesthetically delightful, it's faster than a brute-force transposition of array elements.
+Any region that is entirely white or entirely black is its own rotation, so no further dividing and conquering need be done. For images that have large areas of blank space, the "whirling regions" algorithm is not just aesthetically delightful, it's faster than a brute-force transposition of array elements.
 
 Optimizations like this can only be implemented when the algorithm and the data structure are isomorphic to each other.
 
