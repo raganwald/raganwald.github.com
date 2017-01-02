@@ -39,7 +39,7 @@ Here is a square[^square] composed of elements, perhaps pixels or cells that are
 ⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️
 ```
 
-Consider the problem of *rotating* our square. There us a very elegant way to do this. First, we cut the square into four smaller squares:
+Consider the problem of *rotating* our square. There is a very elegant way to do this. First, we cut the square into four smaller squares:
 
 ```
 ⚪️⚪️⚪️⚪️ ⚪️⚪️⚪️⚪️
