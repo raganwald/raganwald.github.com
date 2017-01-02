@@ -674,7 +674,7 @@ Seems simple enough. How about superimposing a quadtree on a quadtree?
 
 ---
 
-[![two trees](/assets/images/banner/two-trees.jpg)](https://www.flickr.com/photos/84744710@N06/11313121123)
+[![two trees](/assets/images/two-trees.jpg)](https://www.flickr.com/photos/84744710@N06/11313121123)
 
 *Two trees, © 2013 Jon Bunting, [some rights reserved][cc-by-2.0]*
 
