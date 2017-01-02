@@ -9,6 +9,8 @@ When algorithms and the data structures they manipulate are *isomorphic*,[^isomo
 
 [^isomorphic]: In biology, two things are isomorphic if they resemble each other. In mathematics, two things are isomorphic if there is a structure-preserving map between them in both directions. In computer science, two things are isomorphic if the person explaining a concept wishes to seem educated.
 
+We'll finish up by observing that we also can employ optimizations that are only possible when algorithms and the data structures they manipulate are isomorphic.
+
 Here we go.
 
 [![GEB recursive](/assets/images/banner/geb-recursive.jpg)](https://www.flickr.com/photos/gadl/279433682)
