@@ -636,6 +636,8 @@ One reason to break the logic up into three separate functions would be if we wa
 
 Well, we might want to superimpose one image on top of another. This could be part of an image editing application, where we have layers of images and want to superimpose all the layers to derive the finished image for the screen. Or we might be implementing [Conway's Game of Life][gol], and might want to 'paste' a pattern like a glider onto a larger universe.
 
+[gol]: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+
 Let's go with a very simple implementation: We're only editing black-and-white images, and each 'pixel' is either a `⚪️` or `⚫️`. If we use two-dimensional arrays to represent our images, we need to iterate over every 'pixel' to perform the superimposition:
 
 ```javascript
