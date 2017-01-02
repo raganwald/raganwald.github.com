@@ -11,13 +11,17 @@ When algorithms and the data structures they manipulate are *isomorphic*,[^isomo
 
 Here we go.
 
-# Part The First: Quadtrees
+[![GEB recursive](/assets/images/banner/geb-recursive.jpg)](https://www.flickr.com/photos/gadl/279433682)
+
+*GEB Recursive, © 2006 Alexandre Duret-Lutz, [some rights reserved][cc-by-sa-2.0]*
 
 ---
 
-### rotating a square
+### an exercise: rotating a square
 
-Here is a square composed of elements, perhaps pixels or cells that are on or off. We could write them out like this:
+Here is a square[^square] composed of elements, perhaps pixels or cells that are on or off. We could write them out like this:
+
+[^square]: To maintain a laser-focus on the principles being discussed, we will make a huge number of simplifying assumptions in this essay, starting with the constraint that all squares will have sides that are a "power of two" in length, e.g. 2x2, 4x4, 8x8, 16x16, an so forth. Every single function discussed can be adjusted to deal with other cases, but we will omit those adjustments as our goal is understanding principles, not writing production code.
 
 ```
 ⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️
@@ -365,6 +369,10 @@ We can argue that this is _necessary_ complexity, because squares are arrays, an
 
 But what if our implementation wasn't an array of arrays? Maybe `divide` and `combine` could be simpler? Maybe that complexity would turn out to be unnecessary after all?
 
+[![Recursive Chessboard](/assets/banner/recursive-chess.jpg)](https://www.flickr.com/photos/fdecomite/746945551)
+
+*Recursive Chessboard, © 2007 fdecomite, [some rights reserved][cc-by-2.0]*
+
 ---
 
 ### isomorphic data structures
@@ -615,100 +623,220 @@ But the converse side of this is that what we're doing is now a lot less efficie
 
 [^bespoke]: In American English, [bespoke](https://en.wikipedia.org/wiki/Bespoke) typically refers to a garment that is hand-crafted for its wearer. "Bespoke" has, in the last decade, been associated with various hipster endeavours, to the point where its use has become ironic. The turning point was likely when a popped-collar founder of a pre-revenue startup boasted of having two iPhones running a bespoke time management application. Today, it often refers to an item where the owner obtains more value from the status conferred by having a bespoke item, than from the item's fitness for their personalized purpose. Calling a function "bespoke" implies that it was written to display the author's trendy use of functional programming, rather than to efficiently rotate a square.
 
-One reason to break the logic up into three separate functions would be if we want to do lots of different kinds of things with quadtrees. Here's one thing we can do with quadtrees:
+One reason to break the logic up into three separate functions would be if we want to do lots of different kinds of things with quadtrees. Besides rotating quadtrees, what else might we do?
 
-We can get the 'depth' of a quadtree:
+Well, we might want to superimpose one image on top of another. This could be part of an image editing application, where we have layers of images and want to superimpose all the layers to derive the finished image for the screen. Or we might be implementing [Conway's Game of Life][gol], and might want to 'paste' a pattern like a glider onto a larger universe.
+
+Let's go with a very simple implementation: We're only editing black-and-white images, and each 'pixel' is either a `⚪️` or `⚫️`. If we use two-dimensional arrays to represent our images, we need to iterate over every 'pixel' to perform the superimposition:
 
 ```javascript
-const depth = multirec({
-  indivisible: hasLengthOne,
-  value: (something) => 0,
-  divide: ([upperLeft, upperRight, lowerRight, lowerLeft]) =>
-    [upperLeft],
-  combine: ([depthOfUpperLeft]) => 1 + depthOfUpperLeft
+const superimposeCell = (left, right) => left === '⚫️' || right === '⚫️'
+                                         ? '⚫️'
+                                         : '⚪️';
+const superimposeRow = (left, right) => [...zipWith(superimposeCell, left, right)];
+
+const superimposeArray = (left, right) => [...zipWith(superimposeRow, left, right)];
+
+const canvas =
+  [ ['⚪️', '⚪️', '⚪️', '⚪️'],
+    ['⚪️', '⚪️', '⚪️', '⚪️'],
+    ['⚪️', '⚪️', '⚪️', '⚫️'],
+    ['⚪️', '⚪️', '⚪️', '⚫️']];
+
+const glider =
+  [ ['⚪️', '⚪️', '⚪️', '⚪️'],
+    ['⚪️', '⚫️', '⚪️', '⚪️'],
+    ['⚫️', '⚪️', '⚪️', '⚪️'],
+    ['⚫️', '⚫️', '⚫️', '⚪️']];
+
+superimposeArray(canvas, glider)
+  //=>
+    [ ['⚪️', '⚪️', '⚪️', '⚪️'],
+      ['⚪️', '⚫️', '⚪️', '⚪️'],
+      ['⚫️', '⚪️', '⚪️', '⚫️'],
+      ['⚫️', '⚫️', '⚫️', '⚫️']];
+```
+
+Seems simple enough. How about superimposing a quadtree on a quadtree?
+
+---
+
+### recursive operations on pairs of quadtrees
+
+We can use `multirec` to superimpose one quadtree on top of another: Our function will take a pair of quadtrees, using destructuring to extract one called `left` and the other called `right`:
+
+```javascript
+const superimposeQuadTrees = multirec({
+  indivisible: ({ left, right }) => isString(left),
+  value: ({ left, right }) => right ==='⚫️'
+                              ? right
+                              : left,
+  divide: ({ left, right }) => [
+      { left: left.ul, right: right.ul },
+      { left: left.ur, right: right.ur },
+      { left: left.lr, right: right.lr },
+      { left: left.ll, right: right.ll }
+    ],
+  combine: ([ul, ur, lr, ll]) => ({  ul, ur, lr, ll })
+});
+
+quadTreeToArray(
+  superimposeQuadTrees({
+    left: arrayToQuadTree(canvas),
+    right: arrayToQuadTree(glider)
+  })
+)
+  //=>
+    [ ['⚪️', '⚪️', '⚪️', '⚪️'],
+      ['⚪️', '⚫️', '⚪️', '⚪️'],
+      ['⚫️', '⚪️', '⚪️', '⚫️'],
+      ['⚫️', '⚫️', '⚫️', '⚫️']];
+```
+
+Again, this feels like faffing about just so we can be recursive. But we are in position to do something interesting!
+
+Many images have large regions that are entirely white or black. When superimposing one region on another, if either region is entirely white, we know the result must be the same as the other region. When superimposing one region on another, if either region is entirely black, the result must be entirely black.
+
+We can use the quadtree's hierarchal representation to exploit this. We'll store some extra information in each quadtree, its colour: If it is entirely white, its colour will be white. If it is entirely black, its colour will be black. And if it contains a mix of white and black cells, its colour will be a question mark.
+
+```javascript
+const isOneByOneArray = (something) =>
+  Array.isArray(something) && something.length === 1 &&
+  Array.isArray(something[0]) && something[0].length === 1;
+
+const contentsOfOneByOneArray = (array) => array[0][0];
+
+const divideSquareIntoRegions = (square) => {
+  const upperHalf = firstHalf(square);
+  const lowerHalf = secondHalf(square);
+
+  const upperLeft = upperHalf.map(firstHalf);
+  const upperRight = upperHalf.map(secondHalf);
+  const lowerRight = lowerHalf.map(secondHalf);
+  const lowerLeft= lowerHalf.map(firstHalf);
+
+  return [upperLeft, upperRight, lowerRight, lowerLeft];
+};
+
+const colour = (something) => {
+  if (something.colour != null) {
+    return something.colour;
+  } else if (something === '⚪️') {
+    return '⚪️';
+  } else if (something === '⚫️') {
+    return '⚫️';
+  } else {
+    throw `Can't get the colour of ${something}`;
+  }
+};
+
+const combinedColour = (...elements) =>
+  elements.reduce((acc, element => acc === element ? element : '❓'))
+
+const regionsToQuadTree = ([ul, ur, lr, ll]) => ({
+    ul, ur, lr, ll, colour: combinedColour(ul, ur, lr, ll)
+  });
+
+const arrayToQuadTree = multirec({
+  indivisible: isOneByOneArray,
+  value: contentsOfOneByOneArray,
+  divide: divideSquareIntoRegions,
+  combine: regionsToQuadTree
+});
+
+arrayToQuadTree(
+  [ ['⚪️', '⚪️'],
+    ['⚪️', '⚪️'] ]
+).colour
+  //=> "⚪️"
+
+arrayToQuadTree(
+  [ ['⚪️', '⚪️'],
+    ['⚪️', '⚫️'] ]
+).colour
+  //=> "❓"
+
+arrayToQuadTree(
+  [ ['⚫️', '⚫️'],
+    ['⚫️', '⚫️'] ]
+).colour
+  //=> "⚫️"
+
+arrayToQuadTree(
+  [ ['⚪️', '⚪️', '⚪️', '⚪️'],
+    ['⚪️', '⚫️', '⚪️', '⚪️'],
+    ['⚫️', '⚪️', '⚪️', '⚪️'],
+    ['⚫️', '⚫️', '⚫️', '⚪️']]
+).colour
+  //=> "❓"
+```
+
+Now, we can take advantage of every region's computed colour when we superimpose "coloured" quadtrees:
+
+```javascript
+const eitherAreEntirelyColoured = ({ left, right }) =>
+  colour(left) !== '❓' || colour(right) !== '❓' ;
+
+const superimposeColoured = ({ left, right }) => {
+    if (colour(left) === '⚪️' || colour(right) === '⚫️') {
+      return right;
+    } else if (colour(left) === '⚫️' || colour(right) === '⚪️') {
+      return left;
+    } else {
+      throw `Can't superimpose ${left} and ${right}`;
+    }
+  };
+
+const divideTwoQuadTrees = ({ left, right }) => [
+    { left: left.ul, right: right.ul },
+    { left: left.ur, right: right.ur },
+    { left: left.lr, right: right.lr },
+    { left: left.ll, right: right.ll }
+  ];
+
+const combineColouredRegions = ([ul, ur, lr, ll]) => ({
+    ul, ur, lr, ll, colour: combinedColour(ul, ur, lr, ll)
+  });
+
+const superimposeColouredQuadTrees = multirec({
+  indivisible: eitherAreEntirelyColoured,
+  value: superimposeColoured,
+  divide: divideTwoQuadTrees,
+  combine: combineColouredRegions
 });
 ```
 
-Or create a quadtree filled with a particular cell, to a particular depth:
+We get the same output, but now instead of comparing every cell whenever we superimpose quadtrees, we compare entire regions at a time. If either is "entirely coloured," we can return the other one without recursively drilling down to the level of individual pixels.
 
-```javascript
-const fillWith = ({ cell, depth }) =>
-  linrec({
-    indivisible: (depth) => depth === 0,
-    value: () => [cell],
-    divide: (depth) => ({atom: 1, remainder: depth - 1}),
-    combine: ({left, right: region}) => [region, region, region, region]
-  })(depth);
-```
+There is no savings if both quadtrees are composed of a fairly evenly spread mix of black and white pixels (e.g. a checkerboard pattern), but in cases where there are large expanses of white or black, the difference is substantial.
 
-With `depth` and `fillWith`, we can double the size of a particular quadtree, placing the original contents in the centre of the new tree:
+In the case of comparing the 4x4 `canvas` and `glider` images above, the `superimposeArray` function requires sixteen comparisons. The `superimposeQuadTrees` function requires twenty comparisons. But the `superimposeColouredQuadTrees` function requires just seven comparisons.
 
-```javascript
-const double = ({ cell, quadTree: [upperLeft, upperRight, lowerRight, lowerLeft] }) => {
-  const regionDepth = depth(upperLeft);
+If we were writing an image manipulation application, we'd provide much snappier behaviour using coloured quadtrees to represent images on screen.
 
-  if (regionDepth >= 0) {
-    const paddingQuadTree = fillWith({ cell, depth: regionDepth});
+The interesting thing about this optimization is that it is tuned to the characteristics of both the data structure and the algorithm: It is not something that is easy to perform in the algorithm without the data structure, or in the data structure without the algorithm.
 
-    const upperLeftDoubled = [paddingQuadTree, paddingQuadTree, upperLeft, paddingQuadTree];
-    const upperRightDoubled = [paddingQuadTree, paddingQuadTree, paddingQuadTree, upperRight];
-    const lowerRightDoubled = [lowerRight, paddingQuadTree, paddingQuadTree, paddingQuadTree];
-    const lowerLeftDoubled = [paddingQuadTree, lowerLeft, paddingQuadTree, paddingQuadTree];
+Optimizations like this can only be implemented when the algorithm and the data structure are isomorphic to each other.
 
-    return [upperLeftDoubled, upperRightDoubled, lowerRightDoubled, lowerLeftDoubled];
-  } else {
-    throw('quadTree must be a square');
-  }
-}
+[![Game of Life 6](/assets/images/glider.jpg)](https://www.flickr.com/photos/oskay/6838125520)
 
-quadTreeToArray(
-  double({
-      cell: "⚪️",
-      quadTree: arrayToQuadTree([
-          ['🔵', '🔴'],
-          ['🔘', '⚫️']
-        ])
-  })
-)
-  //=>
-    [
-      ["⚪️", "⚪️", "⚪️", "⚪️"],
-      ["⚪️", "🔵", "🔴", "⚪️"],
-      ["⚪️", "🔘", "⚫️", "⚪️"],
-      ["⚪️", "⚪️", "⚪️", "⚪️"]
-    ]
-```
+*Detail from "Game of Life 6," © Windell Oskay, [some rights reserved][cc-by-2.0]*
 
-And:
+---
 
-```javascript
-quadTreeToArray(
-  double({
-      cell: "⚪️",
-      quadTree: arrayToQuadTree([
-          ["⚪️", "⚪️", "⚪️", "⚪️"],
-          ["⚪️", "🔵", "🔴", "⚪️"],
-          ["⚪️", "🔘", "⚫️", "⚪️"],
-          ["⚪️", "⚪️", "⚪️", "⚪️"]
-        ])
-  })
-)
-  //=>
-     [
-       ["⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️"],
-       ["⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️"],
-       ["⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️"],
-       ["⚪️", "⚪️", "⚪️", "🔵", "🔴", "⚪️", "⚪️", "⚪️"],
-       ["⚪️", "⚪️", "⚪️", "🔘", "⚫️", "⚪️", "⚪️", "⚪️"],
-       ["⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️"],
-       ["⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️"],
-       ["⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️", "⚪️"]
-    ]
-```
+### why!
 
-This second example is interesting:
+So back to, "Why convert data into a structure that is isomorphic to our algorithm."
 
+The first reason to do so, is that the code is clearer and easier to read if we convert, then perform operations on the data structure, and then convert it back (if need be).
 
+The second reason do do so, is that if we want to do lots of different operations on the data structure, it is much more efficient to keep it in the form that is isomorphic to the operations we are going to perform on it.
+
+The example we saw was that if we were building a hypothetical image processing application, we could convert an image into quad trees, then rotate or superimpose images at will. We would only need to convert our quadtrees when we need to save or display the image in a rasterized (i.e. array-like) format.
+
+And third, we saw that once we embraced a data structure that was isomorphic to the form of the algorithm, we could employ elegant optimizations that are impossible (or ridiculously inconvenient) when the algorithm and data structure do not match.
+
+Separating conversion from operation allows us to benefit from all three reasons for ensuring that our algorithms and data structures are isomorphic to each other.
 
 ---
 
@@ -717,5 +845,6 @@ This second example is interesting:
 [anamorphism]: https://en.wikipedia.org/wiki/Anamorphism
 [catamorphism]: https://en.wikipedia.org/wiki/Catamorphism
 [cc-by-2.0]: https://creativecommons.org/licenses/by/2.0/
+[cc-by-sa-2.0]: https://creativecommons.org/licenses/by-sa/2.0/
 [reddit]: https://www.reddit.com/r/javascript/comments/5jdjo6/from_higherorder_functions_to_libraries_and/
 [Ember]: http://emberjs.com/
