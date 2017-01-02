@@ -426,10 +426,10 @@ The quadtree could be expressed in JavaScript like this:
 
 ```javascript
 const quadTree = {
-  ul: { ul: '⚪️', ur: '⚫️', lr: '⚪️', ll: '⚪️' },
-  ur: { ul: '⚪️', ur: '⚪️', lr: '⚪️', ll: '⚫️' },
-  lr: { ul: '⚫️', ur: '⚪️', lr: '⚪️', ll: '⚪️' },
-  ll: { ul: '⚫️', ur: '⚫️', lr: '⚪️', ll: '⚪️' }
+  'ul': { 'ul': '⚪️', 'ur': '⚫️', 'lr': '⚪️', 'll': '⚪️' },
+  'ur': { 'ul': '⚪️', 'ur': '⚪️', 'lr': '⚪️', 'll': '⚫️' },
+  'lr': { 'ul': '⚫️', 'ur': '⚪️', 'lr': '⚪️', 'll': '⚪️' },
+  'll': { 'ul': '⚫️', 'ur': '⚫️', 'lr': '⚪️', 'll': '⚪️' }
 };
 ```
 
@@ -437,10 +437,10 @@ It's easier to see how it maps to our picture if we get a little creative with i
 
 ```
 {
-  ul: { ul: '⚪️', ur: '⚫️',    ur: { ul: '⚪️', ur: '⚪️',
-        ll: '⚪️', lr: '⚪️'  },       ll: '⚫️', lr: '⚪️' },
-  ll: { ul: '⚫️', ur: '⚫️',    lr: { ul: '⚫️', ur: '⚪️',
-        ll: '⚪️', lr: '⚪️' },        ll: '⚪️', lr: '⚪️' }
+  'ul': { 'ul': '⚪️', 'ur': '⚫️',    'ur': { 'ul': '⚪️', 'ur': '⚪️',
+          'll': '⚪️', 'lr': '⚪️'  },         'll': '⚫️', 'lr': '⚪️' },
+  'll': { 'ul': '⚫️', 'ur': '⚫️',    'lr': { 'ul': '⚫️', 'ur': '⚪️',
+          'll': '⚪️', 'lr': '⚪️' },          'll': '⚪️', 'lr': '⚪️' }
 }
 ```
 
@@ -483,10 +483,10 @@ Let's put it to the test:
 rotateQuadTree(quadTree)
   //=>
     {
-       ul:{ ll: "⚪️", lr: "⚫️", ul: "⚪️", ur: "⚫️" },
-       ur:{ ll: "⚪️", lr: "⚫️", ul: "⚪️", ur: "⚪️" },
-       lr:{ ll: "⚪️", lr: "⚪️", ul: "⚫️", ur: "⚪️" },
-       ll:{ ll: "⚪️", lr: "⚪️", ul: "⚪️", ur: "⚫️" }
+       'ul':{ 'll': "⚪️", 'lr': "⚫️", 'ul': "⚪️", 'ur': "⚫️" },
+       'ur':{ 'll': "⚪️", 'lr': "⚫️", 'ul': "⚪️", 'ur': "⚪️" },
+       'lr':{ 'll': "⚪️", 'lr': "⚪️", 'ul': "⚫️", 'ur': "⚪️" },
+       'll':{ 'll': "⚪️", 'lr': "⚪️", 'ul': "⚪️", 'ur': "⚫️" }
      }
 ```
 
@@ -494,10 +494,10 @@ Or if we reorganize things as above to see the pattern:
 
 ```
 {
-  ul:{ ul: "⚪️", ur: "⚫️",   ur:{ ul: "⚪️", ur: "⚪️",
-       ll: "⚪️", lr: "⚫️" },      ll: "⚪️", lr: "⚫️" },
-  ll:{ ul: "⚪️", ur: "⚫️",   lr:{ ul: "⚫️", ur: "⚪️",
-       ll: "⚪️", lr: "⚪️" },      ll: "⚪️", lr: "⚪️" }
+  'ul':{ 'ul': "⚪️", 'ur': "⚫️",   'ur':{ 'ul': "⚪️", 'ur': "⚪️",
+         'll': "⚪️", 'lr': "⚫️" },        'll': "⚪️", 'lr': "⚫️" },
+  'll':{ 'ul': "⚪️", 'ur': "⚫️",   'lr':{ 'ul': "⚫️", 'ur': "⚪️",
+         'll': "⚪️", 'lr': "⚪️" },        'll': "⚪️", 'lr': "⚪️" }
 }
 ```
 
@@ -545,10 +545,10 @@ arrayToQuadTree([
 ])
   //=>
     {
-      ul:  { ul: "⚪️", ur: "⚪️", lr: "⚫️", ll: "⚪️" },
-      ur:  { ul: "⚪️", ur: "⚪️", lr: "⚪️", ll: "⚪️" },
-      lr:  { ul: "⚪️", ur: "⚪️", lr: "⚪️", ll: "⚫️" },
-      ll:  { ul: "⚫️", ur: "⚪️", lr: "⚫️", ll: "⚫️" }
+      'ul':  { 'ul': "⚪️", 'ur': "⚪️", 'lr': "⚫️", 'll': "⚪️" },
+      'ur':  { 'ul': "⚪️", 'ur': "⚪️", 'lr': "⚪️", 'll': "⚪️" },
+      'lr':  { 'ul': "⚪️", 'ur': "⚪️", 'lr': "⚪️", 'll': "⚫️" },
+      'll':  { 'ul': "⚫️", 'ur': "⚪️", 'lr': "⚫️", 'll': "⚫️" }
     }
 ```
 
@@ -700,7 +700,7 @@ Again, this feels like faffing about just so we can be recursive. But we are in 
 
 Many images have large regions that are entirely white or black. When superimposing one region on another, if either region is entirely white, we know the result must be the same as the other region. When superimposing one region on another, if either region is entirely black, the result must be entirely black.
 
-We can use the quadtree's hierarchal representation to exploit this. We'll store some extra information in each quadtree, its colour: If it is entirely white, its colour will be white. If it is entirely black, its colour will be black. And if it contains a mix of white and black cells, its colour will be a question mark.
+We can use the quadtree's hierarchal representation to exploit this. We'll store some extra information in each quadtree, its colo'ur': If it is entirely white, its colour will be white. If it is entirely black, its colour will be black. And if it contains a mix of white and black cells, its colour will be a question mark.
 
 ```javascript
 const isOneByOneArray = (something) =>
@@ -737,7 +737,7 @@ const combinedColour = (...elements) =>
   elements.reduce((acc, element => acc === element ? element : '❓'))
 
 const regionsToQuadTree = ([ul, ur, lr, ll]) => ({
-    ul, ur, lr, ll, colour: combinedColour(ul, ur, lr, ll)
+    ul, ur, lr, ll, colo'ur': combinedColour(ul, ur, lr, ll)
   });
 
 const arrayToQuadTree = multirec({
@@ -798,7 +798,7 @@ const divideTwoQuadTrees = ({ left, right }) => [
   ];
 
 const combineColouredRegions = ([ul, ur, lr, ll]) => ({
-    ul, ur, lr, ll, colour: combinedColour(ul, ur, lr, ll)
+    ul, ur, lr, ll, colo'ur': combinedColour(ul, ur, lr, ll)
   });
 
 const superimposeColouredQuadTrees = multirec({
