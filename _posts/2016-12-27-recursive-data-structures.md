@@ -674,6 +674,12 @@ Seems simple enough. How about superimposing a quadtree on a quadtree?
 
 ---
 
+[![two trees](/assets/images/banner/two-trees.jpg)](https://www.flickr.com/photos/84744710@N06/11313121123)
+
+*Two trees, © 2013 Jon Bunting, [some rights reserved][cc-by-2.0]*
+
+---
+
 ### recursive operations on pairs of quadtrees
 
 We can use `multirec` to superimpose one quadtree on top of another: Our function will take a pair of quadtrees, using destructuring to extract one called `left` and the other called `right`:
