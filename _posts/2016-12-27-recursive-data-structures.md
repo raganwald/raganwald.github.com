@@ -232,7 +232,7 @@ To use `multirec`, we need four pieces:
 3. A `divide` function that breaks a divisible problem into smaller pieces. Our function will break a square into four regions. We'll see how that works below.
 4. A `combine` function that puts the result of rotating the smaller pieces back together. Our function will take four region squares and put them back together into a big square.
 
-As noted, `indivisible` and `value` are trivial. we'll call our functions `hasLengthOne` and `itself`:[^I]
+As noted, `indivisible` and `value` are trivial. We'll call our functions `hasLengthOne`, and, `itself`:[^I]
 
 [^I]: `itself` is known formally is the [I Combinator](https://en.wikipedia.org/wiki/Combinatory_logic), and also fondly nicknamed "The Idiot Bird" using Raymond Smullyan's ornithological taxonomy.
 
