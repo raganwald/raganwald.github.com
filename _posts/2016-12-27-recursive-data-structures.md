@@ -441,17 +441,6 @@ const quadTree = {
 };
 ```
 
-It's easier to see how it maps to our picture if we get a little creative with indentation and ignore JavaScript's syntax rules:
-
-```
-{
-  ul: { ul: '⚪️', ur: '⚫️',    ur: { ul: '⚪️', ur: '⚪️',
-        ll: '⚪️', lr: '⚪️'  },       ll: '⚫️', lr: '⚪️' },
-  ll: { ul: '⚫️', ur: '⚫️',    lr: { ul: '⚫️', ur: '⚪️',
-        ll: '⚪️', lr: '⚪️' },        ll: '⚪️', lr: '⚪️' }
-}
-```
-
 Now to our algorithm. Rotating a quadtree is simpler than rotating an array of arrays. First, our test for indivisibility is now whether something is a `string` or not:
 
 ```javascript
@@ -496,17 +485,6 @@ rotateQuadTree(quadTree)
        lr: { ll: "⚪️", lr: "⚪️", ul: "⚫️", ur: "⚪️" },
        ll: { ll: "⚪️", lr: "⚪️", ul: "⚪️", ur: "⚫️" }
      }
-```
-
-Or if we reorganize things as above to see the pattern:
-
-```
-{
-  ul: { ul: "⚪️", ur: "⚫️",   ur: { ul: "⚪️", ur: "⚪️",
-        ll: "⚪️", lr: "⚫️" },       ll: "⚪️", lr: "⚫️" },
-  ll: { ul: "⚪️", ur: "⚫️",   lr: { ul: "⚫️", ur: "⚪️",
-        ll: "⚪️", lr: "⚪️" },       ll: "⚪️", lr: "⚪️" }
-}
 ```
 
 If we reassemble the square by hand, it's what we expect:
