@@ -479,12 +479,12 @@ Let's put it to the test:
 ```javascript
 rotateQuadTree(quadTree)
   //=>
-    {
+    ({
        ul: { ll: "⚪️", lr: "⚫️", ul: "⚪️", ur: "⚫️" },
        ur: { ll: "⚪️", lr: "⚫️", ul: "⚪️", ur: "⚪️" },
        lr: { ll: "⚪️", lr: "⚪️", ul: "⚫️", ur: "⚪️" },
        ll: { ll: "⚪️", lr: "⚪️", ul: "⚪️", ur: "⚫️" }
-     }
+     })
 ```
 
 If we reassemble the square by hand, it's what we expect:
