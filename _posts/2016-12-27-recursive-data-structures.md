@@ -229,7 +229,7 @@ With this array:
 
 To use `multirec`, we need four pieces:
 
-1. An `indivisible` predicate function. It should report whether an array is to small to be divided up. It's simplicity itself: `(square) => square.length === 1`.
+1. An `indivisible` predicate function. It should report whether an array is too small to be divided up. It's simplicity itself: `(square) => square.length === 1`.
 2. A `value` function that determines what to do with a value that is indivisible. For rotation, we simply return what we are given: `(something) => something`
 3. A `divide` function that breaks a divisible problem into smaller pieces. Our function will break a square into four regions. We'll see how that works below.
 4. A `combine` function that puts the result of rotating the smaller pieces back together. Our function will take four region squares and put them back together into a big square.
