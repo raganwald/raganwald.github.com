@@ -1,4 +1,5 @@
 ---
+title: "Why Recursive Data Structures?"
 layout: default
 tags: [allonge]
 ---
