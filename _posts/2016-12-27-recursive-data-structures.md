@@ -380,7 +380,7 @@ But what if our implementation wasn't an array of arrays? Maybe `divide` and `co
 
 ---
 
-[![Recursive Chessboard](/assets/images/banner/recursive-chess.jpg)](https://www.flickr.com/photos/fdecomite/746945551)
+[![Recursive Chessboard](/assets/images/recursive-chessboard.jpg)](https://www.flickr.com/photos/fdecomite/746945551)
 
 *Recursive Chessboard, © 2007 fdecomite, [some rights reserved][cc-by-2.0]*
 
