@@ -234,6 +234,8 @@ To use `multirec`, we need four pieces:
 
 As noted, `indivisible` and `value` are trivial. we'll call our functions `hasLengthOne` and `itself`:[^I]
 
+[^I]: `itself` is known formally is the [I Combinator](https://en.wikipedia.org/wiki/Combinatory_logic), and also fondly nicknamed "The Idiot Bird" using Raymond Smullyan's ornithological taxonomy.
+
 ```javascript
 const hasLengthOne = (square) => square.length === 1;
 const itself = (something) => something;
