@@ -849,6 +849,14 @@ Separating conversion from operation allows us to benefit from all three reasons
 
 ---
 
+### afterward
+
+Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss this on [reddit](https://www.reddit.com/r/javascript/comments/5lm0ya/why_recursive_data_structures/), or even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-12-27-recursive-data-structures.md) yourself.
+
+And hey! If you like this essay, you'll love [JavaScript Allongé](https://leanpub.com/javascriptallongesix/). It's free to read online!
+
+---
+
 ### notes
 
 [anamorphism]: https://en.wikipedia.org/wiki/Anamorphism
