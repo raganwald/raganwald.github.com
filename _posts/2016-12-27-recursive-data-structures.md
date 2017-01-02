@@ -435,7 +435,7 @@ const quadTree = {
 
 It's easier to see how it maps to our picture if we get a little creative with indentation and ignore JavaScript's syntax rules:
 
-```javascript
+```
 {
   ul: { ul: '⚪️', ur: '⚫️',    ur: { ul: '⚪️', ur: '⚪️',
         ll: '⚪️', lr: '⚪️'  },       ll: '⚫️', lr: '⚪️' },
@@ -492,7 +492,7 @@ rotateQuadTree(quadTree)
 
 Or if we reorganize things as above to see the pattern:
 
-```javascript
+```
 {
   ul:{ ul: "⚪️", ur: "⚫️",   ur:{ ul: "⚪️", ur: "⚪️",
        ll: "⚪️", lr: "⚫️" },      ll: "⚪️", lr: "⚫️" },
