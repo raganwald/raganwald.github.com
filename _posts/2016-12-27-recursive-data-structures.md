@@ -483,10 +483,10 @@ Let's put it to the test:
 rotateQuadTree(quadTree)
   //=>
     {
-       ul:{ ll: "⚪️", lr: "⚫️", ul: "⚪️", ur: "⚫️" },
-       ur:{ ll: "⚪️", lr: "⚫️", ul: "⚪️", ur: "⚪️" },
-       lr:{ ll: "⚪️", lr: "⚪️", ul: "⚫️", ur: "⚪️" },
-       ll:{ ll: "⚪️", lr: "⚪️", ul: "⚪️", ur: "⚫️" }
+       ul: { ll: "⚪️", lr: "⚫️", ul: "⚪️", ur: "⚫️" },
+       ur: { ll: "⚪️", lr: "⚫️", ul: "⚪️", ur: "⚪️" },
+       lr: { ll: "⚪️", lr: "⚪️", ul: "⚫️", ur: "⚪️" },
+       ll: { ll: "⚪️", lr: "⚪️", ul: "⚪️", ur: "⚫️" }
      }
 ```
 
@@ -494,10 +494,10 @@ Or if we reorganize things as above to see the pattern:
 
 ```
 {
-  ul:{ ul: "⚪️", ur: "⚫️",   ur:{ ul: "⚪️", ur: "⚪️",
-       ll: "⚪️", lr: "⚫️" },      ll: "⚪️", lr: "⚫️" },
-  ll:{ ul: "⚪️", ur: "⚫️",   lr:{ ul: "⚫️", ur: "⚪️",
-       ll: "⚪️", lr: "⚪️" },      ll: "⚪️", lr: "⚪️" }
+  ul: { ul: "⚪️", ur: "⚫️",   ur: { ul: "⚪️", ur: "⚪️",
+        ll: "⚪️", lr: "⚫️" },       ll: "⚪️", lr: "⚫️" },
+  ll: { ul: "⚪️", ur: "⚫️",   lr: { ul: "⚫️", ur: "⚪️",
+        ll: "⚪️", lr: "⚪️" },       ll: "⚪️", lr: "⚪️" }
 }
 ```
 
