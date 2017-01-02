@@ -623,12 +623,14 @@ Well, we might want to superimpose one image on top of another. This could be pa
 Let's go with a very simple implementation: We're only editing black-and-white images, and each 'pixel' is either a `⚪️` or `⚫️`. If we use two-dimensional arrays to represent our images, we need to iterate over every 'pixel' to perform the superimposition:
 
 ```javascript
-const superimposeCell = (left, right) => left === '⚫️' || right === '⚫️'
-                                         ? '⚫️'
-                                         : '⚪️';
-const superimposeRow = (left, right) => [...zipWith(superimposeCell, left, right)];
+const superimposeCell = (left, right) =>
+  (left === '⚫️' || right === '⚫️') ? '⚫️' : '⚪️';
 
-const superimposeArray = (left, right) => [...zipWith(superimposeRow, left, right)];
+const superimposeRow = (left, right) =>
+  [...zipWith(superimposeCell, left, right)];
+
+const superimposeArray = (left, right) =>
+  [...zipWith(superimposeRow, left, right)];
 
 const canvas =
   [ ['⚪️', '⚪️', '⚪️', '⚪️'],
