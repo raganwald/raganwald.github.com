@@ -392,7 +392,7 @@ When we have what ought to be an elegant algorithm, but the interface between th
 
 The answer can often be found by imagining a data structure that looks like the algorithm's basic form. If we follow that heuristic, our data structure would be recursive, rather than 'flat.' Since we do all kinds of work sorting out which squares form the four regions of a bigger square, our data structure would describe a square as being composed of four region squares.
 
-Such a data structure already exists, it's called a [quadtree].[^regionquadtree] Squares are represented as four regions, each of which is a smaller square or a cell. A simple implementation is a "Plain Old JavaScript Object" with properties for each of the regions. If the property contains a string, it's cell. If it contains another POJO, it's a quadtree.
+Such a data structure already exists, it's called a [quadtree].[^regionquadtree] Squares are represented as four regions, each of which is a smaller square or a cell. A simple implementation is a "Plain Old JavaScript Object" (or "POJO") with properties for each of the regions. If the property contains a string, it's cell. If it contains another POJO, it's a quadtree.
 
 [quadtree]: https://en.wikipedia.org/wiki/Quadtree
 [^regionquadtree]: More specifically, the data structure we are going to use is called a [region quadtree](https://en.wikipedia.org/wiki/Quadtree#Region_quadtree). But we'll just call it a quadtree.
@@ -456,7 +456,7 @@ const quadTreeToRegions = (qt) =>
   [qt.ul, qt.ur, qt.lr, qt.ll];
 ```
 
-And finally, our combine function reassembles the rotated regions into a POJO ("plain Old JavaScript Object"), rotating them in the process:
+And finally, our combine function reassembles the rotated regions into a POJO, rotating them in the process:
 
 ```javascript
 const regionsToRotatedQuadTree = ([ur, lr, ll, ul]) =>
