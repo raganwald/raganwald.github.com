@@ -883,7 +883,7 @@ Separating conversion from operation allows us to benefit from all three reasons
 
 ### afterward
 
-Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss this on [reddit](https://www.reddit.com/r/javascript/comments/5lm0ya/why_recursive_data_structures/), or even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-12-27-recursive-data-structures.md) yourself.
+Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss this on [hacker news](https://news.ycombinator.com/item?id=13304487) or [reddit](https://www.reddit.com/r/javascript/comments/5lm0ya/why_recursive_data_structures/), or even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-12-27-recursive-data-structures.md) yourself.
 
 p.s. Thank you for reading this far. Here is your reward, [An Algorithm for Compressing Space and Time](http://www.drdobbs.com/jvm/an-algorithm-for-compressing-space-and-t/184406478). And hey! If you like this kind of thing, [JavaScript Allongé](https://leanpub.com/javascriptallongesix/) is exactly the kind of thing you'll like.
 
