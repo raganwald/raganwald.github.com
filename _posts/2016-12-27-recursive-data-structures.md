@@ -530,12 +530,12 @@ arrayToQuadTree([
   ['⚫️', '⚫️', '⚫️', '⚪️']
 ])
   //=>
-    {
+    ({
       ul:  { ul: "⚪️", ur: "⚪️", lr: "⚫️", ll: "⚪️" },
       ur:  { ul: "⚪️", ur: "⚪️", lr: "⚪️", ll: "⚪️" },
       lr:  { ul: "⚪️", ur: "⚪️", lr: "⚪️", ll: "⚫️" },
       ll:  { ul: "⚫️", ur: "⚪️", lr: "⚫️", ll: "⚫️" }
-    }
+    })
 ```
 
 Naturally, we can also write a function to convert quadtrees back into two-dimensional arrays again:
