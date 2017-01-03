@@ -176,6 +176,12 @@ Voila! Rotating a square consists of dividing it into four "region" squares, rot
 
 [^delightful]: There are other interesting, and elegant ways to rotate a square 90 degrees clockwise, the simplest being `zip(square)`. They each have their own set of trade-offs to consider. For example, the 'whirling regions' approach can also be generalized to handle rotating squares in 180- and 270- degree increments, not to mention reflections on either axis. But for the purpose of this essay, 'whirling regions' is the one we will consider most interesting.
 
+Here's the algorithm in action:[^teddyh]
+
+[^teddyh]: 🎩 [teggyh](https://news.ycombinator.com/user?id=teddyh) on Hacker News.
+
+<iframe width="620" height="425" src="https://www.youtube.com/embed/tOLzz_D4-0E" frameborder="0" allowfullscreen></iframe>
+
 ---
 
 ### recursion, see recursion
