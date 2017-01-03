@@ -180,7 +180,7 @@ Here's the algorithm in action:[^teddyh]
 
 [^teddyh]: 🎩 [teggyh](https://news.ycombinator.com/user?id=teddyh) on Hacker News.
 
-<iframe width="620" height="425" src="https://www.youtube.com/embed/tOLzz_D4-0E" frameborder="0" allowfullscreen></iframe>
+<iframe width="620" height="425" src="https://www.youtube.com/embed/UTtcwb-UWW8" frameborder="0" allowfullscreen></iframe>
 
 ---
 
