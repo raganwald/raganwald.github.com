@@ -506,9 +506,9 @@ If we reassemble the square by hand, it's what we expect:
 
 ---
 
-### an aside about "isomorphic"
+> Now we can be serious about the word "Isomorphic." Isomorphic means, fundamentally, "having the same shape." Obviously, a quadtree doesn't look anything like the code in `rotateQuadTree` or `multirec`. So how can a quadtree "look like" an algorithm? The answer is that the quadtree's data structure looks very much like the way `rotateQuadTree` behaves at run time.
 
-> Now we can be serious about the word "Isomorphic." Isomorphic means, fundamentally, "having the same shape." Obviously, a quadtree doesn't look anything like the code in `rotateQuadTree` or `multirec`. So how can a quadtree "look like" an algorithm? The answer is that the quadtree's data structure looks very much like the way `rotateQuadTree` behaves at run time. More precisely, the elements of the quadtree and the relationships between them can be put into a one-to-one correspondance with the [call graph](https://en.wikipedia.org/wiki/Call_graph) of `rotateQuadTree` when acting on that quadtree.
+> More precisely, the elements of the quadtree and the relationships between them can be put into a one-to-one correspondance with the [call graph](https://en.wikipedia.org/wiki/Call_graph) of `rotateQuadTree` when acting on that quadtree.
 
 ---
 
