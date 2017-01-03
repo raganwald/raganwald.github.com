@@ -178,7 +178,7 @@ Voila! Rotating a square consists of dividing it into four "region" squares, rot
 
 Here's the algorithm in action:[^teddyh]
 
-[^teddyh]: 🎩 [teggyh](https://news.ycombinator.com/user?id=teddyh) on Hacker News.
+[^teddyh]: 🎩 [teddyh](https://news.ycombinator.com/user?id=teddyh) on Hacker News.
 
 <iframe width="620" height="425" src="https://www.youtube.com/embed/UTtcwb-UWW8" frameborder="0" allowfullscreen></iframe>
 
