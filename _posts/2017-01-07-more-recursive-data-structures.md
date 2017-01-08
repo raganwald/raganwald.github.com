@@ -29,7 +29,7 @@ function multirec({ indivisible, value, divide, combine }) {
 }
 ```
 
-We used `multirec` to implement _coloured quadtrees_:
+We used `multirec` to implement [quadtrees]:
 
 ```javascript
 const isOneByOneArray = (something) =>
@@ -50,6 +50,51 @@ const divideSquareIntoRegions = (square) => {
   return [upperLeft, upperRight, lowerRight, lowerLeft];
 };
 
+const regionsToQuadTree = ([ul, ur, lr, ll]) =>
+  ({ ul, ur, lr, ll });
+
+const arrayToQuadTree = multirec({
+  indivisible: isOneByOneArray,
+  value: contentsOfOneByOneArray,
+  divide: divideSquareIntoRegions,
+  combine: regionsToQuadTree
+});
+
+const isString = (something) => typeof something === 'string';
+
+const itself = (something) => something;
+
+const quadTreeToRegions = (qt) =>
+  [qt.ul, qt.ur, qt.lr, qt.ll];
+
+const regionsToRotatedQuadTree = ([ur, lr, ll, ul]) =>
+  ({ ul, ur, lr, ll });
+
+const rotateQuadTree = multirec({
+  indivisible : isString,
+  value : itself,
+  divide: quadTreeToRegions,
+  combine: regionsToRotatedQuadTree
+});
+```
+
+And _coloured quadtrees_:
+
+```javascript
+const combinedColour = (...elements) =>
+  elements.reduce((acc, element => acc === element ? element : '❓'))
+
+const regionsToColouredQuadTree = ([ul, ur, lr, ll]) => ({
+    ul, ur, lr, ll, colour: combinedColour(ul, ur, lr, ll)
+  });
+
+const arrayToColouredQuadTree = multirec({
+  indivisible: isOneByOneArray,
+  value: contentsOfOneByOneArray,
+  divide: divideSquareIntoRegions,
+  combine: regionsToColouredQuadTree
+});
+
 const colour = (something) => {
   if (something.colour != null) {
     return something.colour;
@@ -62,53 +107,8 @@ const colour = (something) => {
   }
 };
 
-const combinedColour = (...elements) =>
-  elements.reduce((acc, element => acc === element ? element : '❓'))
-
-const regionsToQuadTree = ([ul, ur, lr, ll]) => ({
-    ul, ur, lr, ll, colour: combinedColour(ul, ur, lr, ll)
-  });
-
-const eitherAreEntirelyColoured = ({ left, right }) =>
-  colour(left) !== '❓' || colour(right) !== '❓' ;
-
-const superimposeColoured = ({ left, right }) => {
-    if (colour(left) === '⚪️' || colour(right) === '⚫️') {
-      return right;
-    } else if (colour(left) === '⚫️' || colour(right) === '⚪️') {
-      return left;
-    } else {
-      throw "Can't superimpose these things";
-    }
-  };
-
-const divideTwoQuadTrees = ({ left, right }) => [
-    { left: left.ul, right: right.ul },
-    { left: left.ur, right: right.ur },
-    { left: left.lr, right: right.lr },
-    { left: left.ll, right: right.ll }
-  ];
-
-const combineColouredRegions = ([ul, ur, lr, ll]) => ({
-    ul, ur, lr, ll, colour: combinedColour(ul, ur, lr, ll)
-  });
-
 const isEntirelyColoured = (something) =>
-  colour(something) !== '❓' ;
-
-const arrayToQuadTree = multirec({
-  indivisible: isOneByOneArray,
-  value: contentsOfOneByOneArray,
-  divide: divideSquareIntoRegions,
-  combine: regionsToQuadTree
-});
-
-const superimposeColouredQuadTrees = multirec({
-  indivisible: eitherAreEntirelyColoured,
-  value: superimposeColoured,
-  divide: divideTwoQuadTrees,
-  combine: combineColouredRegions
-});
+  colour(something) !== '❓';
 
 const rotateColouredQuadTree = multirec({
   indivisible : isEntirelyColoured,
@@ -130,7 +130,7 @@ They can even be faster than naïve array algorithms if the image contains enoug
 
 ---
 
-### memoization
+### optimization
 
 The general idea behind coloured quadtrees is that if we know a way to compute the result of an operation (whether rotation or superimposition) on an entire region, we don't need to recursively drill down and do the operation on every cell in the region. We save O _n_ log _n_ operations where _n_ is the size of the region.
 
@@ -224,6 +224,14 @@ Le's write ourselves a simple implementation.
 ---
 
 ### memoization
+
+We are going to memoize the results of an operation. We'll use rotation again, as it's a simple case, and thus we can focus on the memoization code. We won't worry about colouring our quadtrees (although implementing colour and memoization optimizations can be valuable for some cases).
+
+Here's our naïve quadtree again:
+
+```javascript
+
+```
 
 ---
 
