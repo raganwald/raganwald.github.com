@@ -124,7 +124,7 @@ They can even be faster than naïve array algorithms if the image contains enoug
 
 ---
 
-[![Index Cards](/assets/images/banner/index-cards.jpg)](https://www.flickr.com/photos/paulk/3080211705)
+[![Index Cards](/assets/images/index-cards.jpg)](https://www.flickr.com/photos/paulk/3080211705)
 
 *Index cards in the public library of Trinidad, Cuba, © 2008 Paul Keller, [some rights reserved][cc-by-2.0]*
 
