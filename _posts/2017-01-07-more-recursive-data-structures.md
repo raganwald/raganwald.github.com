@@ -1,7 +1,7 @@
 ---
 title: "More Recursive Data Structures"
 layout: default
-tags: [allonge]
+tags: [allonge, noindex]
 ---
 
 In [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html), we met `multirec`, a *recursive combinator*.
@@ -126,7 +126,7 @@ They can even be faster than naïve array algorithms if the image contains enoug
 
 [![Index Cards](/assets/images/banner/index-cards.jpg)](https://www.flickr.com/photos/paulk/3080211705)
 
-*Index cards in the public library of trinidad, cuba, © 2008 Paul Keller, [some rights reserved][cc-by-2.0]*
+*Index cards in the public library of Trinidad, Cuba, © 2008 Paul Keller, [some rights reserved][cc-by-2.0]*
 
 ---
 
@@ -134,7 +134,7 @@ They can even be faster than naïve array algorithms if the image contains enoug
 
 The general idea behind coloured quadtrees is that if we know a way to compute the result of an operation (whether rotation or superimposition) on an entire region, we don't need to recursively drill down and do the operation on every cell in the region. We save O _n_ log _n_ operations where _n_ is the size of the region.
 
-We happen to know that all-white or all-black regions are a special case for rotation an dsuperimposition, so coloured quadtrees optimize that case. But if we could find an even more common case, we could go even faster.
+We happen to know that all-white or all-black regions are a special case for rotation an superimposition, so coloured quadtrees optimize that case. But if we could find an even more common case, we could go even faster.
 
 One interesting special case is this: If we've done the operation on an identical quadrant before, we could remember the result instead of recomputing it.
 
@@ -165,7 +165,7 @@ We would divide it into:
 ⚪️⚪️⚪️⚫️ ⚫️⚪️⚪️⚪️
 ```
 
-We would complete the first quadrant, and second quadrants, but the third and fourth are identical to th second and first, so we could complete them in one step, saving 50% of the work.
+We would complete the first and second quadrants, but the third and fourth are identical to the second and first, so we could complete them in one step, saving 50% of the work.
 
 But it's even better than that. When we compute the result of rotating the first quadrant, we divide it into:
 
@@ -182,7 +182,6 @@ It's first and third sub-quadrants are unique, but the second and fourth are ide
 And it gets better. The second quadrant subdivides into:
 
 ```
-```
 ⚫️⚪️ ⚪️⚪️
 ⚪️⚫️ ⚪️⚪️
 
@@ -190,9 +189,9 @@ And it gets better. The second quadrant subdivides into:
 ⚫️⚪️ ⚪️⚫️
 ```
 
-Now the first and third sub-quadrants of the second quadrant ae identical to the third sub-quadrant of the first quadrant, so we don't have to rotate them. The second sub-quadrant is identical to the first subquadrant of teh first quadrant, so we don't need to rotate it, either. And the fourth sub-quadrant of the seocnd quadrant is identcial to the second and fourth subquadrants of the first quadrant, so we don't need to rotate it, either.
+Now the first and third sub-quadrants of the second quadrant are identical to the third sub-quadrant of the first quadrant, so we don't have to rotate them. The second sub-quadrant is identical to the first sub-quadrant of the first quadrant, so we don't need to rotate it, either. And the fourth sub-quadrant of the second quadrant is identical to the second and fourth sub-quadrants of the first quadrant, so we don't need to rotate it, either.
 
-Onc we have rotated three subquadrants, we have done all the computation needed,everything else is saving and looking up the results.
+Once we have rotated three sub-quadrants, we have done all the computation needed. Everything else is saving and looking up the results.
 
 ---
 
