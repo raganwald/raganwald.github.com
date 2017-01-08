@@ -165,9 +165,9 @@ We would divide it into:
 ⚪️⚪️⚪️⚫️ ⚫️⚪️⚪️⚪️
 ```
 
-We would complete the first and second quadrants, but the third and fourth are identical to the second and first, so we could complete them in one step, saving 50% of the work.
+We would complete the first, second, third, and fourth quadrants. They're all different. However, consider computing the first quadrant.
 
-But it's even better than that. When we compute the result of rotating the first quadrant, we divide it into:
+We divide it into:
 
 ```
 ⚪️⚪️ ⚪️⚫️
@@ -177,7 +177,27 @@ But it's even better than that. When we compute the result of rotating the first
 ⚫️⚪️ ⚪️⚫️
 ```
 
-It's first and third sub-quadrants are unique, but the second and fourth are identical, so we can save 25%.
+It's first and third sub-quadrants are unique, but the second and fourth are identical, so after we have rotated:
+
+```
+⚪️⚪️
+⚪️⚪️
+
+⚪️⚫️
+⚫️⚪️
+
+⚫️⚪️
+⚪️⚫️
+```
+
+If we have saved our work, we don't need to rotate
+
+```
+⚪️⚫️
+⚫️⚪️
+```
+
+Again, because we have already done it and have saved the result. So we save 25% of the work to compute the first quadrant.
 
 And it gets better. The second quadrant subdivides into:
 
@@ -189,7 +209,7 @@ And it gets better. The second quadrant subdivides into:
 ⚫️⚪️ ⚪️⚫️
 ```
 
-Now the first and third sub-quadrants of the second quadrant are identical to the third sub-quadrant of the first quadrant, so we don't have to rotate them. The second sub-quadrant is identical to the first sub-quadrant of the first quadrant, so we don't need to rotate it, either. And the fourth sub-quadrant of the second quadrant is identical to the second and fourth sub-quadrants of the first quadrant, so we don't need to rotate it, either.
+We've seen all four of these sub-quadrants already, so we can rotate them in one step, looking up the saved result. The same goes for the third and fourth quadrants, we've seen their sub-quadrants before, so we can do each of their sub-quadrants in a single step as well.
 
 Once we have rotated three sub-quadrants, we have done all the computation needed. Everything else is saving and looking up the results.
 
@@ -201,29 +221,15 @@ Once we have rotated three sub-quadrants, we have done all the computation neede
 
 ---
 
-### why!
-
-So back to, "Why convert data into a structure that is isomorphic to our algorithm."
-
-The first reason to do so, is that the code is clearer and easier to read if we convert, then perform operations on the data structure, and then convert it back (if need be).
-
-The second reason do do so, is that if we want to do lots of different operations on the data structure, it is much more efficient to keep it in the form that is isomorphic to the operations we are going to perform on it.
-
-The example we saw was that if we were building a hypothetical image processing application, we could convert an image into quad trees, then rotate or superimpose images at will. We would only need to convert our quadtrees when we need to save or display the image in a rasterized (i.e. array-like) format.
-
-And third, we saw that once we embraced a data structure that was isomorphic to the form of the algorithm, we could employ elegant optimizations that are impossible (or ridiculously inconvenient) when the algorithm and data structure do not match.
-
-Separating conversion from operation allows us to benefit from all three reasons for ensuring that our algorithms and data structures are isomorphic to each other.
+.
 
 ---
 
 ### afterward
 
-There is more to read about `multirec` in the previous essay, [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html).
+There is more to read about `multirec` in the previous essays, [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html) and [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html).
 
-Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss this on [hacker news](https://news.ycombinator.com/item?id=13304487) or [reddit](https://www.reddit.com/r/javascript/comments/5lm0ya/why_recursive_data_structures/), or even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-12-27-recursive-data-structures.md) yourself.
-
-p.s. Thank you for reading this far. Here is your reward, [An Algorithm for Compressing Space and Time](http://www.drdobbs.com/jvm/an-algorithm-for-compressing-space-and-t/184406478). And hey! If you like this kind of thing, [JavaScript Allongé](https://leanpub.com/javascriptallongesix/) is exactly the kind of thing you'll like.
+Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), r even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2017-01-07-more-recursive-data-structures.md) yourself.
 
 ---
 
