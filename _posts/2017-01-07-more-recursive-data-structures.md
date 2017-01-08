@@ -312,7 +312,7 @@ const rotateColouredQuadTree = multirec({
   });
 ```
 
-[↩](#ref-quadtrees)
+<a href="#ref-quadtrees" class="reversefootnote">↩</a>
 
 ---
 
