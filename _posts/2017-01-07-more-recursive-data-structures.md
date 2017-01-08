@@ -4,15 +4,11 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-In [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html), we met `multirec`, a *recursive combinator*.
+In [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html), we met `multirec`, a *recursive combinator*:
 
 ```javascript
 function mapWith (fn) {
-  return function * (iterable) {
-    for (const element of iterable) {
-      yield fn(element);
-    }
-  };
+  return (mappable) => mappable.map(fn);
 }
 
 function multirec({ indivisible, value, divide, combine }) {
@@ -29,7 +25,9 @@ function multirec({ indivisible, value, divide, combine }) {
 }
 ```
 
-We used `multirec` to implement [quadtrees]:
+We used `multirec` to implement [quadtrees][quadtree]:
+
+[quadtree]: https://en.wikipedia.org/wiki/Quadtree
 
 ```javascript
 const isOneByOneArray = (something) =>
@@ -38,27 +36,30 @@ const isOneByOneArray = (something) =>
 
 const contentsOfOneByOneArray = (array) => array[0][0];
 
+const firstHalf = (array) => array.slice(0, array.length / 2);
+const secondHalf = (array) => array.slice(array.length / 2);
+
 const divideSquareIntoRegions = (square) => {
-  const upperHalf = firstHalf(square);
-  const lowerHalf = secondHalf(square);
+    const upperHalf = firstHalf(square);
+    const lowerHalf = secondHalf(square);
 
-  const upperLeft = upperHalf.map(firstHalf);
-  const upperRight = upperHalf.map(secondHalf);
-  const lowerRight = lowerHalf.map(secondHalf);
-  const lowerLeft= lowerHalf.map(firstHalf);
+    const upperLeft = upperHalf.map(firstHalf);
+    const upperRight = upperHalf.map(secondHalf);
+    const lowerRight = lowerHalf.map(secondHalf);
+    const lowerLeft= lowerHalf.map(firstHalf);
 
-  return [upperLeft, upperRight, lowerRight, lowerLeft];
-};
+    return [upperLeft, upperRight, lowerRight, lowerLeft];
+  };
 
 const regionsToQuadTree = ([ul, ur, lr, ll]) =>
   ({ ul, ur, lr, ll });
 
 const arrayToQuadTree = multirec({
-  indivisible: isOneByOneArray,
-  value: contentsOfOneByOneArray,
-  divide: divideSquareIntoRegions,
-  combine: regionsToQuadTree
-});
+    indivisible: isOneByOneArray,
+    value: contentsOfOneByOneArray,
+    divide: divideSquareIntoRegions,
+    combine: regionsToQuadTree
+  });
 
 const isString = (something) => typeof something === 'string';
 
@@ -71,11 +72,11 @@ const regionsToRotatedQuadTree = ([ur, lr, ll, ul]) =>
   ({ ul, ur, lr, ll });
 
 const rotateQuadTree = multirec({
-  indivisible : isString,
-  value : itself,
-  divide: quadTreeToRegions,
-  combine: regionsToRotatedQuadTree
-});
+    indivisible : isString,
+    value : itself,
+    divide: quadTreeToRegions,
+    combine: regionsToRotatedQuadTree
+  });
 ```
 
 And _coloured quadtrees_:
@@ -96,26 +97,26 @@ const arrayToColouredQuadTree = multirec({
 });
 
 const colour = (something) => {
-  if (something.colour != null) {
-    return something.colour;
-  } else if (something === '⚪️') {
-    return '⚪️';
-  } else if (something === '⚫️') {
-    return '⚫️';
-  } else {
-    throw "Can't get the colour of this thing";
-  }
-};
+    if (something.colour != null) {
+      return something.colour;
+    } else if (something === '⚪️') {
+      return '⚪️';
+    } else if (something === '⚫️') {
+      return '⚫️';
+    } else {
+      throw "Can't get the colour of this thing";
+    }
+  };
 
 const isEntirelyColoured = (something) =>
   colour(something) !== '❓';
 
 const rotateColouredQuadTree = multirec({
-  indivisible : isEntirelyColoured,
-  value : itself,
-  divide: quadTreeToRegions,
-  combine: regionsToRotatedQuadTree
-});
+    indivisible : isEntirelyColoured,
+    value : itself,
+    divide: quadTreeToRegions,
+    combine: regionsToRotatedQuadTree
+  });
 ```
 
 Performance-wise, naïve array algorithms are O _n_, and naïve quadtree algorithms are O _n_ log _n_. Coloured quadtrees are worst-case O _n_ log _n_, but are faster than naïve quadtrees whenever there are regions that are entirely white or entirely black, because the entire region can be handled in one 'operation.'
@@ -227,11 +228,83 @@ Le's write ourselves a simple implementation.
 
 We are going to memoize the results of an operation. We'll use rotation again, as it's a simple case, and thus we can focus on the memoization code. We won't worry about colouring our quadtrees (although implementing colour and memoization optimizations can be valuable for some cases).
 
-Here's our naïve quadtree again:
+Here's our naïve quadtree rotation again:
 
 ```javascript
-
+const rotateQuadTree = multirec({
+    indivisible : isString,
+    value : itself,
+    divide: quadTreeToRegions,
+    combine: regionsToRotatedQuadTree
+  });
 ```
+
+In principle, our algorithm will consists of, "Do we already know how to rotate this? Yes? Return the answer. No? Rotate it, save the answer, and return the answer."
+
+As seen [elsewhere](https://github.com/raganwald/javascript-allonge-six/blob/master/manuscript/markdown/2.Objects%20and%20State/recipes/memoize.md), we can use `memoize` to take any function and give it this exact behaviour. Unfortunately, this won't work:
+
+```javascript
+const memoized = (fn, keymaker = JSON.stringify) => {
+    const lookupTable = {};
+
+    return function (...args) {
+      const key = keymaker.apply(this, args);
+
+      return lookupTable[key] || (lookupTable[key] = fn.apply(this, args));
+    }
+  };
+
+const rotateQuadTree = memoized(
+    multirec({
+        indivisible : isString,
+        value : itself,
+        divide: quadTreeToRegions,
+        combine: regionsToRotatedQuadTree
+    })
+  );
+```
+
+As explained, the memoization has to be applied to the function that is being called recursively. In other words, we need to memoize the function _inside_ `multirec`. If we don't, we memoize the first call (for the entire image), but none of the others.
+
+We can do this properly with a new combinator and a function to generate keys:[^würst]
+
+[^würst]: This is the worst possible implementation, because it always does an O _n_ log _n_ computation to derive the key for a square. But we'll come back to this later.
+
+```javascript
+function memoizedMultirec({ indivisible, value, divide, combine, key }) {
+  const myself = memoized((input) => {
+    if (indivisible(input)) {
+      return value(input);
+    } else {
+      const parts = divide(input);
+      const solutions = mapWith(myself)(parts);
+
+      return combine(solutions);
+    }
+  }, key);
+
+  return myself;
+}
+
+const catenateKeys = (keys) => keys.join('');
+
+const würstKey = multirec({
+    indivisible : isString,
+    value : itself,
+    divide: quadTreeToRegions,
+    combine: catenateKeys
+  });
+
+const memoizedRotateQuadTree = memoizedMultirec({
+      indivisible : isString,
+      value : itself,
+      divide: quadTreeToRegions,
+      combine: regionsToRotatedQuadTree,
+      key: würstKey
+  });
+```
+
+[^y]: There is another, far more delightful way to memoize recursive functions: You can read about it in  [Fixed-point combinators in JavaScript: Memoizing recursive functions](http://matt.might.net/articles/implementation-of-recursive-fixed-point-y-combinator-in-javascript-for-memoization/).
 
 ---
 
@@ -241,7 +314,7 @@ Here's our naïve quadtree again:
 
 ---
 
-.
+
 
 ---
 
