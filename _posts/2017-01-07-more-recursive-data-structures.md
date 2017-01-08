@@ -124,7 +124,7 @@ They can even be faster than naïve array algorithms if the image contains enoug
 
 ---
 
-[![Index Cards](/assets/images/dog-faeces.jpg)](https://www.flickr.com/photos/robadob/229219543)
+[![Index Cards](/assets/images/dog-faeces.png)](https://www.flickr.com/photos/robadob/229219543)
 
 *Recursion is a pile of dog faeces, © 2006 Robin Corps, [some rights reserved][cc-by-sa-2.0]*
 
