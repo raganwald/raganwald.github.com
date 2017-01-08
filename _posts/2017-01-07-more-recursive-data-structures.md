@@ -25,103 +25,9 @@ function multirec({ indivisible, value, divide, combine }) {
 }
 ```
 
-We used `multirec` to implement [quadtrees][quadtree]:
+We used `multirec` to implement [quadtrees][quadtree] and coloured quadtrees (the full code for creating and rotating quadtrees and coloured quatrees is [below](#quadtrees)).
 
-[quadtree]: https://en.wikipedia.org/wiki/Quadtree
-
-```javascript
-const isOneByOneArray = (something) =>
-  Array.isArray(something) && something.length === 1 &&
-  Array.isArray(something[0]) && something[0].length === 1;
-
-const contentsOfOneByOneArray = (array) => array[0][0];
-
-const firstHalf = (array) => array.slice(0, array.length / 2);
-const secondHalf = (array) => array.slice(array.length / 2);
-
-const divideSquareIntoRegions = (square) => {
-    const upperHalf = firstHalf(square);
-    const lowerHalf = secondHalf(square);
-
-    const upperLeft = upperHalf.map(firstHalf);
-    const upperRight = upperHalf.map(secondHalf);
-    const lowerRight = lowerHalf.map(secondHalf);
-    const lowerLeft= lowerHalf.map(firstHalf);
-
-    return [upperLeft, upperRight, lowerRight, lowerLeft];
-  };
-
-const regionsToQuadTree = ([ul, ur, lr, ll]) =>
-  ({ ul, ur, lr, ll });
-
-const arrayToQuadTree = multirec({
-    indivisible: isOneByOneArray,
-    value: contentsOfOneByOneArray,
-    divide: divideSquareIntoRegions,
-    combine: regionsToQuadTree
-  });
-
-const isString = (something) => typeof something === 'string';
-
-const itself = (something) => something;
-
-const quadTreeToRegions = (qt) =>
-  [qt.ul, qt.ur, qt.lr, qt.ll];
-
-const regionsToRotatedQuadTree = ([ur, lr, ll, ul]) =>
-  ({ ul, ur, lr, ll });
-
-const rotateQuadTree = multirec({
-    indivisible : isString,
-    value : itself,
-    divide: quadTreeToRegions,
-    combine: regionsToRotatedQuadTree
-  });
-```
-
-And _coloured quadtrees_:
-
-```javascript
-const combinedColour = (...elements) =>
-  elements.reduce((acc, element => acc === element ? element : '❓'))
-
-const regionsToColouredQuadTree = ([ul, ur, lr, ll]) => ({
-    ul, ur, lr, ll, colour: combinedColour(ul, ur, lr, ll)
-  });
-
-const arrayToColouredQuadTree = multirec({
-  indivisible: isOneByOneArray,
-  value: contentsOfOneByOneArray,
-  divide: divideSquareIntoRegions,
-  combine: regionsToColouredQuadTree
-});
-
-const colour = (something) => {
-    if (something.colour != null) {
-      return something.colour;
-    } else if (something === '⚪️') {
-      return '⚪️';
-    } else if (something === '⚫️') {
-      return '⚫️';
-    } else {
-      throw "Can't get the colour of this thing";
-    }
-  };
-
-const isEntirelyColoured = (something) =>
-  colour(something) !== '❓';
-
-const rotateColouredQuadTree = multirec({
-    indivisible : isEntirelyColoured,
-    value : itself,
-    divide: quadTreeToRegions,
-    combine: regionsToRotatedQuadTree
-  });
-```
-
-Performance-wise, naïve array algorithms are O _n_, and naïve quadtree algorithms are O _n_ log _n_. Coloured quadtrees are worst-case O _n_ log _n_, but are faster than naïve quadtrees whenever there are regions that are entirely white or entirely black, because the entire region can be handled in one 'operation.'
-
-They can even be faster than naïve array algorithms if the image contains enough blank regions. But can they be _even faster_?
+Although we talked about the relative performance between quadtrees and coloured quadtrees, our focus was on the notion of an isomorphism between the data structures and the algorithms. Today, we're going to talk about performance.
 
 ---
 
@@ -132,6 +38,10 @@ They can even be faster than naïve array algorithms if the image contains enoug
 ---
 
 ### optimization
+
+Performance-wise, naïve array algorithms are O _n_, and naïve quadtree algorithms are O _n_ log _n_. Coloured quadtrees are worst-case O _n_ log _n_, but are faster than naïve quadtrees whenever there are regions that are entirely white or entirely black, because the entire region can be handled in one 'operation.'
+
+They can even be faster than naïve array algorithms if the image contains enough blank regions. But can they be _even faster_?
 
 The general idea behind coloured quadtrees is that if we know a way to compute the result of an operation (whether rotation or superimposition) on an entire region, we don't need to recursively drill down and do the operation on every cell in the region. We save O _n_ log _n_ operations where _n_ is the size of the region.
 
@@ -314,7 +224,93 @@ const memoizedRotateQuadTree = memoizedMultirec({
 
 ---
 
+### <a name="quadtrees"></a>appendix: naïve quad trees and coloured quad trees
 
+```javascript
+const isOneByOneArray = (something) =>
+  Array.isArray(something) && something.length === 1 &&
+  Array.isArray(something[0]) && something[0].length === 1;
+
+const contentsOfOneByOneArray = (array) => array[0][0];
+
+const firstHalf = (array) => array.slice(0, array.length / 2);
+const secondHalf = (array) => array.slice(array.length / 2);
+
+const divideSquareIntoRegions = (square) => {
+    const upperHalf = firstHalf(square);
+    const lowerHalf = secondHalf(square);
+
+    const upperLeft = upperHalf.map(firstHalf);
+    const upperRight = upperHalf.map(secondHalf);
+    const lowerRight = lowerHalf.map(secondHalf);
+    const lowerLeft= lowerHalf.map(firstHalf);
+
+    return [upperLeft, upperRight, lowerRight, lowerLeft];
+  };
+
+const regionsToQuadTree = ([ul, ur, lr, ll]) =>
+  ({ ul, ur, lr, ll });
+
+const arrayToQuadTree = multirec({
+    indivisible: isOneByOneArray,
+    value: contentsOfOneByOneArray,
+    divide: divideSquareIntoRegions,
+    combine: regionsToQuadTree
+  });
+
+const isString = (something) => typeof something === 'string';
+
+const itself = (something) => something;
+
+const quadTreeToRegions = (qt) =>
+  [qt.ul, qt.ur, qt.lr, qt.ll];
+
+const regionsToRotatedQuadTree = ([ur, lr, ll, ul]) =>
+  ({ ul, ur, lr, ll });
+
+const rotateQuadTree = multirec({
+    indivisible : isString,
+    value : itself,
+    divide: quadTreeToRegions,
+    combine: regionsToRotatedQuadTree
+  });
+
+const combinedColour = (...elements) =>
+  elements.reduce((acc, element => acc === element ? element : '❓'))
+
+const regionsToColouredQuadTree = ([ul, ur, lr, ll]) => ({
+    ul, ur, lr, ll, colour: combinedColour(ul, ur, lr, ll)
+  });
+
+const arrayToColouredQuadTree = multirec({
+  indivisible: isOneByOneArray,
+  value: contentsOfOneByOneArray,
+  divide: divideSquareIntoRegions,
+  combine: regionsToColouredQuadTree
+});
+
+const colour = (something) => {
+    if (something.colour != null) {
+      return something.colour;
+    } else if (something === '⚪️') {
+      return '⚪️';
+    } else if (something === '⚫️') {
+      return '⚫️';
+    } else {
+      throw "Can't get the colour of this thing";
+    }
+  };
+
+const isEntirelyColoured = (something) =>
+  colour(something) !== '❓';
+
+const rotateColouredQuadTree = multirec({
+    indivisible : isEntirelyColoured,
+    value : itself,
+    divide: quadTreeToRegions,
+    combine: regionsToRotatedQuadTree
+  });
+```
 
 ---
 
