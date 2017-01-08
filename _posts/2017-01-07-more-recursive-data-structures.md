@@ -124,9 +124,9 @@ They can even be faster than naïve array algorithms if the image contains enoug
 
 ---
 
-[![Index Cards](/assets/images/index-cards.jpg)](https://www.flickr.com/photos/paulk/3080211705)
+[![Index Cards](/assets/images/dog-faeces.jpg)](https://www.flickr.com/photos/robadob/229219543)
 
-*Index cards in the public library of Trinidad, Cuba, © 2008 Paul Keller, [some rights reserved][cc-by-2.0]*
+*Recursion is a pile of dog faeces, © 2006 Robin Corps, [some rights reserved][cc-by-sa-2.0]*
 
 ---
 
@@ -213,6 +213,18 @@ We've seen all four of these sub-quadrants already, so we can rotate them in one
 
 Once we have rotated three sub-quadrants, we have done all the computation needed. Everything else is saving and looking up the results.
 
+Le's write ourselves a simple implementation.
+
+---
+
+[![Index Cards](/assets/images/index-cards.jpg)](https://www.flickr.com/photos/paulk/3080211705)
+
+*Index cards in the public library of Trinidad, Cuba, © 2008 Paul Keller, [some rights reserved][cc-by-2.0]*
+
+---
+
+### memoization
+
 ---
 
 [![Game of Life 6](/assets/images/glider.jpg)](https://www.flickr.com/photos/oskay/6838125520)
@@ -229,7 +241,7 @@ Once we have rotated three sub-quadrants, we have done all the computation neede
 
 There is more to read about `multirec` in the previous essays, [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html) and [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html).
 
-Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), r even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2017-01-07-more-recursive-data-structures.md) yourself.
+Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), or [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2017-01-07-more-recursive-data-structures.md) yourself.
 
 ---
 
