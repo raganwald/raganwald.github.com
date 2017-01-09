@@ -25,7 +25,7 @@ function multirec({ indivisible, value, divide, combine }) {
 }
 ```
 
-We used `multirec` to implement [quadtrees][quadtree] and coloured quadtrees (the full code for creating and rotating quadtrees and coloured quatrees is <a name="ref-quadtrees"></a>[below](#quadtrees)).
+We used `multirec` to implement [quadtrees][quadtree] and coloured quadtrees (the full code for creating and rotating quadtrees and coloured d is <a name="ref-quadtrees"></a>[below](#quadtrees)).
 
 Although we talked about the relative performance between quadtrees and coloured quadtrees, our focus was on the notion of an isomorphism between the data structures and the algorithms. Today, we're going to talk about performance.
 
@@ -155,7 +155,7 @@ As seen [elsewhere](https://github.com/raganwald/javascript-allonge-six/blob/mas
 
 ```javascript
 const memoized = (fn, keymaker = JSON.stringify) => {
-    const lookupTable = {};
+    const lookupTable = new Map();
 
     return function (...args) {
       const key = keymaker.apply(this, args);
@@ -176,9 +176,7 @@ const rotateQuadTree = memoized(
 
 As explained, the memoization has to be applied to the function that is being called recursively. In other words, we need to memoize the function _inside_ `multirec`. If we don't, we memoize the first call (for the entire image), but none of the others.
 
-We can do this properly with a new combinator and a function to generate keys:[^würst]
-
-[^würst]: This is the worst possible implementation, because it always does an O _n_ log _n_ computation to derive the key for a square. But we'll come back to this later.
+We can do this properly[^y] with a new combinator and a function to generate keys:
 
 ```javascript
 function memoizedMultirec({ indivisible, value, divide, combine, key }) {
@@ -214,7 +212,87 @@ const memoizedRotateQuadTree = memoizedMultirec({
   });
 ```
 
-[^y]: There is another, far more delightful way to memoize recursive functions: You can read about it in  [Fixed-point combinators in JavaScript: Memoizing recursive functions](http://matt.might.net/articles/implementation-of-recursive-fixed-point-y-combinator-in-javascript-for-memoization/).
+[^y]: Actually, there is another, far more delightful way to memoize recursive functions: You can read about it in  [Fixed-point combinators in JavaScript: Memoizing recursive functions](http://matt.might.net/articles/implementation-of-recursive-fixed-point-y-combinator-in-javascript-for-memoization/).
+
+And now, we are able to take advantage of redundancy within our images: Whenever two quadrants of any size are have identical content, we need only rotate one. We get the other from our lookup table.
+
+Of course, we have an additional overhead involved in checking our cache, and we require additional space for the cache. And we are handwaving over the work involved in computing keys. But for the moment, we grasp that we can take advantage of a recursive data structure to exploit redundancy in our data.
+
+Let's exploit it even more.
+
+---
+
+### canonicalization
+
+One of the benefits of our key function is that when two different quadrants have the same content, we return the same result for rotating them. We're exploiting redundancy to reduce the time required to perform an operation like rotating a square.
+
+But that isn't the only redundancy we can exploit. What about redundancy in the space required to represent a square? Why do we ever need two different quadtrees to have the same content?
+
+If we reused the same quadtree whenever we needed the same content, we would be able to save space as well as time. Our quadtree would go from being a strict tree to being a [DAG], but it would be smaller in many cases. In the most extreme case of an image entirely white or entirely black, it would become equivalent to a linked list with four identical links at each level of the quadtree.
+
+[DAG]: https://en.wikipedia.org/wiki/Directed_acyclic_graph
+
+To make this work, we have to isolate the creation of new quadtrees. Let's start by extracting them into a function:
+
+```javascript
+const quadtree = (ul, ur, lr, ll) =>
+  ({ ul, ur, lr, ll });
+
+const regionsToQuadTree = ([ul, ur, lr, ll]) =>
+  quadtree(ul, ur, lr, ll);
+
+const regionsToRotatedQuadTree = ([ur, lr, ll, ul]) =>
+  quadtree(ul, ur, lr, ll);
+```
+
+Next, we memoize our new `quadtree` function. We compute the key of a quadtree we want to create much the same as how we compute the key of a finished quadtree, although that is not strictly necessary for the function to work:
+
+```javascript
+const compositeKey = (...regions) => regions.map(würstKey).join('');
+
+const quadtree = memoized(
+    (ul, ur, lr, ll) => ({ ul, ur, lr, ll }),
+    compositeKey
+  );
+
+const regionsToQuadTree = ([ul, ur, lr, ll]) =>
+  quadtree(ul, ur, lr, ll);
+
+const regionsToRotatedQuadTree = ([ur, lr, ll, ul]) =>
+  quadtree(ul, ur, lr, ll);
+```
+
+Now redundant quadtrees optimize for space as well as for time.
+
+---
+
+### computing keys
+
+The one thing that is terribly wrong with our work so far is that we are always recursively computing keys to achieve our "efficiencies." This is, as noted, O _n_ log _n_ every time we do it.
+
+We could go with a straight memoization of the key computation function, but there is another path. Since we know we will always need to compute keys for every quadtree we make, why not compute them ahead of time, just like we did with colours in our coloured quadtrees?
+
+After all, we might or might not need to rotate a square, but we will always need to check keys for canonicalization purposes. So we'll put the key in a property. Since we're trying to advance our code incrementally, we'll use a [symbol] for the property key, instead of a string.
+
+[symbol]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
+
+Our new `würstKey` and  `quadtree` functions will look like this:
+
+```javascript
+const KEY = Symbol('key');
+
+const würstKey = (something) =>
+  isString(something)
+  ? something
+  : something[KEY];
+
+const quadtree = memoized(
+    (ul, ur, lr, ll) => ({ ul, ur, lr, ll, [KEY]: compositeKey(ul, ur, lr, ll) }),
+    compositeKey
+  );
+```
+
+Now, essentially, keys are also memoized, but explicitly within each canonicalized quadtree instead of in a separate lookup table. Now the redundant computation of keys is gone.
 
 ---
 
