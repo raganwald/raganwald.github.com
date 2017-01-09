@@ -4,32 +4,11 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-In [Why Recursive Data Structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html), we met `multirec`, a recursive combinator:
-
-```javascript
-function mapWith (fn) {
-  return (mappable) => mappable.map(fn);
-}
-
-function multirec({ indivisible, value, divide, combine }) {
-  return function myself (input) {
-    if (indivisible(input)) {
-      return value(input);
-    } else {
-      const parts = divide(input);
-      const solutions = mapWith(myself)(parts);
-
-      return combine(solutions);
-    }
-  }
-}
-```
-
-We used `multirec` to implement [quadtrees][quadtree] and coloured quadtrees (The full code for creating and rotating quadtrees and coloured quadtrees is <a name="ref-quadtrees"></a>[below](#quadtrees)).
+In [Why Recursive Data Structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html), we used `multirec`, a recursive combinator, to implement [quadtrees][quadtree] and coloured quadtrees (The full code for creating and rotating quadtrees and coloured quadtrees is <a name="ref-quadtrees"></a>[below](#quadtrees)).
 
 [quadtree]: https://en.wikipedia.org/wiki/Quadtree
 
-Although we talked about the relative performance between quadtrees and coloured quadtrees, our focus was on the notion of an isomorphism between the data structures and the algorithms. Today, we're going to talk about performance.
+Our focus was on the notion of an isomorphism between the data structures and the algorithms, more than on the performance of quadtrees. Today, we'll take a closer look at taking advantage of their recursive structure to optimize for time and space.
 
 ---
 
