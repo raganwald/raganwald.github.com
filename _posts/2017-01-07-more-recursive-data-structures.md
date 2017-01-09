@@ -292,7 +292,7 @@ const quadtree = memoized(
   );
 ```
 
-Now, essentially, keys are also memoized, but explicitly within each canonicalized quadtree instead of in a separate lookup table. Now the redundant computation of keys is gone.
+Now, essentially, keys are also memoized, but explicitly within each canonicalized quadtree instead of in a separate lookup table. Now the redundant computation of keys is gone. The complete code for memoized and canonicalized quadtrees is <a name="ref-quadtrees"></a>[below](#canonicalized).
 
 ---
 
@@ -302,9 +302,137 @@ Now, essentially, keys are also memoized, but explicitly within each canonicaliz
 
 ---
 
+### <a name="canonicalized"></a>appendix: memoized and canonicalized quad trees
+
+```javascript
+function mapWith (fn) {
+  return (mappable) => mappable.map(fn);
+}
+
+function multirec({ indivisible, value, divide, combine }) {
+  return function myself (input) {
+    if (indivisible(input)) {
+      return value(input);
+    } else {
+      const parts = divide(input);
+      const solutions = mapWith(myself)(parts);
+
+      return combine(solutions);
+    }
+  }
+}
+
+const memoized = (fn, keymaker = JSON.stringify) => {
+    const lookupTable = new Map();
+
+    return function (...args) {
+      const key = keymaker.apply(this, args);
+
+      return lookupTable[key] || (lookupTable[key] = fn.apply(this, args));
+    }
+  };
+
+function memoizedMultirec({ indivisible, value, divide, combine, key }) {
+  const myself = memoized((input) => {
+    if (indivisible(input)) {
+      return value(input);
+    } else {
+      const parts = divide(input);
+      const solutions = mapWith(myself)(parts);
+
+      return combine(solutions);
+    }
+  }, key);
+
+  return myself;
+}
+
+const isOneByOneArray = (something) =>
+  Array.isArray(something) && something.length === 1 &&
+  Array.isArray(something[0]) && something[0].length === 1;
+
+const contentsOfOneByOneArray = (array) => array[0][0];
+
+const firstHalf = (array) => array.slice(0, array.length / 2);
+const secondHalf = (array) => array.slice(array.length / 2);
+
+const divideSquareIntoRegions = (square) => {
+    const upperHalf = firstHalf(square);
+    const lowerHalf = secondHalf(square);
+
+    const upperLeft = upperHalf.map(firstHalf);
+    const upperRight = upperHalf.map(secondHalf);
+    const lowerRight = lowerHalf.map(secondHalf);
+    const lowerLeft= lowerHalf.map(firstHalf);
+
+    return [upperLeft, upperRight, lowerRight, lowerLeft];
+  };
+
+const KEY = Symbol('key');
+
+const würstKey = (something) =>
+  isString(something)
+  ? something
+  : something[KEY];
+
+const quadtree = memoized(
+    (ul, ur, lr, ll) => ({ ul, ur, lr, ll, [KEY]: compositeKey(ul, ur, lr, ll) }),
+    compositeKey
+  );
+
+const regionsToQuadTree = ([ul, ur, lr, ll]) =>
+  quadtree(ul, ur, lr, ll);
+
+const arrayToQuadTree = multirec({
+    indivisible: isOneByOneArray,
+    value: contentsOfOneByOneArray,
+    divide: divideSquareIntoRegions,
+    combine: regionsToQuadTree
+  });
+
+const isString = (something) => typeof something === 'string';
+
+const itself = (something) => something;
+
+const quadTreeToRegions = (qt) =>
+  [qt.ul, qt.ur, qt.lr, qt.ll];
+
+const regionsToRotatedQuadTree = ([ur, lr, ll, ul]) =>
+  quadtree(ul, ur, lr, ll);
+
+const memoizedRotateQuadTree = memoizedMultirec({
+      indivisible : isString,
+      value : itself,
+      divide: quadTreeToRegions,
+      combine: regionsToRotatedQuadTree,
+      key: würstKey
+  });
+```
+
+<a href="#ref-canonicalized" class="reversefootnote">↩</a>
+
+---
+
 ### <a name="quadtrees"></a>appendix: naïve quad trees and coloured quad trees
 
 ```javascript
+function mapWith (fn) {
+  return (mappable) => mappable.map(fn);
+}
+
+function multirec({ indivisible, value, divide, combine }) {
+  return function myself (input) {
+    if (indivisible(input)) {
+      return value(input);
+    } else {
+      const parts = divide(input);
+      const solutions = mapWith(myself)(parts);
+
+      return combine(solutions);
+    }
+  }
+}
+
 const isOneByOneArray = (something) =>
   Array.isArray(something) && something.length === 1 &&
   Array.isArray(something[0]) && something[0].length === 1;
