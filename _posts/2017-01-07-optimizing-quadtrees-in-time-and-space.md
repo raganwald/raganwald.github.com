@@ -12,7 +12,7 @@ Our focus was on the notion of an isomorphism between the data structures and th
 
 ---
 
-[![Index Cards](/assets/images/dog-faeces.png)](https://www.flickr.com/photos/robadob/229219543)
+[![Recursion](/assets/images/dog-faeces.png)](https://www.flickr.com/photos/robadob/229219543)
 
 *Recursion is a pile of dog faeces, © 2006 Robin Corps, [some rights reserved][cc-by-sa-2.0]*
 
@@ -277,9 +277,9 @@ Thus, the keys are memoized, but explicitly within each canonicalized quadtree i
 
 ---
 
-[![Game of Life 6](/assets/images/glider.jpg)](https://www.flickr.com/photos/oskay/6838125520)
+[![Composition in Red, Blue, and Yellow](/assets/images/Davis Staedtler.jpg)](https://www.flickr.com/photos/voxaeterno/14240624635)
 
-*Detail from "Game of Life 6," © Windell Oskay, [some rights reserved][cc-by-2.0]*
+*Photograph of Mondrian's Composition in Red, Blue, and Yellow," © Davis Staedtler, [some rights reserved][cc-by-2.0]*
 
 ---
 
