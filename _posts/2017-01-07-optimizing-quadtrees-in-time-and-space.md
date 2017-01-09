@@ -1,5 +1,5 @@
 ---
-title: "More Recursive Data Structures"
+title: "Optimizing Quadtrees in Time and Space"
 layout: default
 tags: [allonge, noindex]
 ---
