@@ -279,7 +279,7 @@ Thus, the keys are memoized, but explicitly within each canonicalized quadtree i
 
 [![Composition in Red, Blue, and Yellow](/assets/images/composition-in-red-blue-and-yellow.jpg)](https://www.flickr.com/photos/voxaeterno/14240624635)
 
-*Photograph of Mondrian's Composition in Red, Blue, and Yellow," © Davis Staedtler, [some rights reserved][cc-by-2.0]*
+*Photograph of Mondrian's "Composition in Red, Blue, and Yellow," © Davis Staedtler, [some rights reserved][cc-by-2.0]*
 
 ---
 
