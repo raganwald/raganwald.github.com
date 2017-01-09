@@ -384,7 +384,7 @@ const leftmiddle = (square) =>
   quadtree(square.ul.ll, square.ul.lr, square.ll.ur, square.ll.ul);
 ```
 
-Finally, it's just as easy to extract the centre-middle:
+Finally, it's just as easy to extract the middle-centre:
 
 ```
 ⚪️⚫️⚫️⚪️
@@ -394,11 +394,17 @@ Finally, it's just as easy to extract the centre-middle:
 ```
 
 ```javascript
-const uppercentre = (square) =>
+const middlecentre = (square) =>
   quadtree(square.ul.lr, square.ur.ll, square.lr.ul, square.ll.ur);
 ```
 
 Of course, these regions we extract and compose will benefit from canonicalization.
+
+---
+
+### using subdivisions
+
+Operations like rotation, superimposition, and reflection are all self-contained. For example, the result for rotating a square or region is always exactly the same size as the square. But not all operations have this characteristic.
 
 ---
 
