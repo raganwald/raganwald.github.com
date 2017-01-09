@@ -27,6 +27,8 @@ function multirec({ indivisible, value, divide, combine }) {
 
 We used `multirec` to implement [quadtrees][quadtree] and coloured quadtrees (The full code for creating and rotating quadtrees and coloured quadtrees is <a name="ref-quadtrees"></a>[below](#quadtrees)).
 
+[quadtree]: https://en.wikipedia.org/wiki/Quadtree
+
 Although we talked about the relative performance between quadtrees and coloured quadtrees, our focus was on the notion of an isomorphism between the data structures and the algorithms. Today, we're going to talk about performance.
 
 ---
