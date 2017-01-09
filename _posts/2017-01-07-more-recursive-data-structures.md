@@ -4,7 +4,7 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-In [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html), we met `multirec`, a *recursive combinator*:
+In [Why Recursive Data Structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html), we met `multirec`, a recursive combinator:
 
 ```javascript
 function mapWith (fn) {
@@ -25,7 +25,7 @@ function multirec({ indivisible, value, divide, combine }) {
 }
 ```
 
-We used `multirec` to implement [quadtrees][quadtree] and coloured quadtrees (the full code for creating and rotating quadtrees and coloured d is <a name="ref-quadtrees"></a>[below](#quadtrees)).
+We used `multirec` to implement [quadtrees][quadtree] and coloured quadtrees (The full code for creating and rotating quadtrees and coloured quadtrees is <a name="ref-quadtrees"></a>[below](#quadtrees)).
 
 Although we talked about the relative performance between quadtrees and coloured quadtrees, our focus was on the notion of an isomorphism between the data structures and the algorithms. Today, we're going to talk about performance.
 
@@ -41,7 +41,7 @@ Although we talked about the relative performance between quadtrees and coloured
 
 Performance-wise, naïve array algorithms are O _n_, and naïve quadtree algorithms are O _n_ log _n_. Coloured quadtrees are worst-case O _n_ log _n_, but are faster than naïve quadtrees whenever there are regions that are entirely white or entirely black, because the entire region can be handled in one 'operation.'
 
-They can even be faster than naïve array algorithms if the image contains enough blank regions. But can they be _even faster_?
+They can even be faster than naïve array algorithms if the image contains enough blank regions. But can we fined even more opportunities to optimize their behaviour?
 
 The general idea behind coloured quadtrees is that if we know a way to compute the result of an operation (whether rotation or superimposition) on an entire region, we don't need to recursively drill down and do the operation on every cell in the region. We save O _n_ log _n_ operations where _n_ is the size of the region.
 
@@ -292,7 +292,7 @@ const quadtree = memoized(
   );
 ```
 
-Now, essentially, keys are also memoized, but explicitly within each canonicalized quadtree instead of in a separate lookup table. Now the redundant computation of keys is gone. The complete code for memoized and canonicalized quadtrees is <a name="ref-quadtrees"></a>[below](#canonicalized).
+Thus, the keys are memoized, but explicitly within each canonicalized quadtree instead of in a separate lookup table. Now the redundant computation of keys is gone. The complete code for memoized and canonicalized quadtrees is <a name="ref-canonicalized"></a>[below](#canonicalized).
 
 ---
 
