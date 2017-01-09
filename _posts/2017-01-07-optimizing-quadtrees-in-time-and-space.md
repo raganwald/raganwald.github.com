@@ -273,13 +273,132 @@ const quadtree = memoized(
   );
 ```
 
-Thus, the keys are memoized, but explicitly within each canonicalized quadtree instead of in a separate lookup table. Now the redundant computation of keys is gone. The complete code for memoized and canonicalized quadtrees is <a name="ref-canonicalized"></a>[below](#canonicalized).
+Thus, the keys are memoized, but explicitly within each canonicalized quadtree instead of in a separate lookup table. Now the redundant computation of keys is gone.
+
+---
+
+### summary of memoization and canonicalization
+
+We have seen that recursive data structures like quadtrees offer opportunities to take advantage of redundancy, and that we can exploit this to save both time and space. The complete code for our memoized and canonicalized quadtrees is <a name="ref-canonicalized"></a>[below](#canonicalized).
+
+But now let us consider some different operations on quadtrees.
 
 ---
 
 [![Composition in Red, Blue, and Yellow](/assets/images/composition-in-red-blue-and-yellow.jpg)](https://www.flickr.com/photos/voxaeterno/14240624635)
 
 *Photograph of Mondrian's "Composition in Red, Blue, and Yellow," © Davis Staedtler, [some rights reserved][cc-by-2.0]*
+
+---
+
+### subdividing quadtrees
+
+Quadtrees make it obviously easy to subdivide a square into its upper-left, upper-right, lower-right, and lower-left regions. Given:
+
+```
+⚪️⚪️⚪️⚫️⚪️⚪️⚪️⚪️
+⚪️⚪️⚫️⚪️⚫️⚪️⚪️⚪️
+⚪️⚫️⚪️⚫️⚫️⚪️⚪️⚪️
+⚫️⚪️⚫️⚪️⚪️⚫️⚫️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚪️⚫️
+⚪️⚪️⚪️⚫️⚫️⚪️⚫️⚪️
+⚪️⚪️⚪️⚫️⚪️⚫️⚪️⚪️
+⚪️⚪️⚪️⚪️⚫️⚪️⚪️⚪️
+```
+
+We extract:
+
+```
+⚪️⚪️⚪️⚫️
+⚪️⚪️⚫️⚪️
+⚪️⚫️⚪️⚫️
+⚫️⚪️⚫️⚪️
+
+⚪️⚪️⚪️⚪️
+⚫️⚪️⚪️⚪️
+⚫️⚪️⚪️⚪️
+⚪️⚫️⚫️⚪️
+
+⚪️⚫️⚫️⚪️
+⚪️⚪️⚪️⚫️
+⚪️⚪️⚪️⚫️
+⚪️⚪️⚪️⚪️
+
+⚪️⚫️⚪️⚫️
+⚫️⚪️⚫️⚪️
+⚪️⚫️⚪️⚪️
+⚫️⚪️⚪️⚪️
+```
+
+```javascript
+const upperleft = (square) =>
+  square.ul;
+
+const upperright = (square) =>
+  square.ur;
+
+const lowerright = (square) =>
+  square.lr;
+
+const lowerleft = (square) =>
+  square.ll;
+```
+
+There are other regions we can easily extract. For example, the upper-centre, right-middle, lower-centre, and left-middle:
+
+```
+⚪️⚫️⚪️⚪️
+⚫️⚪️⚫️⚪️
+⚪️⚫️⚫️⚪️
+⚫️⚪️⚪️⚫️
+
+⚫️⚪️⚪️⚪️
+⚪️⚫️⚫️⚪️
+⚪️⚫️⚪️⚫️
+⚫️⚪️⚫️⚪️
+
+⚫️⚪️⚪️⚫️
+⚪️⚫️⚫️⚪️
+⚪️⚫️⚪️⚫️
+⚪️⚪️⚫️⚪️
+
+⚪️⚫️⚪️⚫️
+⚫️⚪️⚫️⚪️
+⚪️⚫️⚫️⚪️
+⚪️⚪️⚪️⚫️
+```
+
+The code is a tad more involved, as we must compose these regions from the subregions of our square's regions:
+
+```javascript
+const uppercentre = (square) =>
+  quadtree(square.ul.ur, square.ur.ul, square.ur.ll, square.ur.lr);
+
+const rightmiddle = (square) =>
+  quadtree(square.ur.ll, square.ur.lr, square.lr.ur, square.lr.ul);
+
+const lowercentre = (square) =>
+  quadtree(square.ll.ur, square.lr.ul, square.lr.ll, square.ll.lr);
+
+const leftmiddle = (square) =>
+  quadtree(square.ul.ll, square.ul.lr, square.ll.ur, square.ll.ul);
+```
+
+Finally, it's just as easy to extract the centre-middle:
+
+```
+⚪️⚫️⚫️⚪️
+⚫️⚪️⚪️⚫️
+⚫️⚪️⚪️⚫️
+⚪️⚫️⚫️⚪️
+```
+
+```javascript
+const uppercentre = (square) =>
+  quadtree(square.ul.lr, square.ur.ll, square.lr.ul, square.ll.ur);
+```
+
+Of course, these regions we extract and compose will benefit from canonicalization.
 
 ---
 
@@ -355,6 +474,8 @@ const würstKey = (something) =>
   isString(something)
   ? something
   : something[KEY];
+
+const compositeKey = (...regions) => regions.map(würstKey).join('');
 
 const quadtree = memoized(
     (ul, ur, lr, ll) => ({ ul, ur, lr, ll, [KEY]: compositeKey(ul, ur, lr, ll) }),
@@ -507,7 +628,7 @@ const rotateColouredQuadTree = multirec({
 
 There is more to read about `multirec` in the previous essays, [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html) and [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html).
 
-Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), or [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2017-01-07-more-recursive-data-structures.md) yourself.
+Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), or [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2017-01-07-optimizing-quadtrees-in-time-and-space.md) yourself.
 
 ---
 
