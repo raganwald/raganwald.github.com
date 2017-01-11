@@ -540,7 +540,7 @@ As it happens, averaging a square is not always the same as averaging a square. 
 
 ---
 
-### how to recursively average
+### averaging the centre of a 4x4 square
 
 No matter what neighbours a 4x4 square has or doesn't have, the result of averaging the square will always be the same for the centre four pixels. They are only affected by the pixels that are in the square, not by its neighbours.
 
@@ -616,7 +616,277 @@ const averageOf4x4 = (sq) => ({
     lr: averagedPixel(sq.lr.ul, count(neighboursOfLrUl(sq))),
     ll: averagedPixel(sq.ll.ur, count(neighboursOfLlUr(sq)))
   });
+
+averageOf4x4(
+  arrayToQuadTree([
+    ['⚫️', '⚪️', '⚪️', '⚪️'],
+    ['⚪️', '⚫️', '⚫️', '⚪️'],
+    ['⚪️', '⚫️', '⚪️', '⚫️'],
+    ['⚫️', '⚪️', '⚫️', '⚪️']
+  ])
+)
+  //=>
+    { "ul": "⚪️", "ur": "⚪️",
+      "ll": "⚫️, "lr": "⚫️"   }
 ```
+
+Can we build from here? Yes, and with some interesting manoevers.
+
+---
+
+### averaging the centre of an 8x8 square
+
+Now let's consider an 8x8 square, something like this:
+
+```
+⚫️⚪️⚪️⚫️⚫️⚪️⚪️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚫️⚪️
+⚪️⚫️⚪️⚫️⚪️⚫️⚪️⚫️
+⚪️⚪️⚫️⚪️⚫️⚪️⚫️⚪️
+⚪️⚫️⚪️⚪️⚪️⚫️⚪️⚫️
+⚫️⚪️⚫️⚪️⚫️⚪️⚫️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚫️⚪️
+⚫️⚪️⚪️⚫️⚪️⚪️⚪️⚫️
+```
+
+We can, of course, write a function that calculates the average for the centre 6x6 square, using methods very much like the ones we used for calculating the centre 2x2 of a 4x4 square. However, what we want to do is make the calculation based on the function we already have for computing the average of a 4x4 square.
+
+If we can use the function we already have as a building block, we can build a recursive function that memoizes and canonicalizes.
+
+To start with, let's imagine we are comuting averages of the 4x4 regions. To show the geometry, we will colour the averages blue. Here's what we get when we average eaach of the four regions:
+
+```
+⚫️⚪️⚪️⚫️⚫️⚪️⚪️⚪️
+⚪️🔵🔵⚪️⚪️🔵🔵⚪️
+⚪️🔵🔵⚫️⚪️🔵🔵⚫️
+⚪️⚪️⚫️⚪️⚫️⚪️⚫️⚪️
+⚪️⚫️⚪️⚪️⚪️⚫️⚪️⚫️
+⚫️🔵🔵⚪️⚫️🔵🔵⚪️
+⚪️🔵🔵⚪️⚪️🔵🔵⚪️
+⚫️⚪️⚪️⚫️⚪️⚪️⚪️⚫️
+```
+
+Here's a 2x2 gap we didn't average:
+
+```
+⚫️⚪️⚪️⚫️⚫️⚪️⚪️⚪️
+⚪️⚫️⚫️🔵🔵⚫️⚫️⚪️
+⚪️⚫️⚪️🔵🔵⚫️⚪️⚫️
+⚪️⚪️⚫️⚪️⚫️⚪️⚫️⚪️
+⚪️⚫️⚪️⚪️⚪️⚫️⚪️⚫️
+⚫️⚪️⚫️⚪️⚫️⚪️⚫️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚫️⚪️
+⚫️⚪️⚪️⚫️⚪️⚪️⚪️⚫️
+```
+
+How do we get its average? By averaging this 4x4 square:
+
+```
+⚫️⚪️🔴🔴🔴🔴⚪️⚪️
+⚪️⚫️🔴🔵🔵🔴⚫️⚪️
+⚪️⚫️🔴🔵🔵🔴⚪️⚫️
+⚪️⚪️🔴🔴🔴🔴⚫️⚪️
+⚪️⚫️⚪️⚪️⚪️⚫️⚪️⚫️
+⚫️⚪️⚫️⚪️⚫️⚪️⚫️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚫️⚪️
+⚫️⚪️⚪️⚫️⚪️⚪️⚪️⚫️
+```
+
+Luckily, we know hw to get that 4x4 square from an 8x8 square, it's the `uppercentre` function we wrote earlier. And we can fill in the rest of the gaps using our `rightmiddle`, `lowercentre`, `leftmiddle`, and `middlecentre` functions:
+
+```
+⚫️⚪️⚪️⚫️⚫️⚪️⚪️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚫️⚪️
+⚪️⚫️⚪️⚫️🔴🔴🔴🔴
+⚪️⚪️⚫️⚪️🔴🔵🔵🔴
+⚪️⚫️⚪️⚪️🔴🔵🔵🔴
+⚫️⚪️⚫️⚪️🔴🔴🔴🔴
+⚪️⚫️⚫️⚪️⚪️⚫️⚫️⚪️
+⚫️⚪️⚪️⚫️⚪️⚪️⚪️⚫️
+
+⚫️⚪️⚪️⚫️⚫️⚪️⚪️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚫️⚪️
+⚪️⚫️⚪️⚫️⚪️⚫️⚪️⚫️
+⚪️⚪️⚫️⚪️⚫️⚪️⚫️⚪️
+⚪️⚫️🔴🔴🔴🔴⚪️⚫️
+⚫️⚪️🔴🔵🔵🔴⚫️⚪️
+⚪️⚫️🔴🔵🔵🔴⚫️⚪️
+⚫️⚪️🔴🔴🔴🔴⚪️⚫️
+
+⚫️⚪️⚪️⚫️⚫️⚪️⚪️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚫️⚪️
+⚪️⚫️⚪️⚫️⚪️⚫️⚪️⚫️
+⚪️⚪️⚫️⚪️⚫️⚪️⚫️⚪️
+🔴🔴🔴🔴⚪️⚫️⚪️⚫️
+🔴🔵🔵🔴⚫️⚪️⚫️⚪️
+🔴🔵🔵🔴⚪️⚫️⚫️⚪️
+🔴🔴🔴🔴⚪️⚪️⚪️⚫️
+
+⚫️⚪️⚪️⚫️⚫️⚪️⚪️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚫️⚪️
+⚪️⚫️🔴🔴🔴🔴⚪️⚫️
+⚪️⚪️🔴🔵🔵🔴⚫️⚪️
+⚪️⚫️🔴🔵🔵🔴⚪️⚫️
+⚫️⚪️🔴🔴🔴🔴⚫️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚫️⚪️
+⚫️⚪️⚪️⚫️⚪️⚪️⚪️⚫️
+```
+
+This gives us the centre 6x6 average of an 8x8 square:
+
+```
+⚫️⚪️⚪️⚫️⚫️⚪️⚪️⚪️
+⚪️🔵🔵🔵🔵🔵🔵⚪️
+⚪️🔵🔵🔵🔵🔵🔵⚫️
+⚪️🔵🔵🔵🔵🔵🔵⚪️
+⚪️🔵🔵🔵🔵🔵🔵⚫️
+⚫️🔵🔵🔵🔵🔵🔵⚪️
+⚪️🔵🔵🔵🔵🔵🔵⚪️
+⚫️⚪️⚪️⚫️⚪️⚪️⚪️⚫️
+```
+
+Let's write it:
+
+```javascript
+const from8x8to6x6 = (sq) => ({
+    ul: averageOf4x4(upperleft(sq)),
+    uc: averageOf4x4(uppercentre(sq)),
+    ur: averageOf4x4(upperright(sq)),
+    lm: averageOf4x4(leftmiddle(sq)),
+    mc: averageOf4x4(middlecentre(sq)),
+    rm: averageOf4x4(rightmiddle(sq)),
+    ll: averageOf4x4(lowerleft(sq)),
+    lc: averageOf4x4(lowercentre(sq)),
+    lr: averageOf4x4(lowerright(sq))
+  });
+```
+
+This is an ungainly beast. It doesn't look like our quadtrees at all, so we obviously don't have an algorithm that is isomorphic to our data structure. What we need is a way to get from an 8x8 square to a 4x4 averaged centre. That would have the same "shape" as going from a 4x4 to a 2x2 averaged centre.
+
+Can we go from a 6x6 square to a 4x4 square? Yes. First, note that a 6x6 square can be decomposed into four overlapping 4x4 squares:
+
+```
+🔵🔵🔵🔵⚫️⚫️
+🔵🔵🔵🔵⚫️⚪️
+🔵🔵🔵🔵⚪️⚫️
+🔵🔵🔵🔵⚫️⚪️
+⚪️⚫️⚪️⚫️⚪️⚫️
+⚫️⚫️⚪️⚪️⚫️⚫️
+
+⚫️⚫️🔵🔵🔵🔵
+⚫️⚪️🔵🔵🔵🔵
+⚪️⚫️🔵🔵🔵🔵
+⚫️⚪️🔵🔵🔵🔵
+⚪️⚫️⚪️⚫️⚪️⚫️
+⚫️⚫️⚪️⚪️⚫️⚫️
+
+⚫️⚫️⚪️⚪️⚫️⚫️
+⚫️⚪️⚫️⚪️⚫️⚪️
+⚪️⚫️🔵🔵🔵🔵
+⚫️⚪️🔵🔵🔵🔵
+⚪️⚫️🔵🔵🔵🔵
+⚫️⚫️🔵🔵🔵🔵
+
+⚫️⚫️⚪️⚪️⚫️⚫️
+⚫️⚪️⚫️⚪️⚫️⚪️
+🔵🔵🔵🔵⚪️⚫️
+🔵🔵🔵🔵⚫️⚪️
+🔵🔵🔵🔵⚪️⚫️
+🔵🔵🔵🔵⚫️⚫️
+```
+
+And we can decompose them quite easily:
+
+```javascript
+const decompose = ({ ul, uc, ur, lm, mc, rm, ll, lc, lr }) =>
+  ({
+    ul: quadtree(ul, uc, mc, lm),
+    ur: quadtree(uc, ur, rm, mc),
+    lr: quadtree(mc, rm, lr, lc),
+    ll: quadtree(lm, mc, lc, ll)
+  });
+```
+
+We can average those individually, we would get
+
+```
+⚫️⚫️⚪️⚪️⚫️⚫️
+⚫️🔵🔵⚪️⚫️⚪️
+⚪️🔵🔵⚫️⚪️⚫️
+⚫️⚪️⚪️⚪️⚫️⚪️
+⚪️⚫️⚪️⚫️⚪️⚫️
+⚫️⚫️⚪️⚪️⚫️⚫️
+
+⚫️⚫️⚪️⚪️⚫️⚫️
+⚫️⚪️⚫️🔵🔵⚪️
+⚪️⚫️⚪️🔵🔵⚫️
+⚫️⚪️⚪️⚪️⚫️⚪️
+⚪️⚫️⚪️⚫️⚪️⚫️
+⚫️⚫️⚪️⚪️⚫️⚫️
+
+⚫️⚫️⚪️⚪️⚫️⚫️
+⚫️⚪️⚫️⚪️⚫️⚪️
+⚪️⚫️⚪️⚫️⚪️⚫️
+⚫️⚪️⚪️🔵🔵⚪️
+⚪️⚫️⚪️🔵🔵⚫️
+⚫️⚫️⚪️⚪️⚫️⚫️
+
+⚫️⚫️⚪️⚪️⚫️⚫️
+⚫️⚪️⚫️⚪️⚫️⚪️
+⚪️⚫️⚪️⚫️⚪️⚫️
+⚫️🔵🔵⚪️⚫️⚪️
+⚪️🔵🔵⚫️⚪️⚫️
+⚫️⚫️⚪️⚪️⚫️⚫️
+```
+
+Here's that code:
+
+```javascript
+const averages = ({ ul, ur, lr, ll }) =>
+  ({
+    ul: averageOf4x4(ul),
+    ur: averageOf4x4(ur),
+    lr: averageOf4x4(lr),
+    ll: averageOf4x4(ll)
+  });
+```
+
+And we can compose them back into a quadtree, giving us:
+
+```
+⚫️⚫️⚪️⚪️⚫️⚫️
+⚫️🔵🔵🔵🔵⚪️
+⚪️🔵🔵🔵🔵⚫️
+⚫️🔵🔵🔵🔵⚪️
+⚪️🔵🔵🔵🔵⚫️
+⚫️⚫️⚪️⚪️⚫️⚫️
+```
+
+```javascript
+const centre4x4 = ({ ul, ur, lr, ll }) =>
+  quadtree(ul, ur, lr, ll)
+```
+
+If we superimpose it on our 8x8 square, we see that we have:
+
+```
+⚫️⚪️⚪️⚫️⚫️⚪️⚪️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚫️⚪️
+⚪️⚫️🔵🔵🔵🔵⚪️⚫️
+⚪️⚪️🔵🔵🔵🔵⚫️⚪️
+⚪️⚫️🔵🔵🔵🔵⚪️⚫️
+⚫️⚪️🔵🔵🔵🔵⚫️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚫️⚪️
+⚫️⚪️⚪️⚫️⚪️⚪️⚪️⚫️
+```
+
+Aha! This is the averaged centre 4x4 of an 8x8 square. It has the same "shape" as getting the averaged 2x2 of a 4x4 square. We've averaging twice to get here, but hold that thought.
+
+If we can turn this into a generalized algorithm, we can write a `multirec` to average quadtrees of any size.
+
+---
+
+### generalizing averaging
 
 
 ---
