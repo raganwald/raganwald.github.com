@@ -402,9 +402,222 @@ Of course, these regions we extract and compose will benefit from canonicalizati
 
 ---
 
-### using subdivisions
+### averaging
 
-Operations like rotation, superimposition, and reflection are all self-contained. For example, the result for rotating a square or region is always exactly the same size as the square. But not all operations have this characteristic.
+Operations like rotation, superimposition, and reflection are all self-contained. For example, the result for rotating a square or region is always exactly the same size as the square. Furthermore, these operations scale: They can be defined from a smallest possible size and up. As a result, they have a natural "fit" with `multirec`, or to be more precise, with divide-and-conquer algorithms.
+
+But not all operations are self-contained. Let us take, as an example, an image filter we will call _average_. To average an image, each pixel takes on a colour based on the weighted average of the colours of the pixels in its immediate neighbourhood.
+
+A black pixel surrounded by mostly white pixels becomes white, and a white pixel surrounded by mostly black pixels becomes black. If there are an equal number of black and white neighbours, the pixel stays the same colour.
+
+We'll say that if a black pixel has five or more white "neighbours," it becomes white, while if a white pixel has five or more black neighbours, it becomes black. Consider only the centre pixel in these diagrams:
+
+This one stays black, it only an equal number of back and white neighbours:
+
+```
+⚪️⚫️⚫️
+⚫️⚫️⚪️
+⚫️⚪️⚪️
+```
+
+This one becomes white, it has more white neighbours than black:
+
+```
+⚪️⚪️⚪️
+⚫️⚫️⚪️
+⚫️⚪️⚪️
+```
+
+This stays white, it has more white neighbours than black:
+
+```
+⚪️⚫️⚫️
+⚪️⚪️⚪️
+⚪️⚪️⚪️
+```
+
+This white pixel becomes black, it has five black neighbours  and only three white neighbours:
+
+```
+⚪️⚫️⚫️
+⚫️⚪️⚪️
+⚪️⚫️⚫️
+```
+
+Applied to a larger image, this:
+
+```
+⚫️⚪️⚪️⚪️
+⚪️⚫️⚫️⚪️
+⚪️⚫️⚪️⚫️
+⚫️⚪️⚫️⚪️
+```
+
+Becomes this after "averaging" it once:
+
+```
+⚪️⚫️⚪️⚪️
+⚫️⚪️⚪️⚪️
+⚫️⚫️⚫️⚪️
+⚪️⚫️⚪️⚫️
+```
+
+And we can average it again, just as we can rotate images more than once:
+
+```
+⚫️⚪️⚪️⚪️
+⚫️⚫️⚪️⚪️
+⚫️⚫️⚪️⚪️
+⚫️⚫️⚫️⚪️
+```
+
+And again:
+
+```
+⚫️⚫️⚪️⚪️
+⚫️⚫️⚪️⚪️
+⚫️⚫️⚪️⚪️
+⚫️⚫️⚪️⚪️
+```
+
+And again:
+
+```
+⚫️⚫️⚪️⚪️
+⚫️⚫️⚪️⚪️
+⚫️⚫️⚪️⚪️
+⚫️⚫️⚪️⚪️
+```
+
+We've reached an equilibrium, further averaging operations will have no effect on our image. This crude "average" operation is not particularly useful for graphics, but it is simple enough that we can explore more of the ramifications of working with memoized and canonicalized algorithms, so let's carry on.
+
+---
+
+### the probem
+
+We could easily code a function to determine the result of "averaging" a pixel, something like this:
+
+```javascript
+function averagedPixel (pixel, blackNeighbours) {
+  if (pixel === '⚪️') {
+    return [5, 6, 7, 8].includes(blackNeighbours) ? '⚫️' : '⚪️';
+  } else {
+    return [4, 5, 6, 7, 8].includes(blackNeighbours) ? '⚫️' : '⚪️';
+  }
+}
+```
+
+But there is a bug! This only works for interior pixels, edges and corners would have different numbers. We could fix this, but before we do, let's realize something significant. We had to make no such adjustment for rotating images. Edges and corners weren't special.
+
+Because edges and corners are special, the behaviour of averaging a square if different depending upon whether the edge of the square is the edge of the entire image or not. If it's not the entire image, we get different values for our edges and corners depending upon the square's neighbours.
+
+Consider, for example:
+
+```
+⚫️⚪️⚪️⚫️ ⚫️⚪️⚪️⚪️
+⚪️⚫️⚫️⚪️ ⚪️⚫️⚫️⚪️
+⚪️⚫️⚪️⚫️ ⚪️⚫️⚪️⚫️
+⚪️⚪️⚫️⚪️ ⚫️⚪️⚫️⚪️
+
+⚪️⚫️⚪️⚪️ ⚪️⚫️⚪️⚫️
+⚫️⚪️⚫️⚪️ ⚫️⚪️⚫️⚪️
+⚪️⚫️⚫️⚪️ ⚪️⚫️⚫️⚪️
+⚫️⚪️⚪️⚫️ ⚪️⚪️⚪️⚫️
+```
+
+Our square in the upper-right now has a different outcome for its lower and left edges, because they have neighbours from the upper-left and lower-right quadrants:
+
+```
+ ⚪️⚫️⚪️⚪️
+ ⚫️⚪️⚪️⚪️
+ ⚪️⚫️⚫️⚪️
+ ⚪️⚫️⚫️⚫️
+```
+
+This is different than "rotate." With rotate, rotating a square had no dependency on any adjacent squares. That's what makes our "divide and conquer" algorithms work, and especially our memoization work: rotating a square was rotating a square was rotating a square.
+
+As it happens, averaging a square is not always the same as averaging a square. So what do we do? What can we salvage?
+
+---
+
+### how to recursively average
+
+No matter what neighbours a 4x4 square has or doesn't have, the result of averaging the square will always be the same for the centre four pixels. They are only affected by the pixels that are in the square, not by its neighbours.
+
+Those centre four pixels make up a square that is half the size of the entire square. So here's a very conservative conjecture: Perhaps we can write an algorithm for averaging that only tells us what happens to the centre of a square.
+
+We know how to write a function that gives us the average for the centre pixels of a 4x4 square, so let's start with that, it will be the "indivisible case" for our `multirec`. We'll enumerate the list of neighbours for each of the four squares in the centre, clockwise from the neighbour to the upper-left of the pixel we're averaging:
+
+```javascript
+const sq = arrayToQuadTree([
+  ['0', '1', '2', '3'],
+  ['4', '5', '6', '7'],
+  ['8', '9', 'A', 'B'],
+  ['C', 'D', 'E', 'F']
+]);
+
+const neighboursOfUlLr = (square) => [
+    square.ul.ul, square.ul.ur, square.ur.ul, square.ur.ll,
+    square.lr.ul, square.ll.ur, square.ll.ul, square.ul.ll
+  ];
+
+neighboursOfUlLr(sq).join('')
+  //=> "0126A984"
+
+const neighboursOfUrLl = (square) => [
+    square.ul.ur, square.ur.ul, square.ur.ur, square.ur.lr,
+    square.lr.ur, square.lr.ul, square.ll.ur, square.ur.lr
+  ];
+
+neighboursOfUrLl(sq).join('')
+  //=> "1237BA95"
+
+const neighboursOfLrUl = (square) => [
+    square.ul.lr, square.ur.ll, square.ur.lr, square.lr.ur,
+    square.lr.lr, square.lr.ll, square.ll.lr, square.ll.ur
+  ];
+
+neighboursOfLrUl(sq).join('')
+  //=> "567BFED9"
+
+const neighboursOfLlUr = (square) => [
+    square.ul.ll, square.ul.lr, square.ur.ll, square.lr.ul,
+    square.lr.ll, square.ll.lr, square.ll.ll, square.ll.ul
+  ];
+
+neighboursOfLlUr(sq).join('')
+  //=> "456AEDC8"
+```
+
+We can count the number of black neighbouring pixels:
+
+```javascript
+const countNeighbouringBlack = (neighbours) => neighbours.reduce((c, n) => n === '⚫️' ? c + 1 : c, 0);
+```
+
+We already have a function for determining the result of averaging a pixel with its neighbours, we'll extract the arrays to make it more compact:
+
+```javascript
+const B = [5, 6, 7, 8];
+const S = [4, 5, 6, 7, 8];
+
+const averagedPixel = (pixel, blackNeighbours) =>
+  (pixel === '⚪️')
+  ? B.includes(blackNeighbours) ? '⚫️' : '⚪️'
+  : S.includes(blackNeighbours) ? '⚫️' : '⚪️';
+```
+
+Now we have everything we need to compute the average of the centre four pixels of a 4x4 square:
+
+```javascript
+const averageOf4x4 = (sq) => ({
+    ul: averagedPixel(sq.ul.lr, count(neighboursOfUlLr(sq))),
+    ur: averagedPixel(sq.ur.ll, count(neighboursOfUrLl(sq))),
+    lr: averagedPixel(sq.lr.ul, count(neighboursOfLrUl(sq))),
+    ll: averagedPixel(sq.ll.ur, count(neighboursOfLlUr(sq)))
+  });
+```
+
 
 ---
 
