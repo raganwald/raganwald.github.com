@@ -888,6 +888,115 @@ If we can turn this into a generalized algorithm, we can write a `multirec` to a
 
 ### generalizing averaging
 
+Here's our memoized `multirec` again:
+
+```javascript
+function memoizedMultirec({ indivisible, value, divide, combine, key }) {
+  const myself = memoized((input) => {
+    if (indivisible(input)) {
+      return value(input);
+    } else {
+      const parts = divide(input);
+      const solutions = mapWith(myself)(parts);
+
+      return combine(solutions);
+    }
+  }, key);
+
+  return myself;
+}
+```
+
+Just like `multirec`, we need `indivisible`, `value`, `divide`, `combine`, and `key`. Since the smallest square we want to average is 4x4, the test for `indivisible` is simple. `value` is our existing `averageOf4x4` function, and we'll use our `würstKey` for the `key`:
+
+```javascript
+const is4x4 = (square) => isString(square.ul.ul);
+
+const average = memoizedMultirec(
+    indivisible: is4x4,
+    value: averageOf4x4,
+    // divide: ???
+    // combine: ???
+    key: würstKey
+  );
+```
+
+What about dividing a square that is larger than 4x4? We wrote that code, we divide it into _nine_ regions, not four. We'll adjust to just do the division:
+
+```javascript
+const divideQuadtreeIntoNine = (square) => [
+    upperleft(square),
+    uppercentre(square),
+    upperright(square),
+    leftmiddle(square),
+    middlecentre(square),
+    rightmiddle(square),
+    lowerleft(square),
+    lowercentre(square),
+    lowerright(square)
+  ];
+```
+
+And given the averages of those nine squares, we can recombine them into a "nonettree." A nonettree of 2x2 squares is a 6x6 square, but larger nonettrees are possible too:
+
+```javascript
+const combineNineIntoNonetTree = ([ul, uc, ur, lm, mc, ll, lc, lr]) =>
+  ({ ul, uc, ur, lm, mc, ll, lc, lr });
+```
+
+As discussed that isn't enough. If we were recursively computing the averages of nonettrees, we would extract the four overlapping quadtrees from a nonettree:
+
+```javascript
+const divideNonetTreeIntoQuadTrees = ({ ul, uc, ur, lm, mc, rm, ll, lc, lr }) =>
+  [
+    quadtree(ul, uc, mc, lm), // ul
+    quadtree(uc, ur, rm, mc), // ur
+    quadtree(mc, rm, lr, lc), // lr
+    quadtree(lm, mc, lc, ll)  // ll
+  ];
+```
+
+And we know exactly how to combine four qudtrees into a bigger quadtree, we use `regionsToQuadTree`.
+
+Harumph, another problem. Are we dividing with `divideQuadtreeIntoNine`? Or `divideNonetTreeIntoQuadTrees`? And are we combining the results using `combineNineIntoNonetTree`? Or `regionsToQuadTree`?
+
+The problem is, `memoizedMultirec` is predicated on every step of the recursion involving a single division followed by a single combine of the results. But our average algorithm requires _two_ steps.
+
+We divide a quadtree into nine, and run our algorithm on each piece. Then we subcombine those results into a nonet. Then we subdivide the nonet, and run our algorithm on each piece. Then we combine those results into a final result.
+
+So let's make ourselves a new combinator:
+
+```javascript
+function memoizedDoubleMultirec({ indivisible, value, divide, subcombine, subdivide, combine, key }) {
+  const myself = memoized((input) => {
+    if (indivisible(input)) {
+      return value(input);
+    } else {
+      const parts = divide(input);
+      const solutions = mapWith(myself)(parts);
+      const subcombined = subcombine(solutions);
+
+      const subparts = subdivide(subcombined);
+      const subsolutions = mapWith(myself)(subparts);
+
+      return combine(subsolutions);
+    }
+  }, key);
+
+  return myself;
+}
+
+const eightByEight = arrayToQuadTree([
+    ['⚫️', '⚪️', '⚪️', '⚫️', '⚫️', '⚪️', '⚪️', '⚪️'],
+    ['⚪️', '⚫️', '⚫️', '⚪️', '⚪️', '⚫️', '⚫️', '⚪️'],
+    ['⚪️', '⚫️', '⚪️', '⚫️', '⚪️', '⚫️', '⚪️', '⚫️'],
+    ['⚪️', '⚪️', '⚫️', '⚪️', '⚫️', '⚪️', '⚫️', '⚪️'],
+    ['⚪️', '⚫️', '⚪️', '⚪️', '⚪️', '⚫️', '⚪️', '⚫️'],
+    ['⚫️', '⚪️', '⚫️', '⚪️', '⚫️', '⚪️', '⚫️', '⚪️'],
+    ['⚪️', '⚫️', '⚫️', '⚪️', '⚪️', '⚫️', '⚫️', '⚪️'],
+    ['⚫️', '⚪️', '⚪️', '⚫️', '⚪️', '⚪️', '⚪️', '⚫️']
+  ]);
+```
 
 ---
 
