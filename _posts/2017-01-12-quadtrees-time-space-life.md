@@ -1059,7 +1059,7 @@ So perhaps averaging is not a good domain for memoizing and canonicalizing. What
 
 ---
 
-So far, we've talked about quadtrees storing image information. This was nice because algorithms like rotate are very visual. But images aren't the only thing we can represent with a hashtree, and don't often benefit from repeated operations.
+So far, we've talked about quadtrees storing image information. This was nice because algorithms like rotate are very visual. But images aren't the only thing we can represent with a quadtree, and don't often benefit from repeated operations.
 
 But let's look at `averagedPixel` one more time:
 
@@ -1168,7 +1168,7 @@ B3S23 turned out to be such an automaton, and while Conway did not build such a 
 
 ### studying life
 
-In order to investigate really complicated patterns, we need fast hardware and an algorithm for performing a stupendous amount of computation. In the 1980s, Bill Gosper discovered that memoized and canonicalized hashtrees could be used to simulate tremendously large patterns over enormous numbers of generations. He called the algorithm [hashlife].
+In order to investigate really complicated patterns, we need fast hardware and an algorithm for performing a stupendous amount of computation. In the 1980s, Bill Gosper discovered that memoized and canonicalized quadtrees could be used to simulate tremendously large patterns over enormous numbers of generations. He called the algorithm [hashlife].
 
 One practical application of hashlife is to help us understand the significance of Conway's original proof. The proof is difficult for a layperson (like myself) to follow.
 
@@ -1176,7 +1176,7 @@ Thanks to high-speed algorithms like hashlife, people have proven that anything 
 
 [Turing Machines]: https://en.wikipedia.org/wiki/Turing_machine
 
-The screenshot above is of a Turing Machine running in B3S23. It shows the 6,366,548,773,467,669,985,195,496,000th generation. Computations like this are only possible on commodity hardware when we can use algorithms like our memoized and canonicalized hashtrees.
+The screenshot above is of a Turing Machine running in B3S23. It shows the 6,366,548,773,467,669,985,195,496,000th generation. Computations like this are only possible on commodity hardware when we can use algorithms like our memoized and canonicalized quadtrees.
 
 From this we grasp that all computation can in principle  be performed by remarkably simple devices.
 
