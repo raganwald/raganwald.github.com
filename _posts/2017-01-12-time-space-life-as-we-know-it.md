@@ -1110,7 +1110,7 @@ const double = (sqre) => {
 }
 ```
 
-Now we can
+Now we can think about time.
 
 ---
 
