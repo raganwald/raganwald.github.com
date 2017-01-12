@@ -372,7 +372,7 @@ The code is a tad more involved, as we must compose these regions from the subre
 
 ```javascript
 const uppercentre = (square) =>
-  quadtree(square.ul.ur, square.ur.ul, square.ur.ll, square.ur.lr);
+  quadtree(square.ul.ur, square.ur.ul, square.ur.ll, square.ul.lr);
 
 const rightmiddle = (square) =>
   quadtree(square.ur.ll, square.ur.lr, square.lr.ur, square.lr.ul);
@@ -493,7 +493,7 @@ We've reached an equilibrium, further averaging operations will have no effect o
 
 ---
 
-### the probem
+### the problem
 
 We could easily code a function to determine the result of "averaging" a pixel, something like this:
 
@@ -610,12 +610,12 @@ const averagedPixel = (pixel, blackNeighbours) =>
 Now we have everything we need to compute the average of the centre four pixels of a 4x4 square:
 
 ```javascript
-const averageOf4x4 = (sq) => ({
-    ul: averagedPixel(sq.ul.lr, count(neighboursOfUlLr(sq))),
-    ur: averagedPixel(sq.ur.ll, count(neighboursOfUrLl(sq))),
-    lr: averagedPixel(sq.lr.ul, count(neighboursOfLrUl(sq))),
-    ll: averagedPixel(sq.ll.ur, count(neighboursOfLlUr(sq)))
-  });
+const averageOf4x4 = (sq) => quadtree(
+    averagedPixel(sq.ul.lr, count(neighboursOfUlLr(sq))),
+    averagedPixel(sq.ur.ll, count(neighboursOfUrLl(sq))),
+    averagedPixel(sq.lr.ul, count(neighboursOfLrUl(sq))),
+    averagedPixel(sq.ll.ur, count(neighboursOfLlUr(sq)))
+  );
 
 averageOf4x4(
   arrayToQuadTree([
@@ -630,7 +630,7 @@ averageOf4x4(
       "ll": "⚫️, "lr": "⚫️"   }
 ```
 
-Can we build from here? Yes, and with some interesting manoevers.
+Can we build from here? Yes, and with some interesting manoeuvres.
 
 ---
 
@@ -940,8 +940,8 @@ const divideQuadtreeIntoNine = (square) => [
 And given the averages of those nine squares, we can recombine them into a "nonettree." A nonettree of 2x2 squares is a 6x6 square, but larger nonettrees are possible too:
 
 ```javascript
-const combineNineIntoNonetTree = ([ul, uc, ur, lm, mc, ll, lc, lr]) =>
-  ({ ul, uc, ur, lm, mc, ll, lc, lr });
+const combineNineIntoNonetTree = ([ul, uc, ur, lm, mc, rm, ll, lc, lr]) =>
+  ({ ul, uc, ur, lm, mc, rm, ll, lc, lr });
 ```
 
 As discussed that isn't enough. If we were recursively computing the averages of nonettrees, we would extract the four overlapping quadtrees from a nonettree:
@@ -986,6 +986,15 @@ function memoizedDoubleMultirec({ indivisible, value, divide, subcombine, subdiv
   return myself;
 }
 
+const average = memoizedDoubleMultirec({
+    indivisible: is4x4,
+    value: averageOf4x4,
+    divide: divideQuadtreeIntoNine,
+    subcombine: combineNineIntoNonetTree,
+    subdivide: divideNonetTreeIntoQuadTrees,
+    combine: regionsToQuadTree
+  });
+
 const eightByEight = arrayToQuadTree([
     ['⚫️', '⚪️', '⚪️', '⚫️', '⚫️', '⚪️', '⚪️', '⚪️'],
     ['⚪️', '⚫️', '⚫️', '⚪️', '⚪️', '⚫️', '⚫️', '⚪️'],
@@ -996,6 +1005,102 @@ const eightByEight = arrayToQuadTree([
     ['⚪️', '⚫️', '⚫️', '⚪️', '⚪️', '⚫️', '⚫️', '⚪️'],
     ['⚫️', '⚪️', '⚪️', '⚫️', '⚪️', '⚪️', '⚪️', '⚫️']
   ]);
+```
+
+quadTreeToArray(average(eightByEight))
+  //=>
+    [
+      ["⚪️", "⚫️", "⚪️", "⚫️"],
+      ["⚪️", "⚫️", "⚪️", "⚪️"],
+      ["⚪️", "⚪️", "⚪️", "⚪️"],
+      ["⚪️", "⚪️", "⚪️", "⚪️"]
+    ]
+
+Excellent! Our `memoizedDoubleMultirec` can be used to implement algorithms—like average—where the result that can be memoized is smaller than the square itself, and with some care, we can accomplish the entire thing using memoized operations on squares.
+
+As interesting as this is, we have two problems compared to a operation like rotation. First, we only wind up with _half_ of the result we want. Second, we have a problem of time.
+
+---
+
+### time
+
+When we rotate a square of any size, we rotate it once. We rotate and move about many parts of it, but when we conclude, it has only been rotated ninety degrees. But this is not the case with our average algorithm.
+
+If we average a 4x4 square, the centre 2x2 pixels have been averaged once. But when we average an 8x8 square, the centre 4x4 square is composed of 2x2 squares that have been averaged twice, as we saw above.
+
+If we average a 16x16 square, we would wind up averaging the centre 8x8 square four times. And up it goes exponentially. Were we to average a 1024x1024 square, we would get as a result a 512x512 square, representing the result of averaging the pixels 256 times!
+
+This turns out to be not very useful for operations that are only meant to be performed once. Bit on the other hand, if we want to iteratively perform an operation many, many, many times, it is very useful and can be very fast.
+
+So perhaps averaging is not a good domain for memoizing and canonicalizing. What kind of operation would benefit from being run dozens, hundreds, thousands, or even millions and in some cases billions of times?
+
+---
+
+### cellular automata
+
+So far, we've talked about quadtrees storing image information. This was nice because algorithms like rotate are very visual. But images aren't the only thing we can represent with a hashtree, and don't often benefit from repeated operations.
+
+But let's look at `averagedPixel` one more time:
+
+```javascript
+const B = [5, 6, 7, 8];
+const S = [4, 5, 6, 7, 8];
+
+const averagedPixel = (pixel, blackNeighbours) =>
+  (pixel === '⚪️')
+  ? B.includes(blackNeighbours) ? '⚫️' : '⚪️'
+  : S.includes(blackNeighbours) ? '⚫️' : '⚪️';
+```
+
+If we think of our pixels as state machines, what we are describing is a state machine with two states ('⚫️' and '⚪️'), and a rule for determining the next state it will take based on the number of neighbours in the '⚫️' state.
+
+We have, in fact, a two-dimensional grid of cellular automata, and our `averagedPixel` state machine encodes one particular set of rules. There are many others.
+
+The usual vernacular is to call the '⚫️' state "alive," and the '⚪️' state "dead." With those two names, the `B` and `S` variables can now be called "born" and "survives." `B` or "born" describes a set of conditions for a dead cell being born, or changing to the alive state. `S` or "survives" describes a set of conditions for an alive state remaining alive.
+
+Every iteration or application of "average" is simultaneously advancing the states of all the cells by one generation, using average's rules. For compactness, "average" is called "B5678S45678."
+
+We can explore other rule sets by refactoring our `average` function to accept a rule set as a parameter. Here it is refactored:
+
+```javascript
+function twoDimensionalCellularAutomata ({ B, S }) {
+  const applyRuleToCell = (pixel, blackNeighbours) =>
+    (pixel === '⚪️')
+    ? B.includes(blackNeighbours) ? '⚫️' : '⚪️'
+    : S.includes(blackNeighbours) ? '⚫️' : '⚪️';
+
+  const applyRuleTo4x4 = (sq) => ({
+      ul: applyRuleToCell(sq.ul.lr, count(neighboursOfUlLr(sq))),
+      ur: applyRuleToCell(sq.ur.ll, count(neighboursOfUrLl(sq))),
+      lr: applyRuleToCell(sq.lr.ul, count(neighboursOfLrUl(sq))),
+      ll: applyRuleToCell(sq.ll.ur, count(neighboursOfLlUr(sq)))
+    });
+
+  return memoizedDoubleMultirec({
+      indivisible: is4x4,
+      value: applyRuleTo4x4,
+      divide: divideQuadtreeIntoNine,
+      subcombine: combineNineIntoNonetTree,
+      subdivide: divideNonetTreeIntoQuadTrees,
+      combine: regionsToQuadTree
+    });
+}
+
+const average = twoDimensionalCellularAutomata({ B: [5, 6, 7, 8], S: [4, 5, 6, 7, 8] });
+```
+
+Alas, "Average" is an uninteresting set of rules. "Interesting" rules are those that give rise to a balance between growth and destruction and provide a rich set of interactions between patterns. Sufficiently interesting rules permit many exotic patterns and have been proven to be [Turing complete].
+
+[Turing complete]: https://en.wikipedia.org/wiki/Turing_completeness
+
+---
+
+### life, the universe, and everything
+
+The most famous of those rule sets is "B3S23:"
+
+```
+const conwaysGameOfLife = twoDimensionalCellularAutomata({ B: [3], S: [2, 3]});
 ```
 
 ---
