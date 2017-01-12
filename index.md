@@ -18,6 +18,21 @@ tags: [allonge]
 * books: <a href="https://leanpub.com/u/raganwald/">https://leanpub.com/u/raganwald/</a>
 * talks: <a href="http://braythwayt.com/talks.html">http://braythwayt.com/talks.html</a>
 
+### 2017 essays
+
+<div class="related">
+  <ul>
+    {% for post in site.posts %}
+      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
+      {% unless post.tags contains "noindex" or postyear != "2017" %}
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</div>
+
 ### 2016 essays
 
 <div class="related">
