@@ -1,5 +1,5 @@
 ---
-title: "Optimizing Quadtrees in Time and Space"
+title: "Quadtrees, Time, Space, and Life As We Know It"
 layout: default
 tags: [allonge, noindex]
 ---
