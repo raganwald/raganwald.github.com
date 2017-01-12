@@ -1211,7 +1211,7 @@ Our algorithm is, of course, a toy. We use strings for cells and keys. We have n
 
 We haven't constructed any way to advance an arbitrary number of generations, we can only advance a number of generations driven by the size of our square. We only obtain the result of advancing the centre of our square.[^padding] These and other problems are all fixable in one way or another, and many non-trivial implementations have been written.
 
-[^padding]: This is easily solved by padding the initial quadtree with enough blank space such that its centre square is the size of the input quadtree or even more. One such algorithm is given in an appendix.
+[^padding]: This is easily solved by padding the initial quadtree with enough blank space such that its centre square is the size of the input quadtree or even more. One such algorithm is given in the appendices.
 
 But the existence of an algorithm that runs in logarithmic time tells us that many things that seem impractical, can actually be implemented if we just find the right representation. When Conway and his students were simulating life by hand using a go board and coloured stones, nobody thought that one day you could buy a machine in a retail store that could run a Turing Machine or self-replicating pattern in a few minutes.
 
