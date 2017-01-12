@@ -491,7 +491,8 @@ neighboursOfLlUr(sq).join('')
 We can count the number of black neighbouring pixels:
 
 ```javascript
-const countNeighbouringBlack = (neighbours) => neighbours.reduce((c, n) => n === '⚫️' ? c + 1 : c, 0);
+const countNeighbouringBlack = (neighbours) =>
+  neighbours.reduce((c, n) => n === '⚫️' ? c + 1 : c, 0);
 ```
 
 We already have a function for determining the result of averaging a pixel with its neighbours, we'll extract the arrays to make it more compact:
@@ -929,13 +930,13 @@ Just like `multirec`, we need `indivisible`, `value`, `divide`, `combine`, and `
 ```javascript
 const is4x4 = (square) => isString(square.ul.ul);
 
-const average = memoizedMultirec(
+const average = memoizedMultirec({
     indivisible: is4x4,
     value: averageOf4x4,
     // divide: ???
     // combine: ???
     key: simpleKey
-  );
+  });
 ```
 
 What about dividing a square that is larger than 4x4? We wrote that code, we divide it into _nine_ regions, not four. We'll adjust to just do the division:
@@ -1022,7 +1023,6 @@ const eightByEight = arrayToQuadTree([
     ['⚪️', '⚫️', '⚫️', '⚪️', '⚪️', '⚫️', '⚫️', '⚪️'],
     ['⚫️', '⚪️', '⚪️', '⚫️', '⚪️', '⚪️', '⚪️', '⚫️']
   ]);
-```
 
 quadTreeToArray(average(eightByEight))
   //=>
@@ -1032,6 +1032,7 @@ quadTreeToArray(average(eightByEight))
       ["⚪️", "⚪️", "⚪️", "⚪️"],
       ["⚪️", "⚪️", "⚪️", "⚪️"]
     ]
+```
 
 Excellent! Our `memoizedDoubleMultirec` can be used to implement algorithms—like average—where the result that can be memoized is smaller than the square itself, and with some care, we can accomplish the entire thing using memoized operations on squares.
 
@@ -1039,7 +1040,7 @@ As interesting as this is, we have two problems compared to a operation like rot
 
 ---
 
-[[TIME](/assets/images/time.png)](https://www.flickr.com/photos/smemon/5281453002)
+[![TIME](/assets/images/time.png)](https://www.flickr.com/photos/smemon/5281453002)
 
 *Time, © 2010 Sean MacEntee, [some rights reserved][cc-by-2.0]*
 
