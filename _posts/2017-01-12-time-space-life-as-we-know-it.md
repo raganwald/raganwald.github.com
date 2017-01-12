@@ -1038,6 +1038,80 @@ Excellent! Our `memoizedDoubleMultirec` can be used to implement algorithms—li
 
 As interesting as this is, we have two problems compared to a operation like rotation. First, we only wind up with _half_ of the result we want. Second, we have a problem of time.
 
+Let's solve the half problem before we worry about the time.
+
+---
+
+### getting the whole result
+
+As long as edges have a special set of rules, e.g. fewer neighbours, we will not be able to use our recursive algorithm to compute the average of any arbitrary square, just the centre.
+
+But what if edges don't have a special behaviour? One way to eliminate the problem of edges is to define the problem such that it has no edges. Specifically, we can say that the behaviour of edge cells is as if the entire squre was padded on all sides by "⚪️" cells.
+
+So when given:
+
+```
+⚪️⚫️⚪️⚫️
+⚫️⚪️⚫️⚪️
+⚪️⚫️⚫️⚪️
+⚪️⚪️⚪️⚫️
+```
+
+We compute it as if it was padded on all sides with blanks:
+
+```
+⚪️⚪️⚪️⚪️⚪️⚪️
+⚪️⚪️⚫️⚪️⚫️⚪️
+⚪️⚫️⚪️⚫️⚪️⚪️
+⚪️⚪️⚫️⚫️⚪️⚪️
+⚪️⚪️⚪️⚪️⚫️⚪️
+⚪️⚪️⚪️⚪️⚪️⚪️
+```
+
+Of course, it won't fit our "square algorithm" if we only pad it with one column and row. But if we double its size, we will have all the paddig we need, and the result will be the same size as the input square, like this:
+
+```
+⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️
+⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️
+⚪️⚪️⚪️⚫️⚪️⚫️⚪️⚪️⚪️
+⚪️⚪️⚫️⚪️⚫️⚪️⚪️⚪️⚪️
+⚪️⚪️⚪️⚫️⚫️⚪️⚪️⚪️⚪️
+⚪️⚪️⚪️⚪️⚪️⚫️⚪️⚪️⚪️
+⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️
+⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️
+```
+
+The necessary code is straightforward:
+
+```javascript
+const is2x2 = (square) => isString(square.ul);
+
+const divideQuadTreeIntoRegions = ({ ul, ur, lr, ll }) =>
+  [ul, ur, lr, ll];
+
+const blank4x4 = quadtree('⚪️', '⚪️', '⚪️', '⚪️');
+
+const blankCopy = memoizedMultirec({
+    indivisible: is2x2,
+    value: () => blank4x4,
+    divide: divideQuadTreeIntoRegions,
+    combine: regionsToQuadTree
+  });
+
+const double = (sqre) => {
+  const padding = blankCopy(sqre.ul);
+
+  const ul = quadtree(padding, padding, sqre.ul, padding);
+  const ur = quadtree(padding, padding, padding, sqre.ur);
+  const lr = quadtree(sqre.lr, padding, padding, padding);
+  const ll = quadtree(padding, sqre.ll, padding, padding);
+
+  return quadtree(ul, ur, lr, ll);
+}
+```
+
+Now we can
+
 ---
 
 [![TIME](/assets/images/time.png)](https://www.flickr.com/photos/smemon/5281453002)
@@ -1054,7 +1128,7 @@ If we average a 4x4 square, the centre 2x2 pixels have been averaged once. But w
 
 If we average a 16x16 square, we would wind up averaging the centre 8x8 square four times. And up it goes exponentially. Were we to average a 1024x1024 square, we would get as a result a 512x512 square, representing the result of averaging the pixels 256 times!
 
-This turns out to be not very useful for operations that are only meant to be performed once. Bit on the other hand, if we want to iteratively perform an operation many, many, many times, it is very useful and can be very fast.
+This turns out to be not very useful for operations that are only meant to be performed once. On the other hand, if we want to iteratively perform an operation many, many, many times, it is very useful and can be very fast.
 
 So perhaps averaging is not a good domain for memoizing and canonicalizing. What kind of operation would benefit from being run dozens, hundreds, thousands, or even millions and in some cases billions of times?
 
@@ -1209,9 +1283,7 @@ And there are [many others to try][lifelike].
 
 Our algorithm is, of course, a toy. We use strings for cells and keys. We have no way to evict squares from the cache, so on patterns with a non-trivial amount of entropy, we will quickly exhaust the space available to the JavaScript engine.
 
-We haven't constructed any way to advance an arbitrary number of generations, we can only advance a number of generations driven by the size of our square. We only obtain the result of advancing the centre of our square.[^padding] These and other problems are all fixable in one way or another, and many non-trivial implementations have been written.
-
-[^padding]: This is easily solved by padding the initial quadtree with enough blank space such that its centre square is the size of the input quadtree or even more. One such algorithm is given in the appendices.
+We haven't constructed any way to advance an arbitrary number of generations, we can only advance a number of generations driven by the size of our square when doubled. These and other problems are all fixable in one way or another, and many non-trivial implementations have been written.
 
 But the existence of an algorithm that runs in logarithmic time tells us that many things that seem impractical, can actually be implemented if we just find the right representation. When Conway and his students were simulating life by hand using a go board and coloured stones, nobody thought that one day you could buy a machine in a retail store that could run a Turing Machine or self-replicating pattern in a few minutes.
 
@@ -1450,39 +1522,6 @@ const rotateColouredQuadTree = multirec({
 ```
 
 <a href="#ref-quadtrees" class="reversefootnote">↩</a>
-
----
-
-### appendix: padding a quadtree
-
-This function doubles the size of a quadtree, padding the additional space with '⚪️' cells: It can be repeated to add more and more padding. Its chief use is to determine the number of generations to advance a cellular automaton's pattern.
-
-```javascript
-const is2x2 = (square) => isString(square.ul);
-
-const divideQuadTreeIntoRegions = ({ ul, ur, lr, ll }) =>
-  [ul, ur, lr, ll];
-
-const blank4x4 = quadtree('⚪️', '⚪️', '⚪️', '⚪️');
-
-const blankCopy = memoizedMultirec({
-    indivisible: is2x2,
-    value: () => blank4x4,
-    divide: divideQuadTreeIntoRegions,
-    combine: regionsToQuadTree
-  });
-
-const double = (sqre) => {
-  const padding = blankCopy(sqre.ul);
-
-  const ul = quadtree(padding, padding, sqre.ul, padding);
-  const ur = quadtree(padding, padding, padding, sqre.ur);
-  const lr = quadtree(sqre.lr, padding, padding, padding);
-  const ll = quadtree(padding, sqre.ll, padding, padding);
-
-  return quadtree(ul, ur, lr, ll);
-}
-```
 
 ---
 
