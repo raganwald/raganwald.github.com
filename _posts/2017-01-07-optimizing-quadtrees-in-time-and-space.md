@@ -4,9 +4,10 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-In [Why Recursive Data Structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html), we used `multirec`, a recursive combinator, to implement [quadtrees][quadtree] and coloured quadtrees (The full code for creating and rotating quadtrees and coloured quadtrees is <a name="ref-quadtrees"></a>[below](#quadtrees)).
+In [Why Recursive Data Structures?][why?] we used `multirec`, a recursive combinator, to implement [quadtrees][quadtree] and coloured quadtrees (The full code for creating and rotating quadtrees and coloured quadtrees is <a name="ref-quadtrees"></a>[below](#quadtrees)).
 
 [quadtree]: https://en.wikipedia.org/wiki/Quadtree
+[why?]: http://raganwald.com/2016/12/27/recursive-data-structures.html
 
 Our focus was on the notion of an isomorphism between the data structures and the algorithms, more than on the performance of quadtrees. Today, we'll take a closer look at taking advantage of their recursive structure to optimize for time and using [memoization] and [canonicalization].
 
@@ -182,7 +183,7 @@ function memoizedMultirec({ indivisible, value, divide, combine, key }) {
 
 const catenateKeys = (keys) => keys.join('');
 
-const würstKey = multirec({
+const simpleKey = multirec({
     indivisible : isString,
     value : itself,
     divide: quadTreeToRegions,
@@ -194,7 +195,7 @@ const memoizedRotateQuadTree = memoizedMultirec({
       value : itself,
       divide: quadTreeToRegions,
       combine: regionsToRotatedQuadTree,
-      key: würstKey
+      key: simpleKey
   });
 ```
 
@@ -234,7 +235,7 @@ const regionsToRotatedQuadTree = ([ur, lr, ll, ul]) =>
 Next, we memoize our new `quadtree` function. We compute the key of a quadtree we want to create much the same as how we compute the key of a finished quadtree, although that is not strictly necessary for the function to work:
 
 ```javascript
-const compositeKey = (...regions) => regions.map(würstKey).join('');
+const compositeKey = (...regions) => regions.map(simpleKey).join('');
 
 const quadtree = memoized(
     (ul, ur, lr, ll) => ({ ul, ur, lr, ll }),
@@ -262,12 +263,12 @@ After all, we might or might not need to rotate a square, but we will always nee
 
 [symbol]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
 
-Our new `würstKey` and  `quadtree` functions will look like this:
+Our new `simpleKey` and  `quadtree` functions will look like this:
 
 ```javascript
 const KEY = Symbol('key');
 
-const würstKey = (something) =>
+const simpleKey = (something) =>
   isString(something)
   ? something
   : something[KEY];
@@ -286,7 +287,11 @@ Thus, the keys are memoized, but explicitly within each canonicalized quadtree i
 
 We have seen that recursive data structures like quadtrees offer opportunities to take advantage of redundancy, and that we can exploit this to save both time and space. The complete code for our memoized and canonicalized quadtrees is <a name="ref-canonicalized"></a>[below](#canonicalized).
 
-But now let us consider some different operations on quadtrees.
+These are an important optimizations, and they flow directly from what we investigated in [Why Recursive Data Structures?][why?]: The isomorphism between the shape of the data structure and the run-time behaviour of the algorithm allows us to create optimizations that are not otherwise possible.
+
+And again, the opportunity to exploit these optimizations very much depends upon the amount of redundancy in the "flat" representation of the underlying data.
+
+But now let us consider a completely different kind of operation on quadtrees.
 
 ---
 
@@ -525,6 +530,14 @@ averageOf4x4(
 ```
 
 Can we build from here? Yes, and with some interesting manoeuvres. But first, a necessary digression. It won't take long.
+
+---
+
+[![Peart Elementary](/assets/images/peart.gif)](https://www.flickr.com/photos/kmsiever/99002503)
+
+*Peart Elementary, via Kim Siever, [in the public domain][pd]*
+
+[pd]: https://creativecommons.org/publicdomain/mark/1.0/
 
 ---
 
@@ -911,7 +924,7 @@ function memoizedMultirec({ indivisible, value, divide, combine, key }) {
 }
 ```
 
-Just like `multirec`, we need `indivisible`, `value`, `divide`, `combine`, and `key`. Since the smallest square we want to average is 4x4, the test for `indivisible` is simple. `value` is our existing `averageOf4x4` function, and we'll use our `würstKey` for the `key`:
+Just like `multirec`, we need `indivisible`, `value`, `divide`, `combine`, and `key`. Since the smallest square we want to average is 4x4, the test for `indivisible` is simple. `value` is our existing `averageOf4x4` function, and we'll use our `simpleKey` for the `key`:
 
 ```javascript
 const is4x4 = (square) => isString(square.ul.ul);
@@ -921,7 +934,7 @@ const average = memoizedMultirec(
     value: averageOf4x4,
     // divide: ???
     // combine: ???
-    key: würstKey
+    key: simpleKey
   );
 ```
 
@@ -962,7 +975,7 @@ const divideNonetTreeIntoQuadTrees = ({ ul, uc, ur, lm, mc, rm, ll, lc, lr }) =>
 
 And we know exactly how to combine four quadtrees into a bigger quadtree, we use `regionsToQuadTree`.
 
-Harumph, another problem. Are we dividing with `divideQuadtreeIntoNine`? Or `divideNonetTreeIntoQuadTrees`? And are we combining the results using `combineNineIntoNonetTree`? Or `regionsToQuadTree`?
+Harrumph, another problem. Are we dividing with `divideQuadtreeIntoNine`? Or `divideNonetTreeIntoQuadTrees`? And are we combining the results using `combineNineIntoNonetTree`? Or `regionsToQuadTree`?
 
 The problem is, `memoizedMultirec` is predicated on every step of the recursion involving a single division followed by a single combine of the results. But our average algorithm requires _two_ steps.
 
@@ -1026,7 +1039,13 @@ As interesting as this is, we have two problems compared to a operation like rot
 
 ---
 
-### time
+[[TIME](/assets/images/time.png)](https://www.flickr.com/photos/smemon/5281453002)
+
+*Time, © 2010 Sean MacEntee, [some rights reserved][cc-by-2.0]*
+
+---
+
+### time and cellular automata
 
 When we rotate a square of any size, we rotate it once. We rotate and move about many parts of it, but when we conclude, it has only been rotated ninety degrees. But this is not the case with our average algorithm.
 
@@ -1039,8 +1058,6 @@ This turns out to be not very useful for operations that are only meant to be pe
 So perhaps averaging is not a good domain for memoizing and canonicalizing. What kind of operation would benefit from being run dozens, hundreds, thousands, or even millions and in some cases billions of times?
 
 ---
-
-### cellular automata
 
 So far, we've talked about quadtrees storing image information. This was nice because algorithms like rotate are very visual. But images aren't the only thing we can represent with a hashtree, and don't often benefit from repeated operations.
 
@@ -1058,7 +1075,15 @@ const averagedPixel = (pixel, blackNeighbours) =>
 
 If we think of our pixels as state machines, what we are describing is a state machine with two states ('⚫️' and '⚪️'), and a rule for determining the next state it will take based on the number of neighbours in the '⚫️' state.
 
-We have, in fact, a two-dimensional grid of cellular automata, and our `averagedPixel` state machine encodes one particular set of rules. There are many others.
+We have, in fact, a two-dimensional [cellular automaton], and our `averagedPixel` state machine encodes one particular set of rules. There are many others.
+
+[cellular automaton]: https://en.wikipedia.org/wiki/Cellular_automaton
+
+> A cellular automaton consists of a regular grid of cells, each in one of a finite number of states, such as on and off (in contrast to a coupled map lattice). The grid can be in any finite number of dimensions. For each cell, a set of cells called its neighbourhood is defined relative to the specified cell.
+
+> An initial state (time t = 0) is selected by assigning a state for each cell. A new generation is created (advancing t by 1), according to some fixed rule (generally, a mathematical function) that determines the new state of each cell in terms of the current state of the cell and the states of the cells in its neighbourhood.
+
+> Typically, the rule for updating the state of cells is the same for each cell and does not change over time, and is applied to the whole grid simultaneously.
 
 The usual vernacular is to call the '⚫️' state "alive," and the '⚪️' state "dead." With those two names, the `B` and `S` variables can now be called "born" and "survives." `B` or "born" describes a set of conditions for a dead cell being born, or changing to the alive state. `S` or "survives" describes a set of conditions for an alive state remaining alive.
 
@@ -1067,7 +1092,7 @@ Every iteration or application of "average" is simultaneously advancing the stat
 We can explore other rule sets by refactoring our `average` function to accept a rule set as a parameter. Here it is refactored:
 
 ```javascript
-function twoDimensionalCellularAutomata ({ B, S }) {
+function automaton ({ B, S }) {
   const applyRuleToCell = (pixel, blackNeighbours) =>
     (pixel === '⚪️')
     ? B.includes(blackNeighbours) ? '⚫️' : '⚪️'
@@ -1090,7 +1115,7 @@ function twoDimensionalCellularAutomata ({ B, S }) {
     });
 }
 
-const average = twoDimensionalCellularAutomata({ B: [5, 6, 7, 8], S: [4, 5, 6, 7, 8] });
+const average = automaton({ B: [5, 6, 7, 8], S: [4, 5, 6, 7, 8] });
 ```
 
 Alas, "average" is an uninteresting set of rules. "Interesting" rules are those that give rise to a balance between growth and destruction and provide a rich set of interactions between patterns. Sufficiently interesting rules permit many exotic patterns and have been proven to be [Turing complete].
@@ -1099,13 +1124,89 @@ Alas, "average" is an uninteresting set of rules. "Interesting" rules are those 
 
 ---
 
+[![Crab Nebula](/assets/images/crab-nebula.jpg)](https://www.flickr.com/photos/gsfc/4398655649)
+
+*Crab Nebula, © 2005 NASA Goddard Space Flight Center, [some rights reserved][cc-by-2.0]*
+
+---
+
 ### life, the universe, and everything
 
-The most famous of those rule sets is "B3S23:"
+The most famous rule set for two-dimensional automata is "B3S23," known as "Life:"
 
 ```
-const conwaysGameOfLife = twoDimensionalCellularAutomata({ B: [3], S: [2, 3]});
+const conwaysGameOfLife = automaton({ B: [3], S: [2, 3]});
 ```
+
+John Horton Conway was interested in life. One of the characteristics that people used to distinguish life from "non-life" in the natural world was the ability to replicate itself from a blueprint. Crystals "replicate" themselves by forces in the natural world, but not from a description of a crystal.
+
+Higher orders of life, including plants and animals, replicate themselves from a representation in the form of genes. Some people claimed that this capability was somehow special, conferred by divinity. Conway wondered whether a machine could replicate itself from a description.
+
+Lots of machines replicate things from descriptions, computing engines trace their lineage back to [Jacquard Looms] that used punch cards to describe the patterns to weave. But none could replicate themselves.
+
+[Jacquard Looms]: https://en.wikipedia.org/wiki/Jacquard_loom
+
+Conway did not attempt to build such a machine. As a mathematician, he would be satisfied if he could simply prove that the rules of the universe did not preclude building such a machine. His strategy was to create a very simple simulation of the universe, and within that simulation, devise a self-replicating machine.
+
+He ended up with a two-dimensional cellular automaton that had twenty-nine states for each cell. And he constructed a clever proof that it was possible to build a self-replicating pattern of cells within that automaton that relied upon an encoded description of the device.
+
+From this, he reasoned, the laws of our physical universe would also permit a mechanical device to self-replicate from a description encoded within the machine. And while this does not prove that life like ourselves is mechanical, it disproves the notion that life like ourselves cannot be mechanical.
+
+The physics of our universe are much more complicated than a twenty-nine state automaton. However, it is natural to wonder, "how simple can a universe be and still permit self-replicating patterns?"
+
+The simplest possible universe would have only two states, and Conway (along with a very talented team) set out to find a two-dimensional automaton with only two states that could support self-replicating machines.
+
+B3S23 turned out to be such an automaton, and while Conway did not build such a machine, proofs that such a machine was possible followed, and B3S23 has been studied by mathematicians, computer scientists, and hobbyists ever since.
+
+---
+
+[![Turing Machine](assets/images/Turing_Machine_in_Golly.png)](https://commons.wikimedia.org/w/index.php?curid=18644263)
+
+*By Andrew Trevorrow and Tomas Rokicki - Screenshot of Golly program, GPL, https://commons.wikimedia.org/w/index.php?curid=18644263*
+
+---
+
+### studying life
+
+In order to investigate really complicated patterns, we need fast hardware and an algorithm for performing a stupendous amount of computation. In the 1980s, Bill Gosper discovered that memoized and canonicalized hashtrees could be used to simulate tremendously large patterns over enormous numbers of generations. He called the algorithm [hashlife].
+
+One practical application of hashlife is to help us understand the significance of Conway's original proof. The proof is difficult for a layperson (like myself) to follow.
+
+Thanks to high-speed algorithms like hashlife, people have proven that anything that can be computed, can be computed in B3S23 in a remarkably easy-to-grasp format: They built [Turing Machines].
+
+[Turing Machines]: https://en.wikipedia.org/wiki/Turing_machine
+
+The screenshot above is of a Turing Machine running in B3S23. It shows the 6,366,548,773,467,669,985,195,496,000th generation. Computations like this are only possible on commodity hardware when we can use algorithms like our memoized and canonicalized hashtrees.
+
+From this we grasp that all computation can in principle  be performed by remarkably simple devices.
+
+And as for Conway's proof, in this century people have built actual [self-replicating][self-replication] machines, including machines that replicate an instruction tape. You don't need to prove it is possible when you can simply observe it replicating itself.
+
+[self-replication]: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Self-replication
+
+---
+
+### what do recursive algorithms tell us?
+
+Our algorithm is, of course, a toy. We use strings for cells and keys. We have no way to evict squares from the cache, so on patterns with a non-trivial amount of entropy, we will quickly exhaust the space available to the JavaScript engine.
+
+We haven't constructed any way to advance an arbitrary number of generations, we can only advance a number of generations driven by the size of our square. We only obtain the result of advancing the centre of our square. These and other problems are all fixable in one way or another, and many non-trivial implementations have been written.
+
+But the existence of an algorithm that runs in logarithmic time tells us that many things that seem impractical, can actually be implemented if we just find the right representation. When Conway and his students were simulating life by hand using a go board and coloured stones, nobody thought that one day you could buy a machine in a retail store that could run a Turing Machine or self-replicating pattern in a few minutes.
+
+Breakthroughs like hashlife are more than just "optimizations," even though thats the word used in this very essays. For problems suited to their domain, some algorithms are so much faster that they fundamentally change the way we approach solving problems.
+
+We can and should take this thinking outside of algorithms and mathematical proofs. So many of the things we take for granted today are artefacts of constraints that no longer exist and/or can be removed if we put our minds to it. Out programming languages, our frameworks, our development processes, all of these things are driven by choices that were made when computation cycles were expensive and communication was slow.
+
+We can and should ask ourselves what software would look like if it was many, many, many orders of magnitude faster. We can and should ask ourselves how our tools and the things we create with them would be deeply and fundamentally changed.
+
+And then we should make it happen.
+
+---
+
+[![end](/assets/images/end.jpg)](https://www.flickr.com/photos/brownpau/5500859092)
+
+*End, © 2011 Brownpau, [some rights reserved][cc-by-2.0]*
 
 ---
 
@@ -1177,12 +1278,12 @@ const divideSquareIntoRegions = (square) => {
 
 const KEY = Symbol('key');
 
-const würstKey = (something) =>
+const simpleKey = (something) =>
   isString(something)
   ? something
   : something[KEY];
 
-const compositeKey = (...regions) => regions.map(würstKey).join('');
+const compositeKey = (...regions) => regions.map(simpleKey).join('');
 
 const quadtree = memoized(
     (ul, ur, lr, ll) => ({ ul, ur, lr, ll, [KEY]: compositeKey(ul, ur, lr, ll) }),
@@ -1214,7 +1315,7 @@ const memoizedRotateQuadTree = memoizedMultirec({
       value : itself,
       divide: quadTreeToRegions,
       combine: regionsToRotatedQuadTree,
-      key: würstKey
+      key: simpleKey
   });
 ```
 
