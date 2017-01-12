@@ -439,7 +439,7 @@ But from our exploration of `linrec`, `binrec`, and `multirec`, we can see that 
 
 ### afterward
 
-There is more to read about `multirec` in the follow-up essay, [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html).
+There is more to read about `multirec` in the follow-up essay, [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html), and the final chapter, [Time, Space, and Life As We Know It](http://raganwald.com/2017/01/12/time-space-life-as-we-know-it.html).
 
 An early draft of this post was reviewed by [Jinny Kim](https://github.com/younjin) and [Peter Sobot](https://github.com/psobot). Thank you.
 
