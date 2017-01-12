@@ -8,7 +8,12 @@ In [Why Recursive Data Structures?](http://raganwald.com/2016/12/27/recursive-da
 
 [quadtree]: https://en.wikipedia.org/wiki/Quadtree
 
-Our focus was on the notion of an isomorphism between the data structures and the algorithms, more than on the performance of quadtrees. Today, we'll take a closer look at taking advantage of their recursive structure to optimize for time and space.
+Our focus was on the notion of an isomorphism between the data structures and the algorithms, more than on the performance of quadtrees. Today, we'll take a closer look at taking advantage of their recursive structure to optimize for time and using [memoization] and [canonicalization].
+
+[memoization]: https://en.wikipedia.org/wiki/Memoization
+[canonicalization]: https://en.wikipedia.org/wiki/Canonicalization
+
+Finally, we will look at the application of recursive algorithms and quadtrees to simulate the universe. Really.
 
 ---
 
@@ -291,117 +296,6 @@ But now let us consider some different operations on quadtrees.
 
 ---
 
-### subdividing quadtrees
-
-Quadtrees make it obviously easy to subdivide a square into its upper-left, upper-right, lower-right, and lower-left regions. Given:
-
-```
-⚪️⚪️⚪️⚫️⚪️⚪️⚪️⚪️
-⚪️⚪️⚫️⚪️⚫️⚪️⚪️⚪️
-⚪️⚫️⚪️⚫️⚫️⚪️⚪️⚪️
-⚫️⚪️⚫️⚪️⚪️⚫️⚫️⚪️
-⚪️⚫️⚫️⚪️⚪️⚫️⚪️⚫️
-⚪️⚪️⚪️⚫️⚫️⚪️⚫️⚪️
-⚪️⚪️⚪️⚫️⚪️⚫️⚪️⚪️
-⚪️⚪️⚪️⚪️⚫️⚪️⚪️⚪️
-```
-
-We extract:
-
-```
-⚪️⚪️⚪️⚫️
-⚪️⚪️⚫️⚪️
-⚪️⚫️⚪️⚫️
-⚫️⚪️⚫️⚪️
-
-⚪️⚪️⚪️⚪️
-⚫️⚪️⚪️⚪️
-⚫️⚪️⚪️⚪️
-⚪️⚫️⚫️⚪️
-
-⚪️⚫️⚫️⚪️
-⚪️⚪️⚪️⚫️
-⚪️⚪️⚪️⚫️
-⚪️⚪️⚪️⚪️
-
-⚪️⚫️⚪️⚫️
-⚫️⚪️⚫️⚪️
-⚪️⚫️⚪️⚪️
-⚫️⚪️⚪️⚪️
-```
-
-```javascript
-const upperleft = (square) =>
-  square.ul;
-
-const upperright = (square) =>
-  square.ur;
-
-const lowerright = (square) =>
-  square.lr;
-
-const lowerleft = (square) =>
-  square.ll;
-```
-
-There are other regions we can easily extract. For example, the upper-centre, right-middle, lower-centre, and left-middle:
-
-```
-⚪️⚫️⚪️⚪️
-⚫️⚪️⚫️⚪️
-⚪️⚫️⚫️⚪️
-⚫️⚪️⚪️⚫️
-
-⚫️⚪️⚪️⚪️
-⚪️⚫️⚫️⚪️
-⚪️⚫️⚪️⚫️
-⚫️⚪️⚫️⚪️
-
-⚫️⚪️⚪️⚫️
-⚪️⚫️⚫️⚪️
-⚪️⚫️⚪️⚫️
-⚪️⚪️⚫️⚪️
-
-⚪️⚫️⚪️⚫️
-⚫️⚪️⚫️⚪️
-⚪️⚫️⚫️⚪️
-⚪️⚪️⚪️⚫️
-```
-
-The code is a tad more involved, as we must compose these regions from the subregions of our square's regions:
-
-```javascript
-const uppercentre = (square) =>
-  quadtree(square.ul.ur, square.ur.ul, square.ur.ll, square.ul.lr);
-
-const rightmiddle = (square) =>
-  quadtree(square.ur.ll, square.ur.lr, square.lr.ur, square.lr.ul);
-
-const lowercentre = (square) =>
-  quadtree(square.ll.ur, square.lr.ul, square.lr.ll, square.ll.lr);
-
-const leftmiddle = (square) =>
-  quadtree(square.ul.ll, square.ul.lr, square.ll.ur, square.ll.ul);
-```
-
-Finally, it's just as easy to extract the middle-centre:
-
-```
-⚪️⚫️⚫️⚪️
-⚫️⚪️⚪️⚫️
-⚫️⚪️⚪️⚫️
-⚪️⚫️⚫️⚪️
-```
-
-```javascript
-const middlecentre = (square) =>
-  quadtree(square.ul.lr, square.ur.ll, square.lr.ul, square.ll.ur);
-```
-
-Of course, these regions we extract and compose will benefit from canonicalization.
-
----
-
 ### averaging
 
 Operations like rotation, superimposition, and reflection are all self-contained. For example, the result for rotating a square or region is always exactly the same size as the square. Furthermore, these operations scale: They can be defined from a smallest possible size and up. As a result, they have a natural "fit" with `multirec`, or to be more precise, with divide-and-conquer algorithms.
@@ -630,7 +524,117 @@ averageOf4x4(
       "ll": "⚫️, "lr": "⚫️"   }
 ```
 
-Can we build from here? Yes, and with some interesting manoeuvres.
+Can we build from here? Yes, and with some interesting manoeuvres. But first, a necessary digression. It won't take long.
+
+---
+
+### subdividing quadtrees
+
+Quadtrees make it obviously easy to subdivide a square into its upper-left, upper-right, lower-right, and lower-left regions. Given:
+
+```
+⚪️⚪️⚪️⚫️⚪️⚪️⚪️⚪️
+⚪️⚪️⚫️⚪️⚫️⚪️⚪️⚪️
+⚪️⚫️⚪️⚫️⚫️⚪️⚪️⚪️
+⚫️⚪️⚫️⚪️⚪️⚫️⚫️⚪️
+⚪️⚫️⚫️⚪️⚪️⚫️⚪️⚫️
+⚪️⚪️⚪️⚫️⚫️⚪️⚫️⚪️
+⚪️⚪️⚪️⚫️⚪️⚫️⚪️⚪️
+⚪️⚪️⚪️⚪️⚫️⚪️⚪️⚪️
+```
+
+We extract:
+
+```
+⚪️⚪️⚪️⚫️ ⚪️⚪️⚪️⚪️
+⚪️⚪️⚫️⚪️ ⚫️⚪️⚪️⚪️
+⚪️⚫️⚪️⚫️ ⚫️⚪️⚪️⚪️
+⚫️⚪️⚫️⚪️ ⚪️⚫️⚫️⚪️
+
+⚪️⚫️⚫️⚪️ ⚪️⚫️⚪️⚫️
+⚪️⚪️⚪️⚫️ ⚫️⚪️⚫️⚪️
+⚪️⚪️⚪️⚫️ ⚪️⚫️⚪️⚪️
+⚪️⚪️⚪️⚪️ ⚫️⚪️⚪️⚪️
+```
+
+```javascript
+const upperleft = (square) =>
+  square.ul;
+
+const upperright = (square) =>
+  square.ur;
+
+const lowerright = (square) =>
+  square.lr;
+
+const lowerleft = (square) =>
+  square.ll;
+```
+
+There are other regions we can easily extract. For example, the upper-centre and lower-centre,:
+
+```
+⚪️⚪️ ⚪️⚫️⚪️⚪️ ⚪️⚪️
+⚪️⚪️ ⚫️⚪️⚫️⚪️ ⚪️⚪️
+⚪️⚫️ ⚪️⚫️⚫️⚪️ ⚪️⚪️
+⚫️⚪️ ⚫️⚪️⚪️⚫️ ⚫️⚪️
+
+⚪️⚫️ ⚫️⚪️⚪️⚫️ ⚪️⚫️
+⚪️⚪️ ⚪️⚫️⚫️⚪️ ⚫️⚪️
+⚪️⚪️ ⚪️⚫️⚪️⚫️ ⚪️⚪️
+⚪️⚪️ ⚪️⚪️⚫️⚪️ ⚪️⚪️
+```
+
+And the left-middle and right middle:
+
+```
+⚪️⚪️⚪️⚫️ ⚪️⚪️⚪️⚪️
+⚪️⚪️⚫️⚪️ ⚫️⚪️⚪️⚪️
+
+⚪️⚫️⚪️⚫️ ⚫️⚪️⚪️⚪️
+⚫️⚪️⚫️⚪️ ⚪️⚫️⚫️⚪️
+⚪️⚫️⚫️⚪️ ⚪️⚫️⚪️⚫️
+⚪️⚪️⚪️⚫️ ⚫️⚪️⚫️⚪️
+
+⚪️⚪️⚪️⚫️ ⚪️⚫️⚪️⚪️
+⚪️⚪️⚪️⚪️ ⚫️⚪️⚪️⚪️
+```
+
+And the middle-centre:
+
+```
+⚪️⚪️ ⚪️⚫️⚪️⚪️ ⚪️⚪️
+⚪️⚪️ ⚫️⚪️⚫️⚪️ ⚪️⚪️
+
+⚪️⚫️ ⚪️⚫️⚫️⚪️ ⚪️⚪️
+⚫️⚪️ ⚫️⚪️⚪️⚫️ ⚫️⚪️
+⚪️⚫️ ⚫️⚪️⚪️⚫️ ⚪️⚫️
+⚪️⚪️ ⚪️⚫️⚫️⚪️ ⚫️⚪️
+
+⚪️⚪️ ⚪️⚫️⚪️⚫️ ⚪️⚪️
+⚪️⚪️ ⚪️⚪️⚫️⚪️ ⚪️⚪️
+```
+
+The code is a tad more involved, as we must compose these regions from the subregions of our square's regions:
+
+```javascript
+const uppercentre = (square) =>
+  quadtree(square.ul.ur, square.ur.ul, square.ur.ll, square.ul.lr);
+
+const rightmiddle = (square) =>
+  quadtree(square.ur.ll, square.ur.lr, square.lr.ur, square.lr.ul);
+
+const lowercentre = (square) =>
+  quadtree(square.ll.ur, square.lr.ul, square.lr.ll, square.ll.lr);
+
+const leftmiddle = (square) =>
+  quadtree(square.ul.ll, square.ul.lr, square.ll.ur, square.ll.ul);
+
+const middlecentre = (square) =>
+  quadtree(square.ul.lr, square.ur.ll, square.lr.ul, square.ll.ur);
+```
+
+Of course, these regions we extract and compose will benefit from canonicalization. Ok, back to averaging!
 
 ---
 
@@ -653,7 +657,7 @@ We can, of course, write a function that calculates the average for the centre 6
 
 If we can use the function we already have as a building block, we can build a recursive function that memoizes and canonicalizes.
 
-To start with, let's imagine we are comuting averages of the 4x4 regions. To show the geometry, we will colour the averages blue. Here's what we get when we average eaach of the four regions:
+To start with, let's imagine we are computing averages of the 4x4 regions. To show the geometry, we will colour the averages blue. Here's what we get when we average each of the four regions:
 
 ```
 ⚫️⚪️⚪️⚫️⚫️⚪️⚪️⚪️
@@ -692,7 +696,7 @@ How do we get its average? By averaging this 4x4 square:
 ⚫️⚪️⚪️⚫️⚪️⚪️⚪️⚫️
 ```
 
-Luckily, we know hw to get that 4x4 square from an 8x8 square, it's the `uppercentre` function we wrote earlier. And we can fill in the rest of the gaps using our `rightmiddle`, `lowercentre`, `leftmiddle`, and `middlecentre` functions:
+Luckily, we know how to get that 4x4 square from an 8x8 square, it's the `uppercentre` function we wrote earlier. And we can fill in the rest of the gaps using our `rightmiddle`, `lowercentre`, `leftmiddle`, and `middlecentre` functions:
 
 ```
 ⚫️⚪️⚪️⚫️⚫️⚪️⚪️⚪️
@@ -956,7 +960,7 @@ const divideNonetTreeIntoQuadTrees = ({ ul, uc, ur, lm, mc, rm, ll, lc, lr }) =>
   ];
 ```
 
-And we know exactly how to combine four qudtrees into a bigger quadtree, we use `regionsToQuadTree`.
+And we know exactly how to combine four quadtrees into a bigger quadtree, we use `regionsToQuadTree`.
 
 Harumph, another problem. Are we dividing with `divideQuadtreeIntoNine`? Or `divideNonetTreeIntoQuadTrees`? And are we combining the results using `combineNineIntoNonetTree`? Or `regionsToQuadTree`?
 
@@ -1010,8 +1014,8 @@ const eightByEight = arrayToQuadTree([
 quadTreeToArray(average(eightByEight))
   //=>
     [
-      ["⚪️", "⚫️", "⚪️", "⚫️"],
-      ["⚪️", "⚫️", "⚪️", "⚪️"],
+      ["⚪️", "⚪️", "⚪️", "⚪️"],
+      ["⚪️", "⚪️", "⚪️", "⚪️"],
       ["⚪️", "⚪️", "⚪️", "⚪️"],
       ["⚪️", "⚪️", "⚪️", "⚪️"]
     ]
@@ -1089,7 +1093,7 @@ function twoDimensionalCellularAutomata ({ B, S }) {
 const average = twoDimensionalCellularAutomata({ B: [5, 6, 7, 8], S: [4, 5, 6, 7, 8] });
 ```
 
-Alas, "Average" is an uninteresting set of rules. "Interesting" rules are those that give rise to a balance between growth and destruction and provide a rich set of interactions between patterns. Sufficiently interesting rules permit many exotic patterns and have been proven to be [Turing complete].
+Alas, "average" is an uninteresting set of rules. "Interesting" rules are those that give rise to a balance between growth and destruction and provide a rich set of interactions between patterns. Sufficiently interesting rules permit many exotic patterns and have been proven to be [Turing complete].
 
 [Turing complete]: https://en.wikipedia.org/wiki/Turing_completeness
 
