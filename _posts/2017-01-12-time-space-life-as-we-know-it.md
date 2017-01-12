@@ -1,5 +1,5 @@
 ---
-title: "Quadtrees, Time, Space, and Life As We Know It"
+title: "Time, Space, and Life As We Know It"
 layout: default
 tags: [allonge]
 ---
