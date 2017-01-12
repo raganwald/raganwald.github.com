@@ -1529,7 +1529,7 @@ const rotateColouredQuadTree = multirec({
 
 There is more to read about `multirec` in the previous essays, [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html) and [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html).
 
-Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), or [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2017-01-07-optimizing-quadtrees-in-time-and-space.md) yourself.
+Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss the post on [hacker news](https://news.ycombinator.com/item?id=13384851) or even [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2017-01-12-time-space-life-as-we-know-it.md) yourself.
 
 ---
 
