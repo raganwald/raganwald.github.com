@@ -1237,7 +1237,7 @@ B3S23 turned out to be such an automaton. While Conway did not build such a mach
 
 ---
 
-[![Turing Machine](assets/images/Turing_Machine_in_Golly.png)](https://commons.wikimedia.org/w/index.php?curid=18644263)
+[![Turing Machine](/assets/images/Turing_Machine_in_Golly.png)](https://commons.wikimedia.org/w/index.php?curid=18644263)
 
 *By Andrew Trevorrow and Tomas Rokicki - Screenshot of Golly program, GPL, https://commons.wikimedia.org/w/index.php?curid=18644263*
 
