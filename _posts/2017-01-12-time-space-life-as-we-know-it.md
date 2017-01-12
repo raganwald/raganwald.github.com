@@ -1133,17 +1133,19 @@ Alas, "average" is an uninteresting set of rules. "Interesting" rules are those 
 
 ### life, the universe, and everything
 
-The most famous rule set for two-dimensional automata is "B3S23," known as "Life:"
+The most famous rule set for two-dimensional automata is "B3S23," known as [Conway's Game of Life]:
+
+[Conway's Game of Life]:https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
 ```
 const conwaysGameOfLife = automaton({ B: [3], S: [2, 3]});
 ```
 
-John Horton Conway was interested in life. One of the characteristics that people used to distinguish life from "non-life" in the natural world was the ability to replicate itself from a blueprint. Crystals "replicate" themselves by forces in the natural world, but not from a description of a crystal.
+John Horton Conway was interested in life. One of the characteristics that people used to distinguish "life" from "non-life" in the natural world was the ability to replicate itself from a blueprint. Crystals "replicate" themselves by forces in the natural world, but not from a description of a crystal.
 
 Higher orders of life, including plants and animals, replicate themselves from a representation in the form of genes. Some people claimed that this capability was somehow special, conferred by divinity. Conway wondered whether a machine could replicate itself from a description.
 
-Lots of machines replicate things from descriptions, computing engines trace their lineage back to [Jacquard Looms] that used punch cards to describe the patterns to weave. But none could replicate themselves.
+Lots of machines replicate things from descriptions, computing engines trace their lineage back to [Jacquard Looms] that used punch cards to describe the patterns to weave. But looms do not use punch cards to build more looms.
 
 [Jacquard Looms]: https://en.wikipedia.org/wiki/Jacquard_loom
 
@@ -1153,11 +1155,11 @@ He ended up with a two-dimensional cellular automaton that had twenty-nine state
 
 From this, he reasoned, the laws of our physical universe would also permit a mechanical device to self-replicate from a description encoded within the machine. And while this does not prove that life like ourselves is mechanical, it disproves the notion that life like ourselves cannot be mechanical.
 
-The physics of our universe are much more complicated than a twenty-nine state automaton. However, it is natural to wonder, "how simple can a universe be and still permit self-replicating patterns?"
+The physics of our universe are much more complicated than a twenty-nine state automaton. However, it is natural to wonder, "How simple can a universe be and still permit self-replicating patterns?"
 
 The simplest possible universe would have only two states, and Conway (along with a very talented team) set out to find a two-dimensional automaton with only two states that could support self-replicating machines.
 
-B3S23 turned out to be such an automaton, and while Conway did not build such a machine, proofs that such a machine was possible followed, and B3S23 has been studied by mathematicians, computer scientists, and hobbyists ever since.
+B3S23 turned out to be such an automaton. While Conway did not build such a machine, proofs that such a machine was possible followed, and B3S23 has been studied by mathematicians, computer scientists, and hobbyists ever since.
 
 ---
 
@@ -1169,21 +1171,37 @@ B3S23 turned out to be such an automaton, and while Conway did not build such a 
 
 ### studying life
 
-In order to investigate really complicated patterns, we need fast hardware and an algorithm for performing a stupendous amount of computation. In the 1980s, Bill Gosper discovered that memoized and canonicalized quadtrees could be used to simulate tremendously large patterns over enormous numbers of generations. He called the algorithm [hashlife].
+In order to investigate really complicated patterns, we need fast hardware and an algorithm for performing a stupendous amount of computation. In the 1980s, Bill Gosper discovered that memoized and canonicalized quadtrees could be used to simulate tremendously large patterns over enormous numbers of generations. He called the algorithm [hashlife], and what we have built here is a toy implementation, but it includes hashlife's essential features.
 
-One practical application of hashlife is to help us understand the significance of Conway's original proof. The proof is difficult for a layperson (like myself) to follow.
+But what does hashlife afford us? Why is it important? One practical application of hashlife is to help us understand the significance of Conway's original proof.
 
-Thanks to high-speed algorithms like hashlife, people have proven that anything that can be computed, can be computed in B3S23 in a remarkably easy-to-grasp format: They built [Turing Machines].
+The written proof is difficult for a layperson (like myself) to follow. But thanks to high-speed algorithms like hashlife, people have built actual [self-replicating][self-replication] machines, including machines that replicate an instruction tape. You don't need to prove it is possible when you can simply observe it replicating itself.
+
+[self-replication]: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Self-replication
+
+Equally interestingly, people have proven that anything that can be computed, can be computed in B3S23 in a remarkably easy-to-grasp format: They built [Turing Machines].
 
 [Turing Machines]: https://en.wikipedia.org/wiki/Turing_machine
 
 The screenshot above is of a Turing Machine running in B3S23. It shows the 6,366,548,773,467,669,985,195,496,000th generation. Computations like this are only possible on commodity hardware when we can use algorithms like our memoized and canonicalized quadtrees.
 
-From this we grasp that all computation can in principle  be performed by remarkably simple devices.
+From this we grasp that all computation can--in principle--be performed by remarkably simple devices.
 
-And as for Conway's proof, in this century people have built actual [self-replicating][self-replication] machines, including machines that replicate an instruction tape. You don't need to prove it is possible when you can simply observe it replicating itself.
+Studying B3S23 helps us understand how much of the complexity we observe in our universe can actually arise from the interactions between very simple parts with very simple behaviour.
 
-[self-replication]: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Self-replication
+And B3S23 isn't the only automaton to study. Most rule sets produce boring universes. "Average" from above tends towards empty space. Others fill their universes with chaos. But a few, like B3S23, support the creation of independent patterns that interact with each other.
+
+In 1994, Nathan Thompson devised [Highlife], described by the rules B36S23. In B3S23, a self-replicating pattern was proven to exist, but not devised until 2013 In B36S23, there are a number of trivial replicator patterns that can be used to engineer other patterns.
+
+It's easy to play with using our code:
+
+```
+const highlife = automaton({ B: [3, 6], S: [2, 3]});
+```
+And there are [many others to try][lifelike].
+
+[Highlife]: https://en.wikipedia.org/wiki/Highlife_(cellular_automaton)
+[lifelike]: https://en.wikipedia.org/wiki/Life-like_cellular_automaton
 
 ---
 
@@ -1191,7 +1209,9 @@ And as for Conway's proof, in this century people have built actual [self-replic
 
 Our algorithm is, of course, a toy. We use strings for cells and keys. We have no way to evict squares from the cache, so on patterns with a non-trivial amount of entropy, we will quickly exhaust the space available to the JavaScript engine.
 
-We haven't constructed any way to advance an arbitrary number of generations, we can only advance a number of generations driven by the size of our square. We only obtain the result of advancing the centre of our square. These and other problems are all fixable in one way or another, and many non-trivial implementations have been written.
+We haven't constructed any way to advance an arbitrary number of generations, we can only advance a number of generations driven by the size of our square. We only obtain the result of advancing the centre of our square.[^padding] These and other problems are all fixable in one way or another, and many non-trivial implementations have been written.
+
+[^padding]: This is easily solved by padding the initial quadtree with enough blank space such that its centre square is the size of the input quadtree or even more. One such algorithm is given in an appendix.
 
 But the existence of an algorithm that runs in logarithmic time tells us that many things that seem impractical, can actually be implemented if we just find the right representation. When Conway and his students were simulating life by hand using a go board and coloured stones, nobody thought that one day you could buy a machine in a retail store that could run a Turing Machine or self-replicating pattern in a few minutes.
 
@@ -1430,6 +1450,39 @@ const rotateColouredQuadTree = multirec({
 ```
 
 <a href="#ref-quadtrees" class="reversefootnote">↩</a>
+
+---
+
+### appendix: padding a quadtree
+
+This function doubles the size of a quadtree, padding the additional space with '⚪️' cells: It can be repeated to add more and more padding. Its chief use is to determine the number of generations to advance a cellular automaton's pattern.
+
+```javascript
+const is2x2 = (square) => isString(square.ul);
+
+const divideQuadTreeIntoRegions = ({ ul, ur, lr, ll }) =>
+  [ul, ur, lr, ll];
+
+const blank4x4 = quadtree('⚪️', '⚪️', '⚪️', '⚪️');
+
+const blankCopy = memoizedMultirec({
+    indivisible: is2x2,
+    value: () => blank4x4,
+    divide: divideQuadTreeIntoRegions,
+    combine: regionsToQuadTree
+  });
+
+const double = (sqre) => {
+  const padding = blankCopy(sqre.ul);
+
+  const ul = quadtree(padding, padding, sqre.ul, padding);
+  const ur = quadtree(padding, padding, padding, sqre.ur);
+  const lr = quadtree(sqre.lr, padding, padding, padding);
+  const ll = quadtree(padding, sqre.ll, padding, padding);
+
+  return quadtree(ul, ur, lr, ll);
+}
+```
 
 ---
 
