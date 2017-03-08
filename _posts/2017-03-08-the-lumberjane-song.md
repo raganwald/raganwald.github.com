@@ -29,18 +29,18 @@ And play roller derby
 > She can't stand wearing high heels  
 > And plays roller derby...?  
 
-(The nerds begin to look uncomfortable, but brightens up as they go into the chorus.)  
+*(The nerds begin to look uncomfortable, but brighten up as they go into the chorus.)*
 
 > She's a lumberjane and she's OK  
 > She sleeps all night and codes all day  
 
 I write clean code, don't give a damn  
 What reddit thinks is right  
-Im taking back, my human rights  
+I'm taking back, my human rights  
 Just like my dear mama  
 
 NERD CHOIR  
 She writes clean code, doesn't give a damn  
 What reddit thinks is right???  
 
-(The nerd choir mumbles angrily, and the song breaks down. The signer skates off, whistling cheerfully.)
+*(The nerd choir mumbles angrily, and the song breaks down. The singer skates off, whistling cheerfully.)*
