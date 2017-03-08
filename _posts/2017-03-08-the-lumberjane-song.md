@@ -39,8 +39,7 @@ What reddit thinks is right
 I'm taking back, my human rights  
 Just like my dear mama  
 
-NERD CHOIR  
-She writes clean code, doesn't give a damn  
-What reddit thinks is right???  
+> She writes clean code, doesn't give a damn  
+> What reddit thinks is right???  
 
 *(The nerd choir mumbles angrily, and the song breaks down. The singer skates off, whistling cheerfully.)*
