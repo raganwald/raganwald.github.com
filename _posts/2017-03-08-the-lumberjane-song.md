@@ -6,12 +6,12 @@ NERD CHOIR
 > She's a lumberjane and she's OK  
 > She sleeps all night and codes all day  
 
-I write clean code, I eat my lunch  
+I write clean code, I mentor youth  
 I go to the lavatory  
 On Wednesdays I race bicycles  
 Mine's espresso, if you please  
 
-> She writes clean code, eats her lunch  
+> She writes clean code, mentors youth  
 > She goes to the lavatory  
 > On Wednesdays she races bicycles  
 > Hers is espresso, if you please  
