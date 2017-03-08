@@ -42,4 +42,4 @@ Just like my dear mama
 > She writes clean code, doesn't give a damn  
 > What reddit thinks is right???  
 
-*(The nerd choir mumbles angrily, and the song breaks down. The singer skates off, whistling cheerfully.)*
+*(The nerd choir mumbles angrily, and the song breaks down. The singer skates off, whistling the tune cheerfully.)*
