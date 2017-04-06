@@ -1,5 +1,5 @@
 ---
-title: "Turing Machines (unfinished)"
+title: "Turing Machines and Tooling (unfinished)"
 layout: default
 tags: [allonge]
 ---
@@ -9,6 +9,8 @@ tags: [allonge]
 *Note well: This is an unfinished work-in-progress.*
 
 ---
+
+# Turing Machines and Tooling
 
 Much is made of "functional" programming in JavaScript. People get very excited talking about how to manage, minimize, or even eliminate mutation and state. But what if, instead of trying to avoid state and mutation, we _embrace_ it? What if we "turn mutation up to eleven?"
 
