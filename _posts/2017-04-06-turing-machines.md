@@ -34,6 +34,8 @@ Moving along this tape is the a-machine (or equivalently, moving the tape throug
 
 Turing machines have a finite and predetermined set of states that they can be in. One state is marked as the *start* state, and when a Turing machine begins to operate it begins in that state, and begins positioned over the first cell of the tape. While operating, a Turing machine always has a current state.
 
+[![An abstract Turing machine](/assets/images/tooling/Turing_machine_1.jpg)](https://en.wikipedia.org/wiki/Turing_machine_gallery)
+
 When a Turing machine is started, and continuously thereafter, it reads the contents of the cell in its position, and depending on the current state of the machine, it:
 
 - Writes a mark, moves left, or moves right, and;
@@ -46,7 +48,7 @@ The machine continues to operate until one of two things happens:
 1. It moves off the left edge of the tape, or;
 2. There is no defined behaviour for its current state and the symbol in the current cell.
 
-AT that point, the machine *halts*.
+If either of these things happens, the machine *halts*.
 
 ### our first turing machine
 
