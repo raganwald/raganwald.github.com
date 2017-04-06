@@ -4,6 +4,12 @@ layout: default
 tags: [allonge, noindex]
 ---
 
+[![monk at work](/assets/images/Scriptorium-monk-at-work.jpg)](https://commons.wikimedia.org/wiki/File:Scriptorium-monk-at-work.jpg)
+
+*Note well: This is an unfinished work-in-progress.*
+
+---
+
 Much is made of "functional" programming in JavaScript. People get very excited talking about how to manage, minimize, or even eliminate mutation and state. But what if, instead of trying to avoid state and mutation, we _embrace_ it? What if we "turn mutation up to eleven?"
 
 We know the rough answer without even trying. We'd need a lot of tooling to manage our programs. Which is interesting in its own right, because we might learn a lot about tools for writing software.
@@ -434,6 +440,8 @@ Now, it's not exactly the *same* program that we originally wrote. Our program h
 That is an interesting result in Computer Science, and we will follow the same reasoning to work with other types of Turing machines. But our focus is on something else, tooling. Did you notice that `flatten` is a tool? It's a *compiler*, and it is no different in principle than something like ClojureScript or Babel. It compiles a program written in an expressive language into one written in a less-expressive language.
 
 And that is very interesting.
+
+*(to be continued)*
 
 ---
 
