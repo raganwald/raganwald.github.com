@@ -410,7 +410,7 @@ const description = [
 flatten({ description, tape: [0] })
   //=>
     {
-      "description": [
+      description: [
         ["start", 0, "*halt-2", 3],
         ["*halt-2", 0, "*halt-1", 3],
         ["*halt-2", 1, "*halt-1", 3],
@@ -422,7 +422,7 @@ flatten({ description, tape: [0] })
         ["*halt-4", 0, "halt", 1],
         ["*halt-4", 1, "halt", 1]
       ],
-      "tape": [0]
+      tape: [0]
     }
 ```
 
