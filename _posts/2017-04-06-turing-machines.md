@@ -179,8 +179,8 @@ All of our machines so far have one "real" state, `start`, and one deliberately 
 
 ```javascript
 const description = [
-  ['zero', 0, 'one', RIGHT],
-  ['zero', 1, 'one', RIGHT],
+  ['start', 0, 'one', RIGHT],
+  ['start', 1, 'one', RIGHT],
   ['one', 0, 'two', RIGHT],
   ['one', 1, 'two', RIGHT],
   ['two', 0, 'halt', PRINT]
@@ -258,8 +258,8 @@ It runs all the programs written for an a-machine:
 
 ```javascript
 const description = [
-  ['zero', 0, 'one', RIGHT],
-  ['zero', 1, 'one', RIGHT],
+  ['start', 0, 'one', RIGHT],
+  ['start', 1, 'one', RIGHT],
   ['one', 0, 'two', RIGHT],
   ['one', 1, 'two', RIGHT],
   ['two', 0, 'halt', PRINT]
@@ -289,8 +289,8 @@ We started with a program for an a-machine that looked like this:
 
 ```javascript
 const description = [
-  ['zero', 0, 'one', RIGHT],
-  ['zero', 1, 'one', RIGHT],
+  ['start', 0, 'one', RIGHT],
+  ['start', 1, 'one', RIGHT],
   ['one', 0, 'two', RIGHT],
   ['one', 1, 'two', RIGHT],
   ['two', 0, 'halt', PRINT]
@@ -439,9 +439,61 @@ Now, it's not exactly the *same* program that we originally wrote. Our program h
 
 ### from computer science to tooling
 
-That is an interesting result in Computer Science, and we will follow the same reasoning to work with other types of Turing machines. But our focus is on something else, tooling. Did you notice that `flatten` is a tool? It's a *compiler*, and it is no different in principle than something like ClojureScript or Babel. It compiles a program written in an expressive language into one written in a less-expressive language.
+That is an interesting result in Computer Science, and we will follow the same reasoning to work with other types of Turing machines. But our focus is on something else, tooling. Did you notice that `flatten` is a tool? It's a *compiler*, and it is no different in principle than something like ClojureScript or Babel. It compiles a program written in a more-expressive language into one written in a less-expressive language.
 
 And that is very interesting.
+
+We earlier defined what we meant by two machines having equivalent power. Let's quickly say what we mean about being "more expressive." There are a few different concepts in play, but one of the most obvious is that for a given computation, the description that contains less [accidental complexity].
+
+[accidental complexity]: https://en.wikipedia.org/wiki/No_Silver_Bullet
+
+So when looking at this description of an a-machine:
+
+```javascript
+const description = [
+  ['start', 0, 'one', RIGHT],
+  ['start', 1, 'one', RIGHT],
+  ['one', 0, 'two', RIGHT],
+  ['one', 1, 'two', RIGHT],
+  ['two', 0, 'halt', PRINT]
+];
+```
+
+We can take the position that the states `start` and `halt` are "essential" complexity, but the states `one` and `two` are artefacts of the solution domain, they're how we implement moving right twice. So they are "accidental" complexity. This description of a sequence-machine:
+
+```javascript
+const description = [
+  ['start', 0, 'halt', RIGHT, RIGHT, PRINT],
+  ['start', 1, 'halt', RIGHT, RIGHT, PRINT]
+];
+```
+
+Appears to eliminate the `one` and `two` states. Naturally, we know that it actually creates at much actual complexity as the original hand-coded description:
+
+```javascript
+[
+  ["start", 0, "*halt-2", 3],
+  ["*halt-2", 0, "*halt-1", 3],
+  ["*halt-2", 1, "*halt-1", 3],
+  ["*halt-1", 0, "halt", 1],
+  ["*halt-1", 1, "halt", 1],
+  ["start", 1, "*halt-5", 3],
+  ["*halt-5", 0, "*halt-4", 3],
+  ["*halt-5", 1, "*halt-4", 3],
+  ["*halt-4", 0, "halt", 1],
+  ["*halt-4", 1, "halt", 1]
+]
+```
+
+But as programmers, we don't appear to see that complexity, so it feels like it has been eliminated.
+
+### comparing compilers to interpreters
+
+We actually have two different implementations of the "sequence-machine." The first one we look at is basically an interpreter that understands and executes instructions with multiple actions. The second one we looked at compiles a sequence-machine description into an a-machine description.
+
+We have analogues for this in the "real world" as well. We have tools like Babel that translate various cutting-edge dialects of JavaScript into a more basic flavour of JavaScript. But we also have browsers like Safari and Chrome gradually incorporating more expressive flavours of JavaScript into their underlying engines.
+
+What are the relative tradeoffs of the two approaches?
 
 *(to be continued)*
 
