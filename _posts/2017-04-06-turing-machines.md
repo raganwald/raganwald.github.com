@@ -194,6 +194,8 @@ First, we designate the a-machine as being the simplest possible type of Turing 
 
 We show how to transform any input for our more expressive machine into input for an a-machine. And we show how to transform the output of our a-machine into the output for our more powerful machine. If we can do both of these things, we can grasp that the two machines have equivalent power. Meaning, that both can compute exactly the same things.
 
+### the sequence-machine
+
 Here is a Turing machine that is undeniably more expressive than an a-machine. Its principle advantage is that it permits any sequence of actions to be associated with a single instruction:
 
 ```javascript
@@ -301,6 +303,8 @@ To demonstrate that a sequence-machine is no more powerful than an a-machine, we
 Here is our demonstration written in JavaScript:
 
 ```javascript
+// prologue: some handy functions
+
 const flatMap = (arr, lambda) => {
   const inLen = arr.length;
   const mapped = new Array(inLen);
@@ -334,6 +338,9 @@ const gensym = (()=> {
 
 const times = n =>
   Array.from({ length: n }, (_, i) => i);
+
+// flatten, transform any description for a sequence-machine into
+// a description for an a-machine
 
 const flatten = ({ description: _description, tape }) => {
   const description = flatMap(_description, ([currentState, currentMark, nextState, ...instructions]) => {
