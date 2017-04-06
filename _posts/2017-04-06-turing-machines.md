@@ -1,7 +1,7 @@
 ---
-title: "Turing Machines"
+title: "Turing Machines (unfinished)"
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 [![monk at work](/assets/images/Scriptorium-monk-at-work.jpg)](https://commons.wikimedia.org/wiki/File:Scriptorium-monk-at-work.jpg)
