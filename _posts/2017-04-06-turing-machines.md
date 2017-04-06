@@ -61,4 +61,114 @@ Turing used tables to represent the definitions for his a-machines. We'll use an
 2. The next state for the machine (it can be the same as the current state).
 3. An action to perform (a mark to write, or instructions to move left, or move right).
 
+Naturally, we'll write it as a function that takes a description and a tape as input, and—if the emulated machine halts—outputs the state of the tape.
+
+```javascript
+const ERASE = 0;
+const PRINT = 1;
+const LEFT = 2;
+const RIGHT = 3;
+
+function aMachine({ description, tape: _tape = [0] }) {
+  const tape = Array.from(_tape);
+
+  let tapeIndex = 0;
+  let currentState = description[0][0];
+
+  while (true) {
+    if (tapeIndex < 0) {
+      // moved off the left edge of the tape
+      return tape;
+    }
+
+    const currentMark = tape[tapeIndex];
+
+    if (![0, 1].includes(currentMark)) {
+      // illegal mark on tape
+      return tape;
+    }
+
+    const rule = description.find(([state, mark]) => state === currentState && mark === currentMark);
+
+    if (rule == null) {
+      // no defined behaviour for this state and mark
+      return tape;
+    }
+
+    const [_, __, nextState, action] = rule;
+
+    if (action === LEFT) {
+      --tapeIndex;
+    } else if (action === RIGHT) {
+      ++tapeIndex;
+      if (tape[tapeIndex] == null) tape[tapeIndex] = 0;
+    } else if ([ERASE, PRINT].includes(action)) {
+      tape[tapeIndex] = action;
+    } else {
+      // illegal action
+      return tape;
+    }
+
+    currentState = nextState;
+  }
+}
+```
+
+Our "a-machine" has a "vocabulary" of `0` and `1`: These are the only marks allowed on the tape. If it encounters another mark, it halts. These are also the only marks it is allowed to put on the tape, via the `ERASE` and `PRINT` actions. It selects as the start state the state of the first instruction.
+
+Any finite number of states are permitted. Here is a program that prints a `1` in the first position of the tape, and then halts:
+
+```javascript
+const description = [
+  ['start', 0, 'halt', PRINT]
+];
+
+aMachine({ description })
+  //=> [1]
+```
+
+It starts in state `start` because it is the first (and only) instruction. It is for our convenience that the state is called "start." The instruction matches a `0`, and the action is to `PRINT` a `1`. So given a blank tape, that's what it does. It then transitions to the `halt` state.
+
+What happens next? Well, it is in the halt state. It is positioned over a `1`. But there is no instruction matching a state of `halt` and a mark of `1` (actually, there is no instruction matching a state of `halt` at all). So it halts.
+
+Given a tape that already has a `1` in the first position, it halts without doing anything, because there is no instruction matching a state of `start` and a `1`. We can add one to our program:
+
+```javascript
+const description = [
+  ['start', 0, 'halt', PRINT],
+  ['start', 1, 'halt', ERASE]
+];
+
+aMachine({ description, tape: [0] })
+  //=> [1]
+
+aMachine({ description, tape: [1] })
+  //=> [0]
+```
+
+We've written a "not" function. Let's write another. Let's say that we have a number on the tape, represented as a string of 1s. So the number zero is an empty tape, the number one would be represented as `[1]`, two as `[1, 1]`, three as `[1, 1, 1]` and so forth.
+
+Here's a program that adds one to a number:
+
+```javascript
+const description = [
+  ['start', 0, 'halt', PRINT],
+  ['start', 1, 'start', RIGHT]
+];
+
+aMachine({ description, tape: [0] })
+  //=> [1]
+
+aMachine({ description, tape: [1] })
+  //=> [1, 1]
+
+aMachine({ description, tape: [1, 1] })
+  //=> [1, 1, 1]
+```
+
+If it encounters a `0`, it prints a mark and halts. If it encounters a `1`, it moves right and remains in the same state. Thus, it moves right over any 1s it finds, until it reaches the end, at which point it writes a `1` and halts.
+---
+
+### notes
+
 
