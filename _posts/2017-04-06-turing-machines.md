@@ -167,6 +167,7 @@ aMachine({ description, tape: [1, 1] })
 ```
 
 If it encounters a `0`, it prints a mark and halts. If it encounters a `1`, it moves right and remains in the same state. Thus, it moves right over any 1s it finds, until it reaches the end, at which point it writes a `1` and halts.
+
 ---
 
 ### notes
