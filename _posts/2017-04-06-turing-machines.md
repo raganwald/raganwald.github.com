@@ -76,11 +76,6 @@ function aMachine({ description, tape: _tape = [0] }) {
   let currentState = description[0][0];
 
   while (true) {
-    if (tapeIndex < 0) {
-      // moved off the left edge of the tape
-      return tape;
-    }
-
     const currentMark = tape[tapeIndex];
 
     if (![0, 1].includes(currentMark)) {
@@ -99,6 +94,10 @@ function aMachine({ description, tape: _tape = [0] }) {
 
     if (action === LEFT) {
       --tapeIndex;
+      if (tapeIndex < 0) {
+        // moved off the left edge of the tape
+        return tape;
+      }
     } else if (action === RIGHT) {
       ++tapeIndex;
       if (tape[tapeIndex] == null) tape[tapeIndex] = 0;
@@ -167,6 +166,267 @@ aMachine({ description, tape: [1, 1] })
 ```
 
 If it encounters a `0`, it prints a mark and halts. If it encounters a `1`, it moves right and remains in the same state. Thus, it moves right over any 1s it finds, until it reaches the end, at which point it writes a `1` and halts.
+
+All of our machines so far have one "real" state, `start`, and one deliberately "undefined" state, `halt`. We can write programs with more than one state. This one prints a `1` in the third position on the tape:
+
+```javascript
+const description = [
+  ['zero', 0, 'one', RIGHT],
+  ['zero', 1, 'one', RIGHT],
+  ['one', 0, 'two', RIGHT],
+  ['one', 1, 'two', RIGHT],
+  ['two', 0, 'halt', PRINT]
+];
+
+aMachine({ description })
+  //=> [0, 0, 1]
+```
+
+It has three  different states (plus "halt").
+
+### expressiveness and power
+
+Our "a-machine" is very simple. It does allow for as many states as we like, but only two symbols. Each instruction can only print, erase, or move. Despite its simplicity, Alan Turing proved that anything that can be computed, can be computed by an a-machine. This is not an essay about computer science, so we won't concern ourselves with the formal proof.
+
+Instead, we will follow the path of *demonstrating* why an a-machine is much more powerful than it may appear. Our method will be this:
+
+First, we designate the a-machine as being the simplest possible type of Turing machine. Meaning, it has the least possible "expressiveness" of descriptions. Next, we think of a Turing machine that is more expressive than an a-machine. How do we demonstrate that despite being more expressive, the new machine is no more powerful than an a-machine?
+
+We show how to transform any input for our more expressive machine into input for an a-machine. And we show how to transform the output of our a-machine into the output for our more powerful machine. If we can do both of these things, we can grasp that the two machines have equivalent power. Meaning, that both can compute exactly the same things.
+
+Here is a Turing machine that is undeniably more expressive than an a-machine. Its principle advantage is that it permits any sequence of actions to be associated with a single instruction:
+
+```javascript
+function sequenceMachine({ description, tape: _tape = [0] }) {
+  const tape = Array.from(_tape);
+
+  let tapeIndex = 0;
+  let currentState = description[0][0];
+
+  while (true) {
+
+    const currentMark = tape[tapeIndex];
+
+    if (![0, 1].includes(currentMark)) {
+      // illegal mark on tape
+      return tape;
+    }
+
+    const rule = description.find(([state, mark]) => state === currentState && mark === currentMark);
+
+    if (rule == null) {
+      // no defined behaviour for this state and mark
+      return tape;
+    }
+
+    const [_, __, nextState, ...actions] = rule;
+
+    for (const action of actions) {
+      if (action === LEFT) {
+        --tapeIndex;
+        if (tapeIndex < 0) {
+          // moved off the left edge of the tape
+          return tape;
+        }
+      } else if (action === RIGHT) {
+        ++tapeIndex;
+        if (tape[tapeIndex] == null) tape[tapeIndex] = 0;
+      } else if ([ERASE, PRINT].includes(action)) {
+        tape[tapeIndex] = action;
+      } else {
+        // illegal action
+        return tape;
+      }
+    }
+
+    currentState = nextState;
+  }
+}
+```
+
+It runs all the programs written for an a-machine:
+
+```javascript
+const description = [
+  ['zero', 0, 'one', RIGHT],
+  ['zero', 1, 'one', RIGHT],
+  ['one', 0, 'two', RIGHT],
+  ['one', 1, 'two', RIGHT],
+  ['two', 0, 'halt', PRINT]
+];
+
+sequenceMachine({ description })
+  //=> [0, 0, 1]
+```
+
+But it can also run a new kind of program that an a-machine cannot run:
+
+```javascript
+const description = [
+  ['start', 0, 'halt', RIGHT, RIGHT, PRINT],
+  ['start', 1, 'halt', RIGHT, RIGHT, PRINT]
+];
+
+sequenceMachine({ description })
+  //=> [0, 0, 1]
+```
+
+This is a much more convenient way to run programs. Is it more powerful? No.
+
+### demonstrating that a sequence-machine is no more powerful than an a-machine
+
+We started with a program for an a-machine that looked like this:
+
+```javascript
+const description = [
+  ['zero', 0, 'one', RIGHT],
+  ['zero', 1, 'one', RIGHT],
+  ['one', 0, 'two', RIGHT],
+  ['one', 1, 'two', RIGHT],
+  ['two', 0, 'halt', PRINT]
+];
+```
+
+And we transformed it into a program for a sequence-machine that looked like this:
+
+```javascript
+const description = [
+  ['start', 0, 'halt', RIGHT, RIGHT, PRINT],
+  ['start', 1, 'halt', RIGHT, RIGHT, PRINT]
+];
+```
+
+To demonstrate that a sequence-machine is no more powerful than an a-machine, we will do the reverse: We will show that we can transform any description of a sequence-machine into a description of an a-machine that produces the same result.
+
+Here is our demonstration written in JavaScript:
+
+```javascript
+const flatMap = (arr, lambda) => {
+  const inLen = arr.length;
+  const mapped = new Array(inLen);
+
+  let outLen = 0;
+
+  arr.forEach((e, i) => {
+    const these = lambda(e);
+
+    mapped[i] = these;
+    outLen = outLen + these.length;
+  });
+
+  const out = new Array(outLen);
+
+  let outIndex = 0;
+  for (const these of mapped) {
+    for (const e of these) {
+      out[outIndex++] = e;
+    }
+  }
+
+  return out;
+};
+
+const gensym = (()=> {
+  let n = 1;
+
+  return (prefix = 'G') => `${prefix}-${n++}`;
+})();
+
+const times = n =>
+  Array.from({ length: n }, (_, i) => i);
+
+const flatten = ({ description: _description, tape }) => {
+  const description = flatMap(_description, ([currentState, currentMark, nextState, ...instructions]) => {
+    if (instructions.length === 0) {
+      // pathological case
+      return [];
+    } else {
+      const len = instructions.length;
+      const nextStates = [];
+
+      let destinationState = nextState;
+
+      times(len).forEach( () => {
+        nextStates.unshift(destinationState);
+        const match = destinationState.match(/^\*(.*)-\d+$/)
+
+        if (match) {
+          destinationState = gensym(`*${match[1]}`);
+        } else destinationState = gensym(`*${destinationState}`);
+      });
+
+      const currentStates = nextStates.slice(0, len - 1);
+      currentStates.unshift(currentState);
+
+      let possibleMarks = [currentMark];
+
+      const compiled = flatMap(times(len), i => {
+        const instruction = instructions[i];
+
+        const mappedInstructions = possibleMarks.map(
+          mark => [currentStates[i], mark, nextStates[i], instruction]
+        );
+
+        if ([LEFT, RIGHT].includes(instruction)) {
+          possibleMarks = [0, 1];
+        } else if ([ERASE, PRINT].includes(instruction)) {
+          possibleMarks = [instruction.mark];
+        }
+
+        return mappedInstructions;
+      });
+
+      return compiled;
+    }
+  });
+
+  return { description, tape };
+}
+```
+
+We can "flatten" any description for a sequence-machine into a description for an a-machine:
+
+```javascript
+const description = [
+  ['start', 0, 'halt', RIGHT, RIGHT, PRINT],
+  ['start', 1, 'halt', RIGHT, RIGHT, PRINT]
+];
+
+flatten({ description, tape: [0] })
+  //=>
+    {
+      "description": [
+        ["start", 0, "*halt-2", 3],
+        ["*halt-2", 0, "*halt-1", 3],
+        ["*halt-2", 1, "*halt-1", 3],
+        ["*halt-1", 0, "halt", 1],
+        ["*halt-1", 1, "halt", 1],
+        ["start", 1, "*halt-5", 3],
+        ["*halt-5", 0, "*halt-4", 3],
+        ["*halt-5", 1, "*halt-4", 3],
+        ["*halt-4", 0, "halt", 1],
+        ["*halt-4", 1, "halt", 1]
+      ],
+      "tape": [0]
+    }
+```
+
+Although it has a few moving parts, what it does at its simplest is turn any instruction with more than one action into a series of instructions, one per action. To chain them together, it creates "synthetic" states like `*halt-2`. It also tries to make moving robust to account for any marks the machine may encounter.
+
+If we run our flattened description, we see it produces the same output:
+
+```javascript
+aMachine(flatten({ description, tape: [0]}))
+  //=> [0, 0, 1]
+```
+
+Now, it's not exactly the *same* program that we originally wrote. Our program had fewer states, because we optimized for having a single state for each cell we moved over. The `flatten` function is very conservative. But it will produce a description for an a-machine that performs the same computation, so we can convince ourselves informally that anything a sequence-machine can compute, so can an a-machine, because any member of the set of all possible sequence-machine descriptions maps to at least one member of the set of all possible a-machines.
+
+### from computer science to tooling
+
+That is an interesting result in Computer Science, and we will follow the same reasoning to work with other types of Turing machines. But our focus is on something else, tooling. Did you notice that `flatten` is a tool? It's a *compiler*, and it is no different in principle than something like ClojureScript or Babel. It compiles a program written in an expressive language into one written in a less-expressive language.
+
+And that is very interesting.
 
 ---
 
