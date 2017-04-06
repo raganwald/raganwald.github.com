@@ -4,9 +4,9 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-Much is made of "functional" programming in JavaScript. People get very excited talking about how to manage, minimize, or even eleiminate mutation and state. But what if, instead of trying to avoid state and mutation, we _embrace_ it? What if we "turn mutation up to eleven?"
+Much is made of "functional" programming in JavaScript. People get very excited talking about how to manage, minimize, or even eliminate mutation and state. But what if, instead of trying to avoid state and mutation, we _embrace_ it? What if we "turn mutation up to eleven?"
 
-We know the rough answer without even trying. We'd need a lot of tooling to manage our programs. Which is interesting in its own right., because we might learn a lot about tools for writing software.
+We know the rough answer without even trying. We'd need a lot of tooling to manage our programs. Which is interesting in its own right, because we might learn a lot about tools for writing software.
 
 So with that in mind, let's begin at the beginning.
 
@@ -14,15 +14,15 @@ So with that in mind, let's begin at the beginning.
 
 In 1936, Alan Turing invented what we now call the *Turing Machine* in his honour. He called it an "a-machine," or "automatic machine."[^nomen] Turing machines are mathematical models of computation reduced to an almost absurd simplicity. Computer scientists like to work with very simple models of computation, because that allows them to prove important things about computability in general.
 
-[^nomen]: In this essay, we will call his model an "a-machine" when discussing his work in histrical context, but call the machines we build in the present tense, "Turing machines."
+[^nomen]: In this essay, we will call his model an "a-machine" when discussing his work in historical context, but call the machines we build in the present tense, "Turing machines."
 
 Turing had worked with other model of computation. For example, he was facile with combinatorial logic, and discovered what is now called the [Turing Combinator]: `(λx. λy. (y (x x y))) (λx. λy. (y (x x y)))`.
 
 [Turing Combinator]: http://taggedwiki.zubiaga.org/new_content/44e45bff552833cb7460ea1529cf9ea6#Other_fixed_point_combinators
 
-Turing's "a-machine" model of computation differed greatly from combinatorial logic and the other historiclly significant model, the lambda calculus. Where combinatorial logic and the lambda calculus both modelled computation as expressions without side-effects, mutation, or state, his "a-machine" modelled computation as side-effects, mutation, and state without expressions.
+Turing's "a-machine" model of computation differed greatly from combinatorial logic and the other historically significant model, the lambda calculus. Where combinatorial logic and the lambda calculus both modelled computation as expressions without side-effects, mutation, or state, his "a-machine" modelled computation as side-effects, mutation, and state without expressions.
 
-This new model allowed him to provde some very important results about computability, and as we'll see, it inspired John von Neumann's designed for the stored-program computer, the architecture we use to this day.
+This new model allowed him to prove some very important results about computability, and as we'll see, it inspired John von Neumann's designed for the stored-program computer, the architecture we use to this day.
 
 [![Turing Machine Model](/assets/images/tooling/1200px-Turing_Machine_Model_Davey_2012.jpg)](https://commons.wikimedia.org/wiki/File:Turing_Machine_Model_Davey_2012.jpg)
 
@@ -32,14 +32,14 @@ The tape is divided into cells, each of which is either empty/blank, or contains
 
 Moving along this tape is the a-machine (or equivalently, moving the tape through the a-machine). The machine is, at any one time, positioned over exactly one cell. The machine is capable of reading the mark in a cell, writing a mark into a cell, and moving once cell in either direction.
 
-Turing machines have a finite and predetermined set of states that they can be in. One state is marked as the *start* state, and when a Tuuring machine begins to operate it begins in that state, and begins positioned over the first cell of the tape. While operating, a Turing machine always has a current state.
+Turing machines have a finite and predetermined set of states that they can be in. One state is marked as the *start* state, and when a Turing machine begins to operate it begins in that state, and begins positioned over the first cell of the tape. While operating, a Turing machine always has a current state.
 
 When a Turing machine is started, and continuously thereafter, it reads the contents of the cell in its position, and depending on the current state of the machine, it:
 
 - Writes a mark, moves left, or moves right, and;
 - Either changes to a different state, or remains in the same state.
 
-A Turing machine is defined such that given the same mark in the current cell, and the same state, it always performed the same action. Turing machines are *determinalistic*.
+A Turing machine is defined such that given the same mark in the current cell, and the same state, it always performed the same action. Turing machines are *deterministic*.
 
 The machine continues to operate until one of two things happens:
 
@@ -50,7 +50,7 @@ AT that point, the machine *halts*.
 
 ### our first turing machine
 
-Given the definition above, we can write a Turing machine emulator. We will represent the tape as an array. The 0th element will be the sart of the tape. As the machine moves to the right, if it moves past the end of our array, we will append another element. Thus, the tape appears to be infinite (or as large as the implementation of arrays allows). Marks on the tape will be represnted by numbers and strings. By default, `0` will represent an empty cell (although anything will do).
+Given the definition above, we can write a Turing machine emulator. We will represent the tape as an array. The 0th element will be the start of the tape. As the machine moves to the right, if it moves past the end of our array, we will append another element. Thus, the tape appears to be infinite (or as large as the implementation of arrays allows). Marks on the tape will be represented by numbers and strings. By default, `0` will represent an empty cell (although anything will do).
 
 Turing used tables to represent the definitions for his a-machines. We'll use an array of arrays, as the "description" of the Turing machine. Each element of the description will be an array containing:
 
