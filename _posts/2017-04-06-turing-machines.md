@@ -495,6 +495,8 @@ We have analogues for this in the "real world" as well. We have tools like Babel
 
 What are the relative tradeoffs of the two approaches?
 
+The first and often overriding concern is that we don't always control the engine. When deploying JavaScript to a server, we can use any engine we please, including one we write ourselves. But if we want to deploy our code to browsers, we 
+
 *(to be continued)*
 
 ---
