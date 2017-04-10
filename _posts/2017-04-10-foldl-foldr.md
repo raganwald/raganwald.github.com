@@ -177,8 +177,6 @@ This is true in a certain sense, but it's really just an implementation detail. 
 
 In sum, the order of *consuming* values and the order of *applying* a folding function are two separate concepts.
 
-(This essay was inspired by [https://twitter.com/ReinH/status/851196424654082049](https://twitter.com/ReinH/status/851196424654082049))
-
 ---
 
 Pssst! I'm working on a new book. Have a look at [Raganwald's Tooling for Turing Machines](https://leanpub.com/tooling) and let me know if you're interested. Thanks!
