@@ -30,7 +30,7 @@ For example, mapping can be implemented as folding. Here we fold an array of num
 
 ### foldl
 
-`.reduce` is handy, but it's not the whole story. It's a method on arrays, and we might have lots of collections that aren't arrays. We ought to be able to fold any iterable. Here's a method that makes iterables:
+`.reduce` is handy, but it's not the whole story. It's a method on arrays, and we might have lots of collections that aren't arrays. We ought to be able to fold any iterable. Here's a function that makes iterables:
 
 ```javascript
 const range = function * (fromNumber, toNumber) {
