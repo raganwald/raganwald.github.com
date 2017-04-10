@@ -50,8 +50,8 @@ for (const n of range(1, 5)) {
 This can be useful, but it doesn't work with `.reduce`:
 
 ```javascript
-fiveTimes.reduce((acc, n) => acc + n)
-  //=> fiveTimes.reduce is not a function.
+range(1, 5).reduce((acc, n) => acc + n)
+  //=> range(1, 5).reduce is not a function.
 ```
 
 So let's write our own fold. We're going to call it `foldl`:
@@ -175,7 +175,11 @@ This is true in a certain sense, but it's really just an implementation detail. 
 - `foldl` applies its folding function from the left.
 - `foldr` applies its folding function from the right.
 
-(This essay was inspired by https://twitter.com/ReinH/status/851196424654082049)
+(This essay was inspired by [https://twitter.com/ReinH/status/851196424654082049](https://twitter.com/ReinH/status/851196424654082049))
+
+---
+
+Pssst! I'm working on a new book. Have a look at [Raganwald's Tooling for Turing Machines](https://leanpub.com/tooling) and let me know if you're interested. Thanks!
 
 ---
 
