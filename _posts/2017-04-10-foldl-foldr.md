@@ -17,7 +17,9 @@ For example, we can use it to "reduce" an array of numbers to the sum of the num
   //=> 15
 ```
 
-Another way to put it is to say that reduce **folds** the array into a single value.If all you saw was stuff like summing the elements of arrays, you might think that "folding" is about taking a collections of things and turning it into just one of those things. Like turning an array of numbers into a number. But not so! Folding can produce any arbitrary value.
+Another way to put it is to say that reduce **folds** the array into a single value.
+
+If all we saw was stuff like summing the elements of arrays, we might think that "folding" is about taking a collections of things and turning it into just one of those things. Like turning an array of numbers into a number. But not so! Folding can produce any arbitrary value.
 
 For example, mapping can be implemented as folding. Here we fold an array of numbers into an array of the squares of the numbers:
 
