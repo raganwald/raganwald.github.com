@@ -1,5 +1,5 @@
 ---
-title: "foldl and foldr"
+title: "foldl, foldr, and application order"
 layout: default
 tags: [allonge]
 ---
@@ -174,6 +174,8 @@ This is true in a certain sense, but it's really just an implementation detail. 
 - Both `foldl` and `foldr` consume from the left. And thus, they can be written to consume iterables.
 - `foldl` applies its folding function from the left.
 - `foldr` applies its folding function from the right.
+
+In sum, the order of *consuming* values and the order of *applying* a folding function are two separate concepts.
 
 (This essay was inspired by [https://twitter.com/ReinH/status/851196424654082049](https://twitter.com/ReinH/status/851196424654082049))
 
