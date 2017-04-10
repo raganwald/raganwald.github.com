@@ -181,10 +181,8 @@ In sum, the order of *consuming* values and the order of *applying* a folding fu
 
 ---
 
-Pssst! I'm working on a new book. Have a look at [Raganwald's Tooling for Turing Machines](https://leanpub.com/tooling) and let me know if you're interested. Thanks!
-
----
-
 ### notes
+
+I'm working on a new book. Have a look at [Raganwald's Tooling for Turing Machines](https://leanpub.com/tooling) and let me know if you're interested. Thanks!
 
 
