@@ -88,7 +88,7 @@ Note that it _consumes_ the elements from the left of the collection. It has to,
 
 [^caveat]: Like `.reduce`, `foldl` is usually written to accomodate an optional seed. Feel free to rewrite `foldl` to allow for calls like `foldl(array, (acc, n) => acc + n, 0)`.
 
-But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it applies its folding function from the left. To see what we mean, let's do a fold where the order of application is very clear.
+But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it associates its folding function from the left. To see what we mean, let's do a fold where the order of application is very clear.
 
 Let's start with the idea of *composing* two functions, each of which takes one argument:
 
@@ -128,15 +128,17 @@ compose2(compose2(half, increment), square)(3)
   //=> 5
 ```
 
+So we can see what we mean by saying it is "left-associative." Given elements `a`, `b`, `c`, and `d`, `foldl` applies the folding function like this: `(((a b) c) d)`.
+
 ### foldr
 
-We composed `half` with `increment`, then composed the result with `square`. Works like a charm. But that being said, it can be difficult to follow. So sometimes, we want to apply the operations in order from left to right. This is called `pipeline` in [JavaScript Allongé][ja].
+We composed `half` with `increment`, then composed the result with `square`. Works like a charm. But that being said, it can be difficult to follow. So sometimes, we want to apply the functions in order from left to right. This is called `pipeline` in [JavaScript Allongé][ja].
 
 [ja]: https://leanpub.com/javascriptallongesix
 
-To make `pipeline` our of `compose2`, we want to *apply* the folding function from right to left. That is to say, given `pipeline(half, increment, square)(4)`, we want to compose `square` with `increment`, and then compose the result with `half`. There are a few ways to write `pipeline` without using a fold, but since we're talking about folding, we'll make `pipeline` with a fold.
+To make `pipeline` our of `compose2`, we want to associate the folding function from right to left. That is to say, given `pipeline(half, increment, square)(4)`, we want to compose `square` with `increment`, and then compose the result with `half`, like this: `(half (increment square))`. There are a few ways to write `pipeline` without using a fold, but since we're talking about folding, we'll make `pipeline` with a fold.
 
-`foldl` won't do, because it applies the folding function from the left. What we want is the opposite, `foldr`. Here's a recursive version:[^foldrlimit]
+`foldl` won't do, because it associates the folding function from the left. What we want is the opposite, `foldr`. Here's a recursive version:[^foldrlimit]
 
 [^foldrlimit]: This particular implementation does not work if the fold function ever deliberately returns `undefined`. An implementation that gracefully accommodates this scenario is left as an exercise for the reader.
 
@@ -158,7 +160,7 @@ function foldr (iterable, foldFunction) {
 }
 ```
 
-Although it consumes its elements from the left, thanks to the recursive call, it applies them from the right. Let's check its behaviour:
+Although it consumes its elements from the left, thanks to the recursive call, it associates them from the right. Let's check its behaviour:
 
 ```javascript
 const pipeline = (...fns) => foldr(fns, compose2);
@@ -167,19 +169,19 @@ pipeline(half, increment, square)(4)
   //=> 9
 ```
 
-We are indeed taking the half of four, incrementing that, and squaring the result.
+We are indeed taking the half of four, incrementing that, and squaring the result. So while `foldl` is left associative, `(((a b) c) d)`, `foldr` is right-associative, `(a (b (c d)))`.
 
 ### the bottom line
 
-If we look at the implementation of `foldr` and think about stacks and recursion and so on, we can come to the conclusion that while `foldr` does appear to apply the folding function from the right, `foldr` is actually applying the folding function from the left, it's just that we've used recursion and the call stack to reverse the order of elements.
+If we look at the implementation of `foldr` and think about stacks and recursion and so on, we can come to the conclusion that while `foldr` does associate the folding function from the right, it actually applies the folding function from the left, it's just that we've used recursion and the call stack to reverse the order of elements.
 
 This is true in a certain sense, but it's really just an implementation detail. The point is to understand the semantics of `foldl` and `foldr`, and the semantics are:
 
 - Both `foldl` and `foldr` consume from the left. And thus, they can be written to consume iterables.
-- `foldl` applies its folding function from the left.
-- `foldr` applies its folding function from the right.
+- `foldl` associates its folding function from the left.
+- `foldr` associates its folding function from the right.
 
-In sum, the order of *consuming* values and the order of *applying* a folding function are two separate concepts.
+In sum, the order of *consuming* values and the order of *associating* a folding function are two separate concepts.
 
 ---
 
