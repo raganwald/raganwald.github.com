@@ -82,7 +82,9 @@ console.log(foldl([1, 2, 3, 4, 5], (acc, n) => acc + n))
   //=> 15
 ```
 
-Note that it _consumes_ the elements from the left of the collection. It has to, because iterables can only be consumed from the left. This is clear from `range`, because at the moment we write `range(1, 5)`, none of the elements exist yet. It is only by taking them one by one that the next one is calculated.
+Note that it _consumes_ the elements from the left of the collection. It has to, because iterables can only be consumed from the left. This is clear from `range`, because at the moment we write `range(1, 5)`, none of the elements exist yet. It is only by taking them one by one that the next one is calculated.[^caveat]
+
+[^caveat]: Caveat: Like `.reduce`, `foldl` is usually written to accomodate an optional seed. Feel free to rewrite `foldl` to allow for calls like `foldl(array, (acc, n) => acc + n, 0)`.
 
 But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it applies its folding function from the left. To see what we mean, let's do a fold where the order of application is very clear.
 
