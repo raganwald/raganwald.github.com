@@ -4,7 +4,9 @@ layout: default
 tags: [allonge]
 ---
 
-JavaScript has a method on arrays called [reduce]. It's used for "reducing" a collection to a single element of some kind.
+[![Star](/assets/images/star.jpg)](https://www.flickr.com/photos/ambs/2993482908)
+
+JavaScript has a method on arrays called [reduce]. It's used for "reducing" a collection to a value of some kind.
 
 [reduce]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
 
@@ -15,13 +17,7 @@ For example, we can use it to "reduce" an array of numbers to the sum of the num
   //=> 15
 ```
 
-Another way to put it is to say that reduce "folds" the array into a single value:
-
-> In functional programming, `fold` (also termed `reduce`, `accumulate`, `aggregate`, `compress`, or `inject`) refers to a family of higher-order functions that analyze a recursive data structure and through use of a given combining operation, recombine the results of recursively processing its constituent parts, building up a return value.
->
-> Typically, a fold is presented with a combining function, a top node of a data structure, and possibly some default values to be used under certain conditions. The fold then proceeds to combine elements of the data structure's hierarchy, using the function in a systematic way.
-
-If all you saw was stuff like summing the elements of arrays, you might think that "folding" is about taking a collections of things and turning it into just one of those things. Like turning an array of numbers into a number. But not so! Folding can produce any arbitrary value.
+Another way to put it is to say that reduce **folds** the array into a single value.If all you saw was stuff like summing the elements of arrays, you might think that "folding" is about taking a collections of things and turning it into just one of those things. Like turning an array of numbers into a number. But not so! Folding can produce any arbitrary value.
 
 For example, mapping can be implemented as folding. Here we fold an array of numbers into an array of the squares of the numbers:
 
@@ -29,8 +25,6 @@ For example, mapping can be implemented as folding. Here we fold an array of num
 [1, 2, 3, 4, 5].reduce((acc, n) => acc.concat([n*n]), [])
   //=> [1, 4, 9, 16, 25]
 ```
-
-[![Star](/assets/images/star.jpg)](https://www.flickr.com/photos/ambs/2993482908)
 
 ### foldl
 
