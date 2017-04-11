@@ -86,7 +86,7 @@ console.log(foldl([1, 2, 3, 4, 5], (acc, n) => acc + n))
 
 Note that it _consumes_ the elements from the left of the collection. It has to, because iterables can only be consumed from the left. This is clear from `range`, because at the moment we write `range(1, 5)`, none of the elements exist yet. It is only by taking them one by one that the next one is calculated.[^caveat]
 
-[^caveat]: Like `.reduce`, `foldl` is usually written to accomodate an optional seed. Feel free to rewrite `foldl` to allow for calls like `foldl(array, (acc, n) => acc + n, 0)`.
+[^caveat]: Like `.reduce`, `foldl` is usually written to accommodate an optional seed. Feel free to rewrite `foldl` to allow for calls like `foldl(array, (acc, n) => acc + n, 0)`.
 
 But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it associates its folding function from the left. To see what we mean, let's do a fold where the order of application is very clear.
 
@@ -118,7 +118,7 @@ What about composing more than two functions? Before we write ourselves a "varia
 
 Can we make `compose` out of `compose2`? Yes. If we want `half(increment(square(3)))`, we can use `compose2(compose2(half, increment), square)(3)`. And this generalizes! If we have four functions, `a`, `b`, `c`, and `d`, we can implement `compose(a, b, c, d)` with `compose2(compose2(compose2(a, b), c), d)`.
 
-Can we build a function by applying a function to other functions? Naturally, that's one of JavaScript's Good Parts™. And we know how to build a value by repeatly applying a function to a colletcion of values, we use `foldl`:
+Can we build a function by applying a function to other functions? Naturally, that's one of JavaScript's Good Parts™. And we know how to build a value by repeatedly applying a function to a collection of values, we use `foldl`:
 
 ```javascript
 const compose = (...fns) => foldl(fns, compose2);
@@ -182,7 +182,7 @@ This is true in a certain sense, but it's really just an implementation detail. 
 
 In sum, the order of *consuming* values and the order of *associating* a folding function are two separate concepts.
 
-And our takeaway about `reduce`? It's a handy way to `foldl` arrays, but it's just for arrays and it's just for when left-association is all we need. But when we want more, `foldl` annd `foldr` are just a few lines of code. We can write them ourselves, or, if they are in a library, they're easy to understand.
+And our takeaway about `reduce`? It's a handy way to `foldl` arrays, but it's just for arrays and it's just for when left-association is all we need. But when we want more, `foldl` and `foldr` are just a few lines of code. We can write them ourselves, or, if they are in a library, they're easy to understand.
 
 (discuss on [/r/javascript](https://www.reddit.com/r/javascript/comments/64qv2a/a_quick_look_at_reduce_foldl_foldr_and/))
 
