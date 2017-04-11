@@ -170,6 +170,19 @@ pipeline(half, increment, square)(4)
 
 We are indeed taking the half of four, incrementing that, and squaring the result. So while `foldl` is left associative, `(((a b) c) d)`, `foldr` is right-associative, `(a (b (c d)))`. And if we write `pipeline(a, b, c, d)`, we will get `compose2(a, compose2(b, compose2(c, d)))`.
 
+### reduceRight
+
+Right association is handy enough that JavaScript has something like it built in: `.reduceRight`. We can write `pipeline` with `.reduceRigt`, because `fns` is an array:
+
+```javascript
+const pipeline = (...fns) => fns.reduceRight(compose2);
+
+pipeline(half, increment, square)(4)
+  //=> 9
+```
+
+`.reduceRight` is a method on arrays, and thus while it's incredibly useful when we have an array to work with, it can't be used on any arbitrary iterable. And while it makes no difference to writing functions like `pipeline`, it's still instructive to realize that it differs from `foldr` in that it achieves right-association by consuming its elements from the right, unlike `foldr`, that consumes its elements from the left.
+
 ### the bottom line
 
 If we look at the implementation of `foldr` and think about stacks and recursion and so on, we can come to the conclusion that while `foldr` does associate the folding function from the right, it actually applies the folding function from the left, it's just that we've used recursion and the call stack to reverse the order of elements.
@@ -182,7 +195,7 @@ This is true in a certain sense, but it's really just an implementation detail. 
 
 In sum, the order of *consuming* values and the order of *associating* a folding function are two separate concepts.
 
-And our takeaway about `reduce`? It's a handy way to `foldl` arrays, but it's just for arrays and it's just for when left-association is all we need. But when we want more, `foldl` and `foldr` are just a few lines of code. We can write them ourselves, or, if they are in a library, they're easy to understand.
+And our takeaway about `reduce` and `reduceRight`? They're handy ways to fold arrays, but just arrays. When we want more, `foldl` and `foldr` are just a few lines of code. We can write them ourselves, or, if they are in a library, they're easy to understand.
 
 (discuss on [/r/javascript](https://www.reddit.com/r/javascript/comments/64qv2a/a_quick_look_at_reduce_foldl_foldr_and/))
 
