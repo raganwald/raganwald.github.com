@@ -26,7 +26,16 @@ For example, mapping can be implemented as folding. Here we fold an array of num
 ```javascript
 [1, 2, 3, 4, 5].reduce((acc, n) => acc.concat([n*n]), [])
   //=> [1, 4, 9, 16, 25]
+```:
+
+And if you can map an array with a fold, you can also filter an array with a fold:
+
+```javascript
+[1, 2, 3, 4, 5].reduce((acc, n) => n % 2 === 0 ? acc.concat([n]) : acc, [])
+  //=> [2, 4]
 ```
+
+Folding is a very fundamental kind of iteration over a collection. It can be used in many other ways, but let's move along and talk about what kinds of collections we might want to fold.
 
 ### foldl
 
