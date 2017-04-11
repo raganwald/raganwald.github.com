@@ -88,7 +88,7 @@ Note that it _consumes_ the elements from the left of the collection. It has to,
 
 [^caveat]: Like `.reduce`, `foldl` is usually written to accommodate an optional seed. Feel free to rewrite `foldl` to allow for calls like `foldl(array, (acc, n) => acc + n, 0)`.
 
-But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it associates its folding function from the left. To see what we mean, let's do a fold where the order of application is very clear.
+But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it associates its folding function from the left. To see what we mean, let's do a fold where the order of association is very clear.
 
 ### left-association
 
@@ -127,7 +127,7 @@ compose(half, increment, square)(3)
   //=> 5
 ```
 
-So we can see what we mean by saying it is "left-associative." Given elements `a`, `b`, `c`, and `d`, `foldl` applies the folding function like this: `(((a b) c) d)`. In the case of `compose`, it turns `compose(a, b, c, d)` into `compose2(compose2(compose2(a, b), c), d)`.
+So we can see what we mean by saying it is "left-associative." Given elements `a`, `b`, `c`, and `d`, `foldl` associates the folding function like this: `(((a b) c) d)`. In the case of `compose`, it turns `compose(a, b, c, d)` into `compose2(compose2(compose2(a, b), c), d)`.
 
 ### foldr and right-association
 
