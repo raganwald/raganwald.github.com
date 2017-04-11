@@ -172,7 +172,7 @@ We are indeed taking the half of four, incrementing that, and squaring the resul
 
 ### reduceRight
 
-Right association is handy enough that JavaScript has something like it built in: `.reduceRight`. We can write `pipeline` with `.reduceRigt`, because `fns` is an array:
+Right association is handy enough that JavaScript has something like it built in: `.reduceRight`. We can write `pipeline` with `.reduceRight`, because `fns` is an array:
 
 ```javascript
 const pipeline = (...fns) => fns.reduceRight(compose2);
