@@ -89,7 +89,7 @@ foldl(range(1, 5), (acc, n) => acc + n)
 This works with any iterable, including arrays:
 
 ```javascript
-console.log(foldl([1, 2, 3, 4, 5], (acc, n) => acc + n))
+foldl([1, 2, 3, 4, 5], (acc, n) => acc + n)
   //=> 15
 ```
 
