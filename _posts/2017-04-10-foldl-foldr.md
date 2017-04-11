@@ -1,5 +1,5 @@
 ---
-title: "foldl, foldr, and associative order"
+title: "A quick look at reduce, foldl, foldr, and associative order"
 layout: default
 tags: [allonge]
 ---
