@@ -183,6 +183,8 @@ This is true in a certain sense, but it's really just an implementation detail. 
 
 In sum, the order of *consuming* values and the order of *associating* a folding function are two separate concepts.
 
+(discuss on [/r/javascript](https://www.reddit.com/r/javascript/comments/64qv2a/a_quick_look_at_reduce_foldl_foldr_and/))
+
 ---
 
 ### notes
