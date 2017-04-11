@@ -90,29 +90,35 @@ Note that it _consumes_ the elements from the left of the collection. It has to,
 
 But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it associates its folding function from the left. To see what we mean, let's do a fold where the order of application is very clear.
 
+### left-association
+
 Let's start with the idea of *composing* two functions, each of which takes one argument:
 
 ```javascript
 const compose2 = (x, y) => z => x(y(z));
 ```
 
-We can see that the order in which we compose two functions matters:
+Here are some examples of `compose2` in use:
 
 ```javascript
+const half = x => x / 2;
 const increment = x => x + 1;
 const square = x => x * x;
-const half = x => x / 2;
-
-compose2(increment, square)(3)
-  //=> 10
 
 compose2(half, increment)(3)
   //=> 2
+
+compose2(increment, square)(3)
+  //=> 10
 ```
 
-`compose2(increment, square)` is the "increment" of the "square" of a number. In our case, that's `(3 * 3) + 1`. Whereas `compose2(half, increment)` is the "half" of the "increment" of a number. In our case, that's `(3 + 1) / 2`.
+`compose2(half, increment)` is the "half" of the "increment" of a number. In our case, that's `(3 + 1) / 2`. Whereas `compose2(increment, square)` is the "increment" of the "square" of a number. In our case, that's `(3 * 3) + 1`.
 
-If we want to compose more than two functions, we can use `foldl` for that:
+What about composing more than two functions? Before we write ourselves a "variadic" `compose` function, let's be sure we agree what we mean. `compose2(half, increment)(3)` means `half(increment(3))`, so `compose(half, increment, square)(3)` will mean `half(increment(square(3)))`.
+
+Can we make `compose` out of `compose2`? Yes. If we want `half(increment(square(3)))`, we can use `compose2(compose2(half, increment), square)(3)`. And this generalizes! If we have four functions, `a`, `b`, `c`, and `d`, we can implement `compose(a, b, c, d)` with `compose2(compose2(compose2(a, b), c), d)`.
+
+Can we build a function by applying a function to other functions? Naturally, that's one of JavaScript's Good Parts™. And we know how to build a value by repeatly applying a function to a colletcion of values, we use `foldl`:
 
 ```javascript
 const compose = (...fns) => foldl(fns, compose2);
@@ -121,22 +127,15 @@ compose(half, increment, square)(3)
   //=> 5
 ```
 
-We've taken the half of the increment of the square of three. This is how `compose` works. It's equivalent to writing `compose2(compose2(half, increment), square)`:
+So we can see what we mean by saying it is "left-associative." Given elements `a`, `b`, `c`, and `d`, `foldl` applies the folding function like this: `(((a b) c) d)`. In the case of `compose`, it turns `compose(a, b, c, d)` into `compose2(compose2(compose2(a, b), c), d)`.
 
-```javascript
-compose2(compose2(half, increment), square)(3)
-  //=> 5
-```
+### foldr and right-association
 
-So we can see what we mean by saying it is "left-associative." Given elements `a`, `b`, `c`, and `d`, `foldl` applies the folding function like this: `(((a b) c) d)`.
-
-### foldr
-
-We composed `half` with `increment`, then composed the result with `square`. Works like a charm. But that being said, it can be difficult to follow. So sometimes, we want to apply the functions in order from left to right. This is called `pipeline` in [JavaScript Allongé][ja].
+We composed `half` with `increment`, then composed the result with `square`. Works like a charm. But that being said, it can be difficult to follow `compose` in programs. So sometimes, we want to apply the functions in order from left to right. This is called `pipeline` in [JavaScript Allongé][ja].
 
 [ja]: https://leanpub.com/javascriptallongesix
 
-To make `pipeline` our of `compose2`, we want to associate the folding function from right to left. That is to say, given `pipeline(half, increment, square)(4)`, we want to compose `square` with `increment`, and then compose the result with `half`, like this: `(half (increment square))`. There are a few ways to write `pipeline` without using a fold, but since we're talking about folding, we'll make `pipeline` with a fold.
+To make `pipeline` our of `compose2`, we want to associate the folding function from right to left. That is to say, given `pipeline(half, increment, square)(4)`, we want to `compose2` `square` with `increment`, and then compose the result with `half`, like this: `compose2(half compose2(increment square))`. There are a few ways to write `pipeline` without using a fold, but since we're talking about folding, we'll make `pipeline` with a fold.
 
 `foldl` won't do, because it associates the folding function from the left. What we want is the opposite, `foldr`. Here's a recursive version:[^foldrlimit]
 
@@ -169,7 +168,7 @@ pipeline(half, increment, square)(4)
   //=> 9
 ```
 
-We are indeed taking the half of four, incrementing that, and squaring the result. So while `foldl` is left associative, `(((a b) c) d)`, `foldr` is right-associative, `(a (b (c d)))`.
+We are indeed taking the half of four, incrementing that, and squaring the result. So while `foldl` is left associative, `(((a b) c) d)`, `foldr` is right-associative, `(a (b (c d)))`. And if we write `pipeline(a, b, c, d)`, we will get `compose2(a, compose2(b, compose2(c, d)))`.
 
 ### the bottom line
 
@@ -182,6 +181,8 @@ This is true in a certain sense, but it's really just an implementation detail. 
 - `foldr` associates its folding function from the right.
 
 In sum, the order of *consuming* values and the order of *associating* a folding function are two separate concepts.
+
+And our takeaway about `reduce`? It's a handy way to `foldl` arrays, but it's just for arrays and it's just for when left-association is all we need. But when we want more, `foldl` annd `foldr` are just a few lines of code. We can write them ourselves, or, if they are in a library, they're easy to understand.
 
 (discuss on [/r/javascript](https://www.reddit.com/r/javascript/comments/64qv2a/a_quick_look_at_reduce_foldl_foldr_and/))
 
