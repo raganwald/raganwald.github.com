@@ -1,5 +1,5 @@
 ---
-title: "foldl, foldr, and application order"
+title: "foldl, foldr, and associative order"
 layout: default
 tags: [allonge]
 ---
