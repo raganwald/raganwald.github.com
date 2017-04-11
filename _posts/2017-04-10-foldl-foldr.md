@@ -110,7 +110,7 @@ compose2(half, increment)(3)
   //=> 2
 ```
 
-`compose2(increment, square)` is the "increment" of the "square" of a number. In our case, that's `(3 * 3) + 1`. Whereas `compose2(halve, increment)` is the "half" of the "increment" of a number. In our case, that's `(3 + 1) / 2`.
+`compose2(increment, square)` is the "increment" of the "square" of a number. In our case, that's `(3 * 3) + 1`. Whereas `compose2(half, increment)` is the "half" of the "increment" of a number. In our case, that's `(3 + 1) / 2`.
 
 If we want to compose more than two functions, we can use `foldl` for that:
 
