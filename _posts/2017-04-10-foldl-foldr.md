@@ -26,9 +26,9 @@ For example, mapping can be implemented as folding. Here we fold an array of num
 ```javascript
 [1, 2, 3, 4, 5].reduce((acc, n) => acc.concat([n*n]), [])
   //=> [1, 4, 9, 16, 25]
-```:
+```
 
-And if you can map an array with a fold, you can also filter an array with a fold:
+And if we can map an array with a fold, we can also filter an array with a fold:
 
 ```javascript
 [1, 2, 3, 4, 5].reduce((acc, n) => n % 2 === 0 ? acc.concat([n]) : acc, [])
