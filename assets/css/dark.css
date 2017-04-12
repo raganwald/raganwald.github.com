@@ -1,4 +1,11 @@
 @font-face {
+  font-family: 'TheoVanDoesburg';
+  src: url("../assets/fonts/TheoVanDoesburg.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'OpenSansLight';
   src: url("../assets/fonts/OpenSans-Light-webfont.eot");
   src: url("../assets/fonts/OpenSans-Light-webfont.eot?#iefix") format("embedded-opentype"), url("../assets/fonts/OpenSans-Light-webfont.woff") format("woff"), url("../assets/fonts/OpenSans-Light-webfont.ttf") format("truetype"), url("../assets/fonts/OpenSans-Light-webfont.svg#OpenSansLight") format("svg");
@@ -390,7 +397,7 @@ fieldset {
 
 /*
  * 1. Corrects color not being inherited in IE6/7/8/9
- * 2. Corrects text not wrapping in FF3 
+ * 2. Corrects text not wrapping in FF3
  * 3. Corrects alignment displayed oddly in IE6/7
  */
 legend {
@@ -707,6 +714,9 @@ dt {
   -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
   -o-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+}
+#header h2 {
+  font-family: 'TheoVanDoesburg';
 }
 #header nav {
   max-width: 650px;
