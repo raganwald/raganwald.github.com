@@ -94,6 +94,7 @@ header h2 {
 
 #header h3 a {
   font-family: 'TheoVanDoesburg';
+  letter-spacing: 3px;
   font-weight: normal;
   font-style: normal;
 }
