@@ -4,7 +4,7 @@
 */
 @font-face {
   font-family: 'TheoVanDoesburg';
-  src: url("../assets/fonts/TheoVanDoesburg.ttf");
+  src: url("../assets/fonts/TheoVanDoesburg.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
