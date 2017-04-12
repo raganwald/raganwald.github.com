@@ -92,6 +92,10 @@ header h2 {
   line-height: 1.3;
 }
 
+#header h3 {
+  padding-left: 3px;
+}
+
 #header h3 a {
   font-family: 'TheoVanDoesburg';
   letter-spacing: 3px;
