@@ -52,11 +52,13 @@ We now have nested arrays. What do they represent? A binary tree:
        +
 ```
 
-The leaves of the tree are the operands, and the nodes are the operation. Given this tree, we can write a function that applies a binary operation to it.
+The leaves of the tree are the operands, and the nodes are the places where we apply the operator. This is useful: We have taken something implicit, the order of applying an operator, and made it an explicit data structure.
 
-Naturally, we will represent the binary operation as a function:
+Given this data structure, we can write a function that applies a binary operation to it. Naturally, we will represent the binary operation as a function:
 
 ```javascript
+const plus = (a, b) => a + b;
+
 const applyOperator = (operator, [left, right]) => {
   if (left instanceof Array) {
     left = applyOperator(operator, left);
@@ -66,11 +68,9 @@ const applyOperator = (operator, [left, right]) => {
   }
   return operator(left, right);
 }
-
-const plus = (a, b) => a + b;
 ```
 
-And we can use our function to verify that `plus` has the associative property:
+And we can use our function to check that `plus` has the associative property:
 
 ```javascript
 applyOperator(plus, [[[1, 2], 3], 4])
@@ -131,7 +131,9 @@ applyOperator(catenate, Tuple([1], Tuple([2], Tuple([3], [4]))))
 
 ### associating an expression consisting of an operator and two or more operands
 
-Now that we have a representation for the way we associate an expression, a tree of tuples, we can write functions that generate associations. Here's one that makes a left-associated tree for any number of operands:
+Now that we have a representation for the way we associate an expression, a tree of tuples, we can write functions that generate associations. That's the way of JavaScript: Anything that can be represented as a value can be passed to a function or returned from a function.
+
+Here's a function that makes a left-associated tree for any number of operands:
 
 ```javascript
 const leftAssociate = operands => {
@@ -232,6 +234,8 @@ But `foldl` and `foldr` implicitly associated their folding functions, and it is
 So really, all of this is just an excuse to get some practice thinking about how code can be rewritten to make the implicit, explicit. And that is one of the cornerstones of software design: Choosing what we make explicit, and what implicit goes along with choosing what we name, and what we do not name. Or what we becomes a first-class entity, and what is subordinate to other entities.
 
 It's an excercise in deciding what we want our code to communicate, what we want our code to make flexible, and what we want our code to manipulate.
+
+(discuss on [/r/javascript](https://www.reddit.com/r/javascript/comments/65khv5/disambiguating_leftassociation_rightassociation/))
 
 ---
 
