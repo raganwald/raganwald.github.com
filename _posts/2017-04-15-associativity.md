@@ -24,7 +24,7 @@ Let's take "plus" as an example. If we want to add the numbers from one to four 
 - `(1 + ((2 + 3) + 4))`
 - `(1 + (2 + (3 + 4)))`
 
-Because we always get the same answer, we say that plus has the associative property. Other binary operators that have the associative property include multiplication and catenation (of strings or arrays of lists in general).
+Because we always get the same answer, we say that plus has the associative property. Other binary operators that have the associative property include multiplication and catenation (of strings arrays, or lists in general).
 
 Not all binary operators have the associative property. Subtraction does not have the associative property: `((4 - 3) - 1)` is zero, but `(4 - (3 - 1))` is two. And as we saw in the [previous post][foldl], binary composition does not have the associative property.
 
@@ -179,7 +179,7 @@ const rightApply = (operator, operands) =>
   applyOperator(operator, rightAssociate(operands));
 ```
 
-of course, this makes _no difference_ if, like `+`, the operator has the associative property:
+Of course, this makes no difference if, like `+`, the operator has the associative property:
 
 ```javascript
 leftApply(plus, [4, 3, 2, 1])
