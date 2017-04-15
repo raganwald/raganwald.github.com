@@ -212,8 +212,8 @@ foldr(minus, [4, 3, 2, 1])
 We get the same results as if we write:
 
 ```javascript
-leftApply(plus, 4, 3, 2, 1)
-rightApply(plus, 4, 3, 2, 1)
+leftApply(minus, 4, 3, 2, 1)
+rightApply(minus, 4, 3, 2, 1)
 ```
 
 The difference being, of course, that our `foldl` and `foldr` functions are written to incrementally consume their operands from any iterable, while `leftApply` and `rightApply` explicitly construct a binary tree of associations before evaluating anything.
