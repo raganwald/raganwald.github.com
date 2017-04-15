@@ -223,6 +223,16 @@ And if someone asks us what this has to do with the associative property, we rep
 
 [foldl]: http://raganwald.com/2017/04/10/foldl-foldr.html
 
+### this seems like a lot of bother
+
+Yes, it **is** a lot of bother just to explain that left-associating and right-associating are related to, but not the same as, the associative property of operators.
+
+But `foldl` and `foldr` implicitly associated their folding functions, and it is very interesting to write code that takes something implicit and makes it explicit, in this case, the association. It is also interesting to factor our code such that we separate the association and application from the operator and operands.
+
+So really, all of this is just an excuse to get some practice thinking about how code can be rewritten to make the implicit, explicit. And that is one of the cornerstones of software design: Choosing what we make explicit, and what implicit goes along with choosing what we name, and what we do not name. Or what we becomes a first-class entity, and what is subordinate to other entities.
+
+It's an excercise in deciding what we want our code to communicate.
+
 ---
 
 ### notes
