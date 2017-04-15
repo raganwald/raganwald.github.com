@@ -94,9 +94,9 @@ Unfortunately, our function won't work for operations that take arrays as operan
 [^obj]: We could, of course, simply use an object with `left` and `right` properties. We'll leave that as "an exercise for the reader."
 
 ```javascript
-function Tuple (left, right) {
+function Tuple (...elements) {
   if (this === undefined) {
-    return Array.of.call(Tuple, left, right);
+    return Array.of.apply(Tuple, elements);
   }
 }
 Tuple.prototype = Object.create(Array.prototype);
