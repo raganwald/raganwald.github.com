@@ -26,7 +26,7 @@ Let's take "plus" as an example. If we want to add the numbers from one to four 
 
 Because we always get the same answer, we say that plus has the associative property. Other binary operators that have the associative property include multiplication and catenation (of strings arrays, or lists in general).
 
-Not all binary operators have the associative property. Subtraction does not have the associative property: `((4 - 3) - 1)` is zero, but `(4 - (3 - 1))` is two. And as we saw in the [previous post][foldl], binary composition does not have the associative property.
+Not all binary operators have the associative property. Subtraction does not have the associative property: `((4 - 3) - 1) === 0`, but `(4 - (3 - 1)) === 2`. And as we saw in the [previous post][foldl], binary composition does not have the associative property.
 
 ### checking the associative property
 
