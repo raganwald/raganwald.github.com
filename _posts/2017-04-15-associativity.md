@@ -134,24 +134,25 @@ applyOperator(catenate, Tuple([1], Tuple([2], Tuple([3], [4]))))
 Now that we have a representation for the way we associate an expression, a tree of tuples, we can write functions that generate associations. Here's one that makes a left-associated tree for any number of operands:
 
 ```javascript
-const leftAssociate = (first, second, ...rest) => {
+const leftAssociate = operands => {
+  const [first, second, ...rest] = operands;
   const left = Tuple(first, second);
 
   if (rest.length === 0) {
     return left;
   } else {
-    return leftAssociate(left, ...rest);
+    return leftAssociate([left, ...rest]);
   }
 }
 
-leftAssociate(1, 2, 3, 4)
+leftAssociate([1, 2, 3, 4)]
   //=> Tuple(Tuple(Tuple(1, 2), 3), 4)
 ```
 
 And another that makes a right-associated tree for any number of operands:
 
 ```javascript
-const rightAssociate = (...operands) => {
+const rightAssociate = operands => {
   const rest = operands.slice(0, operands.length - 2);
   const secondLast = operands[operands.length - 2];
   const last = operands[operands.length - 1];
@@ -160,31 +161,31 @@ const rightAssociate = (...operands) => {
   if (rest.length === 0) {
     return right;
   } else {
-    return rightAssociate(...rest, right);
+    return rightAssociate([...rest, right]);
   }
 }
 
-rightAssociate(1, 2, 3, 4)
+rightAssociate([1, 2, 3, 4])
   //=> Tuple(1, Tuple(2, Tuple(3, 4)))
 ```
 
 Given these two functions, we can write a pair of application methods that apply an operator to a set of operands, either left-associated or right-associated:
 
 ```javascript
-const leftApply = (operator, ...operands) =>
-  applyOperator(operator, leftAssociate(...operands));
+const leftApply = (operator, operands) =>
+  applyOperator(operator, leftAssociate(operands));
 
-const rightApply = (operator, ...operands) =>
-  applyOperator(operator, rightAssociate(...operands));
+const rightApply = (operator, operands) =>
+  applyOperator(operator, rightAssociate(operands));
 ```
 
 of course, this makes _no difference_ if, like `+`, the operator has the associative property:
 
 ```javascript
-leftApply(plus, 4, 3, 2, 1)
+leftApply(plus, [4, 3, 2, 1])
   //=> 10
 
-rightApply(plus, 4, 3, 2, 1)
+rightApply(plus, [4, 3, 2, 1])
   //=> 10
 ```
 
@@ -193,10 +194,10 @@ And every difference if the operator doesn't:
 ```javascript
 const minus = (x, y) => x - y;
 
-leftApply(minus, 4, 3, 2, 1)
+leftApply(minus, [4, 3, 2, 1])
   //=> -2
 
-rightApply(minus, 4, 3, 2, 1)
+rightApply(minus, [4, 3, 2, 1])
   //=> 2
 ```
 
@@ -212,8 +213,8 @@ foldr(minus, [4, 3, 2, 1])
 We get the same results as if we write:
 
 ```javascript
-leftApply(minus, 4, 3, 2, 1)
-rightApply(minus, 4, 3, 2, 1)
+leftApply(minus, [4, 3, 2, 1])
+rightApply(minus, [4, 3, 2, 1])
 ```
 
 The difference being, of course, that our `foldl` and `foldr` functions are written to incrementally consume their operands from any iterable, while `leftApply` and `rightApply` explicitly construct a binary tree of associations before evaluating anything.
