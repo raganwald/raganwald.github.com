@@ -231,7 +231,7 @@ But `foldl` and `foldr` implicitly associated their folding functions, and it is
 
 So really, all of this is just an excuse to get some practice thinking about how code can be rewritten to make the implicit, explicit. And that is one of the cornerstones of software design: Choosing what we make explicit, and what implicit goes along with choosing what we name, and what we do not name. Or what we becomes a first-class entity, and what is subordinate to other entities.
 
-It's an excercise in deciding what we want our code to communicate.
+It's an excercise in deciding what we want our code to communicate, what we want our code to make flexible, and what we want our code to manipulate.
 
 ---
 
