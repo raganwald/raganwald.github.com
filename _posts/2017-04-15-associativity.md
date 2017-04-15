@@ -36,7 +36,7 @@ First things first, let's write a representation for the order of operations. We
 
 We'll rewrite it using brackets: `[[1 + [2 + 3]] + 4]`.
 
-Then we'll turn each n: `[[1 + [2 + 3]] + 4]`.
+Then we'll remove the operators: `[[1 [2 3]] 4]`.
 
 And add commas: `[[1, [2, 3]], 4]`.
 
