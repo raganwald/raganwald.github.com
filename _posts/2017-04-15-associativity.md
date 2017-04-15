@@ -89,7 +89,9 @@ applyOperator(plus, [1, [2, [3, 4]]])
   //=> 10
 ```
 
-Unfortunately, our function won't work for operations that take arrays as operands, so here's a hacked up version using a `Tuple` subclass of `Array`, with an example of its use:
+Unfortunately, our function won't work for operations that take arrays as operands, so here's a hacked up version using a `Tuple` subclass of `Array`, with an example of its use:[^obj]
+
+[^obj]: We could, of course, simply use an object with `left` and `right` properties. We'll leave that as "an exercise for the reader."
 
 ```javascript
 function Tuple (left, right) {
@@ -126,8 +128,6 @@ applyOperator(catenate, Tuple([1], Tuple(Tuple([2], [3]), [4])))
 applyOperator(catenate, Tuple([1], Tuple([2], Tuple([3], [4]))))
   //=> [1, 2, 3, 4]
 ```
-
-We could, of course, simply use an object with `left` and `right` properties. We'll leave that as "an exercise for the reader."
 
 ### associating an expression consisting of an operator and two or more operands
 
