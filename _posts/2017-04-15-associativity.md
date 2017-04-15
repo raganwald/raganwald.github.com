@@ -178,7 +178,7 @@ const rightApply = (operator, ...operands) =>
   applyOperator(operator, rightAssociate(...operands));
 ```
 
-of course, this makes _no difference_ if, like `+`, the operator has the assocative property:
+of course, this makes _no difference_ if, like `+`, the operator has the associative property:
 
 ```javascript
 leftApply(plus, 4, 3, 2, 1)
@@ -216,9 +216,9 @@ leftApply(plus, 4, 3, 2, 1)
 rightApply(plus, 4, 3, 2, 1)
 ```
 
-The difference being, of course, that our `foldl` and `foldr` functions are written to incementally consume their operands from any iterable, while `leftApply` and `rightApply` explicitly construct a binary tree of associations before evaluating anything.
+The difference being, of course, that our `foldl` and `foldr` functions are written to incrementally consume their operands from any iterable, while `leftApply` and `rightApply` explicitly construct a binary tree of associations before evaluating anything.
 
-And if someone asks us what this has to do with the associative property, we reply that an operator with teh associative property is one for which for any association of operator and multiple operands, there is no difference to the computed result.
+And if someone asks us what this has to do with the associative property, we reply that an operator with the associative property is one for which for any association of operator and multiple operands, there is no difference to the computed result.
 
 [foldl]: http://raganwald.com/2017/04/10/foldl-foldr.html
 
