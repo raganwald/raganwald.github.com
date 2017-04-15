@@ -16,7 +16,7 @@ The answer is short, and would fit in a footnote. They are not the same thing. B
 
 A binary operation is "associative" if, when there is an expression containing two or more occurrences in a row of the same associative operator, the order in which the operations are performed does not matter as long as the sequence of the operands is not changed.
 
-Let's take "plus" as an example. If we want to add the numbers from one to four in JavaScript, we get the same answer whether we write and of the following:
+Let's take "plus" as an example. If we want to add the numbers from one to four in JavaScript, we get the same answer no matter which one of these we write:
 
 - `(((1 + 2) + 3) + 4)`
 - `((1 + (2 + 3)) + 4)`
