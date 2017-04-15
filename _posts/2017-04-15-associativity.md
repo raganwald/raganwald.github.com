@@ -201,7 +201,7 @@ rightApply(minus, [4, 3, 2, 1])
   //=> 2
 ```
 
-### back to `foldl` and `foldr`
+### back to foldl and foldr
 
 So now we can revisit `foldl` and `foldr`, and underscore what we mean when we say that `foldl` left-associates the folding function we supply. We mean that if we write:
 
