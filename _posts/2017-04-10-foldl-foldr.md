@@ -142,7 +142,7 @@ compose(half, increment, square)(3)
   //=> 5
 ```
 
-So we can see what we mean by saying it is "left-associative." Given elements `a`, `b`, `c`, and `d`, `foldl` associates the folding function like this: `(((a b) c) d)`. In the case of `compose`, it turns `compose(a, b, c, d)` into `compose2(compose2(compose2(a, b), c), d)`.
+So we can see what we mean by saying that `foldl` is "left-associative." Given elements `a`, `b`, `c`, and `d`, `foldl` associates the folding function like this: `(((a b) c) d)`. In the case of `compose`, it turns `compose(a, b, c, d)` into `compose2(compose2(compose2(a, b), c), d)`.
 
 ### foldr and right-association
 
@@ -183,7 +183,7 @@ pipeline(half, increment, square)(4)
   //=> 9
 ```
 
-We are indeed taking the half of four, incrementing that, and squaring the result. So while `foldl` is left associative, `(((a b) c) d)`, `foldr` is right-associative, `(a (b (c d)))`. And if we write `pipeline(a, b, c, d)`, we will get `compose2(a, compose2(b, compose2(c, d)))`.
+We are indeed taking the half of four, incrementing that, and squaring the result. So while `foldl` is left-associative, `(((a b) c) d)`, `foldr` is right-associative, `(a (b (c d)))`. And if we write `pipeline(a, b, c, d)`, we will get `compose2(a, compose2(b, compose2(c, d)))`.
 
 ### reduceRight
 
