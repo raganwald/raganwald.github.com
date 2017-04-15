@@ -1,5 +1,5 @@
 ---
-title: "Disambiguating Associativity"
+title: "Disambiguating Left-Association, Right-Association, and the Associative Property"
 layout: default
 tags: [allonge]
 ---
