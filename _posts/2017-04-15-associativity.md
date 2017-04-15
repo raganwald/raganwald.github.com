@@ -91,7 +91,7 @@ applyOperator(plus, [1, [2, [3, 4]]])
 
 Unfortunately, our function won't work for operations that take arrays as operands, so here's a hacked up version using a `Tuple` subclass of `Array`, with an example of its use:
 
-```javascript`
+```javascript
 function Tuple (left, right) {
   if (this === undefined) {
     return Array.of.call(Tuple, left, right);
