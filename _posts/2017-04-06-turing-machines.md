@@ -511,7 +511,9 @@ We can and should work to separate these concerns, but that does not come "for f
 
 As we add new functionality, if we add it to "flatten" to make a super-compiler, we have the same problem. But compilers don't have to grow this way by default.
 
-In Part II, we are going to add more functionality, and look at how we can pipeline compilers, a pattern that naturally separates and modularizes concerns.
+In [Part II], we are going to add more functionality, and look at how we can pipeline compilers, a pattern that naturally separates and modularizes concerns.
+
+[Part II]: ttp://raganwald.com/2017/04/16/turing-machines-part-ii.html
 
 ---
 
