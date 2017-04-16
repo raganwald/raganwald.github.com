@@ -1,5 +1,5 @@
 ---
-title: "Turing Machines and Tooling (unfinished)"
+title: "Turing Machines and Tooling, Part I"
 layout: default
 tags: [allonge]
 ---
@@ -10,7 +10,7 @@ tags: [allonge]
 
 ---
 
-# Turing Machines and Tooling
+# Turing Machines and Tooling, Part I
 
 Much is made of "functional" programming in JavaScript. People get very excited talking about how to manage, minimize, or even eliminate mutation and state. But what if, instead of trying to avoid state and mutation, we _embrace_ it? What if we "turn mutation up to eleven?"
 
@@ -487,17 +487,31 @@ Appears to eliminate the `one` and `two` states. Naturally, we know that it actu
 
 But as programmers, we don't appear to see that complexity, so it feels like it has been eliminated.
 
+[![declension](/assets/images/compexity.png)](https://twitter.com/n1vux/status/853401067689832448)
+
 ### comparing compilers to interpreters
 
 We actually have two different implementations of the "sequence-machine." The first one we look at is basically an interpreter that understands and executes instructions with multiple actions. The second one we looked at compiles a sequence-machine description into an a-machine description.
 
 We have analogues for this in the "real world" as well. We have tools like Babel that translate various cutting-edge dialects of JavaScript into a more basic flavour of JavaScript. But we also have browsers like Safari and Chrome gradually incorporating more expressive flavours of JavaScript into their underlying engines.
 
-What are the relative tradeoffs of the two approaches?
+What are the relative tradeoffs of the two approaches? In broad terms, it often comes down to how we want to manage the complexity we're trying to hide. We are going to implement more expressive turing machines over the coming posts. With each one, we have to manage more and more complexity.
 
-The first and often overriding concern is that we don't always control the engine. When deploying JavaScript to a server, we can use any engine we please, including one we write ourselves. But if we want to deploy our code to browsers, we 
+When we push that complexity into the interpreter (or "engine"), we often find the engine getting a little more complicated. In our very simple example, both the "a-machine" and the "sequence-machine" have while loops to iterate step-by-step through the instructions as the machine operates. But to handle multiple actions within a single instruction, the "sequence-machine" adds a for loop within the while loop.
 
-*(to be continued)*
+Whereas, the "flatten" complier we wrote obviously doesn't add anything to the "a-machine," it translates programs for the sequence-machine into programs for the a-machine and then runs them on the unmodified a-machine code. That being said, compilers often appear more complicated than the code they add to interpreters. "flatten" certainly has lots more code than the changes we made to transform an a-machine into a sequence-machine.
+
+### so why build compilers?
+
+The compiler solution has one very powerful advantage over the interpreter, despite its size. The compiler absolutely and positively separates the concern of handling sequences from the concern of interpreting instructions for an a-machine. If we want to know what we have to do to handle sequences, all the code we need to read is in "flatten."
+
+Whereas, in the sequence-machine, the code handling sequences is embedded. It's not factored out into a separate function or module. As we add more features to interpreters, our interpreters tend to grow higgledy-piggledy, with the considerations for each feature coupled to every other feature's code.
+
+We can and should work to seprate these concerns, but that does not come "for free." When writing interpreters, the default or easiest path is for them to grow in complexity. But what about compilers?
+
+As we add new functionality, if we add it to "flatten" to make a super-compiler, we have the same problem. But compilers don't have to grow this way by default.
+
+In Part II, we are going to add more functionality, and look at how we can pipeline compilers, a pattern that naturally separates and modularizes concerns.
 
 ---
 
