@@ -487,7 +487,7 @@ Appears to eliminate the `one` and `two` states. Naturally, we know that it actu
 
 But as programmers, we don't appear to see that complexity, so it feels like it has been eliminated.
 
-[![declension](/assets/images/compexity.png)](https://twitter.com/n1vux/status/853401067689832448)
+[![declension](/assets/images/complexity.png)](https://twitter.com/n1vux/status/853401067689832448)
 
 ### comparing compilers to interpreters
 
@@ -495,7 +495,7 @@ We actually have two different implementations of the "sequence-machine." The fi
 
 We have analogues for this in the "real world" as well. We have tools like Babel that translate various cutting-edge dialects of JavaScript into a more basic flavour of JavaScript. But we also have browsers like Safari and Chrome gradually incorporating more expressive flavours of JavaScript into their underlying engines.
 
-What are the relative tradeoffs of the two approaches? In broad terms, it often comes down to how we want to manage the complexity we're trying to hide. We are going to implement more expressive turing machines over the coming posts. With each one, we have to manage more and more complexity.
+What are the relative tradeoffs of the two approaches? In broad terms, it often comes down to how we want to manage the complexity we're trying to hide. We are going to implement more expressive Turing machines over the coming posts. With each one, we have to manage more and more complexity.
 
 When we push that complexity into the interpreter (or "engine"), we often find the engine getting a little more complicated. In our very simple example, both the "a-machine" and the "sequence-machine" have while loops to iterate step-by-step through the instructions as the machine operates. But to handle multiple actions within a single instruction, the "sequence-machine" adds a for loop within the while loop.
 
@@ -507,7 +507,7 @@ The compiler solution has one very powerful advantage over the interpreter, desp
 
 Whereas, in the sequence-machine, the code handling sequences is embedded. It's not factored out into a separate function or module. As we add more features to interpreters, our interpreters tend to grow higgledy-piggledy, with the considerations for each feature coupled to every other feature's code.
 
-We can and should work to seprate these concerns, but that does not come "for free." When writing interpreters, the default or easiest path is for them to grow in complexity. But what about compilers?
+We can and should work to separate these concerns, but that does not come "for free." When writing interpreters, the default or easiest path is for them to grow in complexity. But what about compilers?
 
 As we add new functionality, if we add it to "flatten" to make a super-compiler, we have the same problem. But compilers don't have to grow this way by default.
 
