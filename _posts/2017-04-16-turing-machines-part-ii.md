@@ -1,5 +1,5 @@
 ---
-title: "Turing Machines and Tooling, Part II"
+title: "Turing Machines and Tooling, Part II (unfinished)"
 layout: default
 tags: [allonge, noindex]
 ---
