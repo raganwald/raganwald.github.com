@@ -1,7 +1,7 @@
 ---
 title: "Incremental Evaluation"
 layout: default
-tags: [allonge]
+tags: [allonge, noindex]
 ---
 
 Consider this problem: We have a hypothetical startup that, like so many other unimaginative clones of each other, provides some marginal benefit in exchange for tracking user locations. We want to mine that location data.
@@ -140,11 +140,12 @@ const chunksOf = (chunkSize, array) =>
 
 const transitions = list => chunksOf(2, list);
 
-const transitionsByUser = Array.for(locationsByUser.entries()).reduce(
+const transitionsByUser = Array.from(locationsByUser.entries()).reduce(
   (map, [user, listOfLocations]) => {
     map.set(user, transitions(listOfLocations));
     return map;
   }, new Map());
+```
 
 ---
 
