@@ -1,7 +1,7 @@
 ---
 title: "Turing Machines and Tooling, Part II"
 layout: default
-tags: [allonge]
+tags: [allonge, noindex]
 ---
 
 [![monk at work](/assets/images/Scriptorium-monk-at-work.jpg)](https://commons.wikimedia.org/wiki/File:Scriptorium-monk-at-work.jpg)
@@ -283,9 +283,9 @@ We have a trade-off. An entire compiler is harder to understand than an extra fo
 
 We can see this if we think about testing and reliability. If we trust that the a-machine works, we can continue to trust that it works after writing the "flatten" compiler. Nothing we have done will change the a-machine's capabilities.
 
-Let's demonstrate this by looking at another form of tooling: Automated tests.
+Let's demonstrate this by looking at another form of tooling: Automated Tests.
 
-### tests
+### testing 1-2-3
 
 *to be continued*
 
