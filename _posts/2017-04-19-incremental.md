@@ -262,7 +262,9 @@ const allTransitions = concatValues(transitionsByUser);
     ]
 ```
 
-Now we want to count the occurrences of each transition. We'll reduce our new list to a pairing between the highest count and a list of transitions that match. It would be nice if JavaScript gave us a Deep JSON Equality function, bit it doesn't. We could go down a rabbit-hole of writing our own comparisoln functions and maps and what-not, but it's simpler to convert the transitions to strings before counting them. That's because JavaScript acts as if strings are canonicalized, so they make great keys for objects and maps.
+Now we want to count the occurrences of each transition. We'll reduce our new list to a pairing between the highest count and a list of transitions that match. To facilitate this, we'll turn the arrays for each transition into a string:[^canonical]
+
+[^canonical]: It would be nice if JavaScript gave us a Deep JSON Equality function, but it doesn't. We could go down a rabbit-hole of writing our own comparisoln functions and maps and what-not, but it's simpler to convert the transitions to strings before counting them. That's because JavaScript acts as if strings are canonicalized, so they make great keys for objects and maps.
 
 ```javascript
 const stringifyTransitions = (arr) => arr.map(([from, to]) => `${from} -> ${to}`);
@@ -285,7 +287,7 @@ const stringTransitions = stringifyTransitions(allTransitions);
     ]
 ```
 
-*Now* we can count them with ease:
+Now we can count them with ease:
 
 ```javascript
 const countTransitions = (arr) => arr.reduce(
