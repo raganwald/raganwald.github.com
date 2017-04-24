@@ -205,7 +205,7 @@ const transitionsByUser = transitionize(locationsByUser);
 Now we have each step in our process consisting of applying a single function to the return value of the previous function application. But let's take the next step. We have a mapping from users to their transitions, but we don't care about the users, just the transitions, so let's fold them back together:
 
 ```javascript
-const reduceValues = (-, inMap) =>
+const reduceValues = (mergeFn, inMap) =>
   Array.from(inMap.entries())
     .map(([key, value]) => value)
       .reduce(mergeFn);
@@ -351,12 +351,93 @@ const thePipelinedSolution = pipeline(
   listize,
   transitionize,
   concatValues,
-  stringifyTransitions,
+  stringifyAllTransitions,
+  countTransitions,
+  greatestValue
+);
+```
+
+And here is the complete pipelined solution:
+
+```javascript
+const lines = str => str.split('\n');
+const logLines = lines(logContents);
+
+const datums = str => str.split(', ');
+const datumize = arr => arr.map(datums);
+
+const listize = arr => arr.reduce(
+  (map, [user, location]) => {
+    if (map.has(user)) {
+      map.get(user).push(location);
+    } else {
+      map.set(user, [location]);
+    }
+    return map;
+  }, new Map());
+
+const slicesOf = (sliceSize, array) =>
+  Array(array.length - sliceSize + 1).fill().map((_,i) => array.slice(i, i+sliceSize));
+const transitions = list => slicesOf(2, list);
+
+const mapValues = (fn, inMap) => Array.from(inMap.entries()).reduce(
+  (outMap, [key, value]) => {
+    outMap.set(key, fn(value));
+    return outMap;
+  }, new Map());
+
+const transitionize = mapValues.bind(null, transitions);
+
+const reduceValues = (mergeFn, inMap) =>
+  Array.from(inMap.entries())
+    .map(([key, value]) => value)
+      .reduce(mergeFn);
+
+const concatValues = reduceValues.bind(null, (a, b) => a.concat(b));
+
+const stringifyTransition = transition => transition.join(' -> ');
+const stringifyAllTransitions = arr => arr.map(stringifyTransition);
+
+const countTransitions = arr => arr.reduce(
+  (transitionsToCounts, transitionKey) => {
+    if (transitionsToCounts.has(transitionKey)) {
+      transitionsToCounts.set(transitionKey, 1 + transitionsToCounts.get(transitionKey));
+    } else {
+      transitionsToCounts.set(transitionKey, 1);
+    }
+    return transitionsToCounts;
+  }
+  , new Map());
+
+const greatestValue = inMap =>
+  Array.from(inMap.entries()).reduce(
+    ([wasKeys, wasCount], [transitionKey, count]) => {
+      if (count < wasCount) {
+        return [wasKeys, wasCount];
+      } else if (count > wasCount) {
+        return [new Set([transitionKey]), count];
+      } else {
+        wasKeys.add(transitionKey);
+        return [wasKeys, wasCount];
+      }
+    }
+    , [new Set(), 0]
+  );
+
+const pipeline = (...fns) => fns.reduceRight((a, b) => c => a(b(c)));
+
+const thePipelinedSolution = pipeline(
+  lines,
+  datumize,
+  listize,
+  transitionize,
+  concatValues,
+  stringifyAllTransitions,
   countTransitions,
   greatestValue
 );
 
-thePipelinedSolution(data)
+thePipelinedSolution(logContents)
   //=>
     [
       "5f2b932 -> bd11537",
@@ -573,13 +654,97 @@ That's because we wrote (and debugged!) the pipeline, and then refactored it to 
 
 And now for the question that is the entire point of the essay:
 
-[![question book](/assets/images/Question_book-new.svg.png)](https://en.wikipedia.org/wiki/File:Question_book-new.svg)
+![Gallardo](/assets/images/gallardo.jpg)
 
-### the question that is the entire point of the essay
+### tradeoffs between the two solutions
 
-> Did writing it as a pipeline, and then refactoring it to a single pass, make it easier to write the single pass solution than if we had tried to write it as a single pass in the first place?
+Let's consider a common situation: Having written either solution, we get an updated requirement. Consider a similar analysis: We wish to identify "side-trips." A side-trip happens when a user is in a location, goes to a second location, and then returns to the first location with no other intervening locations.
 
-You be the judge.
+Implementing this with the first solution consists of making two changes:
+
+1. Instead of tracking transitions that are slices of locations of length two, we track slices of locations of length three.
+2. We filter those slices for those of the form `A -> B -> A`.
+
+The changes we make are:
+
+```javascript
+const triples = list => slicesOf(3, list);
+const tripleize = mapValues.bind(null, triples);
+
+const filterWith = (predicateFn, list) => list.filter(predicateFn);
+const isaSideTrip = ([a, b, c]) => a === c && a !== b;
+const onlySideTrips = filterWith.bind(null, isaSideTrip);
+
+const popularSideTrips = pipeline(
+  lines,
+  datumize,
+  listize,
+  // we change transitionize to tripleize here
+  tripleize,
+  concatValues,
+  // and insert a filter for side-trips here
+  onlySideTrips,
+  stringifyAllTransitions,
+  countTransitions,
+  greatestValue
+);
+
+The pipeline structure makes it easy to add certain types of changes. How about for our single pass solution? We can modify it inline too:
+
+```javascript
+const theSingePassSolution = (logContents) => {
+  const lines = str => str.split('\n');
+  const logLines = lines(logContents);
+  const locationsByUser = new Map();
+  const triplesToCounts = new Map();
+  let wasKeys = new Set();
+  let wasCount = 0;
+
+  for (const line of logLines) {
+    const [user, location] = datums(line);
+
+    if (locationsByUser.has(user)) {
+      const locations = locationsByUser.get(user);
+      locations.push(location);
+
+      if (locations.length === 3 && locations[0] === locations[2]) {
+        const triple = locations;
+        locationsByUser.set(user, locations.slice(1));
+
+        const tripleKey = stringifyTransition(triple);
+        let count;
+        if (triplesToCounts.has(tripleKey)) {
+          count = 1 + triplesToCounts.get(tripleKey);
+        } else {
+          count = 1;
+        }
+        triplesToCounts.set(tripleKey, count);
+
+        if (count > wasCount) {
+          wasKeys = new Set([tripleKey])
+          wasCount = count;
+        } else if (count === wasCount) {
+          wasKeys.add(tripleKey);
+        }
+      }
+    } else {
+      locationsByUser.set(user, [location]);
+    }
+  }
+
+  return [wasKeys, wasCount];
+}
+```
+
+It's not a huge deal. We have to dive in and find the right place, and make sure it fits within the function's logic. Having written the function ourselves, it's easy to do. Would it be difficult for someone else? More difficult than modifying the pipeline solution? Quite possibly.
+
+In general, we know that adding complexity—especially conditionals—to a single function is "more complicated" than adding more steps to an already factored solution such as our pipeline. The ideal thing from a readability and maintanability point of view would be to write a pipelined solution that has the memory footprint of our single pass solution.
+
+Let's do that.
+
+# Part III: The iterators and generators approach
+
+*to be continued*
 
 ---
 
