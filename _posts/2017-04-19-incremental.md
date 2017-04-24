@@ -11,40 +11,40 @@ Consider this problem: We have a hypothetical startup that, like so many other u
 For the purposes of this brief blog post, we might have a file that looks like this:
 
 ```
-1a2ddc2db4693cfd16d534cde5572cc1, 5f2b9323c39ee3c861a7b382d205c3d3
-f1a543f5a2c5d49bc5dde298fcf716e4, 5890595e16cbebb8866e1842e4bd6ec7
-3abe124ecc82bf2c2e22e6058f38c50c, bd11537f1bc31e334497ec5463fc575e
-f1a543f5a2c5d49bc5dde298fcf716e4, 5f2b9323c39ee3c861a7b382d205c3d3
-f1a543f5a2c5d49bc5dde298fcf716e4, bd11537f1bc31e334497ec5463fc575e
-f1a543f5a2c5d49bc5dde298fcf716e4, 5890595e16cbebb8866e1842e4bd6ec7
-1a2ddc2db4693cfd16d534cde5572cc1, bd11537f1bc31e334497ec5463fc575e
-1a2ddc2db4693cfd16d534cde5572cc1, 5890595e16cbebb8866e1842e4bd6ec7
-3abe124ecc82bf2c2e22e6058f38c50c, 5f2b9323c39ee3c861a7b382d205c3d3
-f1a543f5a2c5d49bc5dde298fcf716e4, 5f2b9323c39ee3c861a7b382d205c3d3
-f1a543f5a2c5d49bc5dde298fcf716e4, bd11537f1bc31e334497ec5463fc575e
-f1a543f5a2c5d49bc5dde298fcf716e4, 5890595e16cbebb8866e1842e4bd6ec7
-1a2ddc2db4693cfd16d534cde5572cc1, 5f2b9323c39ee3c861a7b382d205c3d3
-1a2ddc2db4693cfd16d534cde5572cc1, bd11537f1bc31e334497ec5463fc575e
-1a2ddc2db4693cfd16d534cde5572cc1, 5890595e16cbebb8866e1842e4bd6ec7
+1a2ddc2, 5f2b932
+f1a543f, 5890595
+3abe124, bd11537
+f1a543f, 5f2b932
+f1a543f, bd11537
+f1a543f, 5890595
+1a2ddc2, bd11537
+1a2ddc2, 5890595
+3abe124, 5f2b932
+f1a543f, 5f2b932
+f1a543f, bd11537
+f1a543f, 5890595
+1a2ddc2, 5f2b932
+1a2ddc2, bd11537
+1a2ddc2, 5890595
 
 ...
 ```
 
-The first column is a pseudo-anonymous hash identifying a user. The second is a pseudo-anonymous hash representing a location. If we eyeball the first 14 lines, we can see that user `1a2ddc2db4693cfd16d534cde5572cc1` visited `5f2b9323c39ee3c861a7b382d205c3d3`, `bd11537f1bc31e334497ec5463fc575e`, `5890595e16cbebb8866e1842e4bd6ec7`, `5f2b9323c39ee3c861a7b382d205c3d3`, `bd11537f1bc31e334497ec5463fc575e`, then `5890595e16cbebb8866e1842e4bd6ec7`. Meanwhile, user `f1a543f5a2c5d49bc5dde298fcf716e4` visited `5890595e16cbebb8866e1842e4bd6ec7`, `5f2b9323c39ee3c861a7b382d205c3d3`, `bd11537f1bc31e334497ec5463fc575e`, `5890595e16cbebb8866e1842e4bd6ec7`, `5f2b9323c39ee3c861a7b382d205c3d3`, `bd11537f1bc31e334497ec5463fc575e`, and then `5890595e16cbebb8866e1842e4bd6ec7`. And so forth.
+The first column is a pseudo-anonymous hash identifying a user. The second is a pseudo-anonymous hash representing a location. If we eyeball the first 14 lines, we can see that user `1a2ddc2` visited `5f2b932`, `bd11537`, `5890595`, `5f2b932`, `bd11537`, then `5890595`. Meanwhile, user `f1a543f` visited `5890595`, `5f2b932`, `bd11537`, `5890595`, `5f2b932`, `bd11537`, and then `5890595`. And so forth.
 
-Let's say we're interested in learning where people tend to go. We are looking for the most popular transitions. So given that user `1a2ddc2db4693cfd16d534cde5572cc1` visited `5f2b9323c39ee3c861a7b382d205c3d3`, `bd11537f1bc31e334497ec5463fc575e`, `5890595e16cbebb8866e1842e4bd6ec7`, `5f2b9323c39ee3c861a7b382d205c3d3`, `bd11537f1bc31e334497ec5463fc575e`, then `5890595e16cbebb8866e1842e4bd6ec7`, we count the transitions as:
+Let's say we're interested in learning where people tend to go. We are looking for the most popular transitions. So given that user `1a2ddc2` visited `5f2b932`, `bd11537`, `5890595`, `5f2b932`, `bd11537`, then `5890595`, we count the transitions as:
 
-- `5f2b9323c39ee3c861a7b382d205c3d3 -> bd11537f1bc31e334497ec5463fc575e`
-- `bd11537f1bc31e334497ec5463fc575e -> 5890595e16cbebb8866e1842e4bd6ec7`
-- `5890595e16cbebb8866e1842e4bd6ec7 -> 5f2b9323c39ee3c861a7b382d205c3d3`
-- `5f2b9323c39ee3c861a7b382d205c3d3 -> bd11537f1bc31e334497ec5463fc575e`
-- `bd11537f1bc31e334497ec5463fc575e -> 5890595e16cbebb8866e1842e4bd6ec7`
+- `5f2b932 -> bd11537`
+- `bd11537 -> 5890595`
+- `5890595 -> 5f2b932`
+- `5f2b932 -> bd11537`
+- `bd11537 -> 5890595`
 
 Notice that we have to track the locations by user in order to get the correct transitions. Next, we're interested in the most popular transitions, so we'll count them:
 
-- `5f2b9323c39ee3c861a7b382d205c3d3 -> bd11537f1bc31e334497ec5463fc575e` appears twice
-- `bd11537f1bc31e334497ec5463fc575e -> 5890595e16cbebb8866e1842e4bd6ec7` also appears twice
-- `5890595e16cbebb8866e1842e4bd6ec7 -> 5f2b9323c39ee3c861a7b382d205c3d3` only appears once
+- `5f2b932 -> bd11537` appears twice
+- `bd11537 -> 5890595` also appears twice
+- `5890595 -> 5f2b932` only appears once
 
 Now all we have to do is count all the transitions across all users, and report the most popular transition.
 
@@ -52,24 +52,24 @@ Now all we have to do is count all the transitions across all users, and report 
 
 The most obvious thing to do is to write this as a series of transformations on the data. We've already seen one: Given the initial data, let's get a list of locations for each user.
 
-We can read the data from a file line-by-line, but to make it easy to follow along in a browser, let's pretend our file is actually a multiline string. So the first thing is to convert it to a an array:
+We can read the data from a file line-by-line, but to make it easy to follow along in a browser, let's pretend our file is actually a multiline string. So the first thing is to convert it to an array:
 
 ```javascript
-const logContents = `1a2ddc2db4693cfd16d534cde5572cc1, 5f2b9323c39ee3c861a7b382d205c3d3
-f1a543f5a2c5d49bc5dde298fcf716e4, 5890595e16cbebb8866e1842e4bd6ec7
-3abe124ecc82bf2c2e22e6058f38c50c, bd11537f1bc31e334497ec5463fc575e
-f1a543f5a2c5d49bc5dde298fcf716e4, 5f2b9323c39ee3c861a7b382d205c3d3
-f1a543f5a2c5d49bc5dde298fcf716e4, bd11537f1bc31e334497ec5463fc575e
-f1a543f5a2c5d49bc5dde298fcf716e4, 5890595e16cbebb8866e1842e4bd6ec7
-1a2ddc2db4693cfd16d534cde5572cc1, bd11537f1bc31e334497ec5463fc575e
-1a2ddc2db4693cfd16d534cde5572cc1, 5890595e16cbebb8866e1842e4bd6ec7
-3abe124ecc82bf2c2e22e6058f38c50c, 5f2b9323c39ee3c861a7b382d205c3d3
-f1a543f5a2c5d49bc5dde298fcf716e4, 5f2b9323c39ee3c861a7b382d205c3d3
-f1a543f5a2c5d49bc5dde298fcf716e4, bd11537f1bc31e334497ec5463fc575e
-f1a543f5a2c5d49bc5dde298fcf716e4, 5890595e16cbebb8866e1842e4bd6ec7
-1a2ddc2db4693cfd16d534cde5572cc1, 5f2b9323c39ee3c861a7b382d205c3d3
-1a2ddc2db4693cfd16d534cde5572cc1, bd11537f1bc31e334497ec5463fc575e
-1a2ddc2db4693cfd16d534cde5572cc1, 5890595e16cbebb8866e1842e4bd6ec7`;
+const logContents = `1a2ddc2, 5f2b932
+f1a543f, 5890595
+3abe124, bd11537
+f1a543f, 5f2b932
+f1a543f, bd11537
+f1a543f, 5890595
+1a2ddc2, bd11537
+1a2ddc2, 5890595
+3abe124, 5f2b932
+f1a543f, 5f2b932
+f1a543f, bd11537
+f1a543f, 5890595
+1a2ddc2, 5f2b932
+1a2ddc2, bd11537
+1a2ddc2, 5890595`;
 
 const lines = str => str.split('\n');
 const logLines = lines(logContents);
@@ -79,21 +79,21 @@ const datumize = arr => arr.map(datums);
 
 const data = datumize(logLines);
   //=>
-    [["1a2ddc2db4693cfd16d534cde5572cc1", "5f2b9323c39ee3c861a7b382d205c3d3"]
-     ["f1a543f5a2c5d49bc5dde298fcf716e4", "5890595e16cbebb8866e1842e4bd6ec7"]
-     ["3abe124ecc82bf2c2e22e6058f38c50c", "bd11537f1bc31e334497ec5463fc575e"]
-     ["f1a543f5a2c5d49bc5dde298fcf716e4", "5f2b9323c39ee3c861a7b382d205c3d3"]
-     ["f1a543f5a2c5d49bc5dde298fcf716e4", "bd11537f1bc31e334497ec5463fc575e"]
-     ["f1a543f5a2c5d49bc5dde298fcf716e4", "5890595e16cbebb8866e1842e4bd6ec7"]
-     ["1a2ddc2db4693cfd16d534cde5572cc1", "bd11537f1bc31e334497ec5463fc575e"]
-     ["1a2ddc2db4693cfd16d534cde5572cc1", "5890595e16cbebb8866e1842e4bd6ec7"]
-     ["3abe124ecc82bf2c2e22e6058f38c50c", "5f2b9323c39ee3c861a7b382d205c3d3"]
-     ["f1a543f5a2c5d49bc5dde298fcf716e4", "5f2b9323c39ee3c861a7b382d205c3d3"]
-     ["f1a543f5a2c5d49bc5dde298fcf716e4", "bd11537f1bc31e334497ec5463fc575e"]
-     ["f1a543f5a2c5d49bc5dde298fcf716e4", "5890595e16cbebb8866e1842e4bd6ec7"]
-     ["1a2ddc2db4693cfd16d534cde5572cc1", "5f2b9323c39ee3c861a7b382d205c3d3"]
-     ["1a2ddc2db4693cfd16d534cde5572cc1", "bd11537f1bc31e334497ec5463fc575e"]
-     ["1a2ddc2db4693cfd16d534cde5572cc1", "5890595e16cbebb8866e1842e4bd6ec7"]]
+    [["1a2ddc2", "5f2b932"]
+     ["f1a543f", "5890595"]
+     ["3abe124", "bd11537"]
+     ["f1a543f", "5f2b932"]
+     ["f1a543f", "bd11537"]
+     ["f1a543f", "5890595"]
+     ["1a2ddc2", "bd11537"]
+     ["1a2ddc2", "5890595"]
+     ["3abe124", "5f2b932"]
+     ["f1a543f", "5f2b932"]
+     ["f1a543f", "bd11537"]
+     ["f1a543f", "5890595"]
+     ["1a2ddc2", "5f2b932"]
+     ["1a2ddc2", "bd11537"]
+     ["1a2ddc2", "5890595"]]
 ```
 
 Next we convert these to lists of locations grouped by user. We'll create a map:
@@ -112,26 +112,26 @@ const listize = arr => arr.reduce(
 const locationsByUser = listize(data);
   //=>
     Map{
-      "1a2ddc2db4693cfd16d534cde5572cc1": [
-        "5f2b9323c39ee3c861a7b382d205c3d3",
-        "bd11537f1bc31e334497ec5463fc575e",
-        "5890595e16cbebb8866e1842e4bd6ec7",
-        "5f2b9323c39ee3c861a7b382d205c3d3",
-        "bd11537f1bc31e334497ec5463fc575e",
-        "5890595e16cbebb8866e1842e4bd6ec7"
+      "1a2ddc2": [
+        "5f2b932",
+        "bd11537",
+        "5890595",
+        "5f2b932",
+        "bd11537",
+        "5890595"
       ],
-      "3abe124ecc82bf2c2e22e6058f38c50c": [
-        "bd11537f1bc31e334497ec5463fc575e",
-        "5f2b9323c39ee3c861a7b382d205c3d3"
+      "3abe124": [
+        "bd11537",
+        "5f2b932"
       ],
-      "f1a543f5a2c5d49bc5dde298fcf716e4": [
-        "5890595e16cbebb8866e1842e4bd6ec7",
-        "5f2b9323c39ee3c861a7b382d205c3d3",
-        "bd11537f1bc31e334497ec5463fc575e",
-        "5890595e16cbebb8866e1842e4bd6ec7",
-        "5f2b9323c39ee3c861a7b382d205c3d3",
-        "bd11537f1bc31e334497ec5463fc575e",
-        "5890595e16cbebb8866e1842e4bd6ec7"
+      "f1a543f": [
+        "5890595",
+        "5f2b932",
+        "bd11537",
+        "5890595",
+        "5f2b932",
+        "bd11537",
+        "5890595"
       ]
     }
 ```
@@ -151,58 +151,58 @@ const transitionsByUser = Array.from(locationsByUser.entries()).reduce(
   }, new Map());
   //=>
     Map{
-      "1a2ddc2db4693cfd16d534cde5572cc1": [
+      "1a2ddc2": [
           [
-            "5f2b9323c39ee3c861a7b382d205c3d3",
-            "bd11537f1bc31e334497ec5463fc575e"
+            "5f2b932",
+            "bd11537"
           ],
           [
-            "bd11537f1bc31e334497ec5463fc575e",
-            "5890595e16cbebb8866e1842e4bd6ec7"
+            "bd11537",
+            "5890595"
           ],
           [
-            "5890595e16cbebb8866e1842e4bd6ec7",
-            "5f2b9323c39ee3c861a7b382d205c3d3"
+            "5890595",
+            "5f2b932"
           ],
           [
-            "5f2b9323c39ee3c861a7b382d205c3d3",
-            "bd11537f1bc31e334497ec5463fc575e"
+            "5f2b932",
+            "bd11537"
           ],
           [
-            "bd11537f1bc31e334497ec5463fc575e",
-            "5890595e16cbebb8866e1842e4bd6ec7"
+            "bd11537",
+            "5890595"
           ]
         ],
-      "f1a543f5a2c5d49bc5dde298fcf716e4": [
+      "f1a543f": [
           [
-            "5890595e16cbebb8866e1842e4bd6ec7",
-            "5f2b9323c39ee3c861a7b382d205c3d3"
+            "5890595",
+            "5f2b932"
           ],
           [
-            "5f2b9323c39ee3c861a7b382d205c3d3",
-            "bd11537f1bc31e334497ec5463fc575e"
+            "5f2b932",
+            "bd11537"
           ],
           [
-            "bd11537f1bc31e334497ec5463fc575e",
-            "5890595e16cbebb8866e1842e4bd6ec7"
+            "bd11537",
+            "5890595"
           ],
           [
-            "5890595e16cbebb8866e1842e4bd6ec7",
-            "5f2b9323c39ee3c861a7b382d205c3d3"
+            "5890595",
+            "5f2b932"
           ],
           [
-            "5f2b9323c39ee3c861a7b382d205c3d3",
-            "bd11537f1bc31e334497ec5463fc575e"
+            "5f2b932",
+            "bd11537"
           ],
           [
-            "bd11537f1bc31e334497ec5463fc575e",
-            "5890595e16cbebb8866e1842e4bd6ec7"
+            "bd11537",
+            "5890595"
           ]
         ],
-      "3abe124ecc82bf2c2e22e6058f38c50c": [
+      "3abe124": [
           [
-            "bd11537f1bc31e334497ec5463fc575e",
-            "5f2b9323c39ee3c861a7b382d205c3d3"
+            "bd11537",
+            "5f2b932"
           ]
         ]
     }
@@ -249,18 +249,18 @@ const concatValues = reduceValues.bind(null, (a, b) => a.concat(b));
 const allTransitions = concatValues(transitionsByUser);
   //=>
     [
-      ["5f2b9323c39ee3c861a7b382d205c3d3", "bd11537f1bc31e334497ec5463fc575e"],
-      ["bd11537f1bc31e334497ec5463fc575e", "5890595e16cbebb8866e1842e4bd6ec7"],
-      ["5890595e16cbebb8866e1842e4bd6ec7", "5f2b9323c39ee3c861a7b382d205c3d3"],
-      ["5f2b9323c39ee3c861a7b382d205c3d3", "bd11537f1bc31e334497ec5463fc575e"],
-      ["bd11537f1bc31e334497ec5463fc575e", "5890595e16cbebb8866e1842e4bd6ec7"],
-      ["5890595e16cbebb8866e1842e4bd6ec7", "5f2b9323c39ee3c861a7b382d205c3d3"],
-      ["5f2b9323c39ee3c861a7b382d205c3d3", "bd11537f1bc31e334497ec5463fc575e"],
-      ["bd11537f1bc31e334497ec5463fc575e", "5890595e16cbebb8866e1842e4bd6ec7"],
-      ["5890595e16cbebb8866e1842e4bd6ec7", "5f2b9323c39ee3c861a7b382d205c3d3"],
-      ["5f2b9323c39ee3c861a7b382d205c3d3", "bd11537f1bc31e334497ec5463fc575e"],
-      ["bd11537f1bc31e334497ec5463fc575e", "5890595e16cbebb8866e1842e4bd6ec7"],
-      ["bd11537f1bc31e334497ec5463fc575e", "5f2b9323c39ee3c861a7b382d205c3d3"]
+      ["5f2b932", "bd11537"],
+      ["bd11537", "5890595"],
+      ["5890595", "5f2b932"],
+      ["5f2b932", "bd11537"],
+      ["bd11537", "5890595"],
+      ["5890595", "5f2b932"],
+      ["5f2b932", "bd11537"],
+      ["bd11537", "5890595"],
+      ["5890595", "5f2b932"],
+      ["5f2b932", "bd11537"],
+      ["bd11537", "5890595"],
+      ["bd11537", "5f2b932"]
     ]
 ```
 
@@ -275,18 +275,18 @@ const stringifyAllTransitions = arr => arr.map(stringifyTransition);
 const stringTransitions = stringifyAllTransitions(allTransitions);
   //=>
     [
-      "5f2b9323c39ee3c861a7b382d205c3d3 -> bd11537f1bc31e334497ec5463fc575e",
-      "bd11537f1bc31e334497ec5463fc575e -> 5890595e16cbebb8866e1842e4bd6ec7",
-      "5890595e16cbebb8866e1842e4bd6ec7 -> 5f2b9323c39ee3c861a7b382d205c3d3",
-      "5f2b9323c39ee3c861a7b382d205c3d3 -> bd11537f1bc31e334497ec5463fc575e",
-      "bd11537f1bc31e334497ec5463fc575e -> 5890595e16cbebb8866e1842e4bd6ec7",
-      "5890595e16cbebb8866e1842e4bd6ec7 -> 5f2b9323c39ee3c861a7b382d205c3d3",
-      "5f2b9323c39ee3c861a7b382d205c3d3 -> bd11537f1bc31e334497ec5463fc575e",
-      "bd11537f1bc31e334497ec5463fc575e -> 5890595e16cbebb8866e1842e4bd6ec7",
-      "5890595e16cbebb8866e1842e4bd6ec7 -> 5f2b9323c39ee3c861a7b382d205c3d3",
-      "5f2b9323c39ee3c861a7b382d205c3d3 -> bd11537f1bc31e334497ec5463fc575e",
-      "bd11537f1bc31e334497ec5463fc575e -> 5890595e16cbebb8866e1842e4bd6ec7",
-      "bd11537f1bc31e334497ec5463fc575e -> 5f2b9323c39ee3c861a7b382d205c3d3"
+      "5f2b932 -> bd11537",
+      "bd11537 -> 5890595",
+      "5890595 -> 5f2b932",
+      "5f2b932 -> bd11537",
+      "bd11537 -> 5890595",
+      "5890595 -> 5f2b932",
+      "5f2b932 -> bd11537",
+      "bd11537 -> 5890595",
+      "5890595 -> 5f2b932",
+      "5f2b932 -> bd11537",
+      "bd11537 -> 5890595",
+      "bd11537 -> 5f2b932"
     ]
 ```
 
@@ -307,10 +307,10 @@ const countTransitions = arr => arr.reduce(
 const counts = countTransitions(stringTransitions);
   //=>
     Map{
-      "5f2b9323c39ee3c861a7b382d205c3d3 -> bd11537f1bc31e334497ec5463fc575e": 4,
-      "bd11537f1bc31e334497ec5463fc575e -> 5890595e16cbebb8866e1842e4bd6ec7": 4,
-      "5890595e16cbebb8866e1842e4bd6ec7 -> 5f2b9323c39ee3c861a7b382d205c3d3": 3,
-      "bd11537f1bc31e334497ec5463fc575e -> 5f2b9323c39ee3c861a7b382d205c3d3": 1
+      "5f2b932 -> bd11537": 4,
+      "bd11537 -> 5890595": 4,
+      "5890595 -> 5f2b932": 3,
+      "bd11537 -> 5f2b932": 1
     }
 ```
 
@@ -335,8 +335,8 @@ const greatestValue = inMap =>
 greatestValue(counts);
   //=>
     [
-      "5f2b9323c39ee3c861a7b382d205c3d3 -> bd11537f1bc31e334497ec5463fc575e",
-      "bd11537f1bc31e334497ec5463fc575e -> 5890595e16cbebb8866e1842e4bd6ec7"
+      "5f2b932 -> bd11537",
+      "bd11537 -> 5890595"
     ],
     4
 ```
@@ -368,8 +368,8 @@ const thePipelinedSolution = logContents =>
 thePipelinedSolution(logContents)
   //=>
     [
-      "5f2b9323c39ee3c861a7b382d205c3d3 -> bd11537f1bc31e334497ec5463fc575e",
-      "bd11537f1bc31e334497ec5463fc575e -> 5890595e16cbebb8866e1842e4bd6ec7"
+      "5f2b932 -> bd11537",
+      "bd11537 -> 5890595"
     ],
     4
 ```
@@ -393,8 +393,8 @@ const thePipelinedSolution = pipeline(
 thePipelinedSolution(data)
   //=>
     [
-      "5f2b9323c39ee3c861a7b382d205c3d3 -> bd11537f1bc31e334497ec5463fc575e",
-      "bd11537f1bc31e334497ec5463fc575e -> 5890595e16cbebb8866e1842e4bd6ec7"
+      "5f2b932 -> bd11537",
+      "bd11537 -> 5890595"
     ],
     4
 ```
@@ -595,8 +595,8 @@ console.log(
 )
   //=>
     [
-      "5f2b9323c39ee3c861a7b382d205c3d3 -> bd11537f1bc31e334497ec5463fc575e",
-      "bd11537f1bc31e334497ec5463fc575e -> 5890595e16cbebb8866e1842e4bd6ec7"
+      "5f2b932 -> bd11537",
+      "bd11537 -> 5890595"
     ],
     4
 ```
