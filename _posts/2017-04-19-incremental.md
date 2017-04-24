@@ -1,5 +1,5 @@
 ---
-title: "Using Clean Code as a device for writing Fast Code"
+title: "Using highly factored code as a device for writing very fast code"
 layout: default
 tags: [allonge]
 ---
@@ -48,7 +48,7 @@ Notice that we have to track the locations by user in order to get the correct t
 
 Now all we have to do is count all the transitions across all users, and report the most popular transition.
 
-# Part I: The first crack
+# Part I: The factored approach
 
 The most obvious thing to do is to write this as a series of transformations on the data. We've already seen one: Given the initial data, let's get a list of locations for each user.
 
@@ -409,7 +409,7 @@ We would use much less data if we wrote a single fold that had a lot of internal
 
 ![Speed](/assets/images/speed.jpg)
 
-# Part II: The single pass
+# Part II: The fast approach
 
 In production systems, memory and performance can matter greatly, especially for an algorithm that may be analyzing data at scale. We can transform our "pipelined" solution into a single pass with a bit of care.
 
