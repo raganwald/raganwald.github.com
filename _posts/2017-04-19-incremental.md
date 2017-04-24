@@ -1,5 +1,5 @@
 ---
-title: "Incremental Evaluation"
+title: "Using Clean Code as a device for writing Fast Code"
 layout: default
 tags: [allonge]
 ---
@@ -601,7 +601,9 @@ console.log(
     4
 ```
 
-We get the same solution, but with a single pass through the data and requiring space proportional to the number of users, not a multiple of the size of the data.
+We get the same solution, but with a single pass through the data and requiring space proportional to the number of users, not a multiple of the size of the data. But note that although the code now looks somewhat different, it actually does the exact same steps as the pipeline solution, in the same order.
+
+That's because we wrote (and debugged!) the pipeline, and then refactored it to a single pass. We did all of the hard reasoning while working with the easier-to-reason-about and factor code, before we wrote the everything-entangled code.
 
 And now for the question that is the entire point of the essay:
 
@@ -609,7 +611,9 @@ And now for the question that is the entire point of the essay:
 
 ### the question that is the entire point of the essay
 
-Did writing it as a pipeline, and then refactoring it to a single pass make it easier to write than if we had tried to write it as a single pass in the first place? You be the judge.
+> Did writing it as a pipeline, and then refactoring it to a single pass, make it easier to write the single pass solution than if we had tried to write it as a single pass in the first place?
+
+You be the judge.
 
 ---
 
