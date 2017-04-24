@@ -652,95 +652,11 @@ We get the same solution, but with a single pass through the data and requiring 
 
 That's because we wrote (and debugged!) the pipeline, and then refactored it to a single pass. We did all of the hard reasoning while working with the easier-to-reason-about and factor code, before we wrote the everything-entangled code.
 
-And now for the question that is the entire point of the essay:
+Obviously, there's a trade-off involved. Maximum readability and easiest to reason about? Or performance? Or is it obvious?
+
+What if we could have it both ways?
 
 ![Gallardo](/assets/images/gallardo.jpg)
-
-### tradeoffs between the two solutions
-
-Let's consider a common situation: Having written either solution, we get an updated requirement. Consider a similar analysis: We wish to identify "side-trips." A side-trip happens when a user is in a location, goes to a second location, and then returns to the first location with no other intervening locations.
-
-Implementing this with the first solution consists of making two changes:
-
-1. Instead of tracking transitions that are slices of locations of length two, we track slices of locations of length three.
-2. We filter those slices for those of the form `A -> B -> A`.
-
-The changes we make are:
-
-```javascript
-const triples = list => slicesOf(3, list);
-const tripleize = mapValues.bind(null, triples);
-
-const filterWith = (predicateFn, list) => list.filter(predicateFn);
-const isaSideTrip = ([a, b, c]) => a === c && a !== b;
-const onlySideTrips = filterWith.bind(null, isaSideTrip);
-
-const popularSideTrips = pipeline(
-  lines,
-  datumize,
-  listize,
-  // we change transitionize to tripleize here
-  tripleize,
-  concatValues,
-  // and insert a filter for side-trips here
-  onlySideTrips,
-  stringifyAllTransitions,
-  countTransitions,
-  greatestValue
-);
-
-The pipeline structure makes it easy to add certain types of changes. How about for our single pass solution? We can modify it inline too:
-
-```javascript
-const theSingePassSolution = (logContents) => {
-  const lines = str => str.split('\n');
-  const logLines = lines(logContents);
-  const locationsByUser = new Map();
-  const triplesToCounts = new Map();
-  let wasKeys = new Set();
-  let wasCount = 0;
-
-  for (const line of logLines) {
-    const [user, location] = datums(line);
-
-    if (locationsByUser.has(user)) {
-      const locations = locationsByUser.get(user);
-      locations.push(location);
-
-      if (locations.length === 3 && locations[0] === locations[2]) {
-        const triple = locations;
-        locationsByUser.set(user, locations.slice(1));
-
-        const tripleKey = stringifyTransition(triple);
-        let count;
-        if (triplesToCounts.has(tripleKey)) {
-          count = 1 + triplesToCounts.get(tripleKey);
-        } else {
-          count = 1;
-        }
-        triplesToCounts.set(tripleKey, count);
-
-        if (count > wasCount) {
-          wasKeys = new Set([tripleKey])
-          wasCount = count;
-        } else if (count === wasCount) {
-          wasKeys.add(tripleKey);
-        }
-      }
-    } else {
-      locationsByUser.set(user, [location]);
-    }
-  }
-
-  return [wasKeys, wasCount];
-}
-```
-
-It's not a huge deal. We have to dive in and find the right place, and make sure it fits within the function's logic. Having written the function ourselves, it's easy to do. Would it be difficult for someone else? More difficult than modifying the pipeline solution? Quite possibly.
-
-In general, we know that adding complexity—especially conditionals—to a single function is "more complicated" than adding more steps to an already factored solution such as our pipeline. The ideal thing from a readability and maintanability point of view would be to write a pipelined solution that has the memory footprint of our single pass solution.
-
-Let's do that.
 
 # Part III: The iterators and generators approach
 
