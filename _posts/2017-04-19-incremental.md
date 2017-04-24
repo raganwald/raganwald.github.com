@@ -235,7 +235,7 @@ Now we want to count the occurrences of each transition. We'll reduce our new li
 [^canonical]: It would be nice if JavaScript gave us a Deep JSON Equality function, but it doesn't. We could go down a rabbit-hole of writing our own comparison functions and maps and what-not, but it's simpler to convert the transitions to strings before counting them. That's because JavaScript acts as if strings are canonicalized, so they make great keys for objects and maps.
 
 ```javascript
-const stringifyTransition = ([from, to]) => `${from} -> ${to}`;
+const stringifyTransition = transition => transition.join(' -> ');
 const stringifyAllTransitions = arr => arr.map(stringifyTransition);
 
 const stringTransitions = stringifyAllTransitions(allTransitions);
