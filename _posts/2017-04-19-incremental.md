@@ -660,7 +660,206 @@ What if we could have it both ways?
 
 # Part III: The iterators and generators approach
 
-*to be continued*
+Our pipeline approach sets up a pipeline of functions, each of which has a well-defined input and a well-defined output:
+
+```javascript
+const thePipelinedSolution = pipeline(
+  lines,
+  datumize,
+  listize,
+  transitionize,
+  concatValues,
+  stringifyAllTransitions,
+  countTransitions,
+  greatestValue
+);
+```
+
+This is an excellent model of computation, it's decomposed nicely, it's easy to test, it's easy to reuse the components, and we get names for things that matter. The drawback is that the inputs and outputs of each function are bundles of data the size of the entire input data. If this were a car factory, we would have an assembly line, but instead of making one frame at a time in the first stage, then adding one engine at a time in the second stage, and so on, this pipeline makes frames for **all** the cars at the first satge before passing the frames to have **all** the engines added at the second, and so forth.
+
+Terrible!
+
+Ideally, an automobile factory passes the cars along one at a time, so that at each station, inputs are arriving continuously and outputs are being passed to the next station continuously. We can do the same thing in JavaScript, but instead of working with lists, we work with [iterables].
+
+[iterables]: http://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html "Lazy Iterables in JavaScript"
+
+So instead of starting with a massive string that we split into lines, we would start with an iterator over the lines in the log. This could be a library function that reads a physical file a line at a time, or it could be a series of log lines arriving asynchronously from a service that monitors our servers. For testing purposes, we'll take our string and wrap it in a little function that returns an iterable over its lines, but won't let us treat it like a list:
+
+```javascript
+function * asStream (iterable) { yield * iterable; };
+
+const streamOfLines = asStream(lines(logContents));
+```
+
+`asStream` has no functional purpose, it exists merely to constrain us to work with a stream of values rather than with lists.
+
+With this in hand, we can follow the same general path that we did with writing a one pass algorithm: We go through our existing pipeline solutionand rewrite each step. Only instead of combining them all into one function, we'll turn them from ordinary functions into [generators], functions that generate streams of values. let's get cracking!
+
+[generators]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
+
+Our original pipeline siolution mapped its inputs several times. We can't call `.map` on an iterable, so let's write a convenience function to do it for us:
+
+```javascript
+function * mapIterableWith (mapFn, iterable) {
+  for (const value of iterable) {
+    yield mapFn(value);
+  }
+}
+
+const datums = str => str.split(', ');
+const datumizeStream = iterable => mapIterableWith(datums, iterable);
+```
+
+Or the equivalent:
+
+```javascript
+const datumizeStream = mapIterableWith.bind(null, datums);
+```
+
+Are you tired of repeating this pattern? Let's (finally) write a left partial application function:
+
+```javascript
+const leftPartialApply = (fn, ...values) => fn.bind(null, ...values);
+
+const datumizeStream = leftPartialApply(mapIterableWith, datums);
+```
+
+Now we're ready for something interesting. Our original code performed a `reduce`, folding a list into a map from users to locations. We are wroking with a stream, of course, and we absolutely do not want to reduce all the elements of the stream to a single object.
+
+[![IBM Card Sorter](/assets/images/card-sorter.jpg)](https://www.flickr.com/photos/pargon/2444932424)
+
+### collating our locations
+
+Consider the metaphor of the assembly line. Log lines enter at the beginning, and are converted into arrays by `datumizeStream`. Instead of bundling everything up into a box, we want to process the lines, but we need to collate the items so we can process them in order for each user. One way to do this while processing one line at a time is to create a series of parallel streams, one per user. We direct each line into the appropriate stream and do some processing on it. We then merge the ouputs back into a single stream for more processing.
+
+If we stop and think about it, this is what we actually wanted to do when we created a map to begin with. We just need to code that intention directly. So here is a `divideStreamBy` function that takes a stream and divides it (metaphorically) into multiple streams according to a function that takes each value and returns a string key.
+
+The key function is simplicty:
+
+```javascipt
+const userKey = ([user, _]) => user;
+```
+
+`divideStreamBy` will apply this to each value as it comes in, and streams will be created for each distinct key. Then, a *transforming function* will be applied to each stream. Our mapping functions so far were stateless and idempotent, so dividing values up into streams only to map them in the ordinary fashion would not do anything differently. But we will use a different tactic. Our transforming functions will take a key as an argument and return a generator that consumes the stream of values associated with that key and produces a stream of results.
+
+In our case, we want to turn them into `transitions`, and our transforming function looks like this:
+
+```javascript
+const transitionsForUser = user => function * (values) {
+  let { done, value: lastLocation } = values.next();
+
+  if (done) return;
+
+  for (const [_, location] of values) {
+    yield [lastLocation, location];
+    lastLocation = location;
+  }
+}
+```
+
+And the handy function used to sort values into streams is:
+
+```javascript
+const divideStreamBy = (keyFn, transformFn) => function * (values) {
+  const streamByKey = new Map();
+
+  for (const value of values) {
+    const key = keyFn(value);
+
+    let transformThisKey;
+    if (streamByKey.has(key)) {
+      transformThisKey = streamByKey.get(key);
+    } else {
+      transformThisKey = transformFn(key);
+      streamByKey.set(key, transformThisKey);
+    }
+
+
+}
+```
+
+```javascript
+
+const listize = arr => arr.reduce(
+  (map, [user, location]) => {
+    if (map.has(user)) {
+      map.get(user).push(location);
+    } else {
+      map.set(user, [location]);
+    }
+    return map;
+  }, new Map());
+
+const slicesOf = (sliceSize, array) =>
+  Array(array.length - sliceSize + 1).fill().map((_,i) => array.slice(i, i+sliceSize));
+const transitions = list => slicesOf(2, list);
+
+const mapValues = (fn, inMap) => Array.from(inMap.entries()).reduce(
+  (outMap, [key, value]) => {
+    outMap.set(key, fn(value));
+    return outMap;
+  }, new Map());
+
+const transitionize = mapValues.bind(null, transitions);
+
+const reduceValues = (mergeFn, inMap) =>
+  Array.from(inMap.entries())
+    .map(([key, value]) => value)
+      .reduce(mergeFn);
+
+const concatValues = reduceValues.bind(null, (a, b) => a.concat(b));
+
+const stringifyTransition = transition => transition.join(' -> ');
+const stringifyAllTransitions = arr => arr.map(stringifyTransition);
+
+const countTransitions = arr => arr.reduce(
+  (transitionsToCounts, transitionKey) => {
+    if (transitionsToCounts.has(transitionKey)) {
+      transitionsToCounts.set(transitionKey, 1 + transitionsToCounts.get(transitionKey));
+    } else {
+      transitionsToCounts.set(transitionKey, 1);
+    }
+    return transitionsToCounts;
+  }
+  , new Map());
+
+const greatestValue = inMap =>
+  Array.from(inMap.entries()).reduce(
+    ([wasKeys, wasCount], [transitionKey, count]) => {
+      if (count < wasCount) {
+        return [wasKeys, wasCount];
+      } else if (count > wasCount) {
+        return [new Set([transitionKey]), count];
+      } else {
+        wasKeys.add(transitionKey);
+        return [wasKeys, wasCount];
+      }
+    }
+    , [new Set(), 0]
+  );
+
+const pipeline = (...fns) => fns.reduceRight((a, b) => c => a(b(c)));
+
+const thePipelinedSolution = pipeline(
+  lines,
+  datumize,
+  listize,
+  transitionize,
+  concatValues,
+  stringifyAllTransitions,
+  countTransitions,
+  greatestValue
+);
+
+thePipelinedSolution(logContents)
+  //=>
+    [
+      "5f2b932 -> bd11537",
+      "bd11537 -> 5890595"
+    ],
+    4
+```
+
 
 ---
 
