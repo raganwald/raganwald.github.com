@@ -365,7 +365,7 @@ thePipelinedSolution(data)
     4
 ```
 
-The very nice thing is that we have decomposed our solution int a simple pipe that takes some data in at one end, and performs a succession of transformations on it, until what emerges at the other end is the result we want.
+The very nice thing is that we have decomposed our solution into a simple pipe that takes some data in at one end, and performs a succession of transformations on it, until what emerges at the other end is the result we want.
 
 Each step can be easily checked and tested, and each step as a well-understood and explicit input, followed by an explicit and well-understood output. There are no side-effects to confuse our reasoning.
 
