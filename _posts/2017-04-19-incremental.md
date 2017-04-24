@@ -48,6 +48,8 @@ Notice that we have to track the locations by user in order to get the correct t
 
 Now all we have to do is count all the transitions across all users, and report the most popular transition.
 
+[![Highway 401 and the DVP](/assets/images/Highway_401_by_401-DVP.jpg)](https://commons.wikimedia.org/wiki/File:Highway_401_by_401-DVP.jpg)
+
 # Part I: The factored approach
 
 The most obvious thing to do is to write this as a series of transformations on the data. We've already seen one: Given the initial data, let's get a list of locations for each user.
