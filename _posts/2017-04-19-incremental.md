@@ -282,7 +282,7 @@ const counts = countTransitions(stringTransitions);
 
 And which is/are the most common?
 
-```
+```javascript
 const greatestValue = inMap =>
   Array.from(inMap.entries()).reduce(
     ([wasKeys, wasCount], [transitionKey, count]) => {
