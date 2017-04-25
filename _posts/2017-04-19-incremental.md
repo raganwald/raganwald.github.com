@@ -456,7 +456,7 @@ We would use much less data if we wrote a single fold that had a lot of internal
 
 ![Speed](/assets/images/speed.jpg)
 
-# Part II: The fast approach
+# Part II: The single pass approach
 
 In production systems, memory and performance can matter greatly, especially for an algorithm that may be analyzing data at scale. We can transform our "pipelined" solution into a single pass with a bit of care.
 
@@ -688,16 +688,17 @@ So instead of starting with a massive string that we split into lines, we would 
 ```javascript
 function * asStream (iterable) { yield * iterable; };
 
+const lines = str => str.split('\n');
 const streamOfLines = asStream(lines(logContents));
 ```
 
 `asStream` has no functional purpose, it exists merely to constrain us to work with a stream of values rather than with lists.
 
-With this in hand, we can follow the same general path that we did with writing a one pass algorithm: We go through our existing pipeline solutionand rewrite each step. Only instead of combining them all into one function, we'll turn them from ordinary functions into [generators], functions that generate streams of values. let's get cracking!
+With this in hand, we can follow the same general path that we did with writing a one pass algorithm: We go through our existing pipeline solution and rewrite each step. Only instead of combining them all into one function, we'll turn them from ordinary functions into [generators], functions that generate streams of values. Let's get cracking!
 
 [generators]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
 
-Our original pipeline siolution mapped its inputs several times. We can't call `.map` on an iterable, so let's write a convenience function to do it for us:
+Our original pipeline solution mapped its inputs several times. We can't call `.map` on an iterable, so let's write a convenience function to do it for us:
 
 ```javascript
 function * mapIterableWith (mapFn, iterable) {
@@ -724,7 +725,7 @@ const leftPartialApply = (fn, ...values) => fn.bind(null, ...values);
 const datumizeStream = leftPartialApply(mapIterableWith, datums);
 ```
 
-Now we're ready for something interesting. Our original code performed a `reduce`, folding a list into a map from users to locations. We are wroking with a stream, of course, and we absolutely do not want to reduce all the elements of the stream to a single object.
+Now we're ready for something interesting. Our original code performed a `reduce`, folding a list into a map from users to locations. We are working with a stream, of course, and we absolutely do not want to reduce all the elements of the stream to a single object.
 
 [![IBM Card Sorter](/assets/images/card-sorter.jpg)](https://www.flickr.com/photos/pargon/2444932424)
 
@@ -734,131 +735,113 @@ Consider the metaphor of the assembly line. Log lines enter at the beginning, an
 
 If we stop and think about it, this is what we actually wanted to do when we created a map to begin with. We just need to code that intention directly. So here is a `divideStreamBy` function that takes a stream and divides it (metaphorically) into multiple streams according to a function that takes each value and returns a string key.
 
-The key function is simplicty:
+The key function is simplicity itself:
 
-```javascipt
+```javascript
 const userKey = ([user, _]) => user;
 ```
 
-`divideStreamBy` will apply this to each value as it comes in, and streams will be created for each distinct key. Then, a *transforming function* will be applied to each stream. Our mapping functions so far were stateless and idempotent, so dividing values up into streams only to map them in the ordinary fashion would not do anything differently. But we will use a different tactic. Our transforming functions will take a key as an argument and return a generator that consumes the stream of values associated with that key and produces a stream of results.
+`divideStreamBy` will apply this to each value as it comes in, and streams will be created for each distinct key. Then, a *transforming function* will be applied to each stream. Our mapping functions so far were stateless, and mapped one value to another. But we're going to do both of these things differently. Our transforming functions will have state, and they will map each value into a list of zero or one value, which will then be merged to form our resulting stream.
 
-In our case, we want to turn them into `transitions`, and our transforming function looks like this:
+Our function looks a lot like the code we wrote for extracting transitions from our single pass solution, only we don't keep the locations per user in a map, and we either return a transition in a list, or an empty list:
 
 ```javascript
-const transitionsForUser = user => function * (values) {
-  let { done, value: lastLocation } = values.next();
+let locations = [];
 
-  if (done) return;
-
-  for (const [_, location] of values) {
-    yield [lastLocation, location];
-    lastLocation = location;
+(location) => {
+  locations.push(location);
+  if (locations.length === 2) {
+    const transition = locations;
+    locations = locations.slice(1);
+    return [transition];
+  } else {
+    return [];
   }
 }
 ```
 
-And the handy function used to sort values into streams is:
+This function take a location at a time, and returns either an empty list or a transition in a list. We can use it to iterate over locations one by one, and get transitions. Which is exactly what we're going to do. Mind you, it isn't quite ready, because while it does maintain state (in the `locations` variable), we will need a different state for each user. In order to have as many of these as we like, we'll wrap the whole thing in a function:
 
 ```javascript
-const divideStreamBy = (keyFn, transformFn) => function * (values) {
-  const streamByKey = new Map();
+const transitionsMaker = () => {
+  let locations = [];
 
-  for (const value of values) {
-    const key = keyFn(value);
-
-    let transformThisKey;
-    if (streamByKey.has(key)) {
-      transformThisKey = streamByKey.get(key);
+  return ([_, location]) => {
+    locations.push(location);
+    if (locations.length === 2) {
+      const transition = locations;
+      locations = locations.slice(1);
+      return [transition];
     } else {
-      transformThisKey = transformFn(key);
-      streamByKey.set(key, transformThisKey);
+      return [];
     }
-
-
+  }
 }
 ```
 
+Now we can call `transitionsMaker` for each user, and get a function that can map the locations for that user into transitions.
+
+Armed with a function for turning a user and location into a key, and `transitionsMaker`, we can write our collating function. It takes a function that makes a stateful mapping function and a function that extracts keys from values as arguments, and returns a function that transforms a stream of values:
+
 ```javascript
+const sortedFlatMap = (mapFnMaker, keyFn) =>
+  function * (values) {
+    const mappersByKey = new Map();
 
-const listize = arr => arr.reduce(
-  (map, [user, location]) => {
-    if (map.has(user)) {
-      map.get(user).push(location);
-    } else {
-      map.set(user, [location]);
-    }
-    return map;
-  }, new Map());
+    for (const value of values) {
+      const key = keyFn(value);
+      let mapperFn;
 
-const slicesOf = (sliceSize, array) =>
-  Array(array.length - sliceSize + 1).fill().map((_,i) => array.slice(i, i+sliceSize));
-const transitions = list => slicesOf(2, list);
-
-const mapValues = (fn, inMap) => Array.from(inMap.entries()).reduce(
-  (outMap, [key, value]) => {
-    outMap.set(key, fn(value));
-    return outMap;
-  }, new Map());
-
-const transitionize = mapValues.bind(null, transitions);
-
-const reduceValues = (mergeFn, inMap) =>
-  Array.from(inMap.entries())
-    .map(([key, value]) => value)
-      .reduce(mergeFn);
-
-const concatValues = reduceValues.bind(null, (a, b) => a.concat(b));
-
-const stringifyTransition = transition => transition.join(' -> ');
-const stringifyAllTransitions = arr => arr.map(stringifyTransition);
-
-const countTransitions = arr => arr.reduce(
-  (transitionsToCounts, transitionKey) => {
-    if (transitionsToCounts.has(transitionKey)) {
-      transitionsToCounts.set(transitionKey, 1 + transitionsToCounts.get(transitionKey));
-    } else {
-      transitionsToCounts.set(transitionKey, 1);
-    }
-    return transitionsToCounts;
-  }
-  , new Map());
-
-const greatestValue = inMap =>
-  Array.from(inMap.entries()).reduce(
-    ([wasKeys, wasCount], [transitionKey, count]) => {
-      if (count < wasCount) {
-        return [wasKeys, wasCount];
-      } else if (count > wasCount) {
-        return [new Set([transitionKey]), count];
+      if (mappersByKey.has(key)) {
+        mapperFn = mappersByKey.get(key);
       } else {
-        wasKeys.add(transitionKey);
-        return [wasKeys, wasCount];
+        mapperFn = mapFnMaker();
+        mappersByKey.set(key, mapperFn);
       }
+
+      yield * mapperFn(value);
     }
-    , [new Set(), 0]
-  );
+  };
 
-const pipeline = (...fns) => fns.reduceRight((a, b) => c => a(b(c)));
-
-const thePipelinedSolution = pipeline(
-  lines,
-  datumize,
-  listize,
-  transitionize,
-  concatValues,
-  stringifyAllTransitions,
-  countTransitions,
-  greatestValue
-);
-
-thePipelinedSolution(logContents)
-  //=>
-    [
-      "5f2b932 -> bd11537",
-      "bd11537 -> 5890595"
-    ],
-    4
+const transitionsStream = sortedFlatMap(transitionsMaker, userKey);
 ```
+
+> Why is `sortedFlatMap` called a "flat map?" A function that maps a value to zero or more values is called a [flat map]. There's actually more to this idea if we dive into functional programming a little more deeply, we can think of putting values in lists as "wrapping" them, and if we have an operation that takes a value and then returns a wrapped value, "flat map" is a function that performs the operation on a value and unwraps the result.
+
+[flat map]: https://martinfowler.com/articles/collection-pipeline/flat-map.html
+
+> In our case, we take values and map them to zero or one transition, which we represent with an empty list or a list with a transition. `sortedFlatMap` "flattens" or "unwraps" these lists using `yield *`, which yields the contents of an iterable, in our case, a list with zero or one element.
+
+Continuing our practise of writing our "stream" solution with the same steps as our "pipeline" solution, we transform the transitions into strings we can use as keys:
+
+```javascript
+const stringifyTransition = transition => transition.join(' -> ');
+
+const stringifyStream = leftPartialApply(mapIterableWith, stringifyTransition);
+```
+
+If we stop and debug our work, we'll see that we now have a stream of transitions represented as strings, and we have the same memory footprint as our single pass solution:
+
+```javascript
+stringifyStream(transitionsStream(datumizeStream(streamOfLines)))
+  //=>
+    "5890595 -> 5f2b932"
+    "5f2b932 -> bd11537"
+    "bd11537 -> 5890595"
+    "5f2b932 -> bd11537"
+    "bd11537 -> 5890595"
+    "bd11537 -> 5f2b932"
+    "5890595 -> 5f2b932"
+    "5f2b932 -> bd11537"
+    "bd11537 -> 5890595"
+    "5890595 -> 5f2b932"
+    "5f2b932 -> bd11537"
+    "bd11537 -> 5890595"
+```
+
+### counting transitions
+
+*to be continued*
 
 
 ---
