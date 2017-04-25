@@ -48,7 +48,7 @@ Notice that we have to track the locations by user in order to get the correct t
 
 Now all we have to do is count all the transitions across all users, and report the most popular transition. We'll look at three different approaches:
 
-1. [**The pipeline approach**](#I)
+1. [**The staged approach**](#I)
 2. [**The single pass approach**](#II)
 3. [**The stream approach**](#III)
 
@@ -56,7 +56,7 @@ Now all we have to do is count all the transitions across all users, and report 
 
 [![Highway 401 and the DVP](/assets/images/Highway_401_by_401-DVP.jpg)](https://commons.wikimedia.org/wiki/File:Highway_401_by_401-DVP.jpg)
 
-# <a name="I"></a>The pipeline approach
+# <a name="I"></a>The staged approach
 
 The most obvious thing to do is to write this as a series of transformations on the data. We've already seen one: Given the initial data, let's get a list of locations for each user.
 
@@ -315,10 +315,10 @@ greatestValue(counts);
 
 ### pipelining this solution
 
-One of the nice thing about this solution is that it forms a pipeline. Leaving the definitions out, the pipeline is:
+One of the nice thing about this solution is that it forms a pipeline. A chunk of data moves through the pipleline, being transformed at each stage. Leaving the definitions out, the pipeline is:
 
 ```javascript
-const thePipelinedSolution = logContents =>
+const theStagedSolution = logContents =>
   greatestValue(
     countTransitions(
       stringifyAllTransitions(
@@ -337,7 +337,7 @@ const thePipelinedSolution = logContents =>
     )
   );
 
-thePipelinedSolution(logContents)
+theStagedSolution(logContents)
   //=>
     [
       "5f2b932 -> bd11537",
@@ -351,7 +351,7 @@ We can write this using `pipeline`:
 ```javascript
 const pipeline = (...fns) => fns.reduceRight((a, b) => c => a(b(c)));
 
-const thePipelinedSolution = pipeline(
+const theStagedSolution = pipeline(
   lines,
   datumize,
   listize,
@@ -432,7 +432,7 @@ const greatestValue = inMap =>
 
 const pipeline = (...fns) => fns.reduceRight((a, b) => c => a(b(c)));
 
-const thePipelinedSolution = pipeline(
+const theStagedSolution = pipeline(
   lines,
   datumize,
   listize,
@@ -443,7 +443,7 @@ const thePipelinedSolution = pipeline(
   greatestValue
 );
 
-thePipelinedSolution(logContents)
+theStagedSolution(logContents)
   //=>
     [
       "5f2b932 -> bd11537",
@@ -508,7 +508,7 @@ const theSingePassSolution = (logContents) => {
 
 What about obtaining transitions from the locations for each user? Strictly speaking, we don't have to worry about slicing the list if we know that the current set of locations has at least two elements. So we'll just take a transition for granted, then we'll discard the oldest location we've seen for this user, as it can no longer figure in any future transitions:[^tidy]
 
-[^tidy]: We could also tidy up some extra variable references, but we're trying to make this code map somewhat reasonably to our pipeline solution, and the extra names make it more obvious. Compared to the overhead of making multiple copies of the data, the extra work for these is negligible.
+[^tidy]: We could also tidy up some extra variable references, but we're trying to make this code map somewhat reasonably to our staged approach, and the extra names make it more obvious. Compared to the overhead of making multiple copies of the data, the extra work for these is negligible.
 
 ```javascript
 const theSingePassSolution = (logContents) => {
@@ -652,7 +652,7 @@ theSingePassSolution(logContents)
     4
 ```
 
-We get the same solution, but with a single pass through the data and requiring space proportional to the number of users, not a multiple of the size of the data. But note that although the code now looks somewhat different, it actually does the exact same steps as the pipeline solution, in the same order.
+We get the same solution, but with a single pass through the data and requiring space proportional to the number of users, not a multiple of the size of the data. But note that although the code now looks somewhat different, it actually does the exact same steps as the staged approach, in the same order.
 
 That's because we wrote (and debugged!) the pipeline, and then refactored it to a single pass. We did all of the hard reasoning while working with the easier-to-reason-about and factor code, before we wrote the everything-entangled code.
 
@@ -664,10 +664,10 @@ What if we could have it both ways?
 
 # <a name="III"></a>The stream approach
 
-Our pipeline approach sets up a pipeline of functions, each of which has a well-defined input and a well-defined output:
+Our staged approach sets up a pipeline of functions, each of which has a well-defined input and a well-defined output:
 
 ```javascript
-const thePipelinedSolution = pipeline(
+const theStagedSolution = pipeline(
   lines,
   datumize,
   listize,
@@ -698,11 +698,11 @@ const streamOfLines = asStream(lines(logContents));
 
 `asStream` has no functional purpose, it exists merely to constrain us to work with a stream of values rather than with lists.
 
-With this in hand, we can follow the same general path that we did with writing a one pass algorithm: We go through our existing pipeline solution and rewrite each step. Only instead of combining them all into one function, we'll turn them from ordinary functions into [generators], functions that generate streams of values. Let's get cracking!
+With this in hand, we can follow the same general path that we did with writing a one pass algorithm: We go through our existing staged approach and rewrite each step. Only instead of combining them all into one function, we'll turn them from ordinary functions into [generators], functions that generate streams of values. Let's get cracking!
 
 [generators]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
 
-Our original pipeline solution mapped its inputs several times. We can't call `.map` on an iterable, so let's write a convenience function to do it for us:
+Our original staged approach mapped its inputs several times. We can't call `.map` on an iterable, so let's write a convenience function to do it for us:
 
 ```javascript
 function * mapIterableWith (mapFn, iterable) {
@@ -940,7 +940,7 @@ theStreamSolution(streamOfLines)
 
 Voila!
 
-To recap what we have accomplished: We are processing the data step by step, just like our original pipeline approach, but we are also handling the locations one by one without processing the entire data set in each step, just like our single pass approach.
+To recap what we have accomplished: We are processing the data step by step, just like our original staged approach, but we are also handling the locations one by one without processing the entire data set in each step, just like our single pass approach.
 
 We have harvested the best parts of each approach.
 
