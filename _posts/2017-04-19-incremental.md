@@ -1,5 +1,5 @@
 ---
-title: "Having our cake and eating it too: Using iterators to write highly composeable yet iterative code"
+title: "Having our cake and eating it too: \"Using iterators to write highly composeable code\""
 layout: default
 tags: [allonge]
 ---
