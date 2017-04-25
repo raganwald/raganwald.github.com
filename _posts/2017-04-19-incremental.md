@@ -902,6 +902,8 @@ stringifyStream(transitionsStream(datumizeStream(streamOfLines)))
     "bd11537 -> 5890595"
 ```
 
+To recap where we are: We are processing the data step by step, just like our pipeline approach, but we are also handling the locations one by one without processing the entire data set in each step, just like our single pass approach.
+
 ### counting transitions
 
 *to be continued*
