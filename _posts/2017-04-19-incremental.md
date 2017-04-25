@@ -750,8 +750,9 @@ Our function looks a lot like the code we wrote for extracting transitions from 
 ```javascript
 let locations = [];
 
-(location) => {
+([_, location]) => {
   locations.push(location);
+
   if (locations.length === 2) {
     const transition = locations;
     locations = locations.slice(1);
@@ -770,6 +771,7 @@ const transitionsMaker = () => {
 
   return ([_, location]) => {
     locations.push(location);
+
     if (locations.length === 2) {
       const transition = locations;
       locations = locations.slice(1);
@@ -843,6 +845,7 @@ const transitionsMaker = () => {
 
   return ([_, location]) => {
     locations.push(location);
+
     if (locations.length === 2) {
       const transition = locations;
       locations = locations.slice(1);
