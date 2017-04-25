@@ -1,5 +1,5 @@
 ---
-title: "Using highly factored code as a device for writing very fast code"
+title: "Having our cake and eating it too: Using iterators to write highly composeable yet iterative code"
 layout: default
 tags: [allonge]
 ---
