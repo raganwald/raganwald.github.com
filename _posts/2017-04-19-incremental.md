@@ -46,11 +46,15 @@ Notice that we have to track the locations by user in order to get the correct t
 - `bd11537 -> 5890595` also appears twice
 - `5890595 -> 5f2b932` only appears once
 
-Now all we have to do is count all the transitions across all users, and report the most popular transition.
+Now all we have to do is count all the transitions across all users, and report the most popular transition. We'll look at three different approaches:
+
+1. [The pipeline approach](#I)
+2. [The single pass approach](#II)
+3. [The stream approach](#III)
 
 [![Highway 401 and the DVP](/assets/images/Highway_401_by_401-DVP.jpg)](https://commons.wikimedia.org/wiki/File:Highway_401_by_401-DVP.jpg)
 
-# Part I: The factored approach
+<a name="I"></a># Part I: The pipeline approach
 
 The most obvious thing to do is to write this as a series of transformations on the data. We've already seen one: Given the initial data, let's get a list of locations for each user.
 
@@ -456,7 +460,7 @@ We would use much less data if we wrote a single fold that had a lot of internal
 
 ![Speed](/assets/images/speed.jpg)
 
-# Part II: The fast approach
+<a name="II"></a># Part II: The fast approach
 
 In production systems, memory and performance can matter greatly, especially for an algorithm that may be analyzing data at scale. We can transform our "pipelined" solution into a single pass with a bit of care.
 
@@ -658,7 +662,7 @@ What if we could have it both ways?
 
 ![Gallardo](/assets/images/gallardo.jpg)
 
-# Part III: The iterators and generators approach
+<a name="III"></a># Part III: The stream approach
 
 Our pipeline approach sets up a pipeline of functions, each of which has a well-defined input and a well-defined output:
 
@@ -677,7 +681,7 @@ const thePipelinedSolution = pipeline(
 
 This is an excellent model of computation, it's decomposed nicely, it's easy to test, it's easy to reuse the components, and we get names for things that matter. The drawback is that the inputs and outputs of each function are bundles of data the size of the entire input data. If this were a car factory, we would have an assembly line, but instead of making one frame at a time in the first stage, then adding one engine at a time in the second stage, and so on, this pipeline makes frames for **all** the cars at the first satge before passing the frames to have **all** the engines added at the second, and so forth.
 
-Terrible!
+**Terrible!**
 
 Ideally, an automobile factory passes the cars along one at a time, so that at each station, inputs are arriving continuously and outputs are being passed to the next station continuously. We can do the same thing in JavaScript, but instead of working with lists, we work with [iterables].
 
