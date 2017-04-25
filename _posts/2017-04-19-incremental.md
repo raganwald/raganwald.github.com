@@ -468,7 +468,7 @@ In production systems, memory and performance can matter greatly, especially for
 
 Let's start with a `for of` loop. We'll fill in the obvious bit first:[^split]
 
-[^split]: Note that if we are reading the file from disc, we can actually iterate over the lines directly, instead of calling `.splt('\n)` on the contents.
+[^split]: Note that if we are reading the file from disc, we can actually iterate over the lines directly, instead of calling `.split('\n')` on the contents.
 
 ```javascript
 const theSingePassSolution = (logContents) => {
@@ -643,9 +643,7 @@ const theSingePassSolution = (logContents) => {
   return [wasKeys, wasCount];
 }
 
-console.log(
-  theSingePassSolution(logContents)
-)
+theSingePassSolution(logContents)
   //=>
     [
       "5f2b932 -> bd11537",
@@ -902,12 +900,106 @@ stringifyStream(transitionsStream(datumizeStream(streamOfLines)))
     "bd11537 -> 5890595"
 ```
 
-To recap where we are: We are processing the data step by step, just like our pipeline approach, but we are also handling the locations one by one without processing the entire data set in each step, just like our single pass approach.
-
 ### counting transitions
 
-*to be continued*
+Our original function for counting transitions performed a `.reduce` on a list of transitions:
 
+```javascript
+const countTransitions = arr => arr.reduce(
+  (transitionsToCounts, transitionKey) => {
+    if (transitionsToCounts.has(transitionKey)) {
+      transitionsToCounts.set(transitionKey, 1 + transitionsToCounts.get(transitionKey));
+    } else {
+      transitionsToCounts.set(transitionKey, 1);
+    }
+    return transitionsToCounts;
+  }
+  , new Map());
+```
+
+It's straightforward to transform this into an iteration over the transitions we receive:
+
+```javascript
+const countTransitionStream = transitionKeys => {
+  const transitionsToCounts = new Map();
+
+  for (const transitionKey of transitionKeys) {
+    if (transitionsToCounts.has(transitionKey)) {
+      transitionsToCounts.set(transitionKey, 1 + transitionsToCounts.get(transitionKey));
+    } else {
+      transitionsToCounts.set(transitionKey, 1);
+    }
+  }
+  return transitionsToCounts;
+}
+```
+
+And then we can reüse:
+
+```javascript
+const greatestValue = inMap =>
+  Array.from(inMap.entries()).reduce(
+    ([wasKeys, wasCount], [transitionKey, count]) => {
+      if (count < wasCount) {
+        return [wasKeys, wasCount];
+      } else if (count > wasCount) {
+        return [new Set([transitionKey]), count];
+      } else {
+        wasKeys.add(transitionKey);
+        return [wasKeys, wasCount];
+      }
+    }
+    , [new Set(), 0]
+  );
+```
+
+And now we can get our result "the old fashioned way:"
+
+```javascript
+greatestValue(
+  countTransitionStream(
+    stringifyStream(
+      transitionsStream(
+        datumizeStream(
+          streamOfLines
+        )
+      )
+    )
+  )
+)
+```
+
+Or use a pipeline again:
+
+```javascript
+const pipeline = (...fns) => fns.reduceRight((a, b) => c => a(b(c)));
+
+const theStreamSolution = pipeline(
+  datumizeStream,
+  transitionsStream,
+  stringifyStream,
+  countTransitionStream,
+  greatestValue
+);
+
+theStreamSolution(streamOfLines)
+  //=>
+    [
+      "5f2b932 -> bd11537",
+      "bd11537 -> 5890595"
+    ],
+    4
+```
+
+Voila!
+
+To recap what we have accomplished: We are processing the data step by step, just like our original pipeline approach, but we are also handling the locations one by one without processing the entire data set in each step, just like our single pass approach.
+
+We have harvested the best parts of each approach.
+
+Now, it's true that we have does a bunch of things that people call "functional programming," but that wasn't the goal. The goal, the benefit we can inspect, is that we have decomposed the algorithm into a series of steps, each of which has well-defined inputs and outputs. *And*, we have arranged our code such that we are not making copies of the entire data set with each of our steps.
+
+The end goal, as always, is to decompose the algorithm into smaller parts that can be named, tested, and perhaps reused elsewhere. Using iterables and generators to implement a stream approach can help us achieve our gaols without compromising practical considerations like memory footprint/
 
 ---
 
