@@ -48,9 +48,11 @@ Notice that we have to track the locations by user in order to get the correct t
 
 Now all we have to do is count all the transitions across all users, and report the most popular transition. We'll look at three different approaches:
 
-1. [The pipeline approach](#I)
-2. [The single pass approach](#II)
-3. [The stream approach](#III)
+1. [**The pipeline approach**](#I)
+2. [**The single pass approach**](#II)
+3. [**The stream approach**](#III)
+
+---
 
 [![Highway 401 and the DVP](/assets/images/Highway_401_by_401-DVP.jpg)](https://commons.wikimedia.org/wiki/File:Highway_401_by_401-DVP.jpg)
 
