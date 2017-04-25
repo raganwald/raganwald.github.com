@@ -831,59 +831,6 @@ const stringifyStream = leftPartialApply(mapIterableWith, stringifyTransition);
 If we stop and debug our work, we'll see that we now have a stream of transitions represented as strings, and we have the same memory footprint as our single pass solution:
 
 ```javascript
-function * mapIterableWith (mapFn, iterable) {
-  for (const value of iterable) {
-    yield mapFn(value);
-  }
-}
-
-const leftPartialApply = (fn, ...values) => fn.bind(null, ...values);
-
-const datums = str => str.split(', ');
-const datumizeStream = leftPartialApply(mapIterableWith, datums);
-
-const userKey = ([user, _]) => user;
-
-const transitionsMaker = () => {
-  let locations = [];
-
-  return ([_, location]) => {
-    locations.push(location);
-
-    if (locations.length === 2) {
-      const transition = locations;
-      locations = locations.slice(1);
-      return [transition];
-    } else {
-      return [];
-    }
-  }
-}
-
-const sortedFlatMap = (mapFnMaker, keyFn) =>
-  function * (values) {
-    const mappersByKey = new Map();
-
-    for (const value of values) {
-      const key = keyFn(value);
-      let mapperFn;
-
-      if (mappersByKey.has(key)) {
-        mapperFn = mappersByKey.get(key);
-      } else {
-        mapperFn = mapFnMaker();
-        mappersByKey.set(key, mapperFn);
-      }
-
-      yield * mapperFn(value);
-    }
-  };
-
-const transitionsStream = sortedFlatMap(transitionsMaker, userKey);
-
-const stringifyTransition = transition => transition.join(' -> ');
-const stringifyStream = leftPartialApply(mapIterableWith, stringifyTransition);
-
 stringifyStream(transitionsStream(datumizeStream(streamOfLines)))
   //=>
     "5890595 -> 5f2b932"
@@ -1002,6 +949,121 @@ Now, it's true that we have does a bunch of things that people call "functional 
 The end goal, as always, is to decompose the algorithm into smaller parts that can be named, tested, and perhaps reused elsewhere. Using iterables and generators to implement a stream approach can help us achieve our gaols without compromising practical considerations like memory footprint.
 
 ---
+
+### appendix: the full code
+
+```javascript
+const logContents =`1a2ddc2db4693cfd16d534cde5572cc1, 5f2b9323c39ee3c861a7b382d205c3d3
+f1a543f5a2c5d49bc5dde298fcf716e4, 5890595e16cbebb8866e1842e4bd6ec7
+3abe124ecc82bf2c2e22e6058f38c50c, bd11537f1bc31e334497ec5463fc575e
+f1a543f5a2c5d49bc5dde298fcf716e4, 5f2b9323c39ee3c861a7b382d205c3d3
+f1a543f5a2c5d49bc5dde298fcf716e4, bd11537f1bc31e334497ec5463fc575e
+f1a543f5a2c5d49bc5dde298fcf716e4, 5890595e16cbebb8866e1842e4bd6ec7
+1a2ddc2db4693cfd16d534cde5572cc1, bd11537f1bc31e334497ec5463fc575e
+1a2ddc2db4693cfd16d534cde5572cc1, 5890595e16cbebb8866e1842e4bd6ec7
+3abe124ecc82bf2c2e22e6058f38c50c, 5f2b9323c39ee3c861a7b382d205c3d3
+f1a543f5a2c5d49bc5dde298fcf716e4, 5f2b9323c39ee3c861a7b382d205c3d3
+f1a543f5a2c5d49bc5dde298fcf716e4, bd11537f1bc31e334497ec5463fc575e
+f1a543f5a2c5d49bc5dde298fcf716e4, 5890595e16cbebb8866e1842e4bd6ec7
+1a2ddc2db4693cfd16d534cde5572cc1, 5f2b9323c39ee3c861a7b382d205c3d3
+1a2ddc2db4693cfd16d534cde5572cc1, bd11537f1bc31e334497ec5463fc575e
+1a2ddc2db4693cfd16d534cde5572cc1, 5890595e16cbebb8866e1842e4bd6ec7`;
+
+const asStream = function * (iterable) { yield * iterable; };
+
+const lines = str => str.split('\n');
+const streamOfLines = asStream(lines(logContents));
+
+function * mapIterableWith (mapFn, iterable) {
+  for (const value of iterable) {
+    yield mapFn(value);
+  }
+}
+
+const leftPartialApply = (fn, ...values) => fn.bind(null, ...values);
+
+const datums = str => str.split(', ');
+const datumizeStream = leftPartialApply(mapIterableWith, datums);
+
+const userKey = ([user, _]) => user;
+
+const transitionsMaker = () => {
+  let locations = [];
+
+  return ([_, location]) => {
+    locations.push(location);
+
+    if (locations.length === 2) {
+      const transition = locations;
+      locations = locations.slice(1);
+      return [transition];
+    } else {
+      return [];
+    }
+  }
+}
+
+const sortedFlatMap = (mapFnMaker, keyFn) =>
+  function * (values) {
+    const mappersByKey = new Map();
+
+    for (const value of values) {
+      const key = keyFn(value);
+      let mapperFn;
+
+      if (mappersByKey.has(key)) {
+        mapperFn = mappersByKey.get(key);
+      } else {
+        mapperFn = mapFnMaker();
+        mappersByKey.set(key, mapperFn);
+      }
+
+      yield * mapperFn(value);
+    }
+  };
+
+const transitionsStream = sortedFlatMap(transitionsMaker, userKey);
+
+const stringifyTransition = transition => transition.join(' -> ');
+const stringifyStream = leftPartialApply(mapIterableWith, stringifyTransition);
+
+const countTransitionStream = transitionKeys => {
+  const transitionsToCounts = new Map();
+
+  for (const transitionKey of transitionKeys) {
+    if (transitionsToCounts.has(transitionKey)) {
+      transitionsToCounts.set(transitionKey, 1 + transitionsToCounts.get(transitionKey));
+    } else {
+      transitionsToCounts.set(transitionKey, 1);
+    }
+  }
+  return transitionsToCounts;
+}
+
+const greatestValue = inMap =>
+  Array.from(inMap.entries()).reduce(
+    ([wasKeys, wasCount], [transitionKey, count]) => {
+      if (count < wasCount) {
+        return [wasKeys, wasCount];
+      } else if (count > wasCount) {
+        return [new Set([transitionKey]), count];
+      } else {
+        wasKeys.add(transitionKey);
+        return [wasKeys, wasCount];
+      }
+    }
+    , [new Set(), 0]
+  );
+const pipeline = (...fns) => fns.reduceRight((a, b) => c => a(b(c)));
+
+const theStreamSolution = pipeline(
+  datumizeStream,
+  transitionsStream,
+  stringifyStream,
+  countTransitionStream,
+  greatestValue
+);
+```
 
 ### notes
 
