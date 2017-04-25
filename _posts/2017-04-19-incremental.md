@@ -731,9 +731,11 @@ Now we're ready for something interesting. Our original code performed a `reduce
 
 ### collating our locations
 
-Consider the metaphor of the assembly line. Log lines enter at the beginning, and are converted into arrays by `datumizeStream`. Instead of bundling everything up into a box, we want to process the lines, but we need to collate the items so we can process them in order for each user. One way to do this while processing one line at a time is to create a series of parallel streams, one per user. We direct each line into the appropriate stream and do some processing on it. We then merge the ouputs back into a single stream for more processing.
+Consider the metaphor of the assembly line. Log lines enter at the beginning, and are converted into arrays by `datumizeStream`. Instead of bundling everything up into a box, we want to process the lines, but we need to collate the items so we can process them in order for each user.
 
-If we stop and think about it, this is what we actually wanted to do when we created a map to begin with. We just need to code that intention directly. So here is a `divideStreamBy` function that takes a stream and divides it (metaphorically) into multiple streams according to a function that takes each value and returns a string key.
+One way to do this while processing one line at a time is to create a series of parallel streams, one per user. We direct each line into the appropriate stream and do some processing on it. We then merge the outputs back into a single stream for more processing.
+
+If we stop and think about it, this is what we actually wanted to do when we created a map to begin with. We just need to code that intention directly. So we will write a function that takes a stream and divides it (metaphorically) into multiple streams according to a function that takes each value and returns a string key.
 
 The key function is simplicity itself:
 
@@ -741,7 +743,7 @@ The key function is simplicity itself:
 const userKey = ([user, _]) => user;
 ```
 
-`divideStreamBy` will apply this to each value as it comes in, and streams will be created for each distinct key. Then, a *transforming function* will be applied to each stream. Our mapping functions so far were stateless, and mapped one value to another. But we're going to do both of these things differently. Our transforming functions will have state, and they will map each value into a list of zero or one value, which will then be merged to form our resulting stream.
+We plan to will apply this to each value as it comes in, and streams will be created for each distinct key. Then, a *transforming function* will be applied to each stream. Our mapping functions so far were stateless, and mapped one value to another. But we're going to do both of these things differently. Our transforming functions will have state, and they will map each value into a list of zero or one value, which will then be merged to form our resulting stream.
 
 Our function looks a lot like the code we wrote for extracting transitions from our single pass solution, only we don't keep the locations per user in a map, and we either return a transition in a list, or an empty list:
 
@@ -823,6 +825,58 @@ const stringifyStream = leftPartialApply(mapIterableWith, stringifyTransition);
 If we stop and debug our work, we'll see that we now have a stream of transitions represented as strings, and we have the same memory footprint as our single pass solution:
 
 ```javascript
+function * mapIterableWith (mapFn, iterable) {
+  for (const value of iterable) {
+    yield mapFn(value);
+  }
+}
+
+const leftPartialApply = (fn, ...values) => fn.bind(null, ...values);
+
+const datums = str => str.split(', ');
+const datumizeStream = leftPartialApply(mapIterableWith, datums);
+
+const userKey = ([user, _]) => user;
+
+const transitionsMaker = () => {
+  let locations = [];
+
+  return ([_, location]) => {
+    locations.push(location);
+    if (locations.length === 2) {
+      const transition = locations;
+      locations = locations.slice(1);
+      return [transition];
+    } else {
+      return [];
+    }
+  }
+}
+
+const sortedFlatMap = (mapFnMaker, keyFn) =>
+  function * (values) {
+    const mappersByKey = new Map();
+
+    for (const value of values) {
+      const key = keyFn(value);
+      let mapperFn;
+
+      if (mappersByKey.has(key)) {
+        mapperFn = mappersByKey.get(key);
+      } else {
+        mapperFn = mapFnMaker();
+        mappersByKey.set(key, mapperFn);
+      }
+
+      yield * mapperFn(value);
+    }
+  };
+
+const transitionsStream = sortedFlatMap(transitionsMaker, userKey);
+
+const stringifyTransition = transition => transition.join(' -> ');
+const stringifyStream = leftPartialApply(mapIterableWith, stringifyTransition);
+
 stringifyStream(transitionsStream(datumizeStream(streamOfLines)))
   //=>
     "5890595 -> 5f2b932"
