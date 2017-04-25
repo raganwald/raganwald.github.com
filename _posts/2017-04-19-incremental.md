@@ -662,7 +662,7 @@ Obviously, there's a trade-off involved. Maximum readability and easiest to reas
 
 What if we could have it both ways?
 
-![Gallardo](/assets/images/gallardo.jpg)
+[![Beetle Asembly Line at Volkswagon](/assets/images/assembly.jpg)](https://www.flickr.com/photos/autohistorian/32637661426)
 
 # <a name="III"></a>The stream approach
 
