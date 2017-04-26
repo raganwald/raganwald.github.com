@@ -681,7 +681,7 @@ const theStagedSolution = pipeline(
 
 This is an excellent model of computation, it's decomposed nicely, it's easy to test, it's easy to reuse the components, and we get names for things that matter. The drawback is that the inputs and outputs of each function are bundles of data the size of the entire input data.
 
-If this were a car factory, we would have an assembly line, but instead of making one frame at a time in the first stage, then adding one engine at a time in the second stage, and so on, this pipeline makes frames for **all** the cars at the first tage before passing the frames to have **all** the engines added at the second, and so forth.
+If this were a car factory, we would have an assembly line, but instead of making one frame at a time in the first stage, then adding one engine at a time in the second stage, and so on, this pipeline makes frames for **all** the cars at the first stage before passing the frames to have **all** the engines added at the second, and so forth.
 
 **Terrible!**
 
