@@ -363,7 +363,7 @@ const theStagedSolution = pipeline(
 );
 ```
 
-And here is the complete pipelined solution:
+And here is the complete staged solution:
 
 ```javascript
 const lines = str => str.split('\n');
@@ -464,14 +464,14 @@ We would use much less data if we wrote a single fold that had a lot of internal
 
 # <a name="II"></a>The single pass approach
 
-In production systems, memory and performance can matter greatly, especially for an algorithm that may be analyzing data at scale. We can transform our "pipelined" solution into a single pass with a bit of care.
+In production systems, memory and performance can matter greatly, especially for an algorithm that may be analyzing data at scale. We can transform our "staged" solution into a single pass with a bit of care.
 
 Let's start with a `for of` loop. We'll fill in the obvious bit first:[^split]
 
 [^split]: Note that if we are reading the file from disc, we can actually iterate over the lines directly, instead of calling `.split('\n')` on the contents.
 
 ```javascript
-const theSingePassSolution = (logContents) => {
+const theSinglePassSolution = (logContents) => {
   const lines = str => str.split('\n');
   const logLines = lines(log);
 
@@ -486,7 +486,7 @@ const theSingePassSolution = (logContents) => {
 Now we'll hand-code a reduction to get locations by users:
 
 ```javascript
-const theSingePassSolution = (logContents) => {
+const theSinglePassSolution = (logContents) => {
   const lines = str => str.split('\n');
   const logLines = lines(logContents);
   const locationsByUser = new Map();
@@ -511,7 +511,7 @@ What about obtaining transitions from the locations for each user? Strictly spea
 [^tidy]: We could also tidy up some extra variable references, but we're trying to make this code map somewhat reasonably to our staged approach, and the extra names make it more obvious. Compared to the overhead of making multiple copies of the data, the extra work for these is negligible.
 
 ```javascript
-const theSingePassSolution = (logContents) => {
+const theSinglePassSolution = (logContents) => {
   const lines = str => str.split('\n');
   const logLines = lines(logContents);
   const locationsByUser = new Map();
@@ -537,7 +537,7 @@ const theSingePassSolution = (logContents) => {
 Folding the transitions per user back into one stream would be sheer simplicity, but we can actually skip it since we have the transition we care about. What's the next step that matters? Getting a string from the transition:
 
 ```javascript
-const theSingePassSolution = (logContents) => {
+const theSinglePassSolution = (logContents) => {
   const lines = str => str.split('\n');
   const logLines = lines(logContents);
   const locationsByUser = new Map();
@@ -565,7 +565,7 @@ const theSingePassSolution = (logContents) => {
 Now we count them, again performing a reduce by hand:
 
 ```javascript
-const theSingePassSolution = (logContents) => {
+const theSinglePassSolution = (logContents) => {
   const lines = str => str.split('\n');
   const logLines = lines(logContents);
   const locationsByUser = new Map();
@@ -602,7 +602,7 @@ No need to iterate over `transitionsToCounts` in a separate pass to obtain the h
 
 
 ```javascript
-const theSingePassSolution = (logContents) => {
+const theSinglePassSolution = (logContents) => {
   const lines = str => str.split('\n');
   const logLines = lines(logContents);
   const locationsByUser = new Map();
@@ -643,7 +643,7 @@ const theSingePassSolution = (logContents) => {
   return [wasKeys, wasCount];
 }
 
-theSingePassSolution(logContents)
+theSinglePassSolution(logContents)
   //=>
     [
       "5f2b932 -> bd11537",
@@ -681,7 +681,7 @@ const theStagedSolution = pipeline(
 
 This is an excellent model of computation, it's decomposed nicely, it's easy to test, it's easy to reuse the components, and we get names for things that matter. The drawback is that the inputs and outputs of each function are bundles of data the size of the entire input data.
 
-If this were a car factory, we would have an assembly line, but instead of making one frame at a time in the first stage, then adding one engine at a time in the second stage, and so on, this pipeline makes frames for **all** the cars at the first satge before passing the frames to have **all** the engines added at the second, and so forth.
+If this were a car factory, we would have an assembly line, but instead of making one frame at a time in the first stage, then adding one engine at a time in the second stage, and so on, this pipeline makes frames for **all** the cars at the first tage before passing the frames to have **all** the engines added at the second, and so forth.
 
 **Terrible!**
 
