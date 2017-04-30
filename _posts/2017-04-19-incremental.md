@@ -948,7 +948,7 @@ We have harvested the best parts of each approach.
 
 Now, it's true that we have does a bunch of things that people call "functional programming," but that wasn't the goal. The goal, the benefit we can inspect, is that we have decomposed the algorithm into a series of steps, each of which has well-defined inputs and outputs. *And*, we have arranged our code such that we are not making copies of the entire data set with each of our steps.
 
-The end goal, as always, is to decompose the algorithm into smaller parts that can be named, tested, and perhaps reused elsewhere. Using iterables and generators to implement a stream approach can help us achieve our gaols without compromising practical considerations like memory footprint.
+The end goal, as always, is to decompose the algorithm into smaller parts that can be named, tested, and perhaps reused elsewhere. Using iterables and generators to implement a stream approach can help us achieve our goals without compromising practical considerations like memory footprint.
 
 ---
 
