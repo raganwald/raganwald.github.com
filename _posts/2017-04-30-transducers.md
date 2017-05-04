@@ -20,6 +20,8 @@ We concluded by looking at a [stream approach]. In the stream approach, we proce
 
 Now we're going to look at another very interesting approach for building composeable pipelines of transformations without incurring a memory penalty. Let's start with reducing (a/k/a "folding"):
 
+---
+
 ### reducers
 
 A **reducer** is a function that takes an accumulation and a value, and folds the value into the accumulation. For example, if `[1, 2, 3]` is an accumulation ,and `4` is a value, `(acc, val) => acc.concat([val]);` is a reducer that returns `[1, 2, 3, 4]`:
@@ -115,6 +117,8 @@ reduce([1, 2, 3], sumOf, 0)
 
 We can write reducers that reduce an iterable of one type (such as an array) into another type (such as a number).
 
+---
+
 ### decorating reducers
 
 JavaScript makes it easy to write functions that return functions. Here's a function that makes a reducer for us:
@@ -161,6 +165,8 @@ const incremented =
 incremented([1, 2, 3])
   //=> [2, 3, 4]
 ```
+
+---
 
 ### mappers
 
@@ -218,6 +224,8 @@ const one2ten = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 reduce(one2ten, squares(sumOf), 0)
   //=> 385
 ```
+
+---
 
 ### filters
 
@@ -296,6 +304,8 @@ reduce(one2ten, filter(x => x % 2 === 1)(squares(sumOf)), 0)
   //=> 165
 ```
 
+---
+
 ### composing decorators
 
 The essential character of this pattern is that we can take a reducer and compose it with as many mappers, filters, or other decorators that we cook up, and we end up with a reducer. Decorators *compose* with each other. We can even be explicit about this in a delightful way:
@@ -318,6 +328,8 @@ reduce(one2ten, squaresOfTheOddNumbers(sumOf), 0)
 Yes, this formulation of `compose` uses `reduce` and in turn is used in our `reduce`.
 
 Being able to compose decorators lets us decompose complex and highly coupled code into smaller units with a single responsibility that we can name if we choose.
+
+---
 
 ### so what's a transducer?
 
@@ -418,6 +430,8 @@ Another case libraries cover is this: Our `transduce` function assumes that the 
 OOP has solved this problem with polymorphism, of course. Collections have methods, so if you invoke the right method, you get the right thing back. Production-class libraries provide an interface for collection types to operate gracefully with transducers.
 
 But this is enough to grasp the pattern behind transducers, and once again to embrace the elegant possibilities when a language provides functions as first-class values.
+
+---
 
 ### the transducer approach to tracking user transitions
 
@@ -533,10 +547,14 @@ greatestValue(
     4
 ```
 
+---
+
 ### further reading
 
 - [Understanding Transducers in JavaScript](https://medium.com/@roman01la/understanding-transducers-in-javascript-3500d3bd9624)
 - [transducers-js](https://github.com/cognitect-labs/transducers-js)
+
+---
 
 ### notes
 
