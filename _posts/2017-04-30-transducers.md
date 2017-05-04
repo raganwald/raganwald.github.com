@@ -17,9 +17,7 @@ We concluded by looking at a [stream approach]. In the stream approach, we proce
 
 [stream approach]: http://raganwald.com/2017/04/19/incremental.html#III
 
-Now we're going to look at another very promising approach for building composeable pipelines of transformations without incurring a memory penalty: **Transducers**.
-
-Transducers are a generalized and composeable form of _reducers_. So let's push "transducers" on the stack, and ask, "What is a reducer?"
+Now we're going to look at another very interesting approach for building composeable pipelines of transformations without incurring a memory penalty. Let's start with reducing (a/k/a "folding"):
 
 ### reducers
 
