@@ -22,13 +22,33 @@ Now we're going to look at another very interesting approach for building compos
 
 ### reducers
 
-A **reducer** is a function that takes an accumulation and a value, and folds the value into the accumulation. For example, if `[1, 2, 3]` is an accumulation and `4` is a value, `(acc, val) => acc.concat([val]);` is a reducer that returns `[1, 2, 3, 4]`.
+A **reducer** is a function that takes an accumulation and a value, and folds the value into the accumulation. For example, if `[1, 2, 3]` is an accumulation ,and `4` is a value, `(acc, val) => acc.concat([val]);` is a reducer that returns `[1, 2, 3, 4]`:
 
-`(acc, val) => acc.concat([val])` is a function that returns the *catenation* of a list and a value. Likewise, `(acc, val) => acc.add(val)` is a reducer that `.add`s a value to an accumulation. It works for any object that has a `.add` method and returns itself from `.add`. Like [Set.prototype.add]. `(acc, val) => acc.add(val)` adds values to sets.
+```javascript
+const acc = [1, 2, 3];
+const val = 4;
+const reducer = (acc, val) => acc.concat([val]);
+
+reducer(acc, val)
+  ///=> 1, 2, 3, 4
+```
+
+`(acc, val) => acc.concat([val])` is a reducer that returns the *catenation* of a list and a value.
+
+Likewise, `(acc, val) => acc.add(val)` is a reducer that `.add`s a value to an accumulation. It works for any object that has a `.add` method and returns itself from `.add`, like [Set.prototype.add]:
+
+```javascript
+const acc = new Set([1, 2, 3]);
+const val = 4;
+const reducer = (acc, val) => acc.add(val);
+
+reducer(acc, val)
+  ///=> Set{1, 2, 3, 4}
+```
 
 [Set.prototype.add]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/add
 
-We can use reducers very easily. Here is a function that makes an array out of any iterable using our catenation reducer:
+Here is a function that makes an array out of any iterable using our catenation reducer:
 
 ```javascript
 const toArray = iterable => {
