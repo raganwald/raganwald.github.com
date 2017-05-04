@@ -255,8 +255,7 @@ const filter =
       (acc, val) =>
         fn(val) ? reducer(acc, val) : acc;
 
-reduce(
-  one2ten, filter(x => x > 5)(squares(arrayOf)), [])
+reduce(one2ten, filter(x => x > 5)(squares(arrayOf)), [])
   //=> [36, 49, 64, 81, 100]
 ```
 
