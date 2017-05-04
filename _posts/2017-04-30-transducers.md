@@ -18,7 +18,9 @@ We concluded by looking at a [stream approach]. In the stream approach, we proce
 
 [![a matrix dream](/assets/images/matrix-dream.jpg)](https://www.flickr.com/photos/gi/127757006)
 
-Now we're going to look at another very interesting approach for building composeable pipelines of transformations without incurring a memory penalty. Let's start with reducing (a/k/a "folding"):
+Now we're going to look at another very interesting approach for building composeable pipelines of transformations without incurring a memory penalty.
+
+Let's start with a look at reducing (a/k/a "folding"):
 
 ---
 
@@ -136,7 +138,9 @@ reduce([1, 2, 3], joinedWith('.'), '')
   //=> "1.2.3"
 ```
 
-JavaScript also makes it easy to write functions that take functions as arguments. *Decorators* are JavaScript functions that take a function as an argument and return another function that is semantically related to its argument. For example, this function takes a binary function and decorates it by adding one to its second input:
+JavaScript also makes it easy to write functions that take functions as arguments.
+
+*Decorators* are JavaScript functions that take a function as an argument and return another function that is semantically related to its argument. For example, this function takes a binary function and decorates it by adding one to its second input:
 
 ```javascript
 const incrementSecondArgument = binaryFn => (x, y) => binaryFn(x, y + 1);
