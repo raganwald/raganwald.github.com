@@ -4,6 +4,8 @@ layout: default
 tags: [allonge]
 ---
 
+[![a matrix dream](/assets/images/matrix-dream.jpg)](https://www.flickr.com/photos/gi/127757006)
+
 In [Using iterators to write highly composeable code][previous-post], we saw that the [staged approach] to data transformation is decomposed, but duplicates the entire data set. Whereas, the [single pass approach]  is more efficient, but the code was entangled and monolithic.
 
 [previous-post]: http://raganwald.com/2017/04/19/incremental.html
@@ -11,8 +13,6 @@ In [Using iterators to write highly composeable code][previous-post], we saw tha
 [single pass approach]: http://raganwald.com/2017/04/19/incremental.html#II
 
 Now we're going to look at an interesting approach for building composeable pipelines of transformations without incurring a memory penalty, **transducers**.
-
-[![a matrix dream](/assets/images/matrix-dream.jpg)](https://www.flickr.com/photos/gi/127757006)
 
 Let's start with a review of reducing (a/k/a "folding"):
 
