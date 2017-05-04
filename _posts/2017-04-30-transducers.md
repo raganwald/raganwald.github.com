@@ -304,9 +304,12 @@ The essential character of this pattern is that we can take a reducer and compos
 const compositionOf = (acc, val) => (...args) => val(acc(...args));
 
 const compose = (...fns) =>
-  reduce(fns, compositionOf, x => x);
+  fns.reduce(compositionOf, x => x);
 
-const squaresOfTheOddNumbers = compose(filter(x => x % 2 === 1), squares);
+const squaresOfTheOddNumbers = compose(
+  filter(x => x % 2 === 1),
+  squares
+);
 
 reduce(one2ten, squaresOfTheOddNumbers(sumOf), 0)
   //=> 165
