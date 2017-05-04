@@ -364,9 +364,9 @@ transduce(squaresOfTheOddNumbers, sumOf, 0, one2ten)
   //=> 165
 ```
 
-And there you have it:[^clojure] A *reducer* is the kind of function you’d pass to `.reduce`—it takes an accumulated result and a new input, and returns a new accumulated result. A *transducer* is a function that decorates a reducer. Transducers compose to produce a new transducer.
+And there you have it: A *reducer* is the kind of function you’d pass to `.reduce`—it takes an accumulated result and a new input, and returns a new accumulated result. A *transducer* is a function that decorates a reducer. Transducers compose to produce a new transducer.[^clojure]
 
-[^clojure]: See https://clojure.org/reference/transducers
+[^clojure]: See [https://clojure.org/reference/transducers](https://clojure.org/reference/transducers)
 
 So, if someone asks you what a "transducer" is, you might reply:
 
