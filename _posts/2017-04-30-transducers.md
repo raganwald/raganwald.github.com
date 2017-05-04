@@ -137,9 +137,12 @@ JavaScript also makes it easy to write functions that take functions as argument
 *Decorators* are JavaScript functions that take a function as an argument and return another function that is semantically related to its argument. For example, this function takes a binary function and decorates it by adding one to its second input:
 
 ```javascript
-const incrementSecondArgument = binaryFn => (x, y) => binaryFn(x, y + 1);
+const incrementSecondArgument =
+  binaryFn =>
+    (x, y) => binaryFn(x, y + 1);
 
-const power = (base, exponent) => base ** exponent;
+const power =
+  (base, exponent) => base ** exponent;
 
 const higherPower = incrementSecondArgument(power);
 
@@ -171,13 +174,17 @@ incremented([1, 2, 3])
 We have produced a *mapper*, a function that takes an iterable and returns a mapping from the iterable's values to the incremented iterable's values. We map values all the time in JavaScript, but of course we want to do more than just increment. Let's take another look at `incrementSecondArgument`:
 
 ```javascript
-const incrementSecondArgument = binaryFn => (x, y) => binaryFn(x, y + 1);
+const incrementSecondArgument =
+  binaryFn =>
+    (x, y) => binaryFn(x, y + 1);
 ```
 
 Since we're using it to decorate reducers, let's give it some more relevant names:
 
 ```javascript
-const incrementValue = reducer => (acc, val) => reducer(acc, val + 1);
+const incrementValue =
+  reducer =>
+    (acc, val) => reducer(acc, val + 1);
 ```
 
 Now we see at a glance that `incrementValue` takes a reducer as an argument and returns a reducer that increments its value before reducing it further. We can extract the "incrementing" logic into a parameter:
