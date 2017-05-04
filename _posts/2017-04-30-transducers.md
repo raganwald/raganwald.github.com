@@ -4,11 +4,11 @@ layout: default
 tags: [allonge]
 ---
 
-In [Using iterators to write highly composeable code][part-i], we took a look at a data transformation and analysis algorithm, and saw that the obvious [staged approach] was highly decomposed, but presented a performance problem in that it created excess duplicates of the entire data set.
+In [Using iterators to write highly composeable code][previous-post], we took a look at a data transformation and analysis algorithm, and saw that the obvious [staged approach] was highly decomposed, but presented a performance problem in that it created excess duplicates of the entire data set.
 
 Whereas the [singe pass approach] was much more memory-efficient, but the code was entangled and monolithic. On a problem small enough to fit in a blog post this isn't a massive problem, but it's easy to see how such an approach in production leads to highly coupled, fragile code that cannot be easily factored or decomposed.
 
-[part-i]: http://raganwald.com/2017/04/19/incremental.html
+[previous-post]: http://raganwald.com/2017/04/19/incremental.html
 [staged approach]: http://raganwald.com/2017/04/19/incremental.html#I
 [singe pass approach]: http://raganwald.com/2017/04/19/incremental.html#II
 
@@ -304,7 +304,7 @@ The essential character of this pattern is that we can take a reducer and compos
 const compositionOf = (acc, val) => (...args) => val(acc(...args));
 
 const compose = (...fns) =>
-  reduce(fns, compositionOf, x => x)
+  reduce(fns, compositionOf, x => x);
 
 const squaresOfTheOddNumbers = compose(filter(x => x % 2 === 1), squares);
 
@@ -350,7 +350,6 @@ const transduce = (transducer, reducer, seed, iterable) => {
   const decoratedReducer = transducer(reducer);
   let accumulation = seed;
 
-
   for (const value of iterable) {
     accumulation = decoratedReducer(accumulation, value);
   }
@@ -371,6 +370,155 @@ So, if someone asks you what a "transducer" is, you might reply:
 ![What's the problem?](/assets/images/what-s-the-problem.png)
 
 ---
+
+### the complete code
+
+```javascript
+const arrayOf = (acc, val) => { acc.push(val); return acc; };
+
+const sumOf = (acc, val) => acc + val;
+
+const setOf = (acc, val) => acc.add(val);
+
+const map =
+  fn =>
+    reducer =>
+      (acc, val) => reducer(acc, fn(val));
+
+const filter =
+  fn =>
+    reducer =>
+      (acc, val) =>
+        fn(val) ? reducer(acc, val) : acc;
+
+const compose = (...fns) =>
+  fns.reduce((acc, val) => (...args) => val(acc(...args)), x => x);
+
+const transduce = (transducer, reducer, seed, iterable) => {
+  const decoratedReducer = transducer(reducer);
+  let accumulation = seed;
+
+  for (const value of iterable) {
+    accumulation = decoratedReducer(accumulation, value);
+  }
+
+  return accumulation;
+}
+```
+
+### the transducer approach to tracking user transitions
+
+(see [Using iterators to write highly composeable code][previous-post] for context.)
+
+```javascript
+const logContents = `1a2ddc2, 5f2b932
+f1a543f, 5890595
+3abe124, bd11537
+f1a543f, 5f2b932
+f1a543f, bd11537
+f1a543f, 5890595
+1a2ddc2, bd11537
+1a2ddc2, 5890595
+3abe124, 5f2b932
+f1a543f, 5f2b932
+f1a543f, bd11537
+f1a543f, 5890595
+1a2ddc2, 5f2b932
+1a2ddc2, bd11537
+1a2ddc2, 5890595`;
+
+const asStream = function * (iterable) { yield * iterable; };
+
+const lines = str => str.split('\n');
+const streamOfLines = asStream(lines(logContents));
+
+const datums = str => str.split(', ');
+const datumize = map(datums);
+
+const userKey = ([user, _]) => user;
+
+const pairMaker = () => {
+  let wip = [];
+
+  return reducer =>
+    (acc, val) => {
+      wip.push(val);
+
+      if (wip.length === 2) {
+        const pair = wip;
+        wip = wip.slice(1);
+        return reducer(acc, pair);
+      } else {
+        return acc;
+      }
+  }
+}
+
+const sortedDecoration =
+  (xfMaker, keyFn) => {
+    const decoratedReducersByKey = new Map();
+
+    return reducer =>
+      (acc, val) => {
+        const key = keyFn(val);
+        let decoratedReducer;
+
+        if (decoratedReducersByKey.has(key)) {
+          decoratedReducer = decoratedReducersByKey.get(key);
+        } else {
+          decoratedReducer = xfMaker()(reducer);
+          decoratedReducersByKey.set(key, decoratedReducer);
+        }
+
+        return decoratedReducer(acc, val);
+      }
+  }
+
+const userTransitions = sortedDecoration(pairMaker, userKey);
+
+const justLocations = map(([[u1, l1], [u2, l2]]) => [l1, l2]);
+
+const stringify = map(transition => transition.join(' -> '));
+
+const transitionKeys = compose(
+  stringify, justLocations, userTransitions, datumize
+);
+
+const countsOf =
+  (acc, val) => {
+    if (acc.has(val)) {
+      acc.set(val, 1 + acc.get(val));
+    } else {
+      acc.set(val, 1);
+    }
+    return acc;
+  }
+
+const greatestValue = inMap =>
+  Array.from(inMap.entries()).reduce(
+    ([wasKeys, wasCount], [transitionKey, count]) => {
+      if (count < wasCount) {
+        return [wasKeys, wasCount];
+      } else if (count > wasCount) {
+        return [new Set([transitionKey]), count];
+      } else {
+        wasKeys.add(transitionKey);
+        return [wasKeys, wasCount];
+      }
+    }
+    , [new Set(), 0]
+  );
+
+greatestValue(
+  transduce(transitionKeys, countsOf, new Map(), streamOfLines)
+)
+  //=>
+    [
+      "5f2b932 -> bd11537",
+      "bd11537 -> 5890595"
+    ],
+    4
+```
 
 ### notes
 
