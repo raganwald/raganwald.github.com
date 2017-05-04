@@ -211,8 +211,6 @@ reduce([1, 2, 3], map(x => x + 1)(sumOf), 0)
   //=> 9
 ```
 
-[![Pythagoras Tree](/assets/images/pythagoras-tree.png)](https://commons.wikimedia.org/wiki/File:Pythagoras_tree_1_1_13_Summer.svg)
-
 Armed with all we've seen so far, what is the sum of the squares of the numbers from one to ten?
 
 ```javascript
@@ -222,6 +220,8 @@ const one2ten = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 reduce(one2ten, squares(sumOf), 0)
   //=> 385
 ```
+
+[![Pythagoras Tree](/assets/images/pythagoras-tree.png)](https://commons.wikimedia.org/wiki/File:Pythagoras_tree_1_1_13_Summer.svg)
 
 ---
 
