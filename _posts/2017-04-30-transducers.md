@@ -520,5 +520,9 @@ greatestValue(
     4
 ```
 
+### further reading
+
+- [Understanding Transducers in JavaScript](https://medium.com/@roman01la/understanding-transducers-in-javascript-3500d3bd9624)
+
 ### notes
 

@@ -954,7 +954,7 @@ The end goal, as always, is to decompose the algorithm into smaller parts that c
 
 ### further reading
 
-- [Understanding Transducers in JavaScript](https://medium.com/@roman01la/understanding-transducers-in-javascript-3500d3bd9624)
+- [What's a Transducer?](http://raganwald.com/2017/04/30/transducers.html)
 
 ---
 
