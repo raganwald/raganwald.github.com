@@ -70,9 +70,11 @@ In JavaScript, arrays have a `.reduce` method built in, and they behave exactly 
   //=> [1, 2, 3]
 ```
 
-Now, `(acc, val) => acc.concat([val])` makes a lot of excess copies of things, and in JavaScript, we can substitute `(acc, val) => { acc.push(val); return acc; }`.[^comma] But either way, what we get is a reducer that accumulates values into an array. Let's give it a name:
+Now, `(acc, val) => acc.concat([val])` makes a lot of excess copies of things, and in JavaScript, we can substitute `(acc, val) => { acc.push(val); return acc; }`.[^comma]
 
 [^comma]: `(acc, val) => (acc.push(val), acc)` is more pleasing semantically, but the comma operator is confusing to those who haven't seen its regular use, and usually best avoided in production code.
+
+Either way, what we get is a reducer that accumulates values into an array. Let's give it a name:
 
 ```javascript
 const arrayOf = (acc, val) => { acc.push(val); return acc; };
@@ -81,7 +83,7 @@ reduce([1, 2, 3], arrayOf, [])
   //=> [1, 2, 3]
 ```
 
-Of course, `arrayOf` is not the only reducer. Consider:
+Here's yet another reducer:
 
 ```javascript
 const sumOf = (acc, val) => acc + val;
@@ -184,12 +186,13 @@ reduce([1, 2, 3], map(x => x + 1)(sumOf), 0)
   //=> 9
 ```
 
-Armed with all we've sen so far, what is the sum of the squares of the numbers from one to ten?
+Armed with all we've seen so far, what is the sum of the squares of the numbers from one to ten?
 
 ```javascript
 const squares = map(x => power(x, 2));
+const one2ten = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-reduce([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], squares(sumOf), 0)
+reduce(one2ten, squares(sumOf), 0)
   //=> 385
 ```
 
@@ -200,7 +203,7 @@ Let's go back to our first reducer:
 ```javascript
 const arrayOf = (acc, val) => { acc.push(val); return acc; };
 
-reduce([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], arrayOf, 0)
+reduce(one2ten, arrayOf, 0)
   //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 ```
 
@@ -214,21 +217,21 @@ const bigUns = (acc, val) => {
   return acc;
 };
 
-reduce([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], bigUns, [])
+reduce(one2ten, bigUns, [])
   //=> [6, 7, 8, 9, 10]
 ```
 
 Naturally, we can combine what we already have to produce an array of the squares of the numbers greater than five:
 
 ```javascript
-reduce([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], squares(bigUns), [])
+reduce(one2ten, squares(bigUns), [])
   //=> [9, 16, 25, 36, 49, 64, 81, 100]
 ```
 
-This is not what we wanted! We have the *squares* that are greater than five, rather than the squares of the numbers that are greater than five. We want to do the selecting of numbers before we do the squaring, not after. This is easily done, and the insight is that what we want is a decorator that selects numbers, rather than a reducer, and we can use that to decorate the :
+This is not what we wanted! We have the *squares* that are greater than five, rather than the squares of the numbers that are greater than five. We want to do the selecting of numbers before we do the squaring, not after. This is easily done, and the insight is that what we want is a decorator that selects numbers, and we can use that to decorate the reducer:
 
 ```javascript
-reduce([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], squares(arrayOf), [])
+reduce(one2ten, squares(arrayOf), [])
   //=> [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 
 const bigUnsOf =
@@ -236,14 +239,14 @@ const bigUnsOf =
     (acc, val) =>
       (val > 5) ? reducer(acc, val) : acc;
 
-reduce([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], bigUnsOf(squares(arrayOf)), [])
+reduce(one2ten, bigUnsOf(squares(arrayOf)), [])
   //=> [36, 49, 64, 81, 100]
 ```
 
 `bgUnsOf` is rather specific. Just as we did with `map`, let's extract the predicate function:
 
 ```javascript
-reduce([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], squares(arrayOf), [])
+reduce(one2ten, squares(arrayOf), [])
   //=> [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 
 const filter =
@@ -252,20 +255,22 @@ const filter =
       (acc, val) =>
         fn(val) ? reducer(acc, val) : acc;
 
-reduce([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], filter(x => x > 5)(squares(arrayOf)), [])
+reduce(
+  one2ten, filter(x => x > 5)(squares(arrayOf)), [])
   //=> [36, 49, 64, 81, 100]
 ```
 
 We can make all kinds of filters, and name them if we want. Or not:
 
 ```javascript
-reduce([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], filter(x => x % 2 === 1)(arrayOf), [])
+reduce(one2ten, filter(x => x % 2 === 1)(arrayOf), [])
   //=> [1, 3, 5, 7, 9]
+```
 
 With all this in hand, the sum of the squares of the odd numbers from one to ten is:
 
 ```javascript
-reduce([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], filter(x => x % 2 === 1)(squares(sumOf)), 0)
+reduce(one2ten, filter(x => x % 2 === 1)(squares(sumOf)), 0)
   //=> 165
 ```
 
@@ -281,7 +286,7 @@ const compose = (...fns) =>
 
 const squaresOfTheOddNumbers = compose(filter(x => x % 2 === 1), squares);
 
-reduce([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], squaresOfTheOddNumbers(sumOf), 0)
+reduce(one2ten, squaresOfTheOddNumbers(sumOf), 0)
   //=> 165
 ```
 
@@ -294,7 +299,7 @@ Being able to compose decorators lets us decompose complex and highly coupled co
 Given reductions written in this style:
 
 ```javascript
-reduce([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], squaresOfTheOddNumbers(sumOf), 0)
+reduce(one2ten, squaresOfTheOddNumbers(sumOf), 0)
 ```
 
 We can note that we have four separate elements: An iterable, a set of decorators for the reducers that are composed together, a reducer, and a seed. We can express the same thing like this:
@@ -312,7 +317,7 @@ const transduce = (transducer, reducer, seed, iterable) => {
   return accumulation;
 }
 
-transduce(squaresOfTheOddNumbers, sumOf, 0, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+transduce(squaresOfTheOddNumbers, sumOf, 0, one2ten)
   //=> 165
 ```
 
