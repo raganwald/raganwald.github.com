@@ -16,6 +16,8 @@ We concluded by looking at a [stream approach]. In the stream approach, we proce
 
 [stream approach]: http://raganwald.com/2017/04/19/incremental.html#III
 
+[![a matrix dream](/assets/images/matrix-dream.jpg)](https://www.flickr.com/photos/gi/127757006)
+
 Now we're going to look at another very interesting approach for building composeable pipelines of transformations without incurring a memory penalty. Let's start with reducing (a/k/a "folding"):
 
 ### reducers
@@ -184,6 +186,8 @@ reduce([1, 2, 3], map(x => x + 1)(joinedWith('.')), '')
 reduce([1, 2, 3], map(x => x + 1)(sumOf), 0)
   //=> 9
 ```
+
+[![Pythagoras Tree](/assets/images/pythagoras-tree.png)](https://commons.wikimedia.org/wiki/File:Pythagoras_tree_1_1_13_Summer.svg)
 
 Armed with all we've seen so far, what is the sum of the squares of the numbers from one to ten?
 
