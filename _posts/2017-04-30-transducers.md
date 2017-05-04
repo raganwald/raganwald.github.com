@@ -302,7 +302,26 @@ Given reductions written in this style:
 reduce(one2ten, squaresOfTheOddNumbers(sumOf), 0)
 ```
 
-We can note that we have four separate elements: An iterable, a set of decorators for the reducers that are composed together, a reducer, and a seed. We can express the same thing like this:
+We can note that we have four separate elements: A decorator for the reducer (which may be a composition of decorators), a seed, and an iterable. We can express the same thing like this:
+
+```javascript
+const reduce = (decorator, reducer, seed, iterable) => {
+  const decoratedReducer = decorator(reducer);
+  let accumulation = seed;
+
+
+  for (const value of iterable) {
+    accumulation = decoratedReducer(accumulation, value);
+  }
+
+  return accumulation;
+}
+
+reduce(squaresOfTheOddNumbers, sumOf, 0, one2ten)
+  //=> 165
+```
+
+This does not resemble the `.reduce` method, or the way `reduce` functions are usually written, so we need some new names:
 
 ```javascript
 const transduce = (transducer, reducer, seed, iterable) => {
@@ -321,7 +340,7 @@ transduce(squaresOfTheOddNumbers, sumOf, 0, one2ten)
   //=> 165
 ```
 
-To recapitulate:[^clojure] A *reducer* is the kind of function you’d pass to `.reduce`—it takes an accumulated result and a new input, and returns a new accumulated result. A *transducer* is a function that decorates a reducer. Transducers compose to produce a new transducer.
+And there you have it:[^clojure] A *reducer* is the kind of function you’d pass to `.reduce`—it takes an accumulated result and a new input, and returns a new accumulated result. A *transducer* is a function that decorates a reducer. Transducers compose to produce a new transducer.
 
 [^clojure]: See https://clojure.org/reference/transducers
 
