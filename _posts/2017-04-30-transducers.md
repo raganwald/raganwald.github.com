@@ -1,6 +1,5 @@
 ---
-title: "A transducer is just a composeable decorator applied to a reducer to fold iterables.
-What's the problem?"
+title: "What's a Transducer?"
 layout: default
 tags: [allonge]
 ---
