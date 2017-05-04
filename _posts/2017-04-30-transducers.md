@@ -16,11 +16,11 @@ We concluded by looking at a [stream approach]. In the stream approach, we proce
 
 [stream approach]: http://raganwald.com/2017/04/19/incremental.html#III
 
+Now we're going to look at another very interesting approach for building composeable pipelines of transformations without incurring a memory penalty, **transducers**.
+
 [![a matrix dream](/assets/images/matrix-dream.jpg)](https://www.flickr.com/photos/gi/127757006)
 
-Now we're going to look at another very interesting approach for building composeable pipelines of transformations without incurring a memory penalty.
-
-Let's start with a look at reducing (a/k/a "folding"):
+Let's start with a review of reducing (a/k/a "folding"):
 
 ---
 
