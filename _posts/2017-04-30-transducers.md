@@ -326,5 +326,7 @@ So, if someone asks you what a "transducer" is, you might reply:
 
 ![What's the problem?](/assets/images/what-s-the-problem.png)
 
+---
+
 ### notes
 
