@@ -374,7 +374,9 @@ So, if someone asks you what a "transducer" is, you might reply:
 
 ---
 
-### the complete code
+### afterward
+
+The code we've written to explore transducers is quite compact and elegant:
 
 ```javascript
 const arrayOf = (acc, val) => { acc.push(val); return acc; };
@@ -408,6 +410,14 @@ const transduce = (transducer, reducer, seed, iterable) => {
   return accumulation;
 }
 ```
+
+It covers all of the cases that we would currently use `.map`, `.filter`, and `.reduce` for with arrays, and the composable transducers don't make multiple copies of the data set. Transducers as developed for production code bases cover more use cases, such as replicating the functionality of `.find`.
+
+Another case libraries cover is this: Our `transduce` function assumes that the collection is iterable, and it demands that we provide the seed and reducer functions. In most cases, the seed and reducer functions are the same for all collections of the same type.
+
+OOP has solved this problem with polymorphism, of course. Collections have methods, so if you invoke the right method, you get the right thing back. Production-class libraries provide an interface for collection types to operate gracefully with transducers.
+
+But this is enough to grasp the pattern behind transducers, and once again to embrace the elegant possibilities when a language provides functions as first-class values.
 
 ### the transducer approach to tracking user transitions
 
@@ -526,6 +536,7 @@ greatestValue(
 ### further reading
 
 - [Understanding Transducers in JavaScript](https://medium.com/@roman01la/understanding-transducers-in-javascript-3500d3bd9624)
+- [transducers-js](https://github.com/cognitect-labs/transducers-js)
 
 ### notes
 
