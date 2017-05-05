@@ -381,11 +381,15 @@ transduce(squaresOfTheOddNumbers, sumOf, 0, one2ten)
   //=> 165
 ```
 
-And there you have it: A *reducer* is the kind of function you’d pass to `.reduce`—it takes an accumulated result and a new input, and returns a new accumulated result. A *transducer* is a function that decorates a reducer. Transducers compose to produce a new transducer.[^clojure]
+And there you have it: A *reducer* is the kind of function you’d pass to `.reduce`—it takes an accumulated result and a new input, and returns a new accumulated result. A *transducer* is a function that decorates a reducer.
 
-[^clojure]: See [https://clojure.org/reference/transducers](https://clojure.org/reference/transducers)
+The elegance of the transducer pattern is that transducers compose naturally to produce new transducers. So we can chain as many transducers together as we like to decorate one decorator, and since we end up with one decorated reducer, we only iterate over the collection once. We don't need to create intermediate copies of the data or iterate over it multiple times.
 
-So, if someone asks you what a "transducer" is, you might reply:
+Transducers come to us from the [Clojure] programming community, but as you can see they "cut with JavaScript's grain" and are a natural fit for what JavaScript makes easy.
+
+[Clojure]: https://clojure.org/reference/transducers
+
+So, if someone asks us what a "transducer" is, we can now reply:
 
 ![What's the problem?](/assets/images/what-s-the-problem.png)
 
