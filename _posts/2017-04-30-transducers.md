@@ -82,7 +82,25 @@ reduce([1, 2, 3], (acc, val) => acc.concat([val]), [])
   //=> [1, 2, 3]
 ```
 
-In JavaScript, arrays have a `.reduce` method built in, and they behave exactly like our `reduce` function:
+Thankfully, JavaScript is evolving towards a convention of writing functions like `reduce` to take the reducer first. In [JavaScript Allongé][ja]-style nomenclature, we can write:
+
+[ja]: https://leanpub.com/javascriptallongesix
+
+```javascript
+const reduceWith = (reducer, seed, iterable) => {
+  let accumulation = seed;
+
+  for (const value of iterable) {
+    accumulation = reducer(accumulation, value);
+  }
+
+  return accumulation;
+}
+
+reduce([1, 2, 3], (acc, val) => acc.concat([val]), [])
+  //=> [1, 2, 3]
+```
+In JavaScript, arrays have a `.reduce` method built in, and they behave exactly like our `reduce` or `reduceWith` functions:
 
 ```javascript
 [1, 2, 3].reduce((acc, val) => acc.concat([val]), [])
@@ -98,7 +116,7 @@ Either way, what we get is a reducer that accumulates values into an array. Let'
 ```javascript
 const arrayOf = (acc, val) => { acc.push(val); return acc; };
 
-reduce([1, 2, 3], arrayOf, [])
+reduceWith(arrayOf, [], [1, 2, 3])
   //=> [1, 2, 3]
 ```
 
@@ -107,7 +125,7 @@ Here's yet another reducer:
 ```javascript
 const sumOf = (acc, val) => acc + val;
 
-reduce([1, 2, 3], sumOf, 0)
+reduceWith(sumOf, 0, [1, 2, 3])
   //=> 6
 ```
 
@@ -125,10 +143,10 @@ const joinedWith =
     (acc, val) =>
       acc == '' ? val : `${acc}${separator}${val}`;
 
-reduce([1, 2, 3], joinedWith(', '), '')
+reduceWith(joinedWith(', '), '', [1, 2, 3])
   //=> "1, 2, 3"
 
-reduce([1, 2, 3], joinedWith('.'), '')
+reduceWith(joinedWith('.'), '', [1, 2, 3])
   //=> "1.2.3"
 ```
 
@@ -156,12 +174,12 @@ higherPower(2, 3)
 `higherPower` is `power`, decorated to add one to its `exponent`. Thus, `higherPower(2, 3)` produces the same result as `power(2, 4)`. We have been working with binary functions already, of course. Reducers are binary functions. Can we decorate them? Yes!
 
 ```javascript
-reduce([1, 2, 3], incrementSecondArgument(arrayOf), [])
+reduceWith(incrementSecondArgument(arrayOf), [], [1, 2, 3])
   //=> [2, 3, 4]
 
 const incremented =
   iterable =>
-    reduce(iterable, incrementSecondArgument(arrayOf), []);
+    reduceWith(incrementSecondArgument(arrayOf), [], iterable);
 
 incremented([1, 2, 3])
   //=> [2, 3, 4]
@@ -197,24 +215,24 @@ const map =
 
 const incrementValue = map(x => x + 1);
 
-reduce([1, 2, 3], incrementValue(arrayOf), [])
+reduceWith(incrementValue(arrayOf), [], [1, 2, 3])
   //=> [2, 3, 4]
 ```
 
 Although it looks unfamiliar to people not used to the idea of a function taking a function as an argument and returning a function that takes a function as an argument, we can write `map(x => x + 1)` anywhere we can write `incrementValue`, therefore we can write:
 
 ```javascript
-reduce([1, 2, 3], map(x => x + 1)(arrayOf), [])
+reduceWith(map(x => x + 1)(arrayOf), [], [1, 2, 3])
   //=> [2, 3, 4]
 ```
 
 And because our `map` decorator can decorate any reducer, we can also join the increments of the numbers from one to three into a  string or sum them:
 
 ```javascript
-reduce([1, 2, 3], map(x => x + 1)(joinedWith('.')), '')
+reduceWith(map(x => x + 1)(joinedWith('.')), '', [1, 2, 3])
   //=> "2.3.4"
 
-reduce([1, 2, 3], map(x => x + 1)(sumOf), 0)
+reduceWith(map(x => x + 1)(sumOf), 0, [1, 2, 3])
   //=> 9
 ```
 
@@ -224,7 +242,7 @@ Armed with all we've seen so far, what is the sum of the squares of the numbers 
 const squares = map(x => power(x, 2));
 const one2ten = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-reduce(one2ten, squares(sumOf), 0)
+reduceWith(squares(sumOf), 0, one2ten)
   //=> 385
 ```
 
@@ -239,7 +257,7 @@ Let's go back to our first reducer:
 ```javascript
 const arrayOf = (acc, val) => { acc.push(val); return acc; };
 
-reduce(one2ten, arrayOf, 0)
+reduceWith(arrayOf, 0, one2ten)
   //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 ```
 
@@ -253,21 +271,21 @@ const bigUns = (acc, val) => {
   return acc;
 };
 
-reduce(one2ten, bigUns, [])
+reduceWith(bigUns, [], one2ten)
   //=> [6, 7, 8, 9, 10]
 ```
 
 Naturally, we can combine what we already have to produce an array of the squares of the numbers greater than five:
 
 ```javascript
-reduce(one2ten, squares(bigUns), [])
+reduceWith(squares(bigUns), [], one2ten)
   //=> [9, 16, 25, 36, 49, 64, 81, 100]
 ```
 
 This is not what we wanted! We have the *squares* that are greater than five, rather than the squares of the numbers that are greater than five. We want to do the selecting of numbers before we do the squaring, not after. This is easily done, and the insight is that what we want is a decorator that selects numbers, and we can use that to decorate the reducer:
 
 ```javascript
-reduce(one2ten, squares(arrayOf), [])
+reduceWith(squares(arrayOf), [], one2ten)
   //=> [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 
 const bigUnsOf =
@@ -275,14 +293,14 @@ const bigUnsOf =
     (acc, val) =>
       (val > 5) ? reducer(acc, val) : acc;
 
-reduce(one2ten, bigUnsOf(squares(arrayOf)), [])
+reduceWith(bigUnsOf(squares(arrayOf)), [], one2ten)
   //=> [36, 49, 64, 81, 100]
 ```
 
 `bgUnsOf` is rather specific. Just as we did with `map`, let's extract the predicate function:
 
 ```javascript
-reduce(one2ten, squares(arrayOf), [])
+reduceWith(squares(arrayOf), [], one2ten)
   //=> [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 
 const filter =
@@ -291,21 +309,21 @@ const filter =
       (acc, val) =>
         fn(val) ? reducer(acc, val) : acc;
 
-reduce(one2ten, filter(x => x > 5)(squares(arrayOf)), [])
+reduceWith(filter(x => x > 5)(squares(arrayOf)), [], one2ten)
   //=> [36, 49, 64, 81, 100]
 ```
 
 We can make all kinds of filters, and name them if we want. Or not:
 
 ```javascript
-reduce(one2ten, filter(x => x % 2 === 1)(arrayOf), [])
+reduceWith(filter(x => x % 2 === 1)(arrayOf), [], one2ten)
   //=> [1, 3, 5, 7, 9]
 ```
 
 With all this in hand, the sum of the squares of the odd numbers from one to ten is:
 
 ```javascript
-reduce(one2ten, filter(x => x % 2 === 1)(squares(sumOf)), 0)
+reduceWith(filter(x => x % 2 === 1)(squares(sumOf)), 0, one2ten)
   //=> 165
 ```
 
@@ -346,7 +364,7 @@ const squaresOfTheOddNumbers = compose2(
   squares
 );
 
-reduce(one2ten, squaresOfTheOddNumbers(sumOf), 0)
+reduceWith(squaresOfTheOddNumbers(sumOf), 0, one2ten)
   //=> 165
 ```
 
@@ -370,7 +388,7 @@ Now we can write `compose` as a reduction of its arguments:
 
 ```javascript
 const compose = (...fns) =>
-  reduce(fns, compositionOf, x => x);
+  reduceWith(compositionOf, x => x, fns);
 ```
 
 ---
@@ -380,13 +398,13 @@ const compose = (...fns) =>
 Given reductions written in this style:
 
 ```javascript
-reduce(one2ten, squaresOfTheOddNumbers(sumOf), 0)
+reduceWith(squaresOfTheOddNumbers(sumOf), 0, one2ten)
 ```
 
 We can note that we have four separate elements: A transformer for the reducer (which may be a composition of transformers), a seed, and an iterable. We can express the same thing like this:
 
 ```javascript
-reduce(iterable, transformer(reducer), seed)
+reduceWith(transformer(reducer), seed, iterable)
 ```
 
 If we tease these into separate parameters and reörder them, we get:[^xf]
