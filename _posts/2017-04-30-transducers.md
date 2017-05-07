@@ -460,7 +460,7 @@ const filter =
 const compose = (...fns) =>
   fns.reduce((acc, val) => (...args) => val(acc(...args)), x => x);
 
-const transduce = (transducer, reducer, seed, iterable) => {
+const transduce = (transformer, reducer, seed, iterable) => {
   const decoratedReducer = transducer(reducer);
   let accumulation = seed;
 
@@ -530,7 +530,7 @@ const pairMaker = () => {
   }
 }
 
-const sortedDecoration =
+const sortedTransformation =
   (xfMaker, keyFn) => {
     const decoratedReducersByKey = new Map();
 
@@ -550,7 +550,7 @@ const sortedDecoration =
       }
   }
 
-const userTransitions = sortedDecoration(pairMaker, userKey);
+const userTransitions = sortedTransformation(pairMaker, userKey);
 
 const justLocations = map(([[u1, l1], [u2, l2]]) => [l1, l2]);
 
