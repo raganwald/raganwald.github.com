@@ -311,17 +311,37 @@ reduce(one2ten, filter(x => x % 2 === 1)(squares(sumOf)), 0)
 
 ---
 
-### composing decorators
+### "transformers" and composition
 
-The essential character of this pattern is that we can take a reducer and compose it with as many mappers, filters, or other decorators that we cook up, and we end up with a reducer. Decorators *compose* with each other. We can even be explicit about this in a delightful way:
+Denizens of other programming communities have a word for a function that takes an argument and transforms it into something else: They call such functions "transformers." What we call decorators are a special case of transformers, and so if some talks about a "transformer" function that transforms a reducer into another reducer, we know that they are talking about the same thing as when we talk about a function that "decorates" a reducer with some additional functionality such as mapping or filtering.
+
+The mappers and filters we have discussed so far are transformers. Within the context of this programming pattern, an essential characteristic of transformers is that they *compose* to produce a new transformer. As a refresher, here's a function that composes any two functions:
 
 ```javascript
-const compositionOf = (acc, val) => (...args) => val(acc(...args));
+const plusFive = x => x + 5;
+const divideByTwo = x => x / 2;
 
-const compose = (...fns) =>
-  reduce(fns, compositionOf, x => x);
+plusFive(3)
+  //=> 8
 
-const squaresOfTheOddNumbers = compose(
+divideByTow(8)
+  //=> 4
+
+const compose2 =
+  (a, b) =>
+    (...c) =>
+      a(b(...c));
+
+const plusFiveDividedByTwo = compose2(divideByTwo, plusFive);
+
+plusFiveDividedByTwo(3)
+  //=> 4
+```
+
+What does it mean to say that transformers compose to make a new transformer? Just that if we `compose2` any two transformers, we get a new transformer that transforms a reducer. Thus:
+
+```javascript
+const squaresOfTheOddNumbers = compose2(
   filter(x => x % 2 === 1),
   squares
 );
@@ -330,9 +350,28 @@ reduce(one2ten, squaresOfTheOddNumbers(sumOf), 0)
   //=> 165
 ```
 
-Yes, this formulation of `compose` uses `reduce` and in turn is used in our `reduce`.
+`squaresOfTheOddNumbers` is a transformer we created by composing a filter with a mapper.
 
 Being able to compose decorators lets us decompose complex and highly coupled code into smaller units with a single responsibility that we can name if we choose.
+
+---
+
+### composition with transformers
+
+Now that we know how to `compose2`, what if we want to compose an arbitrary number of functions? There's a reduction for that!
+
+let's start by rewriting `compose2` as a transformer, `compositionOf`:
+
+```javascript
+const compositionOf = (acc, val) => (...args) => val(acc(...args));
+```
+
+Now we can write `compose` as a reduction of its arguments:
+
+```javascript
+const compose = (...fns) =>
+  reduce(fns, compositionOf, x => x);
+```
 
 ---
 
@@ -344,29 +383,18 @@ Given reductions written in this style:
 reduce(one2ten, squaresOfTheOddNumbers(sumOf), 0)
 ```
 
-We can note that we have four separate elements: A decorator for the reducer (which may be a composition of decorators), a seed, and an iterable. We can express the same thing like this:
+We can note that we have four separate elements: A transformer for the reducer (which may be a composition of transformers), a seed, and an iterable. We can express the same thing like this:
 
 ```javascript
-const reduce = (decorator, reducer, seed, iterable) => {
-  const decoratedReducer = decorator(reducer);
-  let accumulation = seed;
-
-
-  for (const value of iterable) {
-    accumulation = decoratedReducer(accumulation, value);
-  }
-
-  return accumulation;
-}
-
-reduce(squaresOfTheOddNumbers, sumOf, 0, one2ten)
-  //=> 165
+reduce(iterable, transformer(reducer), seed)
 ```
 
-This does not resemble the `.reduce` method, or the way `reduce` functions are usually written, so we need some new names:
+If we tease these into separate parameters and reörder them, we get:[^xf]
+
+[^xf]: In some programming communities, there is a strong sense of conservation with respect to characters, so `tarnsformer` is abbreviated to `xform` or even `xf`. Don't be surprised if you see writing like `(xf, reduce, seed, coll)`, or `xf((val, acc) => acc) -> (val, acc) => acc`.
 
 ```javascript
-const transduce = (transducer, reducer, seed, iterable) => {
+const transduce = (transformer, reducer, seed, iterable) => {
   const decoratedReducer = transducer(reducer);
   let accumulation = seed;
 
@@ -381,9 +409,9 @@ transduce(squaresOfTheOddNumbers, sumOf, 0, one2ten)
   //=> 165
 ```
 
-And there you have it: A *reducer* is the kind of function you’d pass to `.reduce`—it takes an accumulated result and a new input, and returns a new accumulated result. A *transducer* is a function that decorates a reducer.
+And there you have it: A *reducer* is the kind of function you’d pass to `.reduce`—it takes an accumulated result and a new input, and returns a new accumulated result. A *transformer* is a function that transforms a reducer into another reducer. And a *transducer* ("transformer" plus "reducer," get it?) is a function that takes a transformer, a reducer, a seed, and an iterable and reduces it to a value.
 
-The elegance of the transducer pattern is that transducers compose naturally to produce new transducers. So we can chain as many transducers together as we like to decorate one decorator, and since we end up with one decorated reducer, we only iterate over the collection once. We don't need to create intermediate copies of the data or iterate over it multiple times.
+The elegance of the transducer pattern is that transformers compose naturally to produce new transformers. So we can chain as many transformers together as we like, and since we end up with one transformed reducer, we only iterate over the collection once. We don't need to create intermediate copies of the data or iterate over it multiple times.
 
 Transducers come to us from the [Clojure] programming community, but as you can see they "cut with JavaScript's grain" and are a natural fit for what JavaScript makes easy.
 
