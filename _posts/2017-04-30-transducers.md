@@ -97,7 +97,7 @@ const reduceWith = (reducer, seed, iterable) => {
   return accumulation;
 }
 
-reduce([1, 2, 3], (acc, val) => acc.concat([val]), [])
+reduce((acc, val) => acc.concat([val]), [], [1, 2, 3])
   //=> [1, 2, 3]
 ```
 In JavaScript, arrays have a `.reduce` method built in, and they behave exactly like our `reduce` or `reduceWith` functions:
