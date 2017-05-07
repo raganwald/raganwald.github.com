@@ -401,15 +401,9 @@ Given reductions written in this style:
 reduceWith(squaresOfTheOddNumbers(sumOf), 0, one2ten)
 ```
 
-We can note that we have four separate elements: A transformer for the reducer (which may be a composition of transformers), a seed, and an iterable. We can express the same thing like this:
+We can note that we have four separate elements: A transformer for the reducer (which may be a composition of transformers), a seed, and an iterable. If we tease these into separate parameters, we get:[^xf]
 
-```javascript
-reduceWith(transformer(reducer), seed, iterable)
-```
-
-If we tease these into separate parameters and reörder them, we get:[^xf]
-
-[^xf]: In some programming communities, there is a strong sense of conservation with respect to characters, so `tarnsformer` is abbreviated to `xform` or even `xf`. Don't be surprised if you see writing like `(xf, reduce, seed, coll)`, or `xf((val, acc) => acc) -> (val, acc) => acc`.
+[^xf]: In some programming communities, there is a strong sense of conservation with respect to characters, so `tarnsformer` is abbreviated to `xform` or even `xf`. Don't be surprised if you see writing like `(xf, reduce, seed, coll)`, or `xf((val, acc) => acc) -> (val, acc) => acc`. We're not going to do that here, but we have no problem with a name like `xf` or `xform` in production code.
 
 ```javascript
 const transduce = (transformer, reducer, seed, iterable) => {
