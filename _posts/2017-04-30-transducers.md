@@ -99,6 +99,11 @@ const reduceWith = (reducer, seed, iterable) => {
 
 reduce([1, 2, 3], (acc, val) => acc.concat([val]), [])
   //=> [1, 2, 3]
+
+// becomes:
+
+reduceWith((acc, val) => acc.concat([val]), [], [1, 2, 3])
+  //=> [1, 2, 3]
 ```
 In JavaScript, arrays have a `.reduce` method built in, and they behave exactly like our `reduce` or `reduceWith` functions:
 
