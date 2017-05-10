@@ -14,7 +14,7 @@ Now, some libraries would shim `.bind` if it isn't present, and others would pro
 
 But it reminded me of an open issue in my own [allong.es] library that I'm going to fix today. Let me show you. Here's how `Function.prototype.bind works`:
 
-[allong.es]: http://allong.es
+[allong.es]: https://github.com/raganwald/allong.es
 
 ```javascript
 function greet (whom) {

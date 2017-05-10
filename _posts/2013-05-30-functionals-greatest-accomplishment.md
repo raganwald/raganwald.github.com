@@ -16,7 +16,7 @@ I was pleased to see his [Fun.js – Functional JavaScript](http://blog.fogus.me
 
 Today, many people rightly point to things like Underscore or CoffeeScript and ask if we need `Functional`. To be precise, they don't ask, they criticize, often expressing strong disapproval as is common in our community.
 
-Perhaps if someone wrote this library today we might ask if it solves a new problem or introduces a new way of thinking. Mostly, the answer might be "no." We might say that the point-free programming offered by string lambdas are a matter of taste, and that libraries like [Underscore](http://underscorejs.org), [Lemonad](https://github.com/fogus/lemonad), or [allong.es](http://allong.es) cover everything else and more besides.
+Perhaps if someone wrote this library today we might ask if it solves a new problem or introduces a new way of thinking. Mostly, the answer might be "no." We might say that the point-free programming offered by string lambdas are a matter of taste, and that libraries like [Underscore](http://underscorejs.org), [Lemonad](https://github.com/fogus/lemonad), or [allong.es](https://github.com/raganwald/allong.es) cover everything else and more besides.
 
 But of course, `Functional` wasn't written today. It was written well before any of these other libraries. In fact, it inspired all three of the libraries just mentioned in whole or in part. When it was introduced, it seemed exotic and weird to the JavaScript community, but its ideas won a few hardy adventurers over, and they won some more people over, and gradually its seeds grew and spread and intermingled with other ideas.
 

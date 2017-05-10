@@ -146,7 +146,7 @@ L.trampoline = function(fun /*, args */) {
 
 We'll rewrite it in [allong.es] style for consistency with other posts in this blog. Meaning, we write it as a function decorator:
 
-[allong.es]: http://allong.es
+[allong.es]: https://github.com/raganwald/allong.es
 
 ```javascript
 npm install allong.es

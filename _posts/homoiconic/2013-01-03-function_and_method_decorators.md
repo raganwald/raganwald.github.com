@@ -11,7 +11,7 @@ tags : [homoiconic, javascript]
 [ja]: http://leanpub.com/javascriptallongesix
 [I]: http://raganwald.com/2013/01/01/this.html "More than you ever wanted to know about "this" in JavaScript, Part I"
 [proggit_i]: http://www.reddit.com/r/javascript/comments/179j51/more_than_you_ever_wanted_to_know_about_this_in/
-[allong.es]: http://allong.es
+[allong.es]: https://github.com/raganwald/allong.es
 [u]:http://underscorejs.org
 
 ---

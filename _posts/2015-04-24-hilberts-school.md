@@ -277,7 +277,7 @@ He finishes with a summary of what he learned seating students:
 4. You can add an infinite number of infinities to infinity and put your new number into a one-to-one correspondence with the numbers, therefore an infinity times infinity has the same cardinality as the numbers.
 
 [^cantor]: [https://en.wikipedia.org/wiki/Georg_Cantor](https://en.wikipedia.org/wiki/Georg_Cantor)
-[allong.es]: http://allong.es "Free recipes from JavaScript Allongé"
+[allong.es]: https://github.com/raganwald/allong.es "Free recipes from JavaScript Allongé"
 [^kongregate]: [http://www.kongregate.com/forums/9/topics/93615](http://www.kongregate.com/forums/9/topics/93615)
 [^grand]: [https://en.wikipedia.org/wiki/Hilbert's_paradox_of_the_Grand_Hotel](https://en.wikipedia.org/wiki/Hilbert's_paradox_of_the_Grand_Hotel)
 

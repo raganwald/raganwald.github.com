@@ -290,7 +290,7 @@ twain.chosenCareer
 
 No. `twain` has `.setCareer` and `.career` methods, but `.chosencareer` is a property of an object created when `twain` was privately extended, then bound to each method using [`.bind`][bind].
 
-[allong.es]: http://allong.es
+[allong.es]: https://github.com/raganwald/allong.es
 [bind]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
 
 The advantage of this approach over closures is that the template and the mechanism for mixing it in are separate: You just write the template's methods, you don't have to carefully ensure that they access private state through variables in a closure.

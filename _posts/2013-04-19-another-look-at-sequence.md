@@ -11,7 +11,7 @@ One of the goals of the [allong.es] library is to provide easy-to-use tools for 
 
 To pick an example out of thin air, this snippet shows how to write a method that uses `maybe` to ensure that it doesn't do anything if you pass in `null` or `undefined`, and that uses *Fluent* to ensure that it always returns the receiver, jQuery-style:
 
-[allong.es]: http://allong.es
+[allong.es]: https://github.com/raganwald/allong.es
 
 ```javascript
 User.prototype.setName = fluent( maybe( function (name) {
@@ -21,7 +21,7 @@ User.prototype.setName = fluent( maybe( function (name) {
 
 This principle is so enshrined in function-oriented and functional programming that nearly every library with the word "functional" in it includes a `compose` function. Compose is straightforward:[^practice]
 
-[^practice]: In practice, [allong.es](http://allong.es) permits the use of any number of functions (not just two), and it also handles polyadic functions.
+[^practice]: In practice, [allong.es](https://github.com/raganwald/allong.es) permits the use of any number of functions (not just two), and it also handles polyadic functions.
 
 ```javascript
 function compose (a, b) {

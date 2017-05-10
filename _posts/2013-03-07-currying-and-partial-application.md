@@ -22,7 +22,7 @@ Some functions accept a variable number of arguments, we call them *variadic*, a
 
 Partial application is straightforward. We could start with addition or some such completely trivial example, but if you don't mind we'll have a look at something from the [allong.es] JavaScript library that is of actual use in daily programming.
 
-[allong.es]: http://allong.es
+[allong.es]: https://github.com/raganwald/allong.es
 
 As a preamble, let's make ourselves a `map` function that maps another function over a list:
 
@@ -86,7 +86,7 @@ squareAll([5, 7, 5]);
 
 We've just partially applied the value `square` to the function `map`. We got back a unary function, `squareAll`, that we could use as we liked. Partially applying `map` in this fashion is handy, so much so that the [allong.es] library includes a function called `mapWith` that does this exact thing.
 
-[allong.es]: http://allong.es
+[allong.es]: https://github.com/raganwald/allong.es
 
 If we had to physically write ourselves a wrapper function every time we want to do some partial application, we'd never bother. Being programmers though, we can automate this. There are two ways to do it.
 
@@ -281,7 +281,7 @@ notes:
 
 [^tao]: A Taoist ordered a vegetarian hot dog from a street vendor: "Make me one with everything," he requested politely.
 [^also]: There are a lot of other reasons to curry functions, but this is an article about the relationship between currying and partial application, not an introduction to combinatory logic and functional programming :-)
-[allong.es]: http://allong.es
+[allong.es]: https://github.com/raganwald/allong.es
 [ja]: http://leanpub.com/javascriptallongesix
 [pa]: https://github.com/raganwald/allong.es/blob/master/lib/partial_application.js
 [repo]: https://github.com/raganwald/raganwald.github.com

@@ -33,7 +33,7 @@ var _ = require('underscore');
 var orderTotals = _.pluck(orders, 'total');
 ```
 
-[^pluck]: So why not use `_.pluck`? It's even simpler! The benefit of `mapWith` and `attrWith` when used consistently in a codebase is that they *compose* very nicely because they're written to take a single value as an argument and return a function. `mapWith` and `attrWith` are shown here to illustrate the opacity of jargon to those who are not immersed in its culture. In actual fact, the [allong.es](http://allong.es) library does include its own version of pluck, and the definition is a one-liner: `var pluckWith = compose(mapWith, attrWith)`. It's curried, so you can write `var totaller = pluckWith('total');`, or you can write `pluckWith('total', orders);`. And thanks to the magic of the `flip` combinator, `var pluck = flip(pluckWith)`.
+[^pluck]: So why not use `_.pluck`? It's even simpler! The benefit of `mapWith` and `attrWith` when used consistently in a codebase is that they *compose* very nicely because they're written to take a single value as an argument and return a function. `mapWith` and `attrWith` are shown here to illustrate the opacity of jargon to those who are not immersed in its culture. In actual fact, the [allong.es](https://github.com/raganwald/allong.es) library does include its own version of pluck, and the definition is a one-liner: `var pluckWith = compose(mapWith, attrWith)`. It's curried, so you can write `var totaller = pluckWith('total');`, or you can write `pluckWith('total', orders);`. And thanks to the magic of the `flip` combinator, `var pluck = flip(pluckWith)`.
 
 ### jargon
 

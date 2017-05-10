@@ -27,24 +27,9 @@ One of the nice things about markdown is that it is what it is. There's very lit
 
 ### and now...
 
-In the last twelve months or so, I've been embracing [Github Pages](http://pages.github.com) for some projects. In exchange for fiddling with a domain registrar, I can host things on my own domains, like:
-
-* [http://allong.es](http://allong.es): A free library of [JavaScript Allongé](https://leanpub.com/javascriptallongesix) recipes.
-* [http://recursiveuniver.se](http://recursiveuniver.se): An implementation of HashLife, in Literate CoffeeScript.
-* [http://oscin.es](http://oscin.es): Combinatory Logic in JavaScript.
-
-I'm even hosting free versions of some of my books:
-
-* [http://combinators.info](http://combinators.info): [Kestrels, Quirky Birds, and Hopeless Egocentricity](https://leanpub.com/combinators).
-* [http://ristrettolo.gy](http://ristrettolo.gy): [CoffeeScript Ristretto](https://leanpub.com/coffeescript-ristretto).
-
-And with those under my belt, I took the plunge and moved all of my writing from 2013 over to [http://raganwald.com](http://raganwald.com). I'm now using Jekyll to publish my "bloggy thing" to Github. I get the same lame lack of ability to format my posts, but I can now waste time with layouts.
+In the last twelve months or so, I've been embracing [Github Pages](http://pages.github.com) for some projects. In exchange for fiddling with a domain registrar, I can host things on my own domains. I took the plunge and moved all of my writing from 2013 over to [http://raganwald.com](http://raganwald.com). I'm now using Jekyll to publish my "bloggy thing" to Github. I get the same lame lack of ability to format my posts, but I can now waste time with layouts.
 
 And I get my own domain, that's a win. And the layouts let me do things like pimp my books on every page without doing a global search-and-replace. Or add analytics to the blog. We'll see if I do much more than just post.
-
-### my workflow
-
-I do a more complicated thing with Jekyll on my [http://ristrettolo.gy](http://ristrettolo.gy) site, where I use an asset pipeline to compile CoffeeScript. It's a book about CoffeeScript, the interactive behaviour should be written in CoffeeScript!
 
 But here on [http://raganwald.com](http://raganwald.com), I use the basic (and free) Jekyll behaviour built into Github Pages. That means absolutely no Jekyll plugins. Which suits me fine.
 

@@ -554,7 +554,7 @@ function when (guardFn, optionalFn) {
 }
 
 // "getWith," "mapWith," and "pluckWith" can all be found in the allong.es
-// library, http://allong.es
+// library, https://github.com/raganwald/allong.es
 function getWith (prop, obj) {
   function gets (obj) {
     return obj[prop];
