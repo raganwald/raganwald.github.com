@@ -412,11 +412,11 @@ We can note that we have four separate elements: A transformer for the reducer (
 
 ```javascript
 const transduce = (transformer, reducer, seed, iterable) => {
-  const decoratedReducer = transducer(reducer);
+  const transformedReducer = transformer(reducer);
   let accumulation = seed;
 
   for (const value of iterable) {
-    accumulation = decoratedReducer(accumulation, value);
+    accumulation = transformedReducer(accumulation, value);
   }
 
   return accumulation;
@@ -466,11 +466,11 @@ const compose = (...fns) =>
   fns.reduce((acc, val) => (...args) => val(acc(...args)), x => x);
 
 const transduce = (transformer, reducer, seed, iterable) => {
-  const decoratedReducer = transducer(reducer);
+  const transformedReducer = transformer(reducer);
   let accumulation = seed;
 
   for (const value of iterable) {
-    accumulation = decoratedReducer(accumulation, value);
+    accumulation = transformedReducer(accumulation, value);
   }
 
   return accumulation;
