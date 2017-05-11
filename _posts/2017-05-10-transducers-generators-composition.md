@@ -24,39 +24,113 @@ In this post we will compare the iterators and generators approach to the transd
 
 ---
 
-### iterators and generators
+### composition with iterators and generators
 
-The foundation of our iterators and generators approach to composing data transformations is to write our maps and filters as generator functions. we can write composeable functions by hand:
+The foundation of our iterators and generators approach to composing data transformations is to write our maps and filters as generator functions. We can easily write composeable mappers and filterers for iterators:
 
 ```javascript
-function * mapIterableWith (mapFn, iterable) {
-  for (const value of iterable) {
-    yield mapFn(value);
-  }
-}
+const iterableMapper =
+  mapFn =>
+    function * (iterable) {
+      for (const value of iterable) {
+        yield mapFn(value);
+      }
+    };
 
-function * filterIterableWith (predicateFn, iterable) {
-  for (const value of iterable) {
-    if (predicateFn(value)) {
-      yield value;
-    }
-  }
-}
+const iterableFilterer =
+  predicateFn =>
+    function * (iterable) {
+      for (const value of iterable) {
+        if (predicateFn(value)) {
+          yield value;
+        }
+      }
+    };
+```
+
+`iterableMapper` takes a mapping function and returns a generator function that applies the mapping function to every value in its input and yields the result. `iteableFilterer` takes a predicate function and returns a generator function that applies the predicate function to every value in its input and yields those that pass.
+
+The functions returned from `iterableMapper` and `iteableFilterer` compose directly. For example:
+
+```javascript
+const squares = iterableMapper(n => n * n);
+const odds = iterableFilterer(n => n % 2 === 1);
+
+const compose = (...fns) =>
+  fns.reduce((acc, val) => (...args) => val(acc(...args)), x => x);
+
+const squaresOfTheOddNumbers = compose(squares, odds);
 
 const one2ten = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-const squares = iterable => mapIterableWith(n => n * n, iterable);
-const odds = iterable => filterIterableWith(n => n % 2 === 1, iterable);
-
-
+squaresOfTheOddNumbers(one2ten)
+  //=> 1, 9, 25, 49, 81
 ```
 
+In addition to doing nice things with finite arrays, we can even use them with iterators that are infinite in length. The following is **not** the Sieve of Eratosthenes:
 
+```javascript
+function * numbersFrom (count = 0) {
+  while (true) {
+    yield count++;
+  }
+}
 
+function primes * () {
+  function * primesOf(iterable) {
+    const iterator = iterable[Symbol.iterator]();
+    const { value: head, done } = iterator.next();
 
+    if (!done) {
+      yield head;
 
+      const notDivisibleByHead = iterableFilterer(n => n % head !== 0);
 
+      yield * primesOf(notDivisibleByHead(iterator));
+    }
+  }
 
+  yield * primesOf(numbersFrom(2));
+}
+```
+
+What are the first ten prime numbers that read the same forwards and backwards?
+
+```javascript
+const take =
+  numberToTake =>
+    function * (iterable) {
+      let count = 0;
+      for (const value of iterable) {
+        if (++count <= numberToTake) {
+          yield value
+        } else {
+          return;
+        }
+      }
+    };
+
+const simpleReverse =
+  s =>
+    s.split("").reverse().join("");
+
+const palindromic =
+  n =>
+    n.toString() === simpleReverse(n.toString());
+
+const palindromes = iterableFilterer(palindromic);
+
+compose(primes, palindromes, take(10))()
+  //=> 2, 3, 5, 7, 11, 101, 131, 151, 181, 191
+```
+
+The `take` function is interesting. `take(10)` returns a generator that iterates over the first ten elements of its input and then stops. Because geneators are "lazy," even though we are allegedly working with an infinite list of primes, we only compute enough to find the first ten that are palindromic.
+
+We are going to come back to finding the first ten palindromic primes, but first, let's take another look at the transducer pattern.
+
+---
+
+### transducers and composeable transformations
 
 
 [![a matrix dream](/assets/images/matrix-dream.jpg)](https://www.flickr.com/photos/gi/127757006)
