@@ -22,7 +22,7 @@ So with that in mind, we began in [Part I] by looking at a simple Turing Machine
 
 We ended [Part I] by suggesting that as we added even more complexity, the compiler approach would help us manage that complexity, despite the compiler being more complicated to implement than the additions we made to the a-machine's code. Let's follow through and add more power to our machine.
 
-### a quick recap
+### the a-machine
 
 (Feel free to skip over this if [Part I] is fresh in your mind)
 
@@ -79,6 +79,8 @@ function aMachine({ description, tape: _tape = [0] }) {
 ```
 
 Our "a-machine" has a "vocabulary" of `0` and `1`: These are the only marks allowed on the tape. If it encounters another mark, it halts. These are also the only marks it is allowed to put on the tape, via the `ERASE` and `PRINT` actions. It selects as the start state the state of the first instruction. Any finite number of states are permitted.
+
+### the sequence-machine
 
 We also built a "sequence-machine." The sequence-machine differs from the a-machine by allowing a single instruction to have multiple actions:
 
@@ -156,6 +158,8 @@ const description = [
 sequenceMachine({ description })
   //=> [0, 0, 1]
 ```
+
+### the sequence-compiler
 
 To implement the sequence-machine, we added code directly to the a-machine. We then implemented the sequence-machine with a "compiler" that translates programs for the sequence-machine into programs for the a-machine:
 
@@ -274,6 +278,14 @@ flatten({ description, tape: [0] })
       tape: [0]
     }
 ```
+
+### go ugly, early
+
+Now, the above code *seems* to work given some quick checking by hand. But we really ought to use everything we've learned from [JavaScript Allongé][ja] to decompose this monolithic "compiler" into smaller, single-responsibility components that we can name (and possibly reuse elsewhere).
+
+[ja]: https://leanpub.com/javascriptallongesix
+
+To do that, we need some confidence that it works, and we need to be able to easly check that it still works as we change the code.
 
 ### separation of concerns
 
