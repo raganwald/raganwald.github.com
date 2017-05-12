@@ -6,7 +6,7 @@ tags: [allonge, noindex]
 
 This is the third of three loosely related posts about writing composeable transformations of data. The first, [Using iterators to write highly composeable code][iterators] examined the drawbacks of a traditional [staged approach]—excessive copying of the entire data set, and the drawbacks of the [single pass approach]—monolithic code.
 
-We concluded [Using iterators to write highly composeable code][iterators] with a pattern that solved both problems. Using [Iterators and Generators][iterators], we were able to decompose the transformation into sepaate, single-responsibility components like the satged approach, while processing data in a "stream" of one element at a time, without creating temporary copies of the entire data set.
+We concluded [Using iterators to write highly composeable code][iterators] with a pattern that solved both problems. Using [Iterators and Generators][iterators], we were able to decompose the transformation into separate, single-responsibility components like the staged approach, while processing data in a "stream" of one element at a time, without creating temporary copies of the entire data set.
 
 [iterators]: http://raganwald.com/2017/04/19/incremental.html
 [staged approach]: http://raganwald.com/2017/04/19/incremental.html#I
@@ -124,7 +124,7 @@ compose(primes, palindromes, take(10))()
   //=> 2, 3, 5, 7, 11, 101, 131, 151, 181, 191
 ```
 
-The `take` function is interesting. `take(10)` returns a generator that iterates over the first ten elements of its input and then stops. Because geneators are "lazy," even though we are allegedly working with an infinite list of primes, we only compute enough to find the first ten that are palindromic.
+The `take` function is interesting. `take(10)` returns a generator that iterates over the first ten elements of its input and then stops. Because generators are "lazy," even though we are allegedly working with an infinite list of primes, we only compute enough to find the first ten that are palindromic.
 
 We are going to come back to finding the first ten palindromic primes, but first, let's take another look at the transducer pattern.
 
@@ -132,14 +132,58 @@ We are going to come back to finding the first ten palindromic primes, but first
 
 ### transducers and composeable transformations
 
+In [What's a Transducer?], we examined the [transducer] pattern:
 
-[![a matrix dream](/assets/images/matrix-dream.jpg)](https://www.flickr.com/photos/gi/127757006)
+```javascript
+const arrayOf = (acc, val) => { acc.push(val); return acc; };
 
-In [Using iterators to write highly composeable code][iterators], we saw that the [staged approach] to data transformation is decomposed, but duplicates the entire data set. Whereas, the [single pass approach]  is more efficient, but the code was entangled and monolithic.
+const map =
+  fn =>
+    reducer =>
+      (acc, val) => reducer(acc, fn(val));
 
-Now we're going to look at an interesting approach for building composeable pipelines of transformations without incurring a memory penalty, **transducers**.
+const filter =
+  fn =>
+    reducer =>
+      (acc, val) =>
+        fn(val) ? reducer(acc, val) : acc;
 
-Let's start with a review of reducing (a/k/a "folding"):
+const transduce = (transformer, reducer, seed, iterable) => {
+  const transformedReducer = transformer(reducer);
+  let accumulation = seed;
+
+  for (const value of iterable) {
+    accumulation = transformedReducer(accumulation, value);
+  }
+
+  return accumulation;
+}
+
+transduce(compose(squareXf, oddXf), arrayOf, [], one2ten)
+  //=> 1, 9, 25, 49, 81
+```
+
+Transducers treat everything as a reduction, so mapping and filtering are simply special cases of reducing an iterable to a value of some sort, which can be an array in the example case.
+
+The interesting thing about transducers is that the pattern separates reducing an iterable into four separate responsibilities:
+
+1. Iterating over the source (which happens inside the `transduce` function);
+2. A reducer function that folds the elements into an accumulation;
+3. A seed to begin the accumulation;
+4. Composeable transformations of the reducer.
+
+When thinking about composition, we naturally focus on the composeable transformations, as we did above. Like our iterators and generators, we can break a complex transformation into separate functions with a single responsibility, and the operations are applied to the values step by step without creating copies of the entire data set.
+
+And the separation of the four elements gives us other kinds of flexibility, such as folding the odd squares into a set:
+
+```javascript
+const setOf = (acc, val) => acc.add(val);
+
+transduce(compose(squareXf, oddXf), setOf, new Set(), one2ten)
+  //=> Set{1, 9, 25, 49, 81}
+```
+
+But in general, how does it compare to
 
 ---
 
