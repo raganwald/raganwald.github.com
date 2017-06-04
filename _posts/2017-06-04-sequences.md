@@ -128,7 +128,7 @@ f10 -> (*.*)
 f12 -> (*(*))
 f14 -> (*..*)
 f16 -> (((*)))
-f18 -> ((*.)*)
+f18 -> ((*)*)
 f20 -> (*.(*))
 f22 -> (*...*)
 f24 -> (*(*.))
@@ -221,36 +221,48 @@ And now the whole thing is bare.
 
 ### prime factorization
 
-This notation expresses the numbers zero, one, and everything larger as a prime factorization. For example, twenty-eight is seven to the power of one times two to the power of two. Two is `(*)`, and thus twenty-eight is `(*..(*))`.
+This notation expresses the numbers zero and one as special cases. Everything larger uses the parentheses to represent numbers as their prime factorization. For example, twenty-eight is seven to the power of one times two to the power of two (`7ꜛ1 ⨉ 2ꜛ2`). Seven is `(*...)`, two is `(*)`, and thus twenty-eight is `(*..(*))`.
 
 [prime factorization]: https://en.wikipedia.org/wiki/Table_of_prime_factors
 
-Each position is the exponent for that prime. It looks a little weird because everyting is smooshed together, but if we use Lisp's s-exprs, it's easier to see how it works when an exponent is itself an expression:
+Each position is the exponent for that prime, also called its *multiplicity*. It looks a little weird because everything is smooshed together, but if we use Lisp's s-exprs, it's easier to see how it works when an exponent is itself an expression:
 
-`f28 -> (* . . (* .))`
+`f28 -> (* . . (*))`
 
-Another way of looking at the notation is that it describes a tree where each leaf is a `*` or `.`.
-
-### the full solution
-
-`.` is zero
-
-`*` is one
-
-`(cba)` is an expression denoting the product of `p3` to the power of `c`, `p2` to the power of `b`, and `p1` to the power of `a`. Each of `a`, `b`, and `c` can be any expression, a ``.`, a `*`, or another parenthesized expression, recursively.
-
-And in fact, this notation can express any natural number, because all numbers greater than one are the product of primes raised to zero or higher powers.
-
-Furthermore, it is subjectively elegant for certain things. The primes, for one. Another is the powers of two:
+This representation is recursive, so if `(*..(*))` is 28, then `((*..(*)).)` is `3ꜛ28`, or 22,876,792,454,961. Likewise, consider:
 
 ```
 f2 -> (*)
 f4 -> ((*))
-f8 -> (((*)))
 f16 -> (((*)))
+f65536 -> ((((*))))
+
+...
 ```
 
-**So what is 32, the next number in our sequence?**
+This is `2ꜛ1`, `2ꜛ2ꜛ1`, `2ꜛ2ꜛ2ꜛ1`, `2ꜛ2ꜛ2ꜛ2ꜛ1` and so forth ad infinitum.
 
-(Coming soon: Generating this sequence in JavaScript.)
+Many of the numeric properties derived from factorizing numbers are obvious from direct inspection of this notation. For example:
+
+- [Prime numbers](https://en.wikipedia.org/wiki/Prime_number) have just one prime factor raised to the power of one, thus they all have the form `(*` followed by zero or more `.`s followed by `)`.
+- [Composite numbers](https://en.wikipedia.org/wiki/Composite_number) have any other form beginning with `(` and ending with `)`.
+- [Odd numbers](https://en.wikipedia.org/wiki/Odd_number) do not have two as a factor, so they must end with `.)`.
+- [Even numbers](https://en.wikipedia.org/wiki/Even_number) have two as a factor, so they must end with `*)` or `))`.
+- A [semiprime](https://en.wikipedia.org/wiki/Semiprime) is a compound number consisting of two primes multiplied by each other or one prime squared. Thus, it is either:
+  1. `((*)` followed by zero or more `.`s, followed by `)`, or;
+  2. `(*`, followed by zero or more `.`s, followed by `*`, followed by zero or more `.`s, followed by `)`
+- A [square number](https://en.wikipedia.org/wiki/Square_number) has even multiplicity for all prime factors. `*` is a square, and also every number of the form `()` where each position is either a `.` or a parenthesized representation of an even number (see above).
+- A [powerful number](https://en.wikipedia.org/wiki/Powerful_number) has multiplicity above one for every prime factor, therefore a powerful number is represented as a `(`, followed by either `.`s or parenthesized expressions, followed by `)`.
+- A [square-free number](https://en.wikipedia.org/wiki/Square-free_integer) is represented as a `(*`, followed by zero or more `.`s or `*`s, followed by `)`.
+- A [prime power](https://en.wikipedia.org/wiki/Prime_power) is represented as a `(`, either a `*` or a parenthesized expression, followed by zero or more `.`s, followed by `)`.
+
+There are many more. What they all have in common is that they can be determined with fairly simple pattern matching from this representation.
+
+### closing thought
+
+Representations are celebrated for what they make easy. As we saw above, this notation makes all sorts of questions based on factorization easy. And it is much more compact than our base-n representation, the built-in exponentiation scales, well, exponentially.
+
+However, to be useful as a general-purpose representation, it would have to be easy to work with for routine tasks like addition and subtraction. And while converting from this representation seems straightforward, requiring only multiplication and exponentiation, converting to this representation is one of the hardest problems in number theory!
+
+Which is, of course, an irresistible challenge. In a future post, we'll look at mechanically generating this sequence, It should be a fun bit of recreational coding!
 
