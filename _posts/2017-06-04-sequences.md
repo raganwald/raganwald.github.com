@@ -1,5 +1,5 @@
 ---
-title: "A sequence problem, part I"
+title: "A Sequence Problem"
 layout: default
 tags: [allonge]
 ---
@@ -77,6 +77,8 @@ But of course, these are two different things. And if you want to measure one, y
 The argument about whether the ability to solve sequence problems applies to the ability to write software often comes down to the difference between the raw intelligence, which very well may to apply to programming, and the experience with specific math tools, which may not.
 
 But back to our sequence. You can stop here if you haven't solved the problem and care to work on it yourself.
+
+[![Numbers (c) 2012 Morebyless](/assets/images/numbers.jpg)](https://www.flickr.com/photos/morebyless/9423385629)
 
 ### the sequence
 
