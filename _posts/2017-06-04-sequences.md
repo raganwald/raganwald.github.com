@@ -103,7 +103,7 @@ How can we verify our conjecture? Well, the natural numbers have some patterns, 
 
 To make things easier, let's play with the sequence in JavaScript:
 
-```
+```javascript
 const s = ['.', '*', '(*)', '(*.)', '((*))', '(*..)',
   '(**)', '(*...)', '((*.))', '((*).)', '(*.*)', '(*....)',
   '(*(*))', '(*.....)', '(*..*)', '(**.)', '(((*)))',
@@ -115,7 +115,7 @@ const s = ['.', '*', '(*)', '(*.)', '((*))', '(*..)',
 
 Now we can get the even elements:
 
-```
+```javascript
 for (let i = 0; i < s.length; i = i + 2)
   console.log(`f${i} -> `+ s[i]);
 
@@ -139,7 +139,7 @@ f30 -> (***)
 
 And the odds:
 
-```
+```javascript
 for (let i = 1; i < s.length; i = i + 2)
   console.log(`f${i} -> `+ s[i]);
 
@@ -166,7 +166,7 @@ We can express that with a regular expression. Annoyingly, we have to escape eve
 
 Let's use it:
 
-```
+```javascript
 for (let i = 0; i < s.length; i = i + 1)
   if (s[i].match(/^\(\*\.+\)$/))
     console.log(`f${i} -> `+ s[i]);
@@ -185,7 +185,7 @@ f31 -> (*..........)
 
 This sequence looks very familiar, but it's missing something. Where is `f2`? If we modify our regular expression to match zero or more dots instead of one or more, we get:
 
-```
+```javascript
 for (let i = 0; i < s.length; i = i + 1)
   if (s[i].match(/^\(\*\.*\)$/))
     console.log(`f${i} -> `+ s[i]);
