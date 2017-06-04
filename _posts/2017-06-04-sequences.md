@@ -239,9 +239,7 @@ f8 -> (((*)))
 f16 -> (((*)))
 ```
 
-So what is 32, the next number in our sequence?
+**So what is 32, the next number in our sequence?**
 
----
-
-Coming soon: generating this sequence in JavaScript.
+(Coming soon: Generating this sequence in JavaScript.)
 
