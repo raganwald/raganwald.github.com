@@ -226,6 +226,16 @@ And now the whole thing is bare.
 
 And in fact, this notation can express any natural number, because all numbers greater than one are the product of primes raised to zero or higher powers.
 
+
+Furthermore, it is subjectively elegant for certain things. The primes, for one. Another is the powers of two:
+
+```
+f2 -> (*)
+f4 -> ((*))
+f8 -> (((*)))
+f16 -> (((*)))
+```
+
 So what is 32, the next number in our sequence?
 
 ---
