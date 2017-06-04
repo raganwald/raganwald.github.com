@@ -219,6 +219,18 @@ This explains nine (`((*).)`) and twenty-five (`(*)..`). But how about eight? Th
 
 And now the whole thing is bare.
 
+### prime factorization
+
+This notation expresses the numbers zero, one, and everything larger as a prime factorization. For example, twenty-eight is seven to the power of one times two to the power of two. Two is `(*)`, and thus twenty-eight is `(*..(*))`.
+
+[prime factorization]: https://en.wikipedia.org/wiki/Table_of_prime_factors
+
+Each position is the exponent for that prime. It looks a little weird because everyting is smooshed together, but if we use Lisp's s-exprs, it's easier to see how it works when an exponent is itself an expression:
+
+`f28 -> (* . . (* .))`
+
+Another way of looking at the notation is that it describes a tree where each leaf is a `*` or `.`.
+
 ### the full solution
 
 `.` is zero
@@ -228,7 +240,6 @@ And now the whole thing is bare.
 `(cba)` is an expression denoting the product of `p3` to the power of `c`, `p2` to the power of `b`, and `p1` to the power of `a`. Each of `a`, `b`, and `c` can be any expression, a ``.`, a `*`, or another parenthesized expression, recursively.
 
 And in fact, this notation can express any natural number, because all numbers greater than one are the product of primes raised to zero or higher powers.
-
 
 Furthermore, it is subjectively elegant for certain things. The primes, for one. Another is the powers of two:
 
