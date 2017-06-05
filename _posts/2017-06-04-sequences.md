@@ -54,9 +54,21 @@ Problems with this rough form appear regularly in "intelligence" tests. To solve
 
 First, you need some facility with manipulating abstract relationships and patterns. You need a modicum of deductive and inductive logical thought. This is probably what people are talking about when they talk about using a problem like this to measure "intelligence." It's not the only kind of intelligence, of course, but it certainly is one or more kinds of intelligence.
 
-It's not the only thing you need to figure this out. Imagine we try to prove the Pythagorean Theorem from scratch. This would be much harder than if we'd already had some exposure to plane geometry. The fact is, tools matter for solving problems, and experience with the tools greatly influences your ability to solve problems in a particular domain.
+But intelligence (whether intelligence-singular or multiple types of specialized intelligence) is not the only thing you need to figure this out. Intelligence is *necessary but not sufficient*. You also need experience with tools.
 
-There are tools for solving sequence problems. There are particular heuristics, things to pose as default conjectures. For example, one conjecture to try is that this is a sequence where there is a fixed transformation on each element to derive the next element. If that was the case, we would look for `f` where:
+### tooling
+
+What kinds of tools are we talking about?
+
+Imagine we try to prove the Pythagorean Theorem from scratch, with no mathematical training. This requires intelligence, obviously, but it would be much harder t to prove from scratch than if we'd already had some exposure to plane geometry. The fact is, tools matter for solving problems, and experience with the tools greatly influences your ability to solve problems in a particular domain.
+
+Solving sequence problems requires intelligence, yes, but it is greatly assisted by experience solving sequence problems and exposure to the tools for solving sequence problems.
+
+One tool is to make a hypothesis about how the sequence is constructed, test it against the examples given, and if it fits, derive the next value from your hypothetical rules for constructing the sequence.
+
+The more experience you have with sequence problems, the more hypotheses you are likely to consider and the faster you will generate and test them.
+
+One hypothesis to try is that this is a sequence where there is a fixed transformation on each element to derive the next element. If that was the case, we would look for `f` where:
 
 ```
 f. -> *
@@ -74,7 +86,9 @@ The recognition that sequences have patterns like "repeated application of a fun
 
 But of course, these are two different things. And if you want to measure one, you may wind up accidentally measuring the other. This is the main problem with "brain teasers" as programming interview questions. We often want to measure "smarts," but we instead measure "experience with abstract problems."
 
-The argument about whether the ability to solve sequence problems applies to the ability to write software often comes down to the difference between the raw intelligence, which very well may to apply to programming, and the experience with specific math tools, which may not.
+The argument about whether the ability to solve sequence problems applies to the ability to write software, often comes down to the difference between the raw intelligence, which very well may to apply to programming, and the experience with specific math tools, which may not.[^more]
+
+[^more]: There's another conjecture that organic exposure to mathematics is strongly correlated with programming ability. The archetype from my generation is the nerd who subscribed to Scientific American just for Martin Gardner's "Mathematical Recreations" column, and who reads Raymond Smullyan for fun. This may or may not be a reasonable conjecture, but modern thought is that while it may have some positive signal, it has many false negatives. Another, even more glaring flaw is that when there are financial incentives for pretending to have organic exposure to mathematics, people will fake this by purchasing entire books devoted to learning how to solve math problems, just to pass job interviews. In which case, you are testing someone's ability to cram for exams, which is not the same thing at all, and may end up excluding someone who chose to read about combinatorial logic instead of solving sequence problems.
 
 But back to our sequence. You can stop here if you haven't solved the problem and care to work on it yourself.
 
@@ -99,21 +113,63 @@ f31 -> (*..........)
 
 If that was the case, the sequence would be a representation of the Natural Numbers (also called the non-negative integers), in order, from `0` through `15` in the first list, and `16` through `31` in the second list. If we knew that this was a list of the natural numbers, we would know that the next number is going to be `32`, and if we know `f`, we can apply `f32 ->` and derive the next item in the list.
 
-How can we verify our conjecture? Well, the natural numbers have some patterns, and we could see if the sequence we have has similar patterns. For example, do all the even or odd items have something in common?
+How can we verify our hypothesis? Well, the natural numbers have some patterns, and we could see if the sequence we have has similar patterns. For example, do all the even or odd items have something in common?
 
-To make things easier, let's play with the sequence in JavaScript:
+To make things easier, let's play with the sequence in JavaScript. Here's some code that "prints" each element along with our hypothetical relationship:
 
 ```javascript
 const s = ['.', '*', '(*)', '(*.)', '((*))', '(*..)',
   '(**)', '(*...)', '((*.))', '((*).)', '(*.*)', '(*....)',
   '(*(*))', '(*.....)', '(*..*)', '(**.)', '(((*)))',
-  '(*......)', '((*.)*)', '(*.......)', '(*.(*))',
+  '(*......)', '((*)*)', '(*.......)', '(*.(*))',
   '(*.*.)', '(*...*)', '(*........)', '(*(*.))', '((*)..)',
   '(*....*)', '((*.).)', '(*..(*))', '(*.........)',
   '(***)', '(*..........)'];
+
+for (let i = 0; i < s.length; i = i + 1)
+  console.log(`f${i} -> `+ s[i]);
+
+f0 -> .
+f1 -> *
+f2 -> (*)
+f3 -> (*.)
+f4 -> ((*))
+f5 -> (*..)
+f6 -> (**)
+f7 -> (*...)
+f8 -> ((*.))
+f9 -> ((*).)
+f10 -> (*.*)
+f11 -> (*....)
+f12 -> (*(*))
+f13 -> (*.....)
+f14 -> (*..*)
+f15 -> (**.)
+f16 -> (((*)))
+f17 -> (*......)
+f18 -> ((*)*)
+f19 -> (*.......)
+f20 -> (*.(*))
+f21 -> (*.*.)
+f22 -> (*...*)
+f23 -> (*........)
+f24 -> (*(*.))
+f25 -> ((*)..)
+f26 -> (*....*)
+f27 -> ((*.).)
+f28 -> (*..(*))
+f29 -> (*.........)
+f30 -> (***)
+f31 -> (*..........)
 ```
 
-Now we can get the even elements:
+If you haven't solved it yet, feel free to stop here and take advantage of these two tools: The hypothesis that this is a mapping from the natural numbers to some representation, and a snippet of JavaScript that facilitates playing with the elements of the sequence.
+
+[![Sequence #1073 © 2010 fdecomite](/assets/images/cubes.jpg)](https://www.flickr.com/photos/fdecomite/5174624496)
+
+### some observations
+
+One thing we can do is look at the even elements:
 
 ```javascript
 for (let i = 0; i < s.length; i = i + 2)
@@ -137,7 +193,7 @@ f28 -> (*..(*))
 f30 -> (***)
 ```
 
-And the odds:
+And the odd elements:
 
 ```javascript
 for (let i = 1; i < s.length; i = i + 2)
@@ -160,7 +216,7 @@ f29 -> (*.........)
 f31 -> (*..........)
 ```
 
-Interesting. The first odd is `*`, which we conjecture to be `1`. All subsequent odds end in `.)`, while none of the evens end in `.)`. A bunch of the odds are even "more extreme," they start with `(*`, then have one or more dots ending in `.)`.
+Interesting. The first odd is `*`, which we hypothesize is `1`. All subsequent odds end in `.)`, while none of the evens end in `.)`. A bunch of the odds are even "more extreme," they start with `(*`, then have one or more dots ending in `.)`.
 
 We can express that with a regular expression. Annoyingly, we have to escape everything because this sequence consists entirely of characters that have a special meaning in regular expressions: `/^\(\*\.+\)$/`.
 
@@ -203,15 +259,17 @@ f29 -> (*.........)
 f31 -> (*..........)
 ```
 
-Aha! These are prime numbers. `(*)` is the first prime, `(*.)` is the second, `(*..)` is the third, and so forth, up to `(*..........)` being the eleventh prime. If our conjecture is correct, `.` is a zero and `*` is a one.
+Aha! These are prime numbers. `(*)` is the first prime, `(*.)` is the second, `(*..)` is the third, and so forth, up to `(*..........)` being the eleventh prime. If our hypothesis is correct, `.` is a zero and `*` is a one.
 
-So the eleventh prime is indicated by a one in the eleventh position and a zero in the previous positions. We know something like this. Our standard numerical notation (e.g. base ten) uses positions. A number in a particular position indicates how much to multiply the position's value, and we sum all the values together.
+Our special "exception" or two fits, it's an exception in number theory as well, two is the only even prime number. This is encouraging, let's observe something else:
+
+Each prime is indicated by a one in its position and a zero in the previous positions. We know something like this. Our standard numerical notation (e.g. base ten) uses positions. A number in a particular position indicates how much to multiply the position's value, and we sum all the values together.
 
 Maybe this uses the same method, but with primes instead of powers of a base like ten? Let's check it out. If that were the case, then given `(*.)` for three and `(*)` for two, we would expect `(**)` to be five ("three plus two"). But no, it's six. Which is three *times* two.
 
 Let's try another. `(*...)` is seven, and `(*.)` is three. `(*.*.)` is 21, seven times three, not eleven. It looks like this is a multiplicative scheme. And if we check all the numbers that don't have nested parentheses, that's exactly what we have.
 
-This all works out, even `(***)` for thirty (five times three times two). But what about nested parentheses? Well, four appears to be `((*))` if our conjecture is correct. That would be two times two, and there's no way to derive four from multiple primes.
+This all works out, even `(***)` for thirty (five times three times two). But what about nested parentheses? Well, four appears to be `((*))` if our hypothesis is correct. That would be two times two, and there's no way to derive four from multiple primes.
 
 So `((*))` must me some way of multiplying two by itself. We know that, it's two to the power of two. If we stare at it a bit, we see that one is `*`, and two is `(*)`, so that's a little like saying that two is `(1)` So if we look at `((1))`, we can take the inner `(1)` and turn it into two: `(2)` which is like saying two times two. So when we have nested parentheses, we are substituting a parenthesized expression anywhere a dot or asterisk could go.
 
@@ -267,3 +325,7 @@ However, to be useful as a general-purpose representation, it would have to be e
 Which is, of course, an irresistible challenge. In a future post, we'll look at mechanically generating this sequence, It should be a fun bit of recreational coding!
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=14482561))
+
+---
+
+### notes
