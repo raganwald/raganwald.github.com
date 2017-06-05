@@ -266,3 +266,4 @@ However, to be useful as a general-purpose representation, it would have to be e
 
 Which is, of course, an irresistible challenge. In a future post, we'll look at mechanically generating this sequence, It should be a fun bit of recreational coding!
 
+(discuss on [hacker news](https://news.ycombinator.com/item?id=14482561))
