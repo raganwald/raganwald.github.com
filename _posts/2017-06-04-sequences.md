@@ -332,7 +332,7 @@ Which is, of course, an irresistible challenge. In a future post, we'll look at 
 
 ### author's afterword
 
-Early in this essay, I touched on the problem with using questions like this to test "intelligence." The crux of the argument was that besides testing for intelligence, it also tests for exposure to the tooling.
+Earlier in this essay, I touched on the problem with using questions like this to test "intelligence." The crux of the argument was that besides testing for intelligence, it also tests for exposure to the tooling.
 
 The conclusion is that we really shouldn't draw conclusions about someone's intelligence, much less fitness for programming, from their ability to solve a problem like this in the context of a job interview.
 
