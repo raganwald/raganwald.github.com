@@ -326,6 +326,8 @@ Which is, of course, an irresistible challenge. In a future post, we'll look at 
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=14482561))
 
+[![Children at Hiawatha Playfield, 1912 Item 29278, Don Sherwood Parks History Collection (Record Series 5801-01), Seattle Municipal Archives.](/assets/images/teeter-totter.jpg)](https://www.flickr.com/photos/seattlemunicipalarchives/8450857233)
+
 ---
 
 ### author's afterword
