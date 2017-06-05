@@ -350,7 +350,7 @@ No, for the same reasons. Writing a blog post is evidence that Donovan carefully
 
 Carol, reading it extemporaneously, should not worry that she is in any way less intelligent or even less experienced than Donovan. Writing a blog post is a scenario where the author picks the problem and the tools necessary to solve the problem.
 
-It is not evidence of anything other than an enthusiasm for sharing, and I encourage everyone to enjoy blog posts in that spirit and now worry that they are in any way less gifted or unworthy.
+It is not evidence of anything other than an enthusiasm for sharing, and I encourage everyone to enjoy blog posts in that spirit. Please do not worry that you may be less gifted or unworthy in any way.
 
 ---
 
