@@ -169,7 +169,7 @@ If you haven't solved it yet, feel free to stop here and take advantage of these
 
 ### some observations
 
-One thing we can do is look at the even elements:
+Shall we continue? One thing we can do is look at the even elements:
 
 ```javascript
 for (let i = 0; i < s.length; i = i + 2)
@@ -325,6 +325,30 @@ However, to be useful as a general-purpose representation, it would have to be e
 Which is, of course, an irresistible challenge. In a future post, we'll look at mechanically generating this sequence, It should be a fun bit of recreational coding!
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=14482561))
+
+---
+
+### author's afterword
+
+Early in this essay, I touched on the problem with using questions like this to test "intelligence." The crux of the argument was that besides testing for intelligence, it also tests for exposure to the tooling.
+
+The conclusion is that we really shouldn't draw conclusions about someone's intelligence, much less fitness for programming, from their ability to solve a problem like this in the context of a job interview.
+
+A similar dynamic is in play when we compare someone who has seen the problem to someone who hasn't. If Alice is posing the problem to Bob, Alice can easily appear to be smarter than Bob!
+
+It seems silly when I write it out like this, obviously Alice posing the problem to Bob doesn't mean Alice is smarter or more capable than Bob. But all too often, this is the exact dynamic in job interviews. It's easy for interviewers to arrogantly fixate on an interviewee's struggle as evidence of them being unable to come up with the "obvious" solution.
+
+And the interviewee can contract a bad case of intimidation, feeling they are not smart enough or good enough to work in a place full of smart people who do nothing but solve math problems for fun.
+
+This generalizes to all interview problems, whether mathematical or not. Never assume that struggling with a problem implies that the interviewee must not be as smart as the interviewer, who has the advantage of having studied the problem at leisure.
+
+And while you're thinking about that, ask yourself this question: If Donovan writes a blog post about math, or programming, or anything at all, and Carol finds it unfamiliar, should she presume that Donovan is smarter and more experienced than she is?
+
+No, for the same reasons. Writing a blog post is evidence that Donovan carefully selected something he felt he knew, and then spent an undetermined amount of time writing, researching and polishing his words.
+
+Carol, reading it extemporaneously, should not worry that she is in any way less intelligent or even less experienced than Donovan. Writing a blog post is a scenario where the author picks the problem and the tools necessary to solve the problem.
+
+It is not evidence of anything other than an enthusiasm for sharing, and I encourage everyone to enjoy blog posts in that spirit and now worry that they are in any way less gifted or unworthy.
 
 ---
 
