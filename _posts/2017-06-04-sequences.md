@@ -60,7 +60,9 @@ But intelligence (whether intelligence-singular or multiple types of specialized
 
 What kinds of tools are we talking about?
 
-Imagine we try to prove the Pythagorean Theorem from scratch, with no mathematical training. This requires intelligence, obviously, but it would be much harder t to prove from scratch than if we'd already had some exposure to plane geometry. The fact is, tools matter for solving problems, and experience with the tools greatly influences your ability to solve problems in a particular domain.
+Imagine we try to prove the Pythagorean Theorem from scratch, with no mathematical training. This requires intelligence, obviously, but there is something else: It is much harder to prove a geometry theorem from first principles, than if we've already had some exposure to plane geometry and can use the notation and methods taught in school.
+
+The fact is, tools matter for solving problems, and experience with the tools greatly influences your ability to solve problems in a particular domain.
 
 Solving sequence problems requires intelligence, yes, but it is greatly assisted by experience solving sequence problems and exposure to the tools for solving sequence problems.
 
@@ -265,7 +267,7 @@ f31 -> (*..........)
 
 Aha! These are prime numbers. `(*)` is the first prime, `(*.)` is the second, `(*..)` is the third, and so forth, up to `(*..........)` being the eleventh prime. If our hypothesis is correct, `.` is a zero and `*` is a one.
 
-Our special "exception" or two fits, it's an exception in number theory as well, two is the only even prime number. This is encouraging, let's observe something else:
+Our special "exception"--two--fits, it's an exception in number theory as well: Two is the only even prime number. This discovery is encouraging, let's observe something else:
 
 Each prime is indicated by a one in its position and a zero in the previous positions. We know something like this. Our standard numerical notation (e.g. base ten) uses positions. A number in a particular position indicates how much to multiply the position's value, and we sum all the values together.
 
