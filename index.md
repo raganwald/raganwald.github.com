@@ -70,7 +70,7 @@ tags: [allonge]
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear == "2015" or postyear == "2016" or postyear = "2017" %}
+      {% unless post.tags contains "noindex" or postyear == "2015" or postyear == "2016" or postyear == "2017" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>)
         </li>
