@@ -169,9 +169,7 @@ first
   //=> 1
 ```
 
-We can verify for ourselves that this pattern works for both finite and infinite iterables.
-
-But for now, let us note:
+In a little while, we will verify for ourselves that this pattern works for both finite and infinite iterables. But for now, let us note:
 
 - An iterable is *any* object that implements a `[Symbol.iterator]` method, and that method should return an iterator.
 - Iterables can be used in `for..of` loops, amongst other places.
@@ -201,33 +199,65 @@ We loop over `oneTwoThree` twice, and each time JavaScript invokes its `[Symbol.
 
 
 We can make our own iterables, and they work exatcly the same way with things like `for...of` loops:
-{
- next() {
-  return { done: true };
- }
-}
+
 ```javascript
-const NONE = {
+const Nothing = {
   [Symbol.iterator]() {
     return {
-     next() {
-      return { done: true };
-     }
+      next() {
+        return { done: true };
+      }
     };
   }
 };
 
-for (cont v of NONE) {
+for (cont v of Nothing) {
   console.log(v);
 }
   //=> outputs nothing
 ```
 
-Awkward with all those braces, but it shows that we can make iterables at will.
+Awkward with all those braces, but it shows that we can make iterables at will. Now, let us recall our infinite iterators. We can make an iterable that returns an infinite iterator:
+
+```javascript
+const Numbers = {
+  [Symbol.iterator]() {
+    return {
+      value: 0,
+       
+      next() {
+        const value = this.value++;
+        
+        return { value, done: false };
+      }
+    };
+  }
+};
+
+for (cont v of Numbers) {
+  console.log(v);
+}
+  //=>
+    1
+    2
+    3
+    ...
+    infinity
+```
+
+Remember the elegant pattern for using destructuring to get the first element of an iterable? Let's verify that it works with an infinite iterator:
+
+```javascript
+const [zero] = Numbers;
+zero
+  //=> 0
+```
+
+Presto! This is very interesting, and we will certainly look at destructuring iterators in more depth another time. But let's get back to iterables and be a little more precise about their semantics.
 
 "Iterator" and "Iterable" are both standard JavaScript terminology. But here's a non-standard term that will be helpful: We will call iterables like `Array.prototype[Symbol.iterator]` that always return a new iterator, *reiterables*.
 
-A "reiterable" is an iterable that can be iterated over and will always start afresh and return an iterables over the same values.
+A "reiterable" is an iterable that can be iterated over and will always start afresh and return iterables over the same values.
 
 It seems odd to explicitly name this, isn't this how all iterables behave? No. An iterables must return an iterator, but as we will see, iterables can return the exact same iterator when called again, and thus not reset the state between calls. Iterables can also return different iterators, which yield different values. We will meet iterables that are not reiterables in the next section.
 
@@ -283,4 +313,83 @@ for (const v of JustOne()) {
     *
 ```
 
-This generator yields the value `*` and then is stops. Note that we don't have to manage `done` or `value` ourselves, we just write a generator, and JavaScript creates a function that returns an iterables for us.
+This generator yields the value `*` and then is stops. Note that we don't have to manage `done` or `value` ourselves, we just write a generator, and JavaScript creates a function that returns an iterable for us.
+
+Generators are _even better_. Here's a generator that successively yields three values:
+
+```javascript
+function * OneTwoThree () {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+for (const n of OneTwoThree()) {
+  console.log(n);
+}
+  //=>
+    1
+    2
+    3
+```
+
+Anyone who has spent a decade writing software without ever hearing about [coroutines][coroutine] will be amazed. The abstraction being presented to us is that of a function that executes, yields a value, and then suspends its execution until we resume its execution by calling `.next()` on the iterator.
+
+[coroutine]: https://en.m.wikipedia.org/wiki/Coroutine
+
+If it behaves as if it's pausing its execution, does that mean that it is retaining other aspects of its own state, like local variables? Here's one way to test this hypothesis, try it for yourself, what does this output?
+
+```javascript
+function * OneTwoThree () {
+  let n = 1;
+  
+  yield n++;
+  yield n++;
+  yield n;
+}
+
+for (const n of OneTwoThree()) {
+  console.log(n);
+}
+```
+
+We mentioned *reiterables* earlier. Do generators produce iterables or reiterables? Let's test the hypothesis and find out. When we write:
+
+```javascript
+for (const n of OneTwoThree()) {
+  console.log(n);
+}
+  //=>
+    1
+    2
+    3
+
+for (const n of OneTwoThree()) {
+  console.log(n);
+}
+  //=>
+    1
+    2
+    3
+```
+
+We are invoking the `OneTwoThree` generator twice, and it gives us two different iterables, each of which has its own fresh state. That is good to know. But is the iterable it returns a reiterable? Or not? Let's find out:
+
+```javascript
+const one2three = OneTwoThree();
+
+for (const n of one2three) {
+  console.log(n);
+}
+  //=>
+    1
+    2
+    3
+
+for (const n of one2three) {
+  console.log(n);
+}
+  //=> Nothing!
+```
+
+Ah! The iterable returned by a generator is not reiterable, it has one state, and if we "exhaust" it, there will be no more values to yield. This is not the same as something like an array that is also an iterable: Arrays are reiterables, and we must be careful to insure that if a reiterable is what we want, we implement it accordingly.
