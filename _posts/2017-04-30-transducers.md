@@ -347,7 +347,7 @@ const divideByTwo = x => x / 2;
 plusFive(3)
   //=> 8
 
-divideByTow(8)
+divideByTwo(8)
   //=> 4
 
 const compose2 =
