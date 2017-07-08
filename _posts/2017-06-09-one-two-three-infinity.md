@@ -28,7 +28,17 @@ Our sims can easily compare the quntity of fruits to the quantity of children vi
 
 Likewise, ordering the children is trivial. Line them up and have them step forward, one at a time.
 
-Let's use generators[^well-actually] to represent paths.
+So how can a sim determine if there are at at least as many fruits as children?
+
+First, our sim creates an ordering for the fruit, and an ordering for the children. Now the sim plucks a fruit from the basket and simultaneously asks a child to step forward. This is repeated until either the basket is empty, meaning that the ordering of fruit is done, or until there are no more children in line, meaning that the ordering of children is done.
+
+If the ordering of fruit is done, but the ordering of children is not done, there is not enough fruit for each child. Without having a notion for the precise numbers of fruit or children, our sim knows that the quantity of children is larger than the quantity of fruit.
+
+If both are done on the same step, our sim knows that the two quantities are identical.
+
+And if the ordering of children is done, but the ordering of fruit is not done, our sim knows that the quantity of fruit is larger than the quantity of children.
+
+We can implement this algorithm. Let's use generators[^well-actually] to represent orderings.
 
 ### generators
 
@@ -38,7 +48,6 @@ The simplest possible generator looks like this:
 
 ```javascript
 function * Nothing () {}
-
 ```
 
 A generator is a function denoted with a special `*`. When a generator is invoked, it always returns an *iterator*.[^iterable] This is not the same as a normal function: A normal function returns whatever we decide it should return, when we use the `return` keyword. And if we don't use the `return` keyword, it doesn't return anything (or if you prefer, it returns `undefined`.)
@@ -137,14 +146,12 @@ Iterators can be built up from this to handle more complex forms of iteration, a
 
 ```javascript
 function * Nothing () {}
-
 ```
 
 The generator `Nothing`, when invoked, returns an object that is very much like `iNothing` (we will go into the differences later). So when we write:
 
 ```javascript
 function * Nothing () {}
-
 ```
 
 It is as if we wrote:
@@ -226,41 +233,6 @@ function Today {
 
 We get a function that, when invoked, returns an iterator object that "yields" one value and then is done.
 
-
----
-
-
-Iterables have a number of uses. One of them is that we can use a `for...of` loop to iterate over an iterables values.
-
-So when we write:
-
-```javascript
-for (const v of Nothing()) {
-  console.log(v);
-}
-  //=> outputs nothing
-```
-
-We are invoking the `Nothing` generator and getting an iterable. We then iterate over its values. Since it doesn't have any values, the ` for...of` loop doesn't execute at all.
-
-Notice that we aren't iterating over the generator, it's just a function. We're iterating over what it returns, which is an iterable. Generators that return iterators over nothing are fine, but what about values?
-
-Generators `yield` values. Here's the next-simplest generator:
-
-```javascript
-function * JustOne () {
-  yield '*';
-}
-
-for (const v of JustOne()) {
-  console.log(v);
-}
-  //=>
-    *
-```
-
-When we invoke `JustOne`, we get an iterator that yields the value `*` and then it stops. When we use a `for...of` loop to iterate over its values, we  execute the loop once, for the solitary value that `JustOne` yields.
-
 Here's a generator that successively yields three values:
 
 ```javascript
@@ -304,6 +276,56 @@ for (const n of OneTwoThree()) {
 Yes, generators return iterables that don't just remember where they left off, they remember their state, including the values of their variables.
 
 We will look at generators in more depth as we go along, but first, we will consider something crucial to working with generators. If a generator is a kind of function that returns an iterable, can we use it in a function-oriented programming style? Can we pass generators to functions and return generators from functions?
+
+The answer is *yes*, as we'll see when we solve the problem of determining whether there is enough fruit for every child to have one to themselves.
+
+### is there enough fruit to feed the children?
+
+Here are two sample generators representing an ordering of a basket of fruit and an ordering of children:
+
+```javascript
+function * fruit () {
+  yield 'fruit';
+  yield 'fruit';
+  yield 'fruit';
+  yield 'fruit';
+}
+
+
+---
+
+
+Iterables have a number of uses. One of them is that we can use a `for...of` loop to iterate over an iterables values.
+
+So when we write:
+
+```javascript
+for (const v of Nothing()) {
+  console.log(v);
+}
+  //=> outputs nothing
+```
+
+We are invoking the `Nothing` generator and getting an iterable. We then iterate over its values. Since it doesn't have any values, the ` for...of` loop doesn't execute at all.
+
+Notice that we aren't iterating over the generator, it's just a function. We're iterating over what it returns, which is an iterable. Generators that return iterators over nothing are fine, but what about values?
+
+Generators `yield` values. Here's the next-simplest generator:
+
+```javascript
+function * JustOne () {
+  yield '*';
+}
+
+for (const v of JustOne()) {
+  console.log(v);
+}
+  //=>
+    *
+```
+
+When we invoke `JustOne`, we get an iterator that yields the value `*` and then it stops. When we use a `for...of` loop to iterate over its values, we  execute the loop once, for the solitary value that `JustOne` yields.
+
 
 ---
 
