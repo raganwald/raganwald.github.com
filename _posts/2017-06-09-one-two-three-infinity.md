@@ -6,58 +6,111 @@ tags: [allonge, noindex]
 
 Imagine we create intelligent life. Perhaps they are sims in a virtual world. Or if you prefer, they arise spontaneously in miniature as part of a school science experiment.
 
-As they work their way up Maslow's Hierarchy of Needs, they teach themselves about counting things. One of them, a little more academic than the others, decides to take their folk knowledge about counting and codify it into a "calculus."[^romance]
+They are intelligent, social, and self-sufficient. They have their own language. They organize themselves, they solve problems collaboratively, in many ways they are just like us.
 
-This calculus describes, in steps, how to perform calculations of various sorts. What does it look like?
+However, unlike you and I, their language is [anumeric]: They have no words or notation for numbers! This seems very odd to us, but to them things seem just fine.[^romance] 
 
-### the first calculus
-
-The first calculus developed is very simple. It has the notion of *nothing* and of *something*. In our own language, these are like the numbers zero and one. Since JavaScript is a notation familiar to almost everyone who reads this blog, we shall translate the calculus to JavaScript. Here are the first two given elements:
-
-```javascript
-const Zero = '.';
-const One = '*';
-```
-
-Of course, our sims often work with more than one thing, like the number of members of a family, or the number of fruit on a tree. They might need to solve a simple problem involving "numbers" greater than one. For example, are there enough fruits in this particular tree such that each member of the family can have one?
+[anumeric]: https://theconversation.com/anumeric-people-what-happens-when-a-language-has-no-words-for-numbers-75828 "‘Anumeric’ people: What happens when a language has no words for numbers?"
 
 [^romance]: This essay is inspired by the very first book about mathematics or science I can remember reading, Gamow's "One, Two, Three, Infinity." In it , Gamow gave an account of a supposed primitive human tribe that could only count definitively to three, every larger number was "many." With time and maturity I see that we should be very careful about patronising actual humans who live in or have recently lived in what we may think is a primitive manner. For this reason, I speak only of sims and not of real people. Absolutely no inference should be drawn from our hypothetical sims to real people, if for no other reason than the obvious: Artificial life we might actually program is far more likely to reflect our prejudices about the nature of life than reality.
 
-To solve problems like determining whether a tree holds enough fruit for the family, the sims developed the idea of a _path_ through things. A path is a mechanism for going through a set of things one at a time, however there is no way to get the size of a path, or access its things arbitrarily or in any other order. All we can do is follow the path, one thing at a time.
+How do they solve problems without words for numbers?
 
-In JavaScript, we can use iterators and iterables to represent paths. Before we get into the sims' calculus, let's refresh our memories of how iterators and iterables work:
+### solving problems without words for numbers
 
-### iterators and iterables
+Our sims grasp the notions of *nothing*, *something*, and *a quantity of something*. Our sims often work with more than one something, like the children in their family, or the fruit in a basket. In their language, a child is a something, the children in their family are a quantity of something: A child, a quantity of children. Likewise, a fruit, a quantity of fruit.
 
-In JavaScript, an **iterator** is any object that has a `.next()` method, which returns a plain-old-javascript-object that has a `.done` property. `.done` must be either `true` or `false`. If `.done` is `false`, the object must also have a `.value` property.
+They might need to solve a simple problem involving quantities. For example, are there at least enough fruits in this particular basket such that each child can have one to themselves?
 
-The simplest possible iterator looks like this:
+To solve problems like determining whether there as many of one something as there are of another--without distinct numbers--the sims developed the idea of an ordering of things. An ordering is a mechanism for iterating over a collection of things one at a time. There is no way to get the size of an ordering: Not only do they have no concept of numbers one could use for sizes, orderings aren't necessarily finite. For example, days consist on an ordering. There is one today, there will be another tomorrow, and so it goes until the death of our sun and anybody left on our planet will have no concept of dawn or dusk.
+
+Our sims can easily compare the quntity of fruits to the quantity of children via orderings. Plucking a fruit from the basket consists of ordering the quantity of fruit. At some point, the basket goes from having a quantity of fruit to nothing fruit, when that happens, we say the ordering is `done`.
+
+Likewise, ordering the children is trivial. Line them up and have them step forward, one at a time.
+
+Let's use generators[^well-actually] to represent paths.
+
+### generators
+
+Borrowing a page or two from languages like Python, JavaScript provides **generators**, functions that when invoked, return an *iterator*. What's an iterator? Push that question on the stack for a moment and let's see what they do:
+
+The simplest possible generator looks like this:
 
 ```javascript
-const ITER_NONE = {
- next() {
-  return { done: true };
- }
+function * Nothing () {}
+
+```
+
+A generator is a function denoted with a special `*`. When a generator is invoked, it always returns an *iterator*.[^iterable] This is not the same as a normal function: A normal function returns whatever we decide it should return, when we use the `return` keyword. And if we don't use the `return` keyword, it doesn't return anything (or if you prefer, it returns `undefined`.)
+
+[^iterable]: Well, actually, the object a generator returns is not just an iterator, it's a self-iterable iterator, but we're getting ahead of ourselves.
+
+So a generator, when invoked, always returns an iterator. So what is an iterator? In JavaScript, an **iterator** is an object that has a `.next()` method, and that we can count on to return something very specific when we invoke the `.next()` method. When we invoke the `.next()` method, an iteraror returns a plain-old-javascript-object ("POJO") that has a `.done` property. `.done` must be either `true` or `false`. If `.done` is `false`, the object must also have a `.value` property.
+
+An iterator is exactly the same thing as the "ordering" our sims use. A very simple iterator looks like this:
+
+```javascript
+const iNothing = {
+  done: true,
+  
+  next() {
+    const { done } = this;
+    
+    return { done };
+  }
 };
 ```
+
+It's an object with a `.next()` method, the `.next()` method returns a POJO, and the POJO has a `.done` property that is always going to be bound to `true`.
 
 Iterators in JavaScript can be used in a number of ways. The simplest is a loop:
 
 ```javascript
 while (true) {
-  const { value, done } = ITER_NONE.next();
+  const { value, done } = iNothing.next();
   if (done) break;
   console.log(value);
 }
   //=> Outputs nothing.
 ```
 
-`ITER_NONE` doesn't iterate over anything. The next simplest iterator iterates over one element. Here's one possible example:
+`iNothing` doesn't iterate over anything. Another very simple iterator is the extreme opposite of `iNothing`:
 
 ```javascript
-const ITER_ONE = {
+const iDays = {
   done: false,
-  value: '*',
+  value: 'day',
+  
+  next() {
+    const { done, value } = this;
+    
+    return { done, value };
+  }
+};
+```
+
+Iteating over `iDays` is going to take a while. Better brew a really big pot of tea:
+
+```javascript
+while (true) {
+  const { value, done } = iDays.next();
+  if (done) break;
+  console.log(value);
+}
+  //=>
+    day
+    day
+    day
+    
+    ...
+```
+
+Iterators can also return a finite number of values, which is good because that's what we'll need most of the time. Here's one possible example:
+
+```javascript
+const iToday = {
+  done: false,
+  value: 'day',
   next() {
     const { done, value } = this;
     
@@ -71,21 +124,283 @@ const ITER_ONE = {
 }
 
 while (true) {
-  const { value, done } = ITER_ONE.next();
+  const { value, done } = iToday.next();
   if (done) break;
   console.log(value);
 }
-  //=> '*'
+  //=> 'day'
 ```
 
-*Conceptually*, `ITER_ONE` is simple. The first time we call `.next()`, we get a `value` of `*` and a `done` of `false`. The next and every subsequent call, we get a `done` of true.
+*Conceptually*, `iToday` is simple. The first time we call `.next()`, we get a `value` of `day` and a `done` of `false`. The next and every subsequent call, we get a `done` of `true` and no `value`.
+
+Iterators can be built up from this to handle more complex forms of iteration, and we will look at those presently. But let's get back to generators. The purpose of generators is to make it easier--much easier--to write iterators. Let's return to the generator for `Nothing`:
+
+```javascript
+function * Nothing () {}
+
+```
+
+The generator `Nothing`, when invoked, returns an object that is very much like `iNothing` (we will go into the differences later). So when we write:
+
+```javascript
+function * Nothing () {}
+
+```
+
+It is as if we wrote:
+
+```javascript
+function Nothing () {
+  return {
+    done: true,
+    
+    next() {
+      const { done } = this;
+      
+      return { done };
+    }
+  };
+};
+```
+
+Of course, `Nothing` is not `iNothing`, `Nothing` is a function that *generates* an iterator that is just like `iNothing`:
+
+
+```javascript
+const iNothing = Nothing();
+
+while (true) {
+  const { value, done } = iNothing.next();
+  if (done) break;
+  console.log(value);
+}
+  //=> Outputs nothing.
+```
+
+Generators that don't generate anything have their uses, but generators that generate things have many more uses, so onwards. Here's a generator that produces an iterator that iterates over one element:
+
+```javascript
+function * Today () {
+  yield 'day';
+}
+
+const iToday = Today();
+
+while (true) {
+  const { value, done } = iToday.next();
+  if (done) break;
+  console.log(value);
+}
+  //=>
+    day
+```
+
+Ah! When we write:
+
+```javascript
+function * Today () {
+  yield 'day';
+}
+```
+
+It is as if we wrote something equivalent to:
+
+```javascript
+function Today {
+  return {
+    done: false,
+    value: '*',
+    next() {
+      const { done, value } = this;
+      
+      if (done) {
+        return { done };
+      else {
+        this.done = true;
+        return { done, value } 
+      }
+    }
+  };
+}
+```
+
+We get a function that, when invoked, returns an iterator object that "yields" one value and then is done.
+
+
+---
+
+
+Iterables have a number of uses. One of them is that we can use a `for...of` loop to iterate over an iterables values.
+
+So when we write:
+
+```javascript
+for (const v of Nothing()) {
+  console.log(v);
+}
+  //=> outputs nothing
+```
+
+We are invoking the `Nothing` generator and getting an iterable. We then iterate over its values. Since it doesn't have any values, the ` for...of` loop doesn't execute at all.
+
+Notice that we aren't iterating over the generator, it's just a function. We're iterating over what it returns, which is an iterable. Generators that return iterators over nothing are fine, but what about values?
+
+Generators `yield` values. Here's the next-simplest generator:
+
+```javascript
+function * JustOne () {
+  yield '*';
+}
+
+for (const v of JustOne()) {
+  console.log(v);
+}
+  //=>
+    *
+```
+
+When we invoke `JustOne`, we get an iterator that yields the value `*` and then it stops. When we use a `for...of` loop to iterate over its values, we  execute the loop once, for the solitary value that `JustOne` yields.
+
+Here's a generator that successively yields three values:
+
+```javascript
+function * OneTwoThree () {
+  yield '*';
+  yield '**';
+  yield '***';
+}
+
+for (const n of OneTwoThree()) {
+  console.log(n);
+}
+  //=>
+    *
+    **
+    ***
+```
+
+This generator returns an iterable that yields three values successively. Anyone who has spent a decade writing software without ever hearing about [coroutines][coroutine] will be amazed. The abstraction being presented to us is that of a function that executes, yields a value, and then suspends its execution until we resume its execution by calling `.next()` on the iterator.
+
+[coroutine]: https://en.m.wikipedia.org/wiki/Coroutine
+
+If it behaves as if it's pausing its execution, does that mean that it is retaining other aspects of its own state, like local variables? Here's one way to test such a hypothesis: what does this code output?
+
+```javascript
+function * OneTwoThree () {
+  let n = '*';
+  
+  yield n;
+  n += '*';
+  yield n;
+  n += '*';
+  yield n;
+}
+
+for (const n of OneTwoThree()) {
+  console.log(n);
+}
+```
+
+Yes, generators return iterables that don't just remember where they left off, they remember their state, including the values of their variables.
+
+We will look at generators in more depth as we go along, but first, we will consider something crucial to working with generators. If a generator is a kind of function that returns an iterable, can we use it in a function-oriented programming style? Can we pass generators to functions and return generators from functions?
+
+---
+
+# For Later
+
+But let's get back to iterables and be a little more precise about their semantics.
+
+"Iterator" and "Iterable" are both standard JavaScript terminology. But here's a non-standard term that will be helpful: We will call iterables like `Array.prototype[Symbol.iterator]` that always return a new iterator, *reiterables*.
+
+A "reiterable" is an iterable that can be iterated over and will always start afresh and return iterables over the same values.
+
+It seems odd to explicitly name this, isn't this how all iterables behave? No. An iterables must return an iterator, but as we will see, iterables can return the exact same iterator when called again, and thus not reset the state between calls. Iterables can also return different iterators, which yield different values. We will meet iterables that are not reiterables in the next section.
+
+```javascript
+
+typeof Nothing
+  //=> "function"
+  
+typeof Nothing()
+  //=> "object"
+  
+typeof Nothing()[Symbol.iterator]
+  //=> "function"
+  
+typeof Nothing()[Symbol.iterator]()
+  //=> "object"
+  
+typeof Nothing()[Symbol.iterator]().next
+  //=> "function"
+```
+
+
+In a little while, we will verify for ourselves that this pattern works for both finite and infinite iterables. But for now, l
+
+
+Remember the elegant pattern for using destructuring to get the first element of an iterable? Let's verify that it works with an infinite iterator:
+
+```javascript
+const [zero] = Numbers;
+zero
+  //=> 0
+```
+
+Presto! This is very interesting, and we will certainly look at destructuring iterators in more depth another time. 
+
+
+### generators are functions
+
+Although they have a special syntax with a `*`, and `yield` values rather than returning them, generators are just functions that happen to return iterables. Functions in JavaScript can take arguments. Functions in JavaScript can take functions as arguments. Functions in JavaScript can return functions when invoked.
+
+Can we write a generator that takes an argument? Absolutely. Recall our iterable that produced an infinite succession of `*` values? Here is a generator version:
+
+```javascript
+function * Ones () {
+  while (true) {
+    yield `*`;
+  }
+}
+
+const [first, second, third] = Ones();
+first
+  //=> *
+second
+  //=> *
+third
+  //=> *
+```
+
+And here is a version that yields an infinite number of any arbitrary value:
+
+```javascript
+function * InfinityOf (something) {
+  while (true) {
+    yield something;
+  }
+}
+
+const [first, second, third] = InfinityOf('.');
+first
+  //=> .
+second
+  //=> .
+third
+  //=> .
+```
+
+
+
+### iterators and iterables
+
 
 The implementation is a little awkward, and we'll soon see a much simpler way to write this. But for the moment, let's note the essential nature of an iterator: Most iterators are *stateful*. They return something, then maybe another thing, and another thing, and then they stop returning things.
 
 Or do they? Here's an iterator that never stops returning something:
 
 ```javascript
-const ITER_ONES = {
+const TodayS = {
   done: false,
   value: '*',
   next() {
@@ -115,7 +430,7 @@ const ITER_NUMBERS = {
 
 So what do we have so far?
 
-- Iterators are objects with a `.next()` method that returns an object with a `done` property and, if `done` is `false`, a `value` property.
+- **Iterators** are objects with a `.next()` method that returns an object with a `done` property and, if `done` is `false`, a `value` property.
 - Iterators are responsible for managing their own state.
 - Some iterators never return `false` for `done`. If we naively loop over their values, we will go on forever.
 
@@ -161,21 +476,25 @@ for (const n of oneTwoThree) {
 
 There are others that are quite useful in everyday programming, including spreading an iterable into an array, destructing an iterable into variables, and spreading an iterable into arguments for a function call.
 
-For example, here is an elegant way to get the first element of an iterable:
+For example, here is an elegant way to get the first three elements of an iterable:
 
 ```JavaScript
-const [first] = oneTwoThree;
+const [first, second, third] = oneTwoThree;
 first
+  //=> 1
+second
+  //=> 1
+third
   //=> 1
 ```
 
-In a little while, we will verify for ourselves that this pattern works for both finite and infinite iterables. But for now, let us note:
+But for now, let us note:
 
-- An iterable is *any* object that implements a `[Symbol.iterator]` method, and that method should return an iterator.
+- An **iterable** is *any* object that implements a `[Symbol.iterator]` method, and that method should return an iterator.
 - Iterables can be used in `for..of` loops, amongst other places.
-- It's handy to make collections iterables.
+- It's handy to make collections into iterables.
 
-Before we move along, we should look at an important distinction. Most iterables return a *new* iterator every time we call `[Symbol.iterator]()`. We can test this with arrays:
+Before we move along, we should make an important observation. Most iterables that are associated with collections return a *new* iterator every time we call `[Symbol.iterator]()`. We can test this with arrays:
 
 ```javascript
 for (const n of oneTwoThree) {
@@ -197,8 +516,9 @@ for (const n of oneTwoThree) {
 
 We loop over `oneTwoThree` twice, and each time JavaScript invokes its `[Symbol.iterator]()` method, and each time we get a new iterator. Since it is a new iterator, each loop starts at the beginning and goes to the end, because each iterator object manages its own state independently.
 
+### writing our own iterables
 
-We can make our own iterables, and they work exatcly the same way with things like `for...of` loops:
+We can write our own iterables, and they work exactly the same way with things like `for...of` loops:
 
 ```javascript
 const Nothing = {
@@ -243,114 +563,6 @@ for (cont v of Numbers) {
     3
     ...
     infinity
-```
-
-Remember the elegant pattern for using destructuring to get the first element of an iterable? Let's verify that it works with an infinite iterator:
-
-```javascript
-const [zero] = Numbers;
-zero
-  //=> 0
-```
-
-Presto! This is very interesting, and we will certainly look at destructuring iterators in more depth another time. But let's get back to iterables and be a little more precise about their semantics.
-
-"Iterator" and "Iterable" are both standard JavaScript terminology. But here's a non-standard term that will be helpful: We will call iterables like `Array.prototype[Symbol.iterator]` that always return a new iterator, *reiterables*.
-
-A "reiterable" is an iterable that can be iterated over and will always start afresh and return iterables over the same values.
-
-It seems odd to explicitly name this, isn't this how all iterables behave? No. An iterables must return an iterator, but as we will see, iterables can return the exact same iterator when called again, and thus not reset the state between calls. Iterables can also return different iterators, which yield different values. We will meet iterables that are not reiterables in the next section.
-
-### generators
-
-Writing iterables and iterators by hand is a little complex, especially with all the state management. Borrowing a page or two from languages like Python, JavaScript provides **generators**, functions that when invoked, return an iterable.
-
-The simplest possible generator looks like this:
-
-```javascript
-function * Nothing () {}
-
-typeof Nothing
-  //=> "function"
-  
-typeof Nothing()
-  //=> "object"
-  
-typeof Nothing()[Symbol.iterator]
-  //=> "function"
-  
-typeof Nothing()[Symbol.iterator]()
-  //=> "object"
-  
-typeof Nothing()[Symbol.iterator]().next
-  //=> "function"
-```
-
-A generator is a function denoted with a special `*`. It returns an iterable, an object with a `[Symbol.iterator]` method that returns an iterator.
-
-As an iterable, we can use it freely in things like `for...of` loops:
-
-```javascript
-for (const v of Nothing()) {
-  console.log(v);
-}
-  //=> outputs nothing
-```
-
-Notice that we aren't iterating over the generator, it's just a function. We're iterating over what it returns, which is an iterable. Generators that return iterators over nothing are fine, but what about values?
-
-Generators `yield` values. Here's the next-simplest generator:
-
-```javascript
-function * JustOne () {
-  yield '*';
-}
-
-for (const v of JustOne()) {
-  console.log(v);
-}
-  //=>
-    *
-```
-
-This generator yields the value `*` and then is stops. Note that we don't have to manage `done` or `value` ourselves, we just write a generator, and JavaScript creates a function that returns an iterable for us.
-
-Generators are _even better_. Here's a generator that successively yields three values:
-
-```javascript
-function * OneTwoThree () {
-  yield 1;
-  yield 2;
-  yield 3;
-}
-
-for (const n of OneTwoThree()) {
-  console.log(n);
-}
-  //=>
-    1
-    2
-    3
-```
-
-Anyone who has spent a decade writing software without ever hearing about [coroutines][coroutine] will be amazed. The abstraction being presented to us is that of a function that executes, yields a value, and then suspends its execution until we resume its execution by calling `.next()` on the iterator.
-
-[coroutine]: https://en.m.wikipedia.org/wiki/Coroutine
-
-If it behaves as if it's pausing its execution, does that mean that it is retaining other aspects of its own state, like local variables? Here's one way to test this hypothesis, try it for yourself, what does this output?
-
-```javascript
-function * OneTwoThree () {
-  let n = 1;
-  
-  yield n++;
-  yield n++;
-  yield n;
-}
-
-for (const n of OneTwoThree()) {
-  console.log(n);
-}
 ```
 
 We mentioned *reiterables* earlier. Do generators produce iterables or reiterables? Let's test the hypothesis and find out. When we write:
