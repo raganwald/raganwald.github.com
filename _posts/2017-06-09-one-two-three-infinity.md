@@ -285,15 +285,133 @@ Here are two sample generators representing an ordering of a basket of fruit and
 
 ```javascript
 function * fruit () {
-  yield 'fruit';
-  yield 'fruit';
-  yield 'fruit';
-  yield 'fruit';
+  yield 'peach';
+  yield 'apple';
+  yield 'apple';
+  yield 'raspberry';
+  yield 'raspberry';
+  yield 'pear';
+  yield 'orange';
 }
+
+function * children () {
+  yield 'alice';
+  yield 'bob';
+  yield 'carol';
+  yield 'dana';
+  yield 'elizabeth';
+}
+```
+
+We can determine whether there is enough fruit using a loop:
+
+```javascript
+const iFruit = fruit();
+const iChildren = children();
+
+while (true) {
+  const { done: fDone } = iFruit.next();
+  const { done: cDone } = iChildren.next();
+  
+  if (cDone && fDone) {
+    console.log("Good news: There is the same quantity of fruit as children.");
+    break;
+  } else if (cDone) {
+    console.log("Good news: The quantity of fruit is larger than the quantity of children");
+    break;
+  } else if (fDone) {
+    console,log("Bad news: The quantity of fruit is smaller than the quantity of children");
+    break;
+  }
+}
+  //=> "Good news: The quantity of fruit is larger than the quantity of children"
+  
+```
+
+Let's extract a function, `ge` ("greater-than or equal-to"), that we can use whenever we like:
+
+```javascript
+function ge (iteratorOne, iteratorTwo) {
+  while (true) {
+    const { done: oneDone } = iteratorOne.next();
+    const { done: twoDone } = iteratorTwo.next();
+    
+    if (oneDone) {
+      return twoDone;
+    } else if (twoDone) {
+      return true;
+    }
+  } 
+}
+const iFruit = fruit();
+const iChildren = children();
+
+ge(iFruit, iChildren)
+  //=> true
+```
+
+Great. Now let's get back to our sims.
+
+### another problem sims can solve
+
+It doesn't always work out that sims have enough fruit for all their children. If they don't have enough fruit, they send their children out to pick some more from their orchard. Each child can pick the fruit from one tree. So naturally, they want to know if there are enough children to harvest fruit from all the trees, because if not, they'll have to ask some of the children to pick fruit from more than one tree.
+
+Working out whether there are enough children for all the trees is simple:
+
+```javascript
+function * trees () {
+  yield "apple";
+  yield "pear";
+  yield "cherry";
+}
+
+const iTrees = trees();
+
+if (ge(iChildren, iTrees)) {
+  // send the children to pick fruit
+}
+```
+
+Let's not worry about what happens when there are more trees than children for the moment. What about sending the children to pick fruit?
+
+Well, our sims need to pair each child up with a tree so that they don't all try to pick from the same tree. We already know how to loop over two iterators, so that's what we'll do:
+
+```javascript
+const iTrees = trees();
+const iChildren = children();
+
+if (ge(iTrees, iChildren)) {
+  while (true) {
+    const { done, value: tree } = iTrees.next();
+    
+    if (done) break;
+    
+    const { value: child } = iChildren.next();
+    console.log(`Child ${child} should pick fruit from the ${tree} tree.`);
+  }
+}
+  //=> no output!
+```
+
+But this produces no output! What went wrong?
+
+### iterators are irrevocably consumed
+
+The problem is that _iterators are irrevocably consumed_. We can iterate forward through an iteration, but it retains its state. We cannot back up and consume the values of an iterator again. So in our code above, when we called `ge(iTrees, iChildren)`, we iterated through `iTrees` until it was `done`.
+
+Then, we tried to iterate through `iTrees` again, but it was `done` and it remained `done`. Although in theory we could create an object with a `.next()` method that could return `{ done: true }` at some point, and then subsequently return `{ done: false, value: `must eat brainz` }`, in practice iterators must never do this. Once done, they are **done**.
+
+Had we continued to iterate through `iChild`, a similar problem would occur: `iChild` has already iterated over `alice`, `bob`, and `carol` in tandem with the three trees, and then over `dana` when `iTrees` indicated it was done. Were we to continue iterating over `iChildren`, `elizabeth` is the only value remaining to yield.
+
+### working with generators
+
+The bug is fixed by operating at the level of generators rather than iterators. We could litter our code with `()` invoking generators some more, but instead let's rewrite `ge` to take generators as arguments, instead o iterators:
+
 
 
 ---
 
+# For Later
 
 Iterables have a number of uses. One of them is that we can use a `for...of` loop to iterate over an iterables values.
 
@@ -325,11 +443,6 @@ for (const v of JustOne()) {
 ```
 
 When we invoke `JustOne`, we get an iterator that yields the value `*` and then it stops. When we use a `for...of` loop to iterate over its values, we  execute the loop once, for the solitary value that `JustOne` yields.
-
-
----
-
-# For Later
 
 But let's get back to iterables and be a little more precise about their semantics.
 
