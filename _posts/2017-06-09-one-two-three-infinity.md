@@ -331,10 +331,10 @@ while (true) {
 Let's extract a function, `ge` ("greater-than or equal-to"), that we can use whenever we like:
 
 ```javascript
-function ge (iteratorOne, iteratorTwo) {
+function ge (iOne, iTwo) {
   while (true) {
-    const { done: oneDone } = iteratorOne.next();
-    const { done: twoDone } = iteratorTwo.next();
+    const { done: oneDone } = iOne.next();
+    const { done: twoDone } = iTwo.next();
     
     if (oneDone) {
       return twoDone;
@@ -343,6 +343,7 @@ function ge (iteratorOne, iteratorTwo) {
     }
   } 
 }
+
 const iFruit = fruit();
 const iChildren = children();
 
@@ -380,7 +381,7 @@ Well, our sims need to pair each child up with a tree so that they don't all try
 const iTrees = trees();
 const iChildren = children();
 
-if (ge(iTrees, iChildren)) {
+if (ge(iChildren, iTrees)) {
   while (true) {
     const { done, value: tree } = iTrees.next();
     
@@ -405,9 +406,90 @@ Had we continued to iterate through `iChild`, a similar problem would occur: `iC
 
 ### working with generators
 
-The bug is fixed by operating at the level of generators rather than iterators. We could litter our code with `()` invoking generators some more, but instead let's rewrite `ge` to take generators as arguments, instead o iterators:
+The bug is fixed by operating at the level of generators rather than iterators. We could litter our code with `()` invoking generators some more, but instead let's rewrite `ge` to take generators as arguments, instead of iterators:
 
+```javascript
+function ge (gOne, gTwo) {
+  const iOne = gOne();
+  const iTwo = gTwo();
+  
+  while (true) {
+    const { done: oneDone } = iOne.next();
+    const { done: twoDone } = iTwo.next();
+    
+    if (oneDone) {
+      return twoDone;
+    } else if (twoDone) {
+      return true;
+    }
+  } 
+}
+```
 
+Now we can use it:
+
+```javascript
+if (ge(children, trees)) {
+  const iTrees = trees();
+  const iChildren = children();
+  
+  while (true) {
+    const { done, value: tree } = iTrees.next();
+    
+    if (done) break;
+    
+    const { value: child } = iChildren.next();
+    console.log(`Child ${child} should pick fruit from the ${tree} tree.`);
+  }
+}
+  //=>
+    "Child alice should pick fruit from the apple tree."
+    "Child bob should pick fruit from the pear tree."
+    "Child carol should pick fruit from the cherry tree."
+```
+
+### zip
+
+Our sims would have plenty of uses for iterating over two orderings at the same time, or as we are implementing them, two generators. For example, one of the adults may ask another to sort out which children should pick fruit from which trees, as abobe. Or another time they may want to build tree houses and name them after the children.
+
+It would be tedious to reiterate (heh) the steps for iterating over two orderings at once, so the sims might come up with an abstract algorithm for doing so, or as we might call it, a function.
+
+A common abstraction in programming for working with two collections or iterators at once is the function `zip`. In its most basic form, `zip` takes two ordered collections of things, iterates over them simultaneously, and returns a collection of pairs of elements.
+
+Here's an example from the [lodash] library:
+
+```javascript
+import { zip } from 'lodash';
+
+zip(
+  ['alice', 'bob', 'carol', 'dana', elizabeth'],
+  ['apple', 'pear', 'cherry']
+)
+  //=>
+    [['alice', 'apple'], ['bob', 'pear'], ['carol', 'dana']]
+```
+
+As we can see, the collection `zip` returns is only as long as the shortest of its inputs. Our sims don't have any notion of an array, so we will write a simple form of `zip` that takes generators as its inputs, and returns a generator as its output. Each value it yields will likewise be a generator that returns an iterator over two elements:
+
+```javascript
+function zip (gOne, gTwo) {
+  return function * zipped () {
+    const iOne = gOne();
+    const iTwo = gTwo();
+    
+    while (true) {
+      const { done: dOne, value: vOne } = iOne.next();
+      const { done: dTwo, value: dTwo } = iTwo.next();
+      
+      if (dOne || dTwo) break;
+      
+      yield function * pair () {
+        yield vOne;
+        yield vTwo;
+      };
+    }
+  };
+}
 
 ---
 
