@@ -463,7 +463,7 @@ const filter =
         fn(val) ? reducer(acc, val) : acc;
 
 const compose = (...fns) =>
-  fns.reduce((acc, val) => (...args) => val(acc(...args)), x => x);
+  fns.reduce((acc, val) => (...args) => acc(val(...args)), x => x);
 
 const transduce = (transformer, reducer, seed, iterable) => {
   const transformedReducer = transformer(reducer);
