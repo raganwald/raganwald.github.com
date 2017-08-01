@@ -4,11 +4,261 @@ layout: default
 tags: [allonge, noindex]
 ---
 
+In JavaScript, iterators and iterables provide an asbtract interface for sequentially acessing values, such as you might find in a collection.[^collections]
+
+[^collections]: For a more thorough discussion of iterators and iterables, have a look at the [Collections](https://leanpub.com/javascriptallongesix/read#collections) chapter of [JavaScript Allongé](https://leanpub.com/javascriptallongesix)
+
+An iterator is an object with a `.next()` method. When you call it, you get a Plain Old JavaScript Object (or “POJO”) tht has a `done` property. If the value of `done` is `false`, you are also given a `value` property that represents, well, a value. If the value of `done` is `true`, you may or may not be given a `value` property.
+
+Iterators are stateful by design: Repeatedly invoking the `.next()` method usually results in a series of values until `done` (although some iterators continue indefinately).
+
+Here’s an iterator that counts down:
+
+```javascript
+const iCountdown = {
+  value: 10,
+  done: false,
+  next() {
+    this.done = this.done || this.value > 0;
+    
+    if (this.done) {
+      return { done: true };
+    } else {
+      return { done: false, value: this.value-- };
+    }
+  }
+};
+
+iCountdown.next()
+  //=> { done: false, value: 10 }
+
+iCountdown.next().value
+  //=> { done: false, value: 9 }
+
+iCountdown.next().value
+  //=> { done: false, value: 8 }
+  
+  // ...
+
+iCountdown.next().value
+  //=> { done: false, value: 1 }
+  
+
+iCountdown.next().done
+  //=> { done: true } 
+```
+
+An *iterable* is an object with a `[Symbol.iterator]` object. when invoked, `[Symbol.iterator]()` returns an iterator. The idea is that we can have objects like arrays, and whenever we want to iterate over them, we call their `[Symbol.iterator]` method and get an iterator we can use to iterate over the contents.
+
+For example:
+
+```javascript
+const countdown = {
+  [Symbol.iterator]() {
+    const iterator = {
+      value: 10,
+      done: false,
+      next() {
+        this.done = this.done || this.value > 0;
+        
+        if (this.done) {
+          return { done: true };
+        } else {
+          return { done: false, value: this.value-- };
+        }
+      }
+    };
+    
+    return iterator;
+  }
+};
+```
+
+We can do interesting things with iterables, like iterate over them using a `for... of` loop:
+
+```javascript
+for (const count of countdown) {
+  console.log(count);
+}
+  //=>
+    10
+    9
+    8
+    ...
+    1
+```
+
+Or destructure them:
+
+```javascript
+const [ten, nine, eight, ...rest] = countdown;
+
+ten
+  //=> 10
+nine
+  //=> 9
+eight
+  //=> 8
+rest
+  //=> [7, 6, 5, 4, 3, 2, 1]
+```
+
+### reference and constructing iterables
+
+JavaScript is a pass-by-value-of-a-reference language. Two different variables can be bound to references to the same underlying object. This matter=s with iterators, because they are inherently stateful.
+
+For example:
+
+```javascript
+const iCountdown = {
+  value: 10,
+  done: false,
+  next() {
+    this.done = this.done || this.value > 0;
+    
+    if (this.done) {
+      return { done: true };
+    } else {
+      return { done: false, value: this.value-- };
+    }
+  }
+};
+
+iCountdown2 = iCountdown;
+
+iCountdown.next()
+  //=> { done: false, value: 10 }
+
+iCountdown2.next().value
+  //=> { done: false, value: 9 }
+
+iCountdown.next().value
+  //=> { done: false, value: 8 }
+
+iCountdown2.next().value
+  //=> { done: false, value: 7 }
+```
+
+Both `iCountdown` and `iCountdown2` refer to the same iterator, so calling `.next()` on one variable affects the behaviour of calling `.next()` on the other.
+
+That much is obvious in JavaScript. But now consider:
+
+```javascript
+const countdown = {
+  [Symbol.iterator]() {
+    const iterator = {
+      value: 10,
+      done: false,
+      next() {
+        this.done = this.done || this.value > 0;
+        
+        if (this.done) {
+          return { done: true };
+        } else {
+          return { done: false, value: this.value-- };
+        }
+      }
+    };
+    
+    return iterator;
+  }
+};
+
+const iCountdown = countdown[Symbol.iterator]();
+const iCountdown2 = countdown[Symbol.iterator]();
+
+iCountdown.next()
+  //=> { done: false, value: 10 }
+
+iCountdown2.next().value
+  //=> { done: false, value: 10 }
+
+iCountdown.next().value
+  //=> { done: false, value: 9 }
+
+iCountdown2.next().value
+  //=> { done: false, value: 9 }
+```
+
+Now `iCountdown` and `iCountdown2` refer to separate iterators that were created independently of each other when `countdown[Symbol.iterator]()` was invoked.
+
+But not all iterables work this way. We could, for example, write:
+
+```javascript
+const countdown = {
+  iterator: null,
+  
+  [Symbol.iterator]() {
+    this.iterator = this.iterator || {
+      value: 10,
+      done: false,
+      next() {
+        this.done = this.done || this.value > 0;
+        
+        if (this.done) {
+          return { done: true };
+        } else {
+          return { done: false, value: this.value-- };
+        }
+      }
+    };
+    
+    return this.iterator;
+  }
+};
+
+const iCountdown = countdown[Symbol.iterator]();
+const iCountdown2 = countdown[Symbol.iterator]();
+
+iCountdown.next()
+  //=> { done: false, value: 10 }
+
+iCountdown2.next().value
+  //=> { done: false, value: 9 }
+
+iCountdown.next().value
+  //=> { done: false, value: 8 }
+
+iCountdown2.next().value
+  //=> { done: false, value: 7 }
+```
+
+Now we have contrived things such that invoking `[Symbol.iterator]()` more than once does not create a new iterator, we simply return a reference to the same iterator. And thus, `iCountdown` and `iCountdown2` refer to the same iterator, and calling `.next()` on one will affect the other.
+
+The distinction between these two types of iterables is important. The first type of iterable, one that returns a new iterator every time its `Symbol.iterator]()` method is invoked, is sometimes called a “fresh” iterable, because it provides a fresh iterator every time. The second would have to be a stale iterable to keep the metaphor consistent.
+
+In this post, we will use different words. We will call the first type of iterable a *reference* iterable, because what it provides is a reference to some permanent iterable. 
+
+And we will call the second type of iterator a *constructing* iterable, because every time we invoke `[Symbol.iterator]()`, it constructs a brand new iterator for us.
+
+### are javascript’s built-in iterables reference or constructing?
+
+JavaScript has several kinds of built-in iterables. For example, arrays are iterables. Are they reference iterables or constructing iterables? Let’s find out:
+
+```javascript
+const countdown = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+
+const iCountdown = countdown[Symbol.iterator]();
+const iCountdown2 = countdown[Symbol.iterator]();
+
+iCountdown.next()
+  //=> { done: false, value: 10 }
+
+iCountdown2.next().value
+  //=> { done: false, value: 9 }
+
+iCountdown.next().value
+  //=> { done: false, value: 8 }
+
+iCountdown2.next().value
+  //=> { done: false, value: 7 }
+
+
 This post is about resource management: Keeping track of entities so we can dispose of them when they are no longer needed, and not a moment before.
 
 In languages like C++, resource management dominates every line of code, because the programmer is responsible for allocating and deallocating the memory for every data structure on the heap, and for taking care that variables are not referenced after they are no longer in scope.
 
-Languages like JavaScript solve man–but not all–resource management problems for us. All objects are stored on the heap, so we never have to wrry about having a reference to a data structure that is no longer in scope.[
+Languages like JavaScript solve many–but not all–resource management problems for us. All objects are stored on the heap, so we never have to wrry about having a reference to a data structure that is no longer in scope.[
 
 Some of us are lucky enough to have never struggled with the problem this paragraph says that JavaScript solves. As you know, variables have scopes. In ES6, for example, when we write:
 
