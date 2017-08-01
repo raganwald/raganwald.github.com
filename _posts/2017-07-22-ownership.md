@@ -226,83 +226,115 @@ function butFirst (iterable) {
 }
 ```
 
-### destructuring
-
-It’s very precise, but awkward to get the elements of an iteration by calling `.next()` and fooling around with `.value` and `.done`. Let’s use something we know about JavaScript: *destructuring*.
-
-We know that we can destructure objects and arrays into variables. With arrays, we can destructure one or more elements like this:
+We’ll test our code by taking advantage of *destructuring*: We can destructure any iterable with a finite number of values into an array:
 
 ```javascript
-const [first, second, third] = ['Gödel', 'Escher', 'Bach', 'An', 'Eternal', 'Golden', 'Braid'];
-
-first
-  //=> ‘Gödel’
-  
-second
-  //=> ‘Escher’
-
-third
-  //=> ‘Bach’
+[...butFirst(['An', 'Eternal', 'Golden', 'Braid'])]
+  //=> ['Eternal', 'Golden', 'Braid']
 ```
 
-It so happens that destructuring isn’t just for arrays: We can destructure iterators exactly the same way, like this:
+We have other options. We could iterate over our iterable using a `for...of` loop:
 
 ```javascript
-function first (iterator) {
-  const [value] = iterator;
-  
-  return value;
+for (const w of butFirst(['An', 'Eternal', 'Golden', 'Braid'])) {
+    console.log(w);
 }
-
-const i = ['Gödel', 'Escher', 'Bach', 'An', 'Eternal', 'Golden', 'Braid'][Symbol.iterator]();
-
-
-first(i)
-  //=> ‘Gödel’
+  //=>
+    Eternal
+    Golden
+    Braid
 ```
 
-And while we could write a version of `second` that uses destructuring, the one we already have works just fine with our new implementation of `first`:
+Here’s a quick question: Does our `second` function still work?
 
 ```javascript
-function first (iterator) {
-  const [value] = iterator;
-  
-  return value;
-}
-
-function butFirst (iterator) {
-  iterator.next();
-  return iterator;
-}
 
 function second (something) {
   return first(butFirst(something));
 }
 
-const i = ['Gödel', 'Escher', 'Bach', 'An', 'Eternal', 'Golden', 'Braid'][Symbol.iterator]();
-
-second(i)
-  //=> ‘Escher’
+second(‘alpher’, ‘bethe’, ‘gamow’)
+  //=> ‘bethe’
 ```
 
-### oops
+Yes it does. Great!
+
+### generators and iterables
+
+in JavaScript, *generators* are functions that can be used as data producers, data consumers, or even coroutines.[^generating-iterables]
+
+[^generating-iterables]: There’s more about generators in the [Generating Iterables](https://leanpub.com/javascriptallongesix/read#generating-iterables section of [JavaScript Allongé](https://leanpub.com/javascriptallongesix/read)
+
+As data producers, they produce iterables when invoked. For example, we could write:
+
+```javascript
+function * combinators () {
+  yield 'starling';
+  yield 'kestrel';
+  yield 'idiot';
+  yield 'virago';
+  yield 'thrush';
+}
+
+first(combinators())
+  //=> ‘starling’
+```
+
+And also:
+
+```javascript
+[...butFirst(combinators())]
+  //=> [‘kestrel’, ‘idiot’, ‘virago’, ‘thrush’]
+```
+
+And, of course:
+
+```javascript
+second(combinators())
+  //=> ‘kestrel’
+```
+
+This is going great, if a little obvious considering how basic this ought to be.
+
+### destructuring
+ 
+### well, actually
 
 Sooner or later, we’ll get enthusiastic about using laziness to implement infinite iterators. For example, here’s a hand-coded iterator that provides the natural numbers:
 
 [laziness]: https://en.wikipedia.org/wiki/Lazy_evaluation “Lazy Evaluation”
 
 ```javascript
-const numbers = {
-  done: false,
-  value: 1,
+function * combinators () {
+  yield 'starling';
+  yield 'kestrel';
+  yield 'idiot';
+  yield 'virago';
+  yield 'thrush';
+}
+
+const iterableFor = iterator => ({
+  [Symbol.iterator]() { return iterator; }
+});
+
+function first (iterable) {
+  const iterator = iterable[Symbol.iterator]();
+  const { done, value } = iterator.next();
   
-  next() {
-    const done = this.done;
-    const value = this.value++;
-    
-    return { done, value }
-  }
-};
+  if (!done) return value;
+}
 
-second(numbers)
+function butFirst (iterable) {
+  const iterator = iterable[Symbol.iterator]();
+  
+  iterator.next();
+  
+  return iterableFor(iterator);
+ring}
 
+function second (something) {
+  return first(butFirst(something));
+}
+
+console.log(second(combinators()))
+```
