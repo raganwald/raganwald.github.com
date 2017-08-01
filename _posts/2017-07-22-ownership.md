@@ -1,5 +1,5 @@
 ---
-title: “Resource Management is the third-hardest problem in Computer Science”
+title: "Resource Management is the third-hardest problem in Computer Science"
 layout: default
 tags: [allonge, noindex]
 —--
