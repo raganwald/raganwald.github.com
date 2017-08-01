@@ -2,7 +2,7 @@
 title: "Resource Management is the third-hardest problem in Computer Science"
 layout: default
 tags: [allonge, noindex]
-—--
+---
 
 This post is about resource management: Keeping track of entities so we can dispose of them when they are no longer needed, and not a moment before.
 
