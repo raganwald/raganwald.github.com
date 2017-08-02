@@ -328,7 +328,7 @@ Representations are celebrated for what they make easy. As we saw above, this no
 
 However, to be useful as a general-purpose representation, it would have to be easy to work with for routine tasks like addition and subtraction. And while converting from this representation seems straightforward, requiring only multiplication and exponentiation, converting to this representation is one of the hardest problems in number theory!
 
-Which is, of course, an irresistible challenge. In a future post, we'll look at mechanically generating this sequence, It should be a fun bit of recreational coding!
+A fun exercise is to write a program to generate the sequence. A FizzBuzz with a side of curiosity, so to speak. 
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=14482561))
 
@@ -357,6 +357,12 @@ No, for the same reasons. Writing a blog post is evidence that Donovan carefully
 Carol, reading it extemporaneously, should not worry that she is in any way less intelligent or even less experienced than Donovan. Writing a blog post is a scenario where the author picks the problem and the tools necessary to solve the problem.
 
 It is not evidence of anything other than an enthusiasm for sharing, and I encourage everyone to enjoy blog posts in that spirit. Please do not worry that you may be less gifted or unworthy in any way.
+
+---
+
+### an example program to generate the sequence without using integers or arrays
+
+<script src="https://gist.github.com/raganwald/4c16884cfc194e11ea121a89da3419d4.js"></script>
 
 ---
 
