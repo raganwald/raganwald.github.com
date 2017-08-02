@@ -32,19 +32,19 @@ const iCountdown = {
 iCountdown.next()
   //=> { done: false, value: 10 }
 
-iCountdown.next().value
+iCountdown.next()
   //=> { done: false, value: 9 }
 
-iCountdown.next().value
+iCountdown.next()
   //=> { done: false, value: 8 }
   
   // ...
 
-iCountdown.next().value
+iCountdown.next()
   //=> { done: false, value: 1 }
   
 
-iCountdown.next().done
+iCountdown.next()
   //=> { done: true } 
 ```
 
@@ -129,13 +129,13 @@ iCountdown2 = iCountdown;
 iCountdown.next()
   //=> { done: false, value: 10 }
 
-iCountdown2.next().value
+iCountdown2.next()
   //=> { done: false, value: 9 }
 
-iCountdown.next().value
+iCountdown.next()
   //=> { done: false, value: 8 }
 
-iCountdown2.next().value
+iCountdown2.next()
   //=> { done: false, value: 7 }
 ```
 
@@ -170,13 +170,13 @@ const iCountdown2 = countdown[Symbol.iterator]();
 iCountdown.next()
   //=> { done: false, value: 10 }
 
-iCountdown2.next().value
+iCountdown2.next()
   //=> { done: false, value: 10 }
 
-iCountdown.next().value
+iCountdown.next()
   //=> { done: false, value: 9 }
 
-iCountdown2.next().value
+iCountdown2.next()
   //=> { done: false, value: 9 }
 ```
 
@@ -213,13 +213,13 @@ const iCountdown2 = countdown[Symbol.iterator]();
 iCountdown.next()
   //=> { done: false, value: 10 }
 
-iCountdown2.next().value
+iCountdown2.next()
   //=> { done: false, value: 9 }
 
-iCountdown.next().value
+iCountdown.next()
   //=> { done: false, value: 8 }
 
-iCountdown2.next().value
+iCountdown2.next()
   //=> { done: false, value: 7 }
 ```
 
@@ -244,14 +244,119 @@ const iCountdown2 = countdown[Symbol.iterator]();
 iCountdown.next()
   //=> { done: false, value: 10 }
 
-iCountdown2.next().value
+iCountdown2.next();
+  //=> { done: false, value: 10 }
+
+iCountdown.next()
   //=> { done: false, value: 9 }
 
-iCountdown.next().value
-  //=> { done: false, value: 8 }
+iCountdown2.next()
+  //=> { done: false, value: 9 }
+```
 
-iCountdown2.next().value
-  //=> { done: false, value: 7 }
+Ah! Arrays are constructing iterables, you get a new iterable every time. That matters, even if you aren’t in the habit of extracting iterators from them using `[Symbol.iterator]` yourself. You might, for example, want to partially destructure an array and then later, iterate over it using `for... of`:
+
+```javascript
+const words = ['Gödel', 'Escher', 'Bach', 'An', 'Eternal', 'Golden', 'Braid'];
+
+const [firstWord] = words;
+
+firstWord
+  //=> Gödel
+  
+for (const word of words) {
+  if (word.length === 5) {
+    console.log(word);
+  }
+}
+  //=>
+    Gödel
+    Braid
+```
+
+That’s what we’d expect, that every time we iterate over an array, we iterate over the whole thing.
+
+But are there any reference iterables built into JavaScript? It would be important to know this, because we would know *not* to expectto be able to iterate over them more than once.
+
+Yes, there are. *Generators* produce reference iterators:
+
+```javascript
+function * wordGenerator () {
+  yield 'Gödel';
+  yield 'Escher';
+  yield 'Bach';
+  yield 'An';
+  yield 'Eternal';
+  yield 'Golden';
+  yield 'Braid';
+}
+
+const words = wordGenerator();
+
+const [firstWord] = words;
+
+firstWord
+  //=> Gödel
+  
+for (const word of words) {
+  if (word.length === 5) {
+    console.log(word);
+  }
+}
+  //=>
+```
+
+A generator, when invoked, returns an iterable that provides a reference to an iterator. (Interestingly, the result of invoking a generator is an iterable that is also an iterator, and invoking its `[Symbol.iterator]()` returns itself!)
+
+Thus, if we want to iterate over the contents of a generator, we have to invoke the generator again, and get a new reference iterable again, like this:
+
+```javascript
+const [firstWord] = wordGenerator();
+
+firstWord
+  //=> Gödel
+  
+for (const word of wordGenerator()) {
+  if (word.length === 5) {
+    console.log(word);
+  }
+}
+  //=>
+    Gödel
+    Braid
+```
+
+### ownership
+
+Back in the C++ days, the question of whether what appeared to be different variables held references to the same data structure or different data structures was extremely pertinent, because we had to sort out which piece of code was responsible for freeing the data’s memory when it was no longer needed.
+
+The concept of every piece of data having an *owner* was developed. Let’s pretend for a moment that JavaScript does not have garbage collection. We write:
+
+```javascript
+function A (a) {
+ const aa = a.concat[‘foo’];
+ 
+ return aa;
+}
+
+function B () {
+  const b = [‘bar’];
+  const bb = A(b);
+}
+
+B()
+```
+
+In this code, when `B` creates `b`, it obviously owns `b`, and is responsible for freeing its memory. But then it passes `b` to `A`. Can `B` now safely free `b`? Maybe, maybe not. We have to look at the code for `A` and see that once `A` finishes executing, it no longer needs `b`.
+
+We would say that `B` owns `b`, and `A` does not. We’d also say that when `A` returns `aa`, whomever calls `A`, `B` in this case, now owns it.
+
+Putting all that together, we
+
+
+
+Languages like JavaScript that incorporate automatic garbage collection have made this consideration go away, but the general probl
+
 
 
 This post is about resource management: Keeping track of entities so we can dispose of them when they are no longer needed, and not a moment before.
