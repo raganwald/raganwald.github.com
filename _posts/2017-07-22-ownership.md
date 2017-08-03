@@ -19,7 +19,7 @@ const iCountdown = {
   value: 10,
   done: false,
   next() {
-    this.done = this.done || this.value > 0;
+    this.done = this.done || this.value < 0;
     
     if (this.done) {
       return { done: true };
@@ -59,7 +59,7 @@ const countdown = {
       value: 10,
       done: false,
       next() {
-        this.done = this.done || this.value > 0;
+        this.done = this.done || this.value < 0;
         
         if (this.done) {
           return { done: true };
@@ -114,7 +114,7 @@ const iCountdown = {
   value: 10,
   done: false,
   next() {
-    this.done = this.done || this.value > 0;
+    this.done = this.done || this.value < 0;
     
     if (this.done) {
       return { done: true };
@@ -150,7 +150,7 @@ const countdown = {
       value: 10,
       done: false,
       next() {
-        this.done = this.done || this.value > 0;
+        this.done = this.done || this.value < 0;
         
         if (this.done) {
           return { done: true };
@@ -193,7 +193,7 @@ const countdown = {
       value: 10,
       done: false,
       next() {
-        this.done = this.done || this.value > 0;
+        this.done = this.done || this.value < 0;
         
         if (this.done) {
           return { done: true };
@@ -411,7 +411,70 @@ This still isn’t a massive problem, with some careful thought about what is go
 
 But things are about to get thornier.
 
-### ownership
+### reading lines from a file
+
+Consider this problem: We wish to create an iterable that successively yields the lines from a text file. Presuming we have some kind of library for opening, reading from, and closing files, we might write something a little like this:
+  
+```javascript
+function lines (path) {
+  return {
+    [Symbol.iterator]() {
+      return {
+        done: false;
+        fileDescriptor: File.open(path);
+        next() {
+          if (this.done) return { done: true };
+          const line = this.fileDescriptor.readLine();
+          
+          this.done = line == null;
+          
+          if (this.done) {
+            fileDescriptor.close();
+            return { done: true };
+          } else {
+            return { done: false, value: line };
+          }
+        }
+      };
+    }
+  };
+}
+```
+
+Whenever we want to iterate over all the lines of a file, we call our function, e.g. `lines(‘./README.md’)`, and we get an iterable for the lines in the file.
+
+When we invoke `[Symbol.iterator]()` on our iterable, we get an iterator that opens the file, reads the file line by line when we call `.next()`, and then closes the file when there are no more lines to be read.
+
+So we could output all the lines containing a particular word like this:
+
+```javascript
+for (const line of lines(‘./README.md’)) {
+  if (line.match(/raganwald/)) {
+    console.log(line);
+  }
+}
+```
+
+The expression lines(‘./README.md’)` would create a new iterator with an open file, we’d iterate over each line, and eventually we’d run out of lines, close the file, and exit the loop.
+
+What if we only want to find the first line with a particular word in it?
+
+```javascript
+for (const line of lines(‘./README.md’)) {
+  if (line.match(/raganwald/)) {
+    console.log(line);
+    break;
+  }
+}
+```
+
+Now we have a problem. How are we going to close the file? The only way it will exhaust the iterations and invoke `this.fileDescriptor.close()` is if the file doesn’t contain `raganwald`.
+
+There is a mechanism for closing iterators, and it was designed for the epxress purpose of dealing with iterators that must hold onto some kind of resource like a file descriptor, an open port, a tremendous amount of memory, anything at all, really.
+
+But before we dive into the mechanism, let’s reflect on the relationship between non-local values and the need to manage resources like open files: When we have an object like an iterator that holds a resource like an open file, we need to write code that takes care of disposing of the resource when we know we no longer need it.
+
+This is fine for local resources. In the code above, we know we are dealing with an iterator over the lines of a file and could easily close it ourselves. But what about non-local iterators? Do we know if they are iterating over lines in a file? How do we know whetherw e have to close them in some way? What if we pass an iterator to a function. Will it close it? Or should we?
 
 Back in the C++ days, the question of whether what appeared to be different variables held references to the same data structure or different data structures was extremely pertinent, because we had to sort out which piece of code was responsible for freeing the data’s memory when it was no longer needed.
 
