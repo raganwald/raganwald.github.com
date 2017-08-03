@@ -470,11 +470,89 @@ for (const line of lines(‘./README.md’)) {
 
 Now we have a problem. How are we going to close the file? The only way it will exhaust the iterations and invoke `this.fileDescriptor.close()` is if the file doesn’t contain `raganwald`.
 
-There is a mechanism for closing iterators, and it was designed for the epxress purpose of dealing with iterators that must hold onto some kind of resource like a file descriptor, an open port, a tremendous amount of memory, anything at all, really.
+There is a mechanism for closing iterators, and it was designed for the express purpose of dealing with iterators that must hold onto some kind of resource like a file descriptor, an open port, a tremendous amount of memory, anything at all, really.
 
 But before we dive into the mechanism, let’s reflect on the relationship between non-local values and the need to manage resources like open files: When we have an object like an iterator that holds a resource like an open file, we need to write code that takes care of disposing of the resource when we know we no longer need it.
 
-This is fine for local resources. In the code above, we know we are dealing with an iterator over the lines of a file and could easily close it ourselves. But what about non-local iterators? Do we know if they are iterating over lines in a file? How do we know whetherw e have to close them in some way? What if we pass an iterator to a function. Will it close it? Or should we?
+This is fine for local resources. In the code above, we know we are dealing with an iterator over the lines of a file and could easily close it ourselves. But what about non-local iterators? Do we know if they are iterating over lines in a file? How do we know whether we have to close them in some way? What if we pass an iterable to a function. Will the function close our iterable’s iterator? Or should we?
+
+Iterables that need to dispose of resources introduce a new problem when working with non-local iterables and iterators. To solve it, the language introduced a mechanism for closing iterators, but we will still need to work out patterns and protocols of our own.
+
+Let’s take a look at the mechanism.
+
+### return to forever
+
+We’ve seen that the interface for iterators includes a mandatory `.next()` method. It also includes an optional `.return()` method. The contract for `.return(optionalReturnValue)` is that when invoked:
+
+- it should return `{ done: true }` is no optional retun value is provided, or `{ done: true, value: optionalReturnValue }` if an optional return value is provided.
+- thereafter, the iterator should permanently return `{ done: true }` should `.next()` be called.
+- as a consequence of the above, the iterator can and should dispose of any resources it is holding.
+
+Looking back at our countdown iterable, we can implement `.return()` for it:
+
+```javascript
+const countdown = {
+  [Symbol.iterator]() {
+    const iterator = {
+      value: 10,
+      done: false,
+      next() {
+        this.done = this.done || this.value < 0;
+        
+        if (this.done) {
+          return { done: true };
+        } else {
+          return { done: false, value: this.value-- };
+        }
+      },
+      return(value) {
+        this.done = true;
+        if (arguments.length === 1) {
+          return { done: true, value };
+        } else {
+          return { done: true };
+        }
+      }
+    };
+    
+    return iterator;
+  }
+};
+```
+
+There is some duplication of logic around returning `{ done: true }` and setting `this.done = true`, and this dusplication will be more acute when we deal with disposing of resources, so let’s clean it up:
+
+```javascript
+const countdown = {
+  [Symbol.iterator]() {
+    const iterator = {
+      value: 10,
+      done: false,
+      next() {
+        if (this.done) {
+          return { done: true };
+        } else if (this.value < 0) {
+          return this.return();
+        } else {
+          return { done: false, value: this.value-- };
+        }
+      },
+      return(value) {
+        this.done = true;
+        if (arguments.length === 1) {
+          return { done: true, value };
+        } else {
+          return { done: true };
+        }
+      }
+    };
+    
+    return iterator;
+  }
+};
+```
+
+Using a breakpoint or an old-fashioned `console.log(“EREIAM”)`
 
 Back in the C++ days, the question of whether what appeared to be different variables held references to the same data structure or different data structures was extremely pertinent, because we had to sort out which piece of code was responsible for freeing the data’s memory when it was no longer needed.
 
