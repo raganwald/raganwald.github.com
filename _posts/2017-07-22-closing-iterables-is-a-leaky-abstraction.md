@@ -1,5 +1,5 @@
 ---
-title: "Closing Time: Iterables are a Leaky Abstraction"
+title: "Closing Iterables is a Leaky Abstraction"
 layout: default
 tags: [allonge]
 ---
