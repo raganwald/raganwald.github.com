@@ -1,7 +1,7 @@
 ---
 title: "Closing Time: Iterables are a Leaky Abstraction"
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 ### iterators and iterables, a quick recapitulation
