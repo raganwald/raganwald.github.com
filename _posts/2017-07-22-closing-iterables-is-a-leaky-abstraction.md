@@ -381,8 +381,6 @@ for (const word of countdownInWords) {
 
 Invoking `break` inside this `for... of` loop is also invoking `break` inside of `mapWith`'s `for... of` loop, because that is where execution pauses when it invokes `yield`. So this will close the iterator that `mapWith`'s `for... of` loop extracts.
 
-[^?] Is this the correct mechanism?
-
 Unfortunately, we cannot always arrange for JavaScript's built-in constructs to close our iterators for us.
 
 ### more about closing iterators explicitly
