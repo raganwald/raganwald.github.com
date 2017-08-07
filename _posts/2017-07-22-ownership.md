@@ -1,10 +1,10 @@
 ---
-title: "Closing Time: Iteraables are a Leaky Abstraction"
+title: "Closing Time: Iterables are a Leaky Abstraction"
 layout: default
 tags: [allonge, noindex]
 ---
 
-### iterators an iterables, a quick recapitulation
+### iterators and iterables, a quick recapitulation
 
 In JavaScript, iterators and iterables provide an abstract interface for sequentially accessing values, such as you might find in a collection.[^collections]
 
@@ -12,7 +12,7 @@ In JavaScript, iterators and iterables provide an abstract interface for sequent
 
 An iterator is an object with a `.next()` method. When you call it, you get a Plain Old JavaScript Object (or “POJO”) that has a `done` property. If the value of `done` is `false`, you are also given a `value` property that represents, well, a value. If the value of `done` is `true`, you may or may not be given a `value` property.
 
-Iterators are stateful by design: Repeatedly invoking the `.next()` method usually results in a series of values until `done` (although some iterators continue indefinately).
+Iterators are stateful by design: Repeatedly invoking the `.next()` method usually results in a series of values until `done` (although some iterators continue indefinitely).
 
 Here’s an iterator that counts down:
 
@@ -168,7 +168,7 @@ Now we have a problem. How are we going to close the file? The only way it will 
 
 This is not good. And it's not the only case. We might write iterators that act as coroutines, communicating with other processes over ports. Once again, we'd want to explicitly close the port when we are done with the iterator. We don't want to just garbage-collect the memory we're using.
 
-What we need is some way to explicitly "close" iterators, and then each iterator could dispose of any resources it is holding. Thenw e wcould exercise a little caution and explicitly close every iterator when we were done with them. We wouldn't need to know whether the iterator was holding onto an open file or socket or whatever, the iterator would deal with that.
+What we need is some way to explicitly "close" iterators, and then each iterator could dispose of any resources it is holding. Then we could exercise a little caution, and explicitly close every iterator when we were done with them. We wouldn't need to know whether the iterator was holding on to an open file or socket or whatever, the iterator would deal with that.
 
 Fortunately, there is a mechanism for closing iterators, and it was designed for the express purpose of dealing with iterators that must hold onto some kind of resource like a file descriptor, an open port, a tremendous amount of memory, anything at all, really.
 
@@ -180,7 +180,7 @@ Let’s take a look at the mechanism.
 
 We’ve seen that the interface for iterators includes a mandatory `.next()` method. It also includes an optional `.return()` method. The contract for `.return(optionalReturnValue)` is that when invoked:
 
-- it should return `{ done: true }` is no optional retun value is provided, or `{ done: true, value: optionalReturnValue }` if an optional return value is provided.
+- it should return `{ done: true }` is no optional return value is provided, or `{ done: true, value: optionalReturnValue }` if an optional return value is provided.
 - thereafter, the iterator should permanently return `{ done: true }` should `.next()` be called.
 - as a consequence of the above, the iterator can and should dispose of any resources it is holding.
 
@@ -216,7 +216,7 @@ const countdown = {
 };
 ```
 
-There is some duplication of logic around returning `{ done: true }` and setting `this.done = true`, and this dusplication will be more acute when we deal with disposing of resources, so let’s clean it up:
+There is some duplication of logic around returning `{ done: true }` and setting `this.done = true`, and this duplication will be more acute when we deal with disposing of resources, so let’s clean it up:
 
 ```javascript
 const countdown = {
@@ -267,7 +267,7 @@ while (true) {
 }
 ```
 
-Calling `.return()` ensures that `iCountdown` disposes oif any resources it has or otherwise cleans itself up. Of course, this is a PITA if we have to work directly with iterators and give up the convenience of things like `for... of` loops and destructuring.
+Calling `.return()` ensures that `iCountdown` disposes of any resources it has or otherwise cleans itself up. Of course, this is a PITA if we have to work directly with iterators and give up the convenience of things like `for... of` loops and destructuring.
 
 It would be really nice if they followed the same pattern. Do they? Let's find out. We can use a breakpoint in the `.return()` method, or insert an old-school `console.log` statement:
 
@@ -312,7 +312,7 @@ JavaScript's built-in constructs for consuming iterators from iterables invoke `
 
 Also, we can see that the `.return()` method is optional: JavaScript's built-in constructs will not call `.return()` on an iterator that doesn't implement `.return()`.
 
-### ubvoking return isn't always simple
+### invoking return isn't always simple
 
 So, now we see that we should write our iterators to have a `.return()` method when they have resources that need to be disposed of, and that we can use this method ourselves or rely on JavaScript's built-in constructs to call it for us.
 
@@ -427,7 +427,7 @@ const [[firstCount, firstWord]] = zipWith((l, r) => [l, r], countdown, fewWords)
   //=>
 ```
 
-This snippet does not log `Return to Forever`. Although javaScript's built-in behaviour attempts to close the iterator created by our generator function, it never invokes the code we wrote to close all the iterators.
+This snippet does not log `Return to Forever`. Although JavaScript's built-in behaviour attempts to close the iterator created by our generator function, it never invokes the code we wrote to close all the iterators.
 
 One sure way to close all the iterators is to take 100% control of `zipWith`. Instead of writing it as a generator function, we can write it as a function that returns an iterable object:
 
@@ -523,7 +523,7 @@ Is the `for... of` loop more elegant? What if `for (let i = 0; i < numberToTake;
 
 > In the matter of reforming things, as distinct from deforming them, there is one plain and simple principle; a principle which will probably be called a paradox. There exists in such a case a certain institution or law; let us say, for the sake of simplicity, a fence or gate erected across a road. The more modern type of reformer goes gaily up to it and says, "I don't see the use of this; let us clear it away." To which the more intelligent type of reformer will do well to answer: "If you don't see the use of it, I certainly won't let you clear it away. Go away and think. Then, when you can come back and tell me that you do see the use of it, I may allow you to destroy it." --G.K. Chesterton
 
-Imagine that some code included the "correct" implementation of `take`. An engineer sees it, decides it could be faster, and optimizes it, therein removing its ability to correctly close an iterable it is handed. Is this wrong? How would anybody know, if there is no mechnism to discover why it was written that way to begin with?
+Imagine that some code included the "correct" implementation of `take`. An engineer sees it, decides it could be faster, and optimizes it, therein removing its ability to correctly close an iterable it is handed. Is this wrong? How would anybody know, if there is no mechanism to discover why it was written that way to begin with?
 
 Many patterns are like this. They include code for solving problems that are not evident on the first read: We have to have encountered the problem in the past in order to appreciate why the code we're looking at solves it. And to be fair, the problem being solved may not apply to us today.
 
