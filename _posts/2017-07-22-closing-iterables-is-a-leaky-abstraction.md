@@ -107,6 +107,8 @@ rest
 
 And now, let's get started. We'll begin with a simple problem: How do we iterate over the lines of a text file?
 
+---
+
 ### reading lines from a file
 
 We wish to create an iterable that successively yields the lines from a text file. Presuming we have some kind of library for opening, reading from, and closing files, we might write something a little like this:
@@ -175,6 +177,8 @@ Fortunately, there is a mechanism for closing iterators, and it was designed for
 Iterables that need to dispose of resources introduce a problem. To solve it, the language introduced a mechanism for closing iterators, but we will still need to work out patterns and protocols of our own.
 
 Let’s take a look at the mechanism.
+
+---
 
 ### return to forever
 
@@ -312,6 +316,8 @@ JavaScript's built-in constructs for consuming iterators from iterables invoke `
 
 Also, we can see that the `.return()` method is optional: JavaScript's built-in constructs will not call `.return()` on an iterator that doesn't implement `.return()`.
 
+---
+
 ### invoking return isn't always simple
 
 So, now we see that we should write our iterators to have a `.return()` method when they have resources that need to be disposed of, and that we can use this method ourselves or rely on JavaScript's built-in constructs to call it for us.
@@ -382,6 +388,8 @@ for (const word of countdownInWords) {
 Invoking `break` inside this `for... of` loop is also invoking `break` inside of `mapWith`'s `for... of` loop, because that is where execution pauses when it invokes `yield`. So this will close the iterator that `mapWith`'s `for... of` loop extracts.
 
 Unfortunately, we cannot always arrange for JavaScript's built-in constructs to close our iterators for us.
+
+---
 
 ### more about closing iterators explicitly
 
@@ -480,6 +488,8 @@ const [[firstCount, firstWord]] = zipWith((l, r) => [l, r], countdown, fewWords)
 
 We have now arranged things such that `zipWith` takes care to close its iterators when its own iterator is closed.
 
+---
+
 ### hidden affordances
 
 We've seen that iterators need to be closed. We've also seen that the affordance for closing an iterator is invisible. There's a `.return()` method we may need to invoke. We also may need to implement it. But it's usually invisible, and the most convenient way to work with iterables--writing generators and using constructs like `for... of` loops or destructuring--hides `.return()` from us.
@@ -517,6 +527,8 @@ function * take (numberToTake, iterable) {
 
 Is the `for... of` loop more elegant? What if `for (let i = 0; i < numberToTake; ++i)` is faster? Unfortunately, the important difference between these two implementations is hidden from view.
 
+---
+
 ### chesterton's fence and leaky abstractions
 
 > In the matter of reforming things, as distinct from deforming them, there is one plain and simple principle; a principle which will probably be called a paradox. There exists in such a case a certain institution or law; let us say, for the sake of simplicity, a fence or gate erected across a road. The more modern type of reformer goes gaily up to it and says, "I don't see the use of this; let us clear it away." To which the more intelligent type of reformer will do well to answer: "If you don't see the use of it, I certainly won't let you clear it away. Go away and think. Then, when you can come back and tell me that you do see the use of it, I may allow you to destroy it." --G.K. Chesterton
@@ -529,8 +541,14 @@ The implementation of `take` given in the blog post is fine for the code in the 
 
 This is the state of affairs with all code, whether functional, OO, whatever. We have "leaky abstractions" like iterables. They are fine as longa s we are well within the most common case, but when we stray near the edges,we need to understand what is going on "under the hood" in order to appreciate interactions such as whether a `for... of` loop inside a generator closes its iterator if the enclosing iterator is closed while it yields.
 
+---
+
 ### in closing
 
 In closing, we find that closing iterables introduces an aspect of how to write correct iterables code that is not always visibly evident. Sometimes we must choose one construct sometimes another. Sometimes we are safe to use generators, sometimes we must write functions that return iterable objects.
 
 In the end, the safest way to proceed is to understand our tools really, really well. Abstractions are useful for writing code that eliminates accidental complexity, but that does not mean that we as programmers do not need to understand what is happening beneath the abstractions. It is just that we don't always need to clutter our code up with what is happening beneath the abstractions
+
+---
+
+### notes
