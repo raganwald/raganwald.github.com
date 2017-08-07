@@ -1,5 +1,5 @@
 ---
-title: "Closing Time: When Elegant Iterables Meet Production Code"
+title: "Closing Time: Iteraables are a Leaky Abstraction"
 layout: default
 tags: [allonge, noindex]
 ---
@@ -529,7 +529,7 @@ Many patterns are like this. They include code for solving problems that are not
 
 The implementation of `take` given in the blog post is fine for the code in the blog post, and for most code. But when it isn't fine, it's broken.
 
-This is the state of affairs with all code, whether functional, OO, whatever. We have "leaky abstractions" like iterables. They are fine as longa s we are well within the most common case, but when we stray near th eedges,we need to understand what is going on "under the hood" in order to appreciate interactions such as whether a `for... of` loop inside a generator closes its iterator if the enclosing iterator is closed while it yields.
+This is the state of affairs with all code, whether functional, OO, whatever. We have "leaky abstractions" like iterables. They are fine as longa s we are well within the most common case, but when we stray near the edges,we need to understand what is going on "under the hood" in order to appreciate interactions such as whether a `for... of` loop inside a generator closes its iterator if the enclosing iterator is closed while it yields.
 
 ### in closing
 
