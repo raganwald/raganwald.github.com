@@ -22,7 +22,7 @@ const iCountdown = {
   done: false,
   next() {
     this.done = this.done || this.value < 0;
-    
+
     if (this.done) {
       return { done: true };
     } else {
@@ -39,15 +39,15 @@ iCountdown.next()
 
 iCountdown.next()
   //=> { done: false, value: 8 }
-  
+
   // ...
 
 iCountdown.next()
   //=> { done: false, value: 1 }
-  
+
 
 iCountdown.next()
-  //=> { done: true } 
+  //=> { done: true }
 ```
 
 An *iterable* is an object with a `[Symbol.iterator]` object. when invoked, `[Symbol.iterator]()` returns an iterator. The idea is that we can have objects like arrays, and whenever we want to iterate over them, we call their `[Symbol.iterator]` method and get an iterator we can use to iterate over the contents.
@@ -62,7 +62,7 @@ const countdown = {
       done: false,
       next() {
         this.done = this.done || this.value < 0;
-        
+
         if (this.done) {
           return { done: true };
         } else {
@@ -70,7 +70,7 @@ const countdown = {
         }
       }
     };
-    
+
     return iterator;
   }
 };
@@ -112,7 +112,7 @@ And now, let's get started. We'll begin with a simple problem: How do we iterate
 ### reading lines from a file
 
 We wish to create an iterable that successively yields the lines from a text file. Presuming we have some kind of library for opening, reading from, and closing files, we might write something a little like this:
-  
+
 ```javascript
 function lines (path) {
   return {
@@ -123,9 +123,9 @@ function lines (path) {
         next() {
           if (this.done) return { done: true };
           const line = this.fileDescriptor.readLine();
-          
+
           this.done = line == null;
-          
+
           if (this.done) {
             fileDescriptor.close();
             return { done: true };
@@ -198,7 +198,7 @@ const countdown = {
       done: false,
       next() {
         this.done = this.done || this.value < 0;
-        
+
         if (this.done) {
           return { done: true };
         } else {
@@ -214,7 +214,7 @@ const countdown = {
         }
       }
     };
-    
+
     return iterator;
   }
 };
@@ -246,7 +246,7 @@ const countdown = {
         }
       }
     };
-    
+
     return iterator;
   }
 };
@@ -259,11 +259,11 @@ count iCountdown = countdown[Symbol.iterator]();
 
 while (true) {
   const { done, value: count } = iCountdown.next();
-  
+
   if (done) break;
-  
+
   console.log(count);
-  
+
   if (count === 6) {
     iCountdown.return();
     break;
@@ -327,7 +327,7 @@ This can be tricky. Here's a function that returns the first value (if any) of a
 ```javascript
 function first (iterable) {
   const [value] = iterable;
-  
+
   return value;
 }
 ```
@@ -338,7 +338,7 @@ Because destructuring always closes the iterator extracted from the iterable it 
 function first (iterable) {
   const iterator = iterable[Symbol.iterator]();
   const { done, value } = iterator.next();
-  
+
   if (!done) return value;
 }
 ```
@@ -349,11 +349,11 @@ We might neglect closing the iterator we extracted. We have to do *everything* o
 function first (iterable) {
   const iterator = iterable[Symbol.iterator]();
   const { done, value } = iterator.next();
-  
+
   if (typeof iterator.return === 'function') {
     iterator.return();
   }
-  
+
   if (!done) return value;
 }
 ```
@@ -400,12 +400,12 @@ Here's an example that won't work properly for iterators that need to dispose of
 ```javascript
 function * zipWith (zipper, ...iterables) {
   const iterators = iterables.map(i => i[Symbol.iterator]());
-  
+
   while (true) {
     const pairs = iterators.map(j => j.next()),
           dones = pairs.map(p => p.done),
           values = pairs.map(p => p.value);
-          
+
     if (dones.indexOf(true) >= 0) {
       for (const iterator of iterators) {
         if (typeof iterator.return === 'function') {
@@ -414,12 +414,12 @@ function * zipWith (zipper, ...iterables) {
       }
       return;
     }
-    
+
     yield zipper(...values);
   }
 }
 const fewWords = ['alper', 'bethe', 'gamow'];
-               
+
 for (const pair of zipWith((l, r) => [l, r], countdown, fewWords)) {
   //... diddley
 }
@@ -449,7 +449,7 @@ function zipWith (zipper, ...iterables) {
           const pairs = this.iterators.map(j => j.next()),
                 dones = pairs.map(p => p.done),
                 values = pairs.map(p => p.value);
-                
+
           if (dones.indexOf(true) >= 0) {
             return this.return();
           } else {
@@ -459,14 +459,14 @@ function zipWith (zipper, ...iterables) {
         return(optionalValue) {
           if (!this.done) {
             this.done = true;
-          
+
             for (const iterable of this.iterators) {
               if (typeof iterable.return === 'function') {
                 iterable.return();
               }
             }
           }
-          
+
           if (arguments.length === 1) {
             return { done: true, value:optionalValue };
           } else {
@@ -539,15 +539,19 @@ Many patterns are like this. They include code for solving problems that are not
 
 The implementation of `take` given in the blog post is fine for the code in the blog post, and for most code. But when it isn't fine, it's broken.
 
-This is the state of affairs with all code, whether functional, OO, whatever. We have "leaky abstractions" like iterables. They are fine as longa s we are well within the most common case, but when we stray near the edges,we need to understand what is going on "under the hood" in order to appreciate interactions such as whether a `for... of` loop inside a generator closes its iterator if the enclosing iterator is closed while it yields.
+This is the state of affairs with all code, whether functional, OO, whatever. We have "leaky abstractions" like iterables. They are fine as long as we are well within the most common case, but when we stray near the edges, we need to understand what is going on "under the hood." If we can't see beneath the abstraction, we won't appreciate interactions such as whether a `for... of` loop inside a generator closes its iterator if the enclosing iterator is closed while it yields.
 
 ---
 
 ### in closing
 
-In closing, we find that closing iterables introduces an aspect of how to write correct iterables code that is not always visibly evident. Sometimes we must choose one construct sometimes another. Sometimes we are safe to use generators, sometimes we must write functions that return iterable objects.
+We have found that closing iterables introduces an aspect of how to write correct iterables code that is not always visibly evident. Sometimes we must choose one construct, sometimes another. Sometimes we are safe to use generators, sometimes we must write functions that return iterable objects.
 
-In the end, the safest way to proceed is to understand our tools really, really well. Abstractions are useful for writing code that eliminates accidental complexity, but that does not mean that we as programmers do not need to understand what is happening beneath the abstractions. It is just that we don't always need to clutter our code up with what is happening beneath the abstractions
+In the end, the safest way to proceed is to understand our tools really, really well. Abstractions are useful for writing code that eliminates accidental complexity, but that does not mean that we as programmers do not need to understand what is happening beneath the abstractions. It is just that we don't always need to clutter our code up with what is happening beneath the abstractions.
+
+(discuss on [reddit])
+
+[reddit]: https://www.reddit.com/r/javascript/comments/6sdmk9/closing_iterables_is_a_leaky_abstraction/
 
 ---
 
