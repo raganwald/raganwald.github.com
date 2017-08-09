@@ -6,7 +6,7 @@ tags: [allonge]
 
 ### iterators and iterables, a quick recapitulation
 
-In JavaScript, iterators and iterables provide an abstract interface for sequentially accessing values, such as you might find in a collection.[^collections]
+In JavaScript, iterators and iterables provide an abstract interface for sequentially accessing values, such as we might find in collections like arrays or priority queues.[^collections]
 
 [^collections]: For a more thorough discussion of iterators and iterables, have a look at the [Collections](https://leanpub.com/javascriptallongesix/read#collections) chapter of [JavaScript Allongé](https://leanpub.com/javascriptallongesix)
 
@@ -40,17 +40,16 @@ iCountdown.next()
 iCountdown.next()
   //=> { done: false, value: 8 }
 
-  // ...
+// ...
 
 iCountdown.next()
   //=> { done: false, value: 1 }
-
 
 iCountdown.next()
   //=> { done: true }
 ```
 
-An *iterable* is an object with a `[Symbol.iterator]` object. when invoked, `[Symbol.iterator]()` returns an iterator. The idea is that we can have objects like arrays, and whenever we want to iterate over them, we call their `[Symbol.iterator]` method and get an iterator we can use to iterate over the contents.
+An *iterable* is an object with a `[Symbol.iterator]` method. When invoked, `[Symbol.iterator]()` returns an iterator. Semantically, the iterator returned by `[Symbol.iterator]()` represents an iteration over the values associated with the *iterable* collection.
 
 For example:
 
