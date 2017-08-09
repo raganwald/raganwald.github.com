@@ -14,7 +14,7 @@ An iterator is an object with a `.next()` method. When you call it, you get a Pl
 
 Iterators are stateful by design: Repeatedly invoking the `.next()` method usually results in a series of values until `done` (although some iterators continue indefinitely).
 
-Here’s an iterator that counts down:
+Here's an iterator that counts down:
 
 ```javascript
 const iCountdown = {
@@ -138,26 +138,26 @@ function lines (path) {
 }
 ```
 
-Whenever we want to iterate over all the lines of a file, we call our function, e.g. `lines('./README.md’)`, and we get an iterable for the lines in the file.
+Whenever we want to iterate over all the lines of a file, we call our function, e.g. `lines('./README.md')`, and we get an iterable for the lines in the file.
 
 When we invoke `[Symbol.iterator]()` on our iterable, we get an iterator that opens the file, reads the file line by line when we call `.next()`, and then closes the file when there are no more lines to be read.
 
 So we could output all the lines containing a particular word like this:
 
 ```javascript
-for (const line of lines('./README.md’)) {
+for (const line of lines('./README.md')) {
   if (line.match(/raganwald/)) {
     console.log(line);
   }
 }
 ```
 
-The expression lines('./README.md’)` would create a new iterator with an open file, we’d iterate over each line, and eventually we’d run out of lines, close the file, and exit the loop.
+The expression lines('./README.md')` would create a new iterator with an open file, we'd iterate over each line, and eventually we'd run out of lines, close the file, and exit the loop.
 
 What if we only want to find the first line with a particular word in it?
 
 ```javascript
-for (const line of lines('./README.md’)) {
+for (const line of lines('./README.md')) {
   if (line.match(/raganwald/)) {
     console.log(line);
     break;
@@ -165,7 +165,7 @@ for (const line of lines('./README.md’)) {
 }
 ```
 
-Now we have a problem. How are we going to close the file? The only way it will exhaust the iterations and invoke `this.fileDescriptor.close()` is if the file doesn’t contain `raganwald`. If the file *does* contain `raganwald`, our program will happily carry on while leaving the file open.
+Now we have a problem. How are we going to close the file? The only way it will exhaust the iterations and invoke `this.fileDescriptor.close()` is if the file doesn't contain `raganwald`. If the file *does* contain `raganwald`, our program will happily carry on while leaving the file open.
 
 This is not good. And it's not the only case. We might write iterators that act as coroutines, communicating with other processes over ports. Once again, we'd want to explicitly close the port when we are done with the iterator. We don't want to just garbage-collect the memory we're using.
 
@@ -175,13 +175,13 @@ Fortunately, there is a mechanism for closing iterators, and it was designed for
 
 Iterables that need to dispose of resources introduce a problem. To solve it, the language introduced a mechanism for closing iterators, but we will still need to work out patterns and protocols of our own.
 
-Let’s take a look at the mechanism.
+Let's take a look at the mechanism.
 
 ---
 
 ### return to forever
 
-We’ve seen that the interface for iterators includes a mandatory `.next()` method. It also includes an optional `.return()` method. The contract for `.return(optionalReturnValue)` is that when invoked:
+We've seen that the interface for iterators includes a mandatory `.next()` method. It also includes an optional `.return()` method. The contract for `.return(optionalReturnValue)` is that when invoked:
 
 - it should return `{ done: true }` is no optional return value is provided, or `{ done: true, value: optionalReturnValue }` if an optional return value is provided.
 - thereafter, the iterator should permanently return `{ done: true }` should `.next()` be called.
@@ -219,7 +219,7 @@ const countdown = {
 };
 ```
 
-There is some duplication of logic around returning `{ done: true }` and setting `this.done = true`, and this duplication will be more acute when we deal with disposing of resources, so let’s clean it up:
+There is some duplication of logic around returning `{ done: true }` and setting `this.done = true`, and this duplication will be more acute when we deal with disposing of resources, so let's clean it up:
 
 ```javascript
 const countdown = {
