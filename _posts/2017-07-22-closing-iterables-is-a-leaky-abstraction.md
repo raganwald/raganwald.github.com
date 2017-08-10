@@ -392,9 +392,7 @@ Unfortunately, we cannot always arrange for JavaScript's built-in constructs to 
 
 ### more about closing iterators explicitly
 
-The `zipWith` function takes two or more iterables, and "zips" them together with a function. There's no easy way to write this as a generator, because there's no easy way to arrange for JavaScript's built-in constructs to close all of the iterators we extract from its parameters.
-
-Here's an example that won't work properly for iterators that need to dispose of a resource:
+The `zipWith` function takes two or more iterables, and "zips" them together with a function. If we write this as a generator, there is no easy way to rely on JavaScript's built-in constructs to close all of the iterators we extract from its parameters.
 
 ```javascript
 function * zipWith (zipper, ...iterables) {
@@ -434,7 +432,50 @@ const [[firstCount, firstWord]] = zipWith((l, r) => [l, r], countdown, fewWords)
 
 This snippet does not log `Return to Forever`. Although JavaScript's built-in behaviour attempts to close the iterator created by our generator function, it never invokes the code we wrote to close all the iterators.
 
-One sure way to close all the iterators is to take 100% control of `zipWith`. Instead of writing it as a generator function, we can write it as a function that returns an iterable object:
+As suggested by [jaffathecake], we can make sure the iterables are closed within a generator using a `try... finally` construct:
+
+[jaffathecake]: https://www.reddit.com/user/jaffathecake
+
+```javascript
+function * zipWith (zipper, ...iterables) {
+  const iterators = iterables.map(i => i[Symbol.iterator]());
+
+  try {
+    while (true) {
+      const pairs = iterators.map(j => j.next()),
+            dones = pairs.map(p => p.done),
+            values = pairs.map(p => p.value);
+
+      if (dones.indexOf(true) >= 0) {
+        for (const iterator of iterators) {
+          if (typeof iterator.return === 'function') {
+            iterator.return();
+          }
+        }
+        return;
+      }
+
+      yield zipper(...values);
+    }
+  }
+  finally {
+    for (const iterator of iterators) {
+      if (typeof iterator.return === 'function') {
+        iterator.return();
+      }
+    }
+  }
+}
+```
+
+Now, when we close the iterable returned by `zipWith`, we are going to explicitly close each and every one of the iterables we pass into it, provided that they implement `.return()`. Let's try it:
+
+```javascript
+const [[firstCount, firstWord]] = zipWith((l, r) => [l, r], countdown, fewWords);
+  //=> Return to Forever
+```
+
+Another sure way to close all the iterators is to take 100% control of `zipWith`. Instead of writing it as a generator function, we can write it as a function that returns an iterable object:
 
 ```javascript
 function zipWith (zipper, ...iterables) {
@@ -478,14 +519,16 @@ function zipWith (zipper, ...iterables) {
 }
 ```
 
-Now, when we close the iterable returned by `zipWith`, we are going to explicitly close each and every one of the iterables we pass into it, provided that they implement `.return()`. Let's try it:
+And that also works:[^except]
+
+[^except]: There's another case not discussed in this post, handling exceptions. That is deliberate, as the point of this post is illustrating how Iiterators are a leaky abstraction, not dictating patterns for robustly handling all of its leaks.
 
 ```javascript
 const [[firstCount, firstWord]] = zipWith((l, r) => [l, r], countdown, fewWords);
   //=> Return to Forever
 ```
 
-We have now arranged things such that `zipWith` takes care to close its iterators when its own iterator is closed.
+Either way, we must explicitly arrange things such that `zipWith` closes its iterators when its own iterator is closed.
 
 ---
 
@@ -524,7 +567,27 @@ function * take (numberToTake, iterable) {
 }
 ```
 
-Is the `for... of` loop more elegant? What if `for (let i = 0; i < numberToTake; ++i)` is faster? Unfortunately, the important difference between these two implementations is hidden from view.
+And then there is the eternal debate of explicit versus implicit:
+
+```javascript
+function * take (numberToTake, iterable) {
+  const iterator = iterable[Symbol.iterator]();
+
+  try {
+    for (let i = 0; i < numberToTake; ++i) {
+      const { done, value } = iterator.next();
+      if (!done) yield value;
+    }
+  }
+  finally {
+    if (typeof iterator.return === 'function') {
+      iterator.return();
+    }
+  }
+}
+```
+
+Is the `for... of` loop more elegant? What if `for (let i = 0; i < numberToTake; ++i)` is faster? Is the `try... finally` code better because it explicitly handles closing the iterator? Or is it worse because it introduces extra code not central to the purpose of the function?
 
 ---
 
@@ -532,7 +595,7 @@ Is the `for... of` loop more elegant? What if `for (let i = 0; i < numberToTake;
 
 > In the matter of reforming things, as distinct from deforming them, there is one plain and simple principle; a principle which will probably be called a paradox. There exists in such a case a certain institution or law; let us say, for the sake of simplicity, a fence or gate erected across a road. The more modern type of reformer goes gaily up to it and says, "I don't see the use of this; let us clear it away." To which the more intelligent type of reformer will do well to answer: "If you don't see the use of it, I certainly won't let you clear it away. Go away and think. Then, when you can come back and tell me that you do see the use of it, I may allow you to destroy it." --G.K. Chesterton
 
-Imagine that some code included the "correct" implementation of `take`. An engineer sees it, decides it could be faster, and optimizes it, therein removing its ability to correctly close an iterable it is handed. Is this wrong? How would anybody know, if there is no mechanism to discover why it was written that way to begin with?
+Imagine that some code included the "implicit" implementation of `take`. An engineer sees it, decides it could be faster, and optimizes it, therein removing its ability to correctly close an iterable it is handed. Is this wrong? How would anybody know, if there is no mechanism to discover why it was written that way to begin with?
 
 Many patterns are like this. They include code for solving problems that are not evident on the first read: We have to have encountered the problem in the past in order to appreciate why the code we're looking at solves it. And to be fair, the problem being solved may not apply to us today.
 
