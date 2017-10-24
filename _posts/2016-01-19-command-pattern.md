@@ -604,7 +604,7 @@ bob.appendAll(alice);
   //=> My fast brown fox jumped over the lazy dog
 ```
 
-This appears to work: By prepending the exiting edits onto edits being appended to a buffer, we transform the new edits to producet the same result, synchronizing the buffers.
+This appears to work: By prepending the exiting edits onto edits being appended to a buffer, we transform the new edits to produce the same result, synchronizing the buffers.
 
 ![](/assets/images/command/039.png)
 
