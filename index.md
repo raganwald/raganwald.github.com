@@ -44,10 +44,10 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 <div class="related">
   <ul>
   <ul>
-    {% for sectionyear in older.years %}
+    {% for oldyear in page.older %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" %}
+        {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>)
           </li>
