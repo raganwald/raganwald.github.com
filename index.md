@@ -2,7 +2,8 @@
 title: Reginald Braithwaite
 layout: default
 tags: [allonge]
-years: ["2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008"]
+years: ["2017", "2016", "2015", "2014", "2013"]
+older: ["2012", "2011", "2010", "2009", "2008"]
 ---
 
 *This is a repository of essays and presentations by [Reginald "Raganwald" Braithwaite](http://braythwayt.com)*
@@ -37,6 +38,25 @@ years: ["2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", 
 </div>
 
 {% endfor %}
+
+### selected older essays
+
+<div class="related">
+  <ul>
+  <ul>
+    {% for sectionyear in older.years %}
+      {% for post in site.posts %}
+        {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
+        {% unless post.tags contains "noindex" %}
+          <li>
+            <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>)
+          </li>
+        {% endunless %}
+      {% endfor %}
+    {% endfor %}
+  </ul>
+  </ul>
+</div>
 
 ---
 
