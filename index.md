@@ -10,21 +10,23 @@ tags: [allonge]
 
 <p><a href="https://vimeo.com/153097877">JavaScript Combinators, the &ldquo;six&rdquo; edition</a> from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
 
-### elsewhere
-
 * about: [Reginald "raganwald" Braithwaite](http://braythwayt.com)
 * contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
 * code: <a href="https://github.com/raganwald">https://github.com/raganwald</a>
 * books: <a href="https://leanpub.com/u/raganwald/">https://leanpub.com/u/raganwald/</a>
 * talks: <a href="http://braythwayt.com/talks.html">http://braythwayt.com/talks.html</a>
 
-### 2017 essays
+---
+
+{% for sectionyear in ["2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008"] %}
+
+### {{ sectionyear }}
 
 <div class="related">
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != "2017" %}
+      {% unless post.tags contains "noindex" or postyear != sectionyear %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>
         </li>
@@ -33,52 +35,10 @@ tags: [allonge]
   </ul>
 </div>
 
-### 2016 essays
-
-<div class="related">
-  <ul>
-    {% for post in site.posts %}
-      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != "2016" %}
-        <li>
-          <a href="{{ post.url }}">{{ post.title }}</a>
-        </li>
-      {% endunless %}
-    {% endfor %}
-  </ul>
+{% endfor %}
 </div>
 
-### 2015 essays
-
-<div class="related">
-  <ul>
-    {% for post in site.posts %}
-      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != "2015" %}
-        <li>
-          <a href="{{ post.url }}">{{ post.title }}</a>
-        </li>
-      {% endunless %}
-    {% endfor %}
-  </ul>
-</div>
-
-### older essays
-
-<div class="related">
-  <ul>
-  <ul>
-    {% for post in site.posts %}
-      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear == "2015" or postyear == "2016" or postyear == "2017" %}
-        <li>
-          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>)
-        </li>
-      {% endunless %}
-    {% endfor %}
-  </ul>
-  </ul>
-</div>
+---
 
 This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 
