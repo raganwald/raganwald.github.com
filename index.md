@@ -2,6 +2,7 @@
 title: Reginald Braithwaite
 layout: default
 tags: [allonge]
+years: ["2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008"]
 ---
 
 *This is a repository of essays and presentations by [Reginald "Raganwald" Braithwaite](http://braythwayt.com)*
@@ -18,7 +19,7 @@ tags: [allonge]
 
 ---
 
-{% for sectionyear in ["2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008"] %}
+{% for sectionyear in page.years %}
 
 ### {{ sectionyear }}
 
@@ -36,7 +37,6 @@ tags: [allonge]
 </div>
 
 {% endfor %}
-</div>
 
 ---
 
