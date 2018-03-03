@@ -11,6 +11,12 @@ State machines, as we discussed, are a very useful tool for organizing the behav
 [fsm]: https://en.wikipedia.org/wiki/Finite-state_machine
 [Domain models]: https://en.wikipedia.org/wiki/Domain_model
 
+---
+
+[![Bank of Montréal, in Toronto](/assets/images/state-machine/bank-of-montreal.jpg)](https://www.flickr.com/photos/remedy451/8061881196)
+
+### our bank account state machine
+
 Here's the "bank account" code we wrote:[^account]
 
 [^account]: Banking software is not actually written with objects that have methods like `.deposit` for soooooo many reasons, but this toy example describes something most people understand on a basic level, even if they aren't familiar with the needs of banking infrastructure, correctness, and so forth.
@@ -528,12 +534,6 @@ dot(account, "Account")
 ```
 
 We now have a way of drawing state transition diagrams for state machines. We could incorporate this technique into debuggers, for example, so we could examine live objects. With a little more work, we could also parse JavaScript code to generate the same descriptions, and incorporate those into our tool chain so that our documentation is always up-to-date with the latest code.
-
----
-
-[![Bank of Montréal, in Toronto](/assets/images/state-machine/bank-of-montreal.jpg)](https://www.flickr.com/photos/remedy451/8061881196)
-
-### xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 ---
 
