@@ -239,14 +239,14 @@ digraph Account {
 
   open [color=green, fontcolor=green];
 
-  open -> open [color=blue, label="deposit, withdraw, available-to-withdraw"];
-  open -> held [color=blue, label="place-hold"];
+  open -> open [color=blue, label="deposit, withdraw, availableToWithdraw"];
+  open -> held [color=blue, label="placeHold"];
   open -> closed [color=blue, label="close"];
 
   held [color=red, fontcolor=red];
 
-  held -> held [color=blue, label="deposit, available-to-withdraw"];
-  held -> open [color=blue, label="remove-hold"];
+  held -> held [color=blue, label="deposit, availableToWithdraw"];
+  held -> open [color=blue, label="removeHold"];
   held -> closed [color=blue, label="close"];
 
   closed [color=darkslategrey, fontcolor=darkslategrey];
@@ -254,6 +254,8 @@ digraph Account {
   closed -> open [color=blue, label="reopen"];
 }
 ```
+
+iIf we cut all the colors and so forth out, we can easily generate this DOT file if we have a list of states, events, and the states those events transition to.
 
 ---
 
@@ -430,12 +432,12 @@ Directly compiling diagrams has been--so far--highly unproductive for programmin
 
 |            | open              | held       | closed |
 |:-----------|:------------------|:-----------|:-------|
-| **open**   | deposit, withdraw | place-hold | close  |
-| **held**   | remove-hold       | deposit    | close  |
+| **open**   | deposit, withdraw | placeHold | close  |
+| **held**   | removeHold       | deposit    | close  |
 | **closed** | reopen            |            |        |
 
 
-In the leftmost column, we have the current state of the account. Each subsequent column is a destination state. At the intersection of the current state and a destination state, we have the event or events that transition the object from current to destination state. Thus, `deposit` and `withdraw` transition from `open` to `open`, while `place-hold` transitions the object from `open` to `held`. The start state is arbitrarily taken as the first state listed.
+In the leftmost column, we have the current state of the account. Each subsequent column is a destination state. At the intersection of the current state and a destination state, we have the event or events that transition the object from current to destination state. Thus, `deposit` and `withdraw` transition from `open` to `open`, while `placeHold` transitions the object from `open` to `held`. The start state is arbitrarily taken as the first state listed.
 
 Like the state diagram, the transition table shows clearly which events are handled by which state, and the transitions between them. We can take this idea to our executable code: Here's a version of our account that uses objects to represent table rows and columns.
 
