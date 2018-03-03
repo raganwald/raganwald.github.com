@@ -17,6 +17,9 @@ Here's the "bank account" code we wrote:[^account]
 [^account]: Banking software is not actually written with objects that have methods like `.deposit` for soooooo many reasons, but this toy example describes something most people understand on a basic level, even if they aren't familiar with the needs of banking infrastructure, correctness, and so forth.
 
 ```javascript
+const STATES = Symbol("states");
+const STARTING_STATE = Symbol("starting-state");
+
 const account = StateMachine({
   balance: 0,
 
@@ -25,7 +28,7 @@ const account = StateMachine({
     open: {
       deposit (amount) { this.balance = this.balance + amount; },
       withdraw (amount) { this.balance = this.balance - amount; },
-      availableForWithdrawal () { return (this.balance > 0) ? this.balance : 0; }
+      availableForWithdrawal () { return (this.balance > 0) ? this.balance : 0; },
       placeHold: transitionsTo('held', () => undefined),
       close: transitionsTo('closed', function () {
         if (balance > 0) {
@@ -36,7 +39,7 @@ const account = StateMachine({
     held: {
       removeHold: transitionsTo('open', () => undefined),
       deposit (amount) { this.balance = this.balance + amount; },
-      availableForWithdrawal () { return 0; }
+      availableForWithdrawal () { return 0; },
       close: transitionsTo('closed', function () {
         if (balance > 0) {
           // ...transfer balance to suspension account
@@ -55,7 +58,16 @@ const account = StateMachine({
 To make this work, we wrote this naïve `StateMachine` function:
 
 ```javascript
+function transitionsTo (stateName, fn) {
+  return function (...args) {
+    const returnValue = fn.apply(this, args);
+    this[STATE] = this[STATES][stateName];
+    return returnValue;
+  };
+}
+
 const RESERVED = [STARTING_STATE, STATES];
+const STATE = Symbol("state");
 
 function StateMachine (description) {
   const machine = {};
@@ -109,6 +121,85 @@ Having worked through the basics, in this essay we're going to consider some of 
 [![Reflections](/assets/images/state-machine/reflections.jpg)](https://www.flickr.com/photos/hartman045/3503671671)
 
 ### reflection
+
+> In computer science, [reflection] is the ability of a computer program to examine, introspect, and modify its own structure and behavior at runtime.--[Wikipedia][reflection]
+
+[reflection]: https://en.wikipedia.org/wiki/Reflection_(computer_programming)
+
+We can use code to examine our bank account's behaviour:
+
+```javascript
+function methodsOf (obj) {
+  const list = [];
+
+  for (const key in obj) {
+    if (typeof obj[key] === 'function') {
+      list.push(key);
+    }
+  }
+  return list;
+}
+
+methodsOf(account)
+  //=> deposit, withdraw, availableForWithdrawal, placeHold, close, removeHold, reopen
+```
+
+But this is semantically wrong. When an object is created, it is in 'open' state, and `placehold`, `removeHold`, and `reopen` are all invalid methods. Our interface is lying to the outside would about what methods the object truly supports.
+
+The ideal would be for it not to have these methods at all. One way to go about this is with prototype mongling:[^mongle]
+
+[^mongle]: **mongle**: *v*, to molest or disturb.
+
+```javascript
+function transitionsTo (stateName, fn) {
+  return function (...args) {
+    const returnValue = fn.apply(this, args);
+    this[SET_STATE].call(this, stateName);
+    return returnValue;
+  };
+}
+
+const RESERVED = [STARTING_STATE, STATES];
+const STATE = Symbol("state");
+const SET_STATE = Symbol("setState");
+
+function StateMachine (description) {
+  const machine = {};
+
+  // Handle all the initial states and/or methods
+  const propertiesAndMethods = Object.keys(description).filter(property => !RESERVED.includes(property));
+  for (const property of propertiesAndMethods) {
+    machine[property] = description[property];
+  }
+
+  // now its states
+  machine[STATES] = description[STATES];
+
+  // set state method
+  machine[SET_STATE] = function (state) {
+    Object.setPrototypeOf(this, this[STATES][state]);
+  }
+
+  // set the starting state
+  const starting_state = description[STARTING_STATE];
+
+  machine[SET_STATE].call(machine, starting_state);
+
+  // we're done
+  return machine;
+}
+
+methodsOf(account)
+  //=> deposit, withdraw, availableForWithdrawal, placeHold, close
+
+account.placeHold()
+methodsOf(account)
+  //=> removeHold, deposit, availableForWithdrawal, close
+```
+
+This particular hack has many tradeoffs to consider, including the fact that by mutating the prototype rather than manually delegating, we make it very difficult to migrate to an inheritance architecture later, but the important thing here is to recognize that the original `StateMachine` function created an unsatisfactory interface for objects.
+
+We could write another version that respects a supplied prototype, or dynamically adds and removes delegation methods, but let's move on to another consideration.
 
 ---
 
