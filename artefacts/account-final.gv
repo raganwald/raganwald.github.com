@@ -1,0 +1,21 @@
+digraph AccountLebeledWithSelfTransitionsAndOnHold {
+
+  start [label="", fixedsize="false", width=0, height=0, shape=none];
+  start -> open [color=darkslategrey];
+
+  open [color=green, fontcolor=green];
+
+  open -> open [color=blue, label="deposit, withdraw, available-to-withdraw"];
+  open -> held [color=blue, label="place-hold"];
+  open -> closed [color=blue, label="close"];
+
+  held [color=red, fontcolor=red];
+
+  held -> held [color=blue, label="deposit, available-to-withdraw"];
+  held -> open [color=blue, label="remove-hold"];
+  held -> closed [color=blue, label="close"];
+
+  closed [color=darkslategrey, fontcolor=darkslategrey];
+
+  closed -> open [color=blue, label="reopen"];
+}

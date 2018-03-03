@@ -28,7 +28,7 @@ const account = StateMachine({
     open: {
       deposit (amount) { this.balance = this.balance + amount; },
       withdraw (amount) { this.balance = this.balance - amount; },
-      availableForWithdrawal () { return (this.balance > 0) ? this.balance : 0; },
+      availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; },
       placeHold: transitionsTo('held', () => undefined),
       close: transitionsTo('closed', function () {
         if (balance > 0) {
@@ -39,7 +39,7 @@ const account = StateMachine({
     held: {
       removeHold: transitionsTo('open', () => undefined),
       deposit (amount) { this.balance = this.balance + amount; },
-      availableForWithdrawal () { return 0; },
+      availableToWithdraw () { return 0; },
       close: transitionsTo('closed', function () {
         if (balance > 0) {
           // ...transfer balance to suspension account
@@ -141,7 +141,7 @@ function methodsOf (obj) {
 }
 
 methodsOf(account)
-  //=> deposit, withdraw, availableForWithdrawal, placeHold, close, removeHold, reopen
+  //=> deposit, withdraw, availableToWithdraw, placeHold, close, removeHold, reopen
 ```
 
 But this is semantically wrong. When an object is created, it is in 'open' state, and `placehold`, `removeHold`, and `reopen` are all invalid methods. Our interface is lying to the outside would about what methods the object truly supports.
@@ -190,16 +190,39 @@ function StateMachine (description) {
 }
 
 methodsOf(account)
-  //=> deposit, withdraw, availableForWithdrawal, placeHold, close
+  //=> deposit, withdraw, availableToWithdraw, placeHold, close
 
 account.placeHold()
 methodsOf(account)
-  //=> removeHold, deposit, availableForWithdrawal, close
+  //=> removeHold, deposit, availableToWithdraw, close
 ```
 
 This particular hack has many tradeoffs to consider, including the fact that by mutating the prototype rather than manually delegating, we make it very difficult to migrate to an inheritance architecture later, but the important thing here is to recognize that the original `StateMachine` function created an unsatisfactory interface for objects.
 
 We could write another version that respects a supplied prototype, or dynamically adds and removes delegation methods, but let's move on to another consideration.
+
+---
+
+[![Valves](/assets/images/state-machine/valves.jpg)](https://www.flickr.com/photos/thristian/371670597)
+
+### descriptions
+
+Two things have been proven to be consistently true since the dawn of human engineering:
+
+1. Using a diagram, schematic, blueprint, or other symbolic representation of work to be done helps us plan our work, do our work,  verify that our work is correctly done, and understand our work.
+2. Diagrams, schematics, blueprints, and other symbolic representations of work invariably drift from the work over time, until their inaccuracies present more harm than good.
+
+This is especially true of programming, where change happens rapidly and "documentation" lags woefully behind. In early days, researchers toyed with various ways of making executable diagrams for programs: Humans would draw a diagram that communicated the program's behaviour, and the computer would interpret it directly.
+
+With such a scheme, we'd use a special editor to draw something like this:
+
+![Bank account diagram](/assets/images/state-machine/account-final.jpg)
+
+And the machine would simply execute it as a state machine. Naturally, there have been variations over the years, such as having the machine generate a template that huamns would fill in, and so forth. But the results have always been unsatisfactory, not least because diagrams often scale well for reading about code, but not for writing code.
+
+Another approach has been to dynamically generate dialgrams and comments of one form or another. Many modern programing frameworks can generate documentation from the source code itself, sometimes using special annotations as a kind of markup. The value of this approach is that when the code changes, so does the documentation.
+
+Can we generate state transition diagrams from our source code?
 
 ---
 
@@ -823,14 +846,14 @@ const account = StateMachine({
 
 ### how does this help?
 
-Let's finish our examination of state machines with a small change. We wish to add an `availableForWithdrawal` method. It returns the balance (if positive and for accounts that are open and not on hold). The old way would be to write a single method with an `if` statement:
+Let's finish our examination of state machines with a small change. We wish to add an `availableToWithdraw` method. It returns the balance (if positive and for accounts that are open and not on hold). The old way would be to write a single method with an `if` statement:
 
 ```javascript
 let account = {
 
   // ...
 
-  availableForWithdrawal () {
+  availableToWithdraw () {
     if (this.state === 'open') {
       return (this.balance > 0) ? this.balance : 0;
     } else if (this.state === 'held') {
@@ -842,7 +865,7 @@ let account = {
 }
 ```
 
-As discussed, this optimizes for understanding `availableForWithdrawal`, but makes it harder to understand how `open` and `held` accounts differ from each other. It combines multiple responsibilities in the `availableForWithdrawal` method: Understanding everything about account states, and implementing the functionality for each of the applicable states.
+As discussed, this optimizes for understanding `availableToWithdraw`, but makes it harder to understand how `open` and `held` accounts differ from each other. It combines multiple responsibilities in the `availableToWithdraw` method: Understanding everything about account states, and implementing the functionality for each of the applicable states.
 
 The "state machine way" is to write:
 
@@ -856,13 +879,13 @@ const account = StateMachine({
 
       // ...
 
-      availableForWithdrawal () { return (this.balance > 0) ? this.balance : 0; }
+      availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; }
     },
     held: {
 
       // ...
 
-      availableForWithdrawal () { return 0; }
+      availableToWithdraw () { return 0; }
     }
   }
 });
