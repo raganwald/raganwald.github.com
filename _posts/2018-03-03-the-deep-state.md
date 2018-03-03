@@ -122,7 +122,7 @@ Having worked through the basics, in this essay we're going to consider some of 
 
 ### reflection
 
-> In computer science, [reflection] is the ability of a computer program to examine, introspect, and modify its own structure and behavior at runtime.--[Wikipedia][reflection]
+> In computer science, [reflection] is the ability of a computer program to examine, introspect, and modify its own structure and behaviour at runtime.--[Wikipedia][reflection]
 
 [reflection]: https://en.wikipedia.org/wiki/Reflection_(computer_programming)
 
@@ -205,7 +205,7 @@ We could write another version that respects a supplied prototype, or dynamicall
 
 [![Valves](/assets/images/state-machine/valves.jpg)](https://www.flickr.com/photos/thristian/371670597)
 
-### descriptions
+### descriptions and diagrams for code
 
 Two things have been proven to be consistently true since the dawn of human engineering:
 
@@ -218,11 +218,42 @@ With such a scheme, we'd use a special editor to draw something like this:
 
 ![Bank account diagram](/assets/images/state-machine/account-final.jpg)
 
-And the machine would simply execute it as a state machine. Naturally, there have been variations over the years, such as having the machine generate a template that huamns would fill in, and so forth. But the results have always been unsatisfactory, not least because diagrams often scale well for reading about code, but not for writing code.
+And the machine would simply execute it as a state machine. Naturally, there have been variations over the years, such as having the machine generate a template that humans would fill in, and so forth. But the results have always been unsatisfactory, not least because diagrams often scale well for reading about code, but not for writing code.
 
-Another approach has been to dynamically generate dialgrams and comments of one form or another. Many modern programing frameworks can generate documentation from the source code itself, sometimes using special annotations as a kind of markup. The value of this approach is that when the code changes, so does the documentation.
+Another approach has been to dynamically generate diagrams and comments of one form or another. Many modern programming frameworks can generate documentation from the source code itself, sometimes using special annotations as a kind of markup. The value of this approach is that when the code changes, so does the documentation.
 
 Can we generate state transition diagrams from our source code?
+
+Well, we're not going to write an entire graphics generation engine, although that would be a pleasant diversion. But what we will do is generate a kind of program that another engine can consume to produce our documentation. The diagrams in this essay were generated with [Graphviz], free software that generates graphs specified with the [DOT] graph description language.
+
+[Graphviz]: https://en.wikipedia.org/wiki/Graphviz
+[DOT]: https://en.wikipedia.org/wiki/DOT_(graph_description_language)
+
+The code to generate the above diagram looks like this:
+
+```dot
+digraph Account {
+
+  start [label="", fixedsize="false", width=0, height=0, shape=none];
+  start -> open [color=darkslategrey];
+
+  open [color=green, fontcolor=green];
+
+  open -> open [color=blue, label="deposit, withdraw, available-to-withdraw"];
+  open -> held [color=blue, label="place-hold"];
+  open -> closed [color=blue, label="close"];
+
+  held [color=red, fontcolor=red];
+
+  held -> held [color=blue, label="deposit, available-to-withdraw"];
+  held -> open [color=blue, label="remove-hold"];
+  held -> closed [color=blue, label="close"];
+
+  closed [color=darkslategrey, fontcolor=darkslategrey];
+
+  closed -> open [color=blue, label="reopen"];
+}
+```
 
 ---
 
