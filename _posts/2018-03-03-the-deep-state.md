@@ -4,7 +4,9 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-In [Forde's tenth Rule, or, "How I Learned to Stop Worrying and ❤️ the State Machine"](http://raganwald.com/2018/02/23/forde.html), we built an extremely basic [state machine][fsm] to model a bank account.State machines, we discovered, are a very useful tool for organizing the behaviour of [domain models], representations of meaningful real-world concepts pertinent to a sphere of knowledge, influence or activity (the "domain") that need to be modelled in software.
+In [Forde's tenth Rule, or, "How I Learned to Stop Worrying and ❤️ the State Machine"](http://raganwald.com/2018/02/23/forde.html), we built an extremely basic [state machine][fsm] to model a bank account.
+
+State machines, as we discussed, are a very useful tool for organizing the behaviour of [domain models], representations of meaningful real-world concepts pertinent to a sphere of knowledge, influence or activity (the "domain") that need to be modelled in software.
 
 [fsm]: https://en.wikipedia.org/wiki/Finite-state_machine
 
