@@ -3,19 +3,19 @@ digraph Account {
   start [label="", fixedsize="false", width=0, height=0, shape=none];
   start -> open [color=darkslategrey];
 
-  open [color=green, fontcolor=green];
+  open;
 
   open -> open [color=blue, label="deposit, withdraw, availableToWithdraw"];
   open -> held [color=blue, label="placeHold"];
   open -> closed [color=blue, label="close"];
 
-  held [color=red, fontcolor=red];
+  held;
 
   held -> held [color=blue, label="deposit, availableToWithdraw"];
   held -> open [color=blue, label="removeHold"];
   held -> closed [color=blue, label="close"];
 
-  closed [color=darkslategrey, fontcolor=darkslategrey];
+  closed;
 
   closed -> open [color=blue, label="reopen"];
 }
