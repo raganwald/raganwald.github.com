@@ -9,7 +9,6 @@ In "[How I Learned to Stop Worrying and ❤️ the State Machine](http://raganwa
 State machines, as we discussed, are a very useful tool for organizing the behaviour of [domain models], representations of meaningful real-world concepts pertinent to a sphere of knowledge, influence or activity (the "domain") that need to be modelled in software.
 
 [fsm]: https://en.wikipedia.org/wiki/Finite-state_machine
-
 [Domain models]: https://en.wikipedia.org/wiki/Domain_model
 
 Here's the "bank account" code we wrote:[^account]
@@ -31,7 +30,7 @@ const account = StateMachine({
       availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; },
       placeHold: transitionsTo('held', () => undefined),
       close: transitionsTo('closed', function () {
-        if (balance > 0) {
+        if (this.balance > 0) {
           // ...transfer balance to suspension account
         }
       })
@@ -41,7 +40,7 @@ const account = StateMachine({
       deposit (amount) { this.balance = this.balance + amount; },
       availableToWithdraw () { return 0; },
       close: transitionsTo('closed', function () {
-        if (balance > 0) {
+        if (this.balance > 0) {
           // ...transfer balance to suspension account
         }
       })
@@ -182,7 +181,6 @@ function StateMachine (description) {
 
   // set the starting state
   const starting_state = description[STARTING_STATE];
-
   machine[SET_STATE].call(machine, starting_state);
 
   // we're done
@@ -255,13 +253,187 @@ digraph Account {
 }
 ```
 
-iIf we cut all the colors and so forth out, we can easily generate this DOT file if we have a list of states, events, and the states those events transition to.
+iIf we cut all the colours and so forth out, we can easily generate this DOT file if we have a list of states, events, and the states those events transition to.
+
+Getting a list of states and events is easy:
+
+```javascript
+function describe (machine) {
+  const description = machine[STATES];
+
+  return Object.keys(description).reduce(
+    (acc, state) => Object.assign(acc, { [state]: methodsOf(description[state]) }),
+    {}
+  );
+}
+
+describe(account)
+  //=> {
+    open: ["deposit", "withdraw", "availableForWithdrawal", "placeHold", "close"],
+    held: ["removeHold", "deposit", "availableForWithdrawal", "close"],
+    closed: ["reopen"]
+  }
+```
+
+What we don't have is the starting state, nor do we have the states these methods (a/k/a "events") transition to. The starting state problem can be easily solved:
+
+```javascript
+function StateMachine (description) {
+  // ...
+
+  // set the starting state
+  machine[STARTING_STATE] = description[STARTING_STATE];
+  machine[SET_STATE].call(machine, machine[STARTING_STATE]);
+
+  // ...
+}
+
+function describe (machine) {
+  const description = machine[STATES];
+
+  return Object.keys(description).reduce(
+    (acc, state) => Object.assign(acc, { [state]: methodsOf(description[state]) }),
+    { [STARTING_STATE]: machine[STARTING_STATE] }
+  );
+}
+
+describe(account)
+  //=> {
+    open: ["deposit", "withdraw", "availableForWithdrawal", "placeHold", "close"],
+    held: ["removeHold", "deposit", "availableForWithdrawal", "close"],
+    closed: ["reopen"],
+    Symbol(starting-state): "open"
+  }
+```
+
+But what to do about the transitions? This is a deep problem. Throughout our programming explorations, we have repeatedly feasted on JavaScript's ability for functions to consume other functions as arguments and return new functions. Using this, we have written many different kinds of decorators, including `transitionsTo`.
+
+The beauty of functions returning functions is that closures form a hard encapsulation: The closure wrapping a function is available only functions created within its scope, not to any other scope. The drawback is that when we want to do some inspection, we cannot pierce the closure. We simply cannot tell from the function that `transitionsTo` returns what state it will transition to.
+
+We have a few options. One is to use a different form of description that encodes the destination states without a `transitionsTo` function, like this:
+
+```javascript
+const TRANSITIONS = Symbol("description");
+const STARTING_STATE = Symbol("starting-state");
+
+const account = StateMachine({
+  balance: 0,
+
+  [STARTING_STATE]: 'open',
+  [TRANSITIONS]: {
+    open: {
+      open: {
+        deposit (amount) { this.balance = this.balance + amount; },
+        withdraw (amount) { this.balance = this.balance - amount; },
+        availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; }
+      },
+      held: {
+        placeHold () {}
+      },
+      closed: {
+        close () {
+          if (this.balance > 0) {
+            // ...transfer balance to suspension account
+          }
+        }
+      }
+    },
+    held: {
+      open: {
+        removeHold () {}
+      },
+      held: {
+        deposit (amount) { this.balance = this.balance + amount; },
+        availableToWithdraw () { return 0; }
+      },
+      closed: {
+        if (this.balance > 0) {
+          // ...transfer balance to suspension account
+        }
+      }
+    },
+    closed: {
+      open: {
+        reopen () {
+          // ...restore balance if applicable
+        }
+      }
+    }
+  }
+});
+```
+
+This is more verbose, but we can write a `StateMachine` to do all the interpretation work. It will keep the description but translate the methods to use `transitionsTo` for us:
+
+```javascript
+const RESERVED = [STARTING_STATE, TRANSITIONS];
+const STATE = Symbol("state");
+const STATES = Symbol("states");
+const SET_STATE = Symbol("setState");
+
+function transitionsTo (stateName, fn) {
+  return function (...args) {
+    const returnValue = fn.apply(this, args);
+    this[SET_STATE].call(this, stateName);
+    return returnValue;
+  };
+}
+
+function StateMachine (description) {
+  const machine = {};
+
+  // Handle all the initial states and/or methods
+  const propertiesAndMethods = Object.keys(description).filter(property => !RESERVED.includes(property));
+  for (const property of propertiesAndMethods) {
+    machine[property] = description[property];
+  }
+
+  // now its states
+  machine[STATES] = Object.create(null);
+
+  for (const state of Object.keys(description[TRANSITIONS])) {
+    const stateDescription = description[TRANSITIONS][state];
+
+    machine[STATES][state] = {};
+    for (const destinationState of Object.keys(stateDescription)) {
+      const methods = stateDescription[destinationState];
+
+      for (const methodName of Object.keys(methods)) {
+        const value = stateDescription[destinationState][methodName];
+
+        if (typeof value === 'function') {
+          machine[STATES][state][methodName] = transitionsTo(destinationState, value);
+        }
+      }
+    }
+  }
+
+  // set state method
+  machine[SET_STATE] = function (state) {
+    Object.setPrototypeOf(this, this[STATES][state]);
+  }
+
+  // set the starting state
+  machine[STARTING_STATE] = description[STARTING_STATE];
+  machine[SET_STATE].call(machine, machine[STARTING_STATE]);
+
+  // we're done
+  return machine;
+}
+
+methodsOf(account)
+  //=> deposit, withdraw, availableToWithdraw, placeHold, close
+
+account.placeHold()
+methodsOf(account)
+  //=> removeHold, deposit, availableToWithdraw, close
+```
 
 ---
 
 [![Bank of Montréal, in Toronto](/assets/images/state-machine/bank-of-montreal.jpg)](https://www.flickr.com/photos/remedy451/8061881196)
 
-### reflection
+### xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 > A [finite state machine][fsm], or simply a _state machine_, is a mathematical model of computation. It is an abstract machine that can be in exactly one of a finite number of states at any given time.
 >
@@ -318,7 +490,7 @@ let account = {
 
   close () {
     if (this.state === 'open') {
-      if (balance > 0) {
+      if (this.balance > 0) {
         // ...transfer balance to suspension account
       }
       this.state = 'closed';
@@ -396,7 +568,7 @@ let account = {
 
   close () {
     if (this.state === 'open' || this.state === 'held') {
-      if (balance > 0) {
+      if (this.balance > 0) {
         // ...transfer balance to suspension account
       }
       this.state = 'closed';
@@ -459,7 +631,7 @@ const Account = {
       },
       closed: {
         close () {
-          if (balance > 0) {
+          if (this.balance > 0) {
             // ...transfer balance to suspension account
           }
         }
@@ -475,7 +647,7 @@ const Account = {
       },
       closed: {
         close () {
-          if (balance > 0) {
+          if (this.balance > 0) {
             // ...transfer balance to suspension account
           }
         }
@@ -516,7 +688,7 @@ const open = {
     this[STATE] = this[STATES].held;
   },
   close () {
-    if (balance > 0) {
+    if (this.balance > 0) {
       // ...transfer balance to suspension account
     }
     this[STATE] = this[STATES].closed;
@@ -529,7 +701,7 @@ const held = {
   },
   deposit (amount) { this.balance = this.balance + amount; },
   close () {
-    if (balance > 0) {
+    if (this.balance > 0) {
       // ...transfer balance to suspension account
     }
     this[STATE] = this[STATES].closed;
@@ -586,7 +758,7 @@ const open = {
   withdraw (amount) { this.balance = this.balance - amount; },
   placeHold: transitionsTo('held', () => undefined),
   close: transitionsTo('closed', function () {
-    if (balance > 0) {
+    if (this.balance > 0) {
       // ...transfer balance to suspension account
     }
   })
@@ -596,7 +768,7 @@ const held = {
   removeHold: transitionsTo('open', () => undefined),
   deposit (amount) { this.balance = this.balance + amount; },
   close: transitionsTo('closed', function () {
-    if (balance > 0) {
+    if (this.balance > 0) {
       // ...transfer balance to suspension account
     }
   })
@@ -661,7 +833,7 @@ const account = StateMachine({
       withdraw (amount) { this.balance = this.balance - amount; },
       placeHold: transitionsTo('held', () => undefined),
       close: transitionsTo('closed', function () {
-        if (balance > 0) {
+        if (this.balance > 0) {
           // ...transfer balance to suspension account
         }
       })
@@ -670,7 +842,7 @@ const account = StateMachine({
       removeHold: transitionsTo('open', () => undefined),
       deposit (amount) { this.balance = this.balance + amount; },
       close: transitionsTo('closed', function () {
-        if (balance > 0) {
+        if (this.balance > 0) {
           // ...transfer balance to suspension account
         }
       })
@@ -748,7 +920,7 @@ let account = {
 
   close () {
     if (this.state === 'open') {
-      if (balance > 0) {
+      if (this.balance > 0) {
         // ...transfer balance to suspension account
       }
       this.state = 'closed';
@@ -811,13 +983,13 @@ let account = {
 
   close () {
     if (this.state === 'open') {
-      if (balance > 0) {
+      if (this.balance > 0) {
         // ...transfer balance to suspension account
       }
       this.state = 'closed';
     }
     if (this.state === 'held') {
-      if (balance > 0) {
+      if (this.balance > 0) {
         // ...transfer balance to suspension account
       }
       this.state = 'closed';
@@ -850,7 +1022,7 @@ const account = StateMachine({
       withdraw (amount) { this.balance = this.balance - amount; },
       placeHold: transitionsTo('held', () => undefined),
       close: transitionsTo('closed', function () {
-        if (balance > 0) {
+        if (this.balance > 0) {
           // ...transfer balance to suspension account
         }
       })
@@ -859,7 +1031,7 @@ const account = StateMachine({
       removeHold: transitionsTo('open', () => undefined),
       deposit (amount) { this.balance = this.balance + amount; },
       close: transitionsTo('closed', function () {
-        if (balance > 0) {
+        if (this.balance > 0) {
           // ...transfer balance to suspension account
         }
       })
