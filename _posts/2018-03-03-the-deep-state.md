@@ -347,8 +347,10 @@ const account = StateMachine({
         availableToWithdraw () { return 0; }
       },
       closed: {
-        if (this.balance > 0) {
-          // ...transfer balance to suspension account
+        close () {
+          if (this.balance > 0) {
+            // ...transfer balance to suspension account
+          }
         }
       }
     },
@@ -428,6 +430,46 @@ account.placeHold()
 methodsOf(account)
   //=> removeHold, deposit, availableToWithdraw, close
 ```
+
+And now our `describe` function can generate most of what we want:
+
+```javascript
+function describe (machine) {
+  const description = { [STARTING_STATE]: machine[STARTING_STATE] };
+  const transitions = machine[TRANSITIONS];
+
+  for (const state of Object.keys(transitions)) {
+    const stateDescription = transitions[state];
+
+    description[state] = Object.create(null);
+    for (const destinationState of Object.keys(stateDescription)) {
+      description[state][destinationState] = Object.keys(stateDescription[destinationState]);
+    }
+  }
+
+  return description;
+}
+
+describe(account)
+  //=> {
+    open: {
+      open: ["deposit", "withdraw", "availableToWithdraw"],
+      held: ["placeHold"],
+      closed: ["close"]
+    },
+    held: {
+      open: ["removeHold"],
+      held: ["deposit", "availableToWithdraw"],
+      closed: ["close"]
+    },
+    closed: {
+      open: ["reopen"]
+    },
+    Symbol(starting-state): "open"
+  }
+```
+
+And now, we can generate a DOT file from the symbolic description:
 
 ---
 
