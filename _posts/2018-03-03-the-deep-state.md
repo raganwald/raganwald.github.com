@@ -102,11 +102,19 @@ function StateMachine (description) {
 }
 ```
 
+Having worked through the basics, in this essay we're going to consider some of the problems a naïve state machine presents, and mull over some of the ways we can improve on its basic idea.
+
+---
+
+[![Reflections](/assets/images/state-machine/reflections.jpg)](https://www.flickr.com/photos/hartman045/3503671671)
+
+### reflection
+
 ---
 
 [![Bank of Montréal, in Toronto](/assets/images/state-machine/bank-of-montreal.jpg)](https://www.flickr.com/photos/remedy451/8061881196)
 
-### finite state machines
+### reflection
 
 > A [finite state machine][fsm], or simply a _state machine_, is a mathematical model of computation. It is an abstract machine that can be in exactly one of a finite number of states at any given time.
 >
