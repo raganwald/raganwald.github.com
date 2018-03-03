@@ -5,13 +5,13 @@ digraph Account {
 
   open [color=green, fontcolor=green];
 
-  open -> open [color=blue, label="deposit, withdraw, available-to-withdraw"];
+  open -> open [color=blue, label="deposit, withdraw, availableToWithdraw"];
   open -> held [color=blue, label="placeHold"];
   open -> closed [color=blue, label="close"];
 
   held [color=red, fontcolor=red];
 
-  held -> held [color=blue, label="deposit, available-to-withdraw"];
+  held -> held [color=blue, label="deposit, availableToWithdraw"];
   held -> open [color=blue, label="removeHold"];
   held -> closed [color=blue, label="close"];
 
