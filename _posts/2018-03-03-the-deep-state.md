@@ -571,6 +571,39 @@ We're not going to develop an early-bound state machine tool, complete with a co
 
 ---
 
+[![New Parts Bins](/assets/images/state-machine/new-parts-bins.jpg)](https://www.flickr.com/photos/randomskk/2483599171)
+
+### a place for everything , and everything in its place
+
+---
+
+[![Tree](/assets/images/state-machine/tree.jph)](https://www.flickr.com/photos/29233640@N07/14724197800)
+
+### inheritance, the easy way
+
+Earlier, we noted that our `StateMachine` function doesn't respect inheritance. It could be, for example, that our banking software has an idea of objects that have customers:[^notreally]
+
+[^notreally]: Again, this is absolutely not how real banking software should be written. But that's not the point...
+
+```javascript
+const CUSTOMER = Symbol("customer");
+
+class HasCustomers {
+  constructor (customer) {
+    this[CUSTOMER] = customer;
+  }
+
+  customer () {
+    return this[CUSTOMER];
+  }
+
+  setCustomer (customer) {
+    return this[CUSTOMER] = customer;
+  }
+}
+
+---
+
 ### javascript allongé, the six edition
 
 If you enjoyed this essay, you'll ❤️ [JavaScript Allongé, the Six Edition](http://leanpub.com/javascriptallongesix/c/state-machines). It's 100% free to read online, and for a limited time, if you use [this coupon](http://leanpub.com/javascriptallongesix/c/state-machines), you can buy it for $10 off. That's a whopping 37% savings!
