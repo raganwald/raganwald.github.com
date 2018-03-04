@@ -599,7 +599,7 @@ function looksSuspicious (account) {
 
 The implementation logic is that when an account is `open` after every deposit, we check to see if the account looks suspicious. If it does, we place the account on hold.
 
-If we were writing a naïve object, our `deposit` method would look something like this:
+If we were writing a naïve object, our `deposit` method might look something like this:
 
 ```javascript
 let account = {
@@ -622,9 +622,9 @@ let account = {
 };
 ```
 
-That's easy to implement in a free-form object, but if we try to implement this in our state machine description, we can't. The model requires that each event transition to exactly one state. There's no way to code a `deposit` transition that might go back to `open`, but might change to `held`.
+That's easy to implement in a free-form object, but if we try to port this to our state machine description, we can't. The model requires that each event transition to exactly one state. There's no way to code a `deposit` transition that might go back to `open`, but might change to `held`. This actually comes up a lot, and it's the reason that some people shy away from state machines: Real life code is often much messier than a formal model.
 
-This actually comes up a lot, and it's the reason that some people shy away from state machines: Real life code is often much messier than a formal model. However, another way to look at it is that the formal restrictions of the state machine enforce an opinion about where the logic for checking whether an account looks suspicious should live: _Outside the account_.
+However, another way to look at it is that the formal restrictions of the state machine enforce an opinion about where the logic for checking whether an account looks suspicious should live: _Outside the account_.
 
 People often think that "OOP" encapsulation means that each object should know everything about anything that might happen to it. But this is clearly ridiculous. If we were coding an employee of a company, that class might know about the employee's salary and job title. But would it know whether to give itself a promotion and a raise? No, that logic would live somewhere else, entangled with all sorts of gibberish like departmental budgets and salary bands.
 
