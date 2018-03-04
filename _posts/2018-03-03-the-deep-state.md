@@ -601,6 +601,7 @@ class HasCustomers {
     return this[CUSTOMER] = customer;
   }
 }
+```
 
 ---
 
