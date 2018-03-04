@@ -1,10 +1,12 @@
 ---
-title: "Going Deeper into State Machines"
+title: "Down the Rabbit Hole: Going Deeper into State Machines"
 layout: default
 tags: [allonge, noindex]
 ---
 
-In "[How I Learned to Stop Worrying and ❤️ the State Machine](http://raganwald.com/2018/02/23/forde.html)," we built an extremely basic [state machine][fsm] to model a bank account.
+In "[How I Learned to Stop Worrying and ❤️ the State Machine][forde]," we built an extremely basic [state machine][fsm] to model a bank account.
+
+[forde]: http://raganwald.com/2018/02/23/forde.html
 
 State machines, as we discussed, are a very useful tool for organizing the behaviour of [domain models], representations of meaningful real-world concepts pertinent to a sphere of knowledge, influence or activity (the "domain") that need to be modelled in software.
 
@@ -13,7 +15,7 @@ State machines, as we discussed, are a very useful tool for organizing the behav
 
 ---
 
-[![Bank of Montréal, in Toronto](/assets/images/state-machine/bank-of-montreal.jpg)](https://www.flickr.com/photos/remedy451/8061881196)
+[![The Mad Hatter's Tea Party](/assets/images/state-machine/tea-party.jpg)](https://www.amazon.com/Annotated-Alice-150th-Anniversary-Deluxe/dp/0393245438/ref=as_li_ss_tl?ie=UTF8&qid=1520186545&sr=8-1&keywords=annotated+alice&linkCode=ll1&tag=raganwald001-20&linkId=d1df3106d4d7d16e308413cb2ad54194)
 
 ### our bank account state machine
 
@@ -316,7 +318,15 @@ But what to do about the transitions? This is a deep problem. Throughout our pro
 
 The beauty of functions returning functions is that closures form a hard encapsulation: The closure wrapping a function is available only functions created within its scope, not to any other scope. The drawback is that when we want to do some inspection, we cannot pierce the closure. We simply cannot tell from the function that `transitionsTo` returns what state it will transition to.
 
-We have a few options. One is to use a different form of description that encodes the destination states without a `transitionsTo` function, like this:
+We have a few options. One is to use a different form of description that encodes the destination states without a `transitionsTo` function.
+
+---
+
+[![Bank of Montréal, in Toronto](/assets/images/state-machine/bank-of-montreal.jpg)](https://www.flickr.com/photos/remedy451/8061881196)
+
+### a new-old kind of notation for bank accounts
+
+When [we first formulated a notation for state machines][forde], we considered a more declarative format that encoded states and transitions using nested objects:
 
 ```javascript
 const TRANSITIONS = Symbol("description");
