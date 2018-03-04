@@ -577,7 +577,7 @@ We're not going to develop an early-bound state machine tool, complete with a co
 
 ---
 
-[![Tree](/assets/images/state-machine/tree.jph)](https://www.flickr.com/photos/29233640@N07/14724197800)
+[![Tree](/assets/images/state-machine/tree.jpg)](https://www.flickr.com/photos/29233640@N07/14724197800)
 
 ### inheritance, the easy way
 
