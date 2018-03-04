@@ -576,7 +576,7 @@ We're not going to develop an early-bound state machine tool, complete with a co
 
 [![New Parts Bins](/assets/images/state-machine/new-parts-bins.jpg)](https://www.flickr.com/photos/randomskk/2483599171)
 
-### a place for everything , and everything in its place?
+### a place for everything, and everything in its place?
 
 A nice thing about state machines is that they give us a place for related methods. All the methods of a held account are together, and cleanly separated from all the methods of an open account. There is enormous value in separating responsibilities, and value again in having a standard way to separate responsibilities, so that everyone looking at our code will know where to find things, and everyone modifying our code will put the same things in the same places.
 
