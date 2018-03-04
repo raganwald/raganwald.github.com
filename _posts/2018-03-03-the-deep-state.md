@@ -576,7 +576,63 @@ We're not going to develop an early-bound state machine tool, complete with a co
 
 [![New Parts Bins](/assets/images/state-machine/new-parts-bins.jpg)](https://www.flickr.com/photos/randomskk/2483599171)
 
-### a place for everything , and everything in its place
+### a place for everything , and everything in its place?
+
+A nice thing about state machines is that they give us a place for related methods. All the methods of a held account are together, and cleanly separated from all the methods of an open account. There is enormous value in separating responsibilities, and value again in having a standard way to separate responsibilities, so that everyone looking at our code will know where to find things, and everyone modifying our code will put the same things in the same places.
+
+This is--to a very great extent--the appeal of frameworks like Ruby on Rails and Ember. They are "opinionated" about not just how software is written, but even where code is put in a project. State machines provide this. So they must be great, right?
+
+Well, yes. Although sometimes, not in the way we expect. Consider this simple problem: Sometimes, people do bad things with bank accounts, like launder illicit income from a corrupt [petrostate].
+
+Let's say that our bank has a system for detecting questionable transactions. In keeping with our ridiculous oversimplification, it looks like this:
+
+[petrostate]: https://www.thefreedictionary.com/petrostate
+
+```javascript
+function looksSuspicious (account) {
+  // REDACTED
+  //
+  // sorry, this code is not cleared
+  // for publication on the internet
+}
+```
+
+The implementation logic is that when an account is `open` after every deposit, we check to see if the account looks suspicious. If it does, we place the account on hold.
+
+If we were writing a naïve object, our `deposit` method would look something like this:
+
+```javascript
+let account = {
+  state: 'open',
+  balance: 0,
+
+  deposit (amount) {
+    if (this.state === 'open') {
+      this.balance = this.balance + amount;
+      if (looksSuspicious(this)) {
+        this.state = 'held';
+      }
+    else if (this.state === 'held') {
+      this.balance = this.balance + amount;
+    } else {
+      throw 'invalid event';
+    }
+  },
+  // ...
+};
+```
+
+That's easy to implement in a free-form object, but if we try to implement this in our state machine description, we can't. The model requires that each event transition to exactly one state. There's no way to code a `deposit` transition that might go back to `open`, but might change to `held`.
+
+This actually comes up a lot, and it's the reason that some people shy away from state machines: Real life code is often much messier than a formal model. However, another way to look at it is that the formal restrictions of the state machine enforce an opinion about where the logic for checking whether an account looks suspicious should live: _Outside the account_.
+
+People often think that "OOP" encapsulation means that each object should know everything about anything that might happen to it. But this is clearly ridiculous. If we were coding an employee of a company, that class might know about the employee's salary and job title. But would it know whether to give itself a promotion and a raise? No, that logic would live somewhere else, entangled with all sorts of gibberish like departmental budgets and salary bands.
+
+Just because something _involves_ an object, doesn't mean that it's the object's responsibility to implement it.
+
+Thus, we might be guided to suggest that an `account` can implement a deposit for the purposes of updating its balance, but perhaps the business of checking for suspicious accounts should be performed by whatever code is processing the deposit, like a transaction within some controller code.
+
+This is not to say that our state machines are perfect, and that anything they cannot handle should be handled elsewhere: We will look at some extensions to give them richer behaviour in a systematized way. But quite often, one-off exceptions to their structure are not good arguments that a state machine doesn't fit: They're good arguments that some of the behaviour should be modelled outside of the state machine.
 
 ---
 
@@ -609,7 +665,11 @@ class HasCustomers {
 Unfortunately, we use this with our `account` state machine, because our prototype mongling implementation sets its prototype to its current state. To correctly set up the prototype chain, we'd need to correctly set the prototype of each state to be our `HasCustomer`'s prototype, *and* we'll need to have it invoke the constructor properly:
 
 ```javascript
-function StateMachine (description, superclass = Object, ...constructorArguments) {
+function StateMachine (
+    description,
+    superclass = Object,
+    ...constructorArguments
+) {
   const machine = {};
 
   // Handle all the initial states and/or methods
@@ -683,7 +743,9 @@ account.getCustomer()
   //=> 'Reg Braithwaite'
 ```
 
-This works, and might eb all we need. But once we incorporate the idea of inheriting _from_ a class,
+This works, and might be all we need for our immediate purposes. But once we incorporate the idea of inheriting _from_ a class, it seems like we ought to go all the way and make a way to declare an `Account` class.
+
+How hard could that be?
 
 ---
 
