@@ -125,7 +125,7 @@ Having worked through the basics, in this essay we're going to consider some of 
 
 [![Reflections](/assets/images/state-machine/reflections.jpg)](https://www.flickr.com/photos/hartman045/3503671671)
 
-### reflection
+### reflecting on state machines
 
 > In computer science, [reflection] is the ability of a computer program to examine, introspect, and modify its own structure and behaviour at runtime.--[Wikipedia][reflection]
 
@@ -149,7 +149,7 @@ methodsOf(account)
   //=> deposit, withdraw, availableToWithdraw, placeHold, close, removeHold, reopen
 ```
 
-But this is semantically wrong. When an object is created, it is in 'open' state, and `placehold`, `removeHold`, and `reopen` are all invalid methods. Our interface is lying to the outside would about what methods the object truly supports.
+But this is semantically wrong. When an object is created, it is in 'open' state, and `placehold`, `removeHold`, and `reopen` are all invalid methods. Our interface is lying to the outside would about what methods the object truly supports. This is an artefact of our design: We chose to implement methods, but then throw `invalid method` if an object in a particular state was not supposed to respond to a particular event.
 
 The ideal would be for it not to have these methods at all. One way to go about this is with prototype mongling:[^mongle]
 
@@ -201,9 +201,11 @@ methodsOf(account)
   //=> removeHold, deposit, availableToWithdraw, close
 ```
 
-This particular hack has many tradeoffs to consider, including the fact that by mutating the prototype rather than manually delegating, we make it very difficult to migrate to an inheritance architecture later, but the important thing here is to recognize that the original `StateMachine` function created an unsatisfactory interface for objects.
+This particular hack has many tradeoffs to consider, including the fact that by mutating the prototype rather than manually delegating, we make it very difficult to implement an inheritance architecture later.
 
 We could write another version that respects a supplied prototype, or dynamically adds and removes delegation methods, but let's move on to another consideration.
+
+> There is a valuable lesson here: When we reinvent capabilities that are built into our language or framework, we build it for the use cases right in front of us, but neglect others. Then we discover our error, pack more functionality to address some of the missing use cases, but neglect still others. Over time, our design becomes more and more baroque as we attempt to keep it harmonious with how the rest of our language or framework behaves.
 
 ---
 
@@ -241,27 +243,25 @@ digraph Account {
   start [label="", fixedsize="false", width=0, height=0, shape=none];
   start -> open [color=darkslategrey];
 
-  open [color=green, fontcolor=green];
+  open;
 
   open -> open [color=blue, label="deposit, withdraw, availableToWithdraw"];
   open -> held [color=blue, label="placeHold"];
   open -> closed [color=blue, label="close"];
 
-  held [color=red, fontcolor=red];
+  held;
 
   held -> held [color=blue, label="deposit, availableToWithdraw"];
   held -> open [color=blue, label="removeHold"];
   held -> closed [color=blue, label="close"];
 
-  closed [color=darkslategrey, fontcolor=darkslategrey];
+  closed;
 
   closed -> open [color=blue, label="reopen"];
 }
 ```
 
-iIf we cut all the colours and so forth out, we can easily generate this DOT file if we have a list of states, events, and the states those events transition to.
-
-Getting a list of states and events is easy:
+We could generate this DOT file if we have a list of states, events, and the states those events transition to. Getting a list of states and events is easy:
 
 ```javascript
 function transitions (machine) {
