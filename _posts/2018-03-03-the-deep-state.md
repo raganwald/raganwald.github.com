@@ -326,10 +326,10 @@ We have a few options. One is to use a different form of description that encode
 
 ### a new-old kind of notation for bank accounts
 
-When [we first formulated a notation for state machines][forde], we considered a more declarative format that encoded states and transitions using nested objects:
+When [we first formulated a notation for state machines][forde], we considered a more declarative format that encoded states and transitions using nested objects. It looked a little like this:
 
 ```javascript
-const TRANSITIONS = Symbol("description");
+const TRANSITIONS = Symbol("transitions");
 const STARTING_STATE = Symbol("starting-state");
 
 const account = StateMachine({
@@ -406,7 +406,10 @@ function StateMachine (description) {
     machine[property] = description[property];
   }
 
-  // now its states
+  // set the transitions for later reflection
+  machine[TRANSITIONS] = description[TRANSITIONS]
+
+  // create its state prototypes
   machine[STATES] = Object.create(null);
 
   for (const state of Object.keys(description[TRANSITIONS])) {
@@ -583,7 +586,7 @@ We're not going to develop an early-bound state machine tool, complete with a co
 
 Earlier, we noted that our `StateMachine` function doesn't respect inheritance. It could be, for example, that our banking software has an idea of objects that have customers:[^notreally]
 
-[^notreally]: Again, this is absolutely not how real banking software should be written. But that's not the point...
+[^notreally]: Again, this is absolutely not how real banking software should be written. Come to think of it, it's probably not how _any_ software should really be written, at least not without intentionally [considering and discarding](http://raganwald.com/2016/07/16/why-are-mixins-considered-harmful.html "Why are mixins considered harmful?") the possibility of using a mixin or other technique for sharing the functionality of "having a customer."
 
 ```javascript
 const CUSTOMER = Symbol("customer");
@@ -602,6 +605,85 @@ class HasCustomers {
   }
 }
 ```
+
+Unfortunately, we use this with our `account` state machine, because our prototype mongling implementation sets its prototype to its current state. To correctly set up the prototype chain, we'd need to correctly set the prototype of each state to be our `HasCustomer`'s prototype, *and* we'll need to have it invoke the constructor properly:
+
+```javascript
+function StateMachine (description, superclass = Object, ...constructorArguments) {
+  const machine = {};
+
+  // Handle all the initial states and/or methods
+  const propertiesAndMethods = Object.keys(description).filter(property => !RESERVED.includes(property));
+  for (const property of propertiesAndMethods) {
+    machine[property] = description[property];
+  }
+
+  // set the transitions for later reflection
+  machine[TRANSITIONS] = description[TRANSITIONS]
+
+  // now its states
+  machine[STATES] = Object.create(null);
+
+  for (const state of Object.keys(description[TRANSITIONS])) {
+    const stateDescription = description[TRANSITIONS][state];
+
+    // set the prototype of each state
+    machine[STATES][state] = Object.create(superclass.prototype);
+
+    for (const destinationState of Object.keys(stateDescription)) {
+      const methods = stateDescription[destinationState];
+
+      for (const methodName of Object.keys(methods)) {
+        const value = stateDescription[destinationState][methodName];
+
+        if (typeof value === 'function') {
+          machine[STATES][state][methodName] = transitionsTo(destinationState, value);
+        }
+      }
+    }
+  }
+
+  // set state method
+  machine[SET_STATE] = function (state) {
+    Object.setPrototypeOf(this, this[STATES][state]);
+  }
+
+  // set the starting state
+  machine[STARTING_STATE] = description[STARTING_STATE];
+  machine[SET_STATE].call(machine, machine[STARTING_STATE]);
+
+  // and invoke the constructor
+  superclass.apply(machine, constructorArguments);
+
+  // we're done
+  return machine;
+}
+```
+
+```javascript
+const account = StateMachine({
+  balance: 0,
+
+  [STARTING_STATE]: 'open',
+  [TRANSITIONS]: {
+
+    // ...
+
+    closed: {
+      open: {
+        reopen () {
+          // ...restore balance if applicable
+        }
+      }
+    }
+  }
+}, HasCustomers, 'Reg Braithwaite');
+
+account.getCustomer()
+  //=> 'Reg Braithwaite'
+```
+
+This works, and might eb all we need. But once we incorporate the idea of inheriting _from_ a class,
 
 ---
 
