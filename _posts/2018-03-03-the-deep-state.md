@@ -548,7 +548,7 @@ dot(account, "Account")
 
 We now have a way of drawing state transition diagrams for state machines. Being able to extract the semantic structure of an object--like the state transitions for a state machine--is a useful kind of reflection, and one that exists at a higher semantic level than simply reporting on things like the methods an object responds to or the properties it has.
 
-In general, there is a design principle at work: If we build a higher-level semantic construct, like a State Machine, it's fine to just get it working quickly to sort out or immediate needs. But we will inevitably need to build tooling and other architecture around our construct so that it provides the same affordances as the constructs already built into our language, like classes and prototypes.
+> In general, there is a design principle at work: If we build a higher-level semantic construct, like a State Machine, it's fine to just get it working quickly to sort out or immediate needs. But we will inevitably need to build tooling and other architecture around our construct so that it provides the same affordances as the constructs already built into our language, like classes and prototypes.
 
 ---
 
@@ -571,68 +571,6 @@ Late binding gives us enormous flexibility and power as programmers. However, to
 For this reason, language designers sometimes choose early binding, and build "declarative" constructs that are not meant to be dynamically altered. JavaScript's module system was deliberately built to be declarative and early bound specifically so that tools could inspect module dependencies at build time.
 
 We're not going to develop an early-bound state machine tool, complete with a compiler or perhaps a Babel plug-in to generate diagrams and JavaScript code for us today. But it is important to be intentional about this choice and appreciate the tradeoffs.
-
----
-
-[![New Parts Bins](/assets/images/state-machine/new-parts-bins.jpg)](https://www.flickr.com/photos/randomskk/2483599171)
-
-### a place for everything, and everything in its place?
-
-A nice thing about state machines is that they give us a place for related methods. All the methods of a held account are together, and cleanly separated from all the methods of an open account. There is enormous value in separating responsibilities, and value again in having a standard way to separate responsibilities, so that everyone looking at our code will know where to find things, and everyone modifying our code will put the same things in the same places.
-
-This is--to a very great extent--the appeal of frameworks like Ruby on Rails and Ember. They are "opinionated" about not just how software is written, but even where code is put in a project. State machines provide this. So they must be great, right?
-
-Well, yes. Although sometimes, not in the way we expect. Consider this simple problem: Sometimes, people do bad things with bank accounts, like launder illicit income from a corrupt [petrostate].
-
-Let's say that our bank has a system for detecting questionable transactions. In keeping with our ridiculous oversimplification, it looks like this:
-
-[petrostate]: https://www.thefreedictionary.com/petrostate
-
-```javascript
-function looksSuspicious (account) {
-  // REDACTED
-  //
-  // sorry, this code is not cleared
-  // for publication on the internet
-}
-```
-
-The implementation logic is that when an account is `open` after every deposit, we check to see if the account looks suspicious. If it does, we place the account on hold.
-
-If we were writing a naïve object, our `deposit` method might look something like this:
-
-```javascript
-let account = {
-  state: 'open',
-  balance: 0,
-
-  deposit (amount) {
-    if (this.state === 'open') {
-      this.balance = this.balance + amount;
-      if (looksSuspicious(this)) {
-        this.state = 'held';
-      }
-    else if (this.state === 'held') {
-      this.balance = this.balance + amount;
-    } else {
-      throw 'invalid event';
-    }
-  },
-  // ...
-};
-```
-
-That's easy to implement in a free-form object, but if we try to port this to our state machine description, we can't. The model requires that each event transition to exactly one state. There's no way to code a `deposit` transition that might go back to `open`, but might change to `held`. This actually comes up a lot, and it's the reason that some people shy away from state machines: Real life code is often much messier than a formal model.
-
-However, another way to look at it is that the formal restrictions of the state machine enforce an opinion about where the logic for checking whether an account looks suspicious should live: _Outside the account_.
-
-People often think that "OOP" encapsulation means that each object should know everything about anything that might happen to it. But this is clearly ridiculous. If we were coding an employee of a company, that class might know about the employee's salary and job title. But would it know whether to give itself a promotion and a raise? No, that logic would live somewhere else, entangled with all sorts of gibberish like departmental budgets and salary bands.
-
-Just because something _involves_ an object, doesn't mean that it's the object's responsibility to implement it.
-
-Thus, we might be guided to suggest that an `account` can implement a deposit for the purposes of updating its balance, but perhaps the business of checking for suspicious accounts should be performed by whatever code is processing the deposit, like a transaction within some controller code.
-
-This is not to say that our state machines are perfect, and that anything they cannot handle should be handled elsewhere: We will look at some extensions to give them richer behaviour in a systematized way. But quite often, one-off exceptions to their structure are not good arguments that a state machine doesn't fit: They're good arguments that some of the behaviour should be modelled outside of the state machine.
 
 ---
 
