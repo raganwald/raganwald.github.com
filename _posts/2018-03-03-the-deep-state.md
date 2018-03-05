@@ -626,7 +626,7 @@ function StateMachine (
     const stateDescription = description[TRANSITIONS][state];
 
     // set the prototype of each state
-    machine[STATES][state] = Object.create(superclass.prototype);
+    machine[STATES][state] = Object.create(Object.getPrototypeOf(superclass));
 
     for (const destinationState of Object.keys(stateDescription)) {
       const methods = stateDescription[destinationState];
@@ -691,11 +691,151 @@ How hard could that be?
 
 ### defining classes of state machines
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aliquam turpis nec nunc porttitor lacinia. Cras venenatis justo at lacus euismod, a tempor lorem condimentum. Duis rutrum neque eget malesuada placerat. Praesent sollicitudin auctor posuere. Etiam finibus ligula eu turpis volutpat, ut lobortis eros mollis. Praesent feugiat tristique augue, et vestibulum lectus vehicula vitae. Phasellus nec tincidunt augue, vitae venenatis est. Vivamus ultricies ullamcorper purus id pellentesque. Donec felis odio, auctor ac justo sit amet, facilisis feugiat elit. Nullam vel egestas ante, at vestibulum metus. Curabitur convallis leo est, at consectetur leo commodo id. Vestibulum sed nisi vel nibh vulputate suscipit at a massa.
+What if we want to define an `Account` _class_, not just one account?
 
-Integer urna dui, commodo et massa quis, eleifend blandit massa. Cras tincidunt, augue sed iaculis pretium, lectus nisl vulputate lectus, vitae ornare neque odio nec erat. Nullam id bibendum purus. Cras nec sem tincidunt, vestibulum eros at, eleifend turpis. Nullam turpis risus, fermentum sodales lectus sed, hendrerit suscipit purus. Nulla a aliquam nisl. Quisque ornare massa eget porttitor ornare. Sed justo risus, viverra vel eros vel, iaculis tristique est. Aliquam imperdiet massa odio, convallis ultricies tortor tincidunt quis. Integer laoreet lobortis est, non eleifend risus volutpat nec. Nullam egestas neque eu diam ullamcorper rhoncus. Mauris non porttitor ligula. Curabitur sodales suscipit placerat. Maecenas bibendum, ex at lobortis semper, turpis dui tincidunt mi, sit amet pretium turpis felis et lectus.
+Ideally, we would write:
 
-Donec bibendum eleifend orci, id faucibus ipsum interdum sit amet. Ut ligula orci, tempor sit amet commodo tincidunt, porttitor et sapien. Pellentesque libero augue, iaculis tristique mattis in, iaculis id turpis. Ut nisl velit, dignissim mollis augue ut, fermentum blandit eros. Fusce nunc sapien, pretium eget ex quis, scelerisque consequat elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut tempus consequat nulla, ac auctor lorem. Vestibulum bibendum ipsum nec felis elementum elementum sit amet nec purus. Aenean orci lectus, egestas sit amet hendrerit sed, aliquet non nisl. Nunc imperdiet, quam ut feugiat tincidunt, augue orci mollis nisl, sed pretium sem mauris et erat. Fusce pulvinar nulla id orci mattis tincidunt vitae quis erat.
+```javascript
+const Account = StateMachineClass({
+  constructor () {
+    this.balance = 0;
+  },
+
+  [STARTING_STATE]: 'open',
+  [TRANSITIONS]: {
+
+    // ...
+
+    closed: {
+      open: {
+        reopen () {
+          // ...restore balance if applicable
+        }
+      }
+    }
+  }
+}, HasCustomers);
+
+const account = new Account('Reg Braithwaite');
+```
+
+Here's a naïve implementation doesn't require much change from our existing `StateMachine` function:
+
+```javascript
+const CONSTRUCTOR = 'constructor';
+const RESERVED = [STARTING_STATE, STATES, CONSTRUCTOR];
+
+function StateMachineClassFrom (clazzDefinition) {
+  const startingState = clazzDefinition[STARTING_STATE]();
+
+  const clazz = class extends clazzDefinition {
+    constructor (...args) {
+      super(...args);
+      this[SET_STATE].call(this, startingState);
+    }
+  };
+  const transitions = clazzDefinition[TRANSITIONS]();
+  const clazzPrototype = clazz.prototype;
+
+  // now its states
+  clazzPrototype[STATES] = Object.create(null);
+
+  for (const state of Object.keys(transitions)) {
+    const stateDescription = transitions[state];
+
+    // set the prototype of each state
+    clazzPrototype[STATES][state] = Object.create(clazzPrototype);
+
+    for (const destinationState of Object.keys(stateDescription)) {
+      const methods = stateDescription[destinationState];
+
+      for (const methodName of Object.keys(methods)) {
+        const value = stateDescription[destinationState][methodName];
+
+        if (typeof value === 'function') {
+          clazzPrototype[STATES][state][methodName] = transitionsTo(destinationState, value);
+        }
+      }
+    }
+  }
+
+  // set state method
+  clazzPrototype[SET_STATE] = function (state) {
+    Object.setPrototypeOf(this, this[STATES][state]);
+  }
+
+  // set the starting state
+  clazzPrototype[STARTING_STATE] = startingState;
+
+  // we're done
+  return clazz;
+}
+```
+
+We use it to wrap a class expression:
+
+```javascript
+const Account = StateMachineClassFrom(class extends HasCustomers {
+  constructor (...args) {
+    super(...args);
+    this.balance = 0;
+  }
+
+  static [STARTING_STATE] () { return 'open'; }
+
+  static [TRANSITIONS] () {
+    return {
+      open: {
+        open: {
+          deposit (amount) { this.balance = this.balance + amount; },
+          withdraw (amount) { this.balance = this.balance - amount; },
+          availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; }
+        },
+        held: {
+          placeHold () {}
+        },
+        closed: {
+          close () {
+            if (this.balance > 0) {
+              // ...transfer balance to suspension account
+            }
+          }
+        }
+      },
+      held: {
+        open: {
+          removeHold () {}
+        },
+        held: {
+          deposit (amount) { this.balance = this.balance + amount; },
+          availableToWithdraw () { return 0; }
+        },
+        closed: {
+          close () {
+            if (this.balance > 0) {
+              // ...transfer balance to suspension account
+            }
+          }
+        }
+      },
+      closed: {
+        open: {
+          reopen () {
+            // ...restore balance if applicable
+          }
+        }
+      }
+    }
+  }
+});
+
+const act = new Account('Reg');
+act.deposit(96);
+act.placeHold();
+
+act.availableToWithdraw()
+  //=> 0
+```
 
 ---
 
