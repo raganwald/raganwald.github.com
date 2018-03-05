@@ -691,39 +691,51 @@ How hard could that be?
 
 ### defining classes of state machines
 
-What if we want to define an `Account` _class_, not just one account?
-
-Ideally, we would write:
+What if we want to define an `Account` _class_, not just one account? Our `StateMachine` function took as its argument an object, and returned an object. So we'll write a `StateMachineClassFrom` function that takes a class (usually a class expression) as an argument and returns a class. The definitions for our state machine will be transformed into static methods, like this:
 
 ```javascript
-const Account = StateMachineClass({
-  constructor () {
+const Account = StateMachineClassFrom(class extends HasCustomers {
+  constructor (...args) {
+    super(...args);
+
     this.balance = 0;
-  },
+  }
 
-  [STARTING_STATE]: 'open',
-  [TRANSITIONS]: {
+  static [STARTING_STATE] () { return 'open' }
 
-    // ...
+  static [TRANSITIONS] () {
+    return {
 
-    closed: {
-      open: {
-        reopen () {
-          // ...restore balance if applicable
+      // ...
+
+      closed: {
+        open: {
+          reopen () {
+            // ...restore balance if applicable
+          }
         }
       }
-    }
+    };
   }
-}, HasCustomers);
+});
 
-const account = new Account('Reg Braithwaite');
+const act = new Account('Reg');
+const act2 = new Account('Scott');
+
+act.deposit(96);
+act2.deposit(108);
+act.placeHold();
+
+console.log(act.availableToWithdraw())
+  //=> 0
+console.log(act2.availableToWithdraw());
+  //=> 108
 ```
 
 Here's a naïve implementation doesn't require much change from our existing `StateMachine` function:
 
 ```javascript
 const CONSTRUCTOR = 'constructor';
-const RESERVED = [STARTING_STATE, STATES, CONSTRUCTOR];
 
 function StateMachineClassFrom (clazzDefinition) {
   const startingState = clazzDefinition[STARTING_STATE]();
@@ -772,70 +784,13 @@ function StateMachineClassFrom (clazzDefinition) {
 }
 ```
 
-We use it to wrap a class expression:
+Great, we can now create classes, and they work just like JavaScript's built-in classes. Or do they?
 
-```javascript
-const Account = StateMachineClassFrom(class extends HasCustomers {
-  constructor (...args) {
-    super(...args);
-    this.balance = 0;
-  }
+---
 
-  static [STARTING_STATE] () { return 'open'; }
+[![My First Computer: LX Edition](/assets/images/state-machine/my-first-computer-lx-edition.jpg)](https://powerpig.ecwid.com/#!/My-First-Computer-LX-Edition/p/99371870/category=15326690)
 
-  static [TRANSITIONS] () {
-    return {
-      open: {
-        open: {
-          deposit (amount) { this.balance = this.balance + amount; },
-          withdraw (amount) { this.balance = this.balance - amount; },
-          availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; }
-        },
-        held: {
-          placeHold () {}
-        },
-        closed: {
-          close () {
-            if (this.balance > 0) {
-              // ...transfer balance to suspension account
-            }
-          }
-        }
-      },
-      held: {
-        open: {
-          removeHold () {}
-        },
-        held: {
-          deposit (amount) { this.balance = this.balance + amount; },
-          availableToWithdraw () { return 0; }
-        },
-        closed: {
-          close () {
-            if (this.balance > 0) {
-              // ...transfer balance to suspension account
-            }
-          }
-        }
-      },
-      closed: {
-        open: {
-          reopen () {
-            // ...restore balance if applicable
-          }
-        }
-      }
-    }
-  }
-});
-
-const act = new Account('Reg');
-act.deposit(96);
-act.placeHold();
-
-act.availableToWithdraw()
-  //=> 0
-```
+### extending state machine classes
 
 ---
 
