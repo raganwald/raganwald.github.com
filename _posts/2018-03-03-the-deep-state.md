@@ -585,7 +585,7 @@ Earlier, we noted that our `StateMachine` function doesn't respect inheritance. 
 ```javascript
 const CUSTOMER = Symbol("customer");
 
-class HasCustomers {
+class HasCustomer {
   constructor (customer) {
     this[CUSTOMER] = customer;
   }
@@ -675,7 +675,7 @@ const account = StateMachine({
       }
     }
   }
-}, HasCustomers, 'Reg Braithwaite');
+}, HasCustomer, 'Reg Braithwaite');
 
 account.getCustomer()
   //=> 'Reg Braithwaite'
@@ -694,7 +694,7 @@ How hard could that be?
 What if we want to define an `Account` _class_, not just one account? Our `StateMachine` function took as its argument an object, and returned an object. So we'll write a `StateMachineClassFrom` function that takes a class (usually a class expression) as an argument and returns a class. The definitions for our state machine will be transformed into static methods, like this:
 
 ```javascript
-const Account = StateMachineClassFrom(class extends HasCustomers {
+const Account = StateMachineClassFrom(class extends HasCustomer {
   constructor (...args) {
     super(...args);
 
@@ -788,7 +788,108 @@ Great, we can now create classes, and they work just like JavaScript's built-in 
 
 [![My First Computer: LX Edition](/assets/images/state-machine/my-first-computer-lx-edition.jpg)](https://powerpig.ecwid.com/#!/My-First-Computer-LX-Edition/p/99371870/category=15326690)
 
-### extending state machine classes
+### can we extend state machine classes?
+
+Our new Account class can extend any ordinary class we like. It's tempting to think that we have "solved the class problem." But we haven't really. We've solved it in a technical sense, but semantically, our solution has holes.
+
+We earlier posited a (terrible) superclass, `HasCustomer`. Let's consider something that might be more useful for building accounts:
+
+```javascript
+const BALANCE = Symbol("balance");
+const CUSTOMER = Symbol("customer");
+
+const AbstractAccount = StateMachineClassFrom(class {
+  constructor (customer) {
+    this[BALANCE] = 0;
+    this[CUSTOMER] = customer;
+  }
+
+  balance () {
+    return this[BALANCE];
+  }
+
+  customer () {
+    return this[CUSTOMER];
+  }
+
+  setCustomer (customer) {
+    return this[CUSTOMER] = customer;
+  }
+
+  static [STARTING_STATE] () { return 'open' }
+
+  static [TRANSITIONS] () {
+    return {
+      open: {
+        open: {
+          deposit (amount) { this[BALANCE] = this[BALANCE] + amount; },
+          withdraw (amount) { this[BALANCE] = this[BALANCE] - amount; },
+          availableToWithdraw () { return (this[BALANCE] > 0) ? this[BALANCE] : 0; }
+        },
+        closed: {
+          close () {
+            if (this[BALANCE] > 0) {
+              // ...transfer balance to suspension account
+            }
+          }
+        }
+      },
+      closed: {
+        open: {
+          reopen () {
+            // ...restore balance if applicable
+          }
+        }
+      }
+    };
+  }
+});
+```
+
+`AbstractAccount` is responsible for the code implementing accounts that have a balance, a customer, and can be opened and closed. Now we'll write our `Account` class. It's the same as `AbstractAccount`, but it adds the `held` state, something like:
+
+```javascript
+const ConcreteAccount = StateMachineClassFrom(class extends AbstractAccount {
+
+  static [TRANSITIONS] () {
+    return {
+      open: {
+        held: {
+          placeHold () {}
+        }
+      },
+      held: {
+        open: {
+          removeHold () {}
+        },
+        held: {
+          deposit (amount) { this.balance = this.balance + amount; },
+          availableToWithdraw () { return 0; }
+        },
+        closed: {
+          close () {
+            if (this.balance > 0) {
+              // ...transfer balance to suspension account
+            }
+          }
+        }
+      }
+    };
+  }
+});
+
+const justin = new ConcreteAccount('Trudeau');
+justin.deposit(1000000);
+  //=> justin.deposit is not a function.
+```
+
+Whoops! Our `StateMachineClassFrom` function simply takes our definition and implements it in the current class. All the machinery of manipulating state in `AbstractAccount` is there in the prototype, but completely ignored. If we want to be able to selectively add new events and states, we need our inheritance mechanism to know something about state machines.
+
+Once again, we're running into this general problem: When we set out to create a new kind of programming entity, it's fairly easy to get the first cut right, but if we want it to have the same rich affordances as existing constructs, there is a surprising amount of work required, and we often end up reimplementing basic features from scratch. In this case, it looks like we have to write our own `extends` feature.
+
+Before we do that, let's pause for a moment and recognize why frameworks like [Ember] often end up reinventing classes from the ground up, with special ways to extend classes or reopen them after being defined: Once you invent a new kind of class, you'll wind up having to reimplement everything that existing classes already do.
+
+[Ember]: https://emberjs.com
 
 ---
 
