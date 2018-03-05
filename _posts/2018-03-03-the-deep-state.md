@@ -687,6 +687,18 @@ How hard could that be?
 
 ---
 
+[![Ford Assembly Line, 1953](/assets/images/state-machine/ford-1953.jpg)](https://www.flickr.com/photos/autohistorian/27393923970)
+
+### defining classes of state machines
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aliquam turpis nec nunc porttitor lacinia. Cras venenatis justo at lacus euismod, a tempor lorem condimentum. Duis rutrum neque eget malesuada placerat. Praesent sollicitudin auctor posuere. Etiam finibus ligula eu turpis volutpat, ut lobortis eros mollis. Praesent feugiat tristique augue, et vestibulum lectus vehicula vitae. Phasellus nec tincidunt augue, vitae venenatis est. Vivamus ultricies ullamcorper purus id pellentesque. Donec felis odio, auctor ac justo sit amet, facilisis feugiat elit. Nullam vel egestas ante, at vestibulum metus. Curabitur convallis leo est, at consectetur leo commodo id. Vestibulum sed nisi vel nibh vulputate suscipit at a massa.
+
+Integer urna dui, commodo et massa quis, eleifend blandit massa. Cras tincidunt, augue sed iaculis pretium, lectus nisl vulputate lectus, vitae ornare neque odio nec erat. Nullam id bibendum purus. Cras nec sem tincidunt, vestibulum eros at, eleifend turpis. Nullam turpis risus, fermentum sodales lectus sed, hendrerit suscipit purus. Nulla a aliquam nisl. Quisque ornare massa eget porttitor ornare. Sed justo risus, viverra vel eros vel, iaculis tristique est. Aliquam imperdiet massa odio, convallis ultricies tortor tincidunt quis. Integer laoreet lobortis est, non eleifend risus volutpat nec. Nullam egestas neque eu diam ullamcorper rhoncus. Mauris non porttitor ligula. Curabitur sodales suscipit placerat. Maecenas bibendum, ex at lobortis semper, turpis dui tincidunt mi, sit amet pretium turpis felis et lectus.
+
+Donec bibendum eleifend orci, id faucibus ipsum interdum sit amet. Ut ligula orci, tempor sit amet commodo tincidunt, porttitor et sapien. Pellentesque libero augue, iaculis tristique mattis in, iaculis id turpis. Ut nisl velit, dignissim mollis augue ut, fermentum blandit eros. Fusce nunc sapien, pretium eget ex quis, scelerisque consequat elit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut tempus consequat nulla, ac auctor lorem. Vestibulum bibendum ipsum nec felis elementum elementum sit amet nec purus. Aenean orci lectus, egestas sit amet hendrerit sed, aliquet non nisl. Nunc imperdiet, quam ut feugiat tincidunt, augue orci mollis nisl, sed pretium sem mauris et erat. Fusce pulvinar nulla id orci mattis tincidunt vitae quis erat.
+
+---
+
 ### javascript allongé, the six edition
 
 If you enjoyed this essay, you'll ❤️ [JavaScript Allongé, the Six Edition](http://leanpub.com/javascriptallongesix/c/state-machines). It's 100% free to read online, and for a limited time, if you use [this coupon](http://leanpub.com/javascriptallongesix/c/state-machines), you can buy it for $10 off. That's a whopping 37% savings!
