@@ -735,8 +735,6 @@ console.log(act2.availableToWithdraw());
 Here's a naïve implementation doesn't require much change from our existing `StateMachine` function:
 
 ```javascript
-const CONSTRUCTOR = 'constructor';
-
 function StateMachineClassFrom (clazzDefinition) {
   const startingState = clazzDefinition[STARTING_STATE]();
 
