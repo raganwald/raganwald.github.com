@@ -13,6 +13,10 @@ State machines, as we discussed, are a very useful tool for organizing the behav
 [fsm]: https://en.wikipedia.org/wiki/Finite-state_machine
 [Domain models]: https://en.wikipedia.org/wiki/Domain_model
 
+Implementing state machines is fairly straightforward, especially in flexible languages like JavaScript. But what we will discover, is that when we set out to build rich and powerful new programming constructs on top of an existing language's features, our constructs often fall short of having the same flexibility and scope of the language's bult-in constructs.
+
+This isn't necessarily a problem, but we do need to appreciate the tradeoffs involved. Let's return to our "bank account" state machine.
+
 ---
 
 [![The Mad Hatter's Tea Party](/assets/images/state-machine/tea-party.jpg)](https://www.amazon.com/Annotated-Alice-150th-Anniversary-Deluxe/dp/0393245438/ref=as_li_ss_tl?ie=UTF8&qid=1520186545&sr=8-1&keywords=annotated+alice&linkCode=ll1&tag=raganwald001-20&linkId=d1df3106d4d7d16e308413cb2ad54194)
@@ -121,7 +125,7 @@ function StateMachine (description) {
 }
 ```
 
-Having worked through the basics, in this essay we're going to consider some of the problems a naïve state machine presents, and mull over some of the ways we can improve on its basic idea.
+It's simple, and it works. What's the problem?
 
 ---
 
@@ -151,9 +155,11 @@ methodsOf(account)
   //=> deposit, withdraw, availableToWithdraw, placeHold, close, removeHold, reopen
 ```
 
-But this is semantically wrong. When an object is created, it is in 'open' state, and `placehold`, `removeHold`, and `reopen` are all invalid methods. Our interface is lying to the outside would about what methods the object truly supports. This is an artefact of our design: We chose to implement methods, but then throw `invalid method` if an object in a particular state was not supposed to respond to a particular event.
+But this is *semantically* wrong. When an object is created, it is in 'open' state, and `placehold`, `removeHold`, and `reopen` are all invalid methods. Our interface is lying to the outside would about what methods the object truly supports. This is an artefact of our design: We chose to implement methods, but then throw `invalid method` if an object in a particular state was not supposed to respond to a particular event.
 
-The ideal would be for it not to have these methods at all. One way to go about this is with prototype mongling:[^mongle]
+The ideal would be for it not to have these methods at all, so that the standard way that we use our programming language to determine whether an object responds to a method--testing for a member that is a function--just works.
+
+One way to go about this is with prototype mongling:[^mongle]
 
 [^mongle]: **mongle**: *v*, to molest or disturb.
 
@@ -203,11 +209,11 @@ methodsOf(account)
   //=> removeHold, deposit, availableToWithdraw, close
 ```
 
-This particular hack has many tradeoffs to consider, including the fact that by mutating the prototype rather than manually delegating, we make it very difficult to implement an inheritance architecture later.
+Ah, now it works semantically, at the cost of a little more complexity and some uncommon behaviour: Dynamically reassigning an object's prototype.
 
 > There is a valuable lesson here: When we reinvent capabilities that are built into our language or framework, we build it for the use cases right in front of us, but neglect others. Then we discover our error, pack more functionality to address some of the missing use cases, but neglect still others. Over time, our design becomes more and more baroque as we attempt to keep it harmonious with how the rest of our language or framework behaves.
 
-A little later, we will write a version that respects a supplied prototype, but let's move on to another consideration. Our little foray into correctly reflecting upon the valid methods that a state machine responds to segues into an excellent use case for reflection: Documenting our code.
+We'll take a closer look at prototypes when we talk about inheritance, but let's move on to another use case for reflection: Documenting our code.
 
 ---
 
@@ -578,7 +584,7 @@ We're not going to develop an early-bound state machine tool, complete with a co
 
 ### inheritance, the easy way
 
-Earlier, we noted that our `StateMachine` function doesn't respect inheritance. It could be, for example, that our banking software has an idea of objects that have customers:[^notreally]
+Our `StateMachine` function doesn't respect inheritance. Let's say, for example, that our banking software has an idea of objects that have customers:[^notreally]
 
 [^notreally]: Again, this is absolutely not how real banking software should be written. Come to think of it, it's probably not how _any_ software should really be written, at least not without intentionally [considering and discarding](http://raganwald.com/2016/07/16/why-are-mixins-considered-harmful.html "Why are mixins considered harmful?") the possibility of using a mixin or other technique for sharing the functionality of "having a customer."
 
@@ -732,7 +738,7 @@ console.log(act2.availableToWithdraw());
   //=> 108
 ```
 
-Here's a naïve implementation doesn't require much change from our existing `StateMachine` function:
+Here's a naïve implementation doesn't require too much change from our existing `StateMachine` function:
 
 ```javascript
 function StateMachineClassFrom (clazzDefinition) {
@@ -788,7 +794,7 @@ Great, we can now create classes, and they work just like JavaScript's built-in 
 
 [![My First Computer: LX Edition](/assets/images/state-machine/my-first-computer-lx-edition.jpg)](https://powerpig.ecwid.com/#!/My-First-Computer-LX-Edition/p/99371870/category=15326690)
 
-### can we extend state machine classes?
+### the problem with extending state machines
 
 Our new Account class can extend any ordinary class we like. It's tempting to think that we have "solved the class problem." But we haven't really. We've solved it in a technical sense, but semantically, our solution has holes.
 
@@ -885,11 +891,19 @@ justin.deposit(1000000);
 
 Whoops! Our `StateMachineClassFrom` function simply takes our definition and implements it in the current class. All the machinery of manipulating state in `AbstractAccount` is there in the prototype, but completely ignored. If we want to be able to selectively add new events and states, we need our inheritance mechanism to know something about state machines.
 
-Once again, we're running into this general problem: When we set out to create a new kind of programming entity, it's fairly easy to get the first cut right, but if we want it to have the same rich affordances as existing constructs, there is a surprising amount of work required, and we often end up reimplementing basic features from scratch. In this case, it looks like we have to write our own `extends` feature.
-
-Before we do that, let's pause for a moment and recognize why frameworks like [Ember] often end up reinventing classes from the ground up, with special ways to extend classes or reopen them after being defined: Once you invent a new kind of class, you'll wind up having to reimplement everything that existing classes already do.
+> Let's pause for a moment and recognize why frameworks like [Ember] often end up reinventing classes from the ground up, with special ways to extend classes or reopen them after being defined: Once you invent a new kind of behaviour in classes, you'll wind up having to reimplement nearly everything that existing classes already do.
 
 [Ember]: https://emberjs.com
+
+Once again, we're running into this general problem: When we set out to create a new kind of programming entity, it's fairly easy to get the first cut right, but if we want it to have the same rich affordances as existing constructs, there is a surprising amount of work required, and we often end up reimplementing basic features from scratch. In this case, it looks like we have to write our own `extends` feature.
+
+---
+
+[![Trees](/assets/images/state-machine/trees.jpg)](https://www.flickr.com/photos/rbh/14431865903)
+
+### extending state machines
+
+
 
 ---
 
