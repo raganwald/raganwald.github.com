@@ -1,5 +1,5 @@
 ---
-title: "Down the Rabbit Hole: Going Deeper into State Machines"
+title: "Reflections on State Machines"
 layout: default
 tags: [allonge, noindex]
 ---
