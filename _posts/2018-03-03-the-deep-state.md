@@ -125,6 +125,8 @@ function StateMachine (description) {
 }
 ```
 
+([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-naive-es6))
+
 It's simple, and it works. What's the problem?
 
 ---
@@ -208,6 +210,8 @@ account.placeHold()
 methodsOf(account)
   //=> removeHold, deposit, availableToWithdraw, close
 ```
+
+([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-simple-reflection-es6))
 
 Ah, now it works semantically, at the cost of a little more complexity and some uncommon behaviour: Dynamically reassigning an object's prototype.
 
@@ -552,11 +556,11 @@ dot(account, "Account")
 }
 ```
 
+([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-draw-diagrams-es6))
+
 We now have a way of drawing state transition diagrams for state machines. Being able to extract the semantic structure of an object--like the state transitions for a state machine--is a useful kind of reflection, and one that exists at a higher semantic level than simply reporting on things like the methods an object responds to or the properties it has.
 
 > In general, there is a design principle at work: If we build a higher-level semantic construct, like a State Machine, it's fine to just get it working quickly to sort out or immediate needs. But we will inevitably need to build tooling and other architecture around our construct so that it provides the same affordances as the constructs already built into our language, like classes and prototypes.
-
-[code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d)
 
 ---
 
