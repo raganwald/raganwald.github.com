@@ -131,7 +131,7 @@ It's simple, and it works. What's the problem?
 
 ---
 
-[![Evidence](/assets/images/state-machine/evidence.jpg)](https://www.flickr.com/photos/opensourceway/6006414578
+[![Evidence](/assets/images/state-machine/evidence.jpg)](https://www.flickr.com/photos/opensourceway/6006414578)
 
 ### reflecting on state machines
 
