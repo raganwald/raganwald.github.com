@@ -556,7 +556,7 @@ dot(account, "Account")
 }
 ```
 
-([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-draw-diagrams-es6))
+([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-draw-diagrams-es6));
 
 We now have a way of drawing state transition diagrams for state machines. Being able to extract the semantic structure of an object--like the state transitions for a state machine--is a useful kind of reflection, and one that exists at a higher semantic level than simply reporting on things like the methods an object responds to or the properties it has.
 
@@ -584,7 +584,9 @@ For this reason, language designers sometimes choose early binding, and build "d
 
 We're not going to develop an early-bound state machine tool, complete with a compiler or perhaps a Babel plug-in to generate diagrams and JavaScript code for us today. But it is important to be intentional about this choice and appreciate the tradeoffs.
 
+---
 
+[![Swiss Guards](/assets/images/state-machine/swiss-guards.jpg)](https://www.flickr.com/photos/nh53/3912835521)
 
 
 ---
