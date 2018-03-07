@@ -19,7 +19,7 @@ This isn't necessarily a problem, but we do need to appreciate the tradeoffs inv
 
 ---
 
-[![The Mad Hatter's Tea Party](/assets/images/state-machine/tea-party.jpg)](https://www.amazon.com/Annotated-Alice-150th-Anniversary-Deluxe/dp/0393245438/ref=as_li_ss_tl?ie=UTF8&qid=1520186545&sr=8-1&keywords=annotated+alice&linkCode=ll1&tag=raganwald001-20&linkId=d1df3106d4d7d16e308413cb2ad54194)
+[![Reflections](/assets/images/state-machine/reflections.jpg)](https://www.flickr.com/photos/hartman045/3503671671)
 
 ### our bank account state machine
 
@@ -131,7 +131,7 @@ It's simple, and it works. What's the problem?
 
 ---
 
-[![Reflections](/assets/images/state-machine/reflections.jpg)](https://www.flickr.com/photos/hartman045/3503671671)
+[![Evidence](/assets/images/state-machine/evidence.jpg)](https://www.flickr.com/photos/opensourceway/6006414578
 
 ### reflecting on state machines
 
