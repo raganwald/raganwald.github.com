@@ -33,11 +33,19 @@ Adherents of this philosophy usually extend it to allow other entities to know t
 
 In this minimal interpretation, objects have a "contract" with other objects to respond to the methods in their "interface," and nothing else. No other guarantees are offered.
 
-It's hard to write "No other guarantees are offered" with a straight face. If we have an ordered collection, and we give it a method called `sort`, we are absolutely and positively implying that invoking this method sorts the collection. (`sorted` implies returning a sorted version of the collection in this naming styles.)
+It's hard to write "No other guarantees are offered" with a straight face. If we have an ordered collection, and we give it a method called `sort`, we are absolutely and positively implying that invoking this method sorts the collection.[^sorted]
+
+[^sorted]: In this nomenclature, `.sort()` sorts an ordered collection in-place, while `.sorted()` returns a sorted version of the ordered collection.
 
 Objects are useless without offering some sort of domain-specific behaviour contract. So what we generally mean when we talk about an object's contract is not just the set of methods it responds to, but what behaviour another object can depend upon it following.
 
-What
+Now, what does it mean for another object to depend upon our object? Well, since all other objects can do is send messages and examine the return values, we mean that an object's contracted behaviour speaks only in terms of methods invoked and values returned.
+
+> An example of a behaviour contract would be something along the lines of: "If you start with an empty collection, `.push` the values 1, 3, and 2 in succession, `.sort` the collection, and then invoke `.join(', ')`, you will receive '1, 2, 3' in return." Examples like this are often encoded as unit tests, simultaneously documenting and validating the contract.
+
+This contract says nothing about whether the collection is implemented as a vector of contiguous memory addresses, a linked list, or even a mapping from position to value. It speaks to what another object may expect from our collection.
+
+Fair enough. Now how does this apply to state machines?
 
 ---
 
@@ -50,47 +58,11 @@ Here's the "bank account" code we wrote:[^account]
 [^account]: Banking software is not actually written with objects that have methods like `.deposit` for soooooo many reasons, but this toy example describes something most people understand on a basic level, even if they aren't familiar with the needs of banking infrastructure, correctness, and so forth.
 
 ```javascript
+const STATE = Symbol("state");
 const STATES = Symbol("states");
 const STARTING_STATE = Symbol("starting-state");
+const RESERVED = [STARTING_STATE, STATES];
 
-const account = StateMachine({
-  balance: 0,
-
-  [STARTING_STATE]: 'open',
-  [STATES]: {
-    open: {
-      deposit (amount) { this.balance = this.balance + amount; },
-      withdraw (amount) { this.balance = this.balance - amount; },
-      availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; },
-      placeHold: transitionsTo('held', () => undefined),
-      close: transitionsTo('closed', function () {
-        if (this.balance > 0) {
-          // ...transfer balance to suspension account
-        }
-      })
-    },
-    held: {
-      removeHold: transitionsTo('open', () => undefined),
-      deposit (amount) { this.balance = this.balance + amount; },
-      availableToWithdraw () { return 0; },
-      close: transitionsTo('closed', function () {
-        if (this.balance > 0) {
-          // ...transfer balance to suspension account
-        }
-      })
-    },
-    closed: {
-      reopen: transitionsTo('open', function () {
-        // ...restore balance if applicable
-      })
-    }
-  }
-});
-```
-
-To make this work, we wrote this naïve `StateMachine` function:
-
-```javascript
 function transitionsTo (stateName, fn) {
   return function (...args) {
     const returnValue = fn.apply(this, args);
@@ -98,9 +70,6 @@ function transitionsTo (stateName, fn) {
     return returnValue;
   };
 }
-
-const RESERVED = [STARTING_STATE, STATES];
-const STATE = Symbol("state");
 
 function StateMachine (description) {
   const machine = {};
@@ -145,6 +114,40 @@ function StateMachine (description) {
   // we're done
   return machine;
 }
+
+const account = StateMachine({
+  balance: 0,
+
+  [STARTING_STATE]: 'open',
+  [STATES]: {
+    open: {
+      deposit (amount) { this.balance = this.balance + amount; },
+      withdraw (amount) { this.balance = this.balance - amount; },
+      availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; },
+      placeHold: transitionsTo('held', () => undefined),
+      close: transitionsTo('closed', function () {
+        if (this.balance > 0) {
+          // ...transfer balance to suspension account
+        }
+      })
+    },
+    held: {
+      removeHold: transitionsTo('open', () => undefined),
+      deposit (amount) { this.balance = this.balance + amount; },
+      availableToWithdraw () { return 0; },
+      close: transitionsTo('closed', function () {
+        if (this.balance > 0) {
+          // ...transfer balance to suspension account
+        }
+      })
+    },
+    closed: {
+      reopen: transitionsTo('open', function () {
+        // ...restore balance if applicable
+      })
+    }
+  }
+});
 ```
 
 ([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-naive-es6))
@@ -161,7 +164,7 @@ It's simple, and it works. What's the problem?
 
 [reflection]: https://en.wikipedia.org/wiki/Reflection_(computer_programming)
 
-We can use code to examine our bank account's behaviour:
+Remember we talked about objects exposing their interface? In JavaScript, we can use code to examine the methods a bank account responds to:
 
 ```javascript
 function methodsOf (obj) {
@@ -179,7 +182,9 @@ methodsOf(account)
   //=> deposit, withdraw, availableToWithdraw, placeHold, close, removeHold, reopen
 ```
 
-But this is *semantically* wrong. When an object is created, it is in 'open' state, and `placehold`, `removeHold`, and `reopen` are all invalid methods. Our interface is lying to the outside would about what methods the object truly supports. This is an artefact of our design: We chose to implement methods, but then throw `invalid method` if an object in a particular state was not supposed to respond to a particular event.
+This is technically correct, because we wrote methods that delegated all of these "events" to the current state. But this is *semantically* wrong, because the whole idea behind a state machine is that the methods it responds to vary according to what state it is in.
+
+For example, when an object is created, it is in 'open' state, and `placehold`, `removeHold`, and `reopen` are all invalid methods. Our interface is lying to the outside would about what methods the object truly supports. This is an artefact of our design: We chose to implement methods, but then throw `invalid method` if an object in a particular state was not supposed to respond to a particular event.
 
 The ideal would be for it not to have these methods at all, so that the standard way that we use our programming language to determine whether an object responds to a method--testing for a member that is a function--just works.
 
@@ -235,11 +240,7 @@ methodsOf(account)
 
 ([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-simple-reflection-es6))
 
-Ah, now it works semantically, at the cost of a little more complexity and some uncommon behaviour: Dynamically reassigning an object's prototype.
-
-> There is a valuable lesson here: When we reinvent capabilities that are built into our language or framework, we build it for the use cases right in front of us, but neglect others. Then we discover our error, pack more functionality to address some of the missing use cases, but neglect still others. Over time, our design becomes more and more baroque as we attempt to keep it harmonious with how the rest of our language or framework behaves.
-
-We'll take a closer look at prototypes when we talk about inheritance, but let's move on to another use case for reflection: Documenting our code.
+Now we have a state machine that correctly exposes the shallowest part of its interface, the methods that it responds to at any one time. We'll have a look at its contracted behaviour in a moment, but first, a pleasant diversion.
 
 ---
 
@@ -578,33 +579,11 @@ dot(account, "Account")
 }
 ```
 
-([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-draw-diagrams-es6));
+([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-draw-diagrams-es6))
 
-We now have a way of drawing state transition diagrams for state machines. Being able to extract the semantic structure of an object--like the state transitions for a state machine--is a useful kind of reflection, and one that exists at a higher semantic level than simply reporting on things like the methods an object responds to or the properties it has.
+We can feed this `.dot` file to Graphviz, and it will produce the image we see right in this blog post. In fact, the image in this blog post was produced from Graphviz in exactly this way.
 
-> In general, there is a design principle at work: If we build a higher-level semantic construct, like a State Machine, it's fine to just get it working quickly to sort out or immediate needs. But we will inevitably need to build tooling and other architecture around our construct so that it provides the same affordances as the constructs already built into our language, like classes and prototypes.
-
----
-
-[![The Early Bird](/assets/images/state-machine/early-bird.jpg)](https://www.flickr.com/photos/sonstroem/9490151272)
-
-### interlude: early and late binding
-
-We're going to move on to another interesting topic, but before we do, we should note a caveat: *Our code for extracting state diagrams from state machines only works on live objects at runtime*. If we wanted to write something that would document our code as part of our JavaScript toolchain, we'd probably want it to work with more static assets, like source code.
-
-This use case has its own tradeoffs. Code that dynamically inspects an object at runtime allows for objects that are dynamically generated. We could, with relative ease, write functions that add new states to an existing state machine, or add methods to existing state machines complete with transitions.
-
-Constructing state machines at will, in our code, is part of a general philosophy called [late binding]: The specific meaning of an entity like `account` is allowed to be determined as late as we like, up to and including just before it is used at run time.
-
-The converse approach, early binding, has the meanings/definitions of entities be fixed as early as possible, and thereafter they are can be trusted not to change. The ultimate in early binding would be to declare the form of an account in our code, statically, and to not allow any modification or rebinding at run time.
-
-[late binding]: https://en.wikipedia.org/wiki/Late_binding
-
-Late binding gives us enormous flexibility and power as programmers. However, tools that inspect, adapt, or verify our code at "compile" time, such as code that draws diagrams from our source code, will not work with objects that are dynamically constructed at run time.
-
-For this reason, language designers sometimes choose early binding, and build "declarative" constructs that are not meant to be dynamically altered. JavaScript's module system was deliberately built to be declarative and early bound specifically so that tools could inspect module dependencies at build time.
-
-We're not going to develop an early-bound state machine tool, complete with a compiler or perhaps a Babel plug-in to generate diagrams and JavaScript code for us today. But it is important to be intentional about this choice and appreciate the tradeoffs.
+So. We now have a way of drawing state transition diagrams for state machines. Being able to extract the semantic structure of an object--like the state transitions for a state machine--is a useful kind of reflection, and one that exists at a higher semantic level than simply reporting on things like the methods an object responds to or the properties it has.
 
 ---
 
