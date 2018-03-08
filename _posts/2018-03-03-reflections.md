@@ -13,9 +13,31 @@ State machines, as we discussed, are a very useful tool for organizing the behav
 [fsm]: https://en.wikipedia.org/wiki/Finite-state_machine
 [Domain models]: https://en.wikipedia.org/wiki/Domain_model
 
-Implementing state machines is fairly straightforward, especially in flexible languages like JavaScript. But what we will discover, is that when we set out to build rich and powerful new programming constructs on top of an existing language's features, our constructs often fall short of having the same flexibility and scope of the language's bult-in constructs.
+A state machine is an object, but it has a distinctive "behaviour." It is always in exactly one of a finite number of states, and its behaviour is determined by its state, right down to what methods it has in each state and which other states a method may or may not transition the state machine to.
 
-This isn't necessarily a problem, but we do need to appreciate the tradeoffs involved. Let's return to our "bank account" state machine.
+This is interesting!
+
+---
+
+[![contract](/assets/images/state-machine/contract.jpg)](https://www.flickr.com/photos/governmentofalberta/23577005941)
+
+One of the fundamental tenets of object-oriented software design is that objects practise [information hiding].
+
+> In computer science, [information hiding] is the principle of segregation of the design decisions in a computer program that are most likely to change, thus protecting other parts of the program from extensive modification if the design decision is changed. The protection involves providing a stable interface which protects the remainder of the program from the implementation (the details that are most likely to change).
+
+[information hiding]: https://en.wikipedia.org/wiki/Information_hiding
+
+The common, "default" interpretation of OOP is that objects should hide *everything* about their internal state. The only things other entities are permitted to do is to send objects messages (as usually implemented by "invoking methods"), and examine any values returned.
+
+Adherents of this philosophy usually extend it to allow other entities to know the *interface* of an object. Meaning, what methods does it support? In JavaScript, we can enumerate an object's properties. If we code in the standard style, the properties that are also functions are the object's methods.
+
+In this minimal interpretation, objects have a "contract" with other objects to respond to the methods in their "interface," and nothing else. No other guarantees are offered.
+
+It's hard to write "No other guarantees are offered" with a straight face. If we have an ordered collection, and we give it a method called `sort`, we are absolutely and positively implying that invoking this method sorts the collection. (`sorted` implies returning a sorted version of the collection in this naming styles.)
+
+Objects are useless without offering some sort of domain-specific behaviour contract. So what we generally mean when we talk about an object's contract is not just the set of methods it responds to, but what behaviour another object can depend upon it following.
+
+What
 
 ---
 
