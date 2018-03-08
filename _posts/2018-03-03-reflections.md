@@ -589,6 +589,8 @@ So. We now have a way of drawing state transition diagrams for state machines. B
 
 [![Swiss Guards](/assets/images/state-machine/swiss-guards.jpg)](https://www.flickr.com/photos/nh53/3912835521)
 
+### should a state machine hide the fact that it's a state machine?
+
 Back to [information hiding]. The goal is to shield the parts of a program that are less likely to change, from the parts of a program that are most likely to change. Or in another way, "To shield the parts of a program that change infrequently, from the parts of a program that change frequently."
 
 People also talk about separating the responsibility for an object's implementation from its interface. So here's a question: Do our `transitions` and `dot` functions violate information hiding? Is the fact that an account is implemented as a state machine an implementation detail that should be hidden from code that invokes methods like `.deposit`? Or is it part of its contracted behaviour?
