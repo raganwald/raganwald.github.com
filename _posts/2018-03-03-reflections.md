@@ -422,6 +422,10 @@ const STATE = Symbol("state");
 const STATES = Symbol("states");
 const SET_STATE = Symbol("setState");
 
+const MACHINES_TO_STARTING_STATES = new WeakMap();
+const MACHINES_TO_TRANSITIONS = new WeakMap();
+const MACHINES_TO_STATES = new WeakMap();
+
 function transitionsTo (stateName, fn) {
   return function (...args) {
     const returnValue = fn.apply(this, args);
@@ -440,15 +444,15 @@ function StateMachine (description) {
   }
 
   // set the transitions for later reflection
-  machine[TRANSITIONS] = description[TRANSITIONS]
+  MACHINES_TO_TRANSITIONS[machine] = description[TRANSITIONS];
 
   // create its state prototypes
-  machine[STATES] = Object.create(null);
+  MACHINES_TO_STATES[machine] = Object.create(null);
 
-  for (const state of Object.keys(description[TRANSITIONS])) {
-    const stateDescription = description[TRANSITIONS][state];
+  for (const state of Object.keys(MACHINES_TO_TRANSITIONS[machine])) {
+    const stateDescription = MACHINES_TO_TRANSITIONS[machine][state];
 
-    machine[STATES][state] = {};
+    MACHINES_TO_STATES[machine][state] = {};
     for (const destinationState of Object.keys(stateDescription)) {
       const methods = stateDescription[destinationState];
 
@@ -456,7 +460,7 @@ function StateMachine (description) {
         const value = stateDescription[destinationState][methodName];
 
         if (typeof value === 'function') {
-          machine[STATES][state][methodName] = transitionsTo(destinationState, value);
+          MACHINES_TO_STATES[machine][state][methodName] = transitionsTo(destinationState, value);
         }
       }
     }
@@ -464,12 +468,12 @@ function StateMachine (description) {
 
   // set state method
   machine[SET_STATE] = function (state) {
-    Object.setPrototypeOf(this, this[STATES][state]);
+    Object.setPrototypeOf(this, MACHINES_TO_STATES[this][state]);
   }
 
   // set the starting state
-  machine[STARTING_STATE] = description[STARTING_STATE];
-  machine[SET_STATE].call(machine, machine[STARTING_STATE]);
+  MACHINES_TO_STARTING_STATES[machine] = description[STARTING_STATE];
+  machine[SET_STATE].call(machine, MACHINES_TO_STARTING_STATES[machine]);
 
   // we're done
   return machine;
@@ -487,8 +491,8 @@ And now our `transitions` function can generate most of what we want:
 
 ```javascript
 function transitions (machine) {
-  const description = { [STARTING_STATE]: machine[STARTING_STATE] };
-  const transitions = machine[TRANSITIONS];
+  const description = { [STARTING_STATE]: MACHINES_TO_STARTING_STATES[machine] };
+  const transitions = MACHINES_TO_TRANSITIONS[machine];
 
   for (const state of Object.keys(transitions)) {
     const stateDescription = transitions[state];
@@ -591,11 +595,35 @@ So. We now have a way of drawing state transition diagrams for state machines. B
 
 ### should a state machine hide the fact that it's a state machine?
 
-Back to [information hiding]. The goal is to shield the parts of a program that are less likely to change, from the parts of a program that are most likely to change. Or in another way, "To shield the parts of a program that change infrequently, from the parts of a program that change frequently."
+People talk about [information hiding] as separating the responsibility for an object's "implementation" from its "interface." The question here is whether an object's states, transitions between states, and methods in each state are part of its implementation, or whether they are part of its interface, its contracted behaviour.
 
-People also talk about separating the responsibility for an object's implementation from its interface. So here's a question: Do our `transitions` and `dot` functions violate information hiding? Is the fact that an account is implemented as a state machine an implementation detail that should be hidden from code that invokes methods like `.deposit`? Or is it part of its contracted behaviour?
+One way to tell is to ask ourselves whether changing those things will break other code. If we can change the transitions of a state machine without changing any other code in an app, it's fair to say that the transitions are "just implementation details," Just as changing a HashMap class to use a [Cockoo Hash] instead of a [Hash Table] doesn't require us to change any of the code that interacts with our HashMap.
 
-So let's look at a bank account. In its most basic form, we can make deposits, and withdrawals, and besides the presence of `deposit`, `withdraw`, and `availableToWithdraw` methods, its contracted behaviour includes obvious stuff like, if you invoke `.availableToWithdraw()` and get a result, and then you invoke `.deposit(100)`, you expect that if you invoke `.availableToWithdraw()` again, you will get back a number that is 100 larger than the previous amount available to withdraw.
+[Cockoo Hash]: https://en.wikipedia.org/wiki/Cuckoo_hashing
+[Hash Table]: https://en.wikipedia.org/wiki/Hash_table
+
+So how about our bank accounts?
+
+Quite clearly, the fact that a bank account has states is part of its contracted behaviour. Take the following sequence:
+
+```javascript
+account.availableToWithdraw()
+  //=> 0
+
+account.deposit(42)
+
+account.availableToWithdraw()
+  //=> ???
+```
+
+Does the second `.availableToWithdraw()` return forty-two? Or zero? That depends upon whether the account is open or held, and that isn't a private secret that only the account knows about. We know this, because people openly talk about whether accounts are open, held, or closed. People build processes around the account's state, and it's certainly part of the account's design that the `.placeHold` method transitions an account into `held` state.
+
+From this, we get that accounts should certainly *behave* like state machines. And from that, it's reasonable that other pieces of code ought to be able to dynamically inspect an account's current state, as well as its complete graph of states and transitions. That's as much a part of its public interface as any particular method.[^ofcourse]
+
+[^ofcourse]: Of course, we could implement a state machine in some other way, such that it *behaves like* a state machine but is implemented in some other fashion. That would be changing its implementation and not its interface. We could, for example, rewrite our `StateMachine` function to generate a collection of actors communicating with asynchronous method passing. The value of our curent approach is that the implementation strongly mirrors the interface, which has certain benefits for readability.
+
+So how do we implement this reflection in a more organized fashion? We can keep our `transitions` function. But what about current state?
+
 
 
 ---
