@@ -15,37 +15,11 @@ State machines, as we discussed, are a very useful tool for organizing the behav
 
 A state machine is an object, but it has a distinctive "behaviour." It is always in exactly one of a finite number of states, and its behaviour is determined by its state, right down to what methods it has in each state and which other states a method may or may not transition the state machine to.
 
-This is interesting!
+This is interesting! So interesting, that we are going to spend a few minutes looking strictly at state machine behaviour, and more specifically, at the [interface] a state machine has with the entities that use it.
 
----
+[interface]: https://en.wikipedia.org/wiki/Interface_(computing)
 
-[![contract](/assets/images/state-machine/contract.jpg)](https://www.flickr.com/photos/governmentofalberta/23577005941)
-
-One of the fundamental tenets of object-oriented software design is that objects practise [information hiding].
-
-> In computer science, [information hiding] is the principle of segregation of the design decisions in a computer program that are most likely to change, thus protecting other parts of the program from extensive modification if the design decision is changed. The protection involves providing a stable interface which protects the remainder of the program from the implementation (the details that are most likely to change).
-
-[information hiding]: https://en.wikipedia.org/wiki/Information_hiding
-
-The common, "default" interpretation of OOP is that objects should hide *everything* about their internal state. The only things other entities are permitted to do is to send objects messages (as usually implemented by "invoking methods"), and examine any values returned.
-
-Adherents of this philosophy usually extend it to allow other entities to know the *interface* of an object. Meaning, what methods does it support? In JavaScript, we can enumerate an object's properties. If we code in the standard style, the properties that are also functions are the object's methods.
-
-In this minimal interpretation, objects have a "contract" with other objects to respond to the methods in their "interface," and nothing else. No other guarantees are offered.
-
-It's hard to write "No other guarantees are offered" with a straight face. If we have an ordered collection, and we give it a method called `sort`, we are absolutely and positively implying that invoking this method sorts the collection.[^sorted]
-
-[^sorted]: In this nomenclature, `.sort()` sorts an ordered collection in-place, while `.sorted()` returns a sorted version of the ordered collection.
-
-Objects are useless without offering some sort of domain-specific behaviour contract. So what we generally mean when we talk about an object's contract is not just the set of methods it responds to, but what behaviour another object can depend upon it following.
-
-Now, what does it mean for another object to depend upon our object? Well, since all other objects can do is send messages and examine the return values, we mean that an object's contracted behaviour speaks only in terms of methods invoked and values returned.
-
-> An example of a behaviour contract would be something along the lines of: "If you start with an empty collection, `.push` the values 1, 3, and 2 in succession, `.sort` the collection, and then invoke `.join(', ')`, you will receive '1, 2, 3' in return." Examples like this are often encoded as unit tests, simultaneously documenting and validating the contract.
-
-This contract says nothing about whether the collection is implemented as a vector of contiguous memory addresses, a linked list, or even a mapping from position to value. It speaks to what another object may expect from our collection.
-
-Fair enough. Now how does this apply to state machines?
+Let's get started.
 
 ---
 
@@ -165,7 +139,7 @@ const account = StateMachine({
 
 ([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-naive-es6))
 
-It's simple, and it works. What's the problem?
+It's simple, and it seems to work. What's the problem?
 
 ---
 
@@ -554,7 +528,7 @@ So. We now have a way of drawing state transition diagrams for state machines. B
 
 ---
 
-[![Swiss Guards](/assets/images/state-machine/swiss-guards.jpg)](https://www.flickr.com/photos/nh53/3912835521)
+[![contract](/assets/images/state-machine/contract.jpg)](https://www.flickr.com/photos/governmentofalberta/23577005941)
 
 ### should a state machine hide the fact that it's a state machine?
 
