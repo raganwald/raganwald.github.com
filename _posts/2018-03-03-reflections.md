@@ -561,6 +561,7 @@ So now we are told that an account doesn't have one single state, it has two fla
 This is maddening, because we know how to model open/closed as a state machine, and if we didn't have to worry about closd accounts, we also know how to model held/not-held as a state machine.
 
 What to do?
+
 ---
 
 ### javascript allongé, the six edition
