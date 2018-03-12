@@ -53,20 +53,32 @@ Fair enough. Now how does this apply to state machines?
 
 ### our bank account state machine
 
-Here's the "bank account" code we wrote:[^account]
+Here's a small variation on the "bank account" code we wrote:[^account][^weakmap]
 
 [^account]: Banking software is not actually written with objects that have methods like `.deposit` for soooooo many reasons, but this toy example describes something most people understand on a basic level, even if they aren't familiar with the needs of banking infrastructure, correctness, and so forth.
 
+[^weakmap]: We're also using a slightly different pattern for associating state machines with their states, based on [weak maps](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap).
+
 ```javascript
-const STATE = Symbol("state");
+// The naïve state machine extracted from http://raganwald.com/2018/02/23/forde.html
+// modified to use weak maps
+
 const STATES = Symbol("states");
 const STARTING_STATE = Symbol("starting-state");
 const RESERVED = [STARTING_STATE, STATES];
 
+const MACHINES_TO_CURRENT_STATES = new WeakMap();
+const MACHINES_TO_STARTING_STATES = new WeakMap();
+const MACHINES_TO_NAMES_TO_STATES = new WeakMap();
+
+function setState (machine, stateName) {
+  MACHINES_TO_CURRENT_STATES[machine] = MACHINES_TO_NAMES_TO_STATES[machine][stateName];
+}
+
 function transitionsTo (stateName, fn) {
   return function (...args) {
     const returnValue = fn.apply(this, args);
-    this[STATE] = this[STATES][stateName];
+    setState(this, stateName);
     return returnValue;
   };
 }
@@ -81,10 +93,10 @@ function StateMachine (description) {
   }
 
   // now its states
-  machine[STATES] = description[STATES];
+  MACHINES_TO_NAMES_TO_STATES[machine] = description[STATES];
 
   // what event handlers does it have?
-  const eventNames = Object.entries(description[STATES]).reduce(
+  const eventNames = Object.entries(MACHINES_TO_NAMES_TO_STATES[machine]).reduce(
     (eventNames, [state, stateDescription]) => {
       const eventNamesForThisState = Object.keys(stateDescription);
 
@@ -99,9 +111,9 @@ function StateMachine (description) {
   // define the delegating methods
   for (const eventName of eventNames) {
     machine[eventName] = function (...args) {
-      const handler = this[STATE][eventName];
+      const handler = MACHINES_TO_CURRENT_STATES[machine][eventName];
       if (typeof handler === 'function') {
-        return this[STATE][eventName].apply(this, args);
+        return MACHINES_TO_CURRENT_STATES[machine][eventName].apply(this, args);
       } else {
         throw `invalid event ${eventName}`;
       }
@@ -109,7 +121,8 @@ function StateMachine (description) {
   }
 
   // set the starting state
-  machine[STATE] = description[STATES][description[STARTING_STATE]];
+  MACHINES_TO_STARTING_STATES[machine] = description[STARTING_STATE];
+  MACHINES_TO_CURRENT_STATES[machine] = MACHINES_TO_NAMES_TO_STATES[machine][MACHINES_TO_STARTING_STATES[machine]];
 
   // we're done
   return machine;
@@ -270,7 +283,7 @@ Well, we're not going to write an entire graphics generation engine, although th
 [Graphviz]: https://en.wikipedia.org/wiki/Graphviz
 [DOT]: https://en.wikipedia.org/wiki/DOT_(graph_description_language)
 
-The code to generate the above diagram looks like this:
+The dot file to generate the above diagram looks like this:
 
 ```dot
 digraph Account {
@@ -296,58 +309,9 @@ digraph Account {
 }
 ```
 
-We could generate this DOT file if we have a list of states, events, and the states those events transition to. Getting a list of states and events is easy:
+We could generate this DOT file if we have a list of states, events, and the states those events transition to. Getting a list of states and events is easy. But what we don't have is the starting state, nor do we have the states these methods (a/k/a "events") transition to.
 
-```javascript
-function transitions (machine) {
-  const description = machine[STATES];
-
-  return Object.keys(description).reduce(
-    (acc, state) => Object.assign(acc, { [state]: methodsOf(description[state]) }),
-    {}
-  );
-}
-
-transitions(account)
-  //=> {
-    open: ["deposit", "withdraw", "availableForWithdrawal", "placeHold", "close"],
-    held: ["removeHold", "deposit", "availableForWithdrawal", "close"],
-    closed: ["reopen"]
-  }
-```
-
-What we don't have is the starting state, nor do we have the states these methods (a/k/a "events") transition to. The starting state problem can be easily solved:
-
-```javascript
-function StateMachine (description) {
-  // ...
-
-  // set the starting state
-  machine[STARTING_STATE] = description[STARTING_STATE];
-  machine[SET_STATE].call(machine, machine[STARTING_STATE]);
-
-  // ...
-}
-
-function transitions (machine) {
-  const description = machine[STATES];
-
-  return Object.keys(description).reduce(
-    (acc, state) => Object.assign(acc, { [state]: methodsOf(description[state]) }),
-    { [STARTING_STATE]: machine[STARTING_STATE] }
-  );
-}
-
-transitions(account)
-  //=> {
-    open: ["deposit", "withdraw", "availableForWithdrawal", "placeHold", "close"],
-    held: ["removeHold", "deposit", "availableForWithdrawal", "close"],
-    closed: ["reopen"],
-    Symbol(starting-state): "open"
-  }
-```
-
-But what to do about the transitions? This is a deep problem. Throughout our programming explorations, we have repeatedly feasted on JavaScript's ability for functions to consume other functions as arguments and return new functions. Using this, we have written many different kinds of decorators, including `transitionsTo`.
+We could easily store the starting state for each state machine in a weak map. But what to do about the transitions? This is a deep problem. Throughout our programming explorations, we have repeatedly feasted on JavaScript's ability for functions to consume other functions as arguments and return new functions. Using this, we have written many different kinds of decorators, including `transitionsTo`.
 
 The beauty of functions returning functions is that closures form a hard encapsulation: The closure wrapping a function is available only functions created within its scope, not to any other scope. The drawback is that when we want to do some inspection, we cannot pierce the closure. We simply cannot tell from the function that `transitionsTo` returns what state it will transition to.
 
@@ -417,19 +381,23 @@ const account = StateMachine({
 This is more verbose, but we can write a `StateMachine` to do all the interpretation work. It will keep the description but translate the methods to use `transitionsTo` for us:
 
 ```javascript
-const RESERVED = [STARTING_STATE, TRANSITIONS];
-const STATE = Symbol("state");
 const STATES = Symbol("states");
-const SET_STATE = Symbol("setState");
+const RESERVED = [STARTING_STATE, TRANSITIONS];
 
+const MACHINES_TO_CURRENT_STATES = new WeakMap();
 const MACHINES_TO_STARTING_STATES = new WeakMap();
 const MACHINES_TO_TRANSITIONS = new WeakMap();
-const MACHINES_TO_STATES = new WeakMap();
+const MACHINES_TO_NAMES_TO_STATES = new WeakMap();
+
+function setState (machine, stateName) {
+  MACHINES_TO_CURRENT_STATES[machine] = MACHINES_TO_NAMES_TO_STATES[machine][stateName];
+  Object.setPrototypeOf(machine, MACHINES_TO_CURRENT_STATES[machine]);
+}
 
 function transitionsTo (stateName, fn) {
   return function (...args) {
     const returnValue = fn.apply(this, args);
-    this[SET_STATE].call(this, stateName);
+    setState(this, stateName);
     return returnValue;
   };
 }
@@ -447,12 +415,12 @@ function StateMachine (description) {
   MACHINES_TO_TRANSITIONS[machine] = description[TRANSITIONS];
 
   // create its state prototypes
-  MACHINES_TO_STATES[machine] = Object.create(null);
+  MACHINES_TO_NAMES_TO_STATES[machine] = Object.create(null);
 
   for (const state of Object.keys(MACHINES_TO_TRANSITIONS[machine])) {
     const stateDescription = MACHINES_TO_TRANSITIONS[machine][state];
 
-    MACHINES_TO_STATES[machine][state] = {};
+    MACHINES_TO_NAMES_TO_STATES[machine][state] = {};
     for (const destinationState of Object.keys(stateDescription)) {
       const methods = stateDescription[destinationState];
 
@@ -460,20 +428,15 @@ function StateMachine (description) {
         const value = stateDescription[destinationState][methodName];
 
         if (typeof value === 'function') {
-          MACHINES_TO_STATES[machine][state][methodName] = transitionsTo(destinationState, value);
+          MACHINES_TO_NAMES_TO_STATES[machine][state][methodName] = transitionsTo(destinationState, value);
         }
       }
     }
   }
 
-  // set state method
-  machine[SET_STATE] = function (state) {
-    Object.setPrototypeOf(this, MACHINES_TO_STATES[this][state]);
-  }
-
   // set the starting state
   MACHINES_TO_STARTING_STATES[machine] = description[STARTING_STATE];
-  machine[SET_STATE].call(machine, MACHINES_TO_STARTING_STATES[machine]);
+  setState(machine, MACHINES_TO_STARTING_STATES[machine]);
 
   // we're done
   return machine;
