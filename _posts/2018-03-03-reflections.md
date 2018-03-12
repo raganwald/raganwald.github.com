@@ -570,7 +570,7 @@ What to do?
 
 [![Fractal Fun](/assets/images/state-machine/fractal.png)](https://www.flickr.com/photos/41829005@N02/6189894283)
 
-### hierarchal state machines
+### i heard you liked state machines, so…
 
 If we look at a bank account as having two flags, and between their possible settings there are three valid states, we don't see a state machine. We see a stateful object. But hidden in our implementation is a clue as to how we can solve this semantically.
 
@@ -587,6 +587,12 @@ If we allow state object to be state machines, we can actually model our bank ac
 But first, we're going to need a bigger notation.[^biggerboat]
 
 [^biggerboat]: Or a [bigger boat](https://www.youtube.com/watch?v=2I91DJZKRxs)!
+
+---
+
+[![Composer's score for Don Giovanni](/assets/images/state-machine/don-giovanni.jpg)](https://www.flickr.com/photos/lizadaly/4373330774)
+
+### a bigger notation for state machines
 
 Let's look at what we want to model. For starters, we want an account that has `open` and `closed` states, and we want to describe what is guaranteed to be the case for each state:
 
@@ -647,7 +653,59 @@ HierarchalStateMachine({
 
 It's a state machine with two states. In `not-held`, it supports `withdraw`, `availableToWithdraw`, and `placewHold`. In `held`, it supports `availableToWithdraw` and `removeHold`. It does not need support deposit, because our top-level state machine does that.
 
-So now, we need a way to
+So now, we need a way to put the second notation inside the first notation, perhaps like this:
+
+```javascript
+const INNER = Symbol("inner");
+
+const account = HierarchalStateMachine({
+  balance: 0,
+
+  [STARTING_STATE]: 'open',
+  [TRANSITIONS]: {
+    open: {
+      [INNER]: {
+        [STARTING_STATE]: 'not-held',
+        [TRANSITIONS]: {
+          not-held: {
+            not-held: {
+              withdraw (amount) { this.balance = this.balance - amount; },
+              availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; }
+            },
+            held: {
+              placeHold () {}
+            }
+          },
+          held: {
+            not-held: {
+              removeHold () {}
+            },
+            held: {
+              availableToWithdraw () { return 0; }
+            }
+          }
+      },
+      open: {
+        deposit (amount) { this.balance = this.balance + amount; }
+      },
+      closed: {
+        close () {
+          if (this.balance > 0) {
+            // ...transfer balance to suspension account
+          }
+        }
+      }
+    },
+    closed: {
+      open: {
+        reopen () {
+          // ...restore balance if applicable
+        }
+      }
+    }
+  }
+});
+```
 
 ---
 
