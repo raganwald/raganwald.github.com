@@ -218,7 +218,7 @@ function ReflectiveStateMachine (description) {
 }
 ```
 
-How weel does it work? Let's try it with `account = ReflectiveStateMachine({ ... })` more-or-less as before:
+How well does it work? Let's try it with `account = ReflectiveStateMachine({ ... })` more-or-less as before:
 
 ```javascript
 methodsOf(account)
