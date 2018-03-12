@@ -45,7 +45,7 @@ const MACHINES_TO_CURRENT_STATE_NAMES = new WeakMap();
 const MACHINES_TO_STARTING_STATES = new WeakMap();
 const MACHINES_TO_NAMES_TO_STATES = new WeakMap();
 
-function getStateName(machine) {
+function getStateName (machine) {
   return MACHINES_TO_CURRENT_STATE_NAMES[machine];
 }
 
@@ -54,6 +54,7 @@ function getState (machine) {
 }
 
 function setState (machine, stateName) {
+  if (stateName === getStateName(machine)) return;
   MACHINES_TO_CURRENT_STATE_NAMES[machine] = stateName;
 }
 
@@ -189,6 +190,7 @@ One way to go about this is to replace all the delegation methods with prototype
 
 ```javascript
 function setState (machine, stateName) {
+  if (stateName === getStateName(machine)) return;
   MACHINES_TO_CURRENT_STATE_NAMES[machine] = stateName;
   Object.setPrototypeOf(machine, getState(machine));
 }
@@ -585,6 +587,67 @@ If we allow state object to be state machines, we can actually model our bank ac
 But first, we're going to need a bigger notation.[^biggerboat]
 
 [^biggerboat]: Or a [bigger boat](https://www.youtube.com/watch?v=2I91DJZKRxs)!
+
+Let's look at what we want to model. For starters, we want an account that has `open` and `closed` states, and we want to describe what is guaranteed to be the case for each state:
+
+```javascript
+const account = HierarchalStateMachine({
+  balance: 0,
+
+  [STARTING_STATE]: 'open',
+  [TRANSITIONS]: {
+    open: {
+      open: {
+        deposit (amount) { this.balance = this.balance + amount; }
+      },
+      closed: {
+        close () {
+          if (this.balance > 0) {
+            // ...transfer balance to suspension account
+          }
+        }
+      }
+    },
+    closed: {
+      open: {
+        reopen () {
+          // ...restore balance if applicable
+        }
+      }
+    }
+  }
+});
+```
+
+And if we were thinking about a state machine nested _within_ the `open` state, it would loook like this:
+
+```javascript
+HierarchalStateMachine({
+  [STARTING_STATE]: 'not-held',
+  [TRANSITIONS]: {
+    not-held: {
+      not-held: {
+        withdraw (amount) { this.balance = this.balance - amount; },
+        availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; }
+      },
+      held: {
+        placeHold () {}
+      }
+    },
+    held: {
+      not-held: {
+        removeHold () {}
+      },
+      held: {
+        availableToWithdraw () { return 0; }
+      }
+    }
+});
+```
+
+It's a state machine with two states. In `not-held`, it supports `withdraw`, `availableToWithdraw`, and `placewHold`. In `held`, it supports `availableToWithdraw` and `removeHold`. It does not need support deposit, because our top-level state machine does that.
+
+So now, we need a way to
 
 ---
 
