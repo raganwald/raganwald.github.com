@@ -359,26 +359,7 @@ const account = TransitionOrientedStateMachine({
 This is more verbose, but we can write a `StateMachine` to do all the interpretation work. It will keep the description but translate the methods to use `transitionsTo` for us:
 
 ```javascript
-const STATES = Symbol("states");
-const RESERVED = [STARTING_STATE, TRANSITIONS];
-
-const MACHINES_TO_CURRENT_STATES = new WeakMap();
-const MACHINES_TO_STARTING_STATES = new WeakMap();
 const MACHINES_TO_TRANSITIONS = new WeakMap();
-const MACHINES_TO_NAMES_TO_STATES = new WeakMap();
-
-function setState (machine, stateName) {
-  MACHINES_TO_CURRENT_STATES[machine] = MACHINES_TO_NAMES_TO_STATES[machine][stateName];
-  Object.setPrototypeOf(machine, MACHINES_TO_CURRENT_STATES[machine]);
-}
-
-function transitionsTo (stateName, fn) {
-  return function (...args) {
-    const returnValue = fn.apply(this, args);
-    setState(this, stateName);
-    return returnValue;
-  };
-}
 
 function TransitionOrientedStateMachine (description) {
   const machine = {};
@@ -421,10 +402,10 @@ function TransitionOrientedStateMachine (description) {
 }
 ```
 
-And now our `transitions` function can generate most of what we want:
+And now we can write a `getTransitions` function that extracts the structure of the transitions:
 
 ```javascript
-function transitions (machine) {
+function getTransitions (machine) {
   const description = { [STARTING_STATE]: MACHINES_TO_STARTING_STATES[machine] };
   const transitions = MACHINES_TO_TRANSITIONS[machine];
 
@@ -440,7 +421,7 @@ function transitions (machine) {
   return description;
 }
 
-transitions(account)
+getTransitions(account)
   //=> {
     open: {
       open: ["deposit", "withdraw", "availableToWithdraw"],
@@ -459,11 +440,13 @@ transitions(account)
   }
 ```
 
-🎉‼️ We're ready to generate a DOT file from the symbolic description:
+🎉‼️
+
+With `getTransitions` in hand, we're ready to generate a DOT file from the symbolic description:
 
 ```javascript
 function dot (machine, name) {
-  const transitionsForMachine = transitions(machine);
+  const transitionsForMachine = getTransitions(machine);
   const startingState = transitionsForMachine[STARTING_STATE];
   const dot = [];
 
@@ -554,9 +537,11 @@ From this, we get that accounts should certainly *behave* like state machines. A
 
 [^ofcourse]: Of course, we could implement a state machine in some other way, such that it *behaves like* a state machine but is implemented in some other fashion. That would be changing its implementation and not its interface. We could, for example, rewrite our `StateMachine` function to generate a collection of actors communicating with asynchronous method passing. The value of our curent approach is that the implementation strongly mirrors the interface, which has certain benefits for readability.
 
-It follows that in addition to our `ReflectiveStateMachine` function, we ought to also make ``
+It follows that in addition to our `ReflectiveStateMachine` function, we ought to also make both `getTransitions` and `getStateName` "public" functions that every other entity can interact with. `setState`, on the other hand, is best left as a "private" function: To preserve the proper business logic, other entities should invoke methods that perform the appropriate transitions, not directly change state.
 
+So, now we have an understanding of a state machine, the behaviour it contractually guarantees, and how it might be organized such that it can expose its contract dynamically to other code.
 
+But speaking of behaviour...
 
 ---
 
