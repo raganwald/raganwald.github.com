@@ -1,7 +1,7 @@
 ---
-title: "Reflections on State Machines"
+title: "Reflections on State Machine Behaviour (in progress)"
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 In "[How I Learned to Stop Worrying and ❤️ the State Machine][forde]," we built an extremely basic [state machine][fsm] to model a bank account.
