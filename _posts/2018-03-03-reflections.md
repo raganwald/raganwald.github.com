@@ -568,7 +568,7 @@ What to do?
 
 ---
 
-[![Fractal Fun](/assets/images/state-machine/fractal.jpg)](https://www.flickr.com/photos/41829005@N02/6189894283)
+[![Fractal Fun](/assets/images/state-machine/fractal.png)](https://www.flickr.com/photos/41829005@N02/6189894283)
 
 ### hierarchal state machines
 
