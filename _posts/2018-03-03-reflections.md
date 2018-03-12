@@ -35,18 +35,26 @@ Here's a small variation on the "bank account" code we wrote:[^account][^weakmap
 
 ```javascript
 // The naïve state machine extracted from http://raganwald.com/2018/02/23/forde.html
-// modified to use weak maps
+// Modified to use weak maps for "private" state
 
 const STATES = Symbol("states");
 const STARTING_STATE = Symbol("starting-state");
 const RESERVED = [STARTING_STATE, STATES];
 
-const MACHINES_TO_CURRENT_STATES = new WeakMap();
+const MACHINES_TO_CURRENT_STATE_NAMES = new WeakMap();
 const MACHINES_TO_STARTING_STATES = new WeakMap();
 const MACHINES_TO_NAMES_TO_STATES = new WeakMap();
 
+function getStateName(machine) {
+  return MACHINES_TO_CURRENT_STATE_NAMES[machine];
+}
+
+function getState (machine) {
+  return MACHINES_TO_NAMES_TO_STATES[machine][getStateName(machine)];
+}
+
 function setState (machine, stateName) {
-  MACHINES_TO_CURRENT_STATES[machine] = MACHINES_TO_NAMES_TO_STATES[machine][stateName];
+  MACHINES_TO_CURRENT_STATE_NAMES[machine] = stateName;
 }
 
 function transitionsTo (stateName, fn) {
@@ -57,7 +65,7 @@ function transitionsTo (stateName, fn) {
   };
 }
 
-function StateMachine (description) {
+function BasicStateMachine (description) {
   const machine = {};
 
   // Handle all the initial states and/or methods
@@ -85,9 +93,9 @@ function StateMachine (description) {
   // define the delegating methods
   for (const eventName of eventNames) {
     machine[eventName] = function (...args) {
-      const handler = MACHINES_TO_CURRENT_STATES[machine][eventName];
+      const handler = getState(machine)[eventName];
       if (typeof handler === 'function') {
-        return MACHINES_TO_CURRENT_STATES[machine][eventName].apply(this, args);
+        return getState(machine)[eventName].apply(this, args);
       } else {
         throw `invalid event ${eventName}`;
       }
@@ -96,13 +104,13 @@ function StateMachine (description) {
 
   // set the starting state
   MACHINES_TO_STARTING_STATES[machine] = description[STARTING_STATE];
-  MACHINES_TO_CURRENT_STATES[machine] = MACHINES_TO_NAMES_TO_STATES[machine][MACHINES_TO_STARTING_STATES[machine]];
+  setState(machine, MACHINES_TO_STARTING_STATES[machine]);
 
   // we're done
   return machine;
 }
 
-const account = StateMachine({
+const account = BasicStateMachine({
   balance: 0,
 
   [STARTING_STATE]: 'open',
@@ -175,24 +183,21 @@ For example, when an object is created, it is in 'open' state, and `placehold`, 
 
 The ideal would be for it not to have these methods at all, so that the standard way that we use our programming language to determine whether an object responds to a method--testing for a member that is a function--just works.
 
-One way to go about this is with prototype mongling:[^mongle]
+One way to go about this is to replace all the delegation methods with prototype mongling. First, the new `setState` method:[^mongle]
 
 [^mongle]: **mongle**: *v*, to molest or disturb.
 
 ```javascript
-function transitionsTo (stateName, fn) {
-  return function (...args) {
-    const returnValue = fn.apply(this, args);
-    this[SET_STATE].call(this, stateName);
-    return returnValue;
-  };
+function setState (machine, stateName) {
+  MACHINES_TO_CURRENT_STATE_NAMES[machine] = stateName;
+  Object.setPrototypeOf(machine, getState(machine));
 }
+```
 
-const RESERVED = [STARTING_STATE, STATES];
-const STATE = Symbol("state");
-const SET_STATE = Symbol("setState");
+Now we can remove all the code that writes the delegation methods:
 
-function StateMachine (description) {
+```javascript
+function ReflectiveStateMachine (description) {
   const machine = {};
 
   // Handle all the initial states and/or methods
@@ -202,21 +207,20 @@ function StateMachine (description) {
   }
 
   // now its states
-  machine[STATES] = description[STATES];
-
-  // set state method
-  machine[SET_STATE] = function (state) {
-    Object.setPrototypeOf(this, this[STATES][state]);
-  }
+  MACHINES_TO_NAMES_TO_STATES[machine] = description[STATES];
 
   // set the starting state
-  const starting_state = description[STARTING_STATE];
-  machine[SET_STATE].call(machine, starting_state);
+  MACHINES_TO_STARTING_STATES[machine] = description[STARTING_STATE];
+  setState(machine, MACHINES_TO_STARTING_STATES[machine]);
 
   // we're done
   return machine;
 }
+```
 
+How weel does it work? Let's try it with `account = ReflectiveStateMachine({ ... })` more-or-less as before:
+
+```javascript
 methodsOf(account)
   //=> deposit, withdraw, availableToWithdraw, placeHold, close
 
@@ -303,7 +307,7 @@ When [we first formulated a notation for state machines][forde], we considered a
 const TRANSITIONS = Symbol("transitions");
 const STARTING_STATE = Symbol("starting-state");
 
-const account = StateMachine({
+const account = OtherNotationStateMachine({
   balance: 0,
 
   [STARTING_STATE]: 'open',
@@ -415,13 +419,6 @@ function StateMachine (description) {
   // we're done
   return machine;
 }
-
-methodsOf(account)
-  //=> deposit, withdraw, availableToWithdraw, placeHold, close
-
-account.placeHold()
-methodsOf(account)
-  //=> removeHold, deposit, availableToWithdraw, close
 ```
 
 And now our `transitions` function can generate most of what we want:
