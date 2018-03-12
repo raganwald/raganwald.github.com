@@ -231,7 +231,7 @@ methodsOf(account)
 
 ([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-simple-reflection-es6))
 
-Now we have a state machine that correctly exposes the shallowest part of its interface, the methods that it responds to at any one time. We'll have a look at its contracted behaviour in a moment, but first, a pleasant diversion.
+Now we have a state machine that correctly exposes the shallowest part of its interface, the methods that it responds to at any one time. What else might other code be interested in? And why?
 
 ---
 
