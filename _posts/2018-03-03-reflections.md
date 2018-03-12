@@ -545,25 +545,6 @@ But speaking of behaviour...
 
 ---
 
-[![ATMs in Thailand](/assets/images/state-machine/atms.jpg)](https://www.flickr.com/photos/23510510@N03/5268897445)
-
-### it's never as simple as it seems in a blog post
-
-One of the reasons we don't see as many explicit state machines "in the wild" as we'd expect is that there is a perception that state machines are great when we've performed an exhaustive "Big Design Up Front" analysis, and have perfectly identified all of the states and transitions. However, many programmers believe that in a more agile, incremental process, we're constantly *discovering* requirements and methods. We may not know that we have a state machine until later in the process, and things being messy, a domain model may not fit neatly into the state machine model even if it appears to have states.
-
-For example, instead of being told that a bank account might be open, held, or closed, we might be told something different:
-
-- A bank account is either open or closed;
-- An open bank account is either held or not held;
-
-So now we are told that an account doesn't have one single state, it has two flags: open/closed and held/not-held. That doesn't fit the state machine model at all, and refactoring it into open/held/closed may not be appropriate. This is an extremely simple example, but impedence mismatches like this are common, and over time a model may accrete a half-dozen or more toggles and enumerations that represent little states within the domain model's larger state.
-
-This is maddening, because we know how to model open/closed as a state machine, and if we didn't have to worry about closd accounts, we also know how to model held/not-held as a state machine.
-
-What to do?
-
----
-
 ### javascript allongé, the six edition
 
 If you enjoyed this essay, you'll ❤️ [JavaScript Allongé, the Six Edition](http://leanpub.com/javascriptallongesix/c/state-machines). It's 100% free to read online, and for a limited time, if you use [this coupon](http://leanpub.com/javascriptallongesix/c/state-machines), you can buy it for $10 off. That's a whopping 37% savings!
