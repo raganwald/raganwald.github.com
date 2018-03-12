@@ -307,7 +307,7 @@ When [we first formulated a notation for state machines][forde], we considered a
 const TRANSITIONS = Symbol("transitions");
 const STARTING_STATE = Symbol("starting-state");
 
-const account = OtherNotationStateMachine({
+const account = TransitionOrientedStateMachine({
   balance: 0,
 
   [STARTING_STATE]: 'open',
@@ -380,7 +380,7 @@ function transitionsTo (stateName, fn) {
   };
 }
 
-function StateMachine (description) {
+function TransitionOrientedStateMachine (description) {
   const machine = {};
 
   // Handle all the initial states and/or methods
@@ -536,15 +536,13 @@ One way to tell is to ask ourselves whether changing those things will break oth
 [Cockoo Hash]: https://en.wikipedia.org/wiki/Cuckoo_hashing
 [Hash Table]: https://en.wikipedia.org/wiki/Hash_table
 
-So how about our bank accounts?
-
-Quite clearly, the fact that a bank account has states is part of its contracted behaviour. Take the following sequence:
+So how about our bank accounts? Consider the following sequence:
 
 ```javascript
 account.availableToWithdraw()
   //=> 0
 
-account.deposit(42)
+account.deposit(42);
 
 account.availableToWithdraw()
   //=> ???
@@ -556,7 +554,7 @@ From this, we get that accounts should certainly *behave* like state machines. A
 
 [^ofcourse]: Of course, we could implement a state machine in some other way, such that it *behaves like* a state machine but is implemented in some other fashion. That would be changing its implementation and not its interface. We could, for example, rewrite our `StateMachine` function to generate a collection of actors communicating with asynchronous method passing. The value of our curent approach is that the implementation strongly mirrors the interface, which has certain benefits for readability.
 
-So how do we implement this reflection in a more organized fashion? We can keep our `transitions` function. But what about current state?
+It follows that in addition to our `ReflectiveStateMachine` function, we ought to also make ``
 
 
 
