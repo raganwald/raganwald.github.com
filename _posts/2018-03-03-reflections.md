@@ -545,6 +545,12 @@ But speaking of behaviour...
 
 ---
 
+[![ATMs in Thailand](/assets/images/state-machine/atms.jpg)](https://www.flickr.com/photos/23510510@N03/5268897445)
+
+### it's never as simple as it seems in a blog post
+
+---
+
 ### javascript allongé, the six edition
 
 If you enjoyed this essay, you'll ❤️ [JavaScript Allongé, the Six Edition](http://leanpub.com/javascriptallongesix/c/state-machines). It's 100% free to read online, and for a limited time, if you use [this coupon](http://leanpub.com/javascriptallongesix/c/state-machines), you can buy it for $10 off. That's a whopping 37% savings!
