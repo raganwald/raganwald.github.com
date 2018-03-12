@@ -549,7 +549,9 @@ But speaking of behaviour...
 
 ### it's never as simple as it seems in a blog post
 
-One of the reasons we don't see as many explicit state machines "in the wild" as we'd expect is that there is a perception that state machines are great when we've performed an exhaustive "Big Design Up Front" analysis, and have perfectly identified all of the states and transitions. However, many programmers believe that in a more agile, incremental process, we're constantly *discovering* requirements and methods. We may not know that we have a state machine until later in the process, and things being messy, a domain model may not fit neatly into the state machine model even if it appears to have states.
+One of the reasons we don't see as many explicit state machines "in the wild" as we'd expect is that there is a perception that state machines are great when we've performed an exhaustive "Big Design Up Front" analysis, and have perfectly identified all of the states and transitions.
+
+Many programmers believe that in a more agile, incremental process, we're constantly *discovering* requirements and methods. We may not know that we have a state machine until later in the process, and things being messy, a domain model may not fit neatly into the state machine model even if it appears to have states.
 
 For example, instead of being told that a bank account might be open, held, or closed, we might be told something different:
 
@@ -558,9 +560,31 @@ For example, instead of being told that a bank account might be open, held, or c
 
 So now we are told that an account doesn't have one single state, it has two flags: open/closed and held/not-held. That doesn't fit the state machine model at all, and refactoring it into open/held/closed may not be appropriate. This is an extremely simple example, but impedence mismatches like this are common, and over time a model may accrete a half-dozen or more toggles and enumerations that represent little states within the domain model's larger state.
 
-This is maddening, because we know how to model open/closed as a state machine, and if we didn't have to worry about closd accounts, we also know how to model held/not-held as a state machine.
+This is maddening, because we know how to model open/closed as a state machine, and if we didn't have to worry about closed accounts, we also know how to model held/not-held as a state machine.
 
 What to do?
+
+---
+
+[![Fractal Fun](/assets/images/state-machine/fractal.jpg)](https://www.flickr.com/photos/41829005@N02/6189894283)
+
+### hierarchal state machines
+
+If we look at a bank account as having two flags, and between their possible settings there are three valid states, we don't see a state machine. We see a stateful object. But hidden in our implementation is a clue as to how we can solve this semantically.
+
+As implemented, state machines are objects that delegate their behaviour to a state object. There's one state object for each possible state.
+
+The state object for closed state has just one method, `reopen`. Our problem with the state object for `open` state is that it has two differnt behaviours, depending on whether the account is `held` or `not-held`.
+
+That sounds very familiar!
+
+What we are describing is that a bank account has two states. One of them, `closed`, is a simple object. But the other, `open`, is itself a state machine! It has two states, `held`, and `not-held`.
+
+If we allow state object to be state machines, we can actually model our bank account exactly as our business users describe it.
+
+But first, we're going to need a bigger notation.[^biggerboat]
+
+[^biggerboat]: Or a [bigger boat](https://www.youtube.com/watch?v=2I91DJZKRxs)!
 
 ---
 
