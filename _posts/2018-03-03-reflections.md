@@ -896,7 +896,7 @@ As an incredibly fecund bonus, we also get dynamically generated diagrams and a 
 
 Whether we use the complete and rather heavyweight SCXML or build ourself a lightweight alternative, in many cases, modelling domain objects as state machines is a win.
 
-(end)
+(discuss on [reddit](https://www.reddit.com/r/javascript/comments/846cb8/more_state_machine_from_reflection_to_statecharts/))
 
 ---
 
