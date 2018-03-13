@@ -1,5 +1,5 @@
 ---
-title: "State Machines from Reflection to State Charts"
+title: "From State Machines to Statecharts"
 layout: default
 tags: [allonge, noindex]
 ---
@@ -845,6 +845,31 @@ Ta da!
 
 There is, of course, much more work to be done. What should `getCurrentState` actually return? How will it show that an account might be in *both* `open` and `not-held` states? What about drawing DOT diagrams? How should our `getTransitions` and `dot` functions work to produce a nested state transitions diagram?
 
+But before we do that work, perhaps we should look at the work that already exists:
+
+---
+
+[![Except from Harel's Paper](/assets/images/state-machine/harel.jpg)][paper]
+
+### statecharts
+
+In the 1980s, [David Harel] invented the [statechart] notation for specifying and programming reactive systems. In addition to formalizing hierarchal state machines, statechart notation covers many other important topics like concurrency and parallel execution.
+
+[David Harel]: https://en.wikipedia.org/wiki/David_Harel
+[statechart]: https://en.wikipedia.org/wiki/State_diagram
+
+Harel's [original paper][paper] explains the entire idea.
+
+[paper]: https://www.inf.ed.ac.uk/teaching/courses/seoc/2005_2006/resources/statecharts.pdf
+
+Statecharts have a formal [SCXML] notation, a number of actively maintained libraries implementing executable statecharts, and there's even a delightfully readable (but unfinished) [statecharts.github.io] project. There's plenty to review in Wikipedia's article on [UML State Machines] as well.
+
+[SCXML]: https://en.wikipedia.org/wiki/SCXML
+[statecharts.github.io]: https://statecharts.github.io
+[UML State Machines]: https://en.wikipedia.org/wiki/UML_state_machine
+
+There's a lot to digest!
+
 But we've gotten the general idea, and that is enough for now. Now that we've done the work, le's turn to the most pressing question: What is it good for? Why should we care?
 
 ---
@@ -870,12 +895,6 @@ Rubber duck *design* works just like rubber duck debugging: The act of explainin
 As an incredibly fecund bonus, we also get dynamically generated diagrams and a cleaner form of self-documenting code in the form of the descriptions that makes it easier for others to read and modify our domain objects.
 
 (end)
-
-p.s. If you would like to read more about hierarchal state machines and so much more, the best places to start are the [statecharts] project and [Harel's original paper on state charts][paper]. You might also try wading through Wikipedia's entry on [UML State Diagrams][uml].
-
-[statecharts]: https://statecharts.github.io
-[paper]: https://www.inf.ed.ac.uk/teaching/courses/seoc/2005_2006/resources/statecharts.pdf
-[uml]: https://en.wikipedia.org/wiki/UML_state_machine#Hierarchically_nested_states
 
 ---
 
