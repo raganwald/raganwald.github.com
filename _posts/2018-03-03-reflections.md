@@ -1,5 +1,5 @@
 ---
-title: "Reflections on State Machine Behaviour"
+title: "State Machines from Reflection to State Charts"
 layout: default
 tags: [allonge, noindex]
 ---
@@ -540,9 +540,9 @@ So. We now have a way of drawing state transition diagrams for state machines. B
 
 People talk about [information hiding] as separating the responsibility for an object's "implementation" from its "interface." The question here is whether an object's states, transitions between states, and methods in each state are part of its implementation, or whether they are part of its interface, its contracted behaviour.
 
-One way to tell is to ask ourselves whether changing those things will break other code. If we can change the transitions of a state machine without changing any other code in an app, it's fair to say that the transitions are "just implementation details," Just as changing a HashMap class to use a [Cockoo Hash] instead of a [Hash Table] doesn't require us to change any of the code that interacts with our HashMap.
+One way to tell is to ask ourselves whether changing those things will break other code. If we can change the transitions of a state machine without changing any other code in an app, it's fair to say that the transitions are "just implementation details," Just as changing a HashMap class to use a [Cuckoo Hash] instead of a [Hash Table] doesn't require us to change any of the code that interacts with our HashMap.
 
-[Cockoo Hash]: https://en.wikipedia.org/wiki/Cuckoo_hashing
+[Cuckoo Hash]: https://en.wikipedia.org/wiki/Cuckoo_hashing
 [Hash Table]: https://en.wikipedia.org/wiki/Hash_table
 [information hiding]: https://en.wikipedia.org/wiki/Information_hiding
 
@@ -593,7 +593,7 @@ For example, instead of being told that a bank account might be open, held, or c
 - A bank account is either open or closed;
 - An open bank account is either held or not held;
 
-So now we are told that an account doesn't have one single state, it has two flags: open/closed and held/not-held. That doesn't fit the state machine model at all, and refactoring it into open/held/closed may not be appropriate. This is an extremely simple example, but impedence mismatches like this are common, and over time a model may accrete a half-dozen or more toggles and enumerations that represent little states within the domain model's larger state.
+So now we are told that an account doesn't have one single state, it has two flags: open/closed and held/not-held. That doesn't fit the state machine model at all, and refactoring it into open/held/closed may not be appropriate. This is an extremely simple example, but impedance mismatches like this are common, and over time a model may accrete a half-dozen or more toggles and enumerations that represent little states within the domain model's larger state.
 
 This is maddening, because we know how to model open/closed as a state machine, and if we didn't have to worry about closed accounts, we also know how to model held/not-held as a state machine.
 
@@ -609,7 +609,7 @@ If we look at a bank account as having two flags, and between their possible set
 
 As implemented, state machines are objects that delegate their behaviour to a state object. There's one state object for each possible state.
 
-The state object for closed state has just one method, `reopen`. Our problem with the state object for `open` state is that it has two differnt behaviours, depending on whether the account is `held` or `not-held`.
+The state object for closed state has just one method, `reopen`. Our problem with the state object for `open` state is that it has two different behaviours, depending on whether the account is `held` or `not-held`.
 
 That sounds very familiar!
 
@@ -657,7 +657,7 @@ const account = HierarchalStateMachine({
 });
 ```
 
-And if we were thinking about a state machine nested _within_ the `open` state, it would loook like this:
+And if we were thinking about a state machine nested _within_ the `open` state, it would look like this:
 
 ```javascript
 HierarchalStateMachine({
@@ -743,7 +743,7 @@ const account = HierarchalStateMachine({
 
 ### using prototypical inheritance to model hierarchal state machines
 
-Here's what we want to happen: When an account enters `open` state, as per usual, its prototype will be set to its `open` state object. That will have a `deposit` and `close` method. But what will the `open` state object's protoype be? Ah! That will be the inner state machine that has `held` and `not-held` methods. And every time the object enters the `open` state, the inner state machine will enter the `not-held` state.
+Here's what we want to happen: When an account enters `open` state, as per usual, its prototype will be set to its `open` state object. That will have a `deposit` and `close` method. But what will the `open` state object's prototype be? Ah! That will be the inner state machine that has `held` and `not-held` methods. And every time the object enters the `open` state, the inner state machine will enter the `not-held` state.
 
 So the prototype chain will look something like this:
 
@@ -780,7 +780,7 @@ function HierarchalStateMachine (description, prototype = Object.prototype) {
 
 Armed with this, we can look for `[INNER]` in any state description. If we don't find one, the state is going to be whatever we construct for our `stateObject`.
 
-But if we do find an `[INNER]`, we will recursively construct a state machine from its description, but have its protptype be the `stateObject` we have constructed. And our state is going to be the inner state machine:
+But if we do find an `[INNER]`, we will recursively construct a state machine from its description, but have its prototype be the `stateObject` we have constructed. And our state is going to be the inner state machine:
 
 ```javascript
 function HierarchalStateMachine (description, prototype = Object.prototype) {
@@ -843,7 +843,7 @@ Ta da!
 
 ([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-hierarchal-es6))
 
-There is, of course, much more work to be done. What should `getCurrentState` actually return? How will it show that an account might be in *both* `open` and `not-held` states? WHat about drawing DOT diagrams? How should our `getTransitions` and `dot` functions work to produce a nested state transitions diagram?
+There is, of course, much more work to be done. What should `getCurrentState` actually return? How will it show that an account might be in *both* `open` and `not-held` states? What about drawing DOT diagrams? How should our `getTransitions` and `dot` functions work to produce a nested state transitions diagram?
 
 But we've gotten the general idea, and that is enough for now. Now that we've done the work, le's turn to the most pressing question: What is it good for? Why should we care?
 
@@ -871,7 +871,7 @@ As an incredibly fecund bonus, we also get dynamically generated diagrams and a 
 
 (end)
 
-p.s. If you would like to read more about hierarchal state machines and so much more, the best places to start are the [statecharts] project and [Harel's Original Paper on Statecharts][paper]. You might also try wading through Wikipedia's entry on [UML State Diagrams][uml].
+p.s. If you would like to read more about hierarchal state machines and so much more, the best places to start are the [statecharts] project and [Harel's original paper on state charts][paper]. You might also try wading through Wikipedia's entry on [UML State Diagrams][uml].
 
 [statecharts]: https://statecharts.github.io
 [paper]: https://www.inf.ed.ac.uk/teaching/courses/seoc/2005_2006/resources/statecharts.pdf
