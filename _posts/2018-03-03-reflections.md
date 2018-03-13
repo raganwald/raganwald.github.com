@@ -379,31 +379,29 @@ function TransitionOrientedStateMachine (description) {
   MACHINES_TO_NAMES_TO_STATES.set(machine, Object.create(null));
 
   for (const state of Object.keys(MACHINES_TO_TRANSITIONS.get(machine))) {
+    const stateObject = Object.create(null);
     const stateDescription = MACHINES_TO_TRANSITIONS.get(machine)[state];
+    const nonTransitioningMethods = Object.keys(stateDescription).filter(name => typeof stateDescription[name] === 'function');
+    const destinationStates = Object.keys(stateDescription).filter(name => typeof stateDescription[name] !== 'function');
 
-    MACHINES_TO_NAMES_TO_STATES.get(machine)[state] = {};
+    for (const nonTransitioningMethodName of nonTransitioningMethods) {
+      const nonTransitioningMethod = stateDescription[nonTransitioningMethodName];
 
-    for (const descriptionKey of Object.keys(stateDescription)) {
-      const innerDescription = stateDescription[descriptionKey];
+      stateObject[nonTransitioningMethodName] = nonTransitioningMethod;
+    }
 
-      if (typeof innerDescription === 'function') {
-        const nonTransitioningMethodName = descriptionKey;
-        const nonTransitioningMethod = innerDescription;
+    for (const destinationState of destinationStates) {
+      const destinationStateDescription = stateDescription[destinationState];
+      const transitioningMethodNames = Object.keys(destinationStateDescription).filter(name => typeof destinationStateDescription[name] === 'function');
 
-        MACHINES_TO_NAMES_TO_STATES.get(machine)[state][nonTransitioningMethodName] =
-          nonTransitioningMethod;
-      } else {
-        const destinationState = descriptionKey;
+      for (const transitioningMethodName of transitioningMethodNames) {
+        const transitioningMethod = destinationStateDescription[transitioningMethodName];
 
-        for (const transitioningMethodName of Object.keys(innerDescription)) {
-          const transitioningMethod = stateDescription[destinationState][transitioningMethodName];
-
-          if (typeof transitioningMethod === 'function') {
-            MACHINES_TO_NAMES_TO_STATES.get(machine)[state][transitioningMethodName] = transitionsTo(destinationState, transitioningMethod);
-          }
-        }
+        stateObject[transitioningMethodName] = transitionsTo(destinationState, transitioningMethod);
       }
     }
+
+    MACHINES_TO_NAMES_TO_STATES.get(machine)[state] = stateObject;
   }
 
   // set the starting state
@@ -437,7 +435,7 @@ function getTransitions (machine) {
         const destinationState = descriptionKey;
         const transitionEvents = Object.keys(innerDescription);
 
-      	description[state][destinationState] = transitionEvents;
+        description[state][destinationState] = transitionEvents;
       }
     }
 
@@ -566,6 +564,14 @@ From this, we get that accounts should certainly *behave* like state machines. A
 [^ofcourse]: Of course, we could implement a state machine in some other way, such that it *behaves like* a state machine but is implemented in some other fashion. That would be changing its implementation and not its interface. We could, for example, rewrite our `StateMachine` function to generate a collection of actors communicating with asynchronous method passing. The value of our curent approach is that the implementation strongly mirrors the interface, which has certain benefits for readability.
 
 It follows that in addition to our `ReflectiveStateMachine` function, we ought to also make both `getTransitions` and `getStateName` "public" functions that every other entity can interact with. `setState`, on the other hand, is best left as a "private" function: To preserve the proper business logic, other entities should invoke methods that perform the appropriate transitions, not directly change state.
+
+We can even create public functions like:
+
+```javascript
+function isStateMachine (object) {
+  return MACHINES_TO_NAMES_TO_STATES.has(object);
+}
+```
 
 So, now we have an understanding of a state machine, the behaviour it contractually guarantees, and how it might be organized such that it can expose its contract dynamically to other code.
 
@@ -756,9 +762,85 @@ And if it is closed, it will change to:
 account -> closed
 ```
 
-The first thing we're going to need is to slightly modify our state machine to take a prototype as an argument
+The first thing we're going to need is to slightly modify our state machine to take a prototype as an argument, and then make sure that every `stateObject` we create for it points to that prototype:
 
+```javascript
+function HierarchalStateMachine (description, prototype = Object.prototype) {
+  // ...
 
+  for (const state of Object.keys(MACHINES_TO_TRANSITIONS.get(machine))) {
+    const stateObject = Object.create(prototype);
+
+    // ...
+  }
+  // ...
+}
+```
+
+Armed with this, we can look for `[INNER]` in any state description. If we don't find one, the state is going to be whatever we construct for our `stateObject`.
+
+But if we do find an `[INNER]`, we will recursively construct a state machine from its description, but have its protptype be the `stateObject` we have constructed. And our state is going to be the inner state machine:
+
+```javascript
+function HierarchalStateMachine (description, prototype = Object.prototype) {
+
+  // ...
+
+  for (const state of Object.keys(MACHINES_TO_TRANSITIONS.get(machine))) {
+    const stateObject = Object.create(prototype);
+
+    // ...
+
+    const innerStateMachineDescription = stateDescription[INNER];
+
+    // ...
+
+    if (innerStateMachineDescription == null) {
+      MACHINES_TO_NAMES_TO_STATES.get(machine)[state] = stateObject;
+    } else {
+      const innerStateMachine = HierarchalStateMachine(
+        innerStateMachineDescription,
+        stateObject
+      );
+
+      MACHINES_TO_NAMES_TO_STATES.get(machine)[state] = innerStateMachine;
+    }
+  }
+
+  // ...
+}
+```
+
+One final thing. When we set the state for a state machine, we have to figure out whether the state machine can handle it, or whether it should delegate that to a nested state machine:
+
+```javascript
+function setState (machine, stateName) {
+  const currentState = getState(machine);
+
+  if (hasState(machine, stateName)) {
+  	setDirectState(machine, stateName)
+  } else if (isStateMachine(currentState)) {
+    setState(currentState, stateName);
+  } else {
+    console.log(`illegal transition to ${stateName}`, machine);
+  }
+}
+
+function setDirectState (machine, stateName) {
+  MACHINES_TO_CURRENT_STATE_NAMES.set(machine, stateName);
+
+  const newState = getState(machine);
+  Object.setPrototypeOf(machine, newState);
+
+  if (isStateMachine(newState)) {
+    setState(newState, MACHINES_TO_STARTING_STATES.get(newState));
+  }
+}
+```
+
+Ta da!
+
+([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-hierarchal-es6))
 
 ---
 
