@@ -45,7 +45,7 @@ const MACHINES_TO_CURRENT_STATE_NAMES = new WeakMap();
 const MACHINES_TO_STARTING_STATES = new WeakMap();
 const MACHINES_TO_NAMES_TO_STATES = new WeakMap();
 
-function getStateName(machine) {
+function getStateName (machine) {
   return MACHINES_TO_CURRENT_STATE_NAMES.get(machine);
 }
 
@@ -189,7 +189,7 @@ One way to go about this is to replace all the delegation methods with prototype
 
 ```javascript
 function setState (machine, stateName) {
-  MACHINES_TO_CURRENT_STATE_NAMES[machine] = stateName;
+  MACHINES_TO_CURRENT_STATE_NAMES.set(machine, stateName);
   Object.setPrototypeOf(machine, getState(machine));
 }
 ```
@@ -197,7 +197,7 @@ function setState (machine, stateName) {
 Now we can remove all the code that writes the delegation methods:
 
 ```javascript
-function ReflectiveStateMachine (description) {
+function RefectiveStateMachine (description) {
   const machine = {};
 
   // Handle all the initial states and/or methods
@@ -207,11 +207,11 @@ function ReflectiveStateMachine (description) {
   }
 
   // now its states
-  MACHINES_TO_NAMES_TO_STATES[machine] = description[STATES];
+  MACHINES_TO_NAMES_TO_STATES.set(machine, description[STATES]);
 
   // set the starting state
-  MACHINES_TO_STARTING_STATES[machine] = description[STARTING_STATE];
-  setState(machine, MACHINES_TO_STARTING_STATES[machine]);
+  MACHINES_TO_STARTING_STATES.set(machine, description[STARTING_STATE]);
+  setState(machine, MACHINES_TO_STARTING_STATES.get(machine));
 
   // we're done
   return machine;
@@ -373,15 +373,15 @@ function TransitionOrientedStateMachine (description) {
   }
 
   // set the transitions for later reflection
-  MACHINES_TO_TRANSITIONS[machine] = description[TRANSITIONS];
+  MACHINES_TO_TRANSITIONS.set(machine, description[TRANSITIONS]);
 
   // create its top-level state prototypes
-  MACHINES_TO_NAMES_TO_STATES[machine] = Object.create(null);
+  MACHINES_TO_NAMES_TO_STATES.set(machine, Object.create(null));
 
-  for (const state of Object.keys(MACHINES_TO_TRANSITIONS[machine])) {
-    const stateDescription = MACHINES_TO_TRANSITIONS[machine][state];
+  for (const state of Object.keys(MACHINES_TO_TRANSITIONS.get(machine))) {
+    const stateDescription = MACHINES_TO_TRANSITIONS.get(machine)[state];
 
-    MACHINES_TO_NAMES_TO_STATES[machine][state] = {};
+    MACHINES_TO_NAMES_TO_STATES.get(machine)[state] = {};
 
     for (const descriptionKey of Object.keys(stateDescription)) {
       const innerDescription = stateDescription[descriptionKey];
@@ -390,7 +390,7 @@ function TransitionOrientedStateMachine (description) {
         const nonTransitioningMethodName = descriptionKey;
         const nonTransitioningMethod = innerDescription;
 
-        MACHINES_TO_NAMES_TO_STATES[machine][state][nonTransitioningMethodName] =
+        MACHINES_TO_NAMES_TO_STATES.get(machine)[state][nonTransitioningMethodName] =
           nonTransitioningMethod;
       } else {
         const destinationState = descriptionKey;
@@ -399,7 +399,7 @@ function TransitionOrientedStateMachine (description) {
           const transitioningMethod = stateDescription[destinationState][transitioningMethodName];
 
           if (typeof transitioningMethod === 'function') {
-            MACHINES_TO_NAMES_TO_STATES[machine][state][transitioningMethodName] = transitionsTo(destinationState, transitioningMethod);
+            MACHINES_TO_NAMES_TO_STATES.get(machine)[state][transitioningMethodName] = transitionsTo(destinationState, transitioningMethod);
           }
         }
       }
@@ -407,8 +407,8 @@ function TransitionOrientedStateMachine (description) {
   }
 
   // set the starting state
-  MACHINES_TO_STARTING_STATES[machine] = description[STARTING_STATE];
-  setState(machine, MACHINES_TO_STARTING_STATES[machine]);
+  MACHINES_TO_STARTING_STATES.set(machine, description[STARTING_STATE]);
+  setState(machine, MACHINES_TO_STARTING_STATES.get(machine));
 
   // we're done
   return machine;
@@ -419,8 +419,8 @@ And now we can write a `getTransitions` function that extracts the structure of 
 
 ```javascript
 function getTransitions (machine) {
-  const description = { [STARTING_STATE]: MACHINES_TO_STARTING_STATES[machine] };
-  const transitions = MACHINES_TO_TRANSITIONS[machine];
+  const description = { [STARTING_STATE]: MACHINES_TO_STARTING_STATES.get(machine) };
+  const transitions = MACHINES_TO_TRANSITIONS.get(machine);
 
   for (const state of Object.keys(transitions)) {
     const stateDescription = transitions[state];
@@ -437,7 +437,7 @@ function getTransitions (machine) {
         const destinationState = descriptionKey;
         const transitionEvents = Object.keys(innerDescription);
 
-        description[state][destinationState] = transitionEvents;
+      	description[state][destinationState] = transitionEvents;
       }
     }
 
