@@ -894,6 +894,8 @@ Rubber duck *design* works just like rubber duck debugging: The act of explainin
 
 As an incredibly fecund bonus, we also get dynamically generated diagrams and a cleaner form of self-documenting code in the form of the descriptions that makes it easier for others to read and modify our domain objects.
 
+Whether we use the complete and rather heavyweight SCXML or build ourself a lightweight alternative, in many cases, modelling domain objects as state machines is a win.
+
 (end)
 
 ---
