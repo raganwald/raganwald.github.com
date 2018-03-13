@@ -544,6 +544,7 @@ One way to tell is to ask ourselves whether changing those things will break oth
 
 [Cockoo Hash]: https://en.wikipedia.org/wiki/Cuckoo_hashing
 [Hash Table]: https://en.wikipedia.org/wiki/Hash_table
+[information hiding]: https://en.wikipedia.org/wiki/Information_hiding
 
 So how about our bank accounts? Consider the following sequence:
 
@@ -842,6 +843,40 @@ Ta da!
 
 ([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-hierarchal-es6))
 
+There is, of course, much more work to be done. What should `getCurrentState` actually return? How will it show that an account might be in *both* `open` and `not-held` states? WHat about drawing DOT diagrams? How should our `getTransitions` and `dot` functions work to produce a nested state transitions diagram?
+
+But we've gotten the general idea, and that is enough for now. Now that we've done the work, le's turn to the most pressing question: What is it good for? Why should we care?
+
+---
+
+[![Rubber Duck Tour in HK](/assets/images/state-machine/rubber-duck.jpg)](https://www.flickr.com/photos/wkc1/8778085054)
+
+### rubber duck design
+
+Hierarchal state machines seem like an awful lot of work for a model with a handful of methods, but let's take a step back and think about the general principles involved. First, hierarchal state machines help us model the way people think about states more closely than if we had to translate what they are saying to a simple "flat" state machine.
+
+Second, hierarchal state machines open up opportunities for _composing_ state machines out of smaller parts. Being able to decompose and recompose models is a programming superpower.
+
+Third, having a "meta-model"--whether it be hierarchal state machines or flat state machines--for constructing domain models provides an unexpected process benefit we might call "Rubber Duck Design."
+
+> In software engineering, [rubber duck debugging] or rubber ducking is a method of debugging code. The name is a reference to a story in the book The Pragmatic Programmer in which a programmer would carry around a rubber duck and debug their code by forcing themselves to explain it, line-by-line, to the duck. Many other terms exist for this technique, often involving different inanimate objects.
+>
+> Many programmers have had the experience of explaining a problem to someone else, possibly even to someone who knows nothing about programming, and then hitting upon the solution in the process of explaining the problem.
+
+[rubber duck debugging]: https://en.wikipedia.org/wiki/Rubber_duck_debugging
+
+Rubber duck *design* works just like rubber duck debugging: The act of explaining the design prompts our brains to think through the thing we're modelling more thoroughly than if we just stare at the code. What makes state machines--whether hierarchal or flat--particularly effective for this is that they force us to "explain to the computer" all of the states and transitions the entity we're modelling will have.
+
+As an incredibly fecund bonus, we also get dynamically generated diagrams and a cleaner form of self-documenting code in the form of the descriptions that makes it easier for others to read and modify our domain objects.
+
+(end)
+
+p.s. If you would like to read more about hierarchal state machines and so much more, the best places to start are the [statecharts] project and [Harel's Original Paper on Statecharts][paper]. You might also try wading through Wikipedia's entry on [UML State Diagrams][uml].
+
+[statecharts]: https://statecharts.github.io
+[paper]: https://www.inf.ed.ac.uk/teaching/courses/seoc/2005_2006/resources/statecharts.pdf
+[uml]: https://en.wikipedia.org/wiki/UML_state_machine#Hierarchically_nested_states
+
 ---
 
 ### javascript allongé, the six edition
@@ -850,6 +885,6 @@ If you enjoyed this essay, you'll ❤️ [JavaScript Allongé, the Six Edition](
 
 ---
 
-[![A clock mechanism](/assets/images/state-machine/field-notes.jpg)](https://www.flickr.com/photos/migreenberg/7155283115)
+[![Water Calligraphy](/assets/images/state-machine/water-calligraphy.jpg)](https://www.flickr.com/photos/ironypoisoning/10218992073)
 
 # notes
