@@ -1,5 +1,5 @@
 ---
-title: "More State Machine ❤️: From Refelction to Statecharts"
+title: "More State Machine ❤️: From Reflection to Statecharts"
 layout: default
 tags: [allonge]
 ---
