@@ -45,17 +45,16 @@ const MACHINES_TO_CURRENT_STATE_NAMES = new WeakMap();
 const MACHINES_TO_STARTING_STATES = new WeakMap();
 const MACHINES_TO_NAMES_TO_STATES = new WeakMap();
 
-function getStateName (machine) {
-  return MACHINES_TO_CURRENT_STATE_NAMES[machine];
+function getStateName(machine) {
+  return MACHINES_TO_CURRENT_STATE_NAMES.get(machine);
 }
 
 function getState (machine) {
-  return MACHINES_TO_NAMES_TO_STATES[machine][getStateName(machine)];
+  return MACHINES_TO_NAMES_TO_STATES.get(machine)[getStateName(machine)];
 }
 
 function setState (machine, stateName) {
-  if (stateName === getStateName(machine)) return;
-  MACHINES_TO_CURRENT_STATE_NAMES[machine] = stateName;
+  MACHINES_TO_CURRENT_STATE_NAMES.set(machine, stateName);
 }
 
 function transitionsTo (stateName, fn) {
@@ -76,10 +75,10 @@ function BasicStateMachine (description) {
   }
 
   // now its states
-  MACHINES_TO_NAMES_TO_STATES[machine] = description[STATES];
+  MACHINES_TO_NAMES_TO_STATES.set(machine, description[STATES]);
 
   // what event handlers does it have?
-  const eventNames = Object.entries(MACHINES_TO_NAMES_TO_STATES[machine]).reduce(
+  const eventNames = Object.entries(MACHINES_TO_NAMES_TO_STATES.get(machine)).reduce(
     (eventNames, [state, stateDescription]) => {
       const eventNamesForThisState = Object.keys(stateDescription);
 
@@ -104,8 +103,8 @@ function BasicStateMachine (description) {
   }
 
   // set the starting state
-  MACHINES_TO_STARTING_STATES[machine] = description[STARTING_STATE];
-  setState(machine, MACHINES_TO_STARTING_STATES[machine]);
+  MACHINES_TO_STARTING_STATES.set(machine, description[STARTING_STATE]);
+  setState(machine, MACHINES_TO_STARTING_STATES.get(machine));
 
   // we're done
   return machine;
@@ -190,7 +189,6 @@ One way to go about this is to replace all the delegation methods with prototype
 
 ```javascript
 function setState (machine, stateName) {
-  if (stateName === getStateName(machine)) return;
   MACHINES_TO_CURRENT_STATE_NAMES[machine] = stateName;
   Object.setPrototypeOf(machine, getState(machine));
 }
@@ -315,14 +313,14 @@ const account = TransitionOrientedStateMachine({
   [STARTING_STATE]: 'open',
   [TRANSITIONS]: {
     open: {
-      open: {
-        deposit (amount) { this.balance = this.balance + amount; },
-        withdraw (amount) { this.balance = this.balance - amount; },
-        availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; }
-      },
+      deposit (amount) { this.balance = this.balance + amount; },
+      withdraw (amount) { this.balance = this.balance - amount; },
+      availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; },
+
       held: {
         placeHold () {}
       },
+
       closed: {
         close () {
           if (this.balance > 0) {
@@ -331,14 +329,15 @@ const account = TransitionOrientedStateMachine({
         }
       }
     },
+
     held: {
+      deposit (amount) { this.balance = this.balance + amount; },
+      availableToWithdraw () { return 0; },
+
       open: {
         removeHold () {}
       },
-      held: {
-        deposit (amount) { this.balance = this.balance + amount; },
-        availableToWithdraw () { return 0; }
-      },
+
       closed: {
         close () {
           if (this.balance > 0) {
@@ -347,6 +346,7 @@ const account = TransitionOrientedStateMachine({
         }
       }
     },
+
     closed: {
       open: {
         reopen () {
@@ -358,7 +358,7 @@ const account = TransitionOrientedStateMachine({
 });
 ```
 
-This is more verbose, but we can write a `StateMachine` to do all the interpretation work. It will keep the description but translate the methods to use `transitionsTo` for us:
+This is touch more verbose, but we can write a `StateMachine` to do all the interpretation work. It will keep the description but translate the methods to use `transitionsTo` for us:
 
 ```javascript
 const MACHINES_TO_TRANSITIONS = new WeakMap();
@@ -375,21 +375,32 @@ function TransitionOrientedStateMachine (description) {
   // set the transitions for later reflection
   MACHINES_TO_TRANSITIONS[machine] = description[TRANSITIONS];
 
-  // create its state prototypes
+  // create its top-level state prototypes
   MACHINES_TO_NAMES_TO_STATES[machine] = Object.create(null);
 
   for (const state of Object.keys(MACHINES_TO_TRANSITIONS[machine])) {
     const stateDescription = MACHINES_TO_TRANSITIONS[machine][state];
 
     MACHINES_TO_NAMES_TO_STATES[machine][state] = {};
-    for (const destinationState of Object.keys(stateDescription)) {
-      const methods = stateDescription[destinationState];
 
-      for (const methodName of Object.keys(methods)) {
-        const value = stateDescription[destinationState][methodName];
+    for (const descriptionKey of Object.keys(stateDescription)) {
+      const innerDescription = stateDescription[descriptionKey];
 
-        if (typeof value === 'function') {
-          MACHINES_TO_NAMES_TO_STATES[machine][state][methodName] = transitionsTo(destinationState, value);
+      if (typeof innerDescription === 'function') {
+        const nonTransitioningMethodName = descriptionKey;
+        const nonTransitioningMethod = innerDescription;
+
+        MACHINES_TO_NAMES_TO_STATES[machine][state][nonTransitioningMethodName] =
+          nonTransitioningMethod;
+      } else {
+        const destinationState = descriptionKey;
+
+        for (const transitioningMethodName of Object.keys(innerDescription)) {
+          const transitioningMethod = stateDescription[destinationState][transitioningMethodName];
+
+          if (typeof transitioningMethod === 'function') {
+            MACHINES_TO_NAMES_TO_STATES[machine][state][transitioningMethodName] = transitionsTo(destinationState, transitioningMethod);
+          }
         }
       }
     }
@@ -415,8 +426,23 @@ function getTransitions (machine) {
     const stateDescription = transitions[state];
 
     description[state] = Object.create(null);
-    for (const destinationState of Object.keys(stateDescription)) {
-      description[state][destinationState] = Object.keys(stateDescription[destinationState]);
+    const selfTransitions = [];
+
+    for (const descriptionKey of Object.keys(stateDescription)) {
+      const innerDescription = stateDescription[descriptionKey];
+
+      if (typeof innerDescription === 'function' ) {
+        selfTransitions.push(descriptionKey);
+      } else {
+        const destinationState = descriptionKey;
+        const transitionEvents = Object.keys(innerDescription);
+
+        description[state][destinationState] = transitionEvents;
+      }
+    }
+
+    if (selfTransitions.length > 0) {
+      description[state][state] = selfTransitions;
     }
   }
 
@@ -603,9 +629,8 @@ const account = HierarchalStateMachine({
   [STARTING_STATE]: 'open',
   [TRANSITIONS]: {
     open: {
-      open: {
-        deposit (amount) { this.balance = this.balance + amount; }
-      },
+      deposit (amount) { this.balance = this.balance + amount; }
+
       closed: {
         close () {
           if (this.balance > 0) {
@@ -631,21 +656,19 @@ And if we were thinking about a state machine nested _within_ the `open` state, 
 HierarchalStateMachine({
   [STARTING_STATE]: 'not-held',
   [TRANSITIONS]: {
-    not-held: {
-      not-held: {
-        withdraw (amount) { this.balance = this.balance - amount; },
-        availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; }
-      },
+    ['not-held']: {
+      withdraw (amount) { this.balance = this.balance - amount; },
+      availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; },
+
       held: {
         placeHold () {}
       }
     },
     held: {
-      not-held: {
+      availableToWithdraw () { return 0; },
+
+      ['not-held']: {
         removeHold () {}
-      },
-      held: {
-        availableToWithdraw () { return 0; }
       }
     }
 });
@@ -664,38 +687,38 @@ const account = HierarchalStateMachine({
   [STARTING_STATE]: 'open',
   [TRANSITIONS]: {
     open: {
-      [INNER]: {
-        [STARTING_STATE]: 'not-held',
-        [TRANSITIONS]: {
-          not-held: {
-            not-held: {
-              withdraw (amount) { this.balance = this.balance - amount; },
-              availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; }
-            },
-            held: {
-              placeHold () {}
-            }
-          },
-          held: {
-            not-held: {
-              removeHold () {}
-            },
-            held: {
-              availableToWithdraw () { return 0; }
-            }
-          }
-      },
-      open: {
-        deposit (amount) { this.balance = this.balance + amount; }
-      },
+      deposit (amount) { this.balance = this.balance + amount; },
+
       closed: {
         close () {
           if (this.balance > 0) {
             // ...transfer balance to suspension account
           }
         }
+      },
+
+      [INNER]: {
+        [STARTING_STATE]: 'not-held',
+        [TRANSITIONS]: {
+          ['not-held']: {
+            withdraw (amount) { this.balance = this.balance - amount; },
+            availableToWithdraw () { return (this.balance > 0) ? this.balance : 0; },
+
+            held: {
+              placeHold () {}
+            }
+          },
+          held: {
+            availableToWithdraw () { return 0; },
+
+            ['not-held']: {
+              removeHold () {}
+            }
+          }
+        }
       }
     },
+
     closed: {
       open: {
         reopen () {
@@ -706,6 +729,36 @@ const account = HierarchalStateMachine({
   }
 });
 ```
+
+---
+
+[![Tree](/assets/images/state-machine/tree.jpg)](https://www.flickr.com/photos/29233640@N07/14724197800)
+
+### using prototypical inheritance to model hierarchal state machines
+
+Here's what we want to happen: When an account enters `open` state, as per usual, its prototype will be set to its `open` state object. That will have a `deposit` and `close` method. But what will the `open` state object's protoype be? Ah! That will be the inner state machine that has `held` and `not-held` methods. And every time the object enters the `open` state, the inner state machine will enter the `not-held` state.
+
+So the prototype chain will look something like this:
+
+```
+account -> open -> open.inner -> open.inner.not-held
+```
+
+If the account is held, it will change to:
+
+```
+account -> open -> open.inner -> open.inner.held
+```
+
+And if it is closed, it will change to:
+
+```
+account -> closed
+```
+
+The first thing we're going to need is to slightly modify our state machine to take a prototype as an argument
+
+
 
 ---
 
