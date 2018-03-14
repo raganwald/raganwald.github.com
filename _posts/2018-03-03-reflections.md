@@ -862,7 +862,7 @@ Harel's [original paper][paper] explains the entire idea.
 
 [paper]: https://www.inf.ed.ac.uk/teaching/courses/seoc/2005_2006/resources/statecharts.pdf
 
-Statecharts have a formal [SCXML] notation, a number of actively maintained libraries implementing executable statecharts, and there's even a delightfully readable (but unfinished) [statecharts.github.io] project. There's plenty to review in Wikipedia's article on [UML State Machines] as well.
+Statecharts have a formal [SCXML] notation, and a number of actively maintained libraries implementing executable statecharts, including [xstate], which bills itself as "functional, stateless JavaScript finite state machines and statecharts." You may also want to take a look at the delightfully readable (but unfinished) [statecharts.github.io] project. There's plenty to review in Wikipedia's article on [UML State Machines] as well.
 
 [SCXML]: https://en.wikipedia.org/wiki/SCXML
 [statecharts.github.io]: https://statecharts.github.io
@@ -870,7 +870,7 @@ Statecharts have a formal [SCXML] notation, a number of actively maintained libr
 
 There's a lot to digest!
 
-But we've gotten the general idea, and that is enough for now. Now that we've done the work, le's turn to the most pressing question: What is it good for? Why should we care?
+But we've gotten the general idea, and that is enough for now. Now that we've done the work, let's turn to the most pressing question: What is it good for? Why should we care?
 
 ---
 
