@@ -867,6 +867,7 @@ Statecharts have a formal [SCXML] notation, and a number of actively maintained 
 [SCXML]: https://en.wikipedia.org/wiki/SCXML
 [statecharts.github.io]: https://statecharts.github.io
 [UML State Machines]: https://en.wikipedia.org/wiki/UML_state_machine
+[xstate]: http://davidkpiano.github.io/xstate/docs/#/
 
 There's a lot to digest!
 
