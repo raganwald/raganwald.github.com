@@ -246,22 +246,16 @@ Two things have been proven to be consistently true since the dawn of human engi
 
 This is especially true of programming, where change happens rapidly and "documentation" lags woefully behind. In early days, researchers toyed with various ways of making executable diagrams for programs: Humans would draw a diagram that communicated the program's behaviour, and the computer would interpret it directly.
 
-With such a scheme, we'd use a special editor to draw something like this:
-
-![Bank account diagram](/assets/images/state-machine/account-final.jpg)
-
-And the machine would simply execute it as a state machine. Naturally, there have been variations over the years, such as having the machine generate a template that humans would fill in, and so forth. But the results have always been unsatisfactory, not least because diagrams often scale well for reading about code, but not for writing code.
-
 Another approach has been to dynamically generate diagrams and comments of one form or another. Many modern programming frameworks can generate documentation from the source code itself, sometimes using special annotations as a kind of markup. The value of this approach is that when the code changes, so does the documentation.
 
 Can we generate state transition diagrams from our source code?
 
-Well, we're not going to write an entire graphics generation engine, although that would be a pleasant diversion. But what we will do is generate a kind of program that another engine can consume to produce our documentation. The diagrams in this essay were generated with [Graphviz], free software that generates graphs specified with the [DOT] graph description language.
+Well, we're not going to write an entire graphics generation engine, although that would be a pleasant diversion. But what we will do is generate a kind of program that another engine can consume to produce our documentation. The diagrams in [How I Learned to Stop Worrying and ❤️ the State Machine][forde] were generated with [Graphviz], free software that generates graphs specified with the [DOT] graph description language.
 
 [Graphviz]: https://en.wikipedia.org/wiki/Graphviz
 [DOT]: https://en.wikipedia.org/wiki/DOT_(graph_description_language)
 
-The dot file to generate the above diagram looks like this:
+The dot file to generate the transition graph for our bank account looks like this:
 
 ```dot
 digraph Account {
@@ -528,7 +522,9 @@ dot(account, "Account")
 
 ([code](https://gist.github.com/raganwald/e4e92910e3039a5bd513cf36b6a7f95d#file-draw-diagrams-es6))
 
-We can feed this `.dot` file to Graphviz, and it will produce the image we see right in this blog post. In fact, the image in this blog post was produced from Graphviz in exactly this way.
+We can feed this `.dot` file to Graphviz, and it will produce the image we see right in this blog post, and that's _exactly_ how it was generated:
+
+![Bank account diagram](/assets/images/state-machine/account-final.jpg)
 
 So. We now have a way of drawing state transition diagrams for state machines. Being able to extract the semantic structure of an object--like the state transitions for a state machine--is a useful kind of reflection, and one that exists at a higher semantic level than simply reporting on things like the methods an object responds to or the properties it has.
 
