@@ -220,6 +220,3 @@ And our takeaway about `reduce` and `reduceRight`? They're handy ways to fold ar
 
 There's more on the subject of left- and right-associations in [Disambiguating Left-Association, Right-Association, and the Associative Property](http://raganwald.com/2017/04/15/associativity.html).
 
-I'm working on a new book. Have a look at [Raganwald's Tooling for Turing Machines](https://leanpub.com/tooling) and let me know if you're interested. Thanks!
-
-
