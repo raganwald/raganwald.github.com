@@ -241,6 +241,4 @@ It's an excercise in deciding what we want our code to communicate, what we want
 
 ### notes
 
-I'm working on a new book. Have a look at [Raganwald's Tooling for Turing Machines](https://leanpub.com/tooling) and let me know if you're interested. Thanks!
-
 
