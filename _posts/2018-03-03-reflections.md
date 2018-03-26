@@ -899,7 +899,7 @@ Whether we use the complete and rather heavyweight SCXML or build ourself a ligh
 
 ### javascript allongé, the six edition
 
-If you enjoyed this essay, you'll ❤️ [JavaScript Allongé, the Six Edition](http://leanpub.com/javascriptallongesix/c/state-machines). It's 100% free to read online, and for a limited time, if you use [this coupon](http://leanpub.com/javascriptallongesix/c/state-machines), you can buy it for $10 off. That's a whopping 37% savings!
+If you enjoyed this essay, you'll ❤️ [JavaScript Allongé, the Six Edition](http://leanpub.com/javascriptallongesix). It's 100% free to read online!
 
 ---
 
