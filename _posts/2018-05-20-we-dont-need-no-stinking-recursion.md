@@ -292,7 +292,7 @@ We could look at directly implementing something like Towers of Hanoi with a sta
 
 That particular choice gives us the power of being able to _express_ Towers of Hanoi as a divide-and-conquer algorithm, while _implementing_ it using a stack on the heap. That's terrific if our only objection to `multirec` is the possibility of a stack overflow.[^because]
 
-[^because]: Many, *many* years ago, I wanted to implement a Towers of Hanoi solver in BASIC. The implementation I had allowed calling subroutines, however subroutines were non-reëntrant! So it was impossible for a subroutine to invoke itself. I wound up implementing a stack of my own in an array, and that, as they say, is that.
+[^because]: Many, *many* years ago, I wanted to implement a Towers of Hanoi solver in BASIC. The implementation I was using allowed calling subroutines, however subroutines were non-reëntrant. So it was impossible for a subroutine to invoke itself. I wound up implementing a stack of my own in an array, and that, as they say, was that. (You read this note correctly: Forty years ago, non-reëntrant subroutines were a thing in widely available implementations.)
 
 Our new `multirec` has its own stack, and is clearly iterative. It's one big loop:
 
@@ -343,3 +343,7 @@ function multirec({ indivisible, value, divide, combine }) {
 ```
 
 With this version of `multirec`, our Towers of Hanoi _and_ `countLeaves` algorithms both have switched from being recursive to being iterative with their own stack. That's the power of separating the specification of the divide-and-conquer algorithm from its implementation.
+
+---
+
+## notes
