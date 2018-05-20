@@ -13,6 +13,12 @@ However, what we can say with certainty is that knowing _how_ to implement a rec
 
 So... We're off!
 
+---
+
+[![GEB recursive](/assets/images/banner/geb-recursive.jpg)](https://www.flickr.com/photos/gadl/279433682)
+
+*GEB Recursive, © 2006 Alexandre Duret-Lutz, [some rights reserved][cc-by-sa-2.0]*
+
 ### recursion, see recursion
 
 The shallow definition of a recursive algorithm is a function that directly or indirectly calls itself. Digging a little deeper, most recursive algorithms address the situation where the solution to a problem can be obtained by dividing it into smaller pieces that are similar to the initial problem, solving them, and then combining the solution.
@@ -67,15 +73,17 @@ countLeaves(tree)
   //=> 6
 ```
 
-This is a classic divide-and-conquer: Divide a ree up into its children, and count the leaves in child, then sum them to get the count of the tree.
-
-### iterative algorithms
+This is a classic divide-and-conquer: Divide a ree up into its children, and count the leaves in child, then sum them to get the count of leaves in the tree.
 
 For the vast majority of cases, recursive algorithms are just fine. This is especially true when the form of the algorithm matches teh form of the data being manipulated. A recursive algorithm to "fold" the elements of a tree makes a certain amount of sense because the definition of a tree is itself recursive: A tree is either a left or another tree. And the function we just saw either returns 1 or the count of leaves in a tree.
 
 But sometimes people want iterative algorithms. It could be that recursion eats up to much stack space, and they would rather consume heap space. It could be that they just don't like recursive algorithms. Or... Who knows? Our purpose here is not to fall down a hole of discussing performance and optimization, we'd rather fall down a hole of exploring what kinds of interesting techniques we might use to transform recursion into iteration.
 
 Let's start with the simplest, and one that works remarkably well:
+
+[![Ferris Wheel](/assets/images/recursion/ferris-wheel.jpg)](https://www.flickr.com/photos/darwinist/23358909)
+
+---
 
 ### 1: hide the recursion with iterators
 
@@ -127,8 +135,6 @@ const yardWaste = new Set([
   new Twig()
 ])
 
-
-
 countLeaves(yardWaste)
   //=> 3
 ```
@@ -166,13 +172,17 @@ function countLeaves (iterable) {
 
 This is great because our functions over iterables apply to a wide class of problems, not just recursive problems. So the takeaway is, one technique for turning recursive algorithms into iterative algorithms is to see whether we can recursively iterate. If so, separate the recursive iteration from the rest of the algorithm by writing an iterator.
 
+[![Acid Tower 9](/assets/images/recursion/hof.jpg)](https://www.flickr.com/photos/maxim_mogilevskiy/33934812664)
+
+---
+
 ### 2. abstract the recursion with higher-order functions
 
 Divide-and-conquer comes up a lot, but it's not always directly transferrable to iteration. For example, we might want to [recursively rotate a square][why]. If we want to separate the mechanics of recursion from the "business logic" of rotating a square, we could move some of the logic into a higher-order function, `multirec`:
 
 [why]: http://raganwald.com/2016/12/27/recursive-data-structures.html "Why Recursive Data Structures?"
 
-```
+```javascript
 function mapWith (fn) {
   return function * (iterable) {
     for (const element of iterable) {
@@ -219,8 +229,13 @@ Now, this does separate the implementation of a divide-and-conquer recursive alg
 
 `multirec` isn't the only higher-order recursive function. `linrec` and `binrec` are pretty handy as shown [here](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html). But let's move on and try something else.
 
+
+[![Towers of Hanoi](/assets/images/recursion/hanoi.jpg)][Towers of Hanoi]
+
+---
+
+### implementing the towers of hanoi with multirec
+
 Not all recursive algorithms map neatly to recursive data structures. For example, what about the [Towers of Hanoi]?
 
 [Towers of Hanoi]: https://en.wikipedia.org/wiki/Tower_of_Hanoi
-
-[![Towers of Hanoi](/assets/images/recursion/hanoi.jpg)][Towers of Hanoi]
