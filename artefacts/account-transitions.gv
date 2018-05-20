@@ -1,0 +1,14 @@
+digraph AccountLebeledWithSelfTransitions {
+
+  start [label="", fixedsize="false", width=0, height=0, shape=none];
+  start -> open [color=darkslategrey];
+
+  open [color=green, fontcolor=green];
+
+  open -> open [color=blue];
+  open -> closed [color=blue];
+
+  closed [color=darkslategrey, fontcolor=darkslategrey];
+
+  closed -> open [color=blue];
+}
