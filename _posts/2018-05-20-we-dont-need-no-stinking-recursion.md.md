@@ -1,6 +1,5 @@
 ---
 title: "Recursion? We don't need no stinking recursion!"
-published: false
 tags: [noindex, allonge]
 ---
 
