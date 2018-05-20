@@ -21,7 +21,7 @@ This is known as "divide and conquer," and here is an example: Counting the numb
 
 So a tree that conatins a single leaf is just `new Tree(new Leaf())`, while a tree contains three leaves might be `new Tree(new Leaf(), new Leaf(), new Leaf())`:
 
-```
+```javascript
 class Leaf {}
 
 class Tree {
@@ -83,7 +83,7 @@ Our algorithm above interleaves the mechanics of visiting every node in a tree w
 
 The easiest way to do that is to keep using recursion, but separate the concern of how to visit all the nodes in a tree from the concern of what we want to do with them. In JavaScript, we can make our trees into [Iterables](https://leanpub.com/javascriptallongesix/read#collections):
 
-```
+```javascript
 class Tree {
   constructor(...children) {
     this.children = children;
@@ -116,7 +116,7 @@ Notice now that `countLeaves` is iterative. The recursion has been pushed into `
 
 Furthermore, this lets us mix-and-match different collection types. Here's a basket of yard waste:
 
-```
+```javascript
 class Twig {}
 
 const yardWaste = new Set([
@@ -135,7 +135,7 @@ countLeaves(yardWaste)
 
 And of course, we can apply functions over iterables, for example:
 
-```
+```javascript
 function count (iterable) {
   let runningTotal = 0;
 
