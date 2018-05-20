@@ -81,9 +81,9 @@ But sometimes people want iterative algorithms. It could be that recursion eats 
 
 Let's start with the simplest, and one that works remarkably well:
 
-[![Ferris Wheel](/assets/images/recursion/ferris-wheel.jpg)](https://www.flickr.com/photos/darwinist/23358909)
-
 ---
+
+[![Ferris Wheel](/assets/images/recursion/ferris-wheel.jpg)](https://www.flickr.com/photos/darwinist/23358909)
 
 ### 1: hide the recursion with iterators
 
@@ -172,11 +172,11 @@ function countLeaves (iterable) {
 
 This is great because our functions over iterables apply to a wide class of problems, not just recursive problems. So the takeaway is, one technique for turning recursive algorithms into iterative algorithms is to see whether we can recursively iterate. If so, separate the recursive iteration from the rest of the algorithm by writing an iterator.
 
-[![Acid Tower 9](/assets/images/recursion/hof.jpg)](https://www.flickr.com/photos/maxim_mogilevskiy/33934812664)
-
 ---
 
-### 2. abstract the recursion with higher-order functions
+[![Acid Tower 9](/assets/images/recursion/hof.jpg)](https://www.flickr.com/photos/maxim_mogilevskiy/33934812664)
+
+### 2. abstract the recursion with higher-order recursive functions
 
 Divide-and-conquer comes up a lot, but it's not always directly transferrable to iteration. For example, we might want to [recursively rotate a square][why]. If we want to separate the mechanics of recursion from the "business logic" of rotating a square, we could move some of the logic into a higher-order function, `multirec`:
 
@@ -229,13 +229,28 @@ Now, this does separate the implementation of a divide-and-conquer recursive alg
 
 `multirec` isn't the only higher-order recursive function. `linrec` and `binrec` are pretty handy as shown [here](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html). But let's move on and try something else.
 
+---
+
 
 [![Towers of Hanoi](/assets/images/recursion/hanoi.jpg)][Towers of Hanoi]
 
----
-
-### implementing the towers of hanoi with multirec
+### implementing the towers of hanoi with higher-order recursive functions
 
 Not all recursive algorithms map neatly to recursive data structures. For example, what about the [Towers of Hanoi]?
 
 [Towers of Hanoi]: https://en.wikipedia.org/wiki/Tower_of_Hanoi
+
+let's start with the outline of what our function will look like:
+
+```javascript
+function hanoi ({numberOfDisksToMove, from, to, spare)} {
+  // ...
+}
+```
+
+We can use `multirec` for this as well. Let's consider our four elements:
+
+1. An `indivisible` predicate function. In our case, `numberOfDisksToMove => numberOfDisksToMove == 1`
+2. A `value` function that determines what to do with a value that is indivisible: ``
+3. A `divide` function that breaks a divisible problem into smaller pieces. `tree => tree.children`
+4. A `combine` function that puts the result of dividing a problem up, back together. `counts => counts.reduce((acc, c) => acc + c, 0)`
