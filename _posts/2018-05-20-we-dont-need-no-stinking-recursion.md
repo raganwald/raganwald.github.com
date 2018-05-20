@@ -288,6 +288,58 @@ One of the motivations for replacing recursion with iteration is to avoid making
 
 Translating a recursive algorithm into an algorithm that uses a recursive iterator or a higher-order recursive function will not solve this problem. The simplest way to solve this problem is to use our own stack. Data structures we create and maintain are stored on the heap, and there is considerably more memory available on the heap than on the stack.
 
-We'll look at implementing the Towers of Hanoi with our own stack.[^because]
+We could look at directly implementing something like Towers of Hanoi with a stack, but let's maintain our separation of concerns. Instead of impementing Towers of Hanoi directly, we'll implement `binrec` with a stack, and then trust that our existing Towers of Hanoi implementation will work without any changes.
 
-[^because]: Many, *many* years ago, I wanted to implement a Towers of Hanoi solver in BASIC. The implementation I had allowed calling subroutines, however subroutines were non-reëntrant!
+That particular choice gives us the power of being able to _express_ Towers of Hanoi as a divide-and-conquer algorithm, while _implementing_ it using a stack on the heap. That's terrific if our only objection to `multirec` is the possibility of a stack overflow.[^because]
+
+[^because]: Many, *many* years ago, I wanted to implement a Towers of Hanoi solver in BASIC. The implementation I had allowed calling subroutines, however subroutines were non-reëntrant! So it was impossible for a subroutine to invoke itself. I wound up implementing a stack of my own in an array, and that, as they say, is that.
+
+Our new `multirec` has its own stack, and is clearly iterative. It's one big loop:
+
+```javascript
+function multirec({ indivisible, value, divide, combine }) {
+  return function (input) {
+    const stack = [];
+
+    if (indivisible(input)) {
+      // the degenerate case
+      return value(input);
+    } else {
+      // the iterative case
+      const parts = divide(input);
+      const solutions = [];
+      stack.push({parts, solutions});
+    }
+
+    while (true) {
+      const {parts, solutions} = stack[stack.length - 1];
+
+      if (parts.length > 0) {
+        const subproblem = parts.pop()
+
+        if (indivisible(subproblem)) {
+          solutions.unshift(value(subproblem));
+        } else {
+          // going deeper
+          stack.push({
+            parts: divide(subproblem),
+            solutions: []
+          })
+        }
+      } else {
+        stack.pop(); // done with this frame
+
+        const solution = combine(solutions);
+
+        if (stack.length === 0) {
+          return solution;
+        } else {
+          stack[stack.length - 1].solutions.unshift(solution);
+        }
+      }
+    }
+  }
+}
+```
+
+With this version of `multirec`, our Towers of Hanoi _and_ `countLeaves` algorithms both have switched from being recursive to being iterative with their own stack. That's the power of separating the specification of the divide-and-conquer algorithm from its implementation.
