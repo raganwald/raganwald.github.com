@@ -73,7 +73,7 @@ countLeaves(tree)
   //=> 6
 ```
 
-This is a classic divide-and-conquer: Divide a ree up into its children, and count the leaves in child, then sum them to get the count of leaves in the tree.
+This is a classic divide-and-conquer: Divide a tree up into its children, and count the leaves in child, then sum them to get the count of leaves in the tree.
 
 For the vast majority of cases, recursive algorithms are just fine. This is especially true when the form of the algorithm matches teh form of the data being manipulated. A recursive algorithm to "fold" the elements of a tree makes a certain amount of sense because the definition of a tree is itself recursive: A tree is either a left or another tree. And the function we just saw either returns 1 or the count of leaves in a tree.
 
@@ -227,7 +227,7 @@ Now, this does separate the implementation of a divide-and-conquer recursive alg
 
 [HashLife]: http://raganwald.com/hashlife/
 
-`multirec` isn't the only higher-order recursive function. `linrec` and `binrec` are pretty handy as shown [here](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html). But let's move on and try something else.
+`multirec` isn't the only higher-order recursive function. `linrec` and `binrec` are pretty handy as shown [here](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html). But let's move on and try it on something else.
 
 ---
 
@@ -243,14 +243,51 @@ Not all recursive algorithms map neatly to recursive data structures. For exampl
 let's start with the outline of what our function will look like:
 
 ```javascript
-function hanoi ({numberOfDisksToMove, from, to, spare)} {
+function hanoi (params) { // params = {disks, from, to, spare}
   // ...
 }
 ```
 
 We can use `multirec` for this as well. Let's consider our four elements:
 
-1. An `indivisible` predicate function. In our case, `numberOfDisksToMove => numberOfDisksToMove == 1`
-2. A `value` function that determines what to do with a value that is indivisible: ``
-3. A `divide` function that breaks a divisible problem into smaller pieces. `tree => tree.children`
-4. A `combine` function that puts the result of dividing a problem up, back together. `counts => counts.reduce((acc, c) => acc + c, 0)`
+1. An `indivisible` predicate function. In our case, `({disks}) => disks == 1`
+2. A `value` function that determines what to do with a value that is indivisible: `({from, to}) => [from + " -> " + to]`
+3. A `divide` function that breaks a divisible problem into smaller pieces. `({disks, from, to, spare}) => [{disks: disks - 1, from, to: spare, spare: to}, {disks: 1, from, to, spare}, {disks: disks - 1, from: spare, to, spare: from}]`
+4. A `combine` function that puts the result of dividing a problem up, back together. `[...moves].reduce((acc, move) => acc.concat(move), [])`
+
+Like so:
+
+```javascript
+const hanoi = multirec({
+  indivisible: ({disks}) => disks == 1,
+  value: ({from, to}) => [from + " -> " + to],
+  divide: ({disks, from, to, spare}) => [
+    {disks: disks - 1, from, to: spare, spare: to},
+    {disks: 1, from, to, spare},
+    {disks: disks - 1, from: spare, to, spare: from}
+  ],
+  combine: moves => [...moves].reduce((acc, move) => acc.concat(move), [])
+});
+
+hanoi({disks: 3, from: 1, to: 3, spare: 2})
+  //=>
+    ["1 -> 3", "1 -> 2", "3 -> 2", "1 -> 3", "2 -> 1", "2 -> 3", "1 -> 3"]
+```
+
+This is good stuff, and its important to know how to convert a recursive function into a function that uses a recursive iterator or a higher-order recursive function. We get the benefits of separating the mechanics of recursion from our code. But we may have other motivations for switching to iterative code, like preserving stack space. These methods hide the recursion, but it's still there.
+
+How else can we get rid of recursion?
+
+---
+
+[![Stacked](/assets/images/recursion/stacked.jpg)](https://www.flickr.com/photos/loozrboy/4971412791)
+
+### 3. greenspunning our own stack
+
+One of the motivations for replacing recursion with iteration is to avoid making too many nested function calls. Each such call places a "frame" on the stack, and many programming languages allocated a fixed amount of memory for the stack. Therefore, if you exceed the amount of stack space, you get a "stack overflow."
+
+Translating a recursive algorithm into an algorithm that uses a recursive iterator or a higher-order recursive function will not solve this problem. The simplest way to solve this problem is to use our own stack. Data structures we create and maintain are stored on the heap, and there is considerably more memory available on the heap than on the stack.
+
+We'll look at implementing the Towers of Hanoi with our own stack.[^because]
+
+[^because]: Many, *many* years ago, I wanted to implement a Towers of Hanoi solver in BASIC. The implementation I had allowed calling subroutines, however subroutines were non-reëntrant!
