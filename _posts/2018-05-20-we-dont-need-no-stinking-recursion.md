@@ -164,6 +164,8 @@ function countLeaves (iterable) {
 }
 ```
 
+This is great because our functions over iterables apply to a wide class of problems, not just recursive problems. So the takeaway is, one technique for turning recursive algorithms into iterative algorithms is to see whether we can recursively iterate. If so, separate the recursive iteration from the rest of the algorithm by writing an iterator.
+
 ### 2. abstract the recursion with higher-order functions
 
 Divide-and-conquer comes up a lot, but it's not always directly transferrable to iteration. For example, we might want to [recursively rotate a square][why]. If we want to separate the mechanics of recursion from the "business logic" of rotating a square, we could move some of the logic into a higher-order function, `multirec`:
@@ -221,4 +223,4 @@ Not all recursive algorithms map neatly to recursive data structures. For exampl
 
 [Towers of Hanoi]: https://en.wikipedia.org/wiki/Tower_of_Hanoi
 
-[![Towers of Hanoi](/assets/images/recursion.hanoi.jpg)][Towers of Hanoi]
+[![Towers of Hanoi](/assets/images/recursion/hanoi.jpg)][Towers of Hanoi]
