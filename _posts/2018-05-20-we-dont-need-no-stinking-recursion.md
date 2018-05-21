@@ -407,7 +407,7 @@ Our stack-based iterator performs a [depth-first search][DFS]:
 
 ![Depth-first search](/assets/images/recursion/dfs.jpg)
 
-*By Alexander Drichel - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=3791979*
+*[By Alexander Drichel - Own work, CC BY-SA 3.0](https://commons.wikimedia.org/w/index.php?curid=3791979)*
 
 [DFS]: https://en.wikipedia.org/wiki/Depth-first_search
 
@@ -415,7 +415,7 @@ But for certain algorithms, we want to perform a [_breadth_-first search][BFS]:
 
 ![Breadth-first search](/assets/images/recursion/bfs.jpg)
 
-*By Alexander Drichel - Own work, CC BY 3.0, https://commons.wikimedia.org/w/index.php?curid=3786735*
+*[By Alexander Drichel - Own work, CC BY 3.0](https://commons.wikimedia.org/w/index.php?curid=3786735)*
 
 [BFS]: https://en.wikipedia.org/wiki/Breadth-first_search
 
