@@ -614,13 +614,13 @@ And once again, we have no need to change any function relying on `Tree` being i
 
 ### wrap-up
 
-We've just seen seven different ways to get recursion out of our functions. The first two ("hide the recursion with iterators" and "abstract the recursion with higher-order recursive functions") moved recursion out of our code.
+We've just seen seven different ways to get recursion out of our functions. The first two ("hide the recursion with iterators" and "abstract the recursion with higher-order recursive functions") didn't eliminate recursion altogether, but moved the recursion out of our code.
 
 "Convert recursion to iteraction with tail calls" arranged our code such that a suitable programming language implementation would convert our recursive code into iteration automatically. "Convert tail-recursive functions into loops" showed how to do this manually for the case where the language wouldn't do it for us, or if we're allergic to recursion for other reasons.
 
-The last three ("implement multirec with our own stack," "implementing depth-first iterators with our own stack," and "implementing breadth-first iterators with a queue") showed how to manage our own storage when working with n-ary recursive algorithms.
+The last three ("implement multirec with our own stack," "implementing depth-first iterators with our own stack," and "implementing breadth-first iterators with a queue") showed how to manage our own storage when working with n-ary recursive algorithms. And we saw that by converting our iterators and `multirec` to iteration, we'd get iteration "for free" for all our other code, thanks to the refactoring in the first two approaches.
 
-So now, if you're ever in an interview and your interlocutor asks you, "Can you convert this algorithm to use iteration," you can reply, "Sure! But there are at least seven different ways to do that, depending upon what we want to accomplish..."[^nine]
+So now, if we're ever in an interview and our interlocutor asks, "Can you convert this algorithm to use iteration," we can reply, "Sure! But there are at least seven different ways to do that, depending upon what we want to accomplish..."[^nine]
 
 [^nine]: Actually there are _at least two more_, but this blog post is already long enough. I've written elsewhere about using [trampolines](http://raganwald.com/2013/03/28/trampolines-in-javascript.html) to implement tail-call optimization in JavaScript, and then there is the deeply fascinating subject of conversion to [continuation-passing style](https://en.wikipedia.org/wiki/Continuation-passing_style).
 
