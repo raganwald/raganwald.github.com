@@ -269,7 +269,8 @@ const hanoi = multirec({
     {disks: 1, from, to, spare},
     {disks: disks - 1, from: spare, to, spare: from}
   ],
-  combine: moves => [...moves].reduce((acc, move) => acc.concat(move), [])
+  combine: moves => [...moves].reduce(
+                      (acc, move) => acc.concat(move), [])
 });
 
 hanoi({disks: 3, from: 1, to: 3, spare: 2})
@@ -307,7 +308,8 @@ If we want to find the exponent of a number, the naïve algorithm is to multiply
 ```javascript
 const multiply = (...numbers) => numbers.reduce((x, y) => x * y);
 const repeat = (times, value) => new Array(times).fill(value);
-const naivePower = (exponent, number) => multiply(...repeat(exponent, number));
+const naivePower = (exponent, number) =>
+                     multiply(...repeat(exponent, number));
 
 naivePower(3, 2)
   //=> 8
@@ -347,7 +349,11 @@ const power = (exponent, number, acc = 1) => {
     const halfExponent = Math.floor(exponent / 2);
     const extraMultiplier = exponent %2 === 0 ? 1 : number;
 
-    return power(halfExponent, number * number, acc * extraMultiplier);
+    return power(
+      halfExponent,
+      number * number,
+      acc * extraMultiplier
+    );
   }
 }
 ```
@@ -378,7 +384,11 @@ const power = (exponent, number, acc = 1) => {
     const halfExponent = Math.floor(exponent / 2);
     const extraMultiplier = exponent %2 === 0 ? 1 : number;
 
-    return power(halfExponent, number * number, acc * extraMultiplier);
+    return power(
+      halfExponent,
+      number * number,
+      acc * extraMultiplier
+    );
   }
 }
 ```
@@ -396,7 +406,8 @@ const power = (exponent, number, acc = 1) => {
       const halfExponent = Math.floor(exponent / 2);
       const extraMultiplier = exponent %2 === 0 ? 1 : number;
 
-      [exponent, number, acc] = [halfExponent, number * number, acc * extraMultiplier];
+      [exponent, number, acc] =
+        [halfExponent, number * number, acc * extraMultiplier];
       continue;
     }
   }
@@ -411,7 +422,8 @@ const power = (exponent, number, acc = 1) => {
     const halfExponent = Math.floor(exponent / 2);
     const extraMultiplier = exponent %2 === 0 ? 1 : number;
 
-    [exponent, number, acc] = [halfExponent, number * number, acc * extraMultiplier];
+    [exponent, number, acc] =
+      [halfExponent, number * number, acc * extraMultiplier];
   }
 
   return acc;
