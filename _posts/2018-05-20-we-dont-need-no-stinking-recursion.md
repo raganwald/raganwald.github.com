@@ -624,6 +624,8 @@ So now, if you're ever in an interview and your interlocutor asks you, "Can you 
 
 [^nine]: Actually there are _at least two more_, but this blog post is already long enough. I've written elsewhere about using [trampolines](http://raganwald.com/2013/03/28/trampolines-in-javascript.html) to implement tail-call optimization in JavaScript, and then there is the deeply fascinating subject of conversion to [continuation-passing style](https://en.wikipedia.org/wiki/Continuation-passing_style).
 
+(discuss on [reddit](https://www.reddit.com/r/javascript/comments/8l281i/recursion_we_dont_need_no_stinking_recursion/))
+
 ---
 
 ## notes
