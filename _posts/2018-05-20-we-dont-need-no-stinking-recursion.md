@@ -11,13 +11,7 @@ tags: [allonge]
 
 **Interviewee**: "Hmmmm..."
 
----
-
-[![Rhombic Dodecahedron](/assets/images/recursion/rhombic-dodecahedron.png)](https://www.flickr.com/photos/fdecomite/5403803757/)
-
-### every recursive algorithm can be implemented with iteration
-
-Whether we _should_ implement a recursive algorithm with iteration is, as they say, "an open problem," and the factors going into that decision are so varied that there is no absolute "Always favour recursion" or "Never use recursion" answer.
+The good news is that _every_ recursive algorithm can be implemented with iteration. Whether we _should_ implement a recursive algorithm with iteration is, as they say, "an open problem," and the factors going into that decision are so varied that there is no absolute "Always favour recursion" or "Never use recursion" answer.
 
 However, what we can say with certainty is that knowing _how_ to implement a recursive algorithm with iteration is deeply interesting! And as a bonus, this knowledge is useful when we do encounter one of the situations where we want to convert an algorithm that is normally recursive into an iterative algorithm.
 
@@ -25,7 +19,7 @@ Even if we never encounter this exact question in an interview.
 
 ---
 
-[![Tree recursion](/assets/images/recursion/tree-recursion.jpg)](https://www.flickr.com/photos/cogdog/26518819784)
+[![Rhombic Dodecahedron](/assets/images/recursion/rhombic-dodecahedron.png)](https://www.flickr.com/photos/fdecomite/5403803757/)
 
 ### recursion, see recursion
 
