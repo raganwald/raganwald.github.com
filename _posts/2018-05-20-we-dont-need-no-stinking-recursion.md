@@ -288,7 +288,7 @@ One of the motivations for replacing recursion with iteration is to avoid making
 
 Translating a recursive algorithm into an algorithm that uses a recursive iterator or a higher-order recursive function will not solve this problem. The simplest way to solve this problem is to use our own stack. Data structures we create and maintain are stored on the heap, and there is considerably more memory available on the heap than on the stack.
 
-We could look at directly implementing something like Towers of Hanoi with a stack, but let's maintain our separation of concerns. Instead of implementing Towers of Hanoi directly, we'll implement `binrec` with a stack, and then trust that our existing Towers of Hanoi implementation will work without any changes.
+We could look at directly implementing something like Towers of Hanoi with a stack, but let's maintain our separation of concerns. Instead of implementing Towers of Hanoi directly, we'll implement `multirec` with a stack, and then trust that our existing Towers of Hanoi implementation will work without any changes.
 
 That particular choice gives us the power of being able to _express_ Towers of Hanoi as a divide-and-conquer algorithm, while _implementing_ it using a stack on the heap. That's terrific if our only objection to `multirec` is the possibility of a stack overflow.[^because]
 
@@ -405,7 +405,7 @@ And once again, we have no need to change any function relying on `Tree` being i
 
 Our stack-based iterator performs a [depth-first search][DFS]:
 
-![Depth-first search](/assets/images/recrusion/dfs.jpg)
+![Depth-first search](/assets/images/recursion/dfs.jpg)
 
 *By Alexander Drichel - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=3791979*
 
@@ -413,7 +413,7 @@ Our stack-based iterator performs a [depth-first search][DFS]:
 
 But for certain algorithms, we want to perform a [_breadth_-first search][BFS]:
 
-![Breadth-first search](/assets/images/recrusion/bfs.jpg)
+![Breadth-first search](/assets/images/recursion/bfs.jpg)
 
 *By Alexander Drichel - Own work, CC BY 3.0, https://commons.wikimedia.org/w/index.php?curid=3786735*
 
