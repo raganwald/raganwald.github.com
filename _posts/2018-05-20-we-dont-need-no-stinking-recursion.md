@@ -282,7 +282,7 @@ How else can we get rid of recursion?
 
 [![Stacked](/assets/images/recursion/stacked.jpg)](https://www.flickr.com/photos/loozrboy/4971412791)
 
-### 3. greenspunning our own stack
+### 3. implementing multirec with our own stack
 
 One of the motivations for replacing recursion with iteration is to avoid making too many nested function calls. Each such call places a "frame" on the stack, and many programming languages allocated a fixed amount of memory for the stack. Therefore, if you exceed the amount of stack space, you get a "stack overflow."
 
@@ -343,6 +343,59 @@ function multirec({ indivisible, value, divide, combine }) {
 ```
 
 With this version of `multirec`, our Towers of Hanoi _and_ `countLeaves` algorithms both have switched from being recursive to being iterative with their own stack. That's the power of separating the specification of the divide-and-conquer algorithm from its implementation.
+
+---
+
+[![Pigeons](/assets/images/recursion/pigeons.jpg)](https://www.flickr.com/photos/belenko/4248910204)
+
+### 4. implementing depth-first iterators with our own stack
+
+Recall our recursive iterator for the `Tree` class:
+
+```javascript
+class Tree {
+  constructor(...children) {
+    this.children = children;
+  }
+
+  *[Symbol.iterator]() {
+    for (const child of this.children) {
+      yield child;
+      if (child instanceof Tree) {
+        yield* child;
+      }
+    }
+  }
+}
+```
+
+Writing an iterator for a recursive data structure was useful for hiding recursion in the implementation, and it was also useful because we have many patterns, library functions, and language features (like `for..of`) that operate on iterables. However, the recursive implementation uses the system's stack.
+
+What about using our own stack, as we did with `multirec`. That would produce a nominally iterative solution:
+
+```javascript
+class Tree {
+  constructor(...children) {
+    this.children = children;
+  }
+
+  *[Symbol.iterator]() {
+    let stack = [...this.children].reverse();
+
+    while (stack.length > 0) {
+      const child = stack.pop();
+
+      yield child;
+
+      if (child instanceof Tree) {
+        stack = stack.concat([...child.children].reverse());
+      }
+    }
+  }
+}
+```
+
+And once again, we have no need to change any function relying on `Tree` being iterable to get a solution that does not cosume the system stack.
 
 ---
 
