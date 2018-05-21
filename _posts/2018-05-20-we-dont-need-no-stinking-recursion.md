@@ -9,7 +9,7 @@ True.
 
 Whether we _should_ implement a recursive algorithm with iteration is, as they say, "an open problem," and the factors going into that decision are so varied that there is no absolute "Always favour recursion" or "Never use recursion" answer.
 
-However, what we can say with certainty is that knowing _how_ to implement a recursive algorithm with iteration is deeply interesting! And as a bonus, this knoweledge is useful when we do encounter one of the situations where we want to convert an algorithm that is normally recursive into an iterative algorithm.
+However, what we can say with certainty is that knowing _how_ to implement a recursive algorithm with iteration is deeply interesting! And as a bonus, this knowledge is useful when we do encounter one of the situations where we want to convert an algorithm that is normally recursive into an iterative algorithm.
 
 So... We're off!
 
@@ -25,7 +25,7 @@ The shallow definition of a recursive algorithm is a function that directly or i
 
 This is known as "divide and conquer," and here is an example: Counting the number of leaves in a tree. Our tree is represented as an object of type `Tree` that contains one ore more children. Each child is either a single leaf, represented as an object of class `Leaf`, or a subtree, represented as another object of type `Tree`.
 
-So a tree that conatins a single leaf is just `new Tree(new Leaf())`, while a tree contains three leaves might be `new Tree(new Leaf(), new Leaf(), new Leaf())`:
+So a tree that contains a single leaf is just `new Tree(new Leaf())`, while a tree contains three leaves might be `new Tree(new Leaf(), new Leaf(), new Leaf())`:
 
 ```javascript
 class Leaf {}
@@ -75,7 +75,7 @@ countLeaves(tree)
 
 This is a classic divide-and-conquer: Divide a tree up into its children, and count the leaves in child, then sum them to get the count of leaves in the tree.
 
-For the vast majority of cases, recursive algorithms are just fine. This is especially true when the form of the algorithm matches teh form of the data being manipulated. A recursive algorithm to "fold" the elements of a tree makes a certain amount of sense because the definition of a tree is itself recursive: A tree is either a left or another tree. And the function we just saw either returns 1 or the count of leaves in a tree.
+For the vast majority of cases, recursive algorithms are just fine. This is especially true when the form of the algorithm matches the form of the data being manipulated. A recursive algorithm to "fold" the elements of a tree makes a certain amount of sense because the definition of a tree is itself recursive: A tree is either a left or another tree. And the function we just saw either returns 1 or the count of leaves in a tree.
 
 But sometimes people want iterative algorithms. It could be that recursion eats up to much stack space, and they would rather consume heap space. It could be that they just don't like recursive algorithms. Or... Who knows? Our purpose here is not to fall down a hole of discussing performance and optimization, we'd rather fall down a hole of exploring what kinds of interesting techniques we might use to transform recursion into iteration.
 
@@ -288,7 +288,7 @@ One of the motivations for replacing recursion with iteration is to avoid making
 
 Translating a recursive algorithm into an algorithm that uses a recursive iterator or a higher-order recursive function will not solve this problem. The simplest way to solve this problem is to use our own stack. Data structures we create and maintain are stored on the heap, and there is considerably more memory available on the heap than on the stack.
 
-We could look at directly implementing something like Towers of Hanoi with a stack, but let's maintain our separation of concerns. Instead of impementing Towers of Hanoi directly, we'll implement `binrec` with a stack, and then trust that our existing Towers of Hanoi implementation will work without any changes.
+We could look at directly implementing something like Towers of Hanoi with a stack, but let's maintain our separation of concerns. Instead of implementing Towers of Hanoi directly, we'll implement `binrec` with a stack, and then trust that our existing Towers of Hanoi implementation will work without any changes.
 
 That particular choice gives us the power of being able to _express_ Towers of Hanoi as a divide-and-conquer algorithm, while _implementing_ it using a stack on the heap. That's terrific if our only objection to `multirec` is the possibility of a stack overflow.[^because]
 
@@ -395,7 +395,7 @@ class Tree {
 }
 ```
 
-And once again, we have no need to change any function relying on `Tree` being iterable to get a solution that does not cosume the system stack.
+And once again, we have no need to change any function relying on `Tree` being iterable to get a solution that does not consume the system stack.
 
 ---
 
