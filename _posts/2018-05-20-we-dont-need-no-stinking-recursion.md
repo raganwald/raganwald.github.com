@@ -284,7 +284,7 @@ hanoi({disks: 3, from: 1, to: 3, spare: 2})
 
 [![Tails](/assets/images/recursion/tails.jpg)](https://www.flickr.com/photos/pigpenspics/14002630)
 
-### 3. convert recursion to iteraction with tail calls
+### 3. convert recursion to iteration with tail calls
 
 Some recursive algorithms are much simpler than traversing a tree or generating solutions to the Towers of Hanoi. For example, the algorithm for computing [Fibonacci] numbers.
 
