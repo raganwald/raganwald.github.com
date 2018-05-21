@@ -13,7 +13,7 @@ tags: [allonge]
 
 ---
 
-[![Rhombic Dodecahedron](/assets/images/banner/rhombic-dodecahedron.png)](https://www.flickr.com/photos/fdecomite/5403803757/)
+[![Rhombic Dodecahedron](/assets/images/recursion/rhombic-dodecahedron.png)](https://www.flickr.com/photos/fdecomite/5403803757/)
 
 ### every recursive algorithm can be implemented with iteration
 
@@ -25,7 +25,7 @@ Even if we never encounter this exact question in an interview.
 
 ---
 
-[![Tree recursion](/assets/images/banner/tree-recursion.jpg)](https://www.flickr.com/photos/cogdog/26518819784)
+[![Tree recursion](/assets/images/recursion/tree-recursion.jpg)](https://www.flickr.com/photos/cogdog/26518819784)
 
 ### recursion, see recursion
 
