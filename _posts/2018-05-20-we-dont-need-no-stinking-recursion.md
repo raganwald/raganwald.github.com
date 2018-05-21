@@ -240,7 +240,7 @@ Not all recursive algorithms map neatly to recursive data structures. For exampl
 
 [Towers of Hanoi]: https://en.wikipedia.org/wiki/Tower_of_Hanoi
 
-let's start with the outline of what our function will look like:
+Let's start with the function signature:
 
 ```javascript
 function hanoi (params) { // params = {disks, from, to, spare}
@@ -396,6 +396,54 @@ class Tree {
 ```
 
 And once again, we have no need to change any function relying on `Tree` being iterable to get a solution that does not cosume the system stack.
+
+---
+
+[![Six in a row](/assets/images/recursion/in-a-row.jpg)](https://www.flickr.com/photos/135487472@N07/27752373930)
+
+### 5. implementing breadth-first iterators with a queue
+
+Our stack-based iterator performs a [depth-first search][DFS]:
+
+![Depth-first search](/assets/images/recrusion/dfs.jpg)
+
+*By Alexander Drichel - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=3791979*
+
+[DFS]: https://en.wikipedia.org/wiki/Depth-first_search
+
+But for certain algorithms, we want to perform a [_breadth_-first search][BFS]:
+
+![Breadth-first search](/assets/images/recrusion/bfs.jpg)
+
+*By Alexander Drichel - Own work, CC BY 3.0, https://commons.wikimedia.org/w/index.php?curid=3786735*
+
+[BFS]: https://en.wikipedia.org/wiki/Breadth-first_search
+
+We can accomplish this using a queue instead of a stack:
+
+```javascript
+class Tree {
+  constructor(...children) {
+    this.children = children;
+  }
+
+  *[Symbol.iterator]() {
+    let queue = [...this.children];
+
+    while (queue.length > 0) {
+      const child = queue.shift();
+
+      yield child;
+
+      if (child instanceof Tree) {
+        queue = queue.concat([...child.children]);
+      }
+    }
+  }
+}
+```
+
+And once again, we have no need to change any function relying on `Tree` being iterable to get a solution that does not consume the system stack.
 
 ---
 
