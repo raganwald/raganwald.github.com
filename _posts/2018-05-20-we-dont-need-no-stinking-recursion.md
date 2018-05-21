@@ -3,19 +3,29 @@ title: "Recursion? We don't need no stinking recursion!"
 tags: [allonge]
 ---
 
-> Every recursive algorithm can be implemented with iteration
+**Interviewer**: "Please whiteboard an algorithm that Counts the leaves in a tree/Solves Towers of Hanoi/Random recursive pet problem."
 
-True.
+**Interviewee**: "Ok... Scribble, scribble... That should do it."
+
+**Interviewer**: "That looks like it works, but can you convert it to an iterative solution?"
+
+**Interviewee**: "Hmmmm..."
+
+---
+
+[![Rhombic Dodecahedron](/assets/images/banner/rhombic-dodecahedron.png)](https://www.flickr.com/photos/fdecomite/5403803757/)
+
+### every recursive algorithm can be implemented with iteration
 
 Whether we _should_ implement a recursive algorithm with iteration is, as they say, "an open problem," and the factors going into that decision are so varied that there is no absolute "Always favour recursion" or "Never use recursion" answer.
 
 However, what we can say with certainty is that knowing _how_ to implement a recursive algorithm with iteration is deeply interesting! And as a bonus, this knowledge is useful when we do encounter one of the situations where we want to convert an algorithm that is normally recursive into an iterative algorithm.
 
-So... We're off!
+Even if we never encounter this exact question in an interview.
 
 ---
 
-[![GEB recursive](/assets/images/banner/geb-recursive.jpg)](https://www.flickr.com/photos/gadl/279433682)
+[![Tree recursion](/assets/images/banner/tree-recursion.jpg)](https://www.flickr.com/photos/cogdog/26518819784)
 
 ### recursion, see recursion
 
@@ -604,7 +614,7 @@ The last three ("implement multirec with our own stack," "implementing depth-fir
 
 So now, if you're ever in an interview and your interlocutor asks you, "Can you convert this algorithm to use iteration," you can reply, "Sure! But there are at least seven different ways to do that, depending upon what we want to accomplish..."[^nine]
 
-[^nine]: Actually there are _at least two more_, but this blog post is already long enough. I've written elsewhere about using [trampolines](http://raganwald.com/2013/03/28/trampolines-in-javascript.html) to implement tail-call optimization in JavaScript, and then there is the deeply fascinating subject of _conversion to [continuation-passing style](https://en.wikipedia.org/wiki/Continuation-passing_style)_.
+[^nine]: Actually there are _at least two more_, but this blog post is already long enough. I've written elsewhere about using [trampolines](http://raganwald.com/2013/03/28/trampolines-in-javascript.html) to implement tail-call optimization in JavaScript, and then there is the deeply fascinating subject of conversion to [continuation-passing style](https://en.wikipedia.org/wiki/Continuation-passing_style).
 
 ---
 
