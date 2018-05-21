@@ -241,7 +241,7 @@ Now, this does separate the implementation of a divide-and-conquer recursive alg
 
 ---
 
-Speaking of the [Towers of Hanoi]... Not all recursive algorithms map neatly to recursive data structures. The recursive solution to the Towers of Hanoi is a good example. We'll use `multirec`, demonstrating that we can separate the mechanics of recursion from our code for anything recursive, not just algorithms that work with trees. Let's start with the function signature:
+Speaking of the Towers of Hanoi... Not all recursive algorithms map neatly to recursive data structures. The recursive solution to the Towers of Hanoi is a good example. We'll use `multirec`, demonstrating that we can separate the mechanics of recursion from our code for anything recursive, not just algorithms that work with trees. Let's start with the function signature:
 
 [Towers of Hanoi]: https://en.wikipedia.org/wiki/Tower_of_Hanoi
 
@@ -274,7 +274,9 @@ const hanoi = multirec({
 
 hanoi({disks: 3, from: 1, to: 3, spare: 2})
   //=>
-    ["1 -> 3", "1 -> 2", "3 -> 2", "1 -> 3", "2 -> 1", "2 -> 3", "1 -> 3"]
+    ["1 -> 3", "1 -> 2", "3 -> 2",
+     "1 -> 3", "2 -> 1", "2 -> 3",
+     "1 -> 3"]
 ```
 
 ---
