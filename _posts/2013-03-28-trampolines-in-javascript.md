@@ -81,7 +81,7 @@ Finally, we call `factorial(0)` and it returns `1`. Then the top is popped off t
 
 How can we get around this? Well, imagine if we don't have a hole in a computation to return. In that case, we wouldn't need to "remember" anything on the stack. To make this happen, we need to either return a value or return the result of calling another function without any further computation.
 
-Such a call is said to be in "tail position" and to be a "tail call." The "elimination" of tail-call elimination means that we don't perform a full call including setting up a new stack frame. We perform the equivalent of a "jump." 
+Such a call is said to be in "tail position" and to be a "tail call." The "elimination" of tail-call elimination means that we don't perform a full call including setting up a new stack frame. We perform the equivalent of a "jump."
 
 If we don't need to remember anything, we don't create another stack frame, we just re-use the one we currently have. And when I say "we," I mean the people writing the interpreter. This is generally a feature of the language, not of a program.
 
@@ -94,12 +94,12 @@ function factorial (n) {
     ? myself(acc * n, n - 1)
     : acc
   };
-  
+
   return _factorial(1, n);
 }
 ```
 
-Now our function either returns a value or it returns the result of calling another function without doing anything with that result. 
+Now our function either returns a value or it returns the result of calling another function without doing anything with that result.
 
 Sharp-eyed functional programmers will notice that we're basically rewriting this thing into a fold over a lazy sequence, but it is man's nature to find many paths to enlightenment, so let's push on.
 
@@ -128,7 +128,7 @@ When we call a function, it returns a *thunk* that we call to get a result. Of c
 
 What's a thunk? I didn't explain that? For our purposes, a *thunk* is a function taking no arguments that is intended purely for greenspunning features. For example, this is a thunk: `function () { return 'Hello World'; }`.
 
-An extremely simple and useful implementation of trampolining can be found in the [Lemonad] library. It works provided that you want to trampoline a function that doesn't return a function. Here it is: 
+An extremely simple and useful implementation of trampolining can be found in the [Lemonad] library. It works provided that you want to trampoline a function that doesn't return a function. Here it is:
 
 [Lemonad]: http://fogus.github.com/lemonad/
 
@@ -162,7 +162,7 @@ var trampoline = function (fn) {
     }
 
     return result;
-    
+
   });
 };
 ```
@@ -176,7 +176,7 @@ function factorial (n) {
     ? function () { return myself(acc * n, n - 1); }
     : acc
   });
-  
+
   return _factorial(1, n);
 }
 
@@ -203,7 +203,7 @@ var trampoline = function (fn) {
     }
 
     return result;
-    
+
   });
 };
 
@@ -213,7 +213,7 @@ function factorial (n) {
     ? function () { return myself(acc.times(n), n.minus(1)); }
     : acc
   });
-  
+
   return _factorial(bigInt.one, bigInt(n));
 }
 
@@ -246,14 +246,14 @@ var B = require('bilby'),
     cont = B.cont,
     done = B.done,
     trampoline = B.trampoline;
-    
+
 function factorial (n) {
   var _factorial =  function myself (acc, n) {
     return n.greater(0)
     ? cont( function () { return myself(acc.times(n), n.minus(1)); })
     : done( acc )
   };
-  
+
   return trampoline( _factorial(bigInt.one, bigInt(n)) );
 }
 

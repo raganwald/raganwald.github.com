@@ -1,6 +1,6 @@
 ---
 title: "Recursion? We don't need no stinking recursion!"
-tags: [noindex, allonge]
+tags: [allonge]
 ---
 
 > Every recursive algorithm can be implemented with iteration
@@ -16,8 +16,6 @@ So... We're off!
 ---
 
 [![GEB recursive](/assets/images/banner/geb-recursive.jpg)](https://www.flickr.com/photos/gadl/279433682)
-
-*GEB Recursive, © 2006 Alexandre Duret-Lutz, [some rights reserved][cc-by-sa-2.0]*
 
 ### recursion, see recursion
 
@@ -178,9 +176,15 @@ This is great because our functions over iterables apply to a wide class of prob
 
 ### 2. abstract the recursion with higher-order recursive functions
 
-Divide-and-conquer comes up a lot, but it's not always directly transferrable to iteration. For example, we might want to [recursively rotate a square][why]. If we want to separate the mechanics of recursion from the "business logic" of rotating a square, we could move some of the logic into a higher-order function, `multirec`:
+Divide-and-conquer comes up a lot, but it's not always directly transferrable to iteration. For example, we might want to [recursively rotate a square][why]. If we want to separate the mechanics of recursion from the "business logic" of rotating a square, we could move some of the logic into a higher-order function, `multirec`.
 
 [why]: http://raganwald.com/2016/12/27/recursive-data-structures.html "Why Recursive Data Structures?"
+
+`multirec` is a template function that implements [n-ary recursion][nary]:[^HOF]
+
+[nary]: http://users.monash.edu/~lloyd/tildeAlgDS/Recn/Perm/
+
+[^HOF]: There is more about `multirec`, `linrec`, and another function, `binrec`, in [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html).
 
 ```javascript
 function mapWith (fn) {
@@ -205,7 +209,7 @@ function multirec({ indivisible, value, divide, combine }) {
 }
 ```
 
-To use `multirec`, we need four pieces:
+To use `multirec`, we plug four functions into its template:
 
 1. An `indivisible` predicate function. It should report whether the problem we're solving is too small to be divided. It's simplicity itself for our counting leaves problem: `node => node instanceof Leaf`.
 2. A `value` function that determines what to do with a value that is indivisible. For counting, we return `1`: `leaf => 1`
@@ -223,24 +227,19 @@ const countLeaves = multirec({
 })
 ```
 
-Now, this does separate the implementation of a divide-and-conquer recursive algorithm from what we want to accomplish, but it's still obvious that we're doing a divide and conquer algorithm. Balanced against that, `multirec` can do a lot more than we can accomplish with a recursive iterator, like rotating squares, or implementing [HashLife].
+Now, this does separate the implementation of a divide-and-conquer recursive algorithm from what we want to accomplish, but it's still obvious that we're doing a divide and conquer algorithm. Balanced against that, `multirec` can do a lot more than we can accomplish with a recursive iterator, like rotating squares, implementing [HashLife], or even finding a solution to the [Towers of Hanoi].
 
 [HashLife]: http://raganwald.com/hashlife/
 
-`multirec` isn't the only higher-order recursive function. `linrec` and `binrec` are pretty handy as shown [here](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html). But let's move on and try it on something else.
-
 ---
-
 
 [![Towers of Hanoi](/assets/images/recursion/hanoi.jpg)][Towers of Hanoi]
 
-### implementing the towers of hanoi with higher-order recursive functions
+---
 
-Not all recursive algorithms map neatly to recursive data structures. For example, what about the [Towers of Hanoi]?
+Speaking of the [Towers of Hanoi]... Not all recursive algorithms map neatly to recursive data structures. The recursive solution to the Towers of Hanoi is a good example. We'll use `multirec`, demonstrating that we can separate the mechanics of recursion from our code for anything recursive, not just algorithms that work with trees. Let's start with the function signature:
 
 [Towers of Hanoi]: https://en.wikipedia.org/wiki/Tower_of_Hanoi
-
-Let's start with the function signature:
 
 ```javascript
 function hanoi (params) { // params = {disks, from, to, spare}
@@ -248,7 +247,7 @@ function hanoi (params) { // params = {disks, from, to, spare}
 }
 ```
 
-We can use `multirec` for this as well. Let's consider our four elements:
+Our four elements will be:
 
 1. An `indivisible` predicate function. In our case, `({disks}) => disks == 1`
 2. A `value` function that determines what to do with a value that is indivisible: `({from, to}) => [from + " -> " + to]`
@@ -274,19 +273,165 @@ hanoi({disks: 3, from: 1, to: 3, spare: 2})
     ["1 -> 3", "1 -> 2", "3 -> 2", "1 -> 3", "2 -> 1", "2 -> 3", "1 -> 3"]
 ```
 
-This is good stuff, and its important to know how to convert a recursive function into a function that uses a recursive iterator or a higher-order recursive function. We get the benefits of separating the mechanics of recursion from our code. But we may have other motivations for switching to iterative code, like preserving stack space. These methods hide the recursion, but it's still there.
+---
 
-How else can we get rid of recursion?
+[![Tails](/assets/images/recursion/tails.jpg)](https://www.flickr.com/photos/pigpenspics/14002630)
+
+### 3. convert recursion to iteraction with tail calls
+
+Some recursive algorithms are much simpler than traversing a tree or generating solutions to the Towers of Hanoi. For example, the algorithm for computing [Fibonacci] numbers.
+
+[Fibonacci]: https://en.wikipedia.org/wiki/Fibonacci
+
+No, not _that_ algorithm, the one we are thinking of involves matrix exponentiation, and you can read all about it [here][es6]. In the middle of that algorithm, we have the need to multiply matrices by each other. We'll repeat the same logic here, only using integers so that we can focus on the recursion.
+
+[es6]: http://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html
+
+Let's start with a generic function for multiplying one or more numbers:
+
+```javascript
+const multiply = (...numbers) => numbers.reduce((x, y) => x * y);
+
+multiply(1, 2, 3, 4, 5)
+  //=> 120
+```
+
+If we want to find the exponent of a number, the naïve algorithm is to multiply it by itself repeatedly. We'll use unnecessarily clever code to implement the trick, like this:
+
+```javascript
+const multiply = (...numbers) => numbers.reduce((x, y) => x * y);
+const repeat = (times, value) => new Array(times).fill(value);
+const naivePower = (exponent, number) => multiply(...repeat(exponent, number));
+
+naivePower(3, 2)
+  //=> 8
+```
+
+Besides the obvious of dropping down into the language's library routines, there is a valuable optimization available. Exponentiation should not require "O-n" operations, it should be "O-log2-n." We get there with recursion:
+
+```javascript
+const power = (exponent, number) => {
+  if (exponent === 0) {
+    return 1;
+  } else {
+    const halfExponent = Math.floor(exponent / 2);
+    const extraMultiplier = exponent %2 === 0 ? 1 : number;
+
+    const halves = power(halfExponent, number);
+
+    return halves * halves * extraMultiplier;
+  }
+}
+
+power(16, 2)
+  //=> 65536
+```
+
+Instead of performing 15 multiplications, the recursive algorithm performs four multiplications. That saves a lot of stack, if that's our concern with recursion. But there is an interesting opportunity here. The stack is needed because after `power` calls itself, it does a bunch more work before returning a result.
+
+If we can find a way for `power` to avoid doing anything except returning the result of calling itself, we have a couple of optimizations available to ourselves. So let's arrange things such that when `power` calls itself, it returns the result right away. The "one weird trick"" is to supply an extra parameter, so that the work gets done eventually, but not after `power` calls itself:[^tcrefactoring]
+
+[^tcrefactoring]: Refactoring recursive functions into "tail recursive functions" has been practiced from the early days of Lisp, and there are a number of practical techniques we can learn to apply. An excellent guide that touches on both tail-recursive refactoring and on converting recursion to iteration is Tom Moertel’s [Tricks of the trade: Recursion to Iteration](http://blog.moertel.com/tags/recursion-to-iteration%20series.html) series.
+
+```javascript
+const power = (exponent, number, acc = 1) => {
+  if (exponent === 0) {
+    return acc;
+  } else {
+    const halfExponent = Math.floor(exponent / 2);
+    const extraMultiplier = exponent %2 === 0 ? 1 : number;
+
+    return power(halfExponent, number * number, acc * extraMultiplier);
+  }
+}
+```
+
+Our `power` functions recursion is now a [tail call][TC] meaning that when it calls itself, it returns that result right away, it doesn't do anything else with it. Because it doesn't do anything with the result, behind the scenes the language doesn't have to store a bunch of information in a stack frame. In essence, it can treat the recursive call like a `GOTO` instead of a `CALL`.
+
+[TC]: https://en.wikipedia.org/wiki/Tail_call
+
+Many functional languages optimize this case. While our code may look like recursion, in such a language, our implementation of `power` it would execute in constant stack space, just like a loop.
+
+Alas, tail calls in JavaScript have turned out to be a contentious issue. At the time of this writing, Safari is the only browser implementing tail call optimization. So, while this is a valid optimization in some languages, and might be useful for a Safari-only application in JavaScript, it would be nice if there was something useful we could do now that we've done all the work of transforming `power` into tail-recursive form.
+
+Like... Convert it to a loop ourselves.
+
+---
+
+[![foffa03](/assets/images/recursion/singlespeed.jpg)](https://www.flickr.com/photos/gee01/7125983447)
+
+### 4. convert tail-recursive functions into loops
+
+Here's `power` again:
+
+```javascript
+const power = (exponent, number, acc = 1) => {
+  if (exponent === 0) {
+    return acc;
+  } else {
+    const halfExponent = Math.floor(exponent / 2);
+    const extraMultiplier = exponent %2 === 0 ? 1 : number;
+
+    return power(halfExponent, number * number, acc * extraMultiplier);
+  }
+}
+```
+
+If we don't want to leave the tail call optimization up to the compiler, with a tail-recursive function there's a simple transformation we can perform: We wrap the whole thing in a loop, we reassign the parameters rather than passing parameters, and we use `continue` instead of invoking ourselves.
+
+Like this:
+
+```javascript
+const power = (exponent, number, acc = 1) => {
+  while (true) {
+    if (exponent === 0) {
+      return acc;
+    } else {
+      const halfExponent = Math.floor(exponent / 2);
+      const extraMultiplier = exponent %2 === 0 ? 1 : number;
+
+      [exponent, number, acc] = [halfExponent, number * number, acc * extraMultiplier];
+      continue;
+    }
+  }
+}
+```
+
+The `continue` is superfluous, but when converting other functions it becomes essential. With a bit of cleaning up, we get:
+
+```javascript
+const power = (exponent, number, acc = 1) => {
+  while (exponent > 0) {
+    const halfExponent = Math.floor(exponent / 2);
+    const extraMultiplier = exponent %2 === 0 ? 1 : number;
+
+    [exponent, number, acc] = [halfExponent, number * number, acc * extraMultiplier];
+  }
+
+  return acc;
+}
+```
+
+So we know that for a certain class of recursive function, we can convert it to iteration in two steps:
+
+1. Convert it to tail-recursive form.
+2. Convert the tail-recursive function into a loop that rebinds its parameters.
+
+And presto, we get an algorithm that executes in constant stack space! Or do we?
+
+Unfortunately, it is not always possible to execute a recursive function in constant space. `power` worked, because it is an example of _linear recursion_: At each step of the way, we execute on one piece of the bigger problem and then combine the result in a simple way with the rest of the problem.
+
+Linearly recursive algorithms are often associated with lists. Every fold, unfold, filter and other algorithm can be expressed as linear recursion, and it can also be expressed as an iteration in constant space. But not all recursive algorithms are linear. Some are "n-ary," where n > 1. In other words, at each step of the way they must call themselves _more than once_ before combining the results.
+
+Such algorithms can be transformed into loops, but the mechanism by which we store data to be worked on later will necessarily grow in some relation to the size of the problem.
 
 ---
 
 [![Stacked](/assets/images/recursion/stacked.jpg)](https://www.flickr.com/photos/loozrboy/4971412791)
 
-### 3. implementing multirec with our own stack
+### 5. implement multirec with our own stack
 
-One of the motivations for replacing recursion with iteration is to avoid making too many nested function calls. Each such call places a "frame" on the stack, and many programming languages allocated a fixed amount of memory for the stack. Therefore, if you exceed the amount of stack space, you get a "stack overflow."
-
-Translating a recursive algorithm into an algorithm that uses a recursive iterator or a higher-order recursive function will not solve this problem. The simplest way to solve this problem is to use our own stack. Data structures we create and maintain are stored on the heap, and there is considerably more memory available on the heap than on the stack.
+It is possible to convert n-ary recursive algorithms to iterative versions, but not in constant space. What we _can_ do, however, is move the need for "stacking" our intermediate results and work to be done out of the system stack and into our own explicit stack. Let's give it a try.
 
 We could look at directly implementing something like Towers of Hanoi with a stack, but let's maintain our separation of concerns. Instead of implementing Towers of Hanoi directly, we'll implement `multirec` with a stack, and then trust that our existing Towers of Hanoi implementation will work without any changes.
 
@@ -348,9 +493,9 @@ With this version of `multirec`, our Towers of Hanoi _and_ `countLeaves` algorit
 
 [![Pigeons](/assets/images/recursion/pigeons.jpg)](https://www.flickr.com/photos/belenko/4248910204)
 
-### 4. implementing depth-first iterators with our own stack
+### 6. implementing depth-first iterators with our own stack
 
-Recall our recursive iterator for the `Tree` class:
+We can use a similar approach for iteration. Recall our `Tree` class:
 
 ```javascript
 class Tree {
@@ -371,7 +516,7 @@ class Tree {
 
 Writing an iterator for a recursive data structure was useful for hiding recursion in the implementation, and it was also useful because we have many patterns, library functions, and language features (like `for..of`) that operate on iterables. However, the recursive implementation uses the system's stack.
 
-What about using our own stack, as we did with `multirec`. That would produce a nominally iterative solution:
+What about using our own stack, as we did with `multirec`? That would produce a nominally iterative solution:
 
 ```javascript
 class Tree {
@@ -401,7 +546,7 @@ And once again, we have no need to change any function relying on `Tree` being i
 
 [![Six in a row](/assets/images/recursion/in-a-row.jpg)](https://www.flickr.com/photos/135487472@N07/27752373930)
 
-### 5. implementing breadth-first iterators with a queue
+### 7. implementing breadth-first iterators with a queue
 
 Our stack-based iterator performs a [depth-first search][DFS]:
 
@@ -447,4 +592,21 @@ And once again, we have no need to change any function relying on `Tree` being i
 
 ---
 
+[![Wrapped](/assets/images/recursion/wrap.jpg)](https://www.flickr.com/photos/morebyless/5539304231)
+
+### wrap-up
+
+We've just seen seven different ways to get recursion out of our functions. The first two ("hide the recursion with iterators" and "abstract the recursion with higher-order recursive functions") moved recursion out of our code.
+
+"Convert recursion to iteraction with tail calls" arranged our code such that a suitable programming language implementation would convert our recursive code into iteration automatically. "Convert tail-recursive functions into loops" showed how to do this manually for the case where the language wouldn't do it for us, or if we're allergic to recursion for other reasons.
+
+The last three ("implement multirec with our own stack," "implementing depth-first iterators with our own stack," and "implementing breadth-first iterators with a queue") showed how to manage our own storage when working with n-ary recursive algorithms.
+
+So now, if you're ever in an interview and your interlocutor asks you, "Can you convert this algorithm to use iteration," you can reply, "Sure! But there are at least seven different ways to do that, depending upon what we want to accomplish..."[^nine]
+
+[^nine]: Actually there are _at least two more_, but this blog post is already long enough. I've written elsewhere about using [trampolines](http://raganwald.com/2013/03/28/trampolines-in-javascript.html) to implement tail-call optimization in JavaScript, and then there is the deeply fascinating subject of _conversion to [continuation-passing style](https://en.wikipedia.org/wiki/Continuation-passing_style)_.
+
+---
+
 ## notes
+
