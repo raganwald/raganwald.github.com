@@ -7,7 +7,11 @@ In the nineteen seventies, when I wasn't watching Star Wars fourteen times in th
 
 [Judith Merril]: https://www.thestar.com/yourtoronto/once-upon-a-city-archives/2018/01/04/little-mother-of-science-fiction-birthed-new-chapter-for-genre-in-canada.html
 
+---
+
 ![Scientific American](/assets/images/sci-am-1958-11.gif)
+
+---
 
 I especially enjoyed reading back issues of Scientific American, and like many, I was captivated by [Martin Gardner's][mg] "Mathematical Games" columns. My mother had sent me to a day camp for gifted kids once, and it was organized like a university. The "students" self-selected "electives." I picked one called "Whodunnit," and it turned out to be a half-day exercise in puzzles and games.
 
