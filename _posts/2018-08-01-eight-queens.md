@@ -1,5 +1,5 @@
 ---
-title: "The Eight Queens"
+title: "The Eight Queens [UNFINISHED, PLEASE DO NOT POST ON HACKER NEWS OR REDDIT. TWITTER IS FINE.]"
 tags: [allonge, noindex]
 ---
 
@@ -365,9 +365,57 @@ With this in hand, we can make a faster "combinations" generator, and we won't h
 
 ### improving our combinations
 
-An easy way to implement choosing combinations of squares is to work with numbers from `0` to `63` instead of pairs of indices:
+An easy way to implement choosing combinations of squares is to work with numbers from `0` to `63` instead of pairs of indices. Here's a generator that does the exact thing we want:
 
+```javascript
+function * map (mapFunction, iterable) {
+  for (const element of iterable) {
+    yield mapFunction(element);
+  }
+}
 
+function * choose (n, k, offset = 0) {
+  if (k === 1) {
+    for (let i = 0; i <= (n - k); ++i) {
+      yield [i + offset];
+    }
+  } else if (k > 1) {
+    for (let i = 0; i <= (n - k); ++i) {
+      const remaining = n - i - 1;
+      const otherChoices = choose(remaining, k - 1, i + offset + 1);
+
+      yield * map(x => [i + offset].concat(x), otherChoices);
+    }
+  }
+}
+
+choose(5, 3)
+  //=>
+    [0, 1, 2]
+    [0, 1, 3]
+    [0, 1, 4]
+    [0, 2, 3]
+    [0, 2, 4]
+    [0, 3, 4]
+    [1, 2, 3]
+    [1, 2, 4]
+    [1, 3, 4]
+    [2, 3, 4]
+```
+
+We can now write `choose(64, 8)` to get all the ways to choose eight squares, and `[Math.floor(q/8), q % 8]` to convert a number from `0` to `63` into a pair of indices between `0` and `7`:
+
+```javascript
+const chooseCombinations = map(x => x.map(q => [Math.floor(q/8), q % 8]), choose(64, 8));
+
+const allSolutions = filter(test, chooseCombinations);
+const firstSolution = first(allSolutions);
+
+console.log(stringify(firstSolution));
+
+```
+
+It's still a tremendous number of candidates to search. If we list them out we can see some of the problems right away. For example, the very first combination it wants to test is `[[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7]]`. The queens are all on the same row!
 
 ---
 
