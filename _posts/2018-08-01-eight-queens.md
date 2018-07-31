@@ -11,9 +11,7 @@ In the nineteen-seventies, I spent a lot of time in Toronto's libraries.[^sw] My
 
 ---
 
-[![Scientific American](/assets/images/sci-am-1958-11.gif)][square]
-
-[square]: http://www.celebrationofmind.org/archive/miller-squares.html
+<img src="/assets/images/sci-am-1958-11.gif" alt="Scientific American" longdesc="http://www.celebrationofmind.org/archive/miller-squares.html" style="border: 1; object-position: center;"/>
 
 ---
 
