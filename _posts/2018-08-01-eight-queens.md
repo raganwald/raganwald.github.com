@@ -5,9 +5,7 @@ tags: [allonge, noindex]
 
 ### preamble
 
-In the nineteen-seventies, I spent a lot of time in Toronto's libraries[^sw]. My favourite hangouts were the Sanderson Branch (which was near my home in Little Italy), and the "Spaced Out Library," a non-circulating collection of science fiction and fantasy that had been donated by [Judith Merril] and was housed within St. George and College Street branch.
-
-[^sw]: In my first draft of this memoir, I had a reference to seeing *Star Wars* fourteen times in actual theatres when it first came out. Which is a nice memory, to be sure, but it's hardly some kind of Nerd Merit Achievement, and even seeing it fourteen times is only a very small fraction of the amount of time I spent reading, playing D&D, or skateboarding. The fact that it looms so large in reminisces like this speaks more to the power of its cultural significance than it does to its actual place in my life at the time.
+In the nineteen-seventies, I spent a lot of time in Toronto's libraries. My favourite hangouts were the Sanderson Branch (which was near my home in Little Italy), and the "Spaced Out Library," a non-circulating collection of science fiction and fantasy that had been donated by [Judith Merril] and was housed within St. George and College Street branch.
 
 [Judith Merril]: https://www.thestar.com/yourtoronto/once-upon-a-city-archives/2018/01/04/little-mother-of-science-fiction-birthed-new-chapter-for-genre-in-canada.html
 
@@ -88,6 +86,44 @@ As Wikipedia explains, "The [**eight queens puzzle**][8q] is the problem of plac
 By this time I knew a little about writing "generate and test" algorithms, as well as a little about depth-first search from writing games (like "Maharajah and the Sepoys") that performed basic [minimax] searches for moves to make. So I set about writing a BASIC program to search for solutions. I had no real understanding of computational complexity and running time, but what if I wrote a program and left it running all night?
 
 [minimax]: https://en.wikipedia.org/wiki/Minimax
+
+The truly brute force solution looks something like this:
+
+```javascript
+for (let i0 = 0; i0 < 8; ++i0) {
+  for (let j0 = 0; j0 < 8; ++j0) {
+    for (let i1 = 0; i1 < 8; ++i1) {
+      for (let j1 = 0; j1 < 8; ++j1) {
+        for (let i2 = 0; i2 < 8; ++i2) {
+          for (let j2 = 0; j2 < 8; ++j2) {
+            for (let i3 = 0; i3 < 8; ++i3) {
+              for (let j3 = 0; j3 < 8; ++j3) {
+                for (let i4 = 0; i4 < 8; ++i4) {
+                  for (let j4 = 0; j4 < 8; ++j4) {
+                    for (let i5 = 0; i5 < 8; ++i5) {
+                      for (let j5 = 0; j5 < 8; ++j5) {
+                        for (let i6 = 0; i6 < 8; ++i6) {
+                          for (let j6 = 0; j6 < 8; ++j6) {
+                            for (let i7 = 0; i7 < 8; ++i7) {
+                              for (let j7 = 0; j7 < 8; ++j7) {
+                                // test solution and halt if found
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+	}
+}
+```
 
 IIRC, my sole "optimization" was the observation that if I set about generating all the possible arrangements for the first queen, by definition the subsequent queens would have to come after the each queen's position.
 
