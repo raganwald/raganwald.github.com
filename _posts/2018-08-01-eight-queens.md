@@ -87,49 +87,118 @@ By this time I knew a little about writing "generate and test" algorithms, as we
 
 [minimax]: https://en.wikipedia.org/wiki/Minimax
 
-The truly brute force solution looks something like this:
+The truly brute force solution looks something like this (BASIC has a `for... next` construct, but close enough):
 
 ```javascript
-for (let i0 = 0; i0 < 8; ++i0) {
-  for (let j0 = 0; j0 < 8; ++j0) {
-    for (let i1 = 0; i1 < 8; ++i1) {
-      for (let j1 = 0; j1 < 8; ++j1) {
-        for (let i2 = 0; i2 < 8; ++i2) {
-          for (let j2 = 0; j2 < 8; ++j2) {
-            for (let i3 = 0; i3 < 8; ++i3) {
-              for (let j3 = 0; j3 < 8; ++j3) {
-                for (let i4 = 0; i4 < 8; ++i4) {
-                  for (let j4 = 0; j4 < 8; ++j4) {
-                    for (let i5 = 0; i5 < 8; ++i5) {
-                      for (let j5 = 0; j5 < 8; ++j5) {
-                        for (let i6 = 0; i6 < 8; ++i6) {
-                          for (let j6 = 0; j6 < 8; ++j6) {
-                            for (let i7 = 0; i7 < 8; ++i7) {
-                              for (let j7 = 0; j7 < 8; ++j7) {
-                                // test solution and halt if found
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+test: for (let i0 = 0; i0 < 8; ++i0) {
+       for (let j0 = 0; j0 < 8; ++j0) {
+         for (let i1 = 0; i1 < 8; ++i1) {
+           for (let j1 = 0; j1 < 8; ++j1) {
+             for (let i2 = 0; i2 < 8; ++i2) {
+               for (let j2 = 0; j2 < 8; ++j2) {
+                 for (let i3 = 0; i3 < 8; ++i3) {
+                   for (let j3 = 0; j3 < 8; ++j3) {
+                     for (let i4 = 0; i4 < 8; ++i4) {
+                       for (let j4 = 0; j4 < 8; ++j4) {
+                         for (let i5 = 0; i5 < 8; ++i5) {
+                           for (let j5 = 0; j5 < 8; ++j5) {
+                             for (let i6 = 0; i6 < 8; ++i6) {
+                               for (let j6 = 0; j6 < 8; ++j6) {
+                                 for (let i7 = 0; i7 < 8; ++i7) {
+                                   for (let j7 = 0; j7 < 8; ++j7) {
+                                     const queens = [
+                                       [i0, j0],
+                                       [i1, j1],
+                                       [i2, j2],
+                                       [i3, j3],
+                                       [i4, j4],
+                                       [i5, j5],
+                                       [i6, j6],
+                                       [i7, j7]
+                                     ];
+
+                                     if (test(queens)) {
+                                       console.log(stringify(queens));
+                                       break test;
+                                     }
+                                   }
+                                 }
+                               }
+                             }
+                           }
+                         }
+                       }
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         }
+       }
+    }
+
+function test (queens) {
+  const board = [
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."]
+  ];
+
+  for (const [i, j] of queens) {
+    if (board[i][j] != '.') {
+      // square is occupied or threatened
+      return false;
+    }
+
+    for (let k = 0; k < 7; ++k) {
+      // fill row and column
+      board[i][k] = board[k][j] = "x";
+
+      const vOffset = k-i;
+      const hDiagonal1 = j + vOffset;
+      const hDiagonal2 = j + vOffset;
+
+      // fill diagonals
+      if (hDiagonal1 >= 0 && hDiagonal1 <= 7) {
+        board[k][hDiagonal1] = "x";
+      }
+
+      if (hDiagonal2 >= 0 && hDiagonal2 <= 7) {
+        board[k][hDiagonal2] = "x";
       }
     }
-	}
+  }
+
+  return board;
+}
+
+function stringify (queens) {
+  const board = [
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."]
+  ];
+
+  for (const [i, j] of queens) {
+    board[i][j] = "Q";
+  }
+
+  return board.map(row => row.join('')).join("\n");
 }
 ```
 
-IIRC, my sole "optimization" was the observation that if I set about generating all the possible arrangements for the first queen, by definition the subsequent queens would have to come after the each queen's position.
-
-Obviously, if the first queen was in position `0, 0`, the second queen could only be in positions `0, 1` through `7, 7`. Now if I searched all of the positions where the first queen was in position `0, 0` and didn't find a solution, I would try placing the first queen in `0, 1`. But there was no need to consider placing the second or any subsequent queen in `0, 0`, because that case would already have been tried.
-
-The same reasoning applied to the relationship between any two queens I was trying to place: Given an ordering of squares, the subsequent queen can only be placed on a square after the last queen placed. I wrote some code something like:
+I believe I tried that, left the program running overnight, and when I came in the next morning before school it was still running. It was searching `64^8` candidates for a solution, and a huge part of its running time is the excruciating slowness of the test algorithm.
 
 
 
