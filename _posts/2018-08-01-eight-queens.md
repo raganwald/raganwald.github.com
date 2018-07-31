@@ -423,7 +423,7 @@ There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
 ---
 
-[![Dead End ©2013 Kurtis Garbutt](/assets/images/dead-end.png)](https://www.flickr.com/photos/kjgarbutt/11772154856)
+[![Dead End ©2013 Kurtis Garbutt](/assets/images/dead-end.jpg)](https://www.flickr.com/photos/kjgarbutt/11772154856)
 
 ---
 
