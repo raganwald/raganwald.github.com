@@ -9,7 +9,9 @@ In the nineteen seventies, when I wasn't watching Star Wars fourteen times in th
 
 ---
 
-![Scientific American](/assets/images/sci-am-1958-11.gif)
+[![Scientific American](/assets/images/sci-am-1958-11.gif)][square]
+
+[square]: http://www.celebrationofmind.org/archive/miller-squares.html
 
 ---
 
