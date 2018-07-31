@@ -218,7 +218,15 @@ In any event, I left the updated program running overnight, and once again retur
 
 The paper roll had jammed at some point in the night and was no longer advancing, but the teletype had hammered through the paper and was hammering on the roller behind. Rolls of paper had emerged from the machine and lay in a heap around it. I consider it a very lucky escape that a spark hadn't ignited the paper or its dust that hung in the air.
 
-I shut everything down and cleaned up as best I could, then set about finding the bug.
+I shut everything down, cleaned up as best I could, and then set about finding the bug.
+
+---
+
+[![The Royal Ontario Museum, ©2009 Steve Harris](/assets/images/rom-crystal.jpg)](https://www.flickr.com/photos/stevenharris/3673718875)
+
+---
+
+### separating concerns
 
 ---
 
