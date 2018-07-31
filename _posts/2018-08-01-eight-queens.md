@@ -67,7 +67,7 @@ Saving programs on disc was not allowed. The teletypes had paper tape interfaces
 
 I was a morally vacant vessel at that point in my life, so I would go in late, pick the lock, and boot up single-user mode, in defiance of all regulation. I could then work on customizing Super Star Trek or write programs to solve puzzles. Curiously, I never tampered with the student records. I'm not going to tell you that I had a moral code about these things. I think the truth is that I just didn't care about marks.
 
-Now about puzzles. One of the things I worked on was writing new games. I made a [Maharajah and the Sepoys][ms] program that would play the Maharajah while I played the standard chess pieces. It could beat me, which was enough AI for my purposes. This got me thinking about something I'd read in a Martin Gardner book, the Eight Queens Problem.
+Now about puzzles. One of the things I worked on was writing new games. I made a [Maharajah and the Sepoys][ms] program that would play the Maharajah while I played the standard chess pieces. It could beat me, which was enough AI for my purposes. This got me thinking about something I'd read in a Martin Gardner book, the [Eight Queens Puzzle][8q].
 
 [ms]: https://en.wikipedia.org/wiki/Maharajah_and_the_Sepoys
 
@@ -83,7 +83,13 @@ I decided to write a program to search for the solutions by brute force.
 
 ### The Eight Queens Puzzle
 
-> The **eight queens puzzle** is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal. The eight queens puzzle is an example of the more general ***n*** **queens problem** of placing n non-attacking queens on an n×n chessboard, for which solutions exist for all natural numbers n with the exception of n=2 and n=3.
+As Wikipedia explains, "The [**eight queens puzzle**][8q] is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal. The eight queens puzzle is an example of the more general ***n*** **queens problem** of placing n non-attacking queens on an n×n chessboard, for which solutions exist for all natural numbers n with the exception of n=2 and n=3."
+
+By this time I knew a little about writing "generate and test" algorithms, as well as a little about depth-first search from writing games (like "Maharajah and the Sepoys") that performed basic [minimax] searches for moves to make.
+
+[minimax]: https://en.wikipedia.org/wiki/Minimax
+
+So I set about writing a BASIC program to search for solutions. I had no real understanding of computational complexity and running time, but it was obvious from reading Martin Gardner's account that generating every possible arrangement of eight queens and testing them would take forever on that hardware.
 
 ## notes
 
