@@ -61,12 +61,6 @@ The mode set up for student use was a four-user BASIC interpreter. It had 16KB o
 
 Saving programs on disc was not allowed. The teletypes had paper tape interfaces on the side, so to save a program we would `LIST` the source with the paper tape on, and it would punch ASCII or EBDIC codes onto the tape. We'd tear it off and take it with us. Later, to reload a program, we'd feed the tape into the teletype and it would act as if we were typing the program anew.
 
----
-
-[![Maharajah and the Sepoys](/assets/images/maharajah-and-the-sepoys.jpg)][ms]
-
----
-
 4KB was enough for assignments like writing a simple bubble sort, but I had discovered [David Ahl] by this time, and programs like "Super Star Trek" did not fit in 4KB. There was a 16KB single-user disc locked in a cabinet alongside programs for tabulating student results.
 
 [David Ahl]: https://en.wikipedia.org/wiki/David_H._Ahl
@@ -81,7 +75,7 @@ I decided to write a program to search for the solutions by brute force.
 
 ---
 
-[![Eight Queens Puzzle](/assets/images/eight-queens.jpg)][8q]
+[![Eight Queens Puzzle](/assets/images/eight-queens.png)][8q]
 
 [8q]: https://en.wikipedia.org/wiki/Eight_queens_puzzle
 
