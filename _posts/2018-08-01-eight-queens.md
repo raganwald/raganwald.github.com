@@ -276,37 +276,6 @@ function * bruteForceCombinations () {
   }
 }
 
-function * combinations () {
-  for (let i0 = 0; i0 <= 7; ++i0) {
-    for (let i1 = 0; i1 <= 7; ++i1) {
-      for (let i2 = 0; i2 <= 7; ++i2) {
-        for (let i3 = 0; i3 <= 7; ++i3) {
-          for (let i4 = 0; i4 <= 7; ++i4) {
-            for (let i5 = 0; i5 <= 7; ++i5) {
-              for (let i6 = 0; i6 <= 7; ++i6) {
-                for (let i7 = 0; i7 <= 7; ++i7) {
-                  const queens = [
-                    [i0, 0],
-                    [i1, 1],
-                    [i2, 2],
-                    [i3, 3],
-                    [i4, 4],
-                    [i5, 5],
-                    [i6, 6],
-                    [i7, 7]
-                  ];
-
-                  yield queens;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 function test (queens) {
   const board = [
     [".", ".", ".", ".", ".", ".", ".", "."],
@@ -387,6 +356,18 @@ console.log(stringify(firstSolution));
 ```
 
 With this in hand, we can make a faster "combinations" generator, and we won't have to work around any of the other code.
+
+---
+
+[![Choose your colour ©2014 jaros](/assets/images/canoes.jpg)](https://www.flickr.com/photos/rjswa/15249100536)
+
+---
+
+### improving our combinations
+
+An easy way to implement choosing combinations of squares is to work with numbers from `0` to `63` instead of pairs of indices:
+
+
 
 ---
 
