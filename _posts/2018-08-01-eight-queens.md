@@ -1,9 +1,11 @@
 ---
-title: "The Eight Queens Problem"
+title: "The Eight Queens"
 tags: [allonge, noindex]
 ---
 
-In the nineteen seventies, when I wasn't watching Star Wars fourteen times in the theatre, I spent a lot of time in Toronto's libraries, reading. My favourite hangouts were the Sanderson Branch (which was near my home in Little Italy), and the "Spaced Out Library," a non-circulating collection of science fiction and fantasy that had been donated by [Judith Merril] and was housed within St. George and College Street branch.
+In the nineteen-seventies, I spent a lot of time in Toronto's libraries.[^sw] My favourite hangouts were the Sanderson Branch (which was near my home in Little Italy), and the "Spaced Out Library," a non-circulating collection of science fiction and fantasy that had been donated by [Judith Merril] and was housed within St. George and College Street branch.
+
+[^sw]: In my first draft of this memoir, I had a reference to seeing Star Wars fourteen times in the actual theatre. Which is a nice memory, to be sure, but it's hardly some kind of Nerd Merit Achivement, and even seeing it fourteen times is only a very small fraction of the amount of time I spent reading, playing D&D, or skateboarding. The fact that it looms so large in reminisces like this speaks more to the power of its cultural significance than it does to its actual place in my life at the time.
 
 [Judith Merril]: https://www.thestar.com/yourtoronto/once-upon-a-city-archives/2018/01/04/little-mother-of-science-fiction-birthed-new-chapter-for-genre-in-canada.html
 
