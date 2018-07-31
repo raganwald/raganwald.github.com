@@ -198,9 +198,19 @@ function stringify (queens) {
 }
 ```
 
-I believe I tried that, left the program running overnight, and when I came in the next morning before school it was still running. It was searching `64^8` candidates for a solution, and a huge part of its running time is the excruciating slowness of the test algorithm.
+I believe I tried that, left the program running overnight, and when I came in the next morning before school it was still running. It was searching `64^8` candidates for a solution, and a huge part of its running time is the excruciating slowness of the test algorithm
 
+IIRC, I had an insight of sorts: If I could arrange an _ordering_ of queens, then if I set about generating all the possible arrangements for the first queen, by definition the subsequent queens would have to come _after_ each queen's position.
 
+Before writing out the code for this small improvement, I'll share what happened when I tested my conjecture: First, I had neglected to insert code to halt the program when it found a solution. Perhaps I wanted to print all of the solutions. Second, I tried to optimize my test subroutine at the same time, and inserted a bug. Or perhaps, the bug was already there, but it didn't manifest itself until the program was deeper into its search, and my "optimization" took it to the failure case more quickly.
+
+In any event, I left the updated program running overnight, and once again returned before breakfast to see if it had found any solutions. When I entered the room, there was a horrible smell and a deafening clacking sound. The test function had failed at some point, and it was passing thousands of positions in rapid order.
+
+The paper roll had jammed at some point in the night and was no longer advancing, but the teletype had hammered through the paper and was hammering on the roller behind. Rolls of paper had emerged from the machine and lay in a heap around it. I consider it a very lucky escape that a spark hadn't ignited the paper or its dust that hung in the air.
+
+I shut everything down and cleaned up as best I could, then set about finding the bug.
+
+---
 
 ## notes
 
