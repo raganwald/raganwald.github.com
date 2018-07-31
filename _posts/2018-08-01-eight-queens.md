@@ -83,13 +83,19 @@ I decided to write a program to search for the solutions by brute force.
 
 ### The Eight Queens Puzzle
 
-As Wikipedia explains, "The [**eight queens puzzle**][8q] is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal. The eight queens puzzle is an example of the more general ***n*** **queens problem** of placing n non-attacking queens on an n×n chessboard, for which solutions exist for all natural numbers n with the exception of n=2 and n=3."
+As Wikipedia explains, "The [**eight queens puzzle**][8q] is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal."
 
-By this time I knew a little about writing "generate and test" algorithms, as well as a little about depth-first search from writing games (like "Maharajah and the Sepoys") that performed basic [minimax] searches for moves to make.
+By this time I knew a little about writing "generate and test" algorithms, as well as a little about depth-first search from writing games (like "Maharajah and the Sepoys") that performed basic [minimax] searches for moves to make. So I set about writing a BASIC program to search for solutions. I had no real understanding of computational complexity and running time, but what if I wrote a program and left it running all night?
 
 [minimax]: https://en.wikipedia.org/wiki/Minimax
 
-So I set about writing a BASIC program to search for solutions. I had no real understanding of computational complexity and running time, but it was obvious from reading Martin Gardner's account that generating every possible arrangement of eight queens and testing them would take forever on that hardware.
+IIRC, my sole "optimization" was the observation that if I set about generating all the possible arrangements for the first queen, by definition the subsequent queens would have to come after the each queen's position.
+
+Obviously, if the first queen was in position `0, 0`, the second queen could only be in positions `0, 1` through `7, 7`. Now if I searched all of the positions where the first queen was in position `0, 0` and didn't find a solution, I would try placing the first queen in `0, 1`. But there was no need to consider placing the second or any subsequent queen in `0, 0`, because that case would already have been tried.
+
+The same reasoning applied to the relationship between any two queens I was trying to place: Given an ordering of squares, the subsequent queen can only be placed on a square after the last queen placed. I wrote some code something like:
+
+
 
 ## notes
 
