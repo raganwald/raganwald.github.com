@@ -202,7 +202,17 @@ I believe I tried that, left the program running overnight, and when I came in t
 
 IIRC, I had an insight of sorts: If I could arrange an _ordering_ of queens, then if I set about generating all the possible arrangements for the first queen, by definition the subsequent queens would have to come _after_ each queen's position.
 
-Before writing out the code for this small improvement, I'll share what happened when I tested my conjecture: First, I had neglected to insert code to halt the program when it found a solution. Perhaps I wanted to print all of the solutions. Second, I tried to optimize my test subroutine at the same time, and inserted a bug. Or perhaps, the bug was already there, but it didn't manifest itself until the program was deeper into its search, and my "optimization" took it to the failure case more quickly.
+Before writing out the code for this small improvement, I'll share what happened when I tested my conjecture.
+
+---
+
+![Boiler explosion throws one steam locomotive onto another](/assets/images/boiler-explosion.jpg)
+
+---
+
+### disaster!
+
+First, I had neglected to insert code to halt the program when it found a solution. Perhaps I wanted to print all of the solutions. Second, I tried to optimize my test subroutine at the same time, and inserted a bug. Or perhaps, the bug was already there, but it didn't manifest itself until the program was deeper into its search, and my "optimization" took it to the failure case more quickly.
 
 In any event, I left the updated program running overnight, and once again returned before breakfast to see if it had found any solutions. When I entered the room, there was a horrible smell and a deafening clacking sound. The test function had failed at some point, and it was passing thousands of positions in rapid order.
 
