@@ -90,22 +90,22 @@ By this time I knew a little about writing "generate and test" algorithms, as we
 The truly brute force solution looks something like this (BASIC has a `for... next` construct, but close enough):
 
 ```javascript
-outer: for (let i0 = 0; i0 < 8; ++i0) {
- for (let j0 = 0; j0 < 8; ++j0) {
-   for (let i1 = 0; i1 < 8; ++i1) {
-     for (let j1 = 0; j1 < 8; ++j1) {
-       for (let i2 = 0; i2 < 8; ++i2) {
-         for (let j2 = 0; j2 < 8; ++j2) {
-           for (let i3 = 0; i3 < 8; ++i3) {
-             for (let j3 = 0; j3 < 8; ++j3) {
-               for (let i4 = 0; i4 < 8; ++i4) {
-                 for (let j4 = 0; j4 < 8; ++j4) {
-                   for (let i5 = 0; i5 < 8; ++i5) {
-                     for (let j5 = 0; j5 < 8; ++j5) {
-                       for (let i6 = 0; i6 < 8; ++i6) {
-                         for (let j6 = 0; j6 < 8; ++j6) {
-                           for (let i7 = 0; i7 < 8; ++i7) {
-                             inner: for (let j7 = 0; j7 < 8; ++j7) {
+outer: for (let i0 = 0; i0 <= 7; ++i0) {
+ for (let j0 = 0; j0 <= 7; ++j0) {
+   for (let i1 = 0; i1 <= 7; ++i1) {
+     for (let j1 = 0; j1 <= 7; ++j1) {
+       for (let i2 = 0; i2 <= 7; ++i2) {
+         for (let j2 = 0; j2 <= 7; ++j2) {
+           for (let i3 = 0; i3 <= 7; ++i3) {
+             for (let j3 = 0; j3 <= 7; ++j3) {
+               for (let i4 = 0; i4 <= 7; ++i4) {
+                 for (let j4 = 0; j4 <= 7; ++j4) {
+                   for (let i5 = 0; i5 <= 7; ++i5) {
+                     for (let j5 = 0; j5 <= 7; ++j5) {
+                       for (let i6 = 0; i6 <= 7; ++i6) {
+                         for (let j6 = 0; j6 <= 7; ++j6) {
+                           for (let i7 = 0; i7 <= 7; ++i7) {
+                             inner: for (let j7 = 0; j7 <= 7; ++j7) {
                                const board = [
                                  [".", ".", ".", ".", ".", ".", ".", "."],
                                  [".", ".", ".", ".", ".", ".", ".", "."],
@@ -134,7 +134,7 @@ outer: for (let i0 = 0; i0 < 8; ++i0) {
                                    continue inner;
                                  }
 
-                                 for (let k = 0; k < 7; ++k) {
+                                 for (let k = 0; k <= 7; ++k) {
                                    // fill row and column
                                    board[i][k] = board[k][j] = "x";
 
@@ -153,7 +153,22 @@ outer: for (let i0 = 0; i0 < 8; ++i0) {
                                  }
                                }
 
-                               console.log(stringify(queens));
+                               const out = [
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."]
+                               ];
+
+                               for (const [i, j] of queens) {
+                                 out[i][j] = "Q";
+                               }
+
+                               console.log(out.map(row => row.join('')).join("\n"));
                                break outer;
                              }
                            }
@@ -170,6 +185,126 @@ outer: for (let i0 = 0; i0 < 8; ++i0) {
      }
    }
  }
+}
+```
+
+I believe I tried that, left the program running overnight, and when I came in the next morning before school it was still running. It was searching `64^8` candidates for a solution, and a huge part of its running time is the excruciating slowness of the test algorithm
+
+IIRC, I had an insight of sorts: If I could arrange an _ordering_ of queens, then if I set about generating all the possible arrangements for the first queen, by definition the subsequent queens would have to come _after_ each queen's position.
+
+Before writing out the code for this small improvement, I'll share what happened when I tested my conjecture.
+
+---
+
+![Boiler explosion throws one steam locomotive onto another](/assets/images/boiler-explosion.jpg)
+
+---
+
+### disaster!
+
+First, I had neglected to insert code to halt the program when it found a solution. Perhaps I wanted to print all of the solutions. Second, I tried to optimize my test subroutine at the same time, and inserted a bug. Or perhaps, the bug was already there, but it didn't manifest itself until the program was deeper into its search, and my "optimization" took it to the failure case more quickly.
+
+In any event, I left the updated program running overnight, and once again returned before breakfast to see if it had found any solutions. When I entered the room, there was a horrible smell and a deafening clacking sound. The test function had failed at some point, and it was passing thousands of positions in rapid order.
+
+The paper roll had jammed at some point in the night and was no longer advancing, but the teletype had hammered through the paper and was hammering on the roller behind. Rolls of paper had emerged from the machine and lay in a heap around it. I consider it a very lucky escape that a spark hadn't ignited the paper or its dust that hung in the air.
+
+I shut everything down, cleaned up as best I could, and then set about finding the bug.
+
+---
+
+[![The Royal Ontario Museum, ©2009 Steve Harris](/assets/images/rom-crystal.jpg)](https://www.flickr.com/photos/stevenharris/3673718875)
+
+---
+
+### separating concerns
+
+The crux of my "insight" is realizing that the number of unique choices of eight distint squares is much smaller than `64^8`. For starters, if we eliminate the cases where two queens are on the same square, we're already down from `64*64*64*64*64*64*64*64` to `64*63*62*61*60*59*58*57`, or from `64^8` to `64!/56!`.
+
+But we also don't care about the ordering, so what we want are [combinations], not permutations. That reduces our search space again, down to `64!/(8!*56!)`, or 4,426,165,368 ways to choose 8 squares from 64.
+
+[combinations]: https://en.wikipedia.org/wiki/Combination
+
+One of our go-to techniques for modifying programs is to begin my making sure that the thing we wish to change is refactored into its own responsibility, then we can make a change to just one thing. The JavaScript analog of my old BASIC code has the generating loops, testing code, and output code all higgledy-piggledy.
+
+We might begin be refactoring into a generator and consumer. We can then modify the generator as we see fit:
+
+```javascript
+function * bruteForceCombinations () {
+  for (let i0 = 0; i0 <= 7; ++i0) {
+    for (let j0 = 0; j0 <= 7; ++j0) {
+      for (let i1 = 0; i1 <= 7; ++i1) {
+        for (let j1 = 0; j1 <= 7; ++j1) {
+          for (let i2 = 0; i2 <= 7; ++i2) {
+            for (let j2 = 0; j2 <= 7; ++j2) {
+              for (let i3 = 0; i3 <= 7; ++i3) {
+                for (let j3 = 0; j3 <= 7; ++j3) {
+                  for (let i4 = 0; i4 <= 7; ++i4) {
+                    for (let j4 = 0; j4 <= 7; ++j4) {
+                      for (let i5 = 0; i5 <= 7; ++i5) {
+                        for (let j5 = 0; j5 <= 7; ++j5) {
+                          for (let i6 = 0; i6 <= 7; ++i6) {
+                            for (let j6 = 0; j6 <= 7; ++j6) {
+                              for (let i7 = 0; i7 <= 7; ++i7) {
+                                for (let j7 = 0; j7 <= 7; ++j7) {
+                                  const queens = [
+                                    [i0, j0],
+                                    [i1, j1],
+                                    [i2, j2],
+                                    [i3, j3],
+                                    [i4, j4],
+                                    [i5, j5],
+                                    [i6, j6],
+                                    [i7, j7]
+                                  ];
+
+                                  yield queens;
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+function * combinations () {
+  for (let i0 = 0; i0 <= 7; ++i0) {
+    for (let i1 = 0; i1 <= 7; ++i1) {
+      for (let i2 = 0; i2 <= 7; ++i2) {
+        for (let i3 = 0; i3 <= 7; ++i3) {
+          for (let i4 = 0; i4 <= 7; ++i4) {
+            for (let i5 = 0; i5 <= 7; ++i5) {
+              for (let i6 = 0; i6 <= 7; ++i6) {
+                for (let i7 = 0; i7 <= 7; ++i7) {
+                  const queens = [
+                    [i0, 0],
+                    [i1, 1],
+                    [i2, 2],
+                    [i3, 3],
+                    [i4, 4],
+                    [i5, 5],
+                    [i6, 6],
+                    [i7, 7]
+                  ];
+
+                  yield queens;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 function test (queens) {
@@ -190,7 +325,7 @@ function test (queens) {
       return false;
     }
 
-    for (let k = 0; k < 7; ++k) {
+    for (let k = 0; k <= 7; ++k) {
       // fill row and column
       board[i][k] = board[k][j] = "x";
 
@@ -230,37 +365,28 @@ function stringify (queens) {
 
   return board.map(row => row.join('')).join("\n");
 }
+
+function * filter (predicateFunction, iterable) {
+  for (const element of iterable) {
+    if (predicateFunction(element)) {
+      yield element;
+    }
+  }
+}
+
+function first (iterable) {
+  const [value] = iterable;
+
+  return value;
+}
+
+const allSolutions = filter(test, bruteForceCombinations());
+const firstSolution = first(allSolutions);
+
+console.log(stringify(firstSolution));
 ```
 
-I believe I tried that, left the program running overnight, and when I came in the next morning before school it was still running. It was searching `64^8` candidates for a solution, and a huge part of its running time is the excruciating slowness of the test algorithm
-
-IIRC, I had an insight of sorts: If I could arrange an _ordering_ of queens, then if I set about generating all the possible arrangements for the first queen, by definition the subsequent queens would have to come _after_ each queen's position.
-
-Before writing out the code for this small improvement, I'll share what happened when I tested my conjecture.
-
----
-
-![Boiler explosion throws one steam locomotive onto another](/assets/images/boiler-explosion.jpg)
-
----
-
-### disaster!
-
-First, I had neglected to insert code to halt the program when it found a solution. Perhaps I wanted to print all of the solutions. Second, I tried to optimize my test subroutine at the same time, and inserted a bug. Or perhaps, the bug was already there, but it didn't manifest itself until the program was deeper into its search, and my "optimization" took it to the failure case more quickly.
-
-In any event, I left the updated program running overnight, and once again returned before breakfast to see if it had found any solutions. When I entered the room, there was a horrible smell and a deafening clacking sound. The test function had failed at some point, and it was passing thousands of positions in rapid order.
-
-The paper roll had jammed at some point in the night and was no longer advancing, but the teletype had hammered through the paper and was hammering on the roller behind. Rolls of paper had emerged from the machine and lay in a heap around it. I consider it a very lucky escape that a spark hadn't ignited the paper or its dust that hung in the air.
-
-I shut everything down, cleaned up as best I could, and then set about finding the bug.
-
----
-
-[![The Royal Ontario Museum, ©2009 Steve Harris](/assets/images/rom-crystal.jpg)](https://www.flickr.com/photos/stevenharris/3673718875)
-
----
-
-### separating concerns
+With this in hand, we can make a faster "combinations" generator, and we won't have to work around any of the other code.
 
 ---
 
