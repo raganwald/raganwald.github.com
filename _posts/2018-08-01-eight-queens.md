@@ -55,7 +55,7 @@ In the autumn of 1976, I packed my bags and went to [St. Andrew's College][sac],
 
 At SAC, there was a [Nova 1220 minicomputer][1220] in a room with--oh glorious day--four ancient teletype machines hooked up to it with what I now presume were serial ports. It had various operating modes that were set by loading a 5MB removable hard disk (It was a 12" or 16" platter encased in a big protective plastic shell), and rebooting the machine by toggling bootstrap instructions into the front panel.
 
-[12220]: https://en.wikipedia.org/wiki/Data_General_Nova
+[1220]: https://en.wikipedia.org/wiki/Data_General_Nova
 
 The mode set up for student use was a four-user BASIC interpreter. It had 16KB of RAM (yes, you read that right), and its simple model partitioned the memory so that each user got 4KB to themselves. You could type your program into the teletype, and its output would print on a roll of paper.
 
