@@ -90,40 +90,71 @@ By this time I knew a little about writing "generate and test" algorithms, as we
 The truly brute force solution looks something like this (BASIC has a `for... next` construct, but close enough):
 
 ```javascript
-test: for (let i0 = 0; i0 < 8; ++i0) {
-       for (let j0 = 0; j0 < 8; ++j0) {
-         for (let i1 = 0; i1 < 8; ++i1) {
-           for (let j1 = 0; j1 < 8; ++j1) {
-             for (let i2 = 0; i2 < 8; ++i2) {
-               for (let j2 = 0; j2 < 8; ++j2) {
-                 for (let i3 = 0; i3 < 8; ++i3) {
-                   for (let j3 = 0; j3 < 8; ++j3) {
-                     for (let i4 = 0; i4 < 8; ++i4) {
-                       for (let j4 = 0; j4 < 8; ++j4) {
-                         for (let i5 = 0; i5 < 8; ++i5) {
-                           for (let j5 = 0; j5 < 8; ++j5) {
-                             for (let i6 = 0; i6 < 8; ++i6) {
-                               for (let j6 = 0; j6 < 8; ++j6) {
-                                 for (let i7 = 0; i7 < 8; ++i7) {
-                                   for (let j7 = 0; j7 < 8; ++j7) {
-                                     const queens = [
-                                       [i0, j0],
-                                       [i1, j1],
-                                       [i2, j2],
-                                       [i3, j3],
-                                       [i4, j4],
-                                       [i5, j5],
-                                       [i6, j6],
-                                       [i7, j7]
-                                     ];
+outer: for (let i0 = 0; i0 < 8; ++i0) {
+ for (let j0 = 0; j0 < 8; ++j0) {
+   for (let i1 = 0; i1 < 8; ++i1) {
+     for (let j1 = 0; j1 < 8; ++j1) {
+       for (let i2 = 0; i2 < 8; ++i2) {
+         for (let j2 = 0; j2 < 8; ++j2) {
+           for (let i3 = 0; i3 < 8; ++i3) {
+             for (let j3 = 0; j3 < 8; ++j3) {
+               for (let i4 = 0; i4 < 8; ++i4) {
+                 for (let j4 = 0; j4 < 8; ++j4) {
+                   for (let i5 = 0; i5 < 8; ++i5) {
+                     for (let j5 = 0; j5 < 8; ++j5) {
+                       for (let i6 = 0; i6 < 8; ++i6) {
+                         for (let j6 = 0; j6 < 8; ++j6) {
+                           for (let i7 = 0; i7 < 8; ++i7) {
+                             inner: for (let j7 = 0; j7 < 8; ++j7) {
+                               const board = [
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."],
+                                 [".", ".", ".", ".", ".", ".", ".", "."]
+                               ];
 
-                                     if (test(queens)) {
-                                       console.log(stringify(queens));
-                                       break test;
-                                     }
+                               const queens = [
+                                 [i0, j0],
+                                 [i1, j1],
+                                 [i2, j2],
+                                 [i3, j3],
+                                 [i4, j4],
+                                 [i5, j5],
+                                 [i6, j6],
+                                 [i7, j7]
+                               ];
+
+                               for (const [i, j] of queens) {
+                                 if (board[i][j] != '.') {
+                                   // square is occupied or threatened
+                                   continue inner;
+                                 }
+
+                                 for (let k = 0; k < 7; ++k) {
+                                   // fill row and column
+                                   board[i][k] = board[k][j] = "x";
+
+                                   const vOffset = k-i;
+                                   const hDiagonal1 = j + vOffset;
+                                   const hDiagonal2 = j + vOffset;
+
+                                   // fill diagonals
+                                   if (hDiagonal1 >= 0 && hDiagonal1 <= 7) {
+                                     board[k][hDiagonal1] = "x";
+                                   }
+
+                                   if (hDiagonal2 >= 0 && hDiagonal2 <= 7) {
+                                     board[k][hDiagonal2] = "x";
                                    }
                                  }
                                }
+
+                               console.log(stringify(queens));
+                               break outer;
                              }
                            }
                          }
@@ -136,7 +167,10 @@ test: for (let i0 = 0; i0 < 8; ++i0) {
            }
          }
        }
-    }
+     }
+   }
+ }
+}
 
 function test (queens) {
   const board = [
