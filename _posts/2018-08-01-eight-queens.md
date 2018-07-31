@@ -79,7 +79,7 @@ I decided to write a program to search for the solutions by brute force.
 
 ---
 
-### The Eight Queens Puzzle
+### the eight queens puzzle
 
 As Wikipedia explains, "The [**eight queens puzzle**][8q] is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal."
 
@@ -139,7 +139,7 @@ outer: for (let i0 = 0; i0 <= 7; ++i0) {
                                    board[i][k] = board[k][j] = "x";
 
                                    const vOffset = k-i;
-                                   const hDiagonal1 = j + vOffset;
+                                   const hDiagonal1 = j - vOffset;
                                    const hDiagonal2 = j + vOffset;
 
                                    // fill diagonals
@@ -299,7 +299,7 @@ function test (queens) {
       board[i][k] = board[k][j] = "x";
 
       const vOffset = k-i;
-      const hDiagonal1 = j + vOffset;
+      const hDiagonal1 = j - vOffset;
       const hDiagonal2 = j + vOffset;
 
       // fill diagonals
@@ -310,6 +310,8 @@ function test (queens) {
       if (hDiagonal2 >= 0 && hDiagonal2 <= 7) {
         board[k][hDiagonal2] = "x";
       }
+
+      board[i][j] = "Q";
     }
   }
 
@@ -416,6 +418,66 @@ console.log(stringify(firstSolution));
 ```
 
 It's still a tremendous number of candidates to search. If we list them out we can see some of the problems right away. For example, the very first combination it wants to test is `[[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7]]`. The queens are all on the same row!
+
+There is an easy fix for this and as a bonus, it gets us solutions really fast.
+
+---
+
+[![Dead End ©2013 Kurtis Garbutt](/assets/images/dead-end.png)](https://www.flickr.com/photos/kjgarbutt/11772154856)
+
+---
+
+### making smart choices
+
+We _know_ that eight queens on the same row are not going to work. No two queens can be on the same column or row. So what we really want are all the combinations of eight queens that don't share a column or row. In other words, every queen will have a unique column and a unique row.
+
+Let's start with the unique rows. Every time we generate a set of queens, one will be on row `0`, one on row `1`, one on row `2`, and so forth. Same goes for the columns. To do this, we'll need to be able to generate the [permutations] of the numbers from `0` to `7`.
+
+[permutations]: https://en.wikipedia.org/wiki/Permutation
+
+It's fairly easy to do if we don't mind splicing and reassembling arrays:
+
+```javascript
+function * permutations (arr, prefix = []) {
+  if (arr.length === 1) {
+    yield prefix.concat(arr);
+  } else if (arr.length > 1) {
+    for (let i = 0; i < arr.length; ++i) {
+      const chosen = arr[i];
+      const remainder = arr.slice(0, i).concat(arr.slice(i+1, arr.length))
+
+      yield * permutations(remainder, prefix.concat([chosen]));
+    }
+  }
+}
+
+permutations([1, 2, 3])
+//=> [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]
+```
+
+And now we can obtain a solution in a split-second:
+
+```javascript
+function * fastQueens = map(ii => ii.map((i, j) => [i, j]), permutations([0, 1, 2, 3, 4, 5, 6, 7]));
+
+const allSolutions = filter(test, fastQueens());
+const firstSolution = first(allSolutions);
+
+console.log(stringify(firstSolution));
+
+//=>
+  Q.......
+  ....Q...
+  .......Q
+  .....Q..
+  ..Q.....
+  ......Q.
+  .Q......
+  ...Q....
+
+```
+
+Naturally, this is a great solution. We can make the testing much, much faster if we want, but we've made a huge performance improvement simply by narrowing the "search space."
 
 ---
 
