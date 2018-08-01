@@ -68,6 +68,7 @@ I was a morally vacant vessel at that point in my life, so I would go in late, p
 Now about puzzles. One of the things I worked on was writing new games. I made a [Maharajah and the Sepoys][ms] program that would play the Maharajah while I played the standard chess pieces. It could beat me, which was enough AI for my purposes. This got me thinking about something I'd read in a Martin Gardner book, the [Eight Queens Puzzle][8q].
 
 [ms]: https://en.wikipedia.org/wiki/Maharajah_and_the_Sepoys
+[8q]: https://en.wikipedia.org/wiki/Eight_queens_puzzle
 
 I decided to write a program to search for the solutions by brute force.
 
@@ -473,7 +474,9 @@ console.log(stringify(firstSolution));
 
 Naturally, this is a great solution. We can make the testing much, much faster if we want, but we've made a huge performance improvement simply by narrowing the "search space." We're down to `8!` permutations of queens on unique rows and columns.
 
-However, we've accidentally regressed in our design.
+Now here's an interesting question: _Have we broken our design?_ Whenever we do a refactoring to separate concerns, we should always keep an eye on our work and make sure that we haven't accidentally introduced unwanted coupling. The only thing worse than a big ball of mud is a design that distributes concerns, but implements such deep coupling that it has all the disadvantages of a big ball of mud, and all the disadvantages of code where everything happens somewhere else.
+
+We separated generation from testing, but now we've changed our generator to take into account solutions that we know aren't going to work.
 
 ---
 
