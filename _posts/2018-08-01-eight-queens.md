@@ -3,7 +3,7 @@ title: "The Eight Queens [UNFINISHED, PLEASE DO NOT POST ON HACKER NEWS OR REDDI
 tags: [allonge, noindex]
 ---
 
-### preamble
+## Prelude: 1972 – 1976
 
 In the nineteen-seventies, I spent a lot of time in Toronto's libraries. My favourite hangouts were the Sanderson Branch (which was near my home in Little Italy), and the "Spaced Out Library," a non-circulating collection of science fiction and fantasy that had been donated by [Judith Merril] and was housed within St. George and College Street branch.
 
@@ -73,13 +73,7 @@ I decided to write a program to search for the solutions by brute force.
 
 ---
 
-[![Eight Queens Puzzle](/assets/images/eight-queens.png)][8q]
-
-[8q]: https://en.wikipedia.org/wiki/Eight_queens_puzzle
-
----
-
-### the eight queens puzzle
+# Canon à 8 per Augmentationem et Diminutionem
 
 As Wikipedia explains, "The [**eight queens puzzle**][8q] is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal."
 
@@ -218,7 +212,7 @@ I shut everything down, cleaned up as best I could, and then set about finding t
 
 ### separating concerns
 
-The crux of my "insight" is realizing that the number of unique choices of eight distint squares is much smaller than `64^8`. For starters, if we eliminate the cases where two queens are on the same square, we're already down from `64*64*64*64*64*64*64*64` to `64*63*62*61*60*59*58*57`, or from `64^8` to `64!/56!`.
+The crux of my "insight" is realizing that the number of unique choices of eight distint squares is much smaller than `64^8`. For starters, if we eliminate the cases where two queens are on the same square, we're already down from `64^8` to `64!/56!` (`64*63*62*61*60*59*58*57`).
 
 But we also don't care about the ordering, so what we want are [combinations], not permutations. That reduces our search space again, down to `64!/(8!*56!)`, or 4,426,165,368 ways to choose 8 squares from 64.
 
@@ -431,7 +425,7 @@ There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
 We _know_ that eight queens on the same row are not going to work. No two queens can be on the same column or row. So what we really want are all the combinations of eight queens that don't share a column or row. In other words, every queen will have a unique column and a unique row.
 
-Let's start with the unique rows. Every time we generate a set of queens, one will be on row `0`, one on row `1`, one on row `2`, and so forth. Same goes for the columns. To do this, we'll need to be able to generate the [permutations] of the numbers from `0` to `7`.
+Let's start with the unique rows. Every time we generate a set of queens, one will be on row `0`, one on row `1`, one on row `2`, and so forth. So since we're always going to end up with a queen on row `0`, another on row `1` and so Same goes for the columns. To do this, we'll need to be able to generate the [permutations] of the numbers from `0` to `7`.
 
 [permutations]: https://en.wikipedia.org/wiki/Permutation
 
@@ -477,7 +471,9 @@ console.log(stringify(firstSolution));
 
 ```
 
-Naturally, this is a great solution. We can make the testing much, much faster if we want, but we've made a huge performance improvement simply by narrowing the "search space."
+Naturally, this is a great solution. We can make the testing much, much faster if we want, but we've made a huge performance improvement simply by narrowing the "search space." We're down to `8!` permutations of queens on unique rows and columns.
+
+However, we've accidentally regressed in our design.
 
 ---
 
