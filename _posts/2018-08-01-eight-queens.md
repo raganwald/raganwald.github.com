@@ -230,7 +230,7 @@ But we also don't care about the ordering, so what we want are [combinations], n
 
 [combinations]: https://en.wikipedia.org/wiki/Combination
 
-One of our go-to techniques for modifying programs is to begin my making sure that the thing we wish to change is refactored into its own responsibility, then we can make a change to just one thing. The JavaScript analog of my old BASIC code has the generating loops, testing code, and output code all higgledy-piggledy.
+One of our go-to techniques for modifying programs is to begin my making sure that the thing we wish to change is refactored into its own responsibility, then we can make a change to just one thing. The JavaScript analog of my old BASIC code has the generating loops, function shareNoRowOrColumnOrDiagonaling code, and output code all higgledy-piggledy.
 
 We might begin be refactoring into a generator and consumer. We can then modify the generator as we see fit:
 
@@ -357,7 +357,7 @@ function first (iterable) {
   return value;
 }
 
-const allSolutions = filter(test, bruteForceCombinations());
+const allSolutions = filter(shareNoRowOrColumnOrDiagonal, bruteForceCombinations());
 const firstSolution = first(allSolutions);
 
 console.log(stringify(firstSolution));
@@ -416,7 +416,7 @@ We can now write `choose(64, 8)` to get all the ways to choose eight squares, an
 ```javascript
 const chooseCombinations = map(x => x.map(q => [Math.floor(q/8), q % 8]), choose(64, 8));
 
-const allSolutions = filter(test, chooseCombinations);
+const allSolutions = filter(shareNoRowOrColumnOrDiagonal, chooseCombinations);
 const firstSolution = first(allSolutions);
 
 console.log(stringify(firstSolution));
@@ -464,9 +464,12 @@ permutations([1, 2, 3])
 And now we can obtain a solution in a split-second:
 
 ```javascript
-function * fastQueens = map(ii => ii.map((i, j) => [i, j]), permutations([0, 1, 2, 3, 4, 5, 6, 7]));
+const queenCombosSharingNoRowOrColumn = map(
+  ii => ii.map((i, j) => [i, j]),
+  permutations([0, 1, 2, 3, 4, 5, 6, 7])
+);
 
-const allSolutions = filter(test, fastQueens());
+const allSolutions = filter(shareNoRowOrColumnOrDiagonal, queenCombosSharingNoRowOrColumn());
 const firstSolution = first(allSolutions);
 
 console.log(stringify(firstSolution));
@@ -487,15 +490,28 @@ This is great! We've made a huge performance improvement simply by narrowing the
 
 ---
 
-[![Dead End ©2013 Kurtis Garbutt](/assets/images/dead-end.jpg)](https://www.flickr.com/photos/kjgarbutt/11772154856)
+[![Spatial Cardioidal Variations ©2013](/assets/images/cardioidal.jpg)](https://www.flickr.com/photos/fdecomite/10299684525)
 
 ---
 
 # Intermezzo
 
-Now here's an interesting question: _Have we broken our design?_ Whenever we do a refactoring to separate concerns, we should always keep an eye on our work and make sure that we haven't accidentally introduced unwanted coupling. The only thing worse than a big ball of mud is a design that distributes concerns, but implements such deep coupling that it has all the disadvantages of a big ball of mud, and all the disadvantages of code where everything happens somewhere else.
+We've certainly sped things up by being smarter about the candidates we submit for testing. But what about the testing itself? The algorithm of filling in squares on a chess board very neatly matches how we might do this mentally, but it is quite slow. How can we make it faster?
 
-We separated generation from testing, but now we've changed our generator to take into account solutions that we know aren't going to work.
+For starters, we don't need to fill in rows and columns by such brute force. We can simply check that no two queens share the same row or column number fairly directly.
+
+What about diagonals? Observe:
+
+| 0| 1| 2| 3| 4| 5| 6| 7|
+| 1| 2| 3| 4| 5| 6| 7| 8|
+| 2| 3| 4| 5| 6| 7| 8| 9|
+| 3| 4| 5| 6| 7| 8| 9|10|
+| 4| 5| 6| 7| 8| 9|10|11|
+| 5| 6| 7| 8| 9|10|11|12|
+| 6| 7| 8| 9|10|11|12|13|
+| 7| 8| 9|10|11|12|13|14|
+
+If we sum the row and column number, we get a number representing the position of one of a queen's diagonals. What about the other?
 
 ---
 
