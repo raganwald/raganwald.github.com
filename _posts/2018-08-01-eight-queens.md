@@ -194,9 +194,9 @@ outer: for (let i0 = 0; i0 <= 7; ++i0) {
 }
 ```
 
-I believe I tried that, left the program running overnight, and when I came in the next morning before school it was still running. It was searching `64^8` candidates for a solution, and a huge part of its running time is the excruciating slowness of the test algorithm
+I believe I tried that, left the program running overnight, and when I came in the next morning before school it was still running. It was searching `8^16` (or more accurately, `64^8`) candidates for a solution, that's 281,474,976,710,656 loops. Given the speed of that minicomputer, I suspect the program would still be running today.
 
-IIRC, I had an insight of sorts: If I could arrange an _ordering_ of queens, then if I set about generating all the possible arrangements for the first queen, by definition the subsequent queens would have to come _after_ each queen's position.
+Then I had an insight of sorts: If I could arrange an _ordering_ of queens, then if I set about generating all the possible arrangements for the first queen, by definition the subsequent queens would have to come _after_ each queen's position.
 
 Before writing out the code for this small improvement, I'll share what happened when I tested my conjecture.
 
@@ -224,7 +224,7 @@ I shut everything down, cleaned up as best I could, and then set about finding t
 
 ### separating concerns
 
-The crux of my "insight" is realizing that the number of unique choices of eight distint squares is much smaller than `64^8`. For starters, if we eliminate the cases where two queens are on the same square, we're already down from `64^8` to `64!/56!` (`64*63*62*61*60*59*58*57`).
+The crux of my "insight" is realizing that the number of unique choices of eight distint squares is much smaller than `64^8`. For starters, if we eliminate the cases where two queens are on the same square, we're already down from `64^8` to `64!/56!` (`64*63*62*61*60*59*58*57`). That reduces the search space to 178,462,987,637,760 candidates, about half as many as the original pure brute force.
 
 But we also don't care about the ordering, so what we want are [combinations], not permutations. That reduces our search space again, down to `64!/(8!*56!)`, or 4,426,165,368 ways to choose 8 squares from 64.
 
@@ -429,7 +429,7 @@ There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
 ---
 
-[![Dead End ©2013 Kurtis Garbutt](/assets/images/dead-end.jpg)](https://www.flickr.com/photos/kjgarbutt/11772154856)
+[![Making Chess Pieces ©2009 Evan Bench](/assets/images/dead-end.jpg)](https://www.flickr.com/photos/austinevan/3167919437)
 
 ---
 
@@ -483,7 +483,15 @@ console.log(stringify(firstSolution));
 
 ```
 
-Naturally, this is a great solution. We can make the testing much, much faster if we want, but we've made a huge performance improvement simply by narrowing the "search space." We're down to `8!` permutations of queens on unique rows and columns.
+This is great! We've made a huge performance improvement simply by narrowing the "search space." We're down to `8!` permutations of queens on unique rows and columns, just 40,320 different permutations to try.
+
+---
+
+[![Dead End ©2013 Kurtis Garbutt](/assets/images/dead-end.jpg)](https://www.flickr.com/photos/kjgarbutt/11772154856)
+
+---
+
+# Intermezzo
 
 Now here's an interesting question: _Have we broken our design?_ Whenever we do a refactoring to separate concerns, we should always keep an eye on our work and make sure that we haven't accidentally introduced unwanted coupling. The only thing worse than a big ball of mud is a design that distributes concerns, but implements such deep coupling that it has all the disadvantages of a big ball of mud, and all the disadvantages of code where everything happens somewhere else.
 
