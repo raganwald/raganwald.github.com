@@ -3,6 +3,8 @@ title: "The Eight Queens [UNFINISHED, PLEASE DO NOT POST ON HACKER NEWS OR REDDI
 tags: [allonge, noindex]
 ---
 
+*This is my account of working on the eight queens puzzle, stretched out over four decades. If you prefer to get right into the programming, [skip the prelude](#eight-queens).*
+
 ## Prelude: 1972 – 1976
 
 In the nineteen-seventies, I spent a lot of time in Toronto's libraries. My favourite hangouts were the Sanderson Branch (which was near my home in Little Italy), and the "Spaced Out Library," a non-circulating collection of science fiction and fantasy that had been donated by [Judith Merril] and was housed within St. George and College Street branch.
@@ -21,9 +23,9 @@ Where else would I learn about playing tic-tac-toe in a hypercube? Or about liar
 
 [mg]: https://en.wikipedia.org/wiki/Martin_Gardner
 
-One day we had a field trip to the University of Toronto's High-Speed Job Stream, located in the [Sanford Fleming Building][^sfb]. This was a big room that had a line printer on one side of it, a punch card reader on the other, and lots and lots of stations for punching your own cards.
+One day we had a field trip to the University of Toronto's High-Speed Job Stream, located in the Sanford Fleming Building[^sfb]. This was a big room that had a line printer on one side of it, a punch card reader on the other, and lots and lots of stations for punching your own cards.
 
-[^sfb]: There's a nice history of the Sanford Fleming Building on [Skulepedia](http://skulepedia.ca/wiki/Sandford_Fleming_Building), including an account of an infamous fire that engulfed the building in the Spring of 1977.
+[^sfb]: There's a nice history of the Sanford Fleming Building on [Skulepedia](http://skulepedia.ca/wiki/Sandford_Fleming_Building), including an account of the infamous fire that engulfed the building in the Spring of 1977.
 
 ---
 
@@ -31,7 +33,10 @@ One day we had a field trip to the University of Toronto's High-Speed Job Stream
 
 ---
 
-To run a job, you typed out your program, one line per card, and then stuck a header on the front that told the batch job what kind of interpreter or compiler to use. Those cards were brightly coloured, and had words like "WATFIV" or "SNOBOL" printed on them in huge letters.
+To run a job, you typed out your program, one line per card, and then stuck a header on the front that told the batch job what kind of interpreter or compiler to use. Those cards were brightly coloured, and had words like [WATFIV] or [SNOBOL] printed on them in huge letters.
+
+[WATFIV]: https://en.wikipedia.org/wiki/WATFIV
+[SNOBOL]: /assets/snobol-green-book.pdf
 
 You put header plus program into the hopper at the back, waited, and when it emerged from the reader, collected your punch cards and headed over to the large and noisy line printer. When the IBM 360 got around to actually running your job, it would print the results for you, and you would head over to a table to review the output and--nearly all of the time for me--find the typo or bug, update your program, and start all over again.
 
@@ -63,7 +68,7 @@ Saving programs on disc was not allowed. The teletypes had paper tape interfaces
 
 [David Ahl]: https://en.wikipedia.org/wiki/David_H._Ahl
 
-I was a morally vacant vessel at that point in my life, so I would go in late, pick the lock, and boot up single-user mode, in defiance of all regulation. I could then work on customizing Super Star Trek or write programs to solve puzzles. Curiously, I never tampered with the student records. I'm not going to tell you that I had a moral code about these things. I think the truth is that I just didn't care about marks.
+In defiance of all regulation, I would go in late, pick the cupboard's lock, remove the disc I wanted, and boot up single-user mode. I could then work on customizing Super Star Trek or write programs to solve puzzles. Curiously, I never tampered with the student records. I was a morally vacant vessel at that pointy in my life: I'm not going to tell you that I had a moral code about these things. I think the truth is that I just didn't care about marks.
 
 Now about puzzles. One of the things I worked on was writing new games. I made a [Maharajah and the Sepoys][ms] program that would play the Maharajah while I played the standard chess pieces. It could beat me, which was enough AI for my purposes. This got me thinking about something I'd read in a Martin Gardner book, the [Eight Queens Puzzle][8q].
 
@@ -74,7 +79,13 @@ I decided to write a program to search for the solutions by brute force.
 
 ---
 
-# Canon à 8 per Augmentationem et Diminutionem
+<a name="eight-queens"/>[![Eight Queens Puzzle](/assets/images/eight-queens.png)][8q]
+
+[8q]: https://en.wikipedia.org/wiki/Eight_queens_puzzle
+
+---
+
+# The Eight Queens Puzzle
 
 As Wikipedia explains, "The [**eight queens puzzle**][8q] is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal."
 
