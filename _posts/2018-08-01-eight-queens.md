@@ -360,7 +360,7 @@ function first (iterable) {
 const allSolutions = filter(test, bruteForceCombinations());
 const firstSolution = first(allSolutions);
 
-console.log(stringify(firstSolution));
+stringify(firstSolution)
 ```
 
 With this in hand, we can make a faster "combinations" generator, and we won't have to work around any of the other code.
@@ -419,7 +419,7 @@ const chooseCombinations = map(x => x.map(q => [Math.floor(q/8), q % 8]), choose
 const allSolutions = filter(test, chooseCombinations);
 const firstSolution = first(allSolutions);
 
-console.log(stringify(firstSolution));
+stringify(firstSolution)
 
 ```
 
@@ -472,7 +472,7 @@ const queensSharingNoRowsOrColumns = map(
 const allSolutions = filter(test, queensSharingNoRowsOrColumns);
 const firstSolution = first(allSolutions);
 
-console.log(stringify(firstSolution));
+stringify(firstSolution)
 
 //=>
   Q.......
@@ -589,7 +589,7 @@ function fastTest (queens) {
 const allSolutions = filter(fastTest, queensSharingNoRowsOrColumns);
 const firstSolution = first(allSolutions);
 
-console.log(stringify(firstSolution));
+stringify(firstSolution)
 
 //=>
   Q.......
@@ -603,6 +603,10 @@ console.log(stringify(firstSolution));
 
 ```
 
+Just as we were able to change the generator independently of the test, now we have changed the test independently of the generator. That's a good thing!
+
+
+
 ---
 
 [![Huge Tree ©2009 Mitch Bennett](/assets/images/huge-tree.jpg)](https://www.flickr.com/photos/mitchell3417/3451297468)
@@ -611,7 +615,39 @@ console.log(stringify(firstSolution));
 
 # Tree Searching
 
-*to be continued...*
+As noted, separating generator from test allows us to optimize and improve each of the two parts independently. If we were mindful of such, we could write test for the two independent pieces. This is all very good.
+
+But that being said, not all improvements can be made independently like this. Any organization of code makes some things easier, but others harder. In my original BASIC program way back in 1977, I built the board as I went, and marked the "threatened" squares. But instead of iterating over all the possible queen positions, as I added queens to the board I iterated over all the open positions.
+
+So after placing the first queen in the first open space, my board looked conceptually like this:
+
+```
+Qxxxxxxx
+xx......
+x.x.....
+x..x....
+x...x...
+x....x..
+x.....x.
+x......x
+```
+
+The next queen I would try would be in the first "open" square, like this:
+
+```
+Qxxxxxxx
+xxQxxxxx
+xxxx....
+x.xxx...
+x.x.xx..
+x.x..xx.
+x.x...xx
+x.x....x
+```
+
+I'd continue like this until there were eight queens, or I ran out of empty spaces. If I failed, I'd backtrack and try a different position for the last queen. If I ran out of different positions for the last queen, I'd try a different position for the second-to-last queen, and so on.
+
+I did not know the words for it, but I was performing a depth-first search of a "tree" of positions. I was trying to find a path that was eight queens deep.
 
 ---
 
