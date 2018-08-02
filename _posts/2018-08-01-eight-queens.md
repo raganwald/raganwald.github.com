@@ -502,16 +502,29 @@ For starters, we don't need to fill in rows and columns by such brute force. We 
 
 What about diagonals? Observe:
 
-| 0| 1| 2| 3| 4| 5| 6| 7|
-| 1| 2| 3| 4| 5| 6| 7| 8|
-| 2| 3| 4| 5| 6| 7| 8| 9|
-| 3| 4| 5| 6| 7| 8| 9|10|
-| 4| 5| 6| 7| 8| 9|10|11|
-| 5| 6| 7| 8| 9|10|11|12|
-| 6| 7| 8| 9|10|11|12|13|
-| 7| 8| 9|10|11|12|13|14|
+|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
+|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|
+|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|&nbsp;9|
+|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|&nbsp;9|10|
+|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|&nbsp;9|10|11|
+|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|&nbsp;9|10|11|12|
+|&nbsp;6|&nbsp;7|&nbsp;8|&nbsp;9|10|11|12|13|
+|&nbsp;7|&nbsp;8|&nbsp;9|10|11|12|13|14|
 
-If we sum the row and column number, we get a number representing the position of one of a queen's diagonals. What about the other?
+If we sum the row and column number (`row + col`), we get a number representing the position of one of a queen's diagonals. What about the other diagonal?
+
+|&nbsp;7|&nbsp;6|&nbsp;5|&nbsp;4|&nbsp;3|&nbsp;2|&nbsp;1|&nbsp;0|
+|&nbsp;8|&nbsp;7|&nbsp;6|&nbsp;5|&nbsp;4|&nbsp;3|&nbsp;2|&nbsp;1|
+|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;6|&nbsp;5|&nbsp;4|&nbsp;3|&nbsp;2|
+|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;6|&nbsp;5|&nbsp;4|&nbsp;3|
+|11|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;6|&nbsp;5|&nbsp;4|
+|12|11|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;6|&nbsp;5|
+|13|12|11|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;6|
+|14|13|12|11|10|&nbsp;9|&nbsp;8|&nbsp;7|
+
+Ah! We can sum the row with the inverse of the column number (`row + 7 - col`). If we don't need it to be zero or greater, we can dispense with the `+ 7` and get a number that is just as useful for determining a queen's diagonal.
+
+So now we have four numbers for each queen, and there are twenty-seven ways to choose two queens from eight. So we'll need at most 108 comparisons to validate a successful solution, and we don't need to create or update any arrays. Our previous test needed 128 operations just to check the rows and columns.
 
 ---
 
