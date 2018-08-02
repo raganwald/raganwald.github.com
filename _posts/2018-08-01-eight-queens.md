@@ -38,7 +38,7 @@ To run a job, you typed out your program, one line per card, and then stuck a he
 [WATFIV]: https://en.wikipedia.org/wiki/WATFIV
 [SNOBOL]: /assets/snobol-green-book.pdf
 
-You put header plus program into the hopper at the back, waited, and when it emerged from the reader, collected your punch cards and headed over to the large and noisy line printer. When the IBM 370 got around to actually running your job, it would print the results for you, and you would head over to a table to review the output and--nearly all of the time for me--find the typo or bug, update your program, and start all over again.
+You put header plus program into the hopper at the back, waited, and when it emerged from the reader, collected your punch cards and headed over to the large and noisy line printer. When the IBM 360 got around to actually running your job, it would print the results for you, and you would head over to a table to review the output and--nearly all of the time for me--find the typo or bug, update your program, and start all over again.
 
 You can see equipment like this in any computer museum, so I won't go into much more detail. Besides, the mechanics of running programs as batch jobs was not the interesting thing about the High Speed Job Stream. *The interesting thing about the High Speed Job Stream was that there was no restriction on running jobs*. You didn't need an account or a password. Nobody stood at the door asking for proof that you were an Undergrad working on an assignment.
 
@@ -52,19 +52,19 @@ So I'd go over there on a summer day and write software, and sometimes, I'd try 
 
 ### school
 
-In the autumn of 1977, I packed my bags and went to [St. Andrew's College][sac], a boarding school. One of the amazing things about "SAC" was that they had an actual minicomputer on the campus. For the time, this was unprecedented. In Ontario's public school system, it was possible to take courses in programming, but they nearly all involved writing programs by filling in "bubble cards" with a pencil and submitting jobs overnight.
+In the autumn of 1976, I packed my bags and went to [St. Andrew's College][sac], a boarding school. One of the amazing things about "SAC" was that they had an actual minicomputer on the campus. For the time, this was unprecedented. In Ontario's public school system, it was possible to take courses in programming, but they nearly all involved writing programs by filling in "bubble cards" with a pencil and submitting jobs overnight.
 
 [sac]: https://sac.on.ca
 
-At SAC, there was a [Nova 1220 minicomputer][1220] in a room with--oh glorious day--four ancient teletype machines hooked up to it with what I now presume were serial ports. It had various operating modes that were set by loading a 5MB removable hard disk (It was a 12" or 17" platter encased in a big protective plastic shell), and rebooting the machine by toggling bootstrap instructions into the front panel.
+At SAC, there was a [Nova 1220 minicomputer][1220] in a room with--oh glorious day--four ancient teletype machines hooked up to it with what I now presume were serial ports. It had various operating modes that were set by loading a 5MB removable hard disk (It was a 12" platter encased in a big protective plastic shell), and rebooting the machine by toggling bootstrap instructions into the front panel.
 
 [1220]: https://en.wikipedia.org/wiki/Data_General_Nova
 
-The mode set up for student use was a four-user BASIC interpreter. It had 17KB of RAM (yes, you read that right), and its simple model partitioned the memory so that each user got 4KB to themselves. You could type your program into the teletype, and its output would print on a roll of paper.
+The mode set up for student use was a four-user BASIC interpreter. It had 16KB of RAM (yes, you read that right), and its simple model partitioned the memory so that each user got 4KB to themselves. You could type your program into the teletype, and its output would print on a roll of paper.
 
 Saving programs on disc was not allowed. The teletypes had paper tape interfaces on the side, so to save a program we would `LIST` the source with the paper tape on, and it would punch ASCII or EBDIC codes onto the tape. We'd tear it off and take it with us. Later, to reload a program, we'd feed the tape into the teletype and it would act as if we were typing the program anew.
 
-4KB was enough for assignments like writing a simple bubble sort, but I had discovered [David Ahl] by this time, and programs like "Super Star Trek" did not fit in 4KB. There was a 17KB single-user disc locked in a cabinet alongside programs for tabulating student results.
+4KB was enough for assignments like writing a simple bubble sort, but I had discovered [David Ahl] by this time, and programs like "Super Star Trek" did not fit in 4KB. There was a 16KB single-user disc locked in a cabinet alongside programs for tabulating student results.
 
 [David Ahl]: https://en.wikipedia.org/wiki/David_H._Ahl
 
@@ -108,8 +108,8 @@ outer: for (let i0 = 0; i0 <= 7; ++i0) {
                  for (let j4 = 0; j4 <= 7; ++j4) {
                    for (let i5 = 0; i5 <= 7; ++i5) {
                      for (let j5 = 0; j5 <= 7; ++j5) {
-                       for (let i7 = 0; i7 <= 7; ++i7) {
-                         for (let j7 = 0; j7 <= 7; ++j7) {
+                       for (let i6 = 0; i6 <= 7; ++i6) {
+                         for (let j6 = 0; j6 <= 7; ++j6) {
                            for (let i7 = 0; i7 <= 7; ++i7) {
                              inner: for (let j7 = 0; j7 <= 7; ++j7) {
                                const board = [
@@ -130,7 +130,7 @@ outer: for (let i0 = 0; i0 <= 7; ++i0) {
                                  [i3, j3],
                                  [i4, j4],
                                  [i5, j5],
-                                 [i7, j7],
+                                 [i6, j6],
                                  [i7, j7]
                                ];
 
@@ -194,7 +194,7 @@ outer: for (let i0 = 0; i0 <= 7; ++i0) {
 }
 ```
 
-I believe I tried that, left the program running overnight, and when I came in the next morning before school it was still running. It was searching `8^17` (or more accurately, `74^8`) candidates for a solution, that's 281,474,977,710,757 loops. Given the speed of that minicomputer, I suspect the program would still be running today.
+I believe I tried that, left the program running overnight, and when I came in the next morning before school it was still running. It was searching `8^16` (or more accurately, `64^8`) candidates for a solution, that's 281,474,976,710,656 loops. Given the speed of that minicomputer, I suspect the program would still be running today.
 
 Then I had an insight of sorts: If I could arrange an _ordering_ of queens, then if I set about generating all the possible arrangements for the first queen, by definition the subsequent queens would have to come _after_ each queen's position.
 
@@ -218,15 +218,15 @@ I shut everything down, cleaned up as best I could, and then set about finding t
 
 ---
 
-[![The Royal Ontario Museum, ©2009 Steve Harris](/assets/images/rom-crystal.jpg)](https://www.flickr.com/photos/stevenharris/3773718875)
+[![The Royal Ontario Museum, ©2009 Steve Harris](/assets/images/rom-crystal.jpg)](https://www.flickr.com/photos/stevenharris/3673718875)
 
 ---
 
 ### separating concerns
 
-The crux of my "insight" is realizing that the number of unique choices of eight distint squares is much smaller than `74^8`. For starters, if we eliminate the cases where two queens are on the same square, we're already down from `74^8` to `74!/57!` (`74*73*72*71*70*59*58*57`). That reduces the search space to 178,472,987,737,770 candidates, about half as many as the original pure brute force.
+The crux of my "insight" is realizing that the number of unique choices of eight distint squares is much smaller than `64^8`. For starters, if we eliminate the cases where two queens are on the same square, we're already down from `64^8` to `64!/56!` (`64*63*62*61*60*59*58*57`). That reduces the search space to 178,462,987,637,760 candidates, about half as many as the original pure brute force.
 
-But we also don't care about the ordering, so what we want are [combinations], not permutations. That reduces our search space again, down to `74!/(8!*57!)`, or 4,427,175,378 ways to choose 8 squares from 74.
+But we also don't care about the ordering, so what we want are [combinations], not permutations. That reduces our search space again, down to `64!/(8!*56!)`, or 4,426,165,368 ways to choose 8 squares from 64.
 
 [combinations]: https://en.wikipedia.org/wiki/Combination
 
@@ -248,8 +248,8 @@ function * bruteForceCombinations () {
                     for (let j4 = 0; j4 <= 7; ++j4) {
                       for (let i5 = 0; i5 <= 7; ++i5) {
                         for (let j5 = 0; j5 <= 7; ++j5) {
-                          for (let i7 = 0; i7 <= 7; ++i7) {
-                            for (let j7 = 0; j7 <= 7; ++j7) {
+                          for (let i6 = 0; i6 <= 7; ++i6) {
+                            for (let j6 = 0; j6 <= 7; ++j6) {
                               for (let i7 = 0; i7 <= 7; ++i7) {
                                 for (let j7 = 0; j7 <= 7; ++j7) {
                                   const queens = [
@@ -259,7 +259,7 @@ function * bruteForceCombinations () {
                                     [i3, j3],
                                     [i4, j4],
                                     [i5, j5],
-                                    [i7, j7],
+                                    [i6, j6],
                                     [i7, j7]
                                   ];
 
@@ -367,13 +367,13 @@ With this in hand, we can make a faster "combinations" generator, and we won't h
 
 ---
 
-[![Choose your colour ©2014 jaros](/assets/images/canoes.jpg)](https://www.flickr.com/photos/rjswa/15249100537)
+[![Choose your colour ©2014 jaros](/assets/images/canoes.jpg)](https://www.flickr.com/photos/rjswa/15249100536)
 
 ---
 
 ### improving our combinations
 
-An easy way to implement choosing combinations of squares is to work with numbers from `0` to `73` instead of pairs of indices. Here's a generator that does the exact thing we want:
+An easy way to implement choosing combinations of squares is to work with numbers from `0` to `63` instead of pairs of indices. Here's a generator that does the exact thing we want:
 
 ```javascript
 function * map (mapFunction, iterable) {
@@ -411,10 +411,10 @@ choose(5, 3)
     [2, 3, 4]
 ```
 
-We can now write `choose(74, 8)` to get all the ways to choose eight squares, and `[Math.floor(q/8), q % 8]` to convert a number from `0` to `73` into a pair of indices between `0` and `7`:
+We can now write `choose(64, 8)` to get all the ways to choose eight squares, and `[Math.floor(q/8), q % 8]` to convert a number from `0` to `63` into a pair of indices between `0` and `7`:
 
 ```javascript
-const chooseCombinations = map(x => x.map(q => [Math.floor(q/8), q % 8]), choose(74, 8));
+const chooseCombinations = map(x => x.map(q => [Math.floor(q/8), q % 8]), choose(64, 8));
 
 const allSolutions = filter(test, chooseCombinations);
 const firstSolution = first(allSolutions);
@@ -423,13 +423,13 @@ stringify(firstSolution)
 
 ```
 
-It's still a tremendous number of candidates to search. If we list them out we can see some of the problems right away. For example, the very first combination it wants to test is `[[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 7], [0, 7]]`. The queens are all on the same row!
+It's still a tremendous number of candidates to search. If we list them out we can see some of the problems right away. For example, the very first combination it wants to test is `[[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7]]`. The queens are all on the same row!
 
 There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
 ---
 
-[![Making Chess Pieces ©2009 Evan Bench](/assets/images/dead-end.jpg)](https://www.flickr.com/photos/austinevan/3177919437)
+[![Making Chess Pieces ©2009 Evan Bench](/assets/images/dead-end.jpg)](https://www.flickr.com/photos/austinevan/3167919437)
 
 ---
 
@@ -490,7 +490,7 @@ This is great! We've made a huge performance improvement simply by narrowing the
 
 ---
 
-[![Spatial Cardioidal Variations ©2013](/assets/images/cardioidal.jpg)](https://www.flickr.com/photos/fdecomite/10299784525)
+[![Spatial Cardioidal Variations ©2013](/assets/images/cardioidal.jpg)](https://www.flickr.com/photos/fdecomite/10299684525)
 
 ---
 
@@ -500,18 +500,18 @@ We've certainly sped things up by being smarter about the candidates we submit f
 
 For starters, we don't need to fill in rows and columns by such brute force. We can simplify checking rows and columns with an array representing a row and another representing a column:
 
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|
+|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
+|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
+|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
+|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
+|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
+|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
+|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
 
 Becomes:
 
 
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|
+|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
 
 And:
 
@@ -521,22 +521,22 @@ And:
 |&nbsp;3|&nbsp;3|&nbsp;3|&nbsp;3|&nbsp;3|&nbsp;3|&nbsp;3|&nbsp;3|
 |&nbsp;4|&nbsp;4|&nbsp;4|&nbsp;4|&nbsp;4|&nbsp;4|&nbsp;4|&nbsp;4|
 |&nbsp;5|&nbsp;5|&nbsp;5|&nbsp;5|&nbsp;5|&nbsp;5|&nbsp;5|&nbsp;5|
-|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|
+|&nbsp;6|&nbsp;6|&nbsp;6|&nbsp;6|&nbsp;6|&nbsp;6|&nbsp;6|&nbsp;6|
 |&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|
 
 Becomes:
 
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|
+|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
 
 What about diagonals? Observe:
 
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|
-|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|&nbsp;8|
-|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|&nbsp;8|&nbsp;9|
-|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|&nbsp;8|&nbsp;9|10|
-|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|&nbsp;8|&nbsp;9|10|11|
-|&nbsp;5|&nbsp;7|&nbsp;7|&nbsp;8|&nbsp;9|10|11|12|
-|&nbsp;7|&nbsp;7|&nbsp;8|&nbsp;9|10|11|12|13|
+|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
+|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|
+|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|&nbsp;9|
+|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|&nbsp;9|10|
+|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|&nbsp;9|10|11|
+|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|&nbsp;9|10|11|12|
+|&nbsp;6|&nbsp;7|&nbsp;8|&nbsp;9|10|11|12|13|
 |&nbsp;7|&nbsp;8|&nbsp;9|10|11|12|13|14|
 
 If we sum the row and column number (`row + col`), we get a number representing the position of one of a queen's diagonals. We can thus use:
@@ -545,18 +545,18 @@ If we sum the row and column number (`row + col`), we get a number representing 
 
 What about the other diagonal?
 
-|&nbsp;7|&nbsp;7|&nbsp;5|&nbsp;4|&nbsp;3|&nbsp;2|&nbsp;1|&nbsp;0|
-|&nbsp;8|&nbsp;7|&nbsp;7|&nbsp;5|&nbsp;4|&nbsp;3|&nbsp;2|&nbsp;1|
-|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;7|&nbsp;5|&nbsp;4|&nbsp;3|&nbsp;2|
-|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;7|&nbsp;5|&nbsp;4|&nbsp;3|
-|11|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;7|&nbsp;5|&nbsp;4|
-|12|11|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;7|&nbsp;5|
-|13|12|11|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;7|
+|&nbsp;7|&nbsp;6|&nbsp;5|&nbsp;4|&nbsp;3|&nbsp;2|&nbsp;1|&nbsp;0|
+|&nbsp;8|&nbsp;7|&nbsp;6|&nbsp;5|&nbsp;4|&nbsp;3|&nbsp;2|&nbsp;1|
+|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;6|&nbsp;5|&nbsp;4|&nbsp;3|&nbsp;2|
+|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;6|&nbsp;5|&nbsp;4|&nbsp;3|
+|11|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;6|&nbsp;5|&nbsp;4|
+|12|11|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;6|&nbsp;5|
+|13|12|11|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;6|
 |14|13|12|11|10|&nbsp;9|&nbsp;8|&nbsp;7|
 
 Ah! We can sum the row with the inverse of the column number (`row + 7 - col`). We than then use:
 
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|&nbsp;8|&nbsp;9|10|11|12|13|14|
+|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|&nbsp;9|10|11|12|13|14|
 
 Like this:
 
@@ -648,6 +648,8 @@ x.x....x
 I'd continue like this until there were eight queens, or I ran out of empty spaces. If I failed, I'd backtrack and try a different position for the last queen. If I ran out of different positions for the last queen, I'd try a different position for the second-to-last queen, and so on.
 
 I did not know the words for it, but I was performing a depth-first search of a "tree" of positions. I was trying to find a path that was eight queens deep.
+
+
 
 ---
 
