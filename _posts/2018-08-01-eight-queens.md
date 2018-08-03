@@ -436,7 +436,7 @@ There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
 ---
 
-[![Making Chess Pieces ©2009 Evan Bench](/assets/images/dead-end.jpg)](https://www.flickr.com/photos/austinevan/3167919437)
+[![Castle](/assets/images/castle.jpg)](https://www.flickr.com/photos/nh53/41841008735)
 
 ---
 
@@ -701,9 +701,21 @@ function * inductive (queens = []) {
 }
 ```
 
-I wish I'd thought of this in 1977!
+Unlike our true generate-and-test approach, it interleaves partial generation with testing, so it's not possible to break it into two separate pieces. But it's considerably smaller, so it's fine to extract the test and have `inductive` call `testDiagonals`, rather than have them both be independent peers.
 
+I wish I'd thought of this approach in 1977!
 
+---
+
+[![OCAD at night ©2008 Nayuki](/assets/images/ocad.jpg)](https://www.flickr.com/photos/nayukim/3829212004)
+
+---
+
+### and so to bed
+
+It was a lot of fun to revisit Martin Gardner's column on the eight queen's problem, and especially to rewrite these algorithms forty years later. This post doesn't have a deep insight into program design, and thus there's not major point to summarize.
+
+Just as there can be recreational mathematics, there can be recreational programming. And that's a very fine thing to enjoy.
 
 ---
 
