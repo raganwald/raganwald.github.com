@@ -454,11 +454,33 @@ There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
 We _know_ that eight queens on the same row are not going to work. No two queens can be on the same column or row. So what we really want are all the combinations of eight queens that don't share a column or row. In other words, every queen will have a unique column and a unique row.
 
-Let's start with the unique rows. Every time we generate a set of queens, one will be on row `0`, one on row `1`, one on row `2`, and so forth. So since we're always going to end up with a queen on row `0`, another on row `1` and so Same goes for the columns. To do this, we'll need to be able to generate the [permutations] of the numbers from `0` to `7`.
+Let's start with the unique rows. Every time we generate a set of queens, one will be on row `0`, one on row `1`, one on row `2`, and so forth. So the candidate solutions can always be arranged to look like this:
+
+```javascript
+[
+  [0, ?], [1, ?], [2, ?], [3, ?], [4, ?], [5, ?], [6, ?], [7, ?]
+]
+```
+
+Now what about the columns? Since no two queens can share the same column, the candidate solutions must all look like this:
+
+```javascript
+[
+  [?, 0], [?, 1], [?, 2], [?, 3], [?, 4], [?, 5], [?, 6], [?, 7]
+]
+```
+
+The only thing we don't know is how columns pair up with the rows. To generate all the possibilities, we'll need to be able to generate the [permutations] of the column numbers from `0` to `7`, and assign them to the rows `0` through `7` in order. That way, each candidate will look something like this:
+
+```javascript
+[
+  [0, 3], [1, 1], [2, 5], [3, 6], [4, 4], [5, 2], [6, 0], [7, 7]
+]
+```
 
 [permutations]: https://en.wikipedia.org/wiki/Permutation
 
-It's fairly easy to do if we don't mind splicing and reassembling arrays:
+It's fairly easy to generate arbitrary permutations if we don't mind splicing and reassembling arrays:
 
 ```javascript
 function * permutations (arr, prefix = []) {
@@ -478,7 +500,7 @@ permutations([1, 2, 3])
 //=> [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]
 ```
 
-And now we can obtain a solution in a split-second:
+And now we can apply our `permutations` generator to generating candidate solutions:
 
 ```javascript
 const rookSolutions = map(
