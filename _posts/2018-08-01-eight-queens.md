@@ -3,7 +3,14 @@ title: "The Eight Queens [UNFINISHED, PLEASE DO NOT POST ON HACKER NEWS OR REDDI
 tags: [allonge, noindex]
 ---
 
-*This is my account of working on the eight queens puzzle, stretched out over four decades. If you prefer to get right into the programming, [skip the prelude](#eight-queens).*
+A few weeks ago, I ordered a 150th anniversary edition of [The Annotated Alice][aa]. As is their wont, Amazon's collaborative filters showed me other books that might be of interest to me, and I spotted a copy of [Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging][knots]:
+
+<center><A HREF="https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US"><img src="/assets/images/knots.png)" alt="Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging" longdesc="https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US"/></A></center>
+
+[aa]: https://www.amazon.com/Annotated-Alice-150th-Anniversary-Deluxe/dp/0393245438/ref=as_li_ss_tl?ie=UTF8&qid=1533264922&sr=8-1&keywords=annotated+alice&linkCode=ll1&tag=raganwald001-20&linkId=b9022021a0c13d975c6ca45d156a50e4&language=en_US
+[knots]: https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US
+
+I nearly gasped out loud, savouring the memory of one of the earliest computer programs that I ever wrote from scratch, a program that searched for solutions to the eight queens puzzle.
 
 ## Prelude: 1972 – 1977
 
@@ -647,7 +654,9 @@ x.x....x
 
 I'd continue like this until there were eight queens, or I ran out of empty spaces. If I failed, I'd backtrack and try a different position for the last queen. If I ran out of different positions for the last queen, I'd try a different position for the second-to-last queen, and so on.
 
-I did not know the words for it, but I was performing a depth-first search of a "tree" of positions. I was trying to find a path that was eight queens deep.
+I did not know the words for it, but I was performing a depth-first search of a "tree" of positions. I was trying to find a path that was eight queens deep. And I was keeping the board updated to do so.
+
+We can write a version of this, but the big observation is that in this method, the architecture of generating candidate sets of eight queens at a time, and passing them to the test function does not work. Separating those two concerns does not make this algorithm easy.
 
 
 
