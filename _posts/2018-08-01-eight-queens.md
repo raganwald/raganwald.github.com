@@ -1,5 +1,5 @@
 ---
-title: "The Eight Queens [UNFINISHED, PLEASE DO NOT POST ON HACKER NEWS OR REDDIT. TWITTER IS FINE.]"
+title: "Punch cards and BASIC flings, BAck-Tracking, and Eight Queens: Reg Braithwaite's Unexpected Nostalgia"
 tags: [allonge, noindex]
 ---
 
@@ -378,7 +378,7 @@ With this in hand, we can make a faster "combinations" generator, and we won't h
 
 ---
 
-### improving our combinations
+### the final "combinations" algorithm
 
 An easy way to implement choosing combinations of squares is to work with numbers from `0` to `63` instead of pairs of indices. Here's a generator that does the exact thing we want:
 
@@ -440,7 +440,7 @@ There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
 ---
 
-### making smart choices
+### the "rooks" algorithm
 
 We _know_ that eight queens on the same row are not going to work. No two queens can be on the same column or row. So what we really want are all the combinations of eight queens that don't share a column or row. In other words, every queen will have a unique column and a unique row.
 
@@ -494,6 +494,8 @@ stringify(firstSolution)
 ```
 
 This is great! We've made a huge performance improvement simply by narrowing the "search space." We're down to `8!` permutations of queens on unique rows and columns, just 40,320 different permutations to try.
+
+(This approach is known as the "rooks" algorithm, because generating the candidate positions for the queens based on permutations of rows and columns is the solution for enumerating all of the ways eight rooks can be placed on a chessboard.)
 
 ---
 
@@ -612,8 +614,6 @@ stringify(firstSolution)
 
 Just as we were able to change the generator independently of the test, now we have changed the test independently of the generator. That's a good thing!
 
-
-
 ---
 
 [![Huge Tree ©2009 Mitch Bennett](/assets/images/huge-tree.jpg)](https://www.flickr.com/photos/mitchell3417/3451297468)
@@ -656,7 +656,9 @@ I'd continue like this until there were eight queens, or I ran out of empty spac
 
 I did not know the words for it, but I was performing a depth-first search of a "tree" of positions. I was trying to find a path that was eight queens deep. And I was keeping the board updated to do so.
 
-We can write a version of this, but the big observation is that in this method, the architecture of generating candidate sets of eight queens at a time, and passing them to the test function does not work. Separating those two concerns does not make this algorithm easy.
+This method is better than the combinations approach, but not as good as the rooks approach. It's interesting nevertheless, because it is an "inductive" method that lends itself to recursive thinking. We begin with the solution for zero queens, and empty board. Then we successively search for ways to add one more queen to whatever we already have, backtracking if we run out of available spaces.
+
+We can actually combine the inductive and rooks approach:
 
 
 
