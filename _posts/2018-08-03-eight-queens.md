@@ -1,5 +1,5 @@
 ---
-title: "Punch cards and BASIC flings, Back-Tracking, and Eight Queens: Raganwald's Unexpected Nostalgia"
+title: "Punch Cards and BASIC flings, Back-Tracking, and Eight Queens: Raganwald's Unexpected Nostalgia"
 tags: [allonge]
 ---
 
@@ -507,41 +507,13 @@ This is great! We've made a huge performance improvement simply by narrowing the
 
 ---
 
-### faster testing
+### speeding up the testing
 
 We've certainly sped things up by being smarter about the candidates we submit for testing. But what about the testing itself? The algorithm of filling in squares on a chess board very neatly matches how we might do this mentally, but it is quite slow. How can we make it faster?
 
-For starters, we don't need to fill in rows and columns by such brute force. We can simplify checking rows and columns with an array representing a row and another representing a column:
+For starters, if we know that we are only submitting solutions to the "eight rooks" problem, we need never test whether queens threaten each other on rows and columns. That cuts our testing workload roughly in half!
 
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
-
-Becomes:
-
-
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
-
-And:
-
-|&nbsp;0|&nbsp;0|&nbsp;0|&nbsp;0|&nbsp;0|&nbsp;0|&nbsp;0|&nbsp;0|
-|&nbsp;1|&nbsp;1|&nbsp;1|&nbsp;1|&nbsp;1|&nbsp;1|&nbsp;1|&nbsp;1|
-|&nbsp;2|&nbsp;2|&nbsp;2|&nbsp;2|&nbsp;2|&nbsp;2|&nbsp;2|&nbsp;2|
-|&nbsp;3|&nbsp;3|&nbsp;3|&nbsp;3|&nbsp;3|&nbsp;3|&nbsp;3|&nbsp;3|
-|&nbsp;4|&nbsp;4|&nbsp;4|&nbsp;4|&nbsp;4|&nbsp;4|&nbsp;4|&nbsp;4|
-|&nbsp;5|&nbsp;5|&nbsp;5|&nbsp;5|&nbsp;5|&nbsp;5|&nbsp;5|&nbsp;5|
-|&nbsp;6|&nbsp;6|&nbsp;6|&nbsp;6|&nbsp;6|&nbsp;6|&nbsp;6|&nbsp;6|
-|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|&nbsp;7|
-
-Becomes:
-
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
-
-What about diagonals? Observe:
+But what about diagonal attacks? Observe:
 
 |&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|
 |&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|
@@ -556,6 +528,8 @@ If we sum the row and column number (`row + col`), we get a number representing 
 
 |&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;7|&nbsp;7|&nbsp;8|&nbsp;9|10|11|12|13|14|
 
+Instead of the entire chessboard! Simply compute the diagonal number for each queen and put an 'x' in this one-dimensional array. That's much faster than putting an 'x' in every square of a diagonal.
+
 What about the other diagonal?
 
 |&nbsp;7|&nbsp;6|&nbsp;5|&nbsp;4|&nbsp;3|&nbsp;2|&nbsp;1|&nbsp;0|
@@ -567,56 +541,7 @@ What about the other diagonal?
 |13|12|11|10|&nbsp;9|&nbsp;8|&nbsp;7|&nbsp;6|
 |14|13|12|11|10|&nbsp;9|&nbsp;8|&nbsp;7|
 
-Ah! We can sum the row with the inverse of the column number (`row + 7 - col`). We than then use:
-
-|&nbsp;0|&nbsp;1|&nbsp;2|&nbsp;3|&nbsp;4|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|&nbsp;9|10|11|12|13|14|
-
-Like this:
-
-```javascript
-function fastTest (queens) {
-  const ns = [".", ".", ".", ".", ".", ".", ".", "."];
-  const ew = [".", ".", ".", ".", ".", ".", ".", "."];
-  const nesw = [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."];
-  const nwse = [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."];
-
-  if (queens.length < 2) return true;
-
-  for (const [i, j] of queens) {
-    if (
-      ns[i] !== '.' ||
-      ew[j] !== '.' ||
-      nwse[i + j] !== '.' ||
-      nesw[i + 7 - j] !== '.'
-    ) return false;
-
-    ns[i] = 'x';
-    ew[j] = 'x';
-    nwse[i + j] = 'x';
-    nesw[i + 7 - j] = 'x';
-  }
-
-  return true;
-}
-
-const allSolutions = filter(fastTest, queensSharingNoRowsOrColumns);
-const firstSolution = first(allSolutions);
-
-stringify(firstSolution)
-
-//=>
-  Q.......
-  ......Q.
-  ....Q...
-  .......Q
-  .Q......
-  ...Q....
-  .....Q..
-  ..Q.....
-
-```
-
-Just as we were able to change the generator independently of the test, now we have changed the test independently of the generator. That's a good thing. And hey, if we only need to test diagonals, we can be _even faster_:
+Ah! We can sum the row with the inverse of the column number (`row + 7 - col`). If we use two of these one-dimensional arrays, we can check both diagonal attacks much more quickly than tediously marking chessboard squares. Like this:
 
 ```javascript
 function testDiagonals (queens) {
@@ -634,7 +559,25 @@ function testDiagonals (queens) {
 
   return true;
 }
+
+const allSolutions = filter(testDiagonals, queensSharingNoRowsOrColumns);
+const firstSolution = first(allSolutions);
+
+stringify(firstSolution)
+
+//=>
+  Q.......
+  ......Q.
+  ....Q...
+  .......Q
+  .Q......
+  ...Q....
+  .....Q..
+  ..Q.....
+
 ```
+
+Checking diagonals without filling in squares is a specialized optimization, of course. Now we have coupled the test with the generation algorithm. In a larger software project, we might decouple things so that we can use them in different places in different ways. But when we come along to optimize something like this, the coupling makes it harder to reuse components, and it makes the program harder to change. Luckily for us, this isn't an essay about writing large software projects.
 
 ---
 
