@@ -3,7 +3,9 @@ title: "Punch Cards and BASIC flings, Back-Tracking, and Eight Queens: Raganwald
 tags: [allonge]
 ---
 
-A few weeks ago, I ordered a 150th anniversary edition of [The Annotated Alice][aa]. As is their wont, Amazon's collaborative filters showed me other books that might be of interest to me, and I spotted a copy of [Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging][knots].
+A few weeks ago, I ordered a 150th anniversary edition of [The Annotated Alice][aa].
+
+As is their wont, Amazon's collaborative filters showed me other books that might be of interest to me, and I spotted a copy of [Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging][knots].
 
 [aa]: https://www.amazon.com/Annotated-Alice-150th-Anniversary-Deluxe/dp/0393245438/ref=as_li_ss_tl?ie=UTF8&qid=1533264922&sr=8-1&keywords=annotated+alice&linkCode=ll1&tag=raganwald001-20&linkId=b9022021a0c13d975c6ca45d156a50e4&language=en_US
 [knots]: https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US
