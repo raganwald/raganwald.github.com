@@ -693,7 +693,7 @@ I wish I'd thought of this approach in 1977!
 
 Something else comes to mind when thinking about reducing the size of the tree to search. There is symmetry to the moves a Queen makes in Chess, and as a consequence, the positions we find have rotational symmetry, and they also have reflective symmetry on either horizontal or vertical axes.
 
-For example, every valid arrangement also has another valid arrangement that is symmetrical under vertical reflection, like these two are mirror images of each other:
+For example, every valid arrangement also has another valid arrangement that is symmetrical under vertical reflection, like these two mirror images of each other:
 
 ```
 Q.......  .......Q
@@ -721,7 +721,7 @@ Note the following numbered positions:
 ........
 ```
 
-The "inductive" approach calculates every possible arrangement that has a queen in position 1 before computing those with a queen in position 2, then 3, then 4. When it has done so, it has computed half of the possible arrangements. But it has also calculated all of the possible mirror arrangements for their mirrors. Therefore, when it has finished computing the above, we have also computed:
+The "inductive" approach calculates every possible arrangement that has a queen in position 1 before computing those with a queen in position 2, then 3, then 4. When it has done so, it has computed half of the possible arrangements. But it has also calculated all of the possible mirror arrangements. Therefore, when it has finished computing the above, it has also computed:
 
 ```
 ....4321
@@ -778,7 +778,7 @@ It was a lot of fun to revisit Martin Gardner's column on the eight queen's prob
 
 Just as there can be recreational mathematics, there can be recreational programming. And that's a very fine thing to enjoy.
 
-(discuss on [reddit](https://www.reddit.com/r/javascript/comments/94a38n/punch_cards_and_basic_flings_backtracking_and/))
+Thank you, and good night!
 
 ---
 
