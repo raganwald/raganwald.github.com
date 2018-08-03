@@ -214,7 +214,13 @@ I believe I tried that, left the program running overnight, and when I came in t
 
 Then I had an insight of sorts: If I could arrange an _ordering_ of queens, then if I set about generating all the possible arrangements for the first queen, by definition the subsequent queens would have to come _after_ each queen's position.
 
-Before writing out the code for this small improvement, I'll share what happened when I tested my conjecture.
+Although I don't think I sat down and worked out the maths at the time, I intuitively reasoned that the number of unique choices of eight distinct squares is much smaller than `64^8`. For starters, if we eliminate the cases where two queens are on the same square, we're already down from `64^8` to `64!/56!` (`64*63*62*61*60*59*58*57`). That reduces the search space to 178,462,987,637,760 candidates, about half as many as the original pure brute force.
+
+But we also don't care about the ordering, so what we want are [combinations], not permutations. That reduces our search space again, down to `64!/(8!*56!)`, or 4,426,165,368 ways to choose 8 squares from 64.
+
+[combinations]: https://en.wikipedia.org/wiki/Combination
+
+Before writing out code that implements this improvement, I'll share what happened when I tested my conjecture.
 
 ---
 
@@ -230,7 +236,7 @@ In any event, I left the updated program running overnight, and once again retur
 
 The paper roll had jammed at some point in the night and was no longer advancing, but the teletype had hammered through the paper and was hammering on the roller behind. Rolls of paper had emerged from the machine and lay in a heap around it. I consider it a very lucky escape that a spark hadn't ignited the paper or its dust that hung in the air.
 
-I shut everything down, cleaned up as best I could, and then set about finding the bug.
+I shut everything down, cleaned up as best I could, and then set about finding the bug. Although I never did cause another "physical crash," it took me days (or possibly weeks, I don't quite remember, and I did have other things going on at the time) before I had improved my program to the point where it found solutions.
 
 ---
 
@@ -240,11 +246,7 @@ I shut everything down, cleaned up as best I could, and then set about finding t
 
 ### separating concerns
 
-The crux of my "insight" is realizing that the number of unique choices of eight distinct squares is much smaller than `64^8`. For starters, if we eliminate the cases where two queens are on the same square, we're already down from `64^8` to `64!/56!` (`64*63*62*61*60*59*58*57`). That reduces the search space to 178,462,987,637,760 candidates, about half as many as the original pure brute force.
-
-But we also don't care about the ordering, so what we want are [combinations], not permutations. That reduces our search space again, down to `64!/(8!*56!)`, or 4,426,165,368 ways to choose 8 squares from 64.
-
-[combinations]: https://en.wikipedia.org/wiki/Combination
+Now back to writing out an improved algorithm.
 
 One of our go-to techniques for modifying programs is to begin my making sure that the thing we wish to change is refactored into its own responsibility, then we can make a change to just one thing. The JavaScript analog of my old BASIC code has the generating loops, function testing code, and output code all higgledy-piggledy.
 
