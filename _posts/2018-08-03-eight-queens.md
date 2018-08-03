@@ -664,7 +664,9 @@ I wish I'd thought of this approach in 1977!
 
 ---
 
-### and so to bed
+## And so to Bed
+
+---
 
 It was a lot of fun to revisit Martin Gardner's column on the eight queen's problem, and especially to rewrite these algorithms forty years later. This post doesn't have a deep insight into program design, and thus there's not major point to summarize.
 
