@@ -5,7 +5,7 @@ tags: [allonge, noindex]
 
 A few weeks ago, I ordered a 150th anniversary edition of [The Annotated Alice][aa]. As is their wont, Amazon's collaborative filters showed me other books that might be of interest to me, and I spotted a copy of [Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging][knots]:
 
-<center><A HREF="https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US"><img src="/assets/images/knots.png)" alt="Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging" longdesc="https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US"/></A></center>
+<center><A HREF="https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US"><img src="/assets/images/knots.png" alt="Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging" longdesc="https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US"/></A></center>
 
 [aa]: https://www.amazon.com/Annotated-Alice-150th-Anniversary-Deluxe/dp/0393245438/ref=as_li_ss_tl?ie=UTF8&qid=1533264922&sr=8-1&keywords=annotated+alice&linkCode=ll1&tag=raganwald001-20&linkId=b9022021a0c13d975c6ca45d156a50e4&language=en_US
 [knots]: https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US
@@ -612,7 +612,25 @@ stringify(firstSolution)
 
 ```
 
-Just as we were able to change the generator independently of the test, now we have changed the test independently of the generator. That's a good thing!
+Just as we were able to change the generator independently of the test, now we have changed the test independently of the generator. That's a good thing. And hey, if we only need to test diagonals, we can be _even faster_:
+
+```javascript
+function testDiagonals (queens) {
+  const nesw = [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."];
+  const nwse = [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."];
+
+  if (queens.length < 2) return true;
+
+  for (const [i, j] of queens) {
+    if (nwse[i + j] !== '.' || nesw[i + 7 - j] !== '.') return false;
+
+    nwse[i + j] = 'x';
+    nesw[i + 7 - j] = 'x';
+  }
+
+  return true;
+}
+```
 
 ---
 
@@ -658,9 +676,30 @@ I did not know the words for it, but I was performing a depth-first search of a 
 
 This method is better than the combinations approach, but not as good as the rooks approach. It's interesting nevertheless, because it is an "inductive" method that lends itself to recursive thinking. We begin with the solution for zero queens, and empty board. Then we successively search for ways to add one more queen to whatever we already have, backtracking if we run out of available spaces.
 
-We can actually combine the inductive and rooks approach:
+We can actually combine the inductive and rooks approach. This algorithm builds solutions one row at a time, iterating over the open columns, and checking for diagonal attacks. If there are none, it recursively calls itself to add another row. When it reaches eight rows, it yields the solution. It finds all 92 solutions in a split second:
 
+```javascript
+function * inductive (queens = []) {
+  if (queens.length === 8) {
+    yield queens;
+  } else {
+    const candidateColumns = [0, 1, 2, 3, 4, 5, 6, 7];
+    for (const [row, column] of queens) {
+      candidateColumns[column] = undefined;
+    }
 
+    for (const candidateColumn of candidateColumns) {
+      if (candidateColumn != null) {
+        const candidateQueens = queens.concat([[queens.length, candidateColumn]]);
+
+        if (testDiagonals(candidateQueens)) {
+          yield * inductive(candidateQueens);
+        }
+      }
+    }
+  }
+}
+```
 
 ---
 
