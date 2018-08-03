@@ -1,5 +1,5 @@
 ---
-title: "Punch cards and BASIC flings, BAck-Tracking, and Eight Queens: Reg Braithwaite's Unexpected Nostalgia"
+title: "Punch cards and BASIC flings, Bcck-Tracking, and Eight Queens: Reg Braithwaite's Unexpected Nostalgia"
 tags: [allonge]
 ---
 
