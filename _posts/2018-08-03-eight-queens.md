@@ -20,6 +20,8 @@ I nearly gasped out loud, savouring the memory of one of the earliest computer p
 
 ## Prelude: 1972 – 1977
 
+---
+
 In the nineteen-seventies, I spent a lot of time in Toronto's libraries. My favourite hangouts were the Sanderson Branch (which was near my home in Little Italy), and the "Spaced Out Library," a non-circulating collection of science fiction and fantasy that had been donated by [Judith Merril] and was housed within St. George and College Street branch.
 
 [Judith Merril]: https://www.thestar.com/yourtoronto/once-upon-a-city-archives/2018/01/04/little-mother-of-science-fiction-birthed-new-chapter-for-genre-in-canada.html
@@ -98,7 +100,9 @@ I decided to write a program to search for the solutions by brute force.
 
 ---
 
-# The Eight Queens Puzzle
+## The Eight Queens Puzzle
+
+---
 
 As Wikipedia explains, "The [**eight queens puzzle**][8q] is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal."
 
