@@ -477,12 +477,12 @@ permutations([1, 2, 3])
 And now we can obtain a solution in a split-second:
 
 ```javascript
-const queensSharingNoRowsOrColumns = map(
+const rookSolutions = map(
   ii => ii.map((i, j) => [i, j]),
   permutations([0, 1, 2, 3, 4, 5, 6, 7])
 );
 
-const allSolutions = filter(test, queensSharingNoRowsOrColumns);
+const allSolutions = filter(test, rookSolutions);
 const firstSolution = first(allSolutions);
 
 stringify(firstSolution)
@@ -562,7 +562,7 @@ function testDiagonals (queens) {
   return true;
 }
 
-const allSolutions = filter(testDiagonals, queensSharingNoRowsOrColumns);
+const allSolutions = filter(testDiagonals, rookSolutions);
 const firstSolution = first(allSolutions);
 
 stringify(firstSolution)
