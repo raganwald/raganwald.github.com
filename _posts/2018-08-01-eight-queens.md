@@ -1,6 +1,6 @@
 ---
 title: "Punch cards and BASIC flings, BAck-Tracking, and Eight Queens: Reg Braithwaite's Unexpected Nostalgia"
-tags: [allonge, noindex]
+tags: [allonge]
 ---
 
 A few weeks ago, I ordered a 150th anniversary edition of [The Annotated Alice][aa]. As is their wont, Amazon's collaborative filters showed me other books that might be of interest to me, and I spotted a copy of [Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging][knots]:
