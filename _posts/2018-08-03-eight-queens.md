@@ -25,7 +25,7 @@ I nearly gasped out loud, savouring the memory of one of the earliest computer p
 In the nineteen-seventies, I spent a lot of time in Toronto's libraries. My favourite hangouts were the Sanderson Branch (which was near my home in Little Italy), and the "Spaced Out Library," a non-circulating collection of science fiction and fantasy donated by [Judith Merril], that was housed within St. George and College Street branch.[^games]
 
 [Judith Merril]: https://www.thestar.com/yourtoronto/once-upon-a-city-archives/2018/01/04/little-mother-of-science-fiction-birthed-new-chapter-for-genre-in-canada.html
-[^games]: Of particular interest to me was that the Spaced Out Library also contained a collection of sci-fi themed wargames. At the time, these games were quite expensive and nearly always out of my financial reach. I recall going to the library with some like-minded neighborhood friends and playing games like [BattleFleet Mars](https://en.wikipedia.org/wiki/BattleFleet_Mars), [Starforce: Alpha Centauri](Starforce: Alpha Centauri) and [StarSoldier](https://boardgamegeek.com/boardgame/6215/starsoldier-tactical-warfare-25th-century), or just reading the rules and fantasizing about the universe described in the games.
+[^games]: Of particular interest to me was that the Spaced Out Library also contained a collection of sci-fi themed wargames. At the time, these games were quite expensive and nearly always out of my financial reach. I recall going to the library with some like-minded neighbourhood friends and playing games like [BattleFleet Mars](https://en.wikipedia.org/wiki/BattleFleet_Mars), [Starforce: Alpha Centauri](Starforce: Alpha Centauri) and [StarSoldier](https://boardgamegeek.com/boardgame/6215/starsoldier-tactical-warfare-25th-century), or just reading the rules and fantasizing about the universe described in the games.
 
 I especially enjoyed reading back issues of Scientific American, and like many, I was captivated by [Martin Gardner's][mg] "Mathematical Games" columns. My mother had sent me to a day camp for gifted kids once, and it was organized like a university. The "students" self-selected electives, and I picked one called "Whodunnit." It turned out to be a half-day exercise in puzzles and games, and I was hooked.
 
@@ -682,6 +682,87 @@ function * inductive (queens = []) {
 Unlike our true generate-and-test approach, it interleaves partial generation with testing, so it's not possible to break it into two separate pieces. But it's considerably smaller, so it's fine to extract the test and have `inductive` call `testDiagonals`, rather than have them both be independent peers.
 
 I wish I'd thought of this approach in 1977!
+
+---
+
+[![Corner Office ©2016 Michael Pardo](/assets/images/corner-office.jpg)](https://www.flickr.com/photos/michaelpardo/24359913430)
+
+---
+
+### exploiting symmetry
+
+Something else comes to mind when thinking about reducing the size of the tree to search. There is symmetry to the moves a Queen makes in Chess, and as a consequence, the positions we find have rotational symmetry, and they also have reflective symmetry on either horizontal or vertical axes.
+
+For example, every valid arrangement also has another valid arrangement that is symmetrical under vertical reflection, like these two are mirror images of each other:
+
+```
+Q.......  .......Q
+......Q.  .Q......
+....Q...  ...Q....
+.......Q  Q.......
+.Q......  ......Q.
+...Q....  ....Q...
+.....Q..  ..Q.....
+..Q.....  .....Q..
+```
+
+Thus, every time we generate a valid arrangement, we can go ahead and make a vertical mirror image of it. That saves us work if we can also avoid generating and testing that mirror image arrangement.
+
+Note the following numbered positions:
+
+```
+1234....
+........
+........
+........
+........
+........
+........
+........
+```
+
+The "inductive" approach calculates every possible arrangement that has a queen in position 1 before computing those with a queen in position 2, then 3, then 4. When it has done so, it has computed half of the possible arrangements. But it has also calculated all of the possible mirror arrangements for their mirrors. Therefore, when it has finished computing the above, we have also computed:
+
+```
+....4321
+........
+........
+........
+........
+........
+........
+........
+```
+
+We thus know every possible solution that has a queen in one of the first four squares, plus every possible solution that does not have a queen in any of the first four squares. This is every possibility, and we need compute no further. Therefore, we can cut the search in half simply by only doing half the work, and then reflecting the solutions:
+
+```javascript
+function * halfInductive () {
+  for (const candidateQueens of [[[0, 0]], [[0, 1]], [[0, 2]], [[0, 3]]]) {
+    yield * inductive(candidateQueens);
+  }
+}
+
+function verticalReflection (queens) {
+  return queens.map(
+    ([row, col]) => [row, 7 - col]
+  );
+}
+
+function * flatMap (mapFunction, iterable) {
+  for (const element of iterable) {
+    yield * mapFunction(element);
+  }
+}
+
+const withReflections = flatMap(
+  queens => [queens, verticalReflection(queens)], halfInductive());
+
+Array.from(withReflections).length
+  //=> 92
+```
+
+Now we're really getting lazy: We only have to evaluate 2,750 candidate positions, a far, far smaller number than the original worst-case of 281,474,976,710,656. How much smaller? One hundred billion times smaller!
 
 ---
 
