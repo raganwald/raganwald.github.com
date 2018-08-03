@@ -3,7 +3,7 @@ title: "Punch Cards and BASIC flings, Back-Tracking, and Eight Queens: Raganwald
 tags: [allonge]
 ---
 
-A few weeks ago, I ordered a 150th anniversary edition of [The Annotated Alice][aa].
+A few weeks ago, I ordered a copy of the Sesquicentennial Edition of [The Annotated Alice][aa].
 
 As is their wont, Amazon's collaborative filters showed me other books that might be of interest to me, and I spotted a copy of [Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging][knots].
 
