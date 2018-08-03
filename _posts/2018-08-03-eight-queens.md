@@ -462,15 +462,15 @@ Let's start with the unique rows. Every time we generate a set of queens, one wi
 ]
 ```
 
-Now what about the columns? Since no two queens can share the same column, the candidate solutions must all look like this:
+Now what about the columns? Since no two queens can share the same column, the candidate solutions must all have a unique permutation of the numbers `0` through `7`, something like this:
 
 ```javascript
 [
-  [?, 0], [?, 1], [?, 2], [?, 3], [?, 4], [?, 5], [?, 6], [?, 7]
+  [?, 3], [?, 1], [?, 5], [?, 6], [?, 4], [?, 2], [?, 0], [?, 7]
 ]
 ```
 
-The only thing we don't know is how columns pair up with the rows. To generate all the possibilities, we'll need to be able to generate the [permutations] of the column numbers from `0` to `7`, and assign them to the rows `0` through `7` in order. That way, each candidate will look something like this:
+We'll need to be able to generate the [permutations] of the column numbers from `0` to `7`, and assign them to the rows `0` through `7` in order. That way, each candidate will look something like this:
 
 ```javascript
 [
