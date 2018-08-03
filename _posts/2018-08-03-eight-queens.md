@@ -672,7 +672,9 @@ It was a lot of fun to revisit Martin Gardner's column on the eight queen's prob
 
 Just as there can be recreational mathematics, there can be recreational programming. And that's a very fine thing to enjoy.
 
+**The End**
+
 ---
 
-## notes
+## Notes
 
