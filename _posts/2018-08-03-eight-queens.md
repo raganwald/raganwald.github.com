@@ -98,12 +98,16 @@ In defiance of all regulation, I would go in late, pick the cupboard's lock, rem
 
 ---
 
-Now about puzzles. One of the things I worked on was writing new games. I made a [Maharajah and the Sepoys][ms] program that would play the Maharajah while I played the standard chess pieces. It could beat me, which was enough AI for my purposes. This got me thinking about something I'd read in a Martin Gardner book, the [Eight Queens Puzzle][8q].
+Now about puzzles.
+
+One of the things I worked on was writing new games. I made a [Maharajah and the Sepoys][ms] program that would play the Maharajah while I played the standard chess pieces. It could beat me, which was enough AI for my purposes. This got me thinking about something I'd read in a Martin Gardner book, the [Eight Queens Puzzle][8q].
 
 [ms]: https://en.wikipedia.org/wiki/Maharajah_and_the_Sepoys
 [8q]: https://en.wikipedia.org/wiki/Eight_queens_puzzle
 
-As Wikipedia explains, "The eight queens puzzle is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal." I decided to write a program to search for the solutions by brute force.
+As Wikipedia explains, "The eight queens puzzle is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal."
+
+I decided to write a program to search for the solutions by brute force.
 
 By this time I knew a little about writing "generate and test" algorithms, as well as a little about depth-first search from writing games (like "Maharajah and the Sepoys") that performed basic [minimax] searches for moves to make. So I set about writing a BASIC program to search for solutions. I had no real understanding of computational complexity and running time, but what if I wrote a program and left it running all night?
 
@@ -695,7 +699,7 @@ It was a lot of fun to revisit Martin Gardner's column on the eight queen's prob
 
 Just as there can be recreational mathematics, there can be recreational programming. And that's a very fine thing to enjoy.
 
-**The End**
+(discuss on [reddit](https://www.reddit.com/r/javascript/comments/94a38n/punch_cards_and_basic_flings_backtracking_and/))
 
 ---
 
