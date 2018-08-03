@@ -47,7 +47,7 @@ To run a job, you typed out your program, one line per card, and then stuck a he
 
 You put header plus program into the hopper at the back, waited, and when it emerged from the reader, collected your punch cards and headed over to the large and noisy line printer. When the IBM 360 got around to actually running your job, it would print the results for you, and you would head over to a table to review the output and--nearly all of the time for me--find the typo or bug, update your program, and start all over again.
 
-You can see equipment like this in any computer museum, so I won't go into much more detail. Besides, the mechanics of running programs as batch jobs was not the interesting thing about the High Speed Job Stream. *The interesting thing about the High Speed Job Stream was that there was no restriction on running jobs*. You didn't need an account or a password. Nobody stood at the door asking for proof that you were an Undergrad working on an assignment.
+You can see equipment like this in any computer museum, so I won't go into much more detail. Besides, the mechanics of running programs as batch jobs was not the interesting thing about the High Speed Job Stream. *The interesting thing about the High Speed Job Stream was that there was no restriction on running jobs*. You didn't need an account or a password. Nobody stood at the door asking for proof that you were an undergrad working on an assignment.
 
 So I'd go over there on a summer day and write software, and sometimes, I'd try to write programs to solve puzzles.
 
@@ -213,7 +213,7 @@ Before writing out the code for this small improvement, I'll share what happened
 
 ---
 
-### disaster!
+### disaster strikes
 
 First, I had neglected to insert code to halt the program when it found a solution. Perhaps I wanted to print all of the solutions. Second, I tried to optimize my test subroutine at the same time, and inserted a bug. Or perhaps, the bug was already there, but it didn't manifest itself until the program was deeper into its search, and my "optimization" took it to the failure case more quickly.
 
@@ -378,7 +378,7 @@ With this in hand, we can make a faster "combinations" generator, and we won't h
 
 ---
 
-### the final "combinations" algorithm
+### the "combinations" algorithm
 
 An easy way to implement choosing combinations of squares is to work with numbers from `0` to `63` instead of pairs of indices. Here's a generator that does the exact thing we want:
 
@@ -503,7 +503,7 @@ This is great! We've made a huge performance improvement simply by narrowing the
 
 ---
 
-# Intermezzo
+### faster testing
 
 We've certainly sped things up by being smarter about the candidates we submit for testing. But what about the testing itself? The algorithm of filling in squares on a chess board very neatly matches how we might do this mentally, but it is quite slow. How can we make it faster?
 
@@ -638,7 +638,7 @@ function testDiagonals (queens) {
 
 ---
 
-# Tree Searching
+### tree searching
 
 As noted, separating generator from test allows us to optimize and improve each of the two parts independently. If we were mindful of such, we could write test for the two independent pieces. This is all very good.
 
@@ -676,7 +676,7 @@ I did not know the words for it, but I was performing a depth-first search of a 
 
 This method is better than the combinations approach, but not as good as the rooks approach. It's interesting nevertheless, because it is an "inductive" method that lends itself to recursive thinking. We begin with the solution for zero queens, and empty board. Then we successively search for ways to add one more queen to whatever we already have, backtracking if we run out of available spaces.
 
-We can actually combine the inductive and rooks approach. This algorithm builds solutions one row at a time, iterating over the open columns, and checking for diagonal attacks. If there are none, it recursively calls itself to add another row. When it reaches eight rows, it yields the solution. It finds all 92 solutions in a split second:
+We can actually combine the inductive and rooks approach. This algorithm builds solutions one row at a time, iterating over the open columns, and checking for diagonal attacks. If there are none, it recursively calls itself to add another row. When it reaches eight rows, it yields the solution. It finds all 92 solutions searching just 5,508 positions (Of which eight are the degenerate case of having just one queen on the first row):
 
 ```javascript
 function * inductive (queens = []) {
@@ -700,6 +700,10 @@ function * inductive (queens = []) {
   }
 }
 ```
+
+I wish I'd thought of this in 1977!
+
+
 
 ---
 
