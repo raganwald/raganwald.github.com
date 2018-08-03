@@ -3,14 +3,18 @@ title: "Punch cards and BASIC flings, BAck-Tracking, and Eight Queens: Reg Brait
 tags: [allonge]
 ---
 
-A few weeks ago, I ordered a 150th anniversary edition of [The Annotated Alice][aa]. As is their wont, Amazon's collaborative filters showed me other books that might be of interest to me, and I spotted a copy of [Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging][knots]:
-
-<center><A HREF="https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US"><img src="/assets/images/knots.png" alt="Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging" longdesc="https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US"/></A></center>
+A few weeks ago, I ordered a 150th anniversary edition of [The Annotated Alice][aa]. As is their wont, Amazon's collaborative filters showed me other books that might be of interest to me, and I spotted a copy of [Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging][knots].
 
 [aa]: https://www.amazon.com/Annotated-Alice-150th-Anniversary-Deluxe/dp/0393245438/ref=as_li_ss_tl?ie=UTF8&qid=1533264922&sr=8-1&keywords=annotated+alice&linkCode=ll1&tag=raganwald001-20&linkId=b9022021a0c13d975c6ca45d156a50e4&language=en_US
 [knots]: https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US
 
 I nearly gasped out loud, savouring the memory of one of the earliest computer programs that I ever wrote from scratch, a program that searched for solutions to the eight queens puzzle.
+
+---
+
+<center><A HREF="https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US"><img src="/assets/images/knots.png" alt="Knots and Borromean Rings, Rep-Tiles, and Eight Queens: Martin Gardner's Unexpected Hanging" longdesc="https://www.amazon.com/Knots-Borromean-Rings-Rep-Tiles-Queens/dp/0521758718/ref=as_li_ss_tl?ie=UTF8&qid=1533264620&sr=8-1&keywords=knots+and+borromean+rings&linkCode=ll1&tag=raganwald001-20&linkId=2e72dbc983e93f06f07fd758d8fc6480&language=en_US"/></A></center>
+
+---
 
 ## Prelude: 1972 – 1977
 
@@ -18,17 +22,17 @@ In the nineteen-seventies, I spent a lot of time in Toronto's libraries. My favo
 
 [Judith Merril]: https://www.thestar.com/yourtoronto/once-upon-a-city-archives/2018/01/04/little-mother-of-science-fiction-birthed-new-chapter-for-genre-in-canada.html
 
----
-
-<center><img src="/assets/images/sci-am-1958-11.gif" alt="Scientific American" longdesc="http://www.celebrationofmind.org/archive/miller-squares.html"/></center>
-
----
-
 I especially enjoyed reading back issues of Scientific American, and like many, I was captivated by [Martin Gardner's][mg] "Mathematical Games" columns. My mother had sent me to a day camp for gifted kids once, and it was organized like a university. The "students" self-selected electives, and I picked one called "Whodunnit." It turned out to be a half-day exercise in puzzles and games, and I was hooked.
 
 Where else would I learn about playing tic-tac-toe in a hypercube? Or about liars and truth-tellers? Or, as it happened, about Martin Gardner? I suspect the entire material was lifted from his collections of columns, and that suited me down to the ground.
 
 [mg]: https://en.wikipedia.org/wiki/Martin_Gardner
+
+---
+
+<center><img src="/assets/images/sci-am-1958-11.gif" alt="Scientific American" longdesc="http://www.celebrationofmind.org/archive/miller-squares.html"/></center>
+
+---
 
 One day we had a field trip to the University of Toronto's High-Speed Job Stream, located in the Sanford Fleming Building[^sfb]. This was a big room that had a line printer on one side of it, a punch card reader on the other, and lots and lots of stations for punching your own cards.
 
@@ -436,7 +440,7 @@ There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
 ---
 
-[![Castle](/assets/images/castle.jpg)](https://www.flickr.com/photos/nh53/41841008735)
+[![Castle](/assets/images/rook-castles.jpg)](https://www.flickr.com/photos/nh53/41841008735)
 
 ---
 
