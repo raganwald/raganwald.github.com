@@ -22,9 +22,10 @@ I nearly gasped out loud, savouring the memory of one of the earliest computer p
 
 ---
 
-In the nineteen-seventies, I spent a lot of time in Toronto's libraries. My favourite hangouts were the Sanderson Branch (which was near my home in Little Italy), and the "Spaced Out Library," a non-circulating collection of science fiction and fantasy that had been donated by [Judith Merril] and was housed within St. George and College Street branch.
+In the nineteen-seventies, I spent a lot of time in Toronto's libraries. My favourite hangouts were the Sanderson Branch (which was near my home in Little Italy), and the "Spaced Out Library," a non-circulating collection of science fiction and fantasy donated by [Judith Merril], that was housed within St. George and College Street branch.[^games]
 
 [Judith Merril]: https://www.thestar.com/yourtoronto/once-upon-a-city-archives/2018/01/04/little-mother-of-science-fiction-birthed-new-chapter-for-genre-in-canada.html
+[^games]: Of particular interest to me was that the Spaced Out Library also contained a collection of sci-fi themed wargames. At the time, these games were quite expensive and nearly always out of my financial reach. I recall going to the library with some like-minded neighborhood friends and playing games like [BattleFleet Mars](https://en.wikipedia.org/wiki/BattleFleet_Mars), [Starforce: Alpha Centauri](Starforce: Alpha Centauri) and [StarSoldier](https://boardgamegeek.com/boardgame/6215/starsoldier-tactical-warfare-25th-century), or just reading the rules and fantasizing about the universe described in the games.
 
 I especially enjoyed reading back issues of Scientific American, and like many, I was captivated by [Martin Gardner's][mg] "Mathematical Games" columns. My mother had sent me to a day camp for gifted kids once, and it was organized like a university. The "students" self-selected electives, and I picked one called "Whodunnit." It turned out to be a half-day exercise in puzzles and games, and I was hooked.
 
@@ -241,7 +242,7 @@ I shut everything down, cleaned up as best I could, and then set about finding t
 
 ### separating concerns
 
-The crux of my "insight" is realizing that the number of unique choices of eight distint squares is much smaller than `64^8`. For starters, if we eliminate the cases where two queens are on the same square, we're already down from `64^8` to `64!/56!` (`64*63*62*61*60*59*58*57`). That reduces the search space to 178,462,987,637,760 candidates, about half as many as the original pure brute force.
+The crux of my "insight" is realizing that the number of unique choices of eight distinct squares is much smaller than `64^8`. For starters, if we eliminate the cases where two queens are on the same square, we're already down from `64^8` to `64!/56!` (`64*63*62*61*60*59*58*57`). That reduces the search space to 178,462,987,637,760 candidates, about half as many as the original pure brute force.
 
 But we also don't care about the ordering, so what we want are [combinations], not permutations. That reduces our search space again, down to `64!/(8!*56!)`, or 4,426,165,368 ways to choose 8 squares from 64.
 
