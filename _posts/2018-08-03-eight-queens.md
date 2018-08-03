@@ -38,18 +38,18 @@ One day we had a field trip to the University of Toronto's High-Speed Job Stream
 
 [^sfb]: There's a nice history of the Sanford Fleming Building on [Skulepedia](http://skulepedia.ca/wiki/Sandford_Fleming_Building), including an account of the infamous fire that engulfed the building in the Spring of 1977.
 
----
-
-<center><img src="/assets/images/keypunch-2.jpg" alt="IMB Keypunch Machine"/></center>
-
----
-
 To run a job, you typed out your program, one line per card, and then stuck a header on the front that told the batch job what kind of interpreter or compiler to use. Those cards were brightly coloured, and had words like [WATFIV] or [SNOBOL] printed on them in huge letters.
 
 [WATFIV]: https://en.wikipedia.org/wiki/WATFIV
 [SNOBOL]: /assets/snobol-green-book.pdf
 
 You put header plus program into the hopper at the back, waited, and when it emerged from the reader, collected your punch cards and headed over to the large and noisy line printer. When the IBM 360 got around to actually running your job, it would print the results for you, and you would head over to a table to review the output and--nearly all of the time for me--find the typo or bug, update your program, and start all over again.
+
+---
+
+<center><img src="/assets/images/keypunch-2.jpg" alt="IMB Keypunch Machine"/></center>
+
+---
 
 You can see equipment like this in any computer museum, so I won't go into much more detail. Besides, the mechanics of running programs as batch jobs was not the interesting thing about the High Speed Job Stream. *The interesting thing about the High Speed Job Stream was that there was no restriction on running jobs*. You didn't need an account or a password. Nobody stood at the door asking for proof that you were an undergrad working on an assignment.
 
