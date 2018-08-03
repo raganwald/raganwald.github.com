@@ -86,13 +86,6 @@ Saving programs on disc was not allowed. The teletypes had paper tape interfaces
 
 In defiance of all regulation, I would go in late, pick the cupboard's lock, remove the disc I wanted, and boot up single-user mode. I could then work on customizing Super Star Trek or write programs to solve puzzles. Curiously, I never tampered with the student records. I was a morally vacant vessel at that pointy in my life: I'm not going to tell you that I had a moral code about these things. I think the truth is that I just didn't care about marks.
 
-Now about puzzles. One of the things I worked on was writing new games. I made a [Maharajah and the Sepoys][ms] program that would play the Maharajah while I played the standard chess pieces. It could beat me, which was enough AI for my purposes. This got me thinking about something I'd read in a Martin Gardner book, the [Eight Queens Puzzle][8q].
-
-[ms]: https://en.wikipedia.org/wiki/Maharajah_and_the_Sepoys
-[8q]: https://en.wikipedia.org/wiki/Eight_queens_puzzle
-
-I decided to write a program to search for the solutions by brute force.
-
 ---
 
 <a name="eight-queens"/>[![Eight Queens Puzzle](/assets/images/eight-queens.png)][8q]
@@ -105,7 +98,12 @@ I decided to write a program to search for the solutions by brute force.
 
 ---
 
-As Wikipedia explains, "The [**eight queens puzzle**][8q] is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal."
+Now about puzzles. One of the things I worked on was writing new games. I made a [Maharajah and the Sepoys][ms] program that would play the Maharajah while I played the standard chess pieces. It could beat me, which was enough AI for my purposes. This got me thinking about something I'd read in a Martin Gardner book, the [Eight Queens Puzzle][8q].
+
+[ms]: https://en.wikipedia.org/wiki/Maharajah_and_the_Sepoys
+[8q]: https://en.wikipedia.org/wiki/Eight_queens_puzzle
+
+As Wikipedia explains, "The eight queens puzzle is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal." I decided to write a program to search for the solutions by brute force.
 
 By this time I knew a little about writing "generate and test" algorithms, as well as a little about depth-first search from writing games (like "Maharajah and the Sepoys") that performed basic [minimax] searches for moves to make. So I set about writing a BASIC program to search for solutions. I had no real understanding of computational complexity and running time, but what if I wrote a program and left it running all night?
 
