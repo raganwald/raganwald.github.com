@@ -762,7 +762,9 @@ Array.from(withReflections).length
   //=> 92
 ```
 
-Now we're really getting lazy: We only have to evaluate 2,750 candidate positions, a far, far smaller number than the original worst-case, most-pessimum of 281,474,976,710,656. How much smaller? One hundred billion times smaller! Mind you, a fairer comparison is to the combinations approach, which required 4,426,165,368 tests. This searches a tree more than 1.5 million times smaller. I'll take it!
+Now we're really getting lazy: We only have to evaluate 2,750 candidate positions, a far, far smaller number than the original worst-case, most-pessimum of 281,474,976,710,656. How much smaller? One hundred billion times smaller!
+
+Mind you, a fairer comparison is to the combinations approach, which required 4,426,165,368 tests. This searches a tree more than 1.5 million times smaller. I'll take it!
 
 ---
 
