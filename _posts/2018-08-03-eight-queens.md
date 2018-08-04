@@ -111,7 +111,7 @@ By this time I knew a little about writing "generate and test" algorithms, as we
 
 [minimax]: https://en.wikipedia.org/wiki/Minimax
 
-The truly brute force solution looks something like this (BASIC has a `for... next` construct, but close enough):
+The "most pessimum" approach looks something like this (BASIC has a `for... next` construct, but close enough):
 
 ```javascript
 for (let i0 = 0; i0 <= 7; ++i0) {
@@ -241,14 +241,16 @@ I shut everything down, cleaned up as best I could, and then set about finding t
 
 ### refactoring before rewriting
 
-Now back to writing out an improved algorithm based on [combinations] rather than the worst-case brute force.
+Now back to writing out an improved algorithm based on [combinations] rather than the most pessimum approach.
 
 One of our go-to techniques for modifying programs is to begin my making sure that the thing we wish to change is refactored into its own responsibility, then we can make a change to just one thing. The code from above has the generating loops and  testing code thrown together all higgledy-piggledy. That makes it awkward to change the generation or the testing independently.
 
-We might begin be refactoring the code into a generator and consumer pattern. The generator lazily enumerates the search space, and the consumer filters it to select solutions:
+We might begin be refactoring the code into a generator and consumer pattern. The generator lazily enumerates the search space, and the consumer filters it to select solutions:[^gist]
+
+[^gist]: You'll find the code for all of the solutions in [this gist](https://gist.github.com/raganwald/e8896be8f032ba80019fd6a20fc6bb7d).
 
 ```javascript
-function * bruteForceCombinations () {
+function * mostPessimumGenerator () {
   for (let i0 = 0; i0 <= 7; ++i0) {
     for (let j0 = 0; j0 <= 7; ++j0) {
       for (let i1 = 0; i1 <= 7; ++i1) {
@@ -337,7 +339,7 @@ function first (iterable) {
   return value;
 }
 
-const solutionsToEightQueens = filterWith(test, bruteForceCombinations());
+const solutionsToEightQueens = filterWith(test, mostPessimumGenerator());
 
 diagramOf(first(solutionsToEightQueens))
   //=> ...go to bed and catch some 💤...
@@ -783,6 +785,12 @@ It was a lot of fun to revisit Martin Gardner's column on the eight queen's prob
 Just as there can be recreational mathematics, there can be recreational programming. And that's a very fine thing to enjoy.
 
 Thank you, and good night!
+
+---
+
+## The Code
+
+<script src="https://gist.github.com/raganwald/e8896be8f032ba80019fd6a20fc6bb7d.js"></script>
 
 ---
 
