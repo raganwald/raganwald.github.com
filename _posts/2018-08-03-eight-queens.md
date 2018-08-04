@@ -449,7 +449,9 @@ We'll need to be able to generate the [permutations] of the column numbers from 
 
 [permutations]: https://en.wikipedia.org/wiki/Permutation
 
-It's fairly easy to generate arbitrary permutations if we don't mind splicing and reassembling arrays:
+It's fairly easy to generate arbitrary permutations[^name] if we don't mind splicing and reassembling arrays:
+
+[^name]: One of the benefits of having some exposure to math and computer science is this: If you recognize that something is a formal concept, you can extract it, and name it after the "term of art" that is well-understood. Without that exposure, you may reinvent the concept, but you are less likely to know to extract it independently and probably won't give it a name that everyone recognizes at a glance. Thus, we can create explicit functions like `choose` and `permutations`, and that is superior to having the exact same functionality performed implicitly in the code.
 
 ```javascript
 function * permutations (arr, prefix = []) {
@@ -673,7 +675,9 @@ function * inductive (queens = []) {
 }
 ```
 
-Unlike our true generate-and-test approach, it interleaves partial generation with testing, so it's not possible to break it into two separate pieces. But it's considerably smaller, so it's fine to extract the test and have `inductive` call `testDiagonals`, rather than have them both be independent peers.
+Unlike our true generate-and-test approach, it interleaves partial generation with testing, so it's not possible to break it into two separate pieces. A more subtle problem is this: By identifying the places in which we were trying to "choose" positions or look for "permutations" of positions, we were able to extract single responsibilities, and make them explicit with names.
+
+But it's considerably smaller, so it's fine to extract the test and have `inductive` call `testDiagonals`, rather than have them both be independent peers.
 
 I wish I'd thought of this approach in 1977!
 
