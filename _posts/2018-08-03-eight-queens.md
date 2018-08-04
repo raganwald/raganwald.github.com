@@ -782,7 +782,7 @@ Mind you, a fairer comparison is to the combinations approach, which required 4,
 
 It was a lot of fun to revisit Martin Gardner's column on the eight queen's problem, and especially to rewrite these algorithms forty years later. It was neat to look at everything again with fresh eyes, and to see how we could go from searching 281,474,976,710,656, to 4,426,165,368, to 40,320, to 5,508, and finally to 2,750 candidate positions.
 
-This post doesn't have a deep insight into program design, and thus there's not major point to summarize. Just as there can be recreational mathematics, there can be recreational programming. And that's a very fine thing to enjoy.
+This post doesn't have a deep insight into program design, and thus there's no major point to summarize. Just as there can be recreational mathematics, there can be recreational programming. And that's a very fine thing to enjoy.
 
 Thank you, and good night!
 
