@@ -507,7 +507,7 @@ This is great! We've made a huge performance improvement simply by narrowing the
 
 ---
 
-### speeding up the testing
+### programming digression: speeding up the testing
 
 We've certainly sped things up by being smarter about the candidates we submit for testing. But what about the testing itself? The algorithm of filling in squares on a chess board very neatly matches how we might do this mentally, but it is quite slow. How can we make it faster?
 
