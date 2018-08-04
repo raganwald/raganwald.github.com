@@ -421,7 +421,7 @@ There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
 Let's digress and consider a simpler problem. What are all the ways that eight rooks can be placed on a chessboard such that they don't threaten each other?
 
-Obviously, no two rooks can be on the same column or row. So the Aha! realization is that we want all the combinations of eight positions which have a unique column and a unique row.
+Obviously, no two rooks can be on the same column or row. So the "aha!" realization is that we want all the combinations of eight positions which have a unique column and a unique row.
 
 Let's start with the unique rows. Every time we generate a set of rooks, one will be on row `0`, one on row `1`, one on row `2`, and so forth. So the candidate solutions can always be arranged to look like this:
 
@@ -500,8 +500,6 @@ diagramOf(first(solutionsToEightQueens))
 ```
 
 This is great! We've made a huge performance improvement simply by narrowing the "search space." We're down to `8!` permutations of queens on unique rows and columns, just 40,320 different permutations to try.
-
-(This approach is known as the "rooks" algorithm, because generating the candidate positions for the queens based on permutations of rows and columns is the solution for enumerating all of the ways eight rooks can be placed on a chessboard.)
 
 ---
 
