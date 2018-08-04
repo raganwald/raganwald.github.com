@@ -22,6 +22,8 @@ I nearly gasped out loud, savouring the memory of one of the earliest computer p
 
 ---
 
+*This prelude is long on nostalgia and short on programming. If that does not interest you, feel free to [skip straight to the description of the eight queens puzzle](#eight-queens).*
+
 In the nineteen-seventies, I spent a lot of time in Toronto's libraries. My favourite hangouts were the Sanderson Branch (which was near my home in Little Italy), and the "Spaced Out Library," a non-circulating collection of science fiction and fantasy donated by [Judith Merril], that was housed within St. George and College Street branch.[^games]
 
 [Judith Merril]: https://www.thestar.com/yourtoronto/once-upon-a-city-archives/2018/01/04/little-mother-of-science-fiction-birthed-new-chapter-for-genre-in-canada.html
@@ -98,129 +100,122 @@ In defiance of all regulation, I would go in late, pick the cupboard's lock, rem
 
 ---
 
-Now about puzzles. One of the things I worked on was writing new games. I made a [Maharajah and the Sepoys][ms] program that would play the Maharajah while I played the standard chess pieces. It could beat me, which was enough AI for my purposes.
+One of the things I worked on at school was writing new games. I made a [Maharajah and the Sepoys][ms] program that would play the Maharajah while I played the standard chess pieces. It could beat me, which was enough AI for my purposes.
 
 This got me thinking about something I'd read in a Martin Gardner book, the [Eight Queens Puzzle][8q]. As Wikipedia explains, "The eight queens puzzle is the problem of placing eight chess queens on an 8×8 chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal."
 
 [ms]: https://en.wikipedia.org/wiki/Maharajah_and_the_Sepoys
 [8q]: https://en.wikipedia.org/wiki/Eight_queens_puzzle
 
-By this time I knew a little about writing "generate and test" algorithms, as well as a little about depth-first search from writing games (like "Maharajah and the Sepoys") that performed basic [minimax] searches for moves to make. So I set about writing a BASIC program to search for solutions. I had no real understanding of computational complexity and running time, but what if I wrote a program and left it running all night?
+By this time I knew a little about writing "generate and test" algorithms, as well as a little about depth-first search from writing games (like "Maharajah and the Sepoys") that performed basic [minimax] searches for moves to make. So I set about writing a BASIC program to search for solutions. I had no formal understanding of computational complexity and running time, but what if I wrote a program and left it running all night?
 
 [minimax]: https://en.wikipedia.org/wiki/Minimax
 
 The truly brute force solution looks something like this (BASIC has a `for... next` construct, but close enough):
 
 ```javascript
-outer: for (let i0 = 0; i0 <= 7; ++i0) {
- for (let j0 = 0; j0 <= 7; ++j0) {
-   for (let i1 = 0; i1 <= 7; ++i1) {
-     for (let j1 = 0; j1 <= 7; ++j1) {
-       for (let i2 = 0; i2 <= 7; ++i2) {
-         for (let j2 = 0; j2 <= 7; ++j2) {
-           for (let i3 = 0; i3 <= 7; ++i3) {
-             for (let j3 = 0; j3 <= 7; ++j3) {
-               for (let i4 = 0; i4 <= 7; ++i4) {
-                 for (let j4 = 0; j4 <= 7; ++j4) {
-                   for (let i5 = 0; i5 <= 7; ++i5) {
-                     for (let j5 = 0; j5 <= 7; ++j5) {
-                       for (let i6 = 0; i6 <= 7; ++i6) {
-                         for (let j6 = 0; j6 <= 7; ++j6) {
-                           for (let i7 = 0; i7 <= 7; ++i7) {
-                             inner: for (let j7 = 0; j7 <= 7; ++j7) {
-                               const board = [
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."]
-                               ];
+for (let i0 = 0; i0 <= 7; ++i0) {
+  for (let j0 = 0; j0 <= 7; ++j0) {
+    for (let i1 = 0; i1 <= 7; ++i1) {
+      for (let j1 = 0; j1 <= 7; ++j1) {
 
-                               const queens = [
-                                 [i0, j0],
-                                 [i1, j1],
-                                 [i2, j2],
-                                 [i3, j3],
-                                 [i4, j4],
-                                 [i5, j5],
-                                 [i6, j6],
-                                 [i7, j7]
-                               ];
+        // ...lots of loops elided...
 
-                               for (const [i, j] of queens) {
-                                 if (board[i][j] != '.') {
-                                   // square is occupied or threatened
-                                   continue inner;
-                                 }
+          for (let i7 = 0; i7 <= 7; ++i7) {
+            inner: for (let j7 = 0; j7 <= 7; ++j7) {
+              const board = [
+                [".", ".", ".", ".", ".", ".", ".", "."],
+                [".", ".", ".", ".", ".", ".", ".", "."],
+                [".", ".", ".", ".", ".", ".", ".", "."],
+                [".", ".", ".", ".", ".", ".", ".", "."],
+                [".", ".", ".", ".", ".", ".", ".", "."],
+                [".", ".", ".", ".", ".", ".", ".", "."],
+                [".", ".", ".", ".", ".", ".", ".", "."],
+                [".", ".", ".", ".", ".", ".", ".", "."]
+              ];
 
-                                 for (let k = 0; k <= 7; ++k) {
-                                   // fill row and column
-                                   board[i][k] = board[k][j] = "x";
+              const queens = [
+                [i0, j0],
+                [i1, j1],
+                [i2, j2],
+                [i3, j3],
+                [i4, j4],
+                [i5, j5],
+                [i6, j6],
+                [i7, j7]
+              ];
 
-                                   const vOffset = k-i;
-                                   const hDiagonal1 = j - vOffset;
-                                   const hDiagonal2 = j + vOffset;
+              for (const [i, j] of queens) {
+                if (board[i][j] != '.') {
+                  // square is occupied or threatened
+                  continue inner;
+                }
 
-                                   // fill diagonals
-                                   if (hDiagonal1 >= 0 && hDiagonal1 <= 7) {
-                                     board[k][hDiagonal1] = "x";
-                                   }
+                for (let k = 0; k <= 7; ++k) {
+                  // fill row and column
+                  board[i][k] = board[k][j] = "x";
 
-                                   if (hDiagonal2 >= 0 && hDiagonal2 <= 7) {
-                                     board[k][hDiagonal2] = "x";
-                                   }
-                                 }
-                               }
+                  const vOffset = k - i;
+                  const hDiagonal1 = j - vOffset;
+                  const hDiagonal2 = j + vOffset;
 
-                               const out = [
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."],
-                                 [".", ".", ".", ".", ".", ".", ".", "."]
-                               ];
+                  // fill diagonals
+                  if (hDiagonal1 >= 0 && hDiagonal1 <= 7) {
+                    board[k][hDiagonal1] = "x";
+                  }
 
-                               for (const [i, j] of queens) {
-                                 out[i][j] = "Q";
-                               }
+                  if (hDiagonal2 >= 0 && hDiagonal2 <= 7) {
+                    board[k][hDiagonal2] = "x";
+                  }
+                }
+              }
 
-                               console.log(out.map(row => row.join('')).join("\n"));
-                               break outer;
-                             }
-                           }
-                         }
-                       }
-                     }
-                   }
-                 }
-               }
-             }
-           }
-         }
-       }
-     }
-   }
- }
+              console.log(diagramOf(queens));
+            }
+          }
+
+        // ...lots of loops elided...
+
+      }
+    }
+  }
+}
+
+function diagramOf (queens) {
+  const board = [
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."]
+  ];
+
+  for (const [i, j] of queens) {
+    board[i][j] = "Q";
+  }
+
+  return board.map(row => row.join('')).join("\n");
 }
 ```
 
 I believe I tried that, left the program running overnight, and when I came in the next morning before school it was still running. It was searching `8^16` (or more accurately, `64^8`) candidates for a solution, that's 281,474,976,710,656 loops. Given the speed of that minicomputer, I suspect the program would still be running today.
 
-Then I had an insight of sorts: If I could arrange an _ordering_ of queens, then if I set about generating all the possible arrangements for the first queen, by definition the subsequent queens would have to come _after_ each queen's position.
+This will seem very obvious today, but one broad classification of algorithms for solving a problem like this is that of searching for solutions. It's not the only one, but it's the one I tried back then, and the one we're going to focus on today. When you have a search problem, there are two ways to solve it more quickly: Search faster, and search a smaller problem space.
 
-Although I don't think I sat down and worked out the maths at the time, I intuitively reasoned that the number of unique choices of eight distinct squares is much smaller than `64^8`. For starters, if we eliminate the cases where two queens are on the same square, we're already down from `64^8` to `64!/56!` (`64*63*62*61*60*59*58*57`). That reduces the search space to 178,462,987,637,760 candidates, about half as many as the original pure brute force.
+Although I didn't use such words, I grasped that my first priority was searching a smaller space. So I thought about it for a bit. Then I had an insight of sorts: If I could think of teh board as a one-dimensional ordered list of squares, I could reason as follows. If I pick a square for the leftmost queen, every other queen would have to come to the right of that queen.
 
-But we also don't care about the ordering, so what we want are [combinations], not permutations. That reduces our search space again, down to `64!/(8!*56!)`, or 4,426,165,368 ways to choose 8 squares from 64.
+By induction that would follow for the third and every subsequent queen. That is different than the worst-case brute force algorithm: After it picks a square for the first queen, each of the other queens can be in any position before or after it. But if we're iterating through all of the possible positions for the first queen, it follows that we will already have iterated over any position with a queen before the first.
+
+So this approach would eliminate a lot of duplicate positions to consider.
+
+Although I didn't have the education to articulate the idea properly, I was reasoning that what I wanted to search was the space of the number [combinations] of choosing 8 squares from 64 possibilities. That reduces the search space from `64^8` down to 4,426,165,368 candidate positions. That's 63,593 smaller, a big deal.
 
 [combinations]: https://en.wikipedia.org/wiki/Combination
 
-Before writing out code that implements this improvement, I'll share what happened when I tested my conjecture.
+Before we get into the code that implements the "combinations" approach, I'll share what happened when I tested my conjecture using my clumsy code of the time...
 
 ---
 
@@ -228,29 +223,29 @@ Before writing out code that implements this improvement, I'll share what happen
 
 ---
 
-### disaster strikes
+### digression: disaster strikes
 
-First, I had neglected to insert code to halt the program when it found a solution. Perhaps I wanted to print all of the solutions. Second, I tried to optimize my test subroutine at the same time, and inserted a bug. Or perhaps, the bug was already there, but it didn't manifest itself until the program was deeper into its search, and my "optimization" took it to the failure case more quickly.
+As above, I had chosen not to halt the program when it found a solution. Perhaps I wanted to print all of the solutions. As it happened, my test code had a bug, but it didn't manifest itself until the program was deeper into its search, and my "optimization" took it to the failure case more quickly.
 
-In any event, I left the updated program running overnight, and once again returned before breakfast to see if it had found any solutions. When I entered the room, there was a horrible smell and a deafening clacking sound. The test function had failed at some point, and it was passing thousands of positions in rapid order.
+But I didn't know this, so I left the updated program running overnight, and once again returned before breakfast to see if it had found any solutions. When I entered the room, there was a horrible smell and a deafening clacking sound. The test function had failed at some point, and it was passing thousands of positions in rapid order.
 
-The paper roll had jammed at some point in the night and was no longer advancing, but the teletype had hammered through the paper and was hammering on the roller behind. Rolls of paper had emerged from the machine and lay in a heap around it. I consider it a very lucky escape that a spark hadn't ignited the paper or its dust that hung in the air.
+The paper roll on the teletype had jammed at some point in the night and was no longer advancing, but the teletype had hammered through the paper and was hammering on the roller behind. Rolls of paper had emerged from the machine and lay in a heap around it. I consider it a very lucky escape that a spark hadn't ignited the paper or its dust that hung in the air.
 
 I shut everything down, cleaned up as best I could, and then set about finding the bug. Although I never did cause another "physical crash," it took me days (or possibly weeks, I don't quite remember, and I did have other things going on at the time) before I had improved my program to the point where it found solutions.
 
 ---
 
-[![The Royal Ontario Museum, ©2009 Steve Harris](/assets/images/rom-crystal.jpg)](https://www.flickr.com/photos/stevenharris/3673718875)
+<a name="separating-concerns"/>[![The Royal Ontario Museum, ©2009 Steve Harris](/assets/images/rom-crystal.jpg)](https://www.flickr.com/photos/stevenharris/3673718875)
 
 ---
 
-### separating concerns
+### refactoring before rewriting
 
-Now back to writing out an improved algorithm.
+Now back to writing out an improved algorithm based on [combinations] rather than the worst-case brute force.
 
-One of our go-to techniques for modifying programs is to begin my making sure that the thing we wish to change is refactored into its own responsibility, then we can make a change to just one thing. The JavaScript analog of my old BASIC code has the generating loops, function testing code, and output code all higgledy-piggledy.
+One of our go-to techniques for modifying programs is to begin my making sure that the thing we wish to change is refactored into its own responsibility, then we can make a change to just one thing. The code from above has the generating loops and  testing code thrown together all higgledy-piggledy. That makes it awkward to change the generation or the testing independently.
 
-We might begin be refactoring into a generator and consumer. We can then modify the generator as we see fit:
+We might begin be refactoring the code into a generator and consumer pattern. The generator lazily enumerates the search space, and the consumer filters it to select solutions:
 
 ```javascript
 function * bruteForceCombinations () {
@@ -258,42 +253,28 @@ function * bruteForceCombinations () {
     for (let j0 = 0; j0 <= 7; ++j0) {
       for (let i1 = 0; i1 <= 7; ++i1) {
         for (let j1 = 0; j1 <= 7; ++j1) {
-          for (let i2 = 0; i2 <= 7; ++i2) {
-            for (let j2 = 0; j2 <= 7; ++j2) {
-              for (let i3 = 0; i3 <= 7; ++i3) {
-                for (let j3 = 0; j3 <= 7; ++j3) {
-                  for (let i4 = 0; i4 <= 7; ++i4) {
-                    for (let j4 = 0; j4 <= 7; ++j4) {
-                      for (let i5 = 0; i5 <= 7; ++i5) {
-                        for (let j5 = 0; j5 <= 7; ++j5) {
-                          for (let i6 = 0; i6 <= 7; ++i6) {
-                            for (let j6 = 0; j6 <= 7; ++j6) {
-                              for (let i7 = 0; i7 <= 7; ++i7) {
-                                for (let j7 = 0; j7 <= 7; ++j7) {
-                                  const queens = [
-                                    [i0, j0],
-                                    [i1, j1],
-                                    [i2, j2],
-                                    [i3, j3],
-                                    [i4, j4],
-                                    [i5, j5],
-                                    [i6, j6],
-                                    [i7, j7]
-                                  ];
 
-                                  yield queens;
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+          // ...lots of loops elided...
+
+            for (let i7 = 0; i7 <= 7; ++i7) {
+              for (let j7 = 0; j7 <= 7; ++j7) {
+                const queens = [
+                  [i0, j0],
+                  [i1, j1],
+                  [i2, j2],
+                  [i3, j3],
+                  [i4, j4],
+                  [i5, j5],
+                  [i6, j6],
+                  [i7, j7]
+                ];
+
+                yield queens;
               }
             }
-          }
+
+          // ...lots of loops elided...
+
         }
       }
     }
@@ -342,26 +323,7 @@ function test (queens) {
   return true;
 }
 
-function stringify (queens) {
-  const board = [
-    [".", ".", ".", ".", ".", ".", ".", "."],
-    [".", ".", ".", ".", ".", ".", ".", "."],
-    [".", ".", ".", ".", ".", ".", ".", "."],
-    [".", ".", ".", ".", ".", ".", ".", "."],
-    [".", ".", ".", ".", ".", ".", ".", "."],
-    [".", ".", ".", ".", ".", ".", ".", "."],
-    [".", ".", ".", ".", ".", ".", ".", "."],
-    [".", ".", ".", ".", ".", ".", ".", "."]
-  ];
-
-  for (const [i, j] of queens) {
-    board[i][j] = "Q";
-  }
-
-  return board.map(row => row.join('')).join("\n");
-}
-
-function * filter (predicateFunction, iterable) {
+function * filterWith (predicateFunction, iterable) {
   for (const element of iterable) {
     if (predicateFunction(element)) {
       yield element;
@@ -375,10 +337,10 @@ function first (iterable) {
   return value;
 }
 
-const allSolutions = filter(test, bruteForceCombinations());
-const firstSolution = first(allSolutions);
+const solutionsToEightQueens = filterWith(test, bruteForceCombinations());
 
-stringify(firstSolution)
+diagramOf(first(solutionsToEightQueens))
+  //=> ...go to bed and catch some 💤...
 ```
 
 With this in hand, we can make a faster "combinations" generator, and we won't have to work around any of the other code.
@@ -394,7 +356,7 @@ With this in hand, we can make a faster "combinations" generator, and we won't h
 An easy way to implement choosing combinations of squares is to work with numbers from `0` to `63` instead of pairs of indices. Here's a generator that does the exact thing we want:
 
 ```javascript
-function * map (mapFunction, iterable) {
+function * mapWith (mapFunction, iterable) {
   for (const element of iterable) {
     yield mapFunction(element);
   }
@@ -410,7 +372,7 @@ function * choose (n, k, offset = 0) {
       const remaining = n - i - 1;
       const otherChoices = choose(remaining, k - 1, i + offset + 1);
 
-      yield * map(x => [i + offset].concat(x), otherChoices);
+      yield * mapWith(x => [i + offset].concat(x), otherChoices);
     }
   }
 }
@@ -429,19 +391,23 @@ choose(5, 3)
     [2, 3, 4]
 ```
 
-We can now write `choose(64, 8)` to get all the ways to choose eight squares, and `[Math.floor(q/8), q % 8]` to convert a number from `0` to `63` into a pair of indices between `0` and `7`:
+We can now write `choose(64, 8)` to get all the ways to choose eight squares, and `[Math.floor(n/8), n % 8]` to convert a number from `0` to `63` into a pair of indices between `0` and `7`:
 
 ```javascript
-const chooseCombinations = map(x => x.map(q => [Math.floor(q/8), q % 8]), choose(64, 8));
+const numberToPosition = n => [Math.floor(n/8), n % 8];
+const numbersToPositions = queenNumbers => queenNumbers.map(numberToPosition);
 
-const allSolutions = filter(test, chooseCombinations);
-const firstSolution = first(allSolutions);
+const combinationCandidates = mapWith(numbersToPositions, choose(64, 8));
 
-stringify(firstSolution)
+const solutionsToEightQueens = filterWith(test, combinationCandidates);
 
+diagramOf(first(solutionsToEightQueens))
+  //=> ...go to bed and catch some 💤...
 ```
 
-It's still a tremendous number of candidates to search. If we list them out we can see some of the problems right away. For example, the very first combination it wants to test is `[[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7]]`. The queens are all on the same row!
+4,426,165,368 candidate solutions is still a tremendous size of space to search. It was definitely beyond my 1977 hardware.
+
+But we can get faster. If we list the candidates out, we can see some of the problems right away. For example, the very first combination it wants to test is `[[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7]]`. The queens are all on the same row!
 
 There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
@@ -453,9 +419,11 @@ There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
 ### the "rooks" algorithm
 
-We _know_ that eight queens on the same row are not going to work. No two queens can be on the same column or row. So what we really want are all the combinations of eight queens that don't share a column or row. In other words, every queen will have a unique column and a unique row.
+Let's digress and consider a simpler problem. What are all teh ways that eight rooks can be placed on a chessboard such that they don't threaten each other?
 
-Let's start with the unique rows. Every time we generate a set of queens, one will be on row `0`, one on row `1`, one on row `2`, and so forth. So the candidate solutions can always be arranged to look like this:
+Obviously, no two rooks can be on the same column or row. So the Aha! realization is that we want all the combinations of eight positions which have a unique column and a unique row.
+
+Let's start with the unique rows. Every time we generate a set of rooks, one will be on row `0`, one on row `1`, one on row `2`, and so forth. So the candidate solutions can always be arranged to look like this:
 
 ```javascript
 [
@@ -463,7 +431,7 @@ Let's start with the unique rows. Every time we generate a set of queens, one wi
 ]
 ```
 
-Now what about the columns? Since no two queens can share the same column, the candidate solutions must all have a unique permutation of the numbers `0` through `7`, something like this:
+Now what about the columns? Since no two rooks can share the same column, the candidate solutions must all have a unique permutation of the numbers `0` through `7`, something like this:
 
 ```javascript
 [
@@ -501,19 +469,24 @@ permutations([1, 2, 3])
 //=> [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]
 ```
 
-And now we can apply our `permutations` generator to generating candidate solutions:
+And now we can apply our `permutations` generator to generating candidate solutions to the rooks problem:
 
 ```javascript
-const rookSolutions = map(
+const solutionsToEightRooks = mapWith(
   ii => ii.map((i, j) => [i, j]),
   permutations([0, 1, 2, 3, 4, 5, 6, 7])
 );
 
-const allSolutions = filter(test, rookSolutions);
-const firstSolution = first(allSolutions);
+Array.from(solutionsToEightRooks).length
+  //=> 40320
+```
 
-stringify(firstSolution)
+How do we apply this to solving the eight queens problem? Well, the set of all solutions to the eight queens problem is a subset of the set of all solutions to solving the eight rooks problem, so let's search the set of all solutions to the eight rooks problem, and cut the search space down from 4,426,165,368 to 40,320!
 
+```javascript
+const solutionsToEightQueens = filterWith(test, solutionsToEightRooks);
+
+diagramOf(first(solutionsToEightQueens))
 //=>
   Q.......
   ......Q.
@@ -589,11 +562,9 @@ function testDiagonals (queens) {
   return true;
 }
 
-const allSolutions = filter(testDiagonals, rookSolutions);
-const firstSolution = first(allSolutions);
+const solutionsToEightQueens = filterWith(testDiagonals, solutionsToEightRooks);
 
-stringify(firstSolution)
-
+diagramOf(first(solutionsToEightQueens))
 //=>
   Q.......
   ......Q.
@@ -654,7 +625,32 @@ I did not know the words for it, but I was performing a depth-first search of a 
 
 This method is better than the combinations approach, but not as good as the rooks approach. It's interesting nevertheless, because it is an "inductive" method that lends itself to recursive thinking. We begin with the solution for zero queens, and empty board. Then we successively search for ways to add one more queen to whatever we already have, backtracking if we run out of available spaces.
 
-We can actually combine the inductive and rooks approach. This algorithm builds solutions one row at a time, iterating over the open columns, and checking for diagonal attacks. If there are none, it recursively calls itself to add another row. When it reaches eight rows, it yields the solution. It finds all 92 solutions searching just 5,508 positions (Of which eight are the degenerate case of having just one queen on the first row):
+---
+
+[![Time rusting away their thin hinges ©2016 Derek Σωκράτης Finch](/assets/images/beach-huts.jpg)](https://www.flickr.com/photos/sagesolar/26574371071)
+
+---
+
+### tree searching solutions to the rooks problem
+
+The code we wrote for generating solutions to the rooks problem enumerates every permutation of eight squares that don't share a common row or column. But many of those, of course, share a diagonal. For example, here are the first eight solutions it generates:
+
+```
+[[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7]]
+[[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [7, 6], [6, 7]]
+[[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [6, 5], [5, 6], [7, 7]]
+[[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [6, 5], [7, 6], [5, 7]]
+[[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [7, 5], [5, 6], [6, 7]]
+[[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [7, 5], [6, 6], [5, 7]]
+[[0, 0], [1, 1], [2, 2], [3, 3], [5, 4], [4, 5], [6, 6], [7, 7]]
+[[0, 0], [1, 1], [2, 2], [3, 3], [5, 4], [4, 5], [7, 6], [6, 7]]
+```
+
+We can see at a glance that *any* solution beginning with `[0,0], [1,1]` is not going to work, so why bother generating all of the myriad candidates that are disqualified from the very first thing we check?
+
+If we think of the rooks code as generating a tree of candidate positions rather than a flat list, we can adapt it for the eight queens problem by checking partial solutions as we go and "prune" entire subtrees.
+
+This algorithm builds solutions one row at a time, iterating over the open columns, and checking for diagonal attacks. If there are none, it recursively calls itself to add another row. When it reaches eight rows, it yields the solution. It finds all 92 solutions by searching just 5,508 positions (Of which eight are the degenerate case of having just one queen on the first row):
 
 ```javascript
 function * inductive (queens = []) {
@@ -689,7 +685,7 @@ I wish I'd thought of this approach in 1977!
 
 ---
 
-### exploiting symmetry
+### bonus: exploiting symmetry
 
 Something else comes to mind when thinking about reducing the size of the tree to search. There is symmetry to the moves a Queen makes in Chess, and as a consequence, the positions we find have rotational symmetry, and they also have reflective symmetry on either horizontal or vertical axes.
 
@@ -749,13 +745,13 @@ function verticalReflection (queens) {
   );
 }
 
-function * flatMap (mapFunction, iterable) {
+function * flatMapWith (fn, iterable) {
   for (const element of iterable) {
-    yield * mapFunction(element);
+    yield * fn(element);
   }
 }
 
-const withReflections = flatMap(
+const withReflections = flatMapWith(
   queens => [queens, verticalReflection(queens)], halfInductive());
 
 Array.from(withReflections).length
