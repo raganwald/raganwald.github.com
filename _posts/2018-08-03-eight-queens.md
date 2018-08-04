@@ -770,7 +770,7 @@ Mind you, a fairer comparison is to the combinations approach, which required 4,
 
 ---
 
-## And so to Bed
+## And so to bed...
 
 ---
 
