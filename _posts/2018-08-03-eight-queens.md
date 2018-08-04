@@ -211,7 +211,7 @@ By induction that would follow for the third and every subsequent queen. That is
 
 So this approach would eliminate a lot of duplicate positions to consider.
 
-Although I didn't have the education to articulate the idea properly, I was reasoning that what I wanted to search was the space of the number [combinations] of choosing 8 squares from 64 possibilities. That reduces the search space from `64^8` down to 4,426,165,368 candidate positions. That's 63,593 smaller, a big deal.
+Although I didn't have the education to articulate the idea properly, I was reasoning that what I wanted to search was the space of the number [combinations] of choosing 8 squares from 64 possibilities. That reduces the search space from `64^8` down to 4,426,165,368 candidate positions. That's 63,593 times smaller, a big deal.
 
 [combinations]: https://en.wikipedia.org/wiki/Combination
 
