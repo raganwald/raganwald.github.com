@@ -205,7 +205,7 @@ I believe I tried that, left the program running overnight, and when I came in t
 
 This will seem very obvious today, but one broad classification of algorithms for solving a problem like this is that of searching for solutions. It's not the only one, but it's the one I tried back then, and the one we're going to focus on today. When you have a search problem, there are two ways to solve it more quickly: Search faster, and search a smaller problem space.
 
-Although I didn't use such words, I grasped that my first priority was searching a smaller space. So I thought about it for a bit. Then I had an insight of sorts: If I could think of teh board as a one-dimensional ordered list of squares, I could reason as follows. If I pick a square for the leftmost queen, every other queen would have to come to the right of that queen.
+Although I didn't use such words, I grasped that my first priority was searching a smaller space. So I thought about it for a bit. Then I had an insight of sorts: If I could think of the board as a one-dimensional ordered list of squares, I could reason as follows. If I pick a square for the leftmost queen, every other queen would have to come to the right of that queen.
 
 By induction that would follow for the third and every subsequent queen. That is different than the worst-case brute force algorithm: After it picks a square for the first queen, each of the other queens can be in any position before or after it. But if we're iterating through all of the possible positions for the first queen, it follows that we will already have iterated over any position with a queen before the first.
 
@@ -419,7 +419,7 @@ There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
 ### the "rooks" algorithm
 
-Let's digress and consider a simpler problem. What are all teh ways that eight rooks can be placed on a chessboard such that they don't threaten each other?
+Let's digress and consider a simpler problem. What are all the ways that eight rooks can be placed on a chessboard such that they don't threaten each other?
 
 Obviously, no two rooks can be on the same column or row. So the Aha! realization is that we want all the combinations of eight positions which have a unique column and a unique row.
 
