@@ -650,7 +650,7 @@ The code we wrote for generating solutions to the rooks problem enumerates every
 
 We can see at a glance that *any* solution beginning with `[0,0], [1,1]` is not going to work, so why bother generating all of the myriad candidates that are disqualified from the very first thing we check?
 
-If we think of the rooks code as generating a tree of candidate positions rather than a flat list, we can adapt it for the eight queens problem by checking partial solutions as we go and "prune" entire subtrees.
+If we think of the rooks code as generating a tree of candidate positions rather than a flat list, we can adapt it for the eight queens problem by checking partial solutions as we go, and pruning entire subtrees that couldn't possibly work.
 
 This algorithm builds solutions one row at a time, iterating over the open columns, and checking for diagonal attacks. If there are none, it recursively calls itself to add another row. When it reaches eight rows, it yields the solution. It finds all 92 solutions by searching just 5,508 positions (Of which eight are the degenerate case of having just one queen on the first row):
 
