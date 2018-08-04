@@ -1,5 +1,5 @@
 ---
-title: "Punch Cards and BASIC flings, Back-Tracking, and Eight Queens: Raganwald's Unexpected Nostalgia"
+title: "The Eight Queens problem and Raganwald's Unexpected Nostalgia"
 tags: [allonge]
 ---
 
