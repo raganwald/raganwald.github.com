@@ -1,5 +1,5 @@
 ---
-title: "The Eight Queens problem and Raganwald's Unexpected Nostalgia"
+title: "The Eight Queens Problem, and Raganwald's Unexpected Nostalgia"
 tags: [allonge]
 ---
 
