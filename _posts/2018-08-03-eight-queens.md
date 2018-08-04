@@ -685,9 +685,9 @@ I wish I'd thought of this approach in 1977!
 
 ### bonus: exploiting symmetry
 
-Something else comes to mind when thinking about reducing the size of the tree to search. There is symmetry to the moves a Queen makes in Chess, and as a consequence, the positions we find have rotational symmetry, and they also have reflective symmetry on either horizontal or vertical axes.
+Something else comes to mind when thinking about reducing the size of the tree to search. There is symmetry to the queen makes, and as a consequence, the positions we find have rotational symmetry, and they also have reflective symmetry on either horizontal or vertical axes.
 
-For example, every valid arrangement also has another valid arrangement that is symmetrical under vertical reflection, like these two mirror images of each other:
+One way to exploit this begins with noting that every valid arrangement also has another valid arrangement that is symmetrical under vertical reflection, like these two mirror images of each other:
 
 ```
 Q.......  .......Q
@@ -700,7 +700,9 @@ Q.......  .......Q
 ..Q.....  .....Q..
 ```
 
-Thus, every time we generate a valid arrangement, we can go ahead and make a vertical mirror image of it. That saves us work if we can also avoid generating and testing that mirror image arrangement.
+Thus, every time we discover a valid arrangement, we can go ahead and make a vertical mirror image of it. That saves us work if we can also avoid generating and testing that mirror image arrangement.
+
+So the $64,000 question is, "Can we avoid the work of generating both positions and their mirror images?"
 
 Note the following numbered positions:
 
@@ -715,7 +717,9 @@ Note the following numbered positions:
 ........
 ```
 
-The "inductive" approach calculates every possible arrangement that has a queen in position 1 before computing those with a queen in position 2, then 3, then 4. When it has done so, it has computed half of the possible arrangements. But it has also calculated all of the possible mirror arrangements. Therefore, when it has finished computing the above, it has also computed:
+The "inductive" approach calculates every possible arrangement that has a queen in position 1 before computing those with a queen in position 2, then 3, then 4. When it has done so, it has computed half of the possible arrangements. But as we noted above, we can simply make a mirror image copy of each solution found, and thus we do not need to search all of the possible mirror arrangements.
+
+Therefore, when we have searched all of the arrangements with a queen in positions one through four, we have essentially already searched all of these arrnagements as well:
 
 ```
 ....4321
