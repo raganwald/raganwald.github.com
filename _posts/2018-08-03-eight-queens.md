@@ -861,7 +861,13 @@ function niceDiagramOf (queens) {
 mapWith(niceDiagramOf, fundamentals(halfInductive()))
 ```
 
-Success!!!
+Success!!! If we want to check them against the [fundamental solutions listed in Wikipedia][solutions], our algorithm outputs them in this order (some are rotations or reflections of the solution as displayed in Wikipedia):
+
+[solutions]: https://en.wikipedia.org/wiki/Eight_queens_puzzle#Solutions
+
+|&nbsp;3|&nbsp;2|&nbsp;1|&nbsp;4|
+|&nbsp;5|&nbsp;6|&nbsp;7|&nbsp;8|
+|&nbsp;9|12|10|11|
 
 ---
 
