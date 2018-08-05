@@ -1,5 +1,5 @@
 ---
-title: "The Eight Queens Problem, and Raganwald's Unexpected Nostalgia"
+title: "The Eight Queens Problem... and Raganwald's Unexpected Nostalgia"
 tags: [allonge]
 ---
 
@@ -655,22 +655,22 @@ If we think of the rooks code as generating a tree of candidate positions rather
 This algorithm builds solutions one row at a time, iterating over the open columns, and checking for diagonal attacks. If there are none, it recursively calls itself to add another row. When it reaches eight rows, it yields the solution. It finds all 92 solutions by searching just 5,508 positions (Of which eight are the degenerate case of having just one queen on the first row):
 
 ```javascript
-function * inductive (queens = []) {
+const without = (set, element) =>
+	new Set([...set].filter(x => x !== element));
+
+function * inductive (
+	queens = [],
+  candidateColumns = new Set([0, 1, 2, 3, 4, 5, 6, 7])
+) {
   if (queens.length === 8) {
     yield queens;
   } else {
-    const candidateColumns = [0, 1, 2, 3, 4, 5, 6, 7];
-    for (const [row, column] of queens) {
-      candidateColumns[column] = undefined;
-    }
+    for (const chosenColumn of candidateColumns) {
+      const candidateQueens = queens.concat([[queens.length, chosenColumn]]);
+      const remainingColumns = without(candidateColumns, chosenColumn);
 
-    for (const candidateColumn of candidateColumns) {
-      if (candidateColumn != null) {
-        const candidateQueens = queens.concat([[queens.length, candidateColumn]]);
-
-        if (testDiagonals(candidateQueens)) {
-          yield * inductive(candidateQueens);
-        }
+      if (testDiagonals(candidateQueens)) {
+        yield * inductive(candidateQueens, remainingColumns);
       }
     }
   }
