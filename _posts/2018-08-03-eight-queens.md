@@ -851,8 +851,8 @@ function niceDiagramOf (queens) {
     ["⬛️", "⬜️", "⬛️", "⬜️", "⬛️", "⬜️", "⬛️", "⬜️"]
   ];
 
-  for (const [i, j] of queens) {
-    board[i][j] = "👸🏾";
+  for (const [row, col] of queens) {
+    board[7 - row][col] = "👸🏾";
   }
 
   return board.map(row => row.join('')).join("\n");
