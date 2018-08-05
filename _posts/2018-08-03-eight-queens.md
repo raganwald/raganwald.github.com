@@ -725,7 +725,7 @@ Note the following numbered positions:
 
 The "inductive" approach calculates every possible arrangement that has a queen in position 1 before computing those with a queen in position 2, then 3, then 4. When it has done so, it has computed half of the possible arrangements. But as we noted above, we can simply make a mirror image copy of each solution found, and thus we do not need to search all of the possible mirror arrangements.
 
-Therefore, when we have searched all of the arrangements with a queen in positions one through four, we have essentially already searched all of these arrnagements as well:
+Therefore, when we have searched all of the arrangements with a queen in positions one through four, we have essentially already searched all of these arrangements as well:
 
 ```
 ....4321
@@ -840,7 +840,8 @@ function * fundamentals (solutions) {
 }
 
 mapWith(diagramOf, fundamentals(halfInductive()))
-  //=>
+
+//=>
 
 Q.......  Q.......  .Q......  .Q......
 ....Q...  .....Q..  ...Q....  ....Q...
@@ -869,6 +870,8 @@ Q.......  Q.......  Q.......  .......Q
 .....Q..  ...Q....  .Q......  ......Q.
 ..Q.....  .....Q..  .....Q..  ...Q....
 ```
+
+Success!!!
 
 ---
 
