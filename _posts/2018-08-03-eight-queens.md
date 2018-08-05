@@ -768,7 +768,107 @@ Array.from(withReflections).length
 
 Now we're really getting lazy: We only have to evaluate 2,750 candidate positions, a far, far smaller number than the original worst-case, most-pessimum, 281,474,976,710,656 tests. How much smaller? One hundred billion times smaller!
 
-Mind you, a fairer comparison is to the combinations approach, which required 4,426,165,368 tests. A tree of 2,750 candidate positions is more than 1.5 million times smaller. We'll take it!
+Mind you, a fairer comparison is to the combinations approach, which required 4,426,165,368 tests. A tree of 2,750 candidate positions is more than 1.5 million times smaller. We'll take it![^more]
+
+[^more]: There are some other optimizations available around exploiting horizontal or rotational symmetry to reduce the search space. For example, consider an approach where we also generate the horizontal reflection of a solution we find. In that case, after completing all the possible solutions that include a Queen in position `[0, 0]`, we can eliminate trying any solutions that have a queen in position `[7,0]`. Alas, this is a leaf, so we don't get to prune an entire subtree, and the ratio of code complexity to gains is marginal. I found my attempt inelegant. You might want to play around with searching in different ways so that there is an elegant way to exploit horizontal and rotational symmetry to reduce the search space.
+
+---
+
+[![©2009 Matteo](/assets/images/nets.jpg)](https://www.flickr.com/photos/56435712@N06/5231701500)
+
+---
+
+### obtaining fundamental solutions
+
+Now that we've had a look at exploiting vertical symmetry to do less work but still generate all of the possible solutions, including those that are reflections and rotations of each other, what about going the other way?
+
+As Wikipedia explain, "If solutions that differ only by the symmetry operations of rotation and reflection of the board are counted as one, the puzzle has 12 solutions. These are called fundamental solutions."
+
+If we only want the fundamental solutions, we can filter the solutions we generate by testing them against a set that includes reflections and rotations. We obviously won't actually output reflections and rotations, we're just using them to filter the results:
+
+```javascript
+const sortQueens = queens =>
+  queens.reduce(
+    (acc, [row, col]) => (acc[row] = [row, col], acc),
+    [null, null, null, null, null, null, null, null]
+  );
+
+const rotateRight = queens =>
+  sortQueens( queens.map(([row, col]) => [col, 7 - row]) );
+
+const rotations = solution => {
+  const rotations = [null, null, null];
+  let temp = rotateRight(solution);
+
+  rotations[0] = temp;
+  temp = rotateRight(temp);
+  rotations[1] = temp;
+  temp = rotateRight(temp);
+  rotations[2] = temp;
+
+  return rotations;
+}
+
+const indexQueens = queens => queens.map(([row, col]) => `${row},${col}`).join(' ');
+
+function * fundamentals (solutions) {
+  const solutionsSoFar = new Set();
+
+  for (const solution of solutions) {
+    const iSolution = indexQueens(solution);
+
+    if (solutionsSoFar.has(iSolution)) continue;
+
+    solutionsSoFar.add(iSolution);
+    const rSolutions = rotations(solution);
+    const irSolutions = rSolutions.map(indexQueens);
+    for (let irSolution of irSolutions) {
+      solutionsSoFar.add(irSolution);
+    }
+
+    const vSolution = verticalReflection(solution);
+
+    const rvSolutions = rotations(vSolution);
+    const irvSolutions = rvSolutions.map(indexQueens);
+
+    for (let irvSolution of irvSolutions) {
+      solutionsSoFar.add(irvSolution);
+    }
+
+    yield solution;
+  }
+}
+
+mapWith(diagramOf, fundamentals(halfInductive()))
+  //=>
+
+Q.......  Q.......  .Q......  .Q......
+....Q...  .....Q..  ...Q....  ....Q...
+.......Q  .......Q  .....Q..  ......Q.
+.....Q..  ..Q.....  .......Q  Q.......
+..Q.....  ......Q.  ..Q.....  ..Q.....
+......Q.  ...Q....  Q.......  .......Q
+.Q......  .Q......  ......Q.  .....Q..
+...Q....  ....Q...  ....Q...  ...Q....
+
+.Q......  .Q......  .Q......  .Q......
+....Q...  .....Q..  .....Q..  ......Q.
+......Q.  Q.......  .......Q  ..Q.....
+...Q....  ......Q.  ..Q.....  .....Q..
+Q.......  ...Q....  Q.......  .......Q
+.......Q  .......Q  ...Q....  ....Q...
+.....Q..  ..Q.....  ......Q.  Q.......
+..Q.....  ....Q...  ....Q...  ...Q....
+
+.Q......  ..Q.....  ..Q.....  ..Q.....
+......Q.  ....Q...  ....Q...  .....Q..
+....Q...  .Q......  .......Q  .Q......
+.......Q  .......Q  ...Q....  ....Q...
+Q.......  Q.......  Q.......  .......Q
+...Q....  ......Q.  ......Q.  Q.......
+.....Q..  ...Q....  .Q......  ......Q.
+..Q.....  .....Q..  .....Q..  ...Q....
+```
 
 ---
 
