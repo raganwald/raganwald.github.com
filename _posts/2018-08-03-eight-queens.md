@@ -659,7 +659,7 @@ const without = (array, element) =>
 	array.filter(x => x !== element);
 
 function * inductive (
-	queens = [],
+  queens = [],
   candidateColumns = [0, 1, 2, 3, 4, 5, 6, 7]
 ) {
   if (queens.length === 8) {
