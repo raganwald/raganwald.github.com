@@ -655,12 +655,12 @@ If we think of the rooks code as generating a tree of candidate positions rather
 This algorithm builds solutions one row at a time, iterating over the open columns, and checking for diagonal attacks. If there are none, it recursively calls itself to add another row. When it reaches eight rows, it yields the solution. It finds all 92 solutions by searching just 5,508 positions (Of which eight are the degenerate case of having just one queen on the first row):
 
 ```javascript
-const without = (set, element) =>
-	new Set([...set].filter(x => x !== element));
+const without = (array, element) =>
+	array.filter(x => x !== element);
 
 function * inductive (
 	queens = [],
-  candidateColumns = new Set([0, 1, 2, 3, 4, 5, 6, 7])
+  candidateColumns = [0, 1, 2, 3, 4, 5, 6, 7]
 ) {
   if (queens.length === 8) {
     yield queens;
