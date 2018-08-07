@@ -90,7 +90,7 @@ In defiance of all regulation, I would go in late, pick the cupboard's lock, rem
 
 ---
 
-<a name="eight-queens"/>[![Eight Queens Puzzle](/assets/images/one-solution.png)][8q]
+<a name="eight-queens"/>[![Eight Queens Puzzle](/assets/images/one-solutions.png)][8q]
 
 [8q]: https://en.wikipedia.org/wiki/Eight_queens_puzzle
 
@@ -415,6 +415,193 @@ There is an easy fix for this and as a bonus, it gets us solutions really fast.
 
 ---
 
+[![Huge Tree ©2009 Mitch Bennett](/assets/images/huge-tree.jpg)](https://www.flickr.com/photos/mitchell3417/3451297468)
+
+---
+
+### tree searching
+
+In my original BASIC program way back in 1977, I built the board as I went, and marked the "threatened" squares. But instead of iterating over all the possible queen positions, as I added queens to the board I iterated over all the open positions. So after placing the first queen in the first open space, my board looked conceptually like this:
+
+```
+Qxxxxxxx
+xx......
+x.x.....
+x..x....
+x...x...
+x....x..
+x.....x.
+x......x
+```
+
+The next queen I would try would be in the first "open" square, like this:
+
+```
+Qxxxxxxx
+xxQxxxxx
+xxxx....
+x.xxx...
+x.x.xx..
+x.x..xx.
+x.x...xx
+x.x....x
+```
+
+I'd continue like this until there were eight queens, or I ran out of empty spaces. If I failed, I'd backtrack and try a different position for the last queen. If I ran out of different positions for the last queen, I'd try a different position for the second-to-last queen, and so on. This eliminated the problem of testing candidate solutions like `[[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7]]`, because having placed `[0,0]`, the next queen could not be placed on any square until `[1, 2]`.
+
+I did not know the words for it, but I was performing a depth-first search of a "tree" of positions. I was trying to find a path that was eight queens deep. And I was keeping the board updated to do so.
+
+This method is better than the combinations approach, but not as good as the rooks approach. It's interesting nevertheless, because it is an "inductive" method that lends itself to recursive thinking. We begin with the solution for zero queens, and empty board. Then we successively search for ways to add one more queen to whatever we already have, backtracking if we run out of available spaces.
+
+We can be clever in some ways. for example, we need only ever mark squares that come after the queen we are placing, as we never check any square earlier than the last queen we placed. Here's an implementation similar to my 1977 approach, implemented as a class just to prove that we aren't dogmatic about using functions for everything:
+
+```javascript
+const OCCUPATION_HELPER = Symbol("occupationHelper");
+
+class Board {
+  constructor () {
+    this.threats = [
+       0,  0,  0,  0,  0,  0,  0,  0,
+       0,  0,  0,  0,  0,  0,  0,  0,
+       0,  0,  0,  0,  0,  0,  0,  0,
+       0,  0,  0,  0,  0,  0,  0,  0,
+       0,  0,  0,  0,  0,  0,  0,  0,
+       0,  0,  0,  0,  0,  0,  0,  0,
+       0,  0,  0,  0,  0,  0,  0,  0,
+       0,  0,  0,  0,  0,  0,  0,  0
+    ];
+    this.queenIndices = [];
+  }
+
+  isValid (index) {
+    return index >= 0 && index <= 63;
+  }
+
+  isAvailable (index) {
+    return this.threats[index] === 0;
+  }
+
+  isEmpty () {
+    return this.queenIndices.length === 0;
+  }
+
+  isOccupiable (index) {
+    if (this.isEmpty()) {
+      return this.isValid(index);
+    } else {
+      return this.isValid(index) && index > this.lastQueen() && this.isAvailable(index);
+    }
+  }
+
+  numberOfQueens () {
+    return this.queenIndices.length
+  }
+
+  hasQueens () {
+    return this.numberOfQueens() > 0;
+  }
+
+  queens () {
+    return this.queenIndices.map(index => [Math.floor(index / 8), index % 8]);
+  }
+
+  lastQueen () {
+    if (this.queenIndices.length > 0) {
+      return this.queenIndices[this.queenIndices.length - 1];
+    }
+  }
+
+  * availableIndices () {
+    for (let index = (this.isEmpty() ? 0 : this.lastQueen() + 1); index <= 63; ++index) {
+      if (this.isAvailable(index)) {
+        yield index;
+      }
+    }
+  }
+
+  [OCCUPATION_HELPER] (index, action) {
+    const [row, col] = [Math.floor(index / 8), index % 8];
+
+    // the rest of the row
+    const endOfTheRow = row * 8 + 7;
+    for (let iThreatened = index + 1; iThreatened <= endOfTheRow; ++iThreatened) {
+      action(iThreatened);
+    }
+
+    // the rest of the column
+    const endOfTheColumn = 56 + col;
+    for (let iThreatened = index + 8; iThreatened <= endOfTheColumn; iThreatened += 8) {
+      action(iThreatened);
+    }
+
+    // diagonals to the left
+    const lengthOfLeftDiagonal = Math.min(col, 7 - row);
+    for (let i = 1; i <= lengthOfLeftDiagonal; ++i) {
+      const [rowThreatened, colThreatened] = [row + i, col - i];
+      const iThreatened = rowThreatened * 8 + colThreatened;
+
+      action(iThreatened);
+    }
+
+    // diagonals to the right
+    const lengthOfRightDiagonal = Math.min(7 - col, 7 - row);
+    for (let i = 1; i <= lengthOfRightDiagonal; ++i) {
+      const [rowThreatened, colThreatened] = [row + i, col + i];
+      const iThreatened = rowThreatened * 8 + colThreatened;
+
+      action(iThreatened);
+    }
+
+    return this;
+  }
+
+  occupy (index) {
+    const occupyAction = index => {
+      ++this.threats[index];
+    };
+
+    if (this.isOccupiable(index)) {
+      this.queenIndices.push(index);
+      return this[OCCUPATION_HELPER](index, occupyAction);
+    }
+  }
+
+  unoccupy () {
+    const unoccupyAction = index => {
+      --this.threats[index];
+    };
+
+    if (this.hasQueens()) {
+      const index = this.queenIndices.pop();
+
+      return this[OCCUPATION_HELPER](index, unoccupyAction);
+    }
+  }
+}
+```
+
+The `Board` class does nearly all the work. But here's the function that finds solutions:
+
+```javascript
+function * inductive (board = new Board()) {
+  if (board.numberOfQueens() === 8) {
+    yield board.queens();
+  } else {
+    for (const index of board.availableIndices()) {
+      board.occupy(index);
+      yield * inductive(board);
+      board.unoccupy();
+    }
+  }
+}
+```
+
+Very simple, and it shows at a high level exactly how things work. This inductive approach is a big step forward over combinations: With no further improvements or pruning, it tries 118,968 queen placements, a forty-thousandfold improvement over the 4,426,165,368 candidates of the combinations approach. It still is a little wasteful. For example, more than 42,000 of those placements involve placing the first queen on indices 8 or later, which means the first row is empty, and none of them will ever work. It's just spinning its wheels after finding all 92 positions.
+
+But even so, checking 118,968 placements is quite achievable, even on 1977 hardware. We've broken out of theory and into practice. But we can get faster!
+
+---
+
 [![Castle](/assets/images/rook-castles.jpg)](https://www.flickr.com/photos/nh53/41841008735)
 
 ---
@@ -485,7 +672,7 @@ Array.from(solutionsToEightRooks).length
   //=> 40320
 ```
 
-How do we apply this to solving the eight queens problem? Well, the set of all solutions to the eight queens problem is a subset of the set of all solutions to solving the eight rooks problem, so let's search the set of all solutions to the eight rooks problem, and cut the search space down from 4,426,165,368 to 40,320!
+How do we apply this to solving the eight queens problem? Well, the set of all solutions to the eight queens problem is a subset of the set of all solutions to solving the eight rooks problem, so let's search the set of all solutions to the eight rooks problem, and cut the search space down from 118,968 to 40,320!
 
 ```javascript
 const solutionsToEightQueens = filterWith(test, solutionsToEightRooks);
@@ -585,50 +772,6 @@ But when we come along to optimize something like this, the coupling makes it ha
 
 ---
 
-[![Huge Tree ©2009 Mitch Bennett](/assets/images/huge-tree.jpg)](https://www.flickr.com/photos/mitchell3417/3451297468)
-
----
-
-### tree searching
-
-As noted, separating generator from test allows us to optimize and improve each of the two parts independently. If we were mindful of such, we could write test for the two independent pieces. This is all very good.
-
-But that being said, not all improvements can be made independently like this. Any organization of code makes some things easier, but others harder. In my original BASIC program way back in 1977, I built the board as I went, and marked the "threatened" squares. But instead of iterating over all the possible queen positions, as I added queens to the board I iterated over all the open positions.
-
-So after placing the first queen in the first open space, my board looked conceptually like this:
-
-```
-Qxxxxxxx
-xx......
-x.x.....
-x..x....
-x...x...
-x....x..
-x.....x.
-x......x
-```
-
-The next queen I would try would be in the first "open" square, like this:
-
-```
-Qxxxxxxx
-xxQxxxxx
-xxxx....
-x.xxx...
-x.x.xx..
-x.x..xx.
-x.x...xx
-x.x....x
-```
-
-I'd continue like this until there were eight queens, or I ran out of empty spaces. If I failed, I'd backtrack and try a different position for the last queen. If I ran out of different positions for the last queen, I'd try a different position for the second-to-last queen, and so on.
-
-I did not know the words for it, but I was performing a depth-first search of a "tree" of positions. I was trying to find a path that was eight queens deep. And I was keeping the board updated to do so.
-
-This method is better than the combinations approach, but not as good as the rooks approach. It's interesting nevertheless, because it is an "inductive" method that lends itself to recursive thinking. We begin with the solution for zero queens, and empty board. Then we successively search for ways to add one more queen to whatever we already have, backtracking if we run out of available spaces.
-
----
-
 [![Time rusting away their thin hinges ©2016 Derek Σωκράτης Finch](/assets/images/beach-huts.jpg)](https://www.flickr.com/photos/sagesolar/26574371071)
 
 ---
@@ -650,7 +793,7 @@ The code we wrote for generating solutions to the rooks problem enumerates every
 
 We can see at a glance that *any* solution beginning with `[0,0], [1,1]` is not going to work, so why bother generating all of the myriad candidates that are disqualified from the very first thing we check?
 
-If we think of the rooks code as generating a tree of candidate positions rather than a flat list, we can adapt it for the eight queens problem by checking partial solutions as we go, and pruning entire subtrees that couldn't possibly work.
+If we think of the rooks code as generating a tree of candidate positions rather than a flat list, we can adapt it for the eight queens problem by checking partial solutions as we go, and pruning entire subtrees that couldn't possibly work. In essence, we're combining my original tree search with the rooks solution that I didn't know about.
 
 This algorithm builds solutions one row at a time, iterating over the open columns, and checking for diagonal attacks. If there are none, it recursively calls itself to add another row. When it reaches eight rows, it yields the solution. It finds all 92 solutions by searching just 5,508 positions (Of which eight are the degenerate case of having just one queen on the first row):
 
