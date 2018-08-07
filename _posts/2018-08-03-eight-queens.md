@@ -90,7 +90,7 @@ In defiance of all regulation, I would go in late, pick the cupboard's lock, rem
 
 ---
 
-<a name="eight-queens"/>[![Eight Queens Puzzle](/assets/images/one-solutions.png)][8q]
+<a name="eight-queens"/>[![Eight Queens Puzzle](/assets/images/one-solution.png)][8q]
 
 [8q]: https://en.wikipedia.org/wiki/Eight_queens_puzzle
 
