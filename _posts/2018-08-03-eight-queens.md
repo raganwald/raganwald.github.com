@@ -451,7 +451,7 @@ I'd continue like this until there were eight queens, or I ran out of empty spac
 
 I did not know the words for it, but I was performing a depth-first search of a "tree" of positions. I was trying to find a path that was eight queens deep. And I was keeping the board updated to do so.
 
-This method is better than the combinations approach, but not as good as the rooks approach. It's interesting nevertheless, because it is an "inductive" method that lends itself to recursive thinking. We begin with the solution for zero queens, and empty board. Then we successively search for ways to add one more queen to whatever we already have, backtracking if we run out of available spaces.
+This method is interesting, because it is an "inductive" method that lends itself to recursive thinking. We begin with the solution for zero queens, and empty board. Then we successively search for ways to add one more queen to whatever we already have, backtracking if we run out of available spaces.
 
 We can be clever in some ways. for example, we need only ever mark squares that come after the queen we are placing, as we never check any square earlier than the last queen we placed. Here's an implementation similar to my 1977 approach, implemented as a class just to prove that we aren't dogmatic about using functions for everything:
 
@@ -597,6 +597,10 @@ function * inductive (board = new Board()) {
 ```
 
 Very simple, and it shows at a high level exactly how things work. This inductive approach is a big step forward over combinations: With no further improvements or pruning, it tries 118,968 queen placements, a forty-thousandfold improvement over the 4,426,165,368 candidates of the combinations approach. It still is a little wasteful. For example, more than 42,000 of those placements involve placing the first queen on indices 8 or later, which means the first row is empty, and none of them will ever work. It's just spinning its wheels after finding all 92 positions.
+
+Also, and unlike our true generate-and-test approach, it interleaves partial generation with testing, so it's not possible to break it into two separate pieces. A more subtle problem is this: By identifying the places in which we were trying to "choose" positions or look for "permutations" of positions, we were able to extract single responsibilities, and make them explicit with names.
+
+It's also a lot more complex, mostly because it's mutating a single board in place rather than working with immutable data structures.
 
 But even so, checking 118,968 placements is quite achievable, even on 1977 hardware. We've broken out of theory and into practice. But we can get faster!
 
@@ -801,7 +805,7 @@ This algorithm builds solutions one row at a time, iterating over the open colum
 const without = (array, element) =>
 	array.filter(x => x !== element);
 
-function * inductive (
+function * inductiveRooks (
   queens = [],
   candidateColumns = [0, 1, 2, 3, 4, 5, 6, 7]
 ) {
@@ -813,16 +817,14 @@ function * inductive (
       const remainingColumns = without(candidateColumns, chosenColumn);
 
       if (testDiagonals(candidateQueens)) {
-        yield * inductive(candidateQueens, remainingColumns);
+        yield * inductiveRooks(candidateQueens, remainingColumns);
       }
     }
   }
 }
 ```
 
-Unlike our true generate-and-test approach, it interleaves partial generation with testing, so it's not possible to break it into two separate pieces. A more subtle problem is this: By identifying the places in which we were trying to "choose" positions or look for "permutations" of positions, we were able to extract single responsibilities, and make them explicit with names.
-
-But it's considerably smaller, so it's fine to extract the test and have `inductive` call `testDiagonals`, rather than have them both be independent peers.
+This has the best of both worlds: It takes advantage of the "rooks" optimization and the "inductive" approach to pruning subtrees. And although it isn't a pure pipeline, it does break the generation apart from the testing. So it's not only faster, it's also simpler.
 
 I wish I'd thought of this approach in 1977!
 
