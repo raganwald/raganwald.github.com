@@ -772,7 +772,7 @@ diagramOf(first(solutionsToEightQueens))
 
 Checking diagonals without filling in squares is a specialized optimization, of course.[^bitwise] Now we have coupled the test with the generation algorithm. In a larger software project, we might decouple things so that we can use them in different places in different ways.
 
-[^bitwise]: But far from the only one! Once we grasp that the interesting thing about a queen is the number of its row and column, and then add the concept of the numbers of its NESW and NWSE diagonals, it is a fairly obvious step to go right to encoding queen positions as bits. This allows us to use very fast bitwise operations instead of reading and writing from arrays. Here's an example in JavaScript that exploits bitwise operators and inductive search: http://gregtrowbridge.com/a-bitwise-solution-to-the-n-queens-problem-in-javascript/
+[^bitwise]: But far from the only optimization! Once we grasp that the interesting thing about a queen is the number of its row and column, and then add the concept of the numbers of its NESW and NWSE diagonals, it is a fairly obvious step to go right to encoding queen positions as bits. This allows us to use very fast bitwise operations instead of reading and writing from arrays. Here's an example in JavaScript that exploits bitwise operators and inductive search: [A bitwise solution to the n-Queens problem in Javascript](http://gregtrowbridge.com/a-bitwise-solution-to-the-n-queens-problem-in-javascript/).
 
 But when we come along to optimize something like this, the coupling makes it harder to reuse components, and it makes the program harder to change. Luckily for us, this isn't an essay about writing large software projects.
 
