@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Destructuring and Recursion in ES-6
-tags: [allonge]
+tags: [allonge, recursion]
 ---
 
 [![Drink HAND-POURED coffee.](/assets/images/hand-poured.jpg)](https://www.flickr.com/photos/wunderle/8336797898/)
@@ -16,13 +16,13 @@ JavaScript has a literal syntax for creating an array: The `[` and `]` character
 []
   //=> []
 ```
-      
+
 We can create an array with one or more *elements* by placing them between the brackets and separating the items with commas. Whitespace is optional:
 
 ```javascript
 [1]
   //=> [1]
-  
+
 [2, 3, 4]
   //=> [2,3,4]
 ```
@@ -36,13 +36,13 @@ Any expression will work:
 ]
   //=> [2,3,4]
 ```
-      
+
 Including an expression denoting another array:
 
 ```javascript
 [[[[[]]]]]
 ```
-    
+
 This is an array with one element that is an array array with one element this an array with one element that is an array with one element that is an empty array. Although that seems like something nobody would ever construct, many students have worked with almost the exact same thing when they explored various means of constructing arithmetic from Set Theory.
 
 Any expression will do, including names:
@@ -59,16 +59,16 @@ Array literals are expressions, and arrays are *reference types*. We can see tha
 ```javascript
 [] === []
   //=> false
-  
+
 [2 + 2] === [2 + 2]
   //=> false
-  
+
 const array_of_one = () => [1];
 
 array_of_one() === array_of_one()
   //=> false
 ```
-      
+
 ### destructuring arrays
 
 *Destructuring* is a feature going back to Common Lisp, if not before. We saw how to construct an array literal using `[`, expressions, `,` and `]`. Here's an example of an array literal that uses a name:
@@ -76,13 +76,13 @@ array_of_one() === array_of_one()
 ```javascript
 const wrap = (something) => [something];
 ```
-    
+
 Let's expand it to use a block and an extra name:
 
 ```javascript
 const wrap = (something) => {
   const wrapped = [something];
-  
+
   return wrapped;
 }
 
@@ -97,7 +97,7 @@ In JavaScript, we can actually *reverse* the statement and place the template on
 ```javascript
 const unwrap = (wrapped) => {
   const [something] = wrapped;
-  
+
   return something;
 }
 
@@ -110,14 +110,14 @@ The statement `const [something] = wrapped;` *destructures* the array represente
 ```javascript
 const surname = (name) => {
   const [first, last] = name;
-  
+
   return last;
 }
 
 surname(["Reginald", "Braithwaite"])
   //=> "Braithwaite"
 ```
-      
+
 We could do the same thing with `(name) => name[1]`, but destructuring is code that resembles the data it consumes, a valuable coding style.
 
 Destructuring can nest:
@@ -125,14 +125,14 @@ Destructuring can nest:
 ```javascript
 const description = (nameAndOccupation) => {
   const [[first, last], occupation] = nameAndOccupation;
-  
+
   return `${first} is a ${occupation}`;
 }
 
 description([["Reginald", "Braithwaite"], "programmer"])
   //=> "Reginald is a programmer"
 ```
-      
+
 ### gathering
 
 Sometimes we need to extract arrays from arrays. Here is the most common pattern: Extracting the head and gathering everything but the head from an array:
@@ -145,7 +145,7 @@ car
 cdr
   //=> [2, 3, 4, 5]
 ```
-      
+
 [`car` and `cdr`](https://en.wikipedia.org/wiki/CAR_and_CDR) are archaic terms that go back to an implementation of Lisp running on the IBM 704 computer. Some other languages call them `first` and `butFirst`, or `head` and `tail`. We will use a common convention and call variables we gather `rest`, but refer to the `...` operation as a "gather," follow Kyle Simpson's example.[^getify]
 
 [^getify]: Kyle Simpson is the author of [You Don't Know JS](https://github.com/getify/You-Dont-Know-JS/blob/master/README.md#you-dont-know-js-book-series), available [here](http://search.oreilly.com/?q=you+don%27t+know+js+kyle+simpson)
@@ -155,7 +155,7 @@ Alas, the `...` notation does not provide a universal patten-matching capability
 ```javascript
 const [...butLast, last] = [1, 2, 3, 4, 5];
   //=> ERROR
-  
+
 const [first, ..., last] = [1, 2, 3, 4, 5];
   //=> ERROR
 ```
@@ -165,31 +165,31 @@ Also it's important to note that the `...` can be at the beginning, for example 
 ```javascript
 const date = new Date(...[2015, 1, 1]);
 ```
-      
+
 Now, when we introduced destructuring, we saw that it is kind-of-sort-of the reverse of array literals. So if
 
 ```javascript
 const wrapped = [something];
 ```
-    
+
 Then:
 
 ```javascript
 const [unwrapped] = something;
 ```
-    
+
 What is the reverse of gathering? We know that:
 
 ```javascript
 const [car, ...cdr] = [1, 2, 3, 4, 5];
 ```
-    
+
 What is the reverse? It would be:
 
 ```javascript
 const cons = [car, ...cdr];
 ```
-    
+
 Let's try it:
 
 ```javascript
@@ -198,9 +198,9 @@ const oneTwoThree = ["one", "two", "three"];
 ["zero", ...oneTwoThree]
   //=> ["zero","one","two","three"]
 ```
-      
+
 It works! We can use `...` to place the elements of an array inside another array. We say that using `...` to destructure is gathering, and using it in a literal to insert elements is called "spreading."
-       
+
 ### destructuring parameters
 
 Consider the way we pass arguments to parameters:
@@ -210,7 +210,7 @@ foo()
 bar("smaug")
 baz(1, 2, 3)
 ```
-    
+
 It is very much like an array literal. And consider how we bind values to parameter names:
 
 ```javascript
@@ -218,7 +218,7 @@ const foo = () => ...
 const bar = (name) => ...
 const baz = (a, b, c) => ...
 ```
-   
+
 It *looks* like destructuring. It acts like destructuring. There is only one difference: We have not tried gathering. Let's do that:
 
 ```javascript
@@ -226,13 +226,13 @@ const numbers = (...nums) => nums;
 
 numbers(1, 2, 3, 4, 5)
   //=> [1,2,3,4,5]
-  
+
 const headAndTail = (head, ...tail) => [head, tail];
 
 headAndTail(1, 2, 3, 4, 5)
   //=> [1,[2,3,4,5]]
 ```
-      
+
 Gathering works with parameters! This is very useful indeed, and we'll see more of it in a moment.[^rest]
 
 [^rest]: Gathering in parameters has a long history, and the usual terms are to call gathering "pattern matching" and to call a name that is bound to gathered values a "rest parameter." The term "rest" is perfectly compatible with gather: "Rest" is the noun, and "gather" is the verb. We *gather* the *rest* of the parameters.
@@ -267,7 +267,7 @@ Let's convert our rules to array literals. The first rule is simple: `[]` is a l
 ["foo", ...["bar", "baz"]]
 //=> ["foo","bar","baz"]
 ```
-  
+
 Thanks to the parallel between array literals + spreads with destructuring + rests, we can also use the same rules to decompose lists:
 
 ```javascript
@@ -310,9 +310,9 @@ isEmpty([0])
 isEmpty([[]])
   //=> false
 ```
-    
+
 [^wellactually]: Well, actually, this does not work for arrays that contain `undefined` as a value, but we are not going to see that in our examples. A more robust implementation would be `(array) => array.length === 0`, but we are doing backflips to keep this within a very small and contrived playground.
-    
+
 Armed with our definition of an empty list and with what we've already learned, we can build a great many functions that operate on arrays. We know that we can get the length of an array using its `.length`. But as an exercise, how would we write a `length` function using just what we have already?
 
 First, we pick what we call a *terminal case*. What is the length of an empty array? `0`. So let's start our function with the observation that if an array is empty, the length is `0`:
@@ -323,7 +323,7 @@ const length = ([first, ...rest]) =>
     ? 0
     : // ???
 ```
-      
+
 We need something for when the array isn't empty. If an array is not empty, and we break it into two pieces, `first` and `rest`, the length of our array is going to be `length(first) + length(rest)`. Well, the length of `first` is `1`, there's just one element at the front. But we don't know the length of `rest`. If only there was a function we could call... Like `length`!
 
 ```javascript
@@ -332,20 +332,20 @@ const length = ([first, ...rest]) =>
     ? 0
     : 1 + length(rest);
 ```
-    
+
 Let's try it!
 
 ```javascript
 length([])
   //=> 0
-  
+
 length(["foo"])
   //=> 1
-  
+
 length(["foo", "bar", "baz"])
   //=> 3
 ```
-      
+
 Our `length` function is *recursive*, it calls itself. This makes sense because our definition of a list is recursive, and if a list is self-similar, it is natural to create an algorithm that is also self-similar.
 
 ### linear recursion
@@ -376,11 +376,11 @@ We already know how to divide arrays into smaller pieces. How do we decide wheth
 ```javascript
 Array.isArray("foo")
   //=> false
-  
+
 Array.isArray(["foo"])
   //=> true
 ```
-      
+
 The usual "terminal case" will be that flattening an empty array will produce an empty array. The next terminal case is that if an element isn't an array, we don't flatten it, and can put it together with the rest of our solution directly. Whereas if an element is an array, we'll flatten it and put it together with the rest of our solution.
 
 So our first cut at a `flatten` function will look like this:
@@ -401,7 +401,7 @@ const flatten = ([first, ...rest]) => {
 flatten(["foo", [3, 4, []]])
   //=> ["foo",3,4]
 ```
-      
+
 Once again, the solution directly displays the important elements: Dividing a problem into subproblems, detecting terminal cases, solving the terminal cases, and composing a solution from the solved portions.
 
 ### mapping
@@ -415,7 +415,7 @@ const squareAll = ([first, ...rest]) =>
   first === undefined
   ? []
   : [first * first, ...squareAll(rest)];
-                                            
+
 squareAll([1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
 ```
@@ -431,7 +431,7 @@ const truthyAll = ([first, ...rest]) =>
 truthyAll([null, true, 25, false, "foo"])
   //=> [false,true,true,false,true]
 ```
-                                                
+
 This specific case of linear recursion is called "mapping," and it is not necessary to constantly write out the same pattern again and again. Functions can take functions as arguments, so let's "extract" the thing to do to each element and separate it from the business of taking an array apart, doing the thing, and putting the array back together.
 
 Given the signature:
@@ -439,18 +439,18 @@ Given the signature:
 ```javascript
 const mapWith = (fn, array) => // ...
 ```
-    
+
 We can write it out using a ternary operator. Even in this small function, we can identify the terminal condition, the piece being broken off, and recomposing the solution.
 
 ```javascript
-const mapWith = (fn, [first, ...rest]) => 
+const mapWith = (fn, [first, ...rest]) =>
   first === undefined
     ? []
     : [fn(first), ...mapWith(fn, rest)];
-                                              
+
 mapWith((x) => x * x, [1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
-  
+
 mapWith((x) => !!x, [null, true, 25, false, "foo"])
   //=> [false,true,true,false,true]
 ```
@@ -464,7 +464,7 @@ const sumSquares = ([first, ...rest]) =>
   first === undefined
     ? 0
     : first * first + sumSquares(rest);
-                                         
+
 sumSquares([1, 2, 3, 4, 5])
   //=> 55
 ```
@@ -482,7 +482,7 @@ const foldWith = (fn, terminalValue, [first, ...rest]) =>
     ? terminalValue
     : fn(first, foldWith(fn, terminalValue, rest));
 ```
-                                                           
+
 And now we supply a function that does slightly more than our mapping functions:
 
 ```javascript
@@ -511,7 +511,7 @@ const squareAll = (array) => mapWith((x) => x * x, array);
 squareAll([1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
 ```
-          
+
 And to return to our first example, our version of `length` can be written as a fold:
 
 ```javascript
@@ -521,7 +521,7 @@ const length = (array) =>
 length([1, 2, 3, 4, 5])
   //=> 5
 ```
-    
+
 ### what does it all mean?
 
 Some data structures, like lists, have a can be defined as self-similar. When working with a self-similar data structure, a recursive algorithm parallels the data's self-similarity.
@@ -550,4 +550,3 @@ This post was extracted from a draft of the book, [JavaScript Allongé, The "Six
 [ja6]: https://leanpub.com/b/buyjavascriptallongthesixeditiongetjavascriptallongfree
 
 ---
-    

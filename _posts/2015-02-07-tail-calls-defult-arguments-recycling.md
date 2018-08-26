@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Tail Calls, Default Arguments, and Excessive Recycling in ES-6"
-tags: [allonge]
+tags: [allonge, recursion]
 ---
 
 The `mapWith` and `foldWith` functions we wrote in [Destructuring and Recursion in ES6](/2015/02/02/destructuring.html) are useful for illustrating the basic principles behind using recursion to work with self-similar data structures, but they are not "production-ready" implementations. One of the reasons they are not production-ready is that they consume memory proportional to the size of the array being folded.
@@ -13,7 +13,7 @@ const mapWith = (fn, [first, ...rest]) =>
   first === undefined
     ? []
     : [fn(first), ...mapWith(fn, rest)];
-                                              
+
 mapWith((x) => x * x, [1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
 ```
@@ -31,7 +31,7 @@ const mapWith = function (fn, [first, ...rest]) {
     const _temp1 = fn(first),
           _temp2 = mapWith(fn, rest),
           _temp3 = [_temp1, ..._temp2];
-          
+
     return _temp3;
   }
 }
@@ -47,7 +47,7 @@ That information is saved on a *call stack*, and it is quite expensive. Furtherm
 
 In practice, using a method like this with more than about 50 items in an array may cause some implementations to run very slow, run out of memory and freeze, or cause an error.
 
-```javascript                                                  
+```javascript
 mapWith((x) => x * x, [
    0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
   10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -106,7 +106,7 @@ const length = ([first, ...rest]) =>
     ? 0
     : 1 + length(rest);
 ```
-        
+
 The `length` function calls itself, but it is not a tail-call, because it returns `1 + length(rest)`, not `length(rest)`.
 
 The problem can be stated in such a way that the answer is obvious: `length` does not call itself in tail position, because it has to do two pieces of work, and while one of them is in the recursive call to `length`, the other happens after the recursive call.
@@ -126,7 +126,7 @@ const lengthDelaysWork = ([first, ...rest], numberToBeAdded) =>
 lengthDelaysWork(["foo", "bar", "baz"], 0)
   //=> 3
 ```
-      
+
 This `lengthDelaysWork` function calls itself in tail position. The `1 +` work is done before calling itself, and by the time it reaches the terminal position, it has the answer. Now that we've seen how it works, we can clean up the `0 + numberToBeAdded` business. But while we're doing that, it's annoying to remember to call it with a zero. Let's fix that:
 
 ```javascript
@@ -134,24 +134,24 @@ const lengthDelaysWork = ([first, ...rest], numberToBeAdded) =>
   first === undefined
     ? numberToBeAdded
     : lengthDelaysWork(rest, 1 + numberToBeAdded)
-  
+
 const length = (n) =>
   lengthDelaysWork(n, 0);
 ```
-      
+
 Or we could use partial application:
 
 ```javascript
 const callLast = (fn, ...args) =>
     (...remainingArgs) =>
       fn(...remainingArgs, ...args);
-  
+
 const length = callLast(lengthDelaysWork, 0);
 
 length(["foo", "bar", "baz"])
   //=> 3
 ```
-      
+
 This version of `length` calls uses `lengthDelaysWork`, and JavaScript optimizes that not to take up memory proportional to the length of the string. We can use this technique with `mapWith`:
 
 ```javascript
@@ -159,36 +159,36 @@ const mapWithDelaysWork = (fn, [first, ...rest], prepend) =>
   first === undefined
     ? prepend
     : mapWithDelaysWork(fn, rest, [...prepend, fn(first)]);
-    
+
 const mapWith = callLast(mapWithDelaysWork, []);
-                                              
+
 mapWith((x) => x * x, [1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
 ```
-      
+
 We can use it with ridiculously large arrays:
 
 ```javascript
 mapWith((x) => x * x, [
-     0,    1,    2,    3,    4,    5,    6,    7,    8,    9,  
-    10,   11,   12,   13,   14,   15,   16,   17,   18,   19,  
-    20,   21,   22,   23,   24,   25,   26,   27,   28,   29,  
-    30,   31,   32,   33,   34,   35,   36,   37,   38,   39,  
-    40,   41,   42,   43,   44,   45,   46,   47,   48,   49,  
-    50,   51,   52,   53,   54,   55,   56,   57,   58,   59,  
-    60,   61,   62,   63,   64,   65,   66,   67,   68,   69,  
-    70,   71,   72,   73,   74,   75,   76,   77,   78,   79,  
-    80,   81,   82,   83,   84,   85,   86,   87,   88,   89,  
+     0,    1,    2,    3,    4,    5,    6,    7,    8,    9,
+    10,   11,   12,   13,   14,   15,   16,   17,   18,   19,
+    20,   21,   22,   23,   24,   25,   26,   27,   28,   29,
+    30,   31,   32,   33,   34,   35,   36,   37,   38,   39,
+    40,   41,   42,   43,   44,   45,   46,   47,   48,   49,
+    50,   51,   52,   53,   54,   55,   56,   57,   58,   59,
+    60,   61,   62,   63,   64,   65,   66,   67,   68,   69,
+    70,   71,   72,   73,   74,   75,   76,   77,   78,   79,
+    80,   81,   82,   83,   84,   85,   86,   87,   88,   89,
     90,   91,   92,   93,   94,   95,   96,   97,   98,   99,
-    
+
   // ...
-  
+
   2980, 2981, 2982, 2983, 2984, 2985, 2986, 2987, 2988, 2989,
   2990, 2991, 2992, 2993, 2994, 2995, 2996, 2997, 2998, 2999 ])
-  
+
   //=> [0,1,4,9,16,25,36,49,64,81,100,121,144,169,196, ...
 ```
-    
+
 Brilliant! We can map over large arrays without incurring all the memory and performance overhead of non-tail-calls. And this basic transformation from a recursive function that does not make a tail call, into a recursive function that calls itself in tail position, is a bread-and-butter pattern for programmers using a language that incorporates tail-call optimization.
 
 ### factorials
@@ -208,15 +208,15 @@ const factorial = (n) =>
   n == 1
   ? n
   : n * factorial(n - 1);
-  
+
 factorial(1)
   //=> 1
-  
+
 factorial(5)
   //=> 120
 ```
 
-While this is mathematically elegant, it is computational [filigree]. 
+While this is mathematically elegant, it is computational [filigree].
 
 [filigree]: https://en.wikipedia.org/wiki/Filigree
 
@@ -227,23 +227,23 @@ const factorialWithDelayedWork = (n, work) =>
   n === 1
   ? work
   : factorialWithDelayedWork(n - 1, n * work);
-  
+
 const factorial = (n) =>
   factorialWithDelayedWork(n, 1);
 ```
-      
+
 Or we could use partial application:
 
 ```javascript
 const callLast = (fn, ...args) =>
     (...remainingArgs) =>
       fn(...remainingArgs, ...args);
-  
+
 const factorial = callLast(factorialWithDelayedWork, 1);
-  
+
 factorial(1)
   //=> 1
-  
+
 factorial(5)
   //=> 120
 ```
@@ -259,10 +259,10 @@ const factorial = (n, work) =>
   n === 1
   ? work
   : factorial(n - 1, n * work);
-  
+
 factorial(1, 1)
   //=> 1
-  
+
 factorial(5, 1)
   //=> 120
 ```
@@ -278,10 +278,10 @@ const factorial = (n, work = 1) =>
   n === 1
   ? work
   : factorial(n - 1, n * work);
-  
+
 factorial(1)
   //=> 1
-  
+
 factorial(6)
   //=> 720
 ```
@@ -296,12 +296,12 @@ const length = ([first, ...rest], numberToBeAdded = 0) =>
 
 length(["foo", "bar", "baz"])
   //=> 3
-  
+
 const mapWith = (fn, [first, ...rest], prepend = []) =>
   first === undefined
     ? prepend
     : mapWith(fn, rest, [...prepend, fn(first)]);
-                                              
+
 mapWith((x) => x * x, [1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
 ```
@@ -311,7 +311,7 @@ Now we don't need to use two functions. A default argument is concise and readab
 ## Garbage, Garbage Everywhere
 
 ![Garbage Day](/assets/images/garbage.jpg)
-    
+
 We have now seen how to use [Tail Calls](#tail) to execute `mapWith` in constant space:
 
 ```javascript
@@ -319,7 +319,7 @@ const mapWith = (fn, [first, ...rest], prepend = []) =>
   first === undefined
     ? prepend
     : mapWith(fn, rest, [...prepend, fn(first)]);
-                                                  
+
 mapWith((x) => x * x, [1, 2, 3, 4, 5])
   //=> [1,4,9,16,25]
 ```
@@ -336,7 +336,7 @@ The array we had in `prepend` is no longer used. In GC environments, it is marke
 
 We may not be creating 3,000 stack frames, but we are creating three thousand new arrays and copying elements into each and every one of them. Although the maximum amount of memory does not grow, the thrashing as we create short-lived arrays is very bad, and we do a lot of work copying elements from one array to another.
 
-> **Key Point**: Our `[first, ...rest]` approach to recursion is slow because that it creates a lot of temporary arrays, and it spends an enormous amount of time copying elements into arrays that end up being discarded. 
+> **Key Point**: Our `[first, ...rest]` approach to recursion is slow because that it creates a lot of temporary arrays, and it spends an enormous amount of time copying elements into arrays that end up being discarded.
 
 So here's a question: If this is such a slow approach, why do some examples of "functional" algorithms work this exact way?
 
@@ -367,7 +367,7 @@ const cons = (a, d) => [a, d],
       car  = ([a, d]) => a,
       cdr  = ([a, d]) => d;
 ```
-      
+
 We can make a list by calling `cons` repeatedly, and terminating it with `null`:
 
 ```javascript
@@ -385,7 +385,7 @@ const node5 = [5,null],
       node3 = [3, node4],
       node2 = [2, node3],
       node1 = [1, node2];
-    
+
 const oneToFive = node1;
 ```
 
@@ -395,7 +395,7 @@ This is a [Linked List](https://en.wikipedia.org/wiki/Linked_list), it's just th
 car(oneToFive)
   //=> 1
 ```
-      
+
 `car` is very fast, it simply extracts the first element of the cons cell.
 
 But what about the rest of the list? `cdr` does the trick:
@@ -404,7 +404,7 @@ But what about the rest of the list? `cdr` does the trick:
 cdr(oneToFive)
   //=> [2,[3,[4,[5,null]]]]
 ```
-      
+
 Again, it's just extracting a reference from a cons cell, it's very fast. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed. In JavaScript, it's still much, much, much faster to get all the elements except the head from a linked list than from an array. Getting one reference to a structure that already exists is faster than copying a bunch of elements.
 
 So now we understand that in Lisp, a lot of things use linked lists, and they do that in part because it was what the hardware made possible.

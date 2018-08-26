@@ -1,7 +1,7 @@
 ---
 title: "Why Recursive Data Structures?"
 layout: default
-tags: [allonge]
+tags: [allonge, recursion]
 ---
 
 In this essay, we are going to look at recursive algorithms, and how sometimes, we can organize an algorithm so that it resembles the data structure it manipulates, and organize a data structure so that it resembles the algorithms that manipulate it.

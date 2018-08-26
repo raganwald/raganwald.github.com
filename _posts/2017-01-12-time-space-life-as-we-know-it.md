@@ -1,7 +1,7 @@
 ---
 title: "Time, Space, and Life As We Know It"
 layout: default
-tags: [allonge]
+tags: [allonge, recursion]
 ---
 
 In [Why Recursive Data Structures?][why?] we used `multirec`, a recursive combinator, to implement [quadtrees][quadtree] and coloured quadtrees (The full code for creating and rotating quadtrees and coloured quadtrees is <a name="ref-quadtrees"></a>[below](#quadtrees)).
