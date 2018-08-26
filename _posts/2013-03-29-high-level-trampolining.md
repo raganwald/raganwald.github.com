@@ -19,7 +19,7 @@ function factorial (n) {
 
 The major problem given for this code is that stack-based languages like JavaScript consume order *n* space to compute factorial. Some implementations will have a limited stack and fail, others will simply consume an unnecessary amount of memory to compute the desired result.
 
-One solution presented was: 
+One solution presented was:
 
 ```javascript
 var variadic = require('allong.es').variadic;
@@ -33,7 +33,7 @@ function trampoline (fn) {
     }
 
     return result;
-    
+
   });
 };
 
@@ -43,7 +43,7 @@ function factorial (n) {
     ? function () { return myself(acc * n, n - 1); }
     : acc
   });
-  
+
   return _factorial(1, n);
 };
 ```
@@ -115,7 +115,7 @@ We can't overemphasize that **trampolining eliminates all tail calls, not just s
 
 Trampolining is really a general-purpose control-flow construct, not just an implementation of tail-call elimination. And therein lies an important point: JavaScript has some unique considerations.
 
-FOr starters, JavaScript is single-threaded and regardless of whether its stack can handle a deep series of calls, you may want to consider using something like `process.nextTick` to do the trampolining for you, with results passed back via queues or promises.
+For starters, JavaScript is single-threaded and regardless of whether its stack can handle a deep series of calls, you may want to consider using something like `process.nextTick` to do the trampolining for you, with results passed back via queues or promises.
 
 Likewise, you may be using something like promises to mediate control flow any ways, and mixing asynchronous-aware code with trampolining may be an attempt to solve the same problem with two different tools.
 
