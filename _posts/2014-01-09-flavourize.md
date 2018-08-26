@@ -1,7 +1,7 @@
 ---
 title: flavourize.js
 layout: default
-tags: [javascript]
+tags: [noindex, javascript]
 ---
 
 A little something that has fallen out of writing [JavaScript Spessore][js]:

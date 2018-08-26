@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Greenspunning Predicate and Multiple Dispatch in JavaScript"
-tags: ["allonge", "spessore"]
+tags: ["allonge"]
 ---
 
 Pattern matching is a feature found (with considerable rigor) in functional languages like Erlang and Haskell. In mathematics, algorithms and problems can often be solved by breaking them down into simple cases. Sometimes, those cases are reductions of the original problem.
