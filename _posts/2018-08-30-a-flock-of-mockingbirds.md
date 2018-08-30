@@ -108,7 +108,7 @@ So far, so good![^fib]
 
 ### recursion and binding
 
-Now how does our `exponent` function actually perform recursion. The immediate answer is, "It calls itself when the work to be performed is not the base case." How does it call itself? Well, when we have a function declaration (like above), or a name dfunction expression, the function is bound to its own name within the body of the function automatically.
+Question: _How does our `exponent` function actually perform recursion?_ The immediate answer is, "It calls itself when the work to be performed is not the base case" (the base case for exponentiation is an exponent of `0` or `1`). How does it call itself? Well, when we have a function declaration (like above), or a named function expression, the function is bound to its own name within the body of the function automatically.
 
 So within the body of the `exponent` function, the function itself is bound to the name `exponent`, and that's what it calls. This is obvious to most programmers, and it's how we nearly always implement recursion.
 
@@ -122,12 +122,61 @@ const memoized = (fn, keymaker = JSON.stringify) => {
   const lookupTable = new Map();
 
   return function (...args) {
-    const key = keymaker.apply(this, args);
+    const key = keymaker.call(this, args);
 
     return lookupTable[key] || (lookupTable[key] = fn.apply(this, args));
   }
 };
 ```
+
+We can make a memoized version of our `exponent` function:
+
+```javascript
+const mExponent = memoized(exponent);
+
+mExponent(2, 8)
+  //=> 256, performs three multiplications
+mExponent(2, 8)
+  //=> 256, returns the memoized result without further multiplications
+```
+
+There is a hitch with this solution: Although we are invoking `mExponent`, internally `exponent` is invoking itself directly, without memoization. So if we write:
+
+```javascript
+const mExponent = memoized(exponent);
+
+mExponent(2, 8)
+  //=> 256, performs three multiplications
+mExponent(2, 9)
+  //=> 512, performs four multiplications
+```
+
+When we invoke `exponent(2, 8)`, we also end up invoking `exponent(4, 4)`, `exponent(16, 2)`, and `exponent(256, 1)`. We want those memoized. That way, when we invoke `exponent(2, 9)`, and it invoked `exponent(4, 4)`, the result is memoized and it need do no further computation.
+
+Our problem here is that `exponent` is "hard-wired" to call `exponent`, _not_ `mExponent`. So it never invoked the memoized version of the function.
+
+We can work around that like this:
+
+```javascript
+const mExponent = memoized(function (x, n) {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return x;
+  } else if (n % 2 === 1) {
+    return x * mExponent(x * x, Math.floor(n / 2));
+  } else {
+    return mExponent(x * x, n / 2);
+  }
+});
+
+mExponent(2, 8)
+  //=> 256, performs three multiplications
+mExponent(2, 9)
+  //=> 512, performs only one multiplication
+```
+
+In many cases this is fine. But conceptually, writing it this way means that our exponent function needs to know whether it is memoized or not.
 
 ---
 

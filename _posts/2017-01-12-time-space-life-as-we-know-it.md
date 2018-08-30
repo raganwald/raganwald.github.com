@@ -145,7 +145,7 @@ const memoized = (fn, keymaker = JSON.stringify) => {
     const lookupTable = new Map();
 
     return function (...args) {
-      const key = keymaker.apply(this, args);
+      const key = keymaker.call(this, args);
 
       return lookupTable[key] || (lookupTable[key] = fn.apply(this, args));
     }
@@ -1327,7 +1327,7 @@ const memoized = (fn, keymaker = JSON.stringify) => {
     const lookupTable = new Map();
 
     return function (...args) {
-      const key = keymaker.apply(this, args);
+      const key = keymaker.call(this, args);
 
       return lookupTable[key] || (lookupTable[key] = fn.apply(this, args));
     }
