@@ -2,7 +2,11 @@
 tags: [recursion, noindex]
 ---
 
-In this essay we're going to look at the *mockingbird*, also called the `M` comibinator.[^little-omega]
+In this essay we're going to look at the *mockingbird*, also called the `M` combinator.[^little-omega]
+
+[^little-omega]: The Mockingbird is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page.
+
+---
 
 ### combinators
 
@@ -17,8 +21,6 @@ In this essay, we will be using a much looser definition of "combinator:" Pure f
 If we were learning Combinatorial Logic, we'd start with the most basic combinators like `S`, `K`, and `I`, and work up from there to practical combinators. We'd learn that the fundamental combinators are named after birds following the example of Raymond Smullyan's famous book [To Mock a Mockingbird][mock]. Needless to say, the title of the book and its central character is the inspiration for this essay!
 
 [mock]: http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20
-
-There are an infinite number of combinators, but
 
 ---
 
@@ -164,7 +166,7 @@ Our problem here is that `exponent` is "hard-wired" to call `exponent`, _not_ `m
 We can work around that like this:
 
 ```javascript
-const mExponent = memoized(function (x, n) {
+const mExponent = memoized((x, n) => {
   if (n === 0) {
     return 1;
   } else if (n === 1) {
@@ -182,16 +184,12 @@ mExponent(2, 9)
   //=> 512, performs only one multiplication
 ```
 
-In many cases this is fine. But conceptually, writing it this way means that our exponent function needs to know whether it is memoized or not. This runs counter to our "Allongé" style of writing things that can be composed without them needing toknow anything about each other.
+In many cases this is fine. But conceptually, writing it this way means that our exponent function needs to know whether it is memoized or not. This runs counter to our "Allongé" style of writing things that can be composed without them needing to know anything about each other.
 
----
-
-### composeable recursive functions
-
-Let's refactor `exponent` so that it doesn't have a "hard-coded" reference to itself. Seeing as it doiesn't directly refer to itself, it can be a completely anonymous function. So much so, we'll rewrite it as a fat arrow:
+For example, if we wanted a non-memoized exponentiation function, we'd have to duplicate all of teh code, with a minor variation:
 
 ```javascript
-const exponent = function (exponent, x, n) {
+const exponent = (x, n) => {
   if (n === 0) {
     return 1;
   } else if (n === 1) {
@@ -201,6 +199,139 @@ const exponent = function (exponent, x, n) {
   } else {
     return exponent(x * x, n / 2);
   }
+};
+```
+
+That is not composing things, at all. What we want is to have one exponetiation function, and find a way to use it with or without decoration (such as with or without memoization). And we can do this.
+
+---
+
+### composeable recursive functions
+
+The sticking point is that to have full memoization, our exponentiation function needs to have a hard-coded reference to the memoized version of itself, which means it can't be used without memoization. So let's attack the hard-coded reference problem.
+
+We'll refactor `exponent` so that it doesn't have a "hard-coded" reference to itself. Since it doesn't have to be a named function, we can make it a "fat arrow" expression. If we want a function to have a reference to another function in JavaScript, we can pass it in as a parameter. So the 'signature' for our new function expression will look like this:
+
+```javascript
+(myself, x, n) => // ...
+```
+
+In this case, our function assumes that `myself` is going to be bound to the function itself. Now what about the body of the function? We can change `exponent` to `myself`:
+
+```javascript
+(myself, x, n) => {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return x;
+  } else if (n % 2 === 1) {
+    return x * myself(x * x, Math.floor(n / 2));
+  } else {
+    return myself(x * x, n / 2);
+  }
+};
+```
+
+One little hitch: Our function signature is `(myself, x, n)`, but when we invoke `myself`, we're only passing in `x` and `n`. So we can pass `myself` in as well:
+
+```javascript
+(myself, x, n) => {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return x;
+  } else if (n % 2 === 1) {
+    return x * myself(myself, x * x, Math.floor(n / 2));
+  } else {
+    return myself(myself, x * x, n / 2);
+  }
+};
+```
+
+Now this seems very contrived, and it doesn't even work yet. How can we make it work? Behold, the JavaScript Mockingbird!
+
+---
+
+[![Galápagos Mockingbird ©2012 Ben Tavener](/assets/images/galápagos-mockingbird.jpg)](https://www.flickr.com/photos/bentavener/7137047259)
+
+---
+
+### the mockingbird
+
+Behold, the JavaScript Mockingbird:
+
+```javascript
+const M = fn => (...args) => fn(fn, ...args);
+```
+
+The Mockingbird is a function that takes another function, and returns a function. That function takes a bunch or aguments, and invoked the original function with itself and the arguments.[^well-actually] So now we can write:
+
+[^well-actually]: In proper combinatorial logic, the Mockingbird is actually defined as `M x = x x`. However, this presumes that all combinators are "curried" and only take one argument. Our Mockingbird is more "idiomatically JavaScript." But it's cwertainly possible to use `const M = fn => fn(fn);`, we would just need to also rewrite our exponentiation function to have a signature of `myself => x => n => ...`, and so forth. That typically clutters JavaScript up, so we're using `const M = fn => (...args) => fn(fn, ...args);`, which amounts to the same thing.
+
+```javascript
+M((myself, x, n) => {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return x;
+  } else if (n % 2 === 1) {
+    return x * myself(myself, x * x, Math.floor(n / 2));
+  } else {
+    return myself(myself, x * x, n / 2);
+  }
+})(2, 8)
+  //=> 256
+```
+
+That is all very well and good, but we've added some extra bookkeeping. Do we have any wins? Let's try composing it with the memoization function. Althoiugh we didn't use it above, our `memoize` function does allow us to customize the function used to create a key. Here's a key making function that deliberately ignores the first argument:
+
+```
+const ignoreFirst = ([first, ...butFirst]) => JSON.stringify(butFirst);
+```
+
+And now we can create a memoized version of our anonymous function. First, here it is step-by-step:
+
+```javascript
+const exp = (myself, x, n) => {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return x;
+  } else if (n % 2 === 1) {
+    return x * myself(myself, x * x, Math.floor(n / 2));
+  } else {
+    return myself(myself, x * x, n / 2);
+  }
+};
+
+M(memoized(exp, ignoreFirst))(2, 8)
+  //=> 256
+```
+
+But now for the big question: Does it memoize everything? Let's test it:
+
+```javascript
+const mExponent = M(memoized(exp, ignoreFirst));
+
+mExponent(2, 8)
+  //=> 256, performs three multiplications
+mExponent(2, 9)
+  //=> 512, performs only one multiplication
+```
+
+We're back where we were when we wrote:
+
+```javascript
+const mExponent = memoized((x, n) => {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return x;
+  } else if (n % 2 === 1) {
+    return x * mExponent(x * x, Math.floor(n / 2));
+  } else {
+    return mExponent(x * x, n / 2);
+  }
 });
 
 mExponent(2, 8)
@@ -209,8 +340,110 @@ mExponent(2, 9)
   //=> 512, performs only one multiplication
 ```
 
+But now, our function need have absoluetly NO reference to the name of our memozied function. It doesn't know whether it's memoized or not. We can make that crystal clear by getting rid of almost every constant and representing teh entire thinga s an expression. First, given:
+
+```javascript
+const M = fn => (...args) => fn(fn, ...args);
+
+const memoized = (fn, keymaker = JSON.stringify) => {
+  const lookupTable = new Map();
+
+  return function (...args) {
+    const key = keymaker.call(this, args);
+
+    return lookupTable[key] || (lookupTable[key] = fn.apply(this, args));
+  }
+};
+
+const ignoreFirst = ([first, ...butFirst]) => JSON.stringify(butFirst);
+```
+
+We can write:
+
+```javascript
+const mExponent =
+  M(
+    memoized(
+      (myself, x, n) => {
+        if (n === 0) {
+          return 1;
+        } else if (n === 1) {
+          return x;
+        } else if (n % 2 === 1) {
+          return x * myself(myself, x * x, Math.floor(n / 2));
+        } else {
+          return myself(myself, x * x, n / 2);
+        }
+      },
+      ignoreFirst
+    )
+  );
+
+mExponent(2, 8)
+  //=> 256, performs three multiplications
+mExponent(2, 9)
+  //=> 512, performs only one multiplication
+```
+
+Nothing within our expression refers to `mExponent`, and we've separated three different concerns. Self-invocation is handled by `M`, memoization is handled by `memoized`+`ignoreFirst`, and exponentiation is handled by an anonymous function.[^pure]
+
+Because we've separated them like this, we can compose our function with memoization or not as we see fit. As we saw above, thename binding way was that if we wanted one version memoized and one not, we'd have to write two nearly identical versions of the same code:
+
+```javascript
+const mExponent = memoized((x, n) => {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return x;
+  } else if (n % 2 === 1) {
+    return x * mExponent(x * x, Math.floor(n / 2));
+  } else {
+    return mExponent(x * x, n / 2);
+  }
+});
+
+const exponent = (x, n) => {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return x;
+  } else if (n % 2 === 1) {
+    return x * exponent(x * x, Math.floor(n / 2));
+  } else {
+    return exponent(x * x, n / 2);
+  }
+};
+```
+
+But with the Mockingbird separating how a function calls itself from the function, we can now write:
+
+```javascript
+const exp = (myself, x, n) => {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return x;
+  } else if (n % 2 === 1) {
+    return x * myself(myself, x * x, Math.floor(n / 2));
+  } else {
+    return myself(myself, x * x, n / 2);
+  }
+};
+
+const mExponent = M(memoized(exp, ignoreFirst));
+const exponent = M(exp);
+```
+
+We have our composeability and reuse!
+
+
+
+[^pure]: In true Combinatory Logic fashion, if we wanted to we could similarly get rid of the bindings for `M`, `memoized`, and `ignoreFirst`. We would simply take the function expressions, and substitute them inline for the variable names. It would work just the same.
+
+
+
 ---
 
 ## Notes
 
-[^little-omega]: The Mockingbird is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page.
+
