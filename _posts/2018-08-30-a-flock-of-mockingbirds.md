@@ -2,25 +2,9 @@
 tags: [recursion, noindex]
 ---
 
-In this essay we're going to look at the *mockingbird*, also called the `M` combinator.[^little-omega]
+In this essay we're going to look at the *mockingbird*, also called the `M` combinator.[^little-omega] The mockingbird is one of the _recursive combinators_, a combinator that takes a function that is not recursive, and returns a function that is recursive. We'll see how it works, and one unusual but interesting application for it. And when we're done, we'llhave an appreciation for how combinators can be used to make functions more composeable.
 
-[^little-omega]: The Mockingbird is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page.
-
----
-
-### combinators
-
-The word "combinator" has a precise technical meaning in mathematics:
-
-> "A combinator is a higher-order function that uses only function application and earlier defined combinators to define a result from its arguments."--[Wikipedia][combinators]
-
-[combinators]: https://en.wikipedia.org/wiki/Combinatory_logic "Combinatory Logic"
-
-In this essay, we will be using a much looser definition of "combinator:" Pure functions that act on other functions to produce functions. If Objects are nouns and Methods are verbs, **Combinators are the adverbs of programming**.
-
-If we were learning Combinatorial Logic, we'd start with the most basic combinators like `S`, `K`, and `I`, and work up from there to practical combinators. We'd learn that the fundamental combinators are named after birds following the example of Raymond Smullyan's famous book [To Mock a Mockingbird][mock]. Needless to say, the title of the book and its central character is the inspiration for this essay!
-
-[mock]: http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20
+[^little-omega]: The word "combinator" has a precise technical meaning in mathematics: "A combinator is a higher-order function that uses only function application and earlier defined combinators to define a result from its arguments." The Mockingbird or "M combinator" is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page. In Combinatory Logic, the fundamental combinators are named after birds, following the example of Raymond Smullyan's famous book [To Mock a Mockingbird](http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20). Needless to say, the title of the book and its central character is the inspiration for this essay!
 
 ---
 
