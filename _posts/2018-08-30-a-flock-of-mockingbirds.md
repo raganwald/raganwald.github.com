@@ -22,14 +22,29 @@ There are an infinite number of combinators, but in this article we will focus o
 
 > As the number of people discussing recursion in an online forum increases, the probability that someone will quote the definition for recursion as "recursion: see 'recursion'" approaches one.
 
-Recursive functions are easy to grasp, especially if they are simple. We're going to construct one that computes the exponent of a number.[^fib] If we want to compute something like `2^8` (two to the power of eight), we can compute it like this: `2 * 2 * 2 * 2 * 2 * 2 * 2 * 2`. That requires seven multiplications. So, any time we want to raise some number `x` to the exponent `n`, the naïve method requires `n-1` multiplications.
+Recursive functions are easy to grasp, especially if they are simple. We're going to construct one that computes the exponent of a number. If we want to compute something like `2^8` (two to the power of eight), we can compute it like this: `2 * 2 * 2 * 2 * 2 * 2 * 2 * 2`. That requires seven multiplications. So, any time we want to raise some number `x` to the exponent `n`, the naïve method requires `n-1` multiplications.
 
 ```javascript
 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2
   //=> 256
+
+function naiveExponent (x, n) {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return x;
+  } else {
+    return x * naiveExponent(x, n - 1);
+  }
+}
+
+naiveExponent(2, 8)
+  //=> 256
 ```
 
-[^fib]: This basic pattern was originally discussed in an essay about a different recursive function, [writing a matrix multiplication implemntation of fibonacci](http://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html).
+Obviously, we can implement this more efficiently with iteration. It's so easy to convert this by hand that we won't show it here.[^tail]
+
+[^tail]: It's also straightforward to convert this recursive function to a tail-recursive function, and then to an iterative form. See [A Trick of the Tail](http://raganwald.com/2018/05/27/tail.html) for a fuller explanation.
 
 Now let's make an observation: Given a list of numbers to multiply, instead of performing each multiplication independently, let's [Divide and Conquer](http://www.cs.berkeley.edu/~vazirani/algorithms/chap2.pdf). Let's take the easy case: Can we agree that `2 * 2 * 2 * 2 * 2 * 2 * 2 * 2` is equal to `(2 * 2 * 2 * 2) * (2 * 2 * 2 * 2)`? That seems like the same number of operations (there are still seven `*`s), but if we write it like this, we save three operations:
 
@@ -72,7 +87,9 @@ Handling exponents that aren't neat powers of two involves checking whether the 
 
 ```javascript
 function exponent (x, n) {
-  if (n === 1) {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
     return x;
   } else if (n % 2 === 1) {
     return x * exponent(x * x, Math.floor(n / 2));
@@ -85,11 +102,32 @@ exponent(2, 7)
   //=> 128
 ```
 
-So far, so good!
+So far, so good![^fib]
+
+[^fib]: This basic pattern was originally discussed in an essay about a different recursive function, [writing a matrix multiplication implemntation of fibonacci](http://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html).
 
 ### recursion and binding
 
-Now how does our `exponent` function actually perform recursion. The immediate answer is, "it calls itself when the work to be performed is not the base case."
+Now how does our `exponent` function actually perform recursion. The immediate answer is, "It calls itself when the work to be performed is not the base case." How does it call itself? Well, when we have a function declaration (like above), or a name dfunction expression, the function is bound to its own name within the body of the function automatically.
+
+So within the body of the `exponent` function, the function itself is bound to the name `exponent`, and that's what it calls. This is obvious to most programmers, and it's how we nearly always implement recursion.
+
+But it's not _always_ exactly what we want. Our `exponent` function is an improvement over `naiveExponent`, but of we want even more performance, we might consider [memoizing](https://en.wikipedia.org/wiki/Memoization) the function.
+
+Here's a memoization decorator, snarfed from [Time, Space, and Life As We Know It
+](http://raganwald.com/2017/01/12/time-space-life-as-we-know-it.html):
+
+```
+const memoized = (fn, keymaker = JSON.stringify) => {
+  const lookupTable = new Map();
+
+  return function (...args) {
+    const key = keymaker.apply(this, args);
+
+    return lookupTable[key] || (lookupTable[key] = fn.apply(this, args));
+  }
+};
+```
 
 ---
 
