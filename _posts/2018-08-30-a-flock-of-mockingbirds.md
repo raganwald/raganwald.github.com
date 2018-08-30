@@ -2,6 +2,8 @@
 tags: [recursion, noindex]
 ---
 
+In this essay we're going to look at the *mockingbird*, also called the `M` comibinator.[^little-omega]
+
 ### combinators
 
 The word "combinator" has a precise technical meaning in mathematics:
@@ -16,7 +18,9 @@ If we were learning Combinatorial Logic, we'd start with the most basic combinat
 
 [mock]: http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20
 
-There are an infinite number of combinators, but in this article we will focus on the *mockingbird*, also called the `M` combinator, or sometimes the ω or "little omega."[^little-omega]
+There are an infinite number of combinators, but
+
+---
 
 ### a recursive function
 
@@ -106,6 +110,8 @@ So far, so good![^fib]
 
 [^fib]: This basic pattern was originally discussed in an essay about a different recursive function, [writing a matrix multiplication implemntation of fibonacci](http://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html).
 
+---
+
 ### recursion and binding
 
 Question: _How does our `exponent` function actually perform recursion?_ The immediate answer is, "It calls itself when the work to be performed is not the base case" (the base case for exponentiation is an exponent of `0` or `1`). How does it call itself? Well, when we have a function declaration (like above), or a named function expression, the function is bound to its own name within the body of the function automatically.
@@ -176,10 +182,35 @@ mExponent(2, 9)
   //=> 512, performs only one multiplication
 ```
 
-In many cases this is fine. But conceptually, writing it this way means that our exponent function needs to know whether it is memoized or not.
+In many cases this is fine. But conceptually, writing it this way means that our exponent function needs to know whether it is memoized or not. This runs counter to our "Allongé" style of writing things that can be composed without them needing toknow anything about each other.
+
+---
+
+### composeable recursive functions
+
+Let's refactor `exponent` so that it doesn't have a "hard-coded" reference to itself. Seeing as it doiesn't directly refer to itself, it can be a completely anonymous function. So much so, we'll rewrite it as a fat arrow:
+
+```javascript
+const exponent = function (exponent, x, n) {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return x;
+  } else if (n % 2 === 1) {
+    return x * exponent(x * x, Math.floor(n / 2));
+  } else {
+    return exponent(x * x, n / 2);
+  }
+});
+
+mExponent(2, 8)
+  //=> 256, performs three multiplications
+mExponent(2, 9)
+  //=> 512, performs only one multiplication
+```
 
 ---
 
 ## Notes
 
-[^little-omega]: The "little omega" notation comes from David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/) web page.
+[^little-omega]: The Mockingbird is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page.
