@@ -1,5 +1,5 @@
 ---
-tags: [recursion]
+tags: [recursion, noindex]
 ---
 
 ### combinators
@@ -17,5 +17,9 @@ If we were learning Combinatorial Logic, we'd start with the most basic combinat
 [mock]: http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20
 
 There are an infinite number of combinators, but in this article we will focus on the *mockingbird*, also called the `M` combinator, or sometimes the ω or "little omega."[^little-omega]
+
+---
+
+## Notes
 
 [^little-omega]: The "little omega" notation comes from David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/) web page.
