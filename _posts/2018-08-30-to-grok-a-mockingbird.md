@@ -3,7 +3,7 @@ title: To Grok a Mockingbird
 tags: [recursion]
 ---
 
-*Using recursive combinators to enhance functional composition, with special guests the Mockingbird, Trampolining MockingBird, and the Sage Bird*
+*Using recursive combinators to enhance functional composition, with special guests the Mockingbird, Trampolining Mockingbird, and the Sage Bird*
 
 ---
 
