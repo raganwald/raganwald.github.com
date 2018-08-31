@@ -678,9 +678,11 @@ The sage bird has more complicated workings, but it makes the code we write much
 
 In summary, the mockingbird is a _recursive combinator_: It takes a function that is not directly recursive, and makes it recursive by passing the subject function to itself as a parameter. This has the effect of removing a hard-coded dependency between the subject function and itself, which allows us to decorate it with functionality like memoization.
 
-We've also seen that having performed this separation, we can swap the mockingbird out for other functions implementing recursion, such as a trampoline for executing recursive functions with consuming the entire stack. We've seen that using a mockingbird-like recursion function is superior to other approaches to trampolining, because it does not require the function being trampolined to "know" that it is being trampolined.
+We've also seen that having performed this separation, we can swap the mockingbird out for other functions implementing recursion, such as the trampolining mockingbird. We've seen that the trampolining mockingbird is superior to other approaches, because it does not require the function being trampolined to "know" that it is being trampolined.
 
-The mockingbird is another tool in our "composeable functions" toolbox, increasing reuse by decoupling recursive functions from themselves.
+And finally, we saw the sage bird, or Y Combinator. We saw that it makes our functions a little more idiomatic, but once again delivers the value of separating function from recursion mechanism.
+
+Recursive combinators like mockingbirds, trampolining mockingbirds, and sage birds are a few more tools in our "composeable functions" toolbox, increasing reuse by decoupling recursive functions from themselves.
 
 (discuss on [reddit](https://www.reddit.com/r/javascript/comments/9bu5od/to_grok_a_mockingbird_using_recursive_combinators/))
 
