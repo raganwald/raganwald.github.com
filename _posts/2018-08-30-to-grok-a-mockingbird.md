@@ -9,11 +9,11 @@ tags: [recursion]
 
 In this essay we're going to look at the *mockingbird*, also called the `M` combinator.[^little-omega]
 
-[^little-omega]: The Mockingbird or "M combinator" is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page.<br/><br/>In Combinatory Logic, the fundamental combinators are named after birds, following the example of Raymond Smullyan's famous book [To Mock a Mockingbird](http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20). Needless to say, the title of the book and its central character is the inspiration for this essay!
+[^little-omega]: The mockingbird or "M combinator" is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page.<br/><br/>In Combinatory Logic, the fundamental combinators are named after birds, following the example of Raymond Smullyan's famous book [To Mock a Mockingbird](http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20). Needless to say, the title of the book and its central character is the inspiration for this essay!
 
 The mockingbird is one of the _recursive combinators_, a combinator that takes a function that is not recursive, and returns a function that is recursive. We'll see how it works, and one unusual but interesting application for it. And when we're done, we'll have an appreciation for how combinators can be used to make functions more composeable.[^y]
 
-[^y]: The Mockingbird is not the only recursive combinator. The Y Combinator is more complex to grok, but produces more idiomatically readable code. The T Combinator was discovered by Alan Turing, and there are others of great note like the U Combinator.
+[^y]: The mockingbird is not the only recursive combinator. The Y Combinator is more complex to grok, but produces more idiomatically readable code. The T Combinator was discovered by Alan Turing, and there are others of great note like the U Combinator.
 
 ---
 
@@ -31,17 +31,17 @@ Recursive functions are easy to grasp, especially if they are simple. We're goin
 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2
   //=> 256
 
-function naiveExponent (x, n) {
+function naive (x, n) {
   if (n === 0) {
     return 1;
   } else if (n === 1) {
     return x;
   } else {
-    return x * naiveExponent(x, n - 1);
+    return x * naive(x, n - 1);
   }
 }
 
-naiveExponent(2, 8)
+naive(2, 8)
   //=> 256
 ```
 
@@ -123,7 +123,7 @@ How does it call itself? Well, when we have a function declaration (like above),
 
 So within the body of the `exponent` function, the function itself is bound to the name `exponent`, and that's what it calls. This is obvious to most programmers, and it's how we nearly always implement recursion.
 
-But it's not _always_ exactly what we want. Our `exponent` function is an improvement over `naiveExponent`, but of we want even more performance, we might consider [memoizing](https://en.wikipedia.org/wiki/Memoization) the function.
+But it's not _always_ exactly what we want. Our `exponent` function is an improvement over `naive`, but of we want even more performance, we might consider [memoizing](https://en.wikipedia.org/wiki/Memoization) the function.
 
 Here's a memoization decorator, snarfed from [Time, Space, and Life As We Know It
 ](http://raganwald.com/2017/01/12/time-space-life-as-we-know-it.html):
@@ -265,15 +265,15 @@ Now this seems very contrived, and it doesn't even work yet. How can we make it 
 
 ### the mockingbird
 
-Behold, the JavaScript Mockingbird:
+Behold, the JavaScript mockingbird:
 
 ```javascript
 const M = fn => (...args) => fn(fn, ...args);
 ```
 
-The Mockingbird is a function that takes another function, and returns a function. That function takes a bunch or arguments, and invoked the original function with itself and the arguments.[^well-actually] So now we can write:
+The mockingbird is a function that takes another function, and returns a function. That function takes a bunch or arguments, and invoked the original function with itself and the arguments.[^well-actually] So now we can write:
 
-[^well-actually]: In proper combinatorial logic, the Mockingbird is actually defined as `M x = x x`. However, this presumes that all combinators are "curried" and only take one argument. Our Mockingbird is more "idiomatically JavaScript."<br/><br/>But it's certainly possible to use `const M = fn => fn(fn);`, we would just need to also rewrite our exponentiation function to have a signature of `myself => x => n => ...`, and so forth. That typically clutters JavaScript up, so we're using `const M = fn => (...args) => fn(fn, ...args);`, which amounts to the same thing.
+[^well-actually]: In proper combinatorial logic, the mockingbird is actually defined as `M x = x x`. However, this presumes that all combinators are "curried" and only take one argument. Our mockingbird is more "idiomatically JavaScript."<br/><br/>But it's certainly possible to use `const M = fn => fn(fn);`, we would just need to also rewrite our exponentiation function to have a signature of `myself => x => n => ...`, and so forth. That typically clutters JavaScript up, so we're using `const M = fn => (...args) => fn(fn, ...args);`, which amounts to the same thing.
 
 ```javascript
 M((myself, x, n) => {
@@ -426,7 +426,7 @@ const exponent = (x, n) => {
 };
 ```
 
-But with the Mockingbird separating how a function calls itself from the function, we can now write:
+But with the mockingbird separating how a function calls itself from the function, we can now write:
 
 ```javascript
 const exp = (myself, x, n) => {
@@ -447,7 +447,155 @@ const exponent = M(exp);
 
 We have our composeability and reuse! We could equally insert decorators that log each time our function is called and its arguments, or even swap `M` out for a [trampoline] implementation to be used with tail-recursive functions.
 
+---
+
+[![Chrysler Imperial ©2017 pyntofmyld](/assets/images/chrysler-imperial.jpg)](https://www.flickr.com/photos/pyntofmyld/24408966088)
+
+---
+
+### tail recursion
+
+We mentioned above that our functions could be written in tail-recursive form. Here's our original "naïve" exponentiation function, decoupled and written to make its recursive call "in tail position:"
+
+```javascript
+const naive = (myself, x, n, acc = 1) => {
+  if (n === 0) {
+    return acc;
+  } else if (n === 1) {
+    return x * acc;
+  } else {
+    return myself(myself, x, n - 1, x * acc);
+  }
+}
+
+M(naive)(2, 10)
+  //=> 1024
+```
+
+Were using the `naive` version, because it's so inefficient that it's easy to demonstrate the limitation of ordinary recursion on some platforms. What happens if we write:
+
+```javascript
+M(naive)(1, 1000000)
+```
+
+We know the answer is `1`, but do we get it? If we evaluate the above on a JS engine that supports tail call optimization, we get it. But on other implementations, we get this:[^tco]
+
+[^tco]: Our code works just fine on the Safari browser, which in addition to being far more thrifty with battery life on OS X and iOS devices, implements Tail Call Optimization, as specified in the JavaScript standard. Alas, most other implementations refuse to implement TCO.
+
+```javascript
+M(naive)(1, 1000000)
+  //=> Maximum call stack size exceeded
+```
+
+As discussed in [Trampolines in JavaScript][trampoline], we can get around the call stack problem ourselves with a technique called trampolining:
 [trampoline]: http://raganwald.com/2013/03/28/trampolines-in-javascript.html
+
+> A trampoline is a loop that iteratively invokes [thunk]-returning functions ([continuation-passing style][cps]). A single trampoline is sufficient to express all control transfers of a program; a program so expressed is trampolined, or in trampolined style; converting a program to trampolined style is trampolining. Trampolined functions can be used to implement [tail-recursive] function calls in stack-oriented programming languages.--[Wikipedia][trampolining]
+
+[thunk]: https://en.wikipedia.org/wiki/Thunk_(functional_programming)
+[cps]: https://en.wikipedia.org/wiki/Continuation-passing_style
+[tail-recursive]: https://en.wikipedia.org/wiki/Tail-recursive_function
+[trampolining]: https://en.wikipedia.org/wiki/Trampoline_(computing)
+
+Trampolining functions are straightforward to write, but the typical pattern has a drawback. From the OP on the subject, here's `factorial` written to work with the trampolining function, updated for contemporary JavaScript:
+
+```javascript
+class Thunk {
+  constructor (delayed) {
+    this.delayed = delayed;
+  }
+
+  evaluate () {
+    return this.delayed();
+  }
+}
+
+const trampoline =
+  fn =>
+    (...initialArgs) => {
+      let value = fn(...initialArgs);
+
+      while (value instanceof Thunk) {
+        value = value.evaluate();
+      }
+
+      return value;
+    };
+
+
+function factorial (n) {
+  const _factorial = trampoline(
+    function myself (n, acc = 1) {
+      return n
+        ? new Thunk(() => myself(n - 1, acc * n))
+        : acc
+    }
+  );
+
+  return _factorial(n);
+}
+
+factorial(5)
+  //=> 120
+```
+
+This works, but again we have the factorial function coupled to itself, _and_ the inner recursive function is coupled to the implementation of trampolining. Why should it know what a thunk is?
+
+A mockingbird cannot directly solve our problem, but we can learn from the mockingbird to write a new kind of trampolining function based on the mockingbird. We start by rewriting our function in both tail-recursive and decoupled form. Note that this works just fine with our mockingbird:
+
+```javascript
+const factorial =
+  (myself, n, acc = 1) =>
+    n
+      ? myself(myself, n - 1, acc * n)
+      : acc
+
+m(factorial)(5)
+  //=> 120
+```
+
+now we've decoupled the form of the function from the mechanism of recursion. So, let's swap the mechanism of recursion for a trampoline _without altering the recursive function to suit the new implementation_:
+
+```javascript
+const mTrampoline =
+  fn => {
+    class Thunk {
+      constructor (args) {
+        this.args = args;
+      }
+
+      evaluate () {
+        return fn(...this.args);
+      }
+    }
+
+    return (...initialArgs) => {
+      let value = fn(
+        (...args) => new Thunk(args),
+        ...initialArgs
+      );
+
+      while (value instanceof Thunk) {
+        value = value.evaluate();
+      }
+
+      return value;
+    };
+  };
+
+mTrampoline(factorial)(5)
+```
+
+Since we're passing the function to be called recursively into our recursive function, we can place the thunk mechanism in our `mTrampoline` function, completely separating responsibility.
+
+And what about our `naive` exponentiation that broke the stack earlier?
+
+```javascript
+mTrampoline(naive)(1, 1000000)
+  //=> 1
+```
+
+It works just fine, even on engines that don't support tail call optimization. The mockingbird has shown us another benefit of separating the recursive computation to be done from the mechanism for performing the recursion.
 
 ---
 
@@ -457,9 +605,11 @@ We have our composeability and reuse! We could equally insert decorators that lo
 
 ### summary
 
-In summary, the Mockingbird is a _recursive combinator_: It takes a function that is not directly recursive, and makes it recursive by passing the subject function to itself as a parameter. This has the effect of removing a hard-coded dependency between the subject function and itself, which allows us to decorate it with functionality like memoization.
+In summary, the mockingbird is a _recursive combinator_: It takes a function that is not directly recursive, and makes it recursive by passing the subject function to itself as a parameter. This has the effect of removing a hard-coded dependency between the subject function and itself, which allows us to decorate it with functionality like memoization.
 
-The Mockingbird is another tool in our "composeable functions" toolbox, increasing reuse by decoupling recursive functions from themselves.
+We've also seen that having performed this separation, we can swap the mockingbird out for other functions implementing recursion, such as a trampoline for executing recursive functions with consuming the entire stack. We've seen that using a mockingbird-like recursion function is superior to other approaches to trampolining, because it does not require the function being trampolined to "know" that it is being trampolined.
+
+The mockingbird is another tool in our "composeable functions" toolbox, increasing reuse by decoupling recursive functions from themselves.
 
 ---
 
