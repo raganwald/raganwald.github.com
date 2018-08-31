@@ -7,13 +7,11 @@ tags: [recursion]
 
 ---
 
-In this essay we're going to look at the *mockingbird*, also called the `M` combinator.[^little-omega]
+In this essay we're going to look at _recursive combinators_, functions that take a function that is not recursive, and return a function that is recursive. Recursive combinators have important theoretical implications, but for the working programmer they decouple recursive functions from the mechanism that implements recursion.
+
+As we'll see, decoupling recursive functions from recursion makes them more reusable and allows us to separate concerns more cleanly. We'll begin with a look at the *mockingbird*, also called the `M` combinator,[^little-omega] then move on to examine a trampolining mockingbird for tail-recursive functions, and finish with the famous sage bird, or Y Combinator.
 
 [^little-omega]: The mockingbird or "M combinator" is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page.<br/><br/>In Combinatory Logic, the fundamental combinators are named after birds, following the example of Raymond Smullyan's famous book [To Mock a Mockingbird](http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20). Needless to say, the title of the book and its central character is the inspiration for this essay!
-
-The mockingbird is one of the _recursive combinators_, a combinator that takes a function that is not recursive, and returns a function that is recursive. We'll see how it works, and one unusual but interesting application for it. And when we're done, we'll have an appreciation for how combinators can be used to make functions more composeable.[^y]
-
-[^y]: The mockingbird is not the only recursive combinator. The Y Combinator is more complex to grok, but produces more idiomatically readable code. The T Combinator was discovered by Alan Turing, and there are others of great note like the U Combinator.
 
 ---
 
