@@ -16,7 +16,7 @@ The mockingbird is one of the _recursive combinators_, a combinator that takes a
 
 ### a recursive function
 
-> As the number of people discussing recursion in an online forum increases, the probability that someone will quote the definition for recursion as "recursion: see 'recursion'" approaches one.
+> As the number of people discussing recursion in an online forum increases, the probability that someone will quote the definition for recursion as _Recursion: see 'recursion'_, approaches one.
 
 Recursive functions are easy to grasp, especially if they are simple. We're going to construct one that computes the exponent of a number. If we want to compute something like `2^8` (two to the power of eight), we can compute it like this: `2 * 2 * 2 * 2 * 2 * 2 * 2 * 2`. That requires seven multiplications. So, any time we want to raise some number `x` to the exponent `n`, the naïve method requires `n-1` multiplications.
 
