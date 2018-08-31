@@ -250,7 +250,7 @@ Now this seems very contrived, and it doesn't even work yet. How can we make it 
 
 ---
 
-[![Galápagos Mockingbird ©2012 Ben Tavener](/assets/images/galápagos-mockingbird.jpg)](https://www.flickr.com/photos/bentavener/7137047259)
+[![Galápagos Mockingbird ©2012 Ben Tavener](/assets/images/galapagos-mockingbird.jpg)](https://www.flickr.com/photos/bentavener/7137047259)
 
 ---
 
