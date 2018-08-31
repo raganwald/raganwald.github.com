@@ -1,5 +1,5 @@
 ---
-tags: [recursion, noindex]
+tags: [recursion]
 ---
 
 In this essay we're going to look at the *mockingbird*, also called the `M` combinator.[^little-omega]
@@ -438,6 +438,17 @@ We have our composeability and reuse! We could equally insert decorators that lo
 
 [trampoline]: http://raganwald.com/2013/03/28/trampolines-in-javascript.html
 
+---
+
+[![The Summary Key ©2017 Mike Lawrence](/assets/images/summary.jpg)](https://www.flickr.com/photos/157270154@N05/38494483572)
+
+---
+
+### summary
+
+In summary, the Mockingbird is a _recursive combinator_: It takes a function that is not directly recursive, and makes it recursive by passing the subject function to itself as a parameter. This has the effect of removing a hard-coded dependency between the subject function and itself, which allows us to decorate it with functionality like memoization.
+
+All together, it is another tool in our "composeable functions" toolbox, increasing reuse by decoupling functions from their decoration.
 
 ---
 
