@@ -3,6 +3,10 @@ title: To Grok a Mockingbird
 tags: [recursion]
 ---
 
+*Using recursive combinators to enhance functional composition*
+
+---
+
 In this essay we're going to look at the *mockingbird*, also called the `M` combinator.[^little-omega]
 
 [^little-omega]: The Mockingbird or "M combinator" is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page. In Combinatory Logic, the fundamental combinators are named after birds, following the example of Raymond Smullyan's famous book [To Mock a Mockingbird](http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20). Needless to say, the title of the book and its central character is the inspiration for this essay!
