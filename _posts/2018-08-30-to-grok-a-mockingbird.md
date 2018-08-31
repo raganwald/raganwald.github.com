@@ -542,6 +542,14 @@ factorial(5)
 
 This works, but again we have the factorial function coupled to itself, _and_ the inner recursive function is coupled to the implementation of trampolining. Why should it know what a thunk is?
 
+---
+
+[![Mockingbird nabs a berry ©2011 Kim Taylor](/assets/images/mockingbird-berry.jpg)](https://www.flickr.com/photos/kim/6371285287)
+
+---
+
+### a new kind of mockingbird science
+
 A mockingbird cannot directly solve our problem, but we can learn from the mockingbird to write a new kind of trampolining function based on the mockingbird. We start by rewriting our function in both tail-recursive and decoupled form. Note that this works just fine with our mockingbird:
 
 ```javascript
