@@ -497,6 +497,7 @@ const trampoliningMockingbird =
   };
 
 trampoliningMockingbird(factorial)(5)
+  //=> 120
 ```
 
 Since we're passing the function to be called recursively into our recursive function, we can place the thunk mechanism in our `trampoliningMockingbird` function, completely separating responsibility.
