@@ -324,105 +324,11 @@ mExponent(2, 9)
   //=> 512, performs only one multiplication
 ```
 
-We're back where we were when we wrote:
-
-```javascript
-const mExponent = memoized((x, n) => {
-  if (n === 0) {
-    return 1;
-  } else if (n === 1) {
-    return x;
-  } else if (n % 2 === 1) {
-    return x * mExponent(x * x, Math.floor(n / 2));
-  } else {
-    return mExponent(x * x, n / 2);
-  }
-});
-
-mExponent(2, 8)
-  //=> 256, performs three multiplications
-mExponent(2, 9)
-  //=> 512, performs only one multiplication
-```
-
-But now, our function need have absolutely NO reference to the name of our memoized function.[^aha] It doesn't know whether it's memoized or not. We can make that crystal clear by getting rid of almost every constant and representing the entire thing as an expression. First, given:
+Yes it does properly memoize everything. And best of all, our function need have absolutely NO reference to the name of our memoized function.[^aha] It doesn't know whether it's memoized or not.
 
 [^aha]: In JavaScript, like almost all programming languages, we can bind values to names with paramaters, or with variable declarations, or with named functions. So having something like the M Combinator is optional, as we can choose to have a function refer to itself via a function name or variable binding. However, in Combinatory Logic and the Lambda calculus, there are no variable declarations or named functions.<br/><br/>Therefore, recursive combinators are necessary, as they are the only way to implement recursion. And since they don't have iteration either, recursion is the only way to do a lot of things we take for granted in JavaScript, like mapping lists. So recursive combinators are deeply important to the underlying building blocks of computer science.
 
-```javascript
-const M = fn => (...args) => fn(fn, ...args);
-
-const memoized = (fn, keymaker = JSON.stringify) => {
-  const lookupTable = new Map();
-
-  return function (...args) {
-    const key = keymaker.call(this, args);
-
-    return lookupTable[key] || (lookupTable[key] = fn.apply(this, args));
-  }
-};
-
-const ignoreFirst = ([first, ...butFirst]) => JSON.stringify(butFirst);
-```
-
-We can write:
-
-```javascript
-const mExponent =
-  M(
-    memoized(
-      (myself, x, n) => {
-        if (n === 0) {
-          return 1;
-        } else if (n === 1) {
-          return x;
-        } else if (n % 2 === 1) {
-          return x * myself(myself, x * x, Math.floor(n / 2));
-        } else {
-          return myself(myself, x * x, n / 2);
-        }
-      },
-      ignoreFirst
-    )
-  );
-
-mExponent(2, 8)
-  //=> 256, performs three multiplications
-mExponent(2, 9)
-  //=> 512, performs only one multiplication
-```
-
-Nothing within our expression refers to `mExponent`, and we've separated three different concerns. Self-invocation is handled by `M`, memoization is handled by `memoized`+`ignoreFirst`, and exponentiation is handled by an anonymous function.[^pure]
-
-[^pure]: In true Combinatory Logic fashion, if we wanted to we could similarly get rid of the bindings for `M`, `memoized`, and `ignoreFirst`. We would simply take the function expressions, and substitute them inline for the variable names. It would work just the same.
-
-Because we've separated them like this, we can compose our function with memoization or not as we see fit. As we saw above, the name binding way was that if we wanted one version memoized and one not, we'd have to write two nearly identical versions of the same code:
-
-```javascript
-const mExponent = memoized((x, n) => {
-  if (n === 0) {
-    return 1;
-  } else if (n === 1) {
-    return x;
-  } else if (n % 2 === 1) {
-    return x * mExponent(x * x, Math.floor(n / 2));
-  } else {
-    return mExponent(x * x, n / 2);
-  }
-});
-
-const exponent = (x, n) => {
-  if (n === 0) {
-    return 1;
-  } else if (n === 1) {
-    return x;
-  } else if (n % 2 === 1) {
-    return x * exponent(x * x, Math.floor(n / 2));
-  } else {
-    return exponent(x * x, n / 2);
-  }
-};
-```
+Because we've separated the function from the mockingbird that implements recursion, we can compose our exponentiation function with memoization or not as we see fit. When the exponentiation function was responsible for directly calling itself, if we wanted one version memoized and one not, we'd have to write two nearly identical versions of the same code.
 
 But with the mockingbird separating how a function calls itself from the function, we can now write:
 
