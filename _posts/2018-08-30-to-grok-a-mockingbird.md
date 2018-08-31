@@ -678,7 +678,7 @@ In summary, the mockingbird is a _recursive combinator_: It takes a function tha
 
 We've also seen that having performed this separation, we can swap the mockingbird out for other functions implementing recursion, such as the trampolining mockingbird. We've seen that the trampolining mockingbird is superior to other approaches, because it does not require the function being trampolined to "know" that it is being trampolined.
 
-And finally, we saw the sage bird, or Y Combinator. We saw that it makes our functions a little more idiomatic, but once again delivers the value of separating function from recursion mechanism.
+And finally, we saw the sage bird, or Y Combinator. We saw that it makes our functions a little more idiomatic, and once again delivers the value of separating function from recursion mechanism.
 
 Recursive combinators like mockingbirds, trampolining mockingbirds, and sage birds are a few more tools in our "composeable functions" toolbox, increasing reuse by decoupling recursive functions from themselves.
 
