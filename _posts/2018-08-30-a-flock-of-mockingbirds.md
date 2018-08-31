@@ -113,7 +113,9 @@ So far, so good![^fib]
 
 ### recursion and binding
 
-Question: _How does our `exponent` function actually perform recursion?_ The immediate answer is, "It calls itself when the work to be performed is not the base case" (the base case for exponentiation is an exponent of `0` or `1`). How does it call itself? Well, when we have a function declaration (like above), or a named function expression, the function is bound to its own name within the body of the function automatically.
+Question: _How does our `exponent` function actually perform recursion?_ The immediate answer is, "It calls itself when the work to be performed is not the base case" (the base case for exponentiation is an exponent of `0` or `1`).
+
+How does it call itself? Well, when we have a function declaration (like above), or a named function expression, the function is bound to its own name within the body of the function automatically.
 
 So within the body of the `exponent` function, the function itself is bound to the name `exponent`, and that's what it calls. This is obvious to most programmers, and it's how we nearly always implement recursion.
 
@@ -249,7 +251,7 @@ One little hitch: Our function signature is `(myself, x, n)`, but when we invoke
 };
 ```
 
-Now this seems very contrived, and it doesn't even work yet. How can we make it work? Behold, the JavaScript Mockingbird!
+Now this seems very contrived, and it doesn't even work yet. How can we make it work?
 
 ---
 
@@ -286,8 +288,8 @@ M((myself, x, n) => {
 
 That is all very well and good, but we've added some extra bookkeeping. Do we have any wins? Let's try composing it with the memoization function. Although we didn't use it above, our `memoize` function does allow us to customize the function used to create a key. Here's a key making function that deliberately ignores the first argument:
 
-```
-const ignoreFirst = ([first, ...butFirst]) => JSON.stringify(butFirst);
+```javascript
+const ignoreFirst = ([_, ...values]) => JSON.stringify(values);
 ```
 
 And now we can create a memoized version of our anonymous function. First, here it is step-by-step:
@@ -341,7 +343,9 @@ mExponent(2, 9)
   //=> 512, performs only one multiplication
 ```
 
-But now, our function need have absolutely NO reference to the name of our memoized function. It doesn't know whether it's memoized or not. We can make that crystal clear by getting rid of almost every constant and representing the entire thing as an expression. First, given:
+But now, our function need have absolutely NO reference to the name of our memoized function.[^aha] It doesn't know whether it's memoized or not. We can make that crystal clear by getting rid of almost every constant and representing the entire thing as an expression. First, given:
+
+[^aha]: In JavaScript, like almost all programming languages, we can bind values to names with paramaters, or with variable declarations, or with named functions. So having something like the M Combinator is optional, as we can choose to have a function refer to itself via a function name or variable binding. However, in Combinatory Logic and the Lambda calculus, there are no variable declarations or named functions. Therefore, recursive combinators are deeply important, as they are the only way to implement recursion. And since they don't have iteration either, recursion is the only way to do a lot of things we take for granted in JavaScript, like mapping lists. So recursive combinators are deeply important to the underlying building blocks of computer science.
 
 ```javascript
 const M = fn => (...args) => fn(fn, ...args);
