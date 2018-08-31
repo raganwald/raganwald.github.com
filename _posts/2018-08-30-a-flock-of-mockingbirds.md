@@ -4,7 +4,7 @@ tags: [recursion, noindex]
 
 In this essay we're going to look at the *mockingbird*, also called the `M` combinator.[^little-omega]
 
-The mockingbird is one of the _recursive combinators_, a combinator that takes a function that is not recursive, and returns a function that is recursive. We'll see how it works, and one unusual but interesting application for it. And when we're done, we'llhave an appreciation for how combinators can be used to make functions more composeable.
+The mockingbird is one of the _recursive combinators_, a combinator that takes a function that is not recursive, and returns a function that is recursive. We'll see how it works, and one unusual but interesting application for it. And when we're done, we'll have an appreciation for how combinators can be used to make functions more composeable.
 
 [^little-omega]: The word "combinator" has a precise technical meaning in mathematics: "A combinator is a higher-order function that uses only function application and earlier defined combinators to define a result from its arguments." The Mockingbird or "M combinator" is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page. In Combinatory Logic, the fundamental combinators are named after birds, following the example of Raymond Smullyan's famous book [To Mock a Mockingbird](http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20). Needless to say, the title of the book and its central character is the inspiration for this essay!
 
@@ -100,7 +100,7 @@ exponent(2, 7)
 
 So far, so good![^fib]
 
-[^fib]: This basic pattern was originally discussed in an essay about a different recursive function, [writing a matrix multiplication implemntation of fibonacci](http://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html).
+[^fib]: This basic pattern was originally discussed in an essay about a different recursive function, [writing a matrix multiplication implementation of fibonacci](http://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html).
 
 ---
 
@@ -180,7 +180,7 @@ mExponent(2, 9)
 
 In many cases this is fine. But conceptually, writing it this way means that our exponent function needs to know whether it is memoized or not. This runs counter to our "Allongé" style of writing things that can be composed without them needing to know anything about each other.
 
-For example, if we wanted a non-memoized exponentiation function, we'd have to duplicate all of teh code, with a minor variation:
+For example, if we wanted a non-memoized exponentiation function, we'd have to duplicate all of the code, with a minor variation:
 
 ```javascript
 const exponent = (x, n) => {
@@ -196,7 +196,7 @@ const exponent = (x, n) => {
 };
 ```
 
-That is not composing things, at all. What we want is to have one exponetiation function, and find a way to use it with or without decoration (such as with or without memoization). And we can do this.
+That is not composing things, at all. What we want is to have one exponentiation function, and find a way to use it with or without decoration (such as with or without memoization). And we can do this.
 
 ---
 
@@ -262,9 +262,9 @@ Behold, the JavaScript Mockingbird:
 const M = fn => (...args) => fn(fn, ...args);
 ```
 
-The Mockingbird is a function that takes another function, and returns a function. That function takes a bunch or aguments, and invoked the original function with itself and the arguments.[^well-actually] So now we can write:
+The Mockingbird is a function that takes another function, and returns a function. That function takes a bunch or arguments, and invoked the original function with itself and the arguments.[^well-actually] So now we can write:
 
-[^well-actually]: In proper combinatorial logic, the Mockingbird is actually defined as `M x = x x`. However, this presumes that all combinators are "curried" and only take one argument. Our Mockingbird is more "idiomatically JavaScript." But it's cwertainly possible to use `const M = fn => fn(fn);`, we would just need to also rewrite our exponentiation function to have a signature of `myself => x => n => ...`, and so forth. That typically clutters JavaScript up, so we're using `const M = fn => (...args) => fn(fn, ...args);`, which amounts to the same thing.
+[^well-actually]: In proper combinatorial logic, the Mockingbird is actually defined as `M x = x x`. However, this presumes that all combinators are "curried" and only take one argument. Our Mockingbird is more "idiomatically JavaScript." But it's certainly possible to use `const M = fn => fn(fn);`, we would just need to also rewrite our exponentiation function to have a signature of `myself => x => n => ...`, and so forth. That typically clutters JavaScript up, so we're using `const M = fn => (...args) => fn(fn, ...args);`, which amounts to the same thing.
 
 ```javascript
 M((myself, x, n) => {
@@ -281,7 +281,7 @@ M((myself, x, n) => {
   //=> 256
 ```
 
-That is all very well and good, but we've added some extra bookkeeping. Do we have any wins? Let's try composing it with the memoization function. Althoiugh we didn't use it above, our `memoize` function does allow us to customize the function used to create a key. Here's a key making function that deliberately ignores the first argument:
+That is all very well and good, but we've added some extra bookkeeping. Do we have any wins? Let's try composing it with the memoization function. Although we didn't use it above, our `memoize` function does allow us to customize the function used to create a key. Here's a key making function that deliberately ignores the first argument:
 
 ```
 const ignoreFirst = ([first, ...butFirst]) => JSON.stringify(butFirst);
@@ -338,7 +338,7 @@ mExponent(2, 9)
   //=> 512, performs only one multiplication
 ```
 
-But now, our function need have absoluetly NO reference to the name of our memozied function. It doesn't know whether it's memoized or not. We can make that crystal clear by getting rid of almost every constant and representing teh entire thinga s an expression. First, given:
+But now, our function need have absolutely NO reference to the name of our memoized function. It doesn't know whether it's memoized or not. We can make that crystal clear by getting rid of almost every constant and representing the entire thing as an expression. First, given:
 
 ```javascript
 const M = fn => (...args) => fn(fn, ...args);
@@ -387,7 +387,7 @@ Nothing within our expression refers to `mExponent`, and we've separated three d
 
 [^pure]: In true Combinatory Logic fashion, if we wanted to we could similarly get rid of the bindings for `M`, `memoized`, and `ignoreFirst`. We would simply take the function expressions, and substitute them inline for the variable names. It would work just the same.
 
-Because we've separated them like this, we can compose our function with memoization or not as we see fit. As we saw above, thename binding way was that if we wanted one version memoized and one not, we'd have to write two nearly identical versions of the same code:
+Because we've separated them like this, we can compose our function with memoization or not as we see fit. As we saw above, the name binding way was that if we wanted one version memoized and one not, we'd have to write two nearly identical versions of the same code:
 
 ```javascript
 const mExponent = memoized((x, n) => {
