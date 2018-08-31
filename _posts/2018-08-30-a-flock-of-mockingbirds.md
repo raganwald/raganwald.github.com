@@ -8,6 +8,10 @@ In this essay we're going to look at the *mockingbird*, also called the `M` comb
 
 ---
 
+[![Eye in the Sky ©2011 Ian Sane](/assets/images/eye-in-the-sky.jpg)](https://www.flickr.com/photos/31246066@N04/5414394619)
+
+---
+
 ### a recursive function
 
 > As the number of people discussing recursion in an online forum increases, the probability that someone will quote the definition for recursion as "recursion: see 'recursion'" approaches one.
@@ -95,6 +99,10 @@ exponent(2, 7)
 So far, so good![^fib]
 
 [^fib]: This basic pattern was originally discussed in an essay about a different recursive function, [writing a matrix multiplication implemntation of fibonacci](http://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html).
+
+---
+
+[![Dictionary - succeed ©2014 Flazingo Photos](/assets/images/dictionary.jpg)](https://www.flickr.com/photos/124247024@N07/14089978785)
 
 ---
 
@@ -187,6 +195,10 @@ const exponent = (x, n) => {
 ```
 
 That is not composing things, at all. What we want is to have one exponetiation function, and find a way to use it with or without decoration (such as with or without memoization). And we can do this.
+
+---
+
+[![Penrose tiling Oxford ©2014 Kelbv](/assets/images/penrose.jpg)](https://www.flickr.com/photos/flikr/14698426287)
 
 ---
 
@@ -371,6 +383,8 @@ mExponent(2, 9)
 
 Nothing within our expression refers to `mExponent`, and we've separated three different concerns. Self-invocation is handled by `M`, memoization is handled by `memoized`+`ignoreFirst`, and exponentiation is handled by an anonymous function.[^pure]
 
+[^pure]: In true Combinatory Logic fashion, if we wanted to we could similarly get rid of the bindings for `M`, `memoized`, and `ignoreFirst`. We would simply take the function expressions, and substitute them inline for the variable names. It would work just the same.
+
 Because we've separated them like this, we can compose our function with memoization or not as we see fit. As we saw above, thename binding way was that if we wanted one version memoized and one not, we'd have to write two nearly identical versions of the same code:
 
 ```javascript
@@ -418,12 +432,9 @@ const mExponent = M(memoized(exp, ignoreFirst));
 const exponent = M(exp);
 ```
 
-We have our composeability and reuse!
+We have our composeability and reuse! We could equally insert decorators that log each time our function is called and its arguments, or even swap `M` out for a [trampoline] implementation to be used with tail-recursive functions.
 
-
-
-[^pure]: In true Combinatory Logic fashion, if we wanted to we could similarly get rid of the bindings for `M`, `memoized`, and `ignoreFirst`. We would simply take the function expressions, and substitute them inline for the variable names. It would work just the same.
-
+[trampoline]: http://raganwald.com/2013/03/28/trampolines-in-javascript.html
 
 
 ---
