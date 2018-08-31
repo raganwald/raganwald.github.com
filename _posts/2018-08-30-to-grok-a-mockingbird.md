@@ -3,7 +3,7 @@ title: To Grok a Mockingbird
 tags: [recursion]
 ---
 
-*Using recursive combinators to enhance functional composition*
+*Using recursive combinators to enhance functional composition, with special guests the Mockingbird, Trampolining MockingBird, and the Sage Bird*
 
 ---
 
@@ -445,7 +445,7 @@ const mExponent = M(memoized(exp, ignoreFirst));
 const exponent = M(exp);
 ```
 
-We have our composeability and reuse! We could equally insert decorators that log each time our function is called and its arguments, or even swap `M` out for a [trampoline] implementation to be used with tail-recursive functions.
+We have our composeability and reuse!
 
 ---
 
@@ -566,7 +566,7 @@ M(factorial)(5)
 Now we've decoupled the form of the function from the mechanism of recursion. So, let's swap the mechanism of recursion for a trampoline _without altering the recursive function to suit the new implementation_:
 
 ```javascript
-const mTrampoline =
+const trampoliningMockingbird =
   fn => {
     class Thunk {
       constructor (args) {
@@ -592,19 +592,79 @@ const mTrampoline =
     };
   };
 
-mTrampoline(factorial)(5)
+trampoliningMockingbird(factorial)(5)
 ```
 
-Since we're passing the function to be called recursively into our recursive function, we can place the thunk mechanism in our `mTrampoline` function, completely separating responsibility.
+Since we're passing the function to be called recursively into our recursive function, we can place the thunk mechanism in our `trampoliningMockingbird` function, completely separating responsibility.
 
 And what about our `naive` exponentiation that broke the stack earlier?
 
 ```javascript
-mTrampoline(naive)(1, 1000000)
+trampoliningMockingbird(naive)(1, 1000000)
   //=> 1
 ```
 
 It works just fine, even on engines that don't support tail call optimization. The mockingbird has shown us another benefit of separating the recursive computation to be done from the mechanism for performing the recursion.
+
+---
+
+[![y? ©2012 Newtown grafitti](/assets/images/y.jpg)](https://www.flickr.com/photos/newtown_grafitti/8286552835/)
+
+---
+
+### the sage bird
+
+The M Combinator has the advantage of being the very simplest recursive combinator. But it can be enhanced. One of the annoying things about it is that when we write our functions to use with a mockingbird, not only do we need a `myself` parameter, but we need to remember to pass it on as well.
+
+This isn't a bad tradeoff, but logicians searched for a combinator that could implement recursion with a parameter, like the mockingbird, but avoid having to pass that parameter on. This had important theoretical consequences, but for us, the value of such a combinator is that the functions we write are more natural.
+
+The combinator that decouples recursion using a parameter, but doesn't require passing that parameter along, is called the [Y Combinator][y-combinator], or _Sage Bird_.
+
+[y-combinator]: https://en.wikipedia.org/wiki/Fixed-point_combinator
+
+A simple and direct JavaScript implementation looks like this:
+
+```javascript
+const Y = fn =>
+  ( x => fn(v => x(x)(v)) )(
+    x => fn(v => x(x)(v))
+  );
+```
+
+Without getting into [exactly how it works][^whyy], we can see that the disadvantage of the direct implementation is that once again, it assumes that all functions are curried to take only one argument. Here's an idiomatic JavaScript version, one that handles functions with more than one argument. It is written to preserve the form of the direct implementation:
+
+[^whyy]: There are lots of essays deriving the Y Combinator step-by-step. Here's one in [JavaScript](https://enlight.nyc/y-combinator/), and here's [another](http://igstan.ro/posts/2010-12-01-deriving-the-y-combinator-in-7-easy-steps.html).
+
+```javascript
+const Y =
+  fn => (
+    (innerFn) =>
+      ( myself => innerFn((...args) => myself(myself)(...args)) )(
+        myself => innerFn((...args) => myself(myself)(...args))
+      )
+  )(myself => (...args) => fn(myself, ...args));
+```
+
+Armed with our sage bird, we can write recursive functions that look a little more idiomatic:
+
+```javascript
+const exp = (myself, x, n) => {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return x;
+  } else if (n % 2 === 1) {
+    return x * myself(x * x, Math.floor(n / 2));
+  } else {
+    return myself(x * x, n / 2);
+  }
+};
+
+Y(exp)(2, 10)
+  //=> 1024
+```
+
+The sage bird has more complicated workings, but like the mockingbird, it allows us to separate the mechanism for recursion from the function we wish to make recursive.
 
 ---
 
