@@ -620,6 +620,8 @@ We've also seen that having performed this separation, we can swap the mockingbi
 
 The mockingbird is another tool in our "composeable functions" toolbox, increasing reuse by decoupling recursive functions from themselves.
 
+(discuss on [reddit](https://www.reddit.com/r/javascript/comments/9bu5od/to_grok_a_mockingbird_using_recursive_combinators/))
+
 ---
 
 ## Notes
