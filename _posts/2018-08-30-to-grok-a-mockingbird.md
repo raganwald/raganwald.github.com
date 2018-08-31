@@ -664,7 +664,9 @@ Y(exp)(2, 10)
   //=> 1024
 ```
 
-No more `myself(myself, x * x, n / 2)`! The sage bird has more complicated workings, but it makes the code we write much simpler. And like the mockingbird, it allows us to separate the mechanism for recursion from the function we wish to make recursive.
+No more `myself(myself, x * x, n / 2)`!
+
+The sage bird has more complicated workings, but it makes the code we write much simpler. And like the mockingbird, it allows us to separate the mechanism for recursion from the function we wish to make recursive.
 
 ---
 
