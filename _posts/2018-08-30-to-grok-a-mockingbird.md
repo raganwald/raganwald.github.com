@@ -682,7 +682,7 @@ And finally, we saw the sage bird, or Y Combinator. We saw that it makes our fun
 
 Recursive combinators like mockingbirds, trampolining mockingbirds, and sage birds are a few more tools in our "composeable functions" toolbox, increasing reuse by decoupling recursive functions from themselves.
 
-(discuss on [reddit](https://www.reddit.com/r/javascript/comments/9bu5od/to_grok_a_mockingbird_using_recursive_combinators/) or [hacker news](https://news.ycombinator.com/item?id=17885852))
+(discuss on reddit [here](https://www.reddit.com/r/javascript/comments/9bu5od/to_grok_a_mockingbird_using_recursive_combinators/), or [here](https://www.reddit.com/r/programming/comments/9bvmls/to_grok_a_mockingbird_using_recursive_combinators/) or on [hacker news](https://news.ycombinator.com/item?id=17885852))
 
 ---
 
