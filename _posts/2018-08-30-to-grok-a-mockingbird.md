@@ -550,7 +550,7 @@ This works, but again we have the factorial function coupled to itself, _and_ th
 
 ### a new kind of mockingbird science
 
-A mockingbird cannot directly solve our problem, but we can learn from the mockingbird to write a new kind of trampolining function based on the mockingbird. We start by rewriting our function in both tail-recursive and decoupled form. Note that this works just fine with our mockingbird:
+A mockingbird cannot directly solve our problem, but we can learn from the mockingbird to write a new kind of trampolining function based on the mockingbird. We start by rewriting our factorial function in both tail-recursive and decoupled form. Note that this works just fine with our mockingbird:
 
 ```javascript
 const factorial =
@@ -559,11 +559,11 @@ const factorial =
       ? myself(myself, n - 1, acc * n)
       : acc
 
-m(factorial)(5)
+M(factorial)(5)
   //=> 120
 ```
 
-now we've decoupled the form of the function from the mechanism of recursion. So, let's swap the mechanism of recursion for a trampoline _without altering the recursive function to suit the new implementation_:
+Now we've decoupled the form of the function from the mechanism of recursion. So, let's swap the mechanism of recursion for a trampoline _without altering the recursive function to suit the new implementation_:
 
 ```javascript
 const mTrampoline =
