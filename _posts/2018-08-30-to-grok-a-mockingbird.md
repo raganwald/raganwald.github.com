@@ -631,7 +631,7 @@ const Y = fn =>
   );
 ```
 
-Without getting into [exactly how it works][^whyy], we can see that the disadvantage of the direct implementation is that once again, it assumes that all functions are curried to take only one argument. Here's an idiomatic JavaScript version, one that handles functions with more than one argument. It is written to preserve the form of the direct implementation:
+Without getting into exactly how it works,[^whyy] we can see that the disadvantage of the direct implementation is that once again, it assumes that all functions are curried to take only one argument. Here's an idiomatic JavaScript version, one that handles functions with more than one argument. It is written to preserve the form of the direct implementation:
 
 [^whyy]: There are lots of essays deriving the Y Combinator step-by-step. Here's one in [JavaScript](https://enlight.nyc/y-combinator/), and here's [another](http://igstan.ro/posts/2010-12-01-deriving-the-y-combinator-in-7-easy-steps.html).
 
