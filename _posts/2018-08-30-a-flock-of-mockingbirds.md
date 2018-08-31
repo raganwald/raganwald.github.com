@@ -4,9 +4,11 @@ tags: [recursion]
 
 In this essay we're going to look at the *mockingbird*, also called the `M` combinator.[^little-omega]
 
-The mockingbird is one of the _recursive combinators_, a combinator that takes a function that is not recursive, and returns a function that is recursive. We'll see how it works, and one unusual but interesting application for it. And when we're done, we'll have an appreciation for how combinators can be used to make functions more composeable.
+[^little-omega]: The Mockingbird or "M combinator" is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page. In Combinatory Logic, the fundamental combinators are named after birds, following the example of Raymond Smullyan's famous book [To Mock a Mockingbird](http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20). Needless to say, the title of the book and its central character is the inspiration for this essay!
 
-[^little-omega]: The word "combinator" has a precise technical meaning in mathematics: "A combinator is a higher-order function that uses only function application and earlier defined combinators to define a result from its arguments." The Mockingbird or "M combinator" is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page. In Combinatory Logic, the fundamental combinators are named after birds, following the example of Raymond Smullyan's famous book [To Mock a Mockingbird](http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20). Needless to say, the title of the book and its central character is the inspiration for this essay!
+The mockingbird is one of the _recursive combinators_, a combinator that takes a function that is not recursive, and returns a function that is recursive. We'll see how it works, and one unusual but interesting application for it. And when we're done, we'll have an appreciation for how combinators can be used to make functions more composeable.[^y]
+
+[^y]: The Mockingbird is not the only recursive combinator. The Y Combinator is more complex to grok, but produces more idiomatically readable code. The T Combinator was discovered by Alan Turing, and there are others of great note like the U Combinator.
 
 ---
 
@@ -206,9 +208,9 @@ That is not composing things, at all. What we want is to have one exponentiation
 
 ### composeable recursive functions
 
-The sticking point is that to have full memoization, our exponentiation function needs to have a hard-coded reference to the memoized version of itself, which means it can't be used without memoization. So let's attack the hard-coded reference problem.
+The sticking point is that to have full memoization, our exponentiation function needs to have a hard-coded reference to the memoized version of itself, which means it can't be used without memoization. This is a specific case of a more general problem where things that have hard-coded references to each other become tightly coupled, and are thus difficult to compose in different ways. Only in this case, we've made the thing tightly coupled to itself!
 
-We'll refactor `exponent` so that it doesn't have a "hard-coded" reference to itself. Since it doesn't have to be a named function, we can make it a "fat arrow" expression. If we want a function to have a reference to another function in JavaScript, we can pass it in as a parameter. So the 'signature' for our new function expression will look like this:
+So let's attack the hard-coded reference problem, decoupling our recursive function from itself. Since it doesn't have to be a named function, we can make it a "fat arrow" expression. If we want a function to have a reference to another function in JavaScript, we can pass it in as a parameter. So the 'signature' for our new function expression will look like this:
 
 ```javascript
 (myself, x, n) => // ...
@@ -448,7 +450,7 @@ We have our composeability and reuse! We could equally insert decorators that lo
 
 In summary, the Mockingbird is a _recursive combinator_: It takes a function that is not directly recursive, and makes it recursive by passing the subject function to itself as a parameter. This has the effect of removing a hard-coded dependency between the subject function and itself, which allows us to decorate it with functionality like memoization.
 
-All together, it is another tool in our "composeable functions" toolbox, increasing reuse by decoupling functions from their decoration.
+The Mockingbird is another tool in our "composeable functions" toolbox, increasing reuse by decoupling recursive functions from themselves.
 
 ---
 
