@@ -398,7 +398,7 @@ Now we've decoupled the form of the function from the mechanism of recursion. So
 
 We'll call our new "combinator" a Widowbird:[^widowbird]
 
-[^widowbird]: The Jackson's Widowbird, _Euplectes Jacksoni_, is a passerine bird in the family Ploceidae. As notably portrayed in BBC Planet Earth II. When attempting to attrack females to nest in their territory, the males repeatedly jump to show off their fitness. If we exercise our vivid imaginations, we can think of this as resembling the behaviour of a trampolining tail-recursive function. Instead of "drilling deeper and deeper," it repeatedly bounces back up to the top.
+[^widowbird]: The Jackson's Widowbird, _Euplectes Jacksoni_, is a passerine bird in the family Ploceidae. As notably portrayed in BBC Planet Earth II, when attempting to attract females to nest in their territory, the males repeatedly jump to show off their fitness. If we exercise our vivid imaginations, we can think of this as resembling the behaviour of a trampolining tail-recursive function. Instead of "drilling deeper and deeper," it repeatedly bounces back up to the top.
 
 ```javascript
 const widowbird =
