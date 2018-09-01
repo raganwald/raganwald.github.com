@@ -25,7 +25,7 @@ We'll begin our exploration with a look at the *mockingbird*, also called the `M
 
 > As the number of people discussing recursion in an online forum increases, the probability that someone will quote the definition for recursion as _Recursion: see 'recursion'_, approaches one.
 
-This is a function that computes exponentiation. If we want to compute something like `2^8` (two to the power of eight), we can compute it like this: `2 * 2 * 2 * 2 * 2 * 2 * 2 * 2`, which requires On operations. Our function exploits basic arithmetic and recursion to obtain the same result in Olog2n operations:[^fib]
+This is a function that computes exponentiation. If we want to compute something like `2^8` (two to the power of eight), we can compute it like this: `2 * 2 * 2 * 2 * 2 * 2 * 2 * 2`, which requires O_n_ operations. Our function exploits basic arithmetic and recursion to obtain the same result in _O_log2n operations:[^fib]
 
 [^fib]: This basic pattern was originally discussed in an essay about a different recursive function, [writing a matrix multiplication implementation of fibonacci](http://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html).
 
@@ -274,7 +274,7 @@ We have our composeability and reuse!
 
 ### tail recursion
 
-Here's a naive version of our exponentiation function. Not only does it perform On operations (instead of Olog2n operations), but its use of recursion is completely gratuitous. But we'll experiment with it, as it provides a good demonstration of the perils of deeply recursive functions.
+Here's a naive version of our exponentiation function. Not only does it perform O_n_ operations (instead of _O_log2n operations), but its use of recursion is completely gratuitous. But we'll experiment with it, as it provides a good demonstration of the perils of deeply recursive functions.
 
 We've written it in "mockingbird" form:
 
