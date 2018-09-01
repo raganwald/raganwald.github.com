@@ -190,7 +190,9 @@ Behold, the JavaScript mockingbird:
 const mockingbird = fn => (...args) => fn(fn, ...args);
 ```
 
-The mockingbird is a function that takes another function, and returns a function. That function takes a bunch or arguments, and invoked the original function with itself and the arguments.[^well-actually] So now we can write:
+The mockingbird is a function that takes another function, and returns a function. That function takes a bunch or arguments, and invoked the original function with itself and the arguments.[^well-actually]
+
+So now we can write:
 
 [^well-actually]: In proper combinatorial logic, the mockingbird is actually defined as `M x = x x`. However, this presumes that all combinators are "curried" and only take one argument. Our mockingbird is more "idiomatically JavaScript."<br/><br/>But it's certainly possible to use `const M = fn => fn(fn);`, we would just need to also rewrite our exponentiation function to have a signature of `myself => x => n => ...`, and so forth. That typically clutters JavaScript up, so we're using `const mockingbird = fn => (...args) => fn(fn, ...args);`, which amounts to the same thing.
 
@@ -241,7 +243,7 @@ mExponent(2, 9)
   //=> 512, performs only one multiplication
 ```
 
-Yes it does properly memoize everything. And best of all, our function need have absolutely NO reference to the name of our memoized function.[^aha] It doesn't know whether it's memoized or not.
+Yes it does properly memoize everything. And best of all, our function need have absolutely NO reference to the name of our memoized function. It doesn't know whether it's memoized or not.[^aha]
 
 [^aha]: In JavaScript, like almost all programming languages, we can bind values to names with paramaters, or with variable declarations, or with named functions. So having something like the M Combinator is optional, as we can choose to have a function refer to itself via a function name or variable binding. However, in Combinatory Logic and the Lambda calculus, there are no variable declarations or named functions.<br/><br/>Therefore, recursive combinators are necessary, as they are the only way to implement recursion. And since they don't have iteration either, recursion is the only way to do a lot of things we take for granted in JavaScript, like mapping lists. So recursive combinators are deeply important to the underlying building blocks of computer science.
 
@@ -467,7 +469,9 @@ const Y = fn =>
   );
 ```
 
-Without getting into exactly how it works,[^whyy] we can see that the disadvantage of the direct implementation is that once again, it assumes that all functions are curried to take only one argument. Here's an idiomatic JavaScript version, one that handles functions with more than one argument. It is written to preserve the form of the direct implementation:
+Without getting into exactly how it works, we can see that the disadvantage of the direct implementation is that once again, it assumes that all functions are curried to take only one argument.[^whyy]
+
+Here's an idiomatic JavaScript version, one that handles functions with more than one argument. It is written to preserve the form of the direct implementation:
 
 [^whyy]: There are lots of essays deriving the Y Combinator step-by-step. Here's one in [JavaScript](https://enlight.nyc/y-combinator/), and here's [another](http://igstan.ro/posts/2010-12-01-deriving-the-y-combinator-in-7-easy-steps.html).
 
