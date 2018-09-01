@@ -450,7 +450,7 @@ It works just fine, even on engines that don't support tail call optimization. T
 
 ### the sage bird
 
-The M Combinator has the advantage of being the very simplest recursive combinator. But it can be enhanced. One of the annoying things about it is that when we write our functions to use with a mockingbird, not only do we need a `myself` parameter, but we need to remember to pass it on as well.
+The mockingbird has the advantage of being the very simplest recursive combinator. But it can be enhanced. One of the annoying things about it is that when we write our functions to use with a mockingbird, not only do we need a `myself` parameter, but we need to remember to pass it on as well.
 
 This isn't a bad tradeoff, but logicians searched for a combinator that could implement recursion with a parameter, like the mockingbird, but avoid having to pass that parameter on. This had important theoretical consequences, but for us, the value of such a combinator is that the functions we write are more natural.
 
