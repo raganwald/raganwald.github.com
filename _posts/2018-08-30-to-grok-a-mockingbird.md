@@ -21,7 +21,7 @@ We'll begin our exploration with a look at the *mockingbird*, also called the `M
 
 ---
 
-### a recursive function
+### recursion and binding
 
 > As the number of people discussing recursion in an online forum increases, the probability that someone will quote the definition for recursion as _Recursion: see 'recursion'_, approaches one.
 
@@ -43,14 +43,6 @@ function exponent (x, n) {
 exponent(2, 7)
   //=> 128
 ```
-
----
-
-[![Dictionary - succeed ©2014 Flazingo Photos](/assets/images/dictionary.jpg)](https://www.flickr.com/photos/124247024@N07/14089978785)
-
----
-
-### recursion and binding
 
 Question: _How does our `exponent` function actually perform recursion?_ The immediate answer is, "It calls itself when the work to be performed is not the base case" (the base case for exponentiation is an exponent of `0` or `1`).
 
