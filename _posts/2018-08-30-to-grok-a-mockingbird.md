@@ -55,7 +55,7 @@ But it's not _always_ exactly what we want. If we want even more performance, we
 Here's a memoization decorator, snarfed from [Time, Space, and Life As We Know It
 ](http://raganwald.com/2017/01/12/time-space-life-as-we-know-it.html):
 
-```
+```javascript
 const memoized = (fn, keymaker = JSON.stringify) => {
   const lookupTable = new Map();
 
