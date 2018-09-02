@@ -276,53 +276,54 @@ We have our composeability and reuse!
 
 ### tail recursion
 
-Here's a function that determines whether a whole number is even or not, It is highly pessimum, and its use of recursion is completely gratuitous. But we'll experiment with it, as it provides a good demonstration of the perils of deeply recursive functions.
+Here's a function that determines whether a whole number is even (`true`) or odd (`false`).
 
-We've written it in "mockingbird" form:
+It is highly pessimum, and its use of recursion is completely gratuitous. But we'll experiment with it, as it provides a good demonstration of the perils of deeply recursive functions:
+
 
 ```javascript
 const isEven =
-  (myself, n) => {
+  n => {
     if (n === 0) {
       return true;
     } else {
-      return !myself(myself, n - 1);
+      return !IsEven(n - 1);
     }
   };
 
-mockingbird(isEven)(47)
+isEven(47)
   //=> false
 ```
 
-Many recursive functions can be rewritten in "tail recursive form" Here it is again, with its recursive call "in tail position:"[^tail]
+For any number `n`, this function makes `n` recursive calls. So, what happens if we write:
+
+```javascript
+isEven(1000000)
+```
+
+We know the answer is `true`, but will it actually return at all? No. For technical reasons, JavaScript engines place a hard limit on the maximum depth of the call stack. Meaning, if too many function calls are nested--including recursive calls--we get `Maximum call stack size exceeded`.
+
+One fix for this is to rewrite the function in tail-recursive form, and then allow the engine to automatically execute the function without consuming excess stack space. Here it is again, with its recursive call "in tail position:"[^tail]
 
 [^tail]: See [A Trick of the Tail](http://raganwald.com/2018/05/27/tail.html) for a fuller explanation of how to perform this refactoring.
 
 ```javascript
 const isEven =
-  (myself, n, acc = 1) => {
+  (n, acc = 1) => {
     if (n === 0) {
       return acc === 1;
     } else {
-      return myself(myself, n - 1, 1 - acc);
+      return isEven(n - 1, 1 - acc);
     }
   };
 
-mockingbird(isEven)(42)
-  //=> 1024
+isEven(42)
+  //=> true
 ```
 
-What happens if we write:
+This code works just fine on the Safari browser, which in addition to being far more thrifty with battery life on OS X and iOS devices, implements Tail Call Optimization, as specified in the JavaScript standard. Alas, most other implementations refuse to implement TCO.
 
-```javascript
-mockingbird(isEven)(1, 1000000)
-```
-
-We know the answer is `true`, but do we get it? If we evaluate the above on a JS engine that supports tail call optimization, we get it. But on other implementations, we get `Maximum call stack size exceeded`.[^tco]
-
-[^tco]: Our code works just fine on the Safari browser, which in addition to being far more thrifty with battery life on OS X and iOS devices, implements Tail Call Optimization, as specified in the JavaScript standard. Alas, most other implementations refuse to implement TCO.
-
-As discussed in [Trampolines in JavaScript][trampoline], we can get around the call stack problem ourselves with a technique called trampolining:
+There's a workaround for engines that don't support TCO: As discussed in [Trampolines in JavaScript][trampoline], we can get around the call stack problem ourselves with a technique called trampolining:
 
 [trampoline]: http://raganwald.com/2013/03/28/trampolines-in-javascript.html
 
@@ -333,7 +334,13 @@ As discussed in [Trampolines in JavaScript][trampoline], we can get around the c
 [tail-recursive]: https://en.wikipedia.org/wiki/Tail-recursive_function
 [trampolining]: https://en.wikipedia.org/wiki/Trampoline_(computing)
 
-Trampolining functions are straightforward to write, but the typical pattern has a drawback. From the OP on the subject, here's `factorial` written to work with the trampolining function, updated for contemporary JavaScript:
+Like our mockingbird, the trampoline pattern separates the code into a function that defines the work to be done, and a `trampoline` function that calls the recursive function. Th etramppline function checks the function's return value. If it's a [thunk], the trampoline evaluates the thunk, usually invoking the function again. Since the recursive function always returns before evaluating the next call, the stack does not grow.
+
+[thunk]: https://en.wikipedia.org/wiki/Thunk
+
+Here's the simplest trampoline good enough to criticize. Unlike approaches that rely on returning functions for thunks instead of a class, this works for functions that are supposed to return functions.
+
+We include a version of `isEven` designed to work with it:
 
 ```javascript
 class Thunk {
@@ -359,23 +366,23 @@ const trampoline =
     };
 
 
-function factorial (n) {
-  const _factorial = trampoline(
+
+const isEven =
+  trampoline(
     function myself (n, acc = 1) {
-      return n
-        ? new Thunk(() => myself(n - 1, acc * n))
-        : acc
+      if (n === 0) {
+        return acc === 1;
+      } else {
+        return new Thunk(() => myself(n - 1, 1 - acc));
+      }
     }
   );
 
-  return _factorial(n);
-}
-
-factorial(5)
-  //=> 120
+isEven(1000001)
+  //=> false
 ```
 
-This works, but again we have the factorial function coupled to itself, _and_ the inner recursive function is coupled to the implementation of trampolining. Why should it know what a thunk is?
+This works, but suffers from the recursive sins that our mockingbird fixed. The `isEven` function is coupled to itself, _and_ it is coupled to the implementation of trampolining. Why should it know what a `Thunk` is?
 
 ---
 
@@ -385,17 +392,22 @@ This works, but again we have the factorial function coupled to itself, _and_ th
 
 ### a new kind of passerine science
 
-A mockingbird cannot directly solve our problem, but we can learn from the mockingbird to write a new kind of trampolining function based on the mockingbird. We start by rewriting our factorial function in both tail-recursive and decoupled form. Note that this works just fine with our mockingbird:
+A mockingbird cannot directly solve our problem, but we can learn from the mockingbird to write a new kind of trampolining function based on the mockingbird. We start by rewriting our `isEven` function in both tail-recursive and decoupled form.
+
+Note that this works just fine with our mockingbird:
 
 ```javascript
-const factorial =
-  (myself, n, acc = 1) =>
-    n
-      ? myself(myself, n - 1, acc * n)
-      : acc
+const isEven =
+  (myself, n, acc = 1) => {
+    if (n === 0) {
+      return acc === 1;
+    } else {
+      return myself(myself, n - 1, 1 - acc);
+    }
+  };
 
-mockingbird(factorial)(5)
-  //=> 120
+mockingbird(isEven)(1001)
+  //=> false
 ```
 
 Now we've decoupled the form of the function from the mechanism of recursion. So, let's swap the mechanism of recursion for a trampoline _without altering the recursive function to suit the new implementation_.
@@ -431,7 +443,7 @@ const widowbird =
     };
   };
 
-widowbird(factorial)(5)
+widowbird(isEven)(1001)
   //=> 120
 ```
 
