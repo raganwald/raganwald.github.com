@@ -334,7 +334,7 @@ There's a workaround for engines that don't support TCO: As discussed in [Trampo
 [tail-recursive]: https://en.wikipedia.org/wiki/Tail-recursive_function
 [trampolining]: https://en.wikipedia.org/wiki/Trampoline_(computing)
 
-Like our mockingbird, the trampoline pattern separates the code into a function that defines the work to be done, and a `trampoline` function that calls the recursive function. Th etramppline function checks the function's return value. If it's a [thunk], the trampoline evaluates the thunk, usually invoking the function again. Since the recursive function always returns before evaluating the next call, the stack does not grow.
+Like our mockingbird, the trampoline pattern separates the code into a function that defines the work to be done, and a `trampoline` function that calls the recursive function. The trampoline function checks the function's return value. If it's a [thunk], the trampoline evaluates the thunk, usually invoking the function again. Since the recursive function always returns before evaluating the next call, the stack does not grow.
 
 [thunk]: https://en.wikipedia.org/wiki/Thunk
 
