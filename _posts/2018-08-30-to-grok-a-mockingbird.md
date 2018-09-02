@@ -276,21 +276,22 @@ We have our composeability and reuse!
 
 ### tail recursion
 
-Here's a naive version of our exponentiation function. Not only does it perform O(n) operations (instead of O(log2n) operations), but its use of recursion is completely gratuitous. But we'll experiment with it, as it provides a good demonstration of the perils of deeply recursive functions.
+Here's a function that determines whether a whole number is even or not, It is highly pessimum, and its use of recursion is completely gratuitous. But we'll experiment with it, as it provides a good demonstration of the perils of deeply recursive functions.
 
 We've written it in "mockingbird" form:
 
 ```javascript
-const naive = (myself, x, n) => {
-  if (n === 0) {
-    return 1;
-  } else {
-    return x * myself(myself, x, n - 1);
-  }
-}
+const isEven =
+  (myself, n) => {
+    if (n === 0) {
+      return true;
+    } else {
+      return !myself(myself, n - 1);
+    }
+  };
 
-naive(2, 10)
-  //=> 1024
+mockingbird(isEven)(47)
+  //=> false
 ```
 
 Many recursive functions can be rewritten in "tail recursive form" Here it is again, with its recursive call "in tail position:"[^tail]
@@ -298,25 +299,26 @@ Many recursive functions can be rewritten in "tail recursive form" Here it is ag
 [^tail]: See [A Trick of the Tail](http://raganwald.com/2018/05/27/tail.html) for a fuller explanation of how to perform this refactoring.
 
 ```javascript
-const naive = (myself, x, n, acc = 1) => {
-  if (n === 0) {
-    return acc;
-  } else {
-    return myself(myself, x, n - 1, x * acc);
-  }
-}
+const isEven =
+  (myself, n, acc = 1) => {
+    if (n === 0) {
+      return acc === 1;
+    } else {
+      return myself(myself, n - 1, 1 - acc);
+    }
+  };
 
-mockingbird(naive)(2, 10)
+mockingbird(isEven)(42)
   //=> 1024
 ```
 
 What happens if we write:
 
 ```javascript
-mockingbird(naive)(1, 1000000)
+mockingbird(isEven)(1, 1000000)
 ```
 
-We know the answer is `1`, but do we get it? If we evaluate the above on a JS engine that supports tail call optimization, we get it. But on other implementations, we get `Maximum call stack size exceeded`.[^tco]
+We know the answer is `true`, but do we get it? If we evaluate the above on a JS engine that supports tail call optimization, we get it. But on other implementations, we get `Maximum call stack size exceeded`.[^tco]
 
 [^tco]: Our code works just fine on the Safari browser, which in addition to being far more thrifty with battery life on OS X and iOS devices, implements Tail Call Optimization, as specified in the JavaScript standard. Alas, most other implementations refuse to implement TCO.
 
@@ -438,8 +440,8 @@ Since we're passing the function to be called recursively into our recursive fun
 And what about our `naive` exponentiation that broke the stack earlier?
 
 ```javascript
-widowbird(naive)(1, 1000000)
-  //=> 1
+widowbird(isEven)(1, 1000000)
+  //=> true
 ```
 
 It works just fine, even on engines that don't support tail call optimization. The widowbird has shown us another benefit of separating the recursive computation to be done from the mechanism for performing the recursion.
