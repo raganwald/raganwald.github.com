@@ -25,8 +25,6 @@ We'll then derive the Long-tailed Widowbird, a sage bird adapted to use trampoli
 
 To review what we saw in [To Grok a Mockingbird], a typical recursive function calls itself by name, like this:
 
-html).
-
 ```javascript
 function exponent (x, n) {
   if (n === 0) {
