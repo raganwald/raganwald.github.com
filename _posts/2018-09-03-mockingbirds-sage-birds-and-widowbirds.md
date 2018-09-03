@@ -120,7 +120,7 @@ The good news is that we can now do things like memoize our recursive function, 
 
 ---
 
-[![Sage Thrasher © 2016 Bettina Arrigoni](/assets/images/sage-thrasher.jpg](https://www.flickr.com/photos/barrigoni/25566626012)
+[![Sage Thrasher © 2016 Bettina Arrigoni](/assets/images/sage-thrasher.jpg)](https://www.flickr.com/photos/barrigoni/25566626012)
 
 ---
 
