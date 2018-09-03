@@ -1,5 +1,5 @@
 ---
-title: From the Y Combinator to the Long-tailed Widowbird
+title: Using the Mockingbird to Derive the Y Combinator
 tags: [recursion]
 ---
 
