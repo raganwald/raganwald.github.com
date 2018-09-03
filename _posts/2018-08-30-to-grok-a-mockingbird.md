@@ -309,11 +309,11 @@ One fix for this is to rewrite the function in tail-recursive form, and then all
 
 ```javascript
 const isEven =
-  (n, acc = 1) => {
+  (n, parity = 0) => {
     if (n === 0) {
-      return acc === 1;
+      return parity === 0;
     } else {
-      return isEven(n - 1, 1 - acc);
+      return isEven(n - 1, 1 - parity);
     }
   };
 
@@ -369,11 +369,11 @@ const trampoline =
 
 const isEven =
   trampoline(
-    function myself (n, acc = 1) {
+    function myself (n, parity = 0) {
       if (n === 0) {
-        return acc === 1;
+        return parity === 0;
       } else {
-        return new Thunk(() => myself(n - 1, 1 - acc));
+        return new Thunk(() => myself(n - 1, 1 - parity));
       }
     }
   );
@@ -398,11 +398,11 @@ Note that this works just fine with our mockingbird:
 
 ```javascript
 const isEven =
-  (myself, n, acc = 1) => {
+  (myself, n, parity = 0) => {
     if (n === 0) {
-      return acc === 1;
+      return parity === 0;
     } else {
-      return myself(myself, n - 1, 1 - acc);
+      return myself(myself, n - 1, 1 - parity);
     }
   };
 
@@ -444,7 +444,7 @@ const widowbird =
   };
 
 widowbird(isEven)(1001)
-  //=> 120
+  //=> false
 ```
 
 Since we're passing the function to be called recursively into our recursive function, we can place the thunk mechanism in our `widowbird`. Thus, the recursive function is completely decoupled from the mechanism for recursing without consuming the stack.
@@ -452,7 +452,7 @@ Since we're passing the function to be called recursively into our recursive fun
 And what about our `naive` exponentiation that broke the stack earlier?
 
 ```javascript
-widowbird(isEven)(1, 1000000)
+widowbird(isEven)(1000000)
   //=> true
 ```
 
@@ -485,7 +485,7 @@ const Y = fn =>
 
 Without getting into exactly how it works, we can see that the disadvantage of the direct implementation is that once again, it assumes that all functions are curried to take only one argument.[^whyy]
 
-Here's an idiomatic JavaScript version.It handles functions with more than one argument:
+Here's an idiomatic JavaScript version. It handles functions with more than one argument:
 
 [^whyy]: There are lots of essays deriving the Y Combinator step-by-step. Here's one in [JavaScript](https://enlight.nyc/y-combinator/), and here's [another](http://igstan.ro/posts/2010-12-01-deriving-the-y-combinator-in-7-easy-steps.html).
 
