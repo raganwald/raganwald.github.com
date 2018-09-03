@@ -13,7 +13,7 @@ In this essay, we're going to look at the Sage Bird, known most famously as the 
 
 [Y Combinator]: https://en.wikipedia.org/wiki/Fixed-point_combinator
 
-We'll then derive the Long-tailed Widowbird, a sage bird adapted to use trampolin8ng just like the Jackson's Widowbird.
+We'll then derive the Long-tailed Widowbird, a sage bird adapted to use trampolining just like the Jackson's Widowbird.
 
 ---
 
