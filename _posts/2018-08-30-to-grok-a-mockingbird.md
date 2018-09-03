@@ -497,7 +497,7 @@ const sagebird =
     )(maker => (...args) => fn(maker(maker), ...args));
 ```
 
-Armed with our sage bird, we can write recursive functions that look a little more idiomatic. This implementation of `map` is also gratuitously recursive, but demonstrates that using the sage bird, we need not pass `myself` along when `map` calls itself recursively:
+Armed with our sage bird, we can write recursive functions that look a little more idiomatic. This implementation of `map` is gratuitously recursive, but demonstrates that using the sage bird, we need not pass `myself` along when `map` calls itself recursively:
 
 ```javascript
 const map =
@@ -517,7 +517,7 @@ sagebird(map)(x => x * x, [1, 2, 3])
 
 No more `myself(myself, ...)`!
 
-The sage bird has more complicated workings, but it makes the code we write much simpler. And like the mockingbird, it allows us to separate the mechanism for recursion from the function we wish to make recursive.
+The sage bird makes the code we write much simpler. And like the mockingbird, it allows us to separate the mechanism for recursion from the function we wish to make recursive.
 
 ---
 
