@@ -485,38 +485,37 @@ const Y = fn =>
 
 Without getting into exactly how it works, we can see that the disadvantage of the direct implementation is that once again, it assumes that all functions are curried to take only one argument.[^whyy]
 
-Here's an idiomatic JavaScript version, one that handles functions with more than one argument. It is written to preserve the form of the direct implementation:
+Here's an idiomatic JavaScript version.It handles functions with more than one argument:
 
 [^whyy]: There are lots of essays deriving the Y Combinator step-by-step. Here's one in [JavaScript](https://enlight.nyc/y-combinator/), and here's [another](http://igstan.ro/posts/2010-12-01-deriving-the-y-combinator-in-7-easy-steps.html).
 
 ```javascript
 const sagebird =
-  fn => (
-    (innerFn) =>
-      ( myself => innerFn((...args) => myself(myself)(...args)) )(
-        myself => innerFn((...args) => myself(myself)(...args))
-      )
-  )(myself => (...args) => fn(myself, ...args));
+  fn =>
+    (
+      maker => (...args) => fn(maker(maker), ...args)
+    )(maker => (...args) => fn(maker(maker), ...args));
 ```
 
-Armed with our sage bird, we can write recursive functions that look a little more idiomatic:
+Armed with our sage bird, we can write recursive functions that look a little more idiomatic. This implementation of `map` is also gratuitously recursive, but demonstrates that using the sage bird, we need not pass `myself` along when `map` calls itself recursively:
 
 ```javascript
-const exp = (myself, x, n) => {
-  if (n === 0) {
-    return 1;
-  } else if (n % 2 === 1) {
-    return x * myself(x * x, Math.floor(n / 2));
-  } else {
-    return myself(x * x, n / 2);
-  }
-};
+const map =
+  (myself, fn, input) => {
+    if (input.length === 0) {
+      return [];
+    } else {
+      const [first, ...rest] = input;
+      
+      return [fn(first)].concat(myself(fn, rest));
+    }
+  };
 
-sagebird(exp)(2, 10)
-  //=> 1024
+sagebird(map)(x => x * x, [1, 2, 3])
+  //=> [1, 4, 9]
 ```
 
-No more `myself(myself, x * x, n / 2)`!
+No more `myself(myself, ...)`!
 
 The sage bird has more complicated workings, but it makes the code we write much simpler. And like the mockingbird, it allows us to separate the mechanism for recursion from the function we wish to make recursive.
 
