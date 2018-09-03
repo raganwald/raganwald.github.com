@@ -124,5 +124,20 @@ The good news is that we can now do things like memoize our recursive function, 
 
 ---
 
-### deriving the sage bird from the mockingbird
+### deriving the y combinator from the mockingbird
+
+The Mockingbird is excellent, but it has one drawback: In addition to rewriting our functions to take themselves as a parameter, we also have to rewrite them to pass themselves along. So in addition to this:
+
+```javascript
+(myself, x, n) => ...
+```
+
+We must also write this:
+
+
+```javascript
+myself(myself, x * x, Math.floor(n / 2))
+```
+
+The former is the whole point of decoupling. The latter is nonsense! Having written a function in mockingbird form, when we invoke it we don't include itself as a parameter. If we can call it from outside with `exponent(3, 3)`, why can't it call itself with `myself(x * x, Math.floor(n / 2))`?
 
