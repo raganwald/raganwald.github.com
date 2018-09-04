@@ -125,7 +125,7 @@ Memoizing our recursive function does not require any changes to its code. We ca
 
 ---
 
-[![Curlicue copyright 2017 Anja Pietsch](/assets/images/culicue.jpg)](https://www.flickr.com/photos/a_peach/33299615155)
+[![Curlicue copyright 2017 Anja Pietsch](/assets/images/curlicue.jpg)](https://www.flickr.com/photos/a_peach/33299615155)
 
 ---
 
