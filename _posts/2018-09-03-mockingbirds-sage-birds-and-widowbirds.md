@@ -15,8 +15,6 @@ In this essay, we're going to look at the Sage Bird, known most famously as the 
 
 [Y Combinator]: https://en.wikipedia.org/wiki/Fixed-point_combinator
 
-We'll then derive the Long-tailed Widowbird, a function that uses trampolining to execute idiomatically tail-recursive functions in constant stack space.
-
 ---
 
 [![Hood Mockingbird copyright 2007](/assets/images/hood-mockingbird.jpg)](https://www.flickr.com/photos/putneymark/1225867875)
@@ -483,8 +481,7 @@ const Y =
     (x => x(x))(m => a => fn(m(m))(a));
 ```
 
-
-We will use the reduced M combinator make a compact sage bird, too:
+We can use the reduced M combinator make a compact sage bird, too:
 
 ```javascript
 const sagebird =
@@ -496,15 +493,31 @@ const sagebird =
     );
 ```
 
-And now that we're back to idiomatic JavaScript, let's turn our attention to the Long-tail Widowbird.
+And with that, we have derived compact implementations of both the Y combinator and its idiomatic JavaScript equivalent, the sage bird, from our mockingbird implementation.
 
 ---
 
-
+[![Clouds at the end ©2008 Richard Hammond](/assets/images/clouds-at-the-end.jpg)](https://www.flickr.com/photos/mrcubs/8780767395)
 
 ---
 
-### the long-tailed widowbird
+### summary
+
+The mockingbird that we explored in [To Grok a Mockingbird] is easy to understand, and decouples recursive functions from themselves. This provides us with more ways to compose recursive functions with other functions like decorators.
+
+However, it requires us to pass `myself` along when making recursive calls. This is decidedly not idiomatic, so we derived the sage bird, an idiomatic JavaScript recursive combinator that enables recursive functions to call themselves without any additional parameters.
+
+We then derived a JavaScript implementation of the Y combinator from the sage bird, and finished by using a reduced version of the M combinator to produce "compact" implementations of both the sage bird and the Y combinator.
+
+(The end)
+
+---
+
+![Long-tailed Widowbird, public domain](/assets/images/long-tailed-widowbird.jpg)
+
+---
+
+### bonus: the long-tailed widowbird
 
 ---
 
