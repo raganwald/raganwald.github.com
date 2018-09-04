@@ -3,15 +3,15 @@ title: Deriving the Y Combinator and Sage Bird from the Mockingbird
 tags: [recursion]
 ---
 
-In [To Grok a Mockingbird], we explored the Mockingbird, a recursive combinator that decouples recursive functions from themselves. Decoupling recursive functions from themselves allows us to compose them more flexibly, such as with decorators.[^m]
+In [To Grok a Mockingbird], we explored the _mockingbird_, a recursive combinator that decouples recursive functions from themselves. Decoupling recursive functions from themselves allows us to compose them more flexibly, such as with decorators.[^m]
 
 [To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
 
 [^m]: The mockingbird is more formally known as the M Combinator. Our naming convention is that when discussing formal combinators from combinatory logic, or direct implementations in JavaScript, we will use the formal name. But when using variations designed to work more idiomatically in JavaScript--such as versions that work with functions taking more than one argument), we will use Raymond Smullyan's ornithological nicknames.<br/><br/>For a formalist, the M Combinator's direct translation is `const M = fn => fn(fn)`. This is only useful if `fn` is implemented in "curried" form, e.g. `const isEven = myself => n => n === 0 || !myself(n - 1)`. If we wish to use a function written in idiomatic JavaScript form, such as `const isEven = (myself, n) => n === 0 || !myself(n - 1)`, we use the mockingbird, which is given later as `const mockingbird = fn => (...args) => fn(fn, ...args)`. This is far more practical for programming purposes.
 
-We also saw that the mockingbird separates the concern of the recursive algorithm to be performed from the mechanism of implementing recursion. This allowed us to implement the Jackson's Widowbird, a variation of the mockingbird that uses trampolining to execute tail-recursive functions in constant space.
+This also separates the concern of the recursive algorithm to be performed from the mechanism of implementing recursion. This allowed us to implement the Jackson's Widowbird, a variation of the mockingbird that uses trampolining to execute tail-recursive functions in constant space.
 
-In this essay, we're going to look at the Sage Bird, known most famously as the [Y Combinator]. The sage bird provides all the benefits of the mockingbird, but allows us to write more idiomatic code.
+In this essay, we're going to look at the Sage Bird, known most famously as the [Y Combinator]. The sage bird provides all the benefits of the mockingbird, but allows us to write more idiomatic JavaScript.
 
 [Y Combinator]: https://en.wikipedia.org/wiki/Fixed-point_combinator
 
@@ -129,7 +129,7 @@ Memoizing our recursive function does not require any changes to its code. We ca
 
 ### why the mockingbird needs improvement
 
-The mockingbird is excellent, but it has one drawback: In addition to rewriting our functions to take themselves as a parameter, we also have to rewrite them to pass themselves along. So in addition to this:
+The mockingbird is a useful tool, but it has a drawback: In addition to rewriting our functions to take themselves as a parameter, we also have to rewrite them to pass themselves along. So in addition to this:
 
 ```javascript
 (myself, x, n) => ...
@@ -142,9 +142,11 @@ We must also write this:
 myself(myself, x * x, n / 2)
 ```
 
-The former is the whole point of decoupling. The latter is nonsense! The whole point of the mockingbird (as opposed to a literal interpretation of the M combinator) is to write idiomatic JavaScript. But there';s nothing "idiomatic" about a function invoking itself with `myself(myself, ...)`.
+The former is the point of decoupling. The latter is nonsense!
 
-What we want is a function *like* the mockingbird, but it must support functions like `exponent` calling themselves idiomatically, e.g. `myself(x * x, n / 2)`.
+The idea behind the way we use the mockingbird (as opposed to a literal interpretation of the M combinator) is to write idiomatic JavaScript. But there's nothing "idiomatic" about a function invoking itself with `myself(myself, ...)`.
+
+What we want is a function *like* the mockingbird, but it must support functions calling themselves idiomatically, e.g. `myself(x * x, n / 2)`.
 
 Let's visualize exactly what we want. With the mockingbird, we write:
 
@@ -193,7 +195,7 @@ Let's build that!
 Before we begin, there are some rules we have to follow if we are to take the mockingbird and derive another combinator from it. Every combinator has the following properties:
 
 1. It is a function.
-2. It can only use its parameters. This means it cannot refer to anything from its environment, like a function or object from the global namespace.
+2. It can only use its parameters or previously defined combinators that have these same properties. This means it cannot refer to non-combinators, like constants, ordinary functions, or object from the global namespace.
 3. It cannot be a named function declaration or named function expression.
 4. It cannot create a named function expression.
 5. It cannot declare any bindings other than via parameters.
@@ -448,7 +450,7 @@ The Y Combinator makes recursion possible without requiring variable declaration
 
 ### if a forest contains a mockingbird, it also contains a sage bird
 
-Looking at a compact version of the Y combinator, we can see why it was named after the letter "Y," the code literally looks like a forking branch:
+Looking this expression of the Y combinator, we can see why it was named after the letter "Y," the code literally looks like a forking branch:
 
 ```javascript
 const Y =
