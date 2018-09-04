@@ -3,7 +3,7 @@ title: Deriving the Y Combinator and Sage Bird from the Mockingbird
 tags: [recursion]
 ---
 
-In [To Grok a Mockingbird], we were introduced to the Mockingbird, a recursive combinator that decouples recursive functions from themselves. Decoupling recursive functions from themselves allows us to compose them more flexibly, such as with decorators.[^m]
+In [To Grok a Mockingbird], we explored the Mockingbird, a recursive combinator that decouples recursive functions from themselves. Decoupling recursive functions from themselves allows us to compose them more flexibly, such as with decorators.[^m]
 
 [To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
 
@@ -144,11 +144,11 @@ We must also write this:
 myself(myself, x * x, n / 2)
 ```
 
-The former is the whole point of decoupling. The latter is nonsense! Having written a function in mockingbird form, when we invoke it we don't include itself as a parameter. If we can call it from outside with `exponent(3, 3)`, why can't it call itself with `myself(x * x, Math.floor(n / 2))`?
+The former is the whole point of decoupling. The latter is nonsense! The whole point of the mockingbird (as opposed to a literal interpretation of the M combinator) is to write idiomatic JavaScript. But there';s nothing "idiomatic" about a function invoking itself with `myself(myself, ...)`.
 
-What we want is a function *like* the mockingbird, but while it will support writing `(myself, x, n) => ...`, it must also support writing `myself(myself, x * x, n / 2)`.
+What we want is a function *like* the mockingbird, but it must support functions like `exponent` calling themselves idiomatically, e.g. `myself(x * x, n / 2)`.
 
-Let's visualize exactly what we want. With the mockingbird, we can write:
+Let's visualize exactly what we want. With the mockingbird, we write:
 
 ```javascript
 const exponent = 
@@ -165,7 +165,7 @@ const exponent =
   );
 ```
 
-We want a better recursive combinator, one that let's us write:
+We want a better recursive combinator, one that lets us write:
 
 ```javascript
 const exponent = 
@@ -214,7 +214,7 @@ In combinatory logic, all combinators take exactly one parameter, as do all of t
 
 ### deriving the sage bird in seven easy pieces
 
-Step zero: We begin with the mockingbird:
+**Step Zero**: We begin with the mockingbird:
 
 ```javascript
 const mockingbird =
@@ -223,7 +223,7 @@ const mockingbird =
       fn(fn, ...args);
 ```
 
-Step one, we name our combinator. Honouring Raymond Smullyan's choice, we shall call it the sage bird:
+**Step One**, we name our combinator. Honouring Raymond Smullyan's choice, we shall call it the sage bird:
 
 ```javascript
 const sagebird =
@@ -232,7 +232,7 @@ const sagebird =
       fn(fn, ...args);
 ```
 
-Step two, we identify the key change we have to make:
+**Step Two**, we identify the key change we have to make:
 
 ```javascript
 const sagebird =
@@ -249,7 +249,7 @@ Well, the approach we are going to take is to think about the mockingbird. What 
 
 The mockingbird isn't what we want, but let's airily assume that there is such a function. We'll call it `maker`, because it makes the function we want.
 
-Step three, we replace `?` with `maker(??)`. We know it will make the function we want, but we don't yet know what we must pass to it:
+**Step Three**, we replace `?` with `maker(??)`. We know it will make the function we want, but we don't yet know what we must pass to it:
 
 ```javascript
 const sagebird =
@@ -265,7 +265,7 @@ This leaves us two things to figure out:
 
 For `1`, we could define `maker` as an anonymous function expression. Another option arises. In the days before ES6, if we wanted to define variables within a scope smaller than a function, we created an immediately invoked function expression.
 
-Step four, we could, after some experimentation, consider this format that binds a function expression to `maker` with an immediately invoked function expression;
+**Step Four**, we could, after some experimentation, consider this format that binds a function expression to `maker` with an immediately invoked function expression;
 
 ```javascript
 const sagebird =
@@ -283,7 +283,7 @@ This still leaves us two things to work out: `??` is what we pass to `maker`, an
 
 `maker => (...args) => fn(maker(??), ...args)` is a function that takes one parameter(`maker`) and returns a function that looks like `(...args) => fn(maker(??), ...args)`!
 
-Step five, let's fill that in for `???`:
+**Step Five**, let's fill that in for `???`:
 
 ```javascript
 const sagebird =
@@ -306,7 +306,7 @@ Now what about `??`? Well, we have just decided two things:
 
 Conclusion: `maker` takes one parameter, `maker`, and returns a function that looks like `(...args) => fn(maker(??), ...args)`. Therefore, the expression we want is `maker(maker)`, and `??` is nothing more than `maker`!
 
-Step six:
+**Step Six**:
 
 ```javascript
 const sagebird =
