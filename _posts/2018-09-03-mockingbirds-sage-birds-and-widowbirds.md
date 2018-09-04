@@ -202,7 +202,7 @@ In combinatory logic, all combinators take exactly one parameter, as do all of t
 
 ---
 
-### deriving the y combinator from the mockingbird
+### deriving the sage bird from the mockingbird
 
 Step zero: We begin with the mockingbird:
 
@@ -331,6 +331,16 @@ const exponent =
 exponent(2, 9)
   //=> 512
 ```
+
+Voila! A working sage bird!!
+
+---
+
+[![Underwood Typewriter Keys ©2010 Steve Depolo](/assets/images/typewriter-keys.jpg)](https://www.flickr.com/photos/stevendepolo/4550901923)
+
+---
+
+### from sage bird to y combinator
 
 ---
 
