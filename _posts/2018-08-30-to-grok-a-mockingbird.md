@@ -470,31 +470,32 @@ The mockingbird has the advantage of being the very simplest recursive combinato
 
 This isn't a bad tradeoff, but logicians searched for a combinator that could implement recursion with a parameter, like the mockingbird, but avoid having to pass that parameter on. This had important theoretical consequences, but for us, the value of such a combinator is that the functions we write are more natural.
 
-The combinator that decouples recursion using a parameter, but doesn't require passing that parameter along, is called the [Y Combinator][y-combinator], or _Sage Bird_.
+The combinator that decouples recursion using a parameter, but doesn't require passing that parameter along, is called the [Y Combinator][y-combinator].
 
 [y-combinator]: https://en.wikipedia.org/wiki/Fixed-point_combinator
 
-A simple and direct JavaScript implementation looks like this:
+A compact JavaScript implementation looks like this:
 
 ```javascript
-const Y = fn =>
-  ( x => fn(v => x(x)(v)) )(
-    x => fn(v => x(x)(v))
-  );
+const Y =
+  fn =>
+    (x => x(x))(m => a => fn(m(m))(a));
 ```
 
-Without getting into exactly how it works, we can see that the disadvantage of the direct implementation is that once again, it assumes that all functions are curried to take only one argument.[^whyy]
+Without getting into exactly how it works, we can see that the disadvantage of the Y combinator  is that it assumes that all functions are curried to take only one argument.[^whyy]
 
-Here's an idiomatic JavaScript version. It handles functions with more than one argument:
+Here's an idiomatic JavaScript version, called the Sage Bird. It handles functions with more than one argument:
 
 [^whyy]: There are lots of essays deriving the Y Combinator step-by-step. Here's one in [JavaScript](https://enlight.nyc/y-combinator/), and here's [another](http://igstan.ro/posts/2010-12-01-deriving-the-y-combinator-in-7-easy-steps.html).
 
 ```javascript
 const sagebird =
   fn =>
-    (
-      maker => (...args) => fn(maker(maker), ...args)
-    )(maker => (...args) => fn(maker(maker), ...args));
+    (x => x(x))(
+      maker =>
+        (...args) =>
+          fn(maker(maker), ...args)
+    );
 ```
 
 Armed with our sage bird, we can write recursive functions that look a little more idiomatic. This implementation of `map` is gratuitously recursive, but demonstrates that using the sage bird, we need not pass `myself` along when `map` calls itself recursively:
@@ -518,6 +519,8 @@ sagebird(map)(x => x * x, [1, 2, 3])
 No more `myself(myself, ...)`!
 
 The sage bird makes the code we write much simpler. And like the mockingbird, it allows us to separate the mechanism for recursion from the function we wish to make recursive.
+
+(We look at how to derive the sage bird and Y combinator from the mockingbird and M combinator in the literally named [Deriving the Y Combinator and Sage Bird from the Mockingbird](http://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html))
 
 ---
 
