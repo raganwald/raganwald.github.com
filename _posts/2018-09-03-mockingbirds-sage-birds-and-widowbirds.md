@@ -438,9 +438,11 @@ Y(
 )(1962)
 ```
 
-It works too, and now we have derived one of the most important results in theoretical computer science. The Y Combinator matters so deeply, because in the kind of formal computation models that are simple enough to prove results (like the Lambda Calculus and Combinatory Logic), we do not have any iterative constructs, and must use recursion for nearly everything non-trivial.
+It works too, and now we have derived one of the most important results in theoretical computer science. The Y Combinator matters deeply, because in the kind of formal computation models that are simple enough to prove results (like the Lambda Calculus and Combinatory Logic), we do not have any iterative constructs, and must use recursion for nearly everything non-trivial.
 
-The Y Combinator makes recursion possible without requiring variable declarations. As we showed above, we can even make an anonymous function recursive, which is necessary in systems where functions do not have names.
+The Y Combinator makes recursion possible without requiring variable declarations. As we showed above, we can even make an anonymous function recursive, which is necessary in systems where functions do not have names.[^yy]
+
+[^yy]: As alluded to, there is an enormous significance to the Y combinator beyond writing recursive JavaScript functions that are decoupled from themselves. Deriving the Y combinator is interesting in its own right, and highlighting the relationship between the M combinator and the Y combinator is something that is rarely mentioned in casual blogs.<br/><br/>If the subject piques your interest, be sure to look into point-free programming, fixed point functions, recursion theory, ... and most especially, read Raymond Smullyan;s [To Mock a Mockingbird](https://en.wikipedia.org/wiki/To_Mock_a_Mockingbird).
 
 ---
 
@@ -510,20 +512,6 @@ The mockingbird that we explored in [To Grok a Mockingbird] is easy to understan
 However, it requires us to pass `myself` along when making recursive calls. This is decidedly not idiomatic, so we derived the sage bird, an idiomatic JavaScript recursive combinator that enables recursive functions to call themselves without any additional parameters.
 
 We then derived a JavaScript implementation of the Y combinator from the sage bird, and finished by using a reduced version of the M combinator to produce "compact" implementations of both the sage bird and the Y combinator.
-
-(The end)
-
----
-
-![Long-tailed Widowbird, public domain](/assets/images/long-tailed-widowbird.jpg)
-
----
-
-### bonus: the long-tailed widowbird
-
----
-
-*to be continued...*
 
 ---
 
