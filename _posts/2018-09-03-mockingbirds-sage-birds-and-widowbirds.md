@@ -121,7 +121,17 @@ const exponent =
   );
 ```
 
-Memoizing our recursive function does not require any changes to its code. We can easily reuse it elsewhere if we wish.The mockingbird is excellent, but it has one drawback: In addition to rewriting our functions to take themselves as a parameter, we also have to rewrite them to pass themselves along. So in addition to this:
+Memoizing our recursive function does not require any changes to its code. We can easily reuse it elsewhere if we wish.
+
+---
+
+[![Curlicue copyright 2017 Anja Pietsch](/assets/images/culicue.jpg)](https://www.flickr.com/photos/a_peach/33299615155)
+
+---
+
+### why the mockingbird needs improvement
+
+The mockingbird is excellent, but it has one drawback: In addition to rewriting our functions to take themselves as a parameter, we also have to rewrite them to pass themselves along. So in addition to this:
 
 ```javascript
 (myself, x, n) => ...
@@ -138,17 +148,7 @@ The former is the whole point of decoupling. The latter is nonsense! Having writ
 
 What we want is a function *like* the mockingbird, but while it will support writing `(myself, x, n) => ...`, it must also support writing `myself(myself, x * x, n / 2)`.
 
-Let's build that function!
-
----
-
-[![Sage Grouse Lek © 2006 BLM Wyoming](/assets/images/lek.jpg)](https://www.flickr.com/photos/134389515@N06/38964205040)
-
----
-
-### a few ground rules
-
-Before we begin, let's visualize how we want things to end up. With the mockingbird, we could write:
+Let's visualize exactly what we want. With the mockingbird, we can write:
 
 ```javascript
 const exponent = 
@@ -165,7 +165,7 @@ const exponent =
   );
 ```
 
-We want a function that let's us write:
+We want a better recursive combinator, one that let's us write:
 
 ```javascript
 const exponent = 
@@ -182,7 +182,17 @@ const exponent =
   );
 ```
 
-And there are some rules we have to follow if we are to take the mockingbird and derive another combinator from it. Every combinator has the following properties:
+Let's build that!
+
+---
+
+[![Sage Grouse Lek © 2006 BLM Wyoming](/assets/images/lek.jpg)](https://www.flickr.com/photos/134389515@N06/38964205040)
+
+---
+
+### a few ground rules
+
+Before we begin, there are some rules we have to follow if we are to take the mockingbird and derive another combinator from it. Every combinator has the following properties:
 
 1. It is a function.
 2. It can only use its parameters. This means it cannot refer to anything from its environment, like a function or object from the global namespace.
@@ -202,7 +212,7 @@ In combinatory logic, all combinators take exactly one parameter, as do all of t
 
 ---
 
-### deriving the sage bird from the mockingbird
+### deriving the sage bird in seven easy pieces
 
 Step zero: We begin with the mockingbird:
 
