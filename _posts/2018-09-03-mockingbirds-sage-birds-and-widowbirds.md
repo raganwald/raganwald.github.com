@@ -1,5 +1,5 @@
 ---
-title: Deriving the Y Combinator from the Mockingbird
+title: Deriving the Y Combinator and Sage Bird from the Mockingbird
 tags: [recursion]
 ---
 
