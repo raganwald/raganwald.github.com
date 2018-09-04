@@ -15,7 +15,7 @@ In this essay, we're going to look at the Sage Bird, known most famously as the 
 
 [Y Combinator]: https://en.wikipedia.org/wiki/Fixed-point_combinator
 
-We'll then derive the Long-tailed Widowbird, a sage bird adapted to use trampolining, just like the Jackson's Widowbird.
+We'll then derive the Long-tailed Widowbird, a function that uses trampolining to execute idiomatically tail-recursive functions in constant stack space.
 
 ---
 
@@ -450,7 +450,7 @@ The Y Combinator makes recursion possible without requiring variable declaration
 
 ### if a forest contains a mockingbird, it also contains a sage bird
 
-Looking at a compact version of the Y combinator, we can see why it was named after the letter "Y:" The code literally looks like a forking branch:
+Looking at a compact version of the Y combinator, we can see why it was named after the letter "Y," the code literally looks like a forking branch:
 
 ```javascript
 const Y =
@@ -475,19 +475,37 @@ const Y =
     M(m => a => fn(m(m))(a));
 ```
 
-And if we like, we can use `M` to make a moe compact sage bird, too:
+The compact expression of the Y combinator is usually expressed with the M combinator "reduced" to `(x => x(x))`:
+
+```javascript
+const Y =
+  fn =>
+    (x => x(x))(m => a => fn(m(m))(a));
+```
+
+
+We will use the reduced M combinator make a compact sage bird, too:
 
 ```javascript
 const sagebird =
   fn =>
-    M(
+    (x => x(x))(
       maker =>
         (...args) =>
           fn(maker(maker), ...args)
     );
 ```
 
+And now that we're back to idiomatic JavaScript, let's turn our attention to the Long-tail Widowbird.
 
+---
+
+
+
+
+---
+
+### the long-tail widowbird
 ---
 
 *to be continued...*
