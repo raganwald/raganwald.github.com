@@ -502,10 +502,10 @@ And now that we're back to idiomatic JavaScript, let's turn our attention to the
 
 
 
-
 ---
 
-### the long-tail widowbird
+### the long-tailed widowbird
+
 ---
 
 *to be continued...*
