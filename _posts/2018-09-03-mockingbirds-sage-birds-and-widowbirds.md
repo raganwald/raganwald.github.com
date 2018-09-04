@@ -450,10 +450,47 @@ The Y Combinator makes recursion possible without requiring variable declaration
 
 ### if a forest contains a mockingbird, it also contains a sage bird
 
+Looking at a compact version of the Y combinator, we can see why it was named after the letter "Y:" The code literally looks like a forking branch:
 
+```javascript
+const Y =
+  fn =>
+    (m => a => fn(m(m))(a))(
+      m => a => fn(m(m))(a)
+    );
+```
+
+Since we're talking direct implementations of formal combinators, let's have a look at the M combinator:
+
+```javascript
+const M =
+  fn => fn(fn);
+```
+
+We can combine `M` and `Y` to create a more compact expression of the Y combinator:
+
+```javascript
+const Y =
+  fn =>
+    M(m => a => fn(m(m))(a));
+```
+
+And if we like, we can use `M` to make a moe compact sage bird, too:
+
+```javascript
+const sagebird =
+  fn =>
+    M(
+      maker =>
+        (...args) =>
+          fn(maker(maker), ...args)
+    );
+```
+
+
+---
 
 *to be continued...*
-
 
 ---
 
