@@ -1,11 +1,13 @@
 ---
-title: Using the Mockingbird to Derive the Y Combinator
+title: Deriving the Y Combinator from the Mockingbird
 tags: [recursion]
 ---
 
-In [To Grok a Mockingbird], we were introduced to the Mockingbird, a recursive combinator that decouples recursive functions from themselves. Decoupling recursive functions from themselves allows us to compose them more flexibly, such as with decorators.
+In [To Grok a Mockingbird], we were introduced to the Mockingbird, a recursive combinator that decouples recursive functions from themselves. Decoupling recursive functions from themselves allows us to compose them more flexibly, such as with decorators.[^m]
 
 [To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+
+[^m]: The mockingbird is more formally known as the M Combinator. Our naming convention is that when discussing formal combinators from combinatory logic, or direct implementations in JavaScript, we will use the formal name. But when using variations designed to work more idiomatically in JavaScript--such as versions that work with functions taking more than one argument), we will use Raymond Smullyan's ornithological nicknames.<br/><br/>For a formalist, the M Combinator's direct translation is `const M = fn => fn(fn)`. This is only useful if `fn` is implemented in "curried" form, e.g. `const isEven = myself => n => n === 0 || !myself(n - 1)`. If we wish to use a function written in idiomatic JavaScript form, such as `const isEven = (myself, n) => n === 0 || !myself(n - 1)`, we use the mockingbird, which is given later as `const mockingbird = fn => (...args) => fn(fn, ...args)`. This is far more practical for programming purposes.
 
 We also saw that the mockingbird separates the concern of the recursive algorithm to be performed from the mechanism of implementing recursion. This allowed us to implement the Jackson's Widowbird, a variation of the mockingbird that uses trampolining to execute tail-recursive functions in constant space.
 
@@ -13,7 +15,7 @@ In this essay, we're going to look at the Sage Bird, known most famously as the 
 
 [Y Combinator]: https://en.wikipedia.org/wiki/Fixed-point_combinator
 
-We'll then derive the Long-tailed Widowbird, a sage bird adapted to use trampolin8ng just like the Jackson's Widowbird.
+We'll then derive the Long-tailed Widowbird, a sage bird adapted to use trampolining, just like the Jackson's Widowbird.
 
 ---
 
@@ -23,7 +25,9 @@ We'll then derive the Long-tailed Widowbird, a sage bird adapted to use trampoli
 
 ### revisiting the mockingbird
 
-To review what we saw in [To Grok a Mockingbird], a typical recursive function calls itself by name, like this:
+To review what we saw in [To Grok a Mockingbird], a typical recursive function calls itself by name, like this:[^realism]
+
+[^realism]: The paradox of instructional explorations is that if we wish to illustrate a mechanism like recursive combinators, choosing trivial functions like exponentiation makes it easier to focus on the thing we're exploring, the combinators. The tradeoff is that with such simple functions, it will always feel over-complicated to use recursive combinators. Whereas, if we work with functions with real-world implications, the mechanism we're exploring gets lost in the complexity of the functions it operates upon.
 
 ```javascript
 function exponent (x, n) {
@@ -60,7 +64,7 @@ We call that writing a recursive function in mockingbird form. It looks like thi
 };
 ```
 
-Given a function written in mockingbird form, we use a JavaScript implementation of the Mockingbird, or M Combinator, to turn it into a recursive function, like this:
+Given a function written in mockingbird form, we use a JavaScript implementation of the mockingbird to turn it into a recursive function:
 
 ```javascript
 const mockingbird =
@@ -328,4 +332,6 @@ exponent(2, 9)
   //=> 512
 ```
 
-The sagebird
+---
+
+## Notes
