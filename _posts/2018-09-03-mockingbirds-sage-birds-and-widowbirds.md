@@ -342,6 +342,97 @@ Voila! A working sage bird!!
 
 ### from sage bird to y combinator
 
+Our sage bird is written in--and for--idiomatic JavaScript, especially with respect to employing functions that take more than one parameter. A direct implementation of a formal combinator only takes one parameter and only works with functions that take one parameter.
+
+We can translate our sage bird to its formal combinator, the **y combinator**. To aid us, let's first imagine a recursive function:
+
+```javascript
+const isEven =
+  n =>
+    (n === 0) || !isEven(n - 1);
+```
+
+In sage bird form, it becomes:
+
+```javascript
+const isEven =
+  (myself, n) =>
+    (n === 0) || !myself(n - 1);
+```
+
+Alas, it now takes two parameters. We fix this by [currying] it:
+
+[currying]: http://raganwald.com/2013/03/07/currying-and-partial-application.html
+
+
+```javascript
+const isEven =
+  myself =>
+    n =>
+      (n === 0) || !myself(n - 1);
+```
+
+Instead of taking two parameters (`myself` and `n`), it is now a function taking one parameter, `myself`, and returning a function that takes another parameter, `n`.
+
+To accommodate functions in this form, we take our sage bird and perfom some similar modifications. We'll start as above by renaming it:
+
+```javascript
+const Y =
+  fn =>
+    (
+      maker =>
+        (...args) =>
+          fn(maker(maker), ...args)
+    )(
+      maker =>
+        (...args) =>
+          fn(maker(maker), ...args)
+    );
+```
+
+Next, we observe that `(...args) => fn(maker(maker), ...args)` is not allowed, we do not gather and spread parameters. First, we change `...args` into just `arg`, since only one parameter is allowed:
+
+```javascript
+const Y =
+  fn =>
+    (
+      maker =>
+        arg => fn(maker(maker), arg)
+    )(
+      maker =>
+        arg => fn(maker(maker), arg)
+    );
+```
+
+`fn(maker(maker), arg)` is also not allowed, we do not pass two parameters to any function. Instead, we pass one parameter, get a function back, and pass the second parameter to that function. Like this:
+
+```javascript
+const Y =
+  fn =>
+    (
+      maker =>
+        arg => fn(maker(maker))(arg)
+    )(
+      maker =>
+        arg => fn(maker(maker))(arg)
+    );
+```
+
+Let's try it:
+
+```javascript
+Y(
+  myself =>
+    n =>
+      (n === 0) || !myself(n - 1)
+)(1962)
+```
+
+It works too, and now we have derived one of the most important results in theoretical computer science. The Y Combinator matters so deeply, because in the kind of formal computation models that are simple enough to prove results (like the Lambda Calculus and Combinatory Logic), we do not have any iterative constructs, and must use recursion for nearly everything non-trivial.
+
+The Y Combinator makes recursion possible without requiring variable declarations. As we showed above, we can even make an anonymous function recursive, which is necessary in systems where functions do not have names.
+
+
 ---
 
 ## Notes
