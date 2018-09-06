@@ -365,8 +365,6 @@ const trampoline =
       return value;
     };
 
-
-
 const isEven =
   trampoline(
     function myself (n, parity = 0) {
@@ -456,7 +454,10 @@ widowbird(isEven)(1000000)
   //=> true
 ```
 
-It works just fine, even on engines that don't support tail call optimization. The widowbird has shown us another benefit of separating the recursive computation to be done from the mechanism for performing the recursion.
+It works just fine, even on engines that don't support tail call optimization. The widowbird has shown us another benefit of separating the recursive computation to be done from the mechanism for performing the recursion.[^however]
+
+[^however]: Although the widowbird works just fine, it should be noted that it does not work in conjunction with memoization. This is unsurprising, as memoization relies on functions returning values, and trampolining hacks functions to return thunks. So memoization will memoize thunks rather than values.<br><br/>All things considered, that may be acceptable, as the widowbird is designed to simulate an optimization that hacks a tail-recursive function to behave as if it was iterative.
+
 
 ---
 
