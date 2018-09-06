@@ -1,5 +1,5 @@
 ---
-title: Deriving the Y Combinator and Sage Bird from the Mockingbird
+title: Deriving the Y Combinator and Why Bird from the Mockingbird
 tags: [recursion]
 ---
 
@@ -11,7 +11,7 @@ In [To Grok a Mockingbird], we explored the _mockingbird_, a recursive combinato
 
 This also separates the concern of the recursive algorithm to be performed from the mechanism of implementing recursion. This allowed us to implement the Jackson's Widowbird, a variation of the mockingbird that uses trampolining to execute tail-recursive functions in constant space.
 
-In this essay, we're going to look at the Sage Bird, known most famously as the [Y Combinator]. The sage bird provides all the benefits of the mockingbird, but allows us to write more idiomatic JavaScript.
+In this essay, we're going to look at the Why Bird, known most famously as the [Y Combinator]. The why bird provides all the benefits of the mockingbird, but allows us to write more idiomatic JavaScript.
 
 [Y Combinator]: https://en.wikipedia.org/wiki/Fixed-point_combinator
 
@@ -212,7 +212,7 @@ In combinatory logic, all combinators take exactly one parameter, as do all of t
 
 ---
 
-### deriving the sage bird in seven easy pieces
+### deriving the why bird in seven easy pieces
 
 **Step Zero**: We begin with the mockingbird:
 
@@ -223,10 +223,10 @@ const mockingbird =
       fn(fn, ...args);
 ```
 
-**Step One**, we name our combinator. Honouring Raymond Smullyan's choice, we shall call it the sage bird:
+**Step One**, we name our combinator. Honouring Raymond Smullyan's choice, we shall call it the why bird:
 
 ```javascript
-const sagebird =
+const why =
   fn =>
     (...args) =>
       fn(fn, ...args);
@@ -235,7 +235,7 @@ const sagebird =
 **Step Two**, we identify the key change we have to make:
 
 ```javascript
-const sagebird =
+const why =
   fn =>
     (...args) =>
       fn(?, ...args);
@@ -252,7 +252,7 @@ The mockingbird isn't what we want, but let's airily assume that there is such a
 **Step Three**, we replace `?` with `maker(??)`. We know it will make the function we want, but we don't yet know what we must pass to it:
 
 ```javascript
-const sagebird =
+const why =
   fn =>
     (...args) =>
       fn(maker(??), ...args);
@@ -268,7 +268,7 @@ For `1`, we could define `maker` as an anonymous function expression. Another op
 **Step Four**, we could, after some experimentation, consider this format that binds a function expression to `maker` with an immediately invoked function expression;
 
 ```javascript
-const sagebird =
+const why =
   fn =>
     (
       maker =>
@@ -286,7 +286,7 @@ This still leaves us two things to work out: `??` is what we pass to `maker`, an
 **Step Five**, let's fill that in for `???`:
 
 ```javascript
-const sagebird =
+const why =
   fn =>
     (
       maker =>
@@ -309,7 +309,7 @@ Conclusion: `maker` takes one parameter, `maker`, and returns a function that lo
 **Step Six**:
 
 ```javascript
-const sagebird =
+const why =
   fn =>
     (
       maker =>
@@ -326,7 +326,7 @@ Let's test it:
 
 ```javascript
 const exponent = 
-  sagebird(
+  why(
     (myself, x, n) => {
       if (n === 0) {
         return 1;
@@ -342,7 +342,7 @@ exponent(2, 9)
   //=> 512
 ```
 
-Voila! A working sage bird!!
+Voila! A working why bird!!
 
 ---
 
@@ -350,11 +350,11 @@ Voila! A working sage bird!!
 
 ---
 
-### from sage bird to y combinator
+### from why bird to y combinator
 
-Our sage bird is written in--and for--idiomatic JavaScript, especially with respect to employing functions that take more than one parameter. A direct implementation of a formal combinator only takes one parameter and only works with functions that take one parameter.
+Our why bird is written in--and for--idiomatic JavaScript, especially with respect to employing functions that take more than one parameter. A direct implementation of a formal combinator only takes one parameter and only works with functions that take one parameter.
 
-We can translate our sage bird to its formal combinator, the **y combinator**. To aid us, let's first imagine a recursive function:
+We can translate our why bird to its formal combinator, the **y combinator**. To aid us, let's first imagine a recursive function:
 
 ```javascript
 const isEven =
@@ -362,7 +362,7 @@ const isEven =
     (n === 0) || !isEven(n - 1);
 ```
 
-In sage bird form, it becomes:
+In why bird form, it becomes:
 
 ```javascript
 const isEven =
@@ -384,7 +384,7 @@ const isEven =
 
 Instead of taking two parameters (`myself` and `n`), it is now a function taking one parameter, `myself`, and returning a function that takes another parameter, `n`.
 
-To accommodate functions in this form, we take our sage bird and perfom some similar modifications. We'll start as above by renaming it:
+To accommodate functions in this form, we take our why bird and perfom some similar modifications. We'll start as above by renaming it:
 
 ```javascript
 const Y =
@@ -450,7 +450,7 @@ The Y Combinator makes recursion possible without requiring variable declaration
 
 ---
 
-### if a forest contains a mockingbird, it also contains a sage bird
+### if a forest contains a mockingbird, it also contains a why bird
 
 Looking this expression of the Y combinator, we can see why it was named after the letter "Y," the code literally looks like a forking branch:
 
@@ -485,10 +485,10 @@ const Y =
     (x => x(x))(m => a => fn(m(m))(a));
 ```
 
-We can use the reduced M combinator make a compact sage bird, too:
+We can use the reduced M combinator make a compact why bird, too:
 
 ```javascript
-const sagebird =
+const why =
   fn =>
     (x => x(x))(
       maker =>
@@ -497,7 +497,7 @@ const sagebird =
     );
 ```
 
-And with that, we have derived compact implementations of both the Y combinator and its idiomatic JavaScript equivalent, the sage bird, from our mockingbird implementation.
+And with that, we have derived compact implementations of both the Y combinator and its idiomatic JavaScript equivalent, the why bird, from our mockingbird implementation.
 
 ---
 
@@ -509,9 +509,9 @@ And with that, we have derived compact implementations of both the Y combinator 
 
 The mockingbird that we explored in [To Grok a Mockingbird] is easy to understand, and decouples recursive functions from themselves. This provides us with more ways to compose recursive functions with other functions like decorators.
 
-However, it requires us to pass `myself` along when making recursive calls. This is decidedly not idiomatic, so we derived the sage bird, an idiomatic JavaScript recursive combinator that enables recursive functions to call themselves without any additional parameters.
+However, it requires us to pass `myself` along when making recursive calls. This is decidedly not idiomatic, so we derived the why bird, an idiomatic JavaScript recursive combinator that enables recursive functions to call themselves without any additional parameters.
 
-We then derived a JavaScript implementation of the Y combinator from the sage bird, and finished by using a reduced version of the M combinator to produce "compact" implementations of both the sage bird and the Y combinator.
+We then derived a JavaScript implementation of the Y combinator from the why bird, and finished by using a reduced version of the M combinator to produce "compact" implementations of both the why bird and the Y combinator.
 
 ---
 

@@ -464,7 +464,7 @@ It works just fine, even on engines that don't support tail call optimization. T
 
 ---
 
-### the sage bird
+### the why bird
 
 The mockingbird has the advantage of being the very simplest recursive combinator. But it can be enhanced. One of the annoying things about it is that when we write our functions to use with a mockingbird, not only do we need a `myself` parameter, but we need to remember to pass it on as well.
 
@@ -484,12 +484,12 @@ const Y =
 
 Without getting into exactly how it works, we can see that the disadvantage of the Y combinator  is that it assumes that all functions are curried to take only one argument.[^whyy]
 
-Here's an idiomatic JavaScript version, called the Sage Bird. It handles functions with more than one argument:
+Here's an idiomatic JavaScript version, called the Why Bird. It handles functions with more than one argument:
 
 [^whyy]: There are lots of essays deriving the Y Combinator step-by-step. Here's one in [JavaScript](https://enlight.nyc/y-combinator/), and here's [another](http://igstan.ro/posts/2010-12-01-deriving-the-y-combinator-in-7-easy-steps.html).
 
 ```javascript
-const sagebird =
+const why =
   fn =>
     (x => x(x))(
       maker =>
@@ -498,7 +498,7 @@ const sagebird =
     );
 ```
 
-Armed with our sage bird, we can write recursive functions that look a little more idiomatic. This implementation of `map` is gratuitously recursive, but demonstrates that using the sage bird, we need not pass `myself` along when `map` calls itself recursively:
+Armed with our why bird, we can write recursive functions that look a little more idiomatic. This implementation of `map` is gratuitously recursive, but demonstrates that using the why bird, we need not pass `myself` along when `map` calls itself recursively:
 
 ```javascript
 const map =
@@ -512,15 +512,15 @@ const map =
     }
   };
 
-sagebird(map)(x => x * x, [1, 2, 3])
+why(map)(x => x * x, [1, 2, 3])
   //=> [1, 4, 9]
 ```
 
 No more `myself(myself, ...)`!
 
-The sage bird makes the code we write much simpler. And like the mockingbird, it allows us to separate the mechanism for recursion from the function we wish to make recursive.
+The why bird makes the code we write much simpler. And like the mockingbird, it allows us to separate the mechanism for recursion from the function we wish to make recursive.
 
-(We look at how to derive the sage bird and Y combinator from the mockingbird and M combinator in the literally named [Deriving the Y Combinator and Sage Bird from the Mockingbird](http://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html))
+(We look at how to derive the why bird and Y combinator from the mockingbird and M combinator in the literally named [Deriving the Y Combinator and Why Bird from the Mockingbird](http://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html))
 
 ---
 
@@ -534,9 +534,9 @@ In summary, the mockingbird is a _recursive combinator_: It takes a function tha
 
 We've also seen that having performed this separation, we can swap the mockingbird out for other functions implementing recursion, such as the widowbird. We've seen that the widowbird is superior to other approaches, because it does not require the function being trampolined to "know" that it is being trampolined.
 
-And finally, we saw the sage bird, or Y Combinator. We saw that it makes our functions a little more idiomatic, and once again delivers the value of separating function from recursion mechanism.
+And finally, we saw the why bird, or Y Combinator. We saw that it makes our functions a little more idiomatic, and once again delivers the value of separating function from recursion mechanism.
 
-Recursive combinators like mockingbirds, widowbirds, and sage birds are a few more tools in our "composeable functions" toolbox, increasing reuse by decoupling recursive functions from themselves.
+Recursive combinators like mockingbirds, widowbirds, and why birds are a few more tools in our "composeable functions" toolbox, increasing reuse by decoupling recursive functions from themselves.
 
 (discuss on reddit [here](https://www.reddit.com/r/javascript/comments/9bu5od/to_grok_a_mockingbird_using_recursive_combinators/), or [here](https://www.reddit.com/r/programming/comments/9bvmls/to_grok_a_mockingbird_using_recursive_combinators/), or on [hacker news](https://news.ycombinator.com/item?id=17885852))
 
