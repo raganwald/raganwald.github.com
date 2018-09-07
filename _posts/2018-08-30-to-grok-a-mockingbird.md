@@ -410,7 +410,7 @@ mockingbird(isEven)(1001)
 
 Now we've decoupled the form of the function from the mechanism of recursion. So, let's swap the mechanism of recursion for a trampoline _without altering the recursive function to suit the new implementation_.
 
-We'll call our new "combinator" a Widowbird:[^widowbird]
+We'll call our new "combinator" a Jackson's Widowbird:[^widowbird]
 
 [^widowbird]: The Jackson's Widowbird, _Euplectes Jacksoni_, is a passerine bird in the family Ploceidae. As notably portrayed in BBC Planet Earth II, when attempting to attract females to nest in their territory, the males repeatedly jump to show off their fitness. If we exercise our vivid imaginations, we can think of this as resembling the behaviour of a trampolining tail-recursive function. Instead of "drilling deeper and deeper," it repeatedly bounces back up to the top.
 
@@ -445,7 +445,7 @@ widowbird(isEven)(1001)
   //=> false
 ```
 
-Since we're passing the function to be called recursively into our recursive function, we can place the thunk mechanism in our `widowbird`. Thus, the recursive function is completely decoupled from the mechanism for recursing without consuming the stack.
+Since we're passing the function to be called recursively into our recursive function, we can place the thunk mechanism in our widowbird, instead of in the recursive function. Thus, the recursive function is completely decoupled from the mechanism for recursing without consuming the stack.
 
 And what about our `naive` exponentiation that broke the stack earlier?
 
