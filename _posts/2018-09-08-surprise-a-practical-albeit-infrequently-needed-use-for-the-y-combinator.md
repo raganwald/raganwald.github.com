@@ -1,5 +1,5 @@
 ---
-Title: "A Practical (albeit infrequently needed) use for the Y Combinator"
+title: "A Practical (albeit infrequently needed) use for the Y Combinator"
 tags: [noindex,allonge,recursion]
 ---
 
@@ -527,6 +527,7 @@ const isEven =
       else return myself(n - 2);
     }
   );
+```
 
 The latter has clearer separation of concerns and is thus easier to grok at first sight. And thus, we have articulated a practical (albeit infrequently needed) use for the Y Combinator.
 
