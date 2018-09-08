@@ -458,7 +458,6 @@ It works just fine, even on engines that don't support tail call optimization. T
 
 [^however]: Although the widowbird works just fine, it should be noted that it does not work in conjunction with memoization. This is unsurprising, as memoization relies on functions returning values, and trampolining hacks functions to return thunks. So memoization will memoize thunks rather than values.<br><br/>All things considered, that may be acceptable, as the widowbird is designed to simulate an optimization that hacks a tail-recursive function to behave as if it was iterative.
 
-
 ---
 
 [![y? ©2012 Newtown grafitti](/assets/images/y.jpg)](https://www.flickr.com/photos/newtown_grafitti/8286552835/)
