@@ -3,11 +3,13 @@ title: "A practical (albeit infrequently needed) use for the Y Combinator"
 tags: [noindex,allonge,recursion]
 ---
 
-The Y Combinator is an important result in theoretical computer science. A famous technology investment firm and startup incubator takes its name from the Y Combinator, likely because the Y Combinator acts as a kind of "bootstrap" to allow a function to build upon itself.
+The [Y Combinator] is an important result in theoretical computer science. A famous technology investment firm and startup incubator takes its name from the Y Combinator, likely because the Y Combinator acts as a kind of "bootstrap" to allow a function to build upon itself.
 
-In this essay, after a brief review of the work we've already done on the mockingbird, why bird, M Combinator, and Y Combinator, we'll derive the "Decoupled Trampoline," a/k/a "Long-Tailed Widowbird." The decoupled trampoline builds ion the why bird and Y Combinator to allow us to write tail-recursive functions that execute in constant stack space, while hewing closely to idomatic JavaScript.
+[Y Combinator]: https://en.wikipedia.org/wiki/Fixed-point_combinator
 
-While this use case is admittedly rare in production code, it does arise from time to time and it is pleasing to contemplate a direct connection between one of programming's most cerebrally theoretical constructs and a tool for overcoming the limitations of today's JavaScript implementations.
+In this essay, after a brief review of the work we've already done on the Mockingbird, Why Bird, M Combinator, and Y Combinator, we'll derive the "Decoupled Trampoline," a/k/a "Long-Tailed Widowbird." The decoupled trampoline builds on the why bird and Y Combinator to allow us to write tail-recursive functions that execute in constant stack space, while hewing closely to idomatic JavaScript.
+
+While this use case is admittedly rare in production code, it does arise from time to time and it is pleasing to contemplate a direct connection between one of programming's most cerebrally theoretical constructs, and a tool for overcoming the limitations of today's JavaScript implementations.
 
 ---
 
