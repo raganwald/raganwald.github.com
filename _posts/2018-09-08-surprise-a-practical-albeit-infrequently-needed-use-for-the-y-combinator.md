@@ -1,36 +1,38 @@
 ---
 Title: Surprise! A Practical (albeit infrequently needed) Use For The Y Combinator
-tags: [recursion]
+tags: [noindex,allonge,recursion]
 ---
 
-In [To Grok a Mockingbird], we explored the _mockingbird_, a recursive combinator that decouples recursive functions from themselves.[^m]
+The Y Combinator is a very famnous result in theoretical computer science. A famous technology investment firm and startup incubator takes its name from the Y Combinator, likely because the Y Combinator acts as a kind of "bootstrap" to allow a function to build upon itself.
 
-[To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+In this essay, after a brief review of the work we've already done on the mockingbird, why bird, M Combinator, and Y Combinator, we'll derive the "Decoupled Trampoline," a/k/a "Long-Tailed Widowbird." The decoupled trampoline builds ion the why bird and Y Combinator to allow us to write tail-recursive functions that execute in constant stack space, while hewing closely to idomatic JavaScript.
 
-[^m]: The mockingbird is more formally known as the M Combinator. Our naming convention is that when discussing formal combinators from combinatory logic, or direct implementations in JavaScript, we will use the formal name. But when using variations designed to work more idiomatically in JavaScript--such as versions that work with functions taking more than one argument), we will use Raymond Smullyan's ornithological nicknames.<br/><br/>For a formalist, the M Combinator's direct translation is `const M = fn => fn(fn)`. This is only useful if `fn` is implemented in "curried" form, e.g. `const isEven = myself => n => n === 0 || !myself(n - 1)`. If we wish to use a function written in idiomatic JavaScript form, such as `const isEven = (myself, n) => n === 0 || !myself(n - 1)`, we use the mockingbird, which is given later as `const mockingbird = fn => (...args) => fn(fn, ...args)`. This is far more practical for programming purposes.
-
-We then looked at the _Jackson's Widowbird_, a function we could directly swap for the mockingbird. The Jackson's Widowbird implements [trampolining], ensuring that functions written in tail-recursive form will execute in constant stack space.
-
-> A trampoline is a loop that iteratively invokes [thunk]-returning functions ([continuation-passing style][cps]). A single trampoline is sufficient to express all control transfers of a program; a program so expressed is trampolined, or in trampolined style; converting a program to trampolined style is trampolining. Trampolined functions can be used to implement [tail-recursive] function calls in stack-oriented programming languages.--[Wikipedia][trampolining]
-
-[thunk]: https://en.wikipedia.org/wiki/Thunk_(functional_programming)
-[cps]: https://en.wikipedia.org/wiki/Continuation-passing_style
-[tail-recursive]: https://en.wikipedia.org/wiki/Tail-recursive_function
-[trampolining]: https://en.wikipedia.org/wiki/Trampoline_(computing)
-
-We then moved on to [Deriving the Y Combinator and Why Bird from the Mockingbird], where we derived the Why Bird. Although it has tremendous application to combinatory logic as a fixed point combinator, our interest in the why bird was how it helped us write idiomatic JavaScript.
-
-[Deriving the Y Combinator and Why Bird from the Mockingbird]: /2018/09/03/mockingbirds-sage-birds-and-widowbirds.html
+While this use case is admittedly rare in production code, it does arise from time to time and it is pleasing to contemplate a direct connection between one of programming's most cerebrally theoretical constructs and a tool for overcoming the limitations of today's JavaScript implementations.
 
 ---
 
-[![y? ©2012 Newtown grafitti](/assets/images/y.jpg)](https://www.flickr.com/photos/newtown_grafitti/8286552835/)
+[![y? ©2012 Newtown grafitti](../assets/images/y.jpg)](https://www.flickr.com/photos/newtown_grafitti/8286552835/)
 
 ---
 
 ### revisiting the why bird
 
 *This review of the why bird recapitulates the material from [To Grok a Mockingbird] and [Deriving the Y Combinator and Why Bird from the Mockingbird]. Readers familiar with these two essays can skim it quickly.*
+
+In [To Grok a Mockingbird], we explored the _mockingbird_, a recursive combinator that decouples recursive functions from themselves. We explored how writing recursive functions "in mockingbird form" decreases couplingand helps us increase reuse and composition.[^m]
+
+[To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+
+[^m]: The mockingbird is more formally known as the M Combinator. Our naming convention is that when discussing formal combinators from combinatory logic, or direct implementations in JavaScript, we will use the formal name. But when using variations designed to work more idiomatically in JavaScript--such as versions that work with functions taking more than one argument), we will use Raymond Smullyan's ornithological nicknames.<br/><br/>For a formalist, the M Combinator's direct translation is `const M = fn => fn(fn)`. This is only useful if `fn` is implemented in "curried" form, e.g. `const isEven = myself => n => n === 0 || !myself(n - 1)`. If we wish to use a function written in idiomatic JavaScript form, such as `const isEven = (myself, n) => n === 0 || !myself(n - 1)`, we use the mockingbird, which is given later as `const mockingbird = fn => (...args) => fn(fn, ...args)`. This is far more practical for programming purposes.
+
+[thunk]: https://en.wikipedia.org/wiki/Thunk_(functional_programming)
+[cps]: https://en.wikipedia.org/wiki/Continuation-passing_styleer a 
+[tail-recursive]: https://en.wikipedia.org/wiki/Tail-recursive_function
+[trampolining]: https://en.wikipedia.org/wiki/Trampoline_(computing)
+
+We then moved on to [Deriving the Y Combinator and Why Bird from the Mockingbird], where we derived the Why Bird. Although it has tremendous application to combinatory logic as a fixed point combinator, our interest in the why bird was how it helps us obtain all of the benefits of the mockingbird, but we saw that functions written"in why bird form" were much closer to idiomatic JavaScript.
+
+[Deriving the Y Combinator and Why Bird from the Mockingbird]: /2018/09/03/mockingbirds-sage-birds-and-widowbirds.html
 
 The compact expression of why bird in JavaScript looks like this:
 
@@ -205,7 +207,7 @@ In [To Grok a Mockingbird], we solved this problem for functions written "in moc
 
 Functions written "in why bird form" are more idiomatically JavaScript than functions written in mockingbird form. If we can create a similar function that has the same contract as the why bird, but uses a trampoline to evaluate the recursive function, we could execute tail-recursive functions in constant stack space.
 
-We will call this function the Long-tailed Widowbird. Let's derive it.
+We will call this function the "Long-tailed Widowbird." Let's derive it.
 
 ---
 
