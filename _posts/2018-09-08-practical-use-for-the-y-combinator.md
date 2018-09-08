@@ -11,7 +11,7 @@ While this use case is admittedly rare in production code, it does arise from ti
 
 ---
 
-[![y? ©2012 Newtown grafitti](/assets/images/y.jpg)](https://www.flickr.com/photos/newtown_grafitti/8286552835/)
+[![Y (Washington, DC) ©2010 takomabibelot](/assets/images/y2.jpg)](https://www.flickr.com/photos/takomabibelot/4410714841)
 
 ---
 
@@ -115,7 +115,7 @@ We will work with the why bird in this essay, however everything we do can also 
 
 ---
 
-[![Chrysler Imperial ©2017 pyntofmyld](/assets/images/chrysler-imperial.jpg)](https://www.flickr.com/photos/pyntofmyld/24408966088)
+[![Spiral©2012 Renzo Borgatti](/assets/images/spiral.jpg)](https://www.flickr.com/photos/reborg/9222072041)
 
 ---
 
