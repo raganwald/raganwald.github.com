@@ -1,6 +1,6 @@
 ---
 title: "A practical (albeit infrequently needed) use for the Y Combinator"
-tags: [noindex,allonge,recursion]
+tags: [allonge,recursion]
 ---
 
 The [Y Combinator] is an important result in theoretical computer science. A famous technology investment firm and startup incubator takes its name from the Y Combinator, likely because the Y Combinator acts as a kind of "bootstrap" to allow a function to build upon itself.
