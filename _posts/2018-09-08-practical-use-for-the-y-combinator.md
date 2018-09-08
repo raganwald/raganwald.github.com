@@ -115,7 +115,7 @@ We will work with the why bird in this essay, however everything we do can also 
 
 ---
 
-[![Spiral©2012 Renzo Borgatti](/assets/images/spiral.jpg)](https://www.flickr.com/photos/reborg/9222072041)
+[![Spiral ©2012 Renzo Borgatti](/assets/images/spiral.jpg)](https://www.flickr.com/photos/reborg/9222072041)
 
 ---
 
@@ -475,8 +475,7 @@ const decoupledTrampoline =
 ```
 
 ---
-
-*picture3*
+[![Wilhelm Schickard machine replica 1623 ©2008 Daniel Sancho](/assets/images/schickard.jpg)](https://www.flickr.com/photos/teclasorg/2834616624)
 
 ---
 
