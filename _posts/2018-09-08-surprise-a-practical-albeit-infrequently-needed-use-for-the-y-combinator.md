@@ -1,5 +1,5 @@
 ---
-title: "A Practical (albeit infrequently needed) use for the Y Combinator"
+title: "A practical (albeit infrequently needed) use for the Y Combinator"
 tags: [noindex,allonge,recursion]
 ---
 
