@@ -11,7 +11,7 @@ While this use case is admittedly rare in production code, it does arise from ti
 
 ---
 
-[![Y (Washington, DC) ©2010 takomabibelot](/assets/images/y2.jpg)](https://www.flickr.com/photos/takomabibelot/4410714841)
+[![Y Washington, DC ©2010 takomabibelot](/assets/images/y2.jpg)](https://www.flickr.com/photos/takomabibelot/4410714841)
 
 ---
 
