@@ -36,7 +36,7 @@ We then moved on to [Deriving the Y Combinator and Why Bird from the Mockingbird
 
 [Deriving the Y Combinator and Why Bird from the Mockingbird]: /2018/09/03/mockingbirds-sage-birds-and-widowbirds.html
 
-The compact expression of why bird in JavaScript looks like this:
+This is the compact expression of the why bird:
 
 ```javascript
 const why =
@@ -130,7 +130,7 @@ const isEven =
   n =>
     (n === 0) || !isEven(n - 1);
 
-IsEven(1000042)
+isEven(1000042)
   //=> Maximum call stack exceeded
 ```
 
@@ -476,12 +476,14 @@ const decoupledTrampoline =
   };
 ```
 
+And there we have our decoupled trampoline in its final form.
+
 ---
 [![Wilhelm Schickard machine replica 1623 ©2008 Daniel Sancho](/assets/images/schickard.jpg)](https://www.flickr.com/photos/teclasorg/2834616624)
 
 ---
 
-### the use case for the decoupled trampoline
+### summarizing the use case for the decoupled trampoline
 
 To recapitulate the use case for the decoupled trampoline, in the rare but nevertheless valid case where we wish to refactor a singly recursive function into a trampolined function to ensure that it does not consume the stack, we previously had to:
 
@@ -531,6 +533,8 @@ const isEven =
 ```
 
 The latter has clearer separation of concerns and is thus easier to grok at first sight. And thus, we have articulated a practical (albeit infrequently needed) use for the Y Combinator.
+
+That's all!
 
 ---
 
