@@ -365,7 +365,7 @@ const isEven =
 In why bird form, it becomes:
 
 ```javascript
-const isEven =
+const _isEven =
   (myself, n) =>
     (n === 0) || !myself(n - 1);
 ```
@@ -376,7 +376,7 @@ Alas, it now takes two parameters. We fix this by [currying] it:
 
 
 ```javascript
-const isEven =
+const __isEven =
   myself =>
     n =>
       (n === 0) || !myself(n - 1);

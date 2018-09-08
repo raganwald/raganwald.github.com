@@ -218,7 +218,7 @@ const ignoreFirst = ([_, ...values]) => JSON.stringify(values);
 And now we can create a memoized version of our anonymous function. First, here it is step-by-step:
 
 ```javascript
-const exp = (myself, x, n) => {
+const _exponent = (myself, x, n) => {
   if (n === 0) {
     return 1;
   } else if (n % 2 === 1) {
@@ -228,14 +228,14 @@ const exp = (myself, x, n) => {
   }
 };
 
-mockingbird(memoized(exp, ignoreFirst))(2, 8)
+mockingbird(memoized(_exponent, ignoreFirst))(2, 8)
   //=> 256
 ```
 
 But now for the big question: Does it memoize everything? Let's test it:
 
 ```javascript
-const mExponent = mockingbird(memoized(exp, ignoreFirst));
+const mExponent = mockingbird(memoized(_exponent, ignoreFirst));
 
 mExponent(2, 8)
   //=> 256, performs three multiplications
@@ -252,7 +252,7 @@ Because we've separated the function from the mockingbird that implements recurs
 But with the mockingbird separating how a function calls itself from the function, we can now write:
 
 ```javascript
-const exp = (myself, x, n) => {
+const _exponent = (myself, x, n) => {
   if (n === 0) {
     return 1;
   } else if (n % 2 === 1) {
@@ -262,8 +262,8 @@ const exp = (myself, x, n) => {
   }
 };
 
-const mExponent = mockingbird(memoized(exp, ignoreFirst));
-const exponent = mockingbird(exp);
+const mExponent = mockingbird(memoized(_exponent, ignoreFirst));
+const exponent = mockingbird(_exponent);
 ```
 
 We have our composeability and reuse!
@@ -395,7 +395,7 @@ A mockingbird cannot directly solve our problem, but we can learn from the mocki
 Note that this works just fine with our mockingbird:
 
 ```javascript
-const isEven =
+const _isEven =
   (myself, n, parity = 0) => {
     if (n === 0) {
       return parity === 0;
@@ -404,7 +404,7 @@ const isEven =
     }
   };
 
-mockingbird(isEven)(1001)
+mockingbird(_isEven)(1001)
   //=> false
 ```
 
@@ -441,7 +441,7 @@ const widowbird =
     };
   };
 
-widowbird(isEven)(1001)
+widowbird(_isEven)(1001)
   //=> false
 ```
 
@@ -450,7 +450,7 @@ Since we're passing the function to be called recursively into our recursive fun
 And what about our `naive` exponentiation that broke the stack earlier?
 
 ```javascript
-widowbird(isEven)(1000000)
+widowbird(_isEven)(1000000)
   //=> true
 ```
 
@@ -501,7 +501,7 @@ const why =
 Armed with our why bird, we can write recursive functions that look a little more idiomatic. This implementation of `map` is gratuitously recursive, but demonstrates that using the why bird, we need not pass `myself` along when `map` calls itself recursively:
 
 ```javascript
-const map =
+const _map =
   (myself, fn, input) => {
     if (input.length === 0) {
       return [];
@@ -512,7 +512,7 @@ const map =
     }
   };
 
-why(map)(x => x * x, [1, 2, 3])
+why(_map)(x => x * x, [1, 2, 3])
   //=> [1, 4, 9]
 ```
 
