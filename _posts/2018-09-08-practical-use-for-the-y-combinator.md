@@ -222,7 +222,7 @@ We will call this function the "Long-tailed Widowbird." Let's derive it.
 
 ---
 
-*picture*
+![Long-Tailed Widowbird](/assets/images/long-tailed-widowbird.jpg)
 
 ---
 
@@ -357,7 +357,7 @@ It works! And it executes in constant stack space! But this Is code that only it
 
 ---
 
-*picture2*
+[![Ink & Water ©2010 Gagneet Parmar](/assets/images/ink-and-water.jpg)](https://www.flickr.com/photos/45818813@N05/4785640636)
 
 ---
 
