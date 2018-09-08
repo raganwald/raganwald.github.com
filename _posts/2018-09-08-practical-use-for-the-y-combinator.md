@@ -495,7 +495,7 @@ With the decoupled trampoline, we can:
 
 1. Refactor the function into tail-recursive form;
 2. Refactor the function into "why bird form," then; 
-3. Wrap the result in the long-tailed widowbird
+3. Wrap the result in the decoupled trampoline.
 
 Why is this superior? We're going to refactor into tail-recursive form either way, and we're going to wrap the function either way, however:
 
