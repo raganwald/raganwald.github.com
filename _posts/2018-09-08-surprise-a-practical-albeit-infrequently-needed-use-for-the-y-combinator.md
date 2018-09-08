@@ -3,7 +3,7 @@ Title: "A Practical (albeit infrequently needed) use for the Y Combinator"
 tags: [noindex,allonge,recursion]
 ---
 
-The Y Combinator is a very famnous result in theoretical computer science. A famous technology investment firm and startup incubator takes its name from the Y Combinator, likely because the Y Combinator acts as a kind of "bootstrap" to allow a function to build upon itself.
+The Y Combinator is an important result in theoretical computer science. A famous technology investment firm and startup incubator takes its name from the Y Combinator, likely because the Y Combinator acts as a kind of "bootstrap" to allow a function to build upon itself.
 
 In this essay, after a brief review of the work we've already done on the mockingbird, why bird, M Combinator, and Y Combinator, we'll derive the "Decoupled Trampoline," a/k/a "Long-Tailed Widowbird." The decoupled trampoline builds ion the why bird and Y Combinator to allow us to write tail-recursive functions that execute in constant stack space, while hewing closely to idomatic JavaScript.
 
@@ -11,7 +11,7 @@ While this use case is admittedly rare in production code, it does arise from ti
 
 ---
 
-[![y? ©2012 Newtown grafitti](../assets/images/y.jpg)](https://www.flickr.com/photos/newtown_grafitti/8286552835/)
+[![y? ©2012 Newtown grafitti](/assets/images/y.jpg)](https://www.flickr.com/photos/newtown_grafitti/8286552835/)
 
 ---
 
@@ -121,7 +121,18 @@ We will work with the why bird in this essay, however everything we do can also 
 
 ### tail recursion
 
-Our function for determining whether a number is even is extremely slow, and it has another problem:
+This function for determining whether a number is even is extremely slow, and it has another problem:
+
+```javascript
+const isEven =
+  n =>
+    (n === 0) || !isEven(n - 1);
+
+IsEven(1000042)
+  //=> Maximum call stack exceeded
+```
+
+Revising it to work with the why bird does not fix the issue:
 
 ```javascript
 why(
@@ -131,7 +142,7 @@ why(
   //=> Maximum call stack exceeded
 ```
 
-It consumes stack space equal to the magnitude of the argument `n`. Naturally, this is a contrived example, but recursive functions that consume the entire stack to occur from time to time, and it is not always appropriate to rewrite them in iterative form.
+Our function consumes stack space equal to the magnitude of the argument `n`. Naturally, this is a contrived example, but recursive functions that consume the entire stack to occur from time to time, and it is not always appropriate to rewrite them in iterative form.
 
 One solution to this problem is to rewrite the function in tail-recursive form. If the JavaScript engine supports tail-call optimization, the function will execute in constant stack space:
 
@@ -350,7 +361,7 @@ It works! And it executes in constant stack space! But this Is code that only it
 
 ---
 
-### cleaning up the ugly long-tailed widowbird
+### from long-tailed widowbird to decoupled trampoline
 
 Let's begin our cleanup by moving `Thunk` inside our function. This has certain technical advantages if we ever create a recursive program that itself returns thunks. Since it is now a special-purpose class that only ever invokes a single function, we'll give it a more specific implementation:
 
@@ -423,9 +434,9 @@ const longtailed =
   };
 ```
 
-And now we have a considerably less ugly long-tailed widowbird.
+And now we have a considerably less ugly long-tailed widowbird. Well, actually, we are ignoring "the elephant in the room," _the name of the function_. "Long-tailed Widowbird" is a touching tribute to the genius of Raymond Smullyan, and there is an amusing correlation between its long tail and the business of optimizing tail-recursive functions.
 
-Well, actually, we are ignoring "the elephant in the room," the name of the function. "Long-tailed Widowbird" is a touching tribute to the genius of Raymond Smullyan, and there is an amusing correlation between its long tail and the business of optimizing tail-recursive functions, but if we are to work with others, we might want to consider the possibility that they would prefer a less poetic approach:
+Nevertheless, if we are to work with others, we might want to consider the possibility that they would prefer a less poetic approach:
 
 ```javascript
 const decoupledTrampoline =
@@ -469,15 +480,15 @@ const decoupledTrampoline =
 
 ---
 
-### the use case for the long-tailed widowbird
+### the use case for the decoupled trampoline
 
-To recapitulate the use case for the long-tailed widowbird, in the rare but nevertheless valid case where we wish to refactor a singly recursive function into a trampolined function to ensure that it does not consume the stack, we previously had to:
+To recapitulate the use case for the decoupled trampoline, in the rare but nevertheless valid case where we wish to refactor a singly recursive function into a trampolined function to ensure that it does not consume the stack, we previously had to:
 
 1. Refactor the function into tail-recursive form;
 2. Refactor the tail-recursive version to explicitly invoke a trampoline;
 3. Wrap the result in a trampoline function.
 
-With the long-tailed widowbird, we can:
+With the decoupled trampoline, we can:
 
 1. Refactor the function into tail-recursive form;
 2. Refactor the function into "why bird form," then; 
