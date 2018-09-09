@@ -3,7 +3,7 @@ title: To Grok a Mockingbird
 tags: [recursion]
 ---
 
-*Using recursive combinators to enhance functional composition, with special guests the Mockingbird, Widowbird, and Sage Bird*
+*Using recursive combinators to enhance functional composition, with special guests the Mockingbird, Widowbird, and Why Bird*
 
 ---
 
@@ -11,7 +11,7 @@ In this essay we're going to look at _recursive combinators_. A recursive combin
 
 Recursive combinators have important theoretical implications, but for the working programmer they decouple recursive functions from the mechanism that implements recursion. This makes it easier to compose recursive functions with decorators and to implement recursion strategies like trampolining.
 
-We'll begin our exploration with a look at the *mockingbird*, also called the `M` combinator.[^little-omega] We'll then move on to examine the widowbird, a combinator that executes tail-recursive functions in constant space. We'll finish with a brief look at the famous sage bird, or Y Combinator.
+We'll begin our exploration with a look at the *mockingbird*, also called the `M` Combinator.[^little-omega] We'll then move on to examine the widowbird, a combinator that executes tail-recursive functions in constant space. We'll finish with a brief look at the famous Why Bird, or Y Combinator.
 
 [^little-omega]: The mockingbird or "M combinator" is also sometimes called ω, or "little omega". The full explanation for ω, as well as its relation to Ω ("big omega"), can be found on David C Keenan's delightful [To Dissect a Mockingbird](http://dkeenan.com/Lambda/)  page.<br/><br/>In [Combinatory Logic](https://esolangs.org/wiki/Combinatory_logic), the fundamental combinators are named after birds, following the example of Raymond Smullyan's famous book [To Mock a Mockingbird](http://www.amazon.com/gp/product/B00A1P096Y/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00A1P096Y&linkCode=as2&tag=raganwald001-20). Needless to say, the title of the book and its central character is the inspiration for this essay!
 
@@ -539,6 +539,14 @@ And finally, we saw the why bird, or Y Combinator. We saw that it makes our func
 Recursive combinators like mockingbirds, widowbirds, and why birds are a few more tools in our "composeable functions" toolbox, increasing reuse by decoupling recursive functions from themselves.
 
 (discuss on reddit [here](https://www.reddit.com/r/javascript/comments/9bu5od/to_grok_a_mockingbird_using_recursive_combinators/), or [here](https://www.reddit.com/r/programming/comments/9bvmls/to_grok_a_mockingbird_using_recursive_combinators/), or on [hacker news](https://news.ycombinator.com/item?id=17885852))
+
+---
+
+The essays in this series on recursive combinators are: [To Grok a Mockingbord], [Deriving the Y Combinator and Why Bird from the Mockingbird], and [A practical (albeit infrequently needed) use for the Y Combinator]. Enjoy them all!
+
+[To Grok a Mockingbord]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+[Deriving the Y Combinator and Why Bird from the Mockingbird]: http://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html
+[A practical (albeit infrequently needed) use for the Y Combinator]: http://raganwald.com/2018/09/08/practical-use-for-the-y-combinator.html
 
 ---
 

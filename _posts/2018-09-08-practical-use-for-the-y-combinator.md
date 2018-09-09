@@ -538,4 +538,12 @@ That's all!
 
 ---
 
+The essays in this series on recursive combinators are: [To Grok a Mockingbord], [Deriving the Y Combinator and Why Bird from the Mockingbird], and [A practical (albeit infrequently needed) use for the Y Combinator]. Enjoy them all!
+
+[To Grok a Mockingbord]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+[Deriving the Y Combinator and Why Bird from the Mockingbird]: http://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html
+[A practical (albeit infrequently needed) use for the Y Combinator]: http://raganwald.com/2018/09/08/practical-use-for-the-y-combinator.html
+
+---
+
 ## Notes

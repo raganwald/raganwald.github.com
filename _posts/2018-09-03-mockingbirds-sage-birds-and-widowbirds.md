@@ -501,6 +501,14 @@ And with that, we have derived compact implementations of both the Y combinator 
 
 ---
 
+The essays in this series on recursive combinators are: [To Grok a Mockingbord], [Deriving the Y Combinator and Why Bird from the Mockingbird], and [A practical (albeit infrequently needed) use for the Y Combinator]. Enjoy them all!
+
+[To Grok a Mockingbord]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+[Deriving the Y Combinator and Why Bird from the Mockingbird]: http://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html
+[A practical (albeit infrequently needed) use for the Y Combinator]: http://raganwald.com/2018/09/08/practical-use-for-the-y-combinator.html
+
+---
+
 [![Clouds at the end ©2008 Richard Hammond](/assets/images/clouds-at-the-end.jpg)](https://www.flickr.com/photos/mrcubs/8780767395)
 
 ---
