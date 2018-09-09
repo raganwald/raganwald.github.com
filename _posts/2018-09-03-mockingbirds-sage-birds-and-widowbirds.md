@@ -501,14 +501,6 @@ And with that, we have derived compact implementations of both the Y combinator 
 
 ---
 
-The essays in this series on recursive combinators are: [To Grok a Mockingbord], [Deriving the Y Combinator and Why Bird from the Mockingbird], and [A practical (albeit infrequently needed) use for the Y Combinator]. Enjoy them all!
-
-[To Grok a Mockingbord]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
-[Deriving the Y Combinator and Why Bird from the Mockingbird]: http://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html
-[A practical (albeit infrequently needed) use for the Y Combinator]: http://raganwald.com/2018/09/08/practical-use-for-the-y-combinator.html
-
----
-
 [![Clouds at the end ©2008 Richard Hammond](/assets/images/clouds-at-the-end.jpg)](https://www.flickr.com/photos/mrcubs/8780767395)
 
 ---
@@ -520,6 +512,16 @@ The mockingbird that we explored in [To Grok a Mockingbird] is easy to understan
 However, it requires us to pass `myself` along when making recursive calls. This is decidedly not idiomatic, so we derived the why bird, an idiomatic JavaScript recursive combinator that enables recursive functions to call themselves without any additional parameters.
 
 We then derived a JavaScript implementation of the Y combinator from the why bird, and finished by using a reduced version of the M combinator to produce "compact" implementations of both the why bird and the Y combinator.
+
+*the end*
+
+---
+
+The essays in this series on recursive combinators are: [To Grok a Mockingbord], [Deriving the Y Combinator and Why Bird from the Mockingbird], and [A practical (albeit infrequently needed) use for the Y Combinator]. Enjoy them all!
+
+[To Grok a Mockingbord]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+[Deriving the Y Combinator and Why Bird from the Mockingbird]: http://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html
+[A practical (albeit infrequently needed) use for the Y Combinator]: http://raganwald.com/2018/09/08/practical-use-for-the-y-combinator.html
 
 ---
 
