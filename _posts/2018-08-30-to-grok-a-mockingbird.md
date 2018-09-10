@@ -542,9 +542,9 @@ Recursive combinators like mockingbirds, widowbirds, and why birds are a few mor
 
 ---
 
-The essays in this series on recursive combinators are: [To Grok a Mockingbord], and [Why Y? Deriving the Y Combinator in JavaScript]. Enjoy them both!
+The essays in this series on recursive combinators are: [To Grok a Mockingbird], and [Why Y? Deriving the Y Combinator in JavaScript]. Enjoy them both!
 
-[To Grok a Mockingbord]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+[To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
 [Why Y? Deriving the Y Combinator in JavaScript]: http://raganwald.com/2018/09/10/why-y.html
 
 ---
