@@ -1,6 +1,6 @@
 ---
 title: "A practical (albeit infrequently needed) use for the Y Combinator"
-tags: [allonge,recursion]
+tags: [allonge,recursion,noindex]
 ---
 
 **This essay has been incorporated into [Why Y? Deriving the Y Combinator in JavaScript](http://raganwald.com/2018/09/10/why-y.html)**
