@@ -3,6 +3,10 @@ title: "A practical (albeit infrequently needed) use for the Y Combinator"
 tags: [allonge,recursion]
 ---
 
+**This essay has been incorporated into [Why Y? Deriving the Y Combinator in JavaScript](http://raganwald.com/2018/09/10/why-y.html)**
+
+---
+
 The [Y Combinator] is an important result in theoretical computer science. A famous technology investment firm and startup incubator takes its name from the Y Combinator, likely because the Y Combinator acts as a kind of "bootstrap" to allow a function to build upon itself.
 
 [Y Combinator]: https://en.wikipedia.org/wiki/Fixed-point_combinator
@@ -28,7 +32,7 @@ In [To Grok a Mockingbird], we explored the _mockingbird_, a recursive combinato
 [^m]: The mockingbird is more formally known as the M Combinator. Our naming convention is that when discussing formal combinators from combinatory logic, or direct implementations in JavaScript, we will use the formal name. But when using variations designed to work more idiomatically in JavaScript--such as versions that work with functions taking more than one argument), we will use Raymond Smullyan's ornithological nicknames.<br/><br/>For a formalist, the M Combinator's direct translation is `const M = fn => fn(fn)`. This is only useful if `fn` is implemented in "curried" form, e.g. `const isEven = myself => n => n === 0 || !myself(n - 1)`. If we wish to use a function written in idiomatic JavaScript form, such as `const isEven = (myself, n) => n === 0 || !myself(n - 1)`, we use the mockingbird, which is given later as `const mockingbird = fn => (...args) => fn(fn, ...args)`. This is far more practical for programming purposes.
 
 [thunk]: https://en.wikipedia.org/wiki/Thunk_(functional_programming)
-[cps]: https://en.wikipedia.org/wiki/Continuation-passing_styleer a 
+[cps]: https://en.wikipedia.org/wiki/Continuation-passing_styleer a
 [tail-recursive]: https://en.wikipedia.org/wiki/Tail-recursive_function
 [trampolining]: https://en.wikipedia.org/wiki/Trampoline_(computing)
 
@@ -494,7 +498,7 @@ To recapitulate the use case for the decoupled trampoline, in the rare but never
 With the decoupled trampoline, we can:
 
 1. Refactor the function into tail-recursive form;
-2. Refactor the function into "why bird form," then; 
+2. Refactor the function into "why bird form," then;
 3. Wrap the result in the decoupled trampoline.
 
 Why is this superior? We're going to refactor into tail-recursive form either way, and we're going to wrap the function either way, however:

@@ -1,6 +1,10 @@
 ---
 title: Deriving the Y Combinator and Why Bird from the Mockingbird
-tags: [recursion]
+tags: [recursion,noindex]
+---
+
+**This essay has been incorporated into [Why Y? Deriving the Y Combinator in JavaScript](http://raganwald.com/2018/09/10/why-y.html)**
+
 ---
 
 In [To Grok a Mockingbird], we explored the _mockingbird_, a recursive combinator that decouples recursive functions from themselves. Decoupling recursive functions from themselves allows us to compose them more flexibly, such as with decorators.[^m]
@@ -70,7 +74,7 @@ const mockingbird =
     (...args) =>
       fn(fn, ...args);
 
-const exponent = 
+const exponent =
   mockingbird(
     (myself, x, n) => {
       if (n === 0) {
@@ -102,7 +106,7 @@ const memoized = (fn, keymaker = JSON.stringify) => {
 
 const ignoreFirst = ([_, ...values]) => JSON.stringify(values);
 
-const exponent = 
+const exponent =
   mockingbird(
     memoized(
       (myself, x, n) => {
@@ -151,7 +155,7 @@ What we want is a function *like* the mockingbird, but it must support functions
 Let's visualize exactly what we want. With the mockingbird, we write:
 
 ```javascript
-const exponent = 
+const exponent =
   mockingbird(
     (myself, x, n) => {
       if (n === 0) {
@@ -168,7 +172,7 @@ const exponent =
 We want a better recursive combinator, one that lets us write:
 
 ```javascript
-const exponent = 
+const exponent =
   _____(
     (myself, x, n) => {
       if (n === 0) {
@@ -245,7 +249,7 @@ We've replaced that one `fn` with a placeholder. Why? Well, our `fn` is a functi
 
 But what will it be?
 
-Well, the approach we are going to take is to think about the mockingbird. What does it do? It takes a function like `(myself, arg0, arg1, ..., argn) => ...`, and returns a function that looks like `(arg0, arg1, ..., argn) => ...`. 
+Well, the approach we are going to take is to think about the mockingbird. What does it do? It takes a function like `(myself, arg0, arg1, ..., argn) => ...`, and returns a function that looks like `(arg0, arg1, ..., argn) => ...`.
 
 The mockingbird isn't what we want, but let's airily assume that there is such a function. We'll call it `maker`, because it makes the function we want.
 
@@ -325,7 +329,7 @@ const why =
 Let's test it:
 
 ```javascript
-const exponent = 
+const exponent =
   why(
     (myself, x, n) => {
       if (n === 0) {
