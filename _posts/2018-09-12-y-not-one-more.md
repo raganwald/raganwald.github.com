@@ -16,11 +16,11 @@ Another interesting application is given in Ruby, for [implementing autovivifica
 
 For a couple of reasons, it's unlikely to be generally useful in JavaScript, but the ideas behind it are interesting and may be useful in their own right. That, and it's a great hack!
 
-So let's try to apply it to JavaScript.
+So let's try to apply it to JavaScript. We'll start with a look at Ruby's `Hash` class.
 
 ### ruby hashes are not javascript objects
 
-The Ruby programming language has the notion of a [Hash]. A Hash is a dictionary-like collection of unique keys and their values. Also called associative arrays, they are similar to Arrays, but where an Array uses integers as its index, a Hash allows you to use any object type.
+The Ruby programming language has the notion of a [Hash]. A `Hash` is a dictionary-like collection of unique keys and their values. Also called associative arrays, they are similar to Arrays, but where an Array uses integers as its index, a `Hash` allows you to use any object type.
 
 [Hash]: https://ruby-doc.org/core-2.5.1/Hash.html
 
@@ -32,7 +32,7 @@ options = { :font_size => 10, :font_family => "Arial" }
 options2 = { font_size: 10, font_family: "Arial" }
 ```
 
-Ruby Hashes are thus a little more like JavaScript Maps, because they permit the use of any object as a key, not just strings. On the other hand, you can access the values of a Ruby hash using square braces, like this:
+Ruby hashes are thus a little like JavaScript's `Map`, because they permit the use of any object as a key, not just strings. On the other hand, you can access the values of a Ruby hash using square braces, like this:
 
 ```ruby
 grades = { "Jane Doe" => 10, "Jim Doe" => 6 }
@@ -44,7 +44,7 @@ grades["jane doe"]
 options[:font_family]
   #=> "Arial"
 ```
-That's more like a JavaScript object. With JavaScript Maps, we have to use `.at` to access values by key.
+That's more like a JavaScript object. With a JavaScript `Map`, we have to use `.at` to access values by key.
 
 Ruby hashes have a default value that is returned when accessing keys that do not exist in the hash. If no default is set, `nil` is used. You can set the default value by sending it as an argument to `#new`:
 
@@ -70,18 +70,24 @@ JavaScript objects do not have any notion of a default value, and especially not
 
 ### implementing hash in javascript
 
-Given that JavaScript already has `Object` and `Map`, the only motivation to snarf any of `Hash`'s behaviour is going to be the ability to set default values. This is rather handy in Ruby, so let's come up witha toy implementation we can play with in JavaScript.
+Given that JavaScript already has `Object` and `Map`, the only motivation to snarf any of `Hash`'s behaviour is going to be the ability to set default values. This is rather handy in Ruby, so let's come up with a toy implementation we can play with in JavaScript.
 
 the first thing we have to decide is whether we'll base our implementation on `Object` or `Map`. For the purposes of this essay, `Object` has the nicer syntax, and using objects as dictionaries is the usual case in JavaScript. And a `Map` implemention will be trivial once the basic pattern is articulated.
 
-When we create a hash, we'll use `Object.create(null)`  as our backing key-value store, and wrap it in a `Proxy`[^proxy] to handle access.
+When we create an instance of `Hash`, we'll wrap it in a `Proxy`[^proxy] to handle access.
 
 [^proxy]: The [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object is used to define custom behavior for fundamental operations (e.g. property lookup, assignment, enumeration, function invocation, etc). It is enormously flexible, but extremely slow compared to "native" behaviour. Does that mean we should never use it? No, it means we should use our judgment.
 
 What behaviour do we want?
 
 ```javascript
-// use case 1
+// use case zero
+const obj = new Hash();
+
+obj instanceof Hash
+  //=> true
+
+// use case one
 const ages = new Hash();
 ages["Dorothy Doe"] = 23;
 
@@ -90,7 +96,7 @@ ages["Tom Swift"]
 ages["Dorothy Doe"]
   //=> 23
 
-// use case 2
+// use case two
 const grades = new Hash(0);
 grades["Dorothy Doe"] = 9;
 
@@ -99,30 +105,25 @@ grades["Tom Swift"]
 grades["Dorothy Doe"]
   //=> 9
 
-// use case 3
+// use case three
 const h = new Hash((hash, key) => hash[key] = `Go Fish: ${key}`);
 
 h["c"]
   //=> "Go Fish: c"
 h["d"]
   //=> "Go Fish: d"
-
-// use case 4
-const hobj = new Hash();
-
-hobj instanceof Hash
-  //=> true
 ```
 
-The first case we can handle with a plain-old JavaScript function. One of JavaScript's quirks is that when we use the "old-school" way of creating classes, with a function, the function acts like a constructor, with `this` being bound to the new instance.
-
-If the function doesn't return anything, the new instance is returned from `new Hash()`. But if the function does return something, that's what is returned from `new Hash()`. A consequence of this behaviour is that in JavaScript, it's entirely possible to evaluate the expression `new Dog()`, and get in return, a cat.
-
-Since classes derive from `Object` by default, and since JavaScript objects all support `[]` notation, we can just use a new class:
+Since classes derive from `Object` by default, and since JavaScript objects all support `[]` notation, we can just use an empty class to handle use cases zero and one:
 
 ```javascript
-class Hash{
+class Hash {
+  // T.B.D.
 }
+
+const obj = new Hash();
+
+obj instanceof Hash
 
 const ages = new Hash();
 ages["Dorothy Doe"] = 23;
@@ -133,19 +134,19 @@ ages["Dorothy Doe"]
   //=> 23
 ```
 
-Our second use case allows us to pass a non-function value as a default. This is where we incorporate a `Proxy`, and on top of that, we use `Reflect`'s built-in methods to query our base object:
+Use case two allows us to pass a non-function value as a default. We'll make a constructor function, and incorporate a `Proxy`. Note that JavaScript allows us to return something other than the object created from a constructor. That is ripe for abuse, but returning decorated instances form a constructor is perfectly cromulant.
 
 ```javascript
-function Hash (defaultValue = undefined) {
-  const base = Object.create(null);
-
-  return new Proxy(base, {
-    get: function (target, stringKey) {
-          return Reflect.has(target, stringKey)
-               ? Reflect.get(target, stringKey)
-               : defaultValue;
-        }
-  });
+class Hash {
+  constructor (defaultValue = undefined) {
+    return new Proxy(this, {
+      get: function (target, key) {
+            return Reflect.has(target, key)
+                 ? Reflect.get(target, key)
+                 : defaultValue;
+          }
+    });
+  }
 }
 
 const grades = new Hash(0);
@@ -160,22 +161,22 @@ grades["Dorothy Doe"]
 Our third use case involves checking whether the defaultValue is an ordinary value or a function. We could check every time it's accessed, but instead we'll assign different function bodies to the proxy's `get` key. That way, it's only checked at (open air quotes) compile time (close air quotes):
 
 ```javascript
-function Hash (defaultValue = undefined) {
-  const base = Object.create(null);
-
-  return new Proxy(base, {
-    get: defaultValue instanceof Function
-      ? function (target, stringKey) {
+class Hash {
+  constructor (defaultValue = undefined) {
+    return new Proxy(this, {
+      get: function (target, stringKey) {
+        if (defaultValue instanceof Function) {
           return Reflect.has(target, stringKey)
-               ? Reflect.get(target, stringKey)
-               : defaultValue(target, stringKey);
-        }
-      : function (target, stringKey) {
+            ? Reflect.get(target, stringKey)
+            : defaultValue(target, stringKey);
+        } else {
           return Reflect.has(target, stringKey)
-               ? Reflect.get(target, stringKey)
-               : defaultValue;
+            ? Reflect.get(target, stringKey)
+            : defaultValue;
         }
-  });
+      }
+    });
+  }
 }
 
 const h = new Hash((hash, key) => hash[key] = `Go Fish: ${key}`);
@@ -186,45 +187,7 @@ h["d"]
   //=> "Go Fish: d"
 ```
 
-Handling the fourth use case involves another horrible hack, but it works: We give every one of our `Hash` instances a value of `true` bound to a private `Symbol`. We also give our `Hash` function a `[Symbol.hasInstance]` method that checks for this value. To keep everything private, we wrap the entire thing in an IIFE (note that in a module, this would not be necessary):
-
-```javascript
-const Hash = (() => {
-  const IS_HASH = Symbol('IS_HASH');
-
-  function Hash (defaultValue = undefined) {
-    const base = Object.assign(
-      Object.create(null),
-      { [IS_HASH]: true }
-    );
-
-    return new Proxy(base, {
-      get: defaultValue instanceof Function
-        ? function (target, stringKey) {
-            return Reflect.has(target, stringKey)
-                 ? Reflect.get(target, stringKey)
-                 : defaultValue(target, stringKey);
-          }
-        : function (target, stringKey) {
-            return Reflect.has(target, stringKey)
-                 ? Reflect.get(target, stringKey)
-                 : defaultValue;
-          }
-    });
-  }
-
-  Object.defineProperty(Hash, Symbol.hasInstance, {value: instance => !!instance[IS_HASH]});
-
-  return Hash;
-})();
-
-const hobj = new Hash();
-
-hobj instanceof Hash
-  //=> true
-```
-
-As noted, we can make a `Map`-like Hash with a little more work (mostly replicating the interface). But this is enough to set the stage for the next bit of snarfing.
+As noted, we can make a `Map`-like Hash with even less hackery, we don't need a proxy! But most idomatic JavaScript uses objects, so that's what we'll use. this is enough to set the stage for the next bit of snarfing.
 
 ### autovivifying hashes
 
@@ -233,7 +196,7 @@ The Perl language also has hashes, and they have an interesting feature called [
 [autovivification]: https://en.m.wikipedia.org/wiki/Autovivification
 
 > In Perl, the following line will successfully run:
-> 
+>
 > `$h{'a'}{'b'}{'c'} = 1;`
 >
 > even if `$h` was previously `undefined`. Perl will automatically set `$h` to be an empty hash, it will assign `$h{'a'}` to be a reference to an empty hash, `$h{'a'}{'b'} to be an empty hash, and then finally assign `$h{'a'}{'b'}{'c'}` to `1`, all automatically.
@@ -257,12 +220,52 @@ And having the interpreter execute it as if we had written:
 const h = { a: { b: { c: 1 } } };
 ```
 
-Can we do this? Certainly. And we can tear a page out of Ruby's book, as inspired by [implementing autovivification in Ruby hashes].
+Can we do this? Almost. We can't autovivify a new variable as a hash, but given a hash, we can autovivify its values. Certainly. And we can tear a page out of Ruby's book, as inspired by [implementing autovivification in Ruby hashes].
 
 ### autovivifying our ruby-style hash
 
-Let's review the `Hash` pseudo-class we created above. We have something that looks very much like a class
+Let's review the `Hash` pseudo-class we created above. One of the things we can do is provide a default value for a hash. What if the default value is another Hash?
 
+```javascript
+const h2 = new Hash(new Hash());
+
+h2['a']['b'] = 1;
+
+h2['a']
+  //=> a new hash
+
+h2['a']['b']
+  //=> 1
+```
+
+This arrangement looks promising, but it has two bugs. Rubyists have been bitten by the first one so often, they probably spotted it before I could mention that this code has a bug. I'll show you the failure case:
+
+```javascript
+h2['c']['d'] = 2;
+
+h2['a']['d']
+  //=> 2
+```
+
+We have passed a single hash as the default value, so all of the keys that get 'autovivified' share the same hash. We really need to generate a new one every time we wanta  default value. For that, we need to use the function form:
+
+```javascript
+const h3 = new Hash((target, key) => target[key] = new Hash());
+
+h3['a']['b'] = 1;
+h3['c']['d'] = 2;
+
+h3['a']['b']
+  //=> 1
+
+h3['c']['d']
+  //=> 2
+
+h3['a']['d']
+  //=> undefined
+```
+
+That's what we expect. And it leads us to the next problem. This only goes one level deep.
 
 ---
 
