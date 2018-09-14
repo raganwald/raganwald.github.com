@@ -18,7 +18,7 @@ For a couple of reasons, auto-vivifying hashes are unlikely to become a standard
 
 ---
 
-## Part I: How Do We?
+## I: How Do We Auto-Vivify Hashes?
 
 The Ruby programming language has the notion of a [Hash]. A `Hash` is a dictionary-like collection of unique keys and their values. Also called associative arrays, they are similar to Arrays, but where an Array uses integers as its index, a `Hash` allows you to use any object type.
 
@@ -386,7 +386,7 @@ Yowza, our code is not in Kansas any more.
 
 ---
 
-## Part II: Should We?
+## II: Should We Auto-Vivify Hashes?
 
 Most of the time, we do not debate whether the things in this blog belong in production--or any, really--code. The point is to explore ideas. What matters is not "here is something we can use tomorrow," as much as, "here are some ideas that change the way we think about code."
 
