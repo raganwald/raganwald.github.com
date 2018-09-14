@@ -14,11 +14,11 @@ Another interesting application is given in Ruby, for [implementing autovivifica
 
 [implementing autovivification in Ruby hashes]: https://www.sbf5.com/~cduan/technical/ruby/ycombinator.shtml
 
-For a couple of reasons, it's unlikely to be generally useful in JavaScript, but the ideas behind it are interesting and may be useful in their own right. That, and it's a great hack!
+For a couple of reasons, autovivifying hashes are unlikely to become a standard idiom in JavaScript, but the ideas behind it are interesting and may be useful in their own right. That, and it's a great hack. So let's sort out how to implement autovivifying hashes in JavaScript.
 
-So let's try to apply it to JavaScript. We'll start with a look at Ruby's `Hash` class.
+---
 
-### ruby hashes are not javascript objects
+## Part I: How Do We?
 
 The Ruby programming language has the notion of a [Hash]. A `Hash` is a dictionary-like collection of unique keys and their values. Also called associative arrays, they are similar to Arrays, but where an Array uses integers as its index, a `Hash` allows you to use any object type.
 
@@ -140,7 +140,7 @@ Use case two allows us to pass a non-function value as a default. We'll make a c
 class Hash {
   constructor (defaultValue = undefined) {
     return new Proxy(this, {
-      get: function (target, key) {
+      get (target, key) {
             return Reflect.has(target, key)
                  ? Reflect.get(target, key)
                  : defaultValue;
@@ -164,14 +164,14 @@ Our third use case involves checking whether the defaultValue is an ordinary val
 class Hash {
   constructor (defaultValue = undefined) {
     return new Proxy(this, {
-      get: function (target, stringKey) {
+      get (target, key) {
         if (defaultValue instanceof Function) {
-          return Reflect.has(target, stringKey)
-            ? Reflect.get(target, stringKey)
-            : defaultValue(target, stringKey);
+          return Reflect.has(target, key)
+            ? Reflect.get(target, key)
+            : defaultValue(target, key);
         } else {
-          return Reflect.has(target, stringKey)
-            ? Reflect.get(target, stringKey)
+          return Reflect.has(target, key)
+            ? Reflect.get(target, key)
             : defaultValue;
         }
       }
@@ -279,7 +279,7 @@ const h5 = new Hash((target, key) => target[key] = new Hash((target, key) => tar
 
 But we can only type so much of that. How do we make it work for an arbitrary number of levels?
 
-### autovivifying hashes, the classical and functional approaches
+### autovivifying hashes in Javascript, the classical approach
 
 We've been doing everything in an "OO" style so far, let's take things to their natural OO conclusion:
 
@@ -342,11 +342,65 @@ yHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
 
 This style allows us to make autovivifying hashes wherever we like, without having to set up a new class and a new module. This is exactly the approach explained in [implementing autovivification in Ruby hashes].
 
-That being said, it's up to the reader of our code to sort out what's going on. Is the lighter weight worth it?
+Of course, in Ruby the `Hash` class comes baked in, so there's a good incentive to build upon a standard and very common data structure. In JavaScript, we have to build our own. If we're not that interested in classical OO, maybe we can back up and strip things down to their essentials?
 
-Let's discuss.
+### autovivifying hashes in Javascript, the idiomatic approach
+
+If we pare things down to their essentials, we can drop the entire `Hash` class and just use a function. Here it is calling itself by name:
+
+```javascript
+const autoVivifying = () => new Proxy({}, {
+  get: (target, key) =>
+    Reflect.has(target, key)
+      ? Reflect.get(target, key)
+      : target[key] = autoVivifying()
+});
+
+const aHash = autoVivifying();
+
+aHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
+
+aHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
+  //=> "alpha beta"
+```
+
+And if we want to go "pure" and avoid any issues with binding, we'll use `why` as above, but without any classes involved:
+
+```javascript
+const pHash = why(
+  myself => new Proxy({}, {
+    get: (target, key) =>
+      Reflect.has(target, key)
+        ? Reflect.get(target, key)
+        : target[key] = myself()
+  })
+)();
+
+pHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
+
+pHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
+  //=> "alpha beta"
+```
+
+Yowza, our code is not in Kansas any more.
 
 ---
+
+## Part II: Should We?
+
+Most of the time, we do not debate whether the things in this blog belong in production--or any, really--code. The point is to explore ideas. What matters is not "here is something we can use tomorrow," as much as, "here are some ideas that change the way we think about code."
+
+When we integrate those changes to the way we think about code with the various forces acting upon our code decisions, we may end up with something that on the surface is entirely different from the code in these posts, but has been influenced by the journey we take working things out.
+
+But that being said, this particular post involves taking things form other languages, and there can be some value obtained by considering why a certain thing might make sense in another language, and then wondering if those same considerations apply to JavaScript. Not necessarily for the purpose of decising whether to use any of this code as-is, but again for the purpose of changing teh way we think about code.
+
+So here goes.
+
+### do we need a hash class?
+
+### does autovivification make sense in javascript?
+
+### why y? why !y?
 
 ---
 
