@@ -8,13 +8,13 @@ In [Why Y? Deriving the Y Combinator in JavaScript], we derived the Why Bird and
 [To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
 [Why Y? Deriving the Y Combinator in JavaScript]: http://raganwald.com/2018/09/10/why-y.html
 
-WHile higely important theoretically, the most practical application for the Y Combinator usually given is when we want to decorate a recursive function, such as when memoizing it. That idea has been mentioned a number of times independently.
+While highly important theoretically, the most practical application for the Y Combinator usually given is when we want to decorate a recursive function, such as when memoizing it. That idea has been mentioned a number of times independently.
 
-Another interesting application is given in Ruby, for [implementing autovivification in Ruby hashes].
+Another interesting application is given in Ruby, for [implementing auto-vivification in Ruby hashes].
 
-[implementing autovivification in Ruby hashes]: https://www.sbf5.com/~cduan/technical/ruby/ycombinator.shtml
+[implementing auto-vivification in Ruby hashes]: https://www.sbf5.com/~cduan/technical/ruby/ycombinator.shtml
 
-For a couple of reasons, autovivifying hashes are unlikely to become a standard idiom in JavaScript, but the ideas behind it are interesting and may be useful in their own right. That, and it's a great hack. So let's sort out how to implement autovivifying hashes in JavaScript.
+For a couple of reasons, auto-vivifying hashes are unlikely to become a standard idiom in JavaScript, but the ideas behind it are interesting and may be useful in their own right. That, and it's a great hack. So let's sort out how to implement auto-vivifying hashes in JavaScript.
 
 ---
 
@@ -72,11 +72,11 @@ JavaScript objects do not have any notion of a default value, and especially not
 
 Given that JavaScript already has `Object` and `Map`, the only motivation to snarf any of `Hash`'s behaviour is going to be the ability to set default values. This is rather handy in Ruby, so let's come up with a toy implementation we can play with in JavaScript.
 
-the first thing we have to decide is whether we'll base our implementation on `Object` or `Map`. For the purposes of this essay, `Object` has the nicer syntax, and using objects as dictionaries is the usual case in JavaScript. And a `Map` implemention will be trivial once the basic pattern is articulated.
+the first thing we have to decide is whether we'll base our implementation on `Object` or `Map`. For the purposes of this essay, `Object` has the nicer syntax, and using objects as dictionaries is the usual case in JavaScript. And a `Map` implementation will be trivial once the basic pattern is articulated.
 
 When we create an instance of `Hash`, we'll wrap it in a `Proxy`[^proxy] to handle access.
 
-[^proxy]: The [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object is used to define custom behavior for fundamental operations (e.g. property lookup, assignment, enumeration, function invocation, etc). It is enormously flexible, but extremely slow compared to "native" behaviour. Does that mean we should never use it? No, it means we should use our judgment.
+[^proxy]: The [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) object is used to define custom behaviour for fundamental operations (e.g. property lookup, assignment, enumeration, function invocation, etc). It is enormously flexible, but extremely slow compared to "native" behaviour. Does that mean we should never use it? No, it means we should use our judgment.
 
 What behaviour do we want?
 
@@ -187,13 +187,13 @@ h["d"]
   //=> "Go Fish: d"
 ```
 
-As noted, we can make a `Map`-like Hash with even less hackery, we don't need a proxy! But most idomatic JavaScript uses objects, so that's what we'll use. this is enough to set the stage for the next bit of snarfing.
+As noted, we can make a `Map`-like Hash with even less hackery, we don't need a proxy! But most idiomatic JavaScript uses objects, so that's what we'll use. this is enough to set the stage for the next bit of snarfing.
 
-### autovivifying hashes
+### auto-vivifying hashes
 
-The Perl language also has hashes, and they have an interesting feature called [autovivification]. As explained in [implementing autovivification in Ruby hashes]:
+The Perl language also has hashes, and they have an interesting feature called [auto-vivification]. As explained in [implementing auto-vivification in Ruby hashes]:
 
-[autovivification]: https://en.m.wikipedia.org/wiki/Autovivification
+[auto-vivification]: https://en.m.wikipedia.org/wiki/auto-vivification
 
 > In Perl, the following line will successfully run:
 >
@@ -201,11 +201,11 @@ The Perl language also has hashes, and they have an interesting feature called [
 >
 > even if `$h` was previously `undefined`. Perl will automatically set `$h` to be an empty hash, it will assign `$h{'a'}` to be a reference to an empty hash, `$h{'a'}{'b'} to be an empty hash, and then finally assign `$h{'a'}{'b'}{'c'}` to `1`, all automatically.
 
-This is called autovivication in Perl: hash and array variables automatically "come to life" as necessary. This is incredibly convenient for working with multidimensional arrays, for example.
+This is called auto-vivification in Perl: hash and array variables automatically "come to life" as necessary. This is incredibly convenient for working with multidimensional arrays, for example.
 
 The syntax is a little different than Ruby or JavaScript, but the example snippet shows two things:
 
-1. `$h` is a variable that has not yet been bound. In JavaScript, it would be `undefined`. If we tried to assign one of its properties, it would break. In Perl, trying to assign a property of an undefined variable turns it into a hash. So `$h{'a'} = 1` would "autovivify" `$h` and then assign `1` to `{'a'}`.
+1. `$h` is a variable that has not yet been bound. In JavaScript, it would be `undefined`. If we tried to assign one of its properties, it would break. In Perl, trying to assign a property of an undefined variable turns it into a hash. So `$h{'a'} = 1` would "auto-vivify" `$h` and then assign `1` to `{'a'}`.
 2. Given a hash `$h`, the code `$h{'a'}{'b'}{'c'} = 1;` assigns hashes to `{'a'}`, and then `{'a'}{'b'}`, and then it assigns `1` to `{'a'}{'b'}{'c'}`.
 
 This would be like writing this JavaScript:
@@ -220,9 +220,9 @@ And having the interpreter execute it as if we had written:
 const h = { a: { b: { c: 1 } } };
 ```
 
-Can we do this? Almost. We can't autovivify a new variable as a hash, but given a hash, we can autovivify its values. Certainly. And we can tear a page out of Ruby's book, as inspired by [implementing autovivification in Ruby hashes].
+Can we do this? Almost. We can't auto-vivify a new variable as a hash, but given a hash, we can auto-vivify its values. Certainly. And we can tear a page out of Ruby's book, as inspired by [implementing auto-vivification in Ruby hashes].
 
-### attempting to autovivify ruby-style hashes
+### attempting to auto-vivify ruby-style hashes
 
 Let's review the `Hash` pseudo-class we created above. One of the things we can do is provide a default value for a hash. What if the default value is another Hash? BTW, for shits and giggles, we'll use property-based notation in these examples, just to show how confusing JS can be for people coming from a more disciplined OO language:
 
@@ -247,7 +247,7 @@ h2.a.d
   //=> 2
 ```
 
-We have passed a single hash as the default value, so all of the keys that get 'autovivified' share the same hash. We really need to generate a new one every time we want a default value. For that, we need to use the function form:
+We have passed a single hash as the default value, so all of the keys that get 'auto-vivified' share the same hash. We really need to generate a new one every time we want a default value. For that, we need to use the function form:
 
 ```javascript
 const h3 = new Hash((target, key) => target[key] = new Hash());
@@ -279,7 +279,7 @@ const h5 = new Hash((target, key) => target[key] = new Hash((target, key) => tar
 
 But we can only type so much of that. How do we make it work for an arbitrary number of levels?
 
-### autovivifying hashes in Javascript, the classical approach
+### auto-vivifying hashes in Javascript, the classical approach
 
 We've been doing everything in an "OO" style so far, let's take things to their natural OO conclusion:
 
@@ -313,7 +313,7 @@ fHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
   //=> "alpha beta"
 ```
 
-We're still performing recursion by name. Which is fine, JavaScript has names and scopes, we ought to make use of them. But that being said, it's good to know how to make an autovivifying hash without requiring a reference to a class or a function.
+We're still performing recursion by name. Which is fine, JavaScript has names and scopes, we ought to make use of them. But that being said, it's good to know how to make an auto-vivifying hash without requiring a reference to a class or a function.
 
 And we remember how to do that from the essays on recursive combinators: [To Grok a Mockingbird], and [Why Y? Deriving the Y Combinator in JavaScript]:
 
@@ -340,11 +340,11 @@ yHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
   //=> "alpha beta"
 ```
 
-This style allows us to make autovivifying hashes wherever we like, without having to set up a new class and a new module. This is exactly the approach explained in [implementing autovivification in Ruby hashes].
+This style allows us to make auto-vivifying hashes wherever we like, without having to set up a new class and a new module. This is exactly the approach explained in [implementing auto-vivification in Ruby hashes].
 
 Of course, in Ruby the `Hash` class comes baked in, so there's a good incentive to build upon a standard and very common data structure. In JavaScript, we have to build our own. If we're not that interested in classical OO, maybe we can back up and strip things down to their essentials?
 
-### autovivifying hashes in Javascript, the idiomatic approach
+### auto-vivifying hashes in Javascript, the idiomatic approach
 
 If we pare things down to their essentials, we can drop the entire `Hash` class and just use a function. Here it is calling itself by name:
 
@@ -392,13 +392,13 @@ Most of the time, we do not debate whether the things in this blog belong in pro
 
 When we integrate those changes to the way we think about code with the various forces acting upon our code decisions, we may end up with something that on the surface is entirely different from the code in these posts, but has been influenced by the journey we take working things out.
 
-But that being said, this particular post involves taking things form other languages, and there can be some value obtained by considering why a certain thing might make sense in another language, and then wondering if those same considerations apply to JavaScript. Not necessarily for the purpose of decising whether to use any of this code as-is, but again for the purpose of changing teh way we think about code.
+But that being said, this particular post involves taking things form other languages, and there can be some value obtained by considering why a certain thing might make sense in another language, and then wondering if those same considerations apply to JavaScript. Not necessarily for the purpose of deciding whether to use any of this code as-is, but again for the purpose of changing the way we think about code.
 
 So here goes.
 
 ### do we need a hash class?
 
-### does autovivification make sense in javascript?
+### does auto-vivification make sense in javascript?
 
 ### why y? why !y?
 
