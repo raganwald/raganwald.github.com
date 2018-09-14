@@ -305,11 +305,11 @@ class AutovivifyingHash extends Hash {
   }
 }
 
-const autoHash = new AutovivifyingHash();
+const avh = new AutovivifyingHash();
 
-autoHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
+avh.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
 
-autoHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
+avh.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
   //=> "alpha beta"
 ```
 
@@ -320,11 +320,11 @@ That being said, maybe we don't want a brand new class, maybe we want to use our
 ```javascript
 const autoVivifyingHash = () => new Hash(((target, key) => target[key] = autoVivifyingHash()));
 
-const fHash = autoVivifyingHash();
+const fh = autoVivifyingHash();
 
-fHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
+fh.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
 
-fHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
+fh.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
   //=> "alpha beta"
 ```
 
@@ -345,13 +345,13 @@ const why =
     );
 
 
-const yHash = new Hash(
+const yh = new Hash(
   why((myself, target, key) => target[key] = new Hash(myself))
 );
 
-yHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
+yh.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
 
-yHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
+yh.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
   //=> "alpha beta"
 ```
 
@@ -371,18 +371,18 @@ const autoVivifying = () => new Proxy({}, {
       : target[key] = autoVivifying()
 });
 
-const aHash = autoVivifying();
+const ah = autoVivifying();
 
-aHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
+ah.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
 
-aHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
+ah.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
   //=> "alpha beta"
 ```
 
 And if we want to go "pure" and avoid any issues with binding, we'll use `why` as above, but without any classes involved:
 
 ```javascript
-const pHash = why(
+const ph = why(
   myself => new Proxy({}, {
     get: (target, key) =>
       Reflect.has(target, key)
@@ -391,9 +391,9 @@ const pHash = why(
   })
 )();
 
-pHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
+ph.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
 
-pHash.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
+ph.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
   //=> "alpha beta"
 ```
 
