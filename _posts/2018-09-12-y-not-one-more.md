@@ -268,13 +268,28 @@ h3.a.d
 That's what we expect. And it leads us to the next problem. This only goes one level deep. It "vivifies" `h.a` and `h.b` as separate hashes, but when we type `h3.a.d`, we want another hash. But that's two levels deep, so it doesn't work. We can fix it to handle two levels:
 
 ```javascript
-const h4 = new Hash((target, key) => target[key] = new Hash((target, key) => target[key] = new Hash()));
+const h4 = new Hash(
+  (target, key) =>
+    target[key] = new Hash(
+      (target, key) =>
+        target[key] = new Hash()
+    )
+);
 ```
 
 Or three:
 
 ```javascript
-const h5 = new Hash((target, key) => target[key] = new Hash((target, key) => target[key] = new Hash((target, key) => target[key] = new Hash())));
+const h5 = new Hash(
+  (target, key) =>
+    target[key] = new Hash(
+      (target, key) =>
+        target[key] = new Hash(
+          (target, key) =>
+            target[key] = new Hash()
+        )
+    )
+);
 ```
 
 But we can only type so much of that. How do we make it work for an arbitrary number of levels?
