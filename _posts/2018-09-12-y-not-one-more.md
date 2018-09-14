@@ -10,9 +10,9 @@ In [Why Y? Deriving the Y Combinator in JavaScript], we derived the Why Bird and
 
 WHile higely important theoretically, the most practical application for the Y Combinator usually given is when we want to decorate a recursive function, such as when memoizing it. That idea has been mentioned a number of times independently.
 
-Another interesting application is given in Ruby, for [implementing autovivication in Ruby hashes].
+Another interesting application is given in Ruby, for [implementing autovivification in Ruby hashes].
 
-[implementing autovivication in Ruby hashes]: https://www.sbf5.com/~cduan/technical/ruby/ycombinator.shtml
+[implementing autovivification in Ruby hashes]: https://www.sbf5.com/~cduan/technical/ruby/ycombinator.shtml
 
 For a couple of reasons, it's unlikely to be generally useful in JavaScript, but the ideas behind it are interesting and may be useful in their own right. That, and it's a great hack!
 
@@ -32,7 +32,7 @@ options = { :font_size => 10, :font_family => "Arial" }
 options2 = { font_size: 10, font_family: "Arial" }
 ```
 
-Ruby Hashses are thus a little more like JavaScript Maps, because they permit the use of any object as a key, not just strings. On the other hand, youc an access the values of a Ruby hash using square braces, like this:
+Ruby Hashes are thus a little more like JavaScript Maps, because they permit the use of any object as a key, not just strings. On the other hand, you can access the values of a Ruby hash using square braces, like this:
 
 ```ruby
 grades = { "Jane Doe" => 10, "Jim Doe" => 6 }
@@ -118,13 +118,10 @@ The first case we can handle with a plain-old JavaScript function. One of JavaSc
 
 If the function doesn't return anything, the new instance is returned from `new Hash()`. But if the function does return something, that's what is returned from `new Hash()`. A consequence of this behaviour is that in JavaScript, it's entirely possible to evaluate the expression `new Dog()`, and get in return, a cat.
 
-So the first step is to create a function that returns an empty `Object`:
+Since classes derive from `Object` by default, and since JavaScript objects all support `[]` notation, we can just use a new class:
 
 ```javascript
-function Hash () {
-  const base = Object.create(null);
-
-  return base;
+class Hash{
 }
 
 const ages = new Hash();
@@ -227,7 +224,45 @@ hobj instanceof Hash
   //=> true
 ```
 
-As noted, we can make a `Map`-like Hash with a little more work (mostly replicatijg the interface). But this is enough to set the stage for the next bit of snarfing.
+As noted, we can make a `Map`-like Hash with a little more work (mostly replicating the interface). But this is enough to set the stage for the next bit of snarfing.
+
+### autovivifying hashes
+
+The Perl language also has hashes, and they have an interesting feature called [autovivification]. As explained in [implementing autovivification in Ruby hashes]:
+
+[autovivification]: https://en.m.wikipedia.org/wiki/Autovivification
+
+> In Perl, the following line will successfully run:
+> 
+> `$h{'a'}{'b'}{'c'} = 1;`
+>
+> even if `$h` was previously `undefined`. Perl will automatically set `$h` to be an empty hash, it will assign `$h{'a'}` to be a reference to an empty hash, `$h{'a'}{'b'} to be an empty hash, and then finally assign `$h{'a'}{'b'}{'c'}` to `1`, all automatically.
+
+This is called autovivication in Perl: hash and array variables automatically "come to life" as necessary. This is incredibly convenient for working with multidimensional arrays, for example.
+
+The syntax is a little different than Ruby or JavaScript, but the example snippet shows two things:
+
+1. `$h` is a variable that has not yet been bound. In JavaScript, it would be `undefined`. If we tried to assign one of its properties, it would break. In Perl, trying to assign a property of an undefined variable turns it into a hash. So `$h{'a'} = 1` would "autovivify" `$h` and then assign `1` to `{'a'}`.
+2. Given a hash `$h`, the code `$h{'a'}{'b'}{'c'} = 1;` assigns hashes to `{'a'}`, and then `{'a'}{'b'}`, and then it assigns `1` to `{'a'}{'b'}{'c'}`.
+
+This would be like writing this JavaScript:
+
+```javascript
+const h['a']['b']['c'] = 1;
+```
+
+And having the interpreter execute it as if we had written:
+
+```javascript
+const h = { a: { b: { c: 1 } } };
+```
+
+Can we do this? Certainly. And we can tear a page out of Ruby's book, as inspired by [implementing autovivification in Ruby hashes].
+
+### autovivifying our ruby-style hash
+
+Let's review the `Hash` pseudo-class we created above. We have something that looks very much like a class
+
 
 ---
 
