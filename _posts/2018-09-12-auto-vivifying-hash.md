@@ -1,10 +1,6 @@
 ---
-title: Auto-Vivifying Hashes in JavaScript (unfinished)
+title: Auto-Vivifying Hashes in JavaScript
 tags: [recursion,allonge]
----
-
-*Note: This is an unfinished work. Feel free to read and/or share it, but please do not post it to discussion sites like Hacker News or Reddit until this disclaimer has been removed. Thank you.*
-
 ---
 
 In [Why Y? Deriving the Y Combinator in JavaScript], we derived the Why Bird and Y Combinator from the Mockingbird, a recursive combinator we first saw in [To Grok a Mockingbird].
