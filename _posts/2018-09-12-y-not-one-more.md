@@ -18,7 +18,7 @@ For a couple of reasons, auto-vivifying hashes are unlikely to become a standard
 
 ---
 
-## I: How Do We Auto-Vivify Hashes?
+## One: How Do We Auto-Vivify Hashes?
 
 The Ruby programming language has the notion of a [Hash]. A `Hash` is a dictionary-like collection of unique keys and their values. Also called associative arrays, they are similar to Arrays, but where an Array uses integers as its index, a `Hash` allows you to use any object type.
 
@@ -401,17 +401,84 @@ Yowza, our code is not in Kansas any more.
 
 ---
 
-## II: Should We Auto-Vivify Hashes?
+## Two: But Should We Auto-Vivify Hashes?
 
 Most of the time, we do not debate whether the things in this blog belong in production--or any, really--code. The point is to explore ideas. What matters is not "here is something we can use tomorrow," as much as, "here are some ideas that change the way we think about code."
 
 When we integrate those changes to the way we think about code with the various forces acting upon our code decisions, we may end up with something that on the surface is entirely different from the code in these posts, but has been influenced by the journey we take working things out.
 
-But that being said, this particular post involves taking things form other languages, and there can be some value obtained by considering why a certain thing might make sense in another language, and then wondering if those same considerations apply to JavaScript. Not necessarily for the purpose of deciding whether to use any of this code as-is, but again for the purpose of changing the way we think about code.
+But that being said, this particular post touches on various ways to build this feature, from heavyweight OO to lightweight functions, with exotica like proxies tossed around at will. When we discuss whether and/or when to use such techniques, we also discuss ideas of general application around abstraction and pragmatism.
 
 So here goes.
 
 ### do we need a hash class?
+
+We began by writing a `Hash` class to imitate what Ruby provides "out-of-the-box:"
+
+```javascript
+class Hash {
+  constructor (defaultValue = undefined) {
+    return new Proxy(this, {
+      get (target, key) {
+        if (defaultValue instanceof Function) {
+          return Reflect.has(target, key)
+            ? Reflect.get(target, key)
+            : defaultValue(target, key);
+        } else {
+          return Reflect.has(target, key)
+            ? Reflect.get(target, key)
+            : defaultValue;
+        }
+      }
+    });
+  }
+}
+```
+
+And we still need to put auto-vivification on top of this:
+
+```javascript
+class AutovivifyingHash extends Hash {
+  constructor () {
+    super((target, key) => target[key] = new AutovivifyingHash());
+  }
+}
+```
+
+This seems like overkill if all we want is auto-vivification. If that's all we need, better to write the simplest thing that could possibly work:
+
+```javascript
+const autoVivifying = () => new Proxy({}, {
+  get: (target, key) =>
+    Reflect.has(target, key)
+      ? Reflect.get(target, key)
+      : target[key] = autoVivifying()
+});
+```
+
+### the rule of three
+
+When might it be sensible to write `Hash`? Well, in programming there is a [rule of three]. It is usually applied to removing duplication: When you first write something, you obviously don't worry about duplication. If you rite it a second time, make a note of the duplication, but don't rush to refactor things. Only when you need to write it for the third time do you refactor everything to eliminate duplication.
+
+[rule of three]: https://en.wikipedia.org/wiki/Rule_of_three_(computer_programming)
+
+Why wait for the third use? And why do we even count the first use? Well, there is a cost to de-duplication, often in the form of generalization and/or abstraction. Take the `Hash` class. If we write the entire class but only use it to make the `AutovivivifyingHash` class, we are incurring the costs of de-duplication before we've even used it twice.
+
+In essence, we're deciding that at some point we will use `Hash` again, and at that time we can benefit from a single class multiple pieces of code can share, but we'd like to pay that cost **now**. This is called _Premature Abstraction_.
+
+Of ourse, it could be that we spot multiple uses for the `Hash` class. In that case, there is a benefit to bundling it up on its own. And the rule of three helps us with this decision. If there are two other pieces of code that would benefit from being written with (or refactored to use) `Hash`, just the way it is, then having a separate `Hash` class is a win.
+
+If not, we shouldn't bother. If and when we have another use for it, we can refactor. This isn't the kind of decision where we fear that if we fail to make the perfect choice today, we'll be stuck with our mistake forever.
+
+### but libraries
+
+There's another special consideration. If we are writing code for others, such as when writing a library, then the rule of three doesn't apply. If our library is successful, then even the least commonly used classes and functions will be used in dozens or even hundreds of code bases. Conversely, with a library change is hard: We can't reach out and refactor our downstream dependents if we decide in the future to increase the level of abstraction.
+
+That makes fairly obvious sense. Our architectural decisions around our application code should favour pragmatism, while our architectural decisions around libraries encourage more forward-thinking.
+
+And there's another way in which libraries influence our choices. If we have something like the `Hash` class tucked away in a library, it's a lot easier to justify building on it. We have some idea that maintaining it is "free." Whereas, every line of code we write carries a cost of some kind.
+
+So if we have to write our own `Hash` class, fine, but we need good reasons to add the abstraction and maintenance cost to our code. But if we can get it "for free," then of course we still need to understand how it works, but it's easier to justify building on it.
 
 ### does auto-vivification make sense in javascript?
 
