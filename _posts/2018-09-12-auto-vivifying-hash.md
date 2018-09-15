@@ -76,6 +76,8 @@ h["d"]           #=> "Go Fish: d"
 
 JavaScript objects do not have any notion of a default value, and especially not any notion of dynamically returning a value for missing keys.
 
+---
+
 ### implementing hash in javascript
 
 Given that JavaScript already has `Object` and `Map`, the only motivation to snarf any of `Hash`'s behaviour is going to be the ability to set default values. This is rather handy in Ruby, so let's come up with a toy implementation we can play with in JavaScript.
@@ -197,6 +199,8 @@ h["d"]
 
 As noted, we can make a `Map`-like Hash with even less hackery, we don't need a proxy! But most idiomatic JavaScript uses objects, so that's what we'll use. this is enough to set the stage for the next bit of snarfing.
 
+---
+
 ### auto-vivifying hashes
 
 The Perl language also has hashes, and they have an interesting feature called [auto-vivification]. As explained in [implementing auto-vivification in Ruby hashes]:
@@ -229,6 +233,8 @@ const h = { a: { b: { c: 1 } } };
 ```
 
 Can we do this? Almost. We can't auto-vivify a new variable as a hash, but given a hash, we can auto-vivify its values. Certainly. And we can tear a page out of Ruby's book, as inspired by [implementing auto-vivification in Ruby hashes].
+
+---
 
 ### attempting to auto-vivify ruby-style hashes
 
@@ -302,18 +308,20 @@ const h5 = new Hash(
 
 But we can only type so much of that. How do we make it work for an arbitrary number of levels?
 
+---
+
 ### auto-vivifying hashes in Javascript, the classical approach
 
 We've been doing everything in an "OO" style so far, let's take things to their natural OO conclusion:
 
 ```javascript
-class AutovivifyingHash extends Hash {
+class auto-vivifyingHash extends Hash {
   constructor () {
-    super((target, key) => target[key] = new AutovivifyingHash());
+    super((target, key) => target[key] = new auto-vivifyingHash());
   }
 }
 
-const avh = new AutovivifyingHash();
+const avh = new auto-vivifyingHash();
 
 avh.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
 
@@ -326,9 +334,9 @@ It works! We've introduced recursion by having our constructor use a reference t
 That being said, maybe we don't want a brand new class, maybe we want to use our `Hash`, but do something recursive with the function we use to generate default values. Something like:
 
 ```javascript
-const autoVivifyingHash = () => new Hash(((target, key) => target[key] = autoVivifyingHash()));
+const auto-vivifyingHash = () => new Hash(((target, key) => target[key] = auto-vivifyingHash()));
 
-const fh = autoVivifyingHash();
+const fh = auto-vivifyingHash();
 
 fh.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
 
@@ -372,14 +380,14 @@ Of course, in Ruby the `Hash` class comes baked in, so there's a good incentive 
 If we pare things down to their essentials, we can drop the entire `Hash` class and just use a function. Here it is calling itself by name:
 
 ```javascript
-const autoVivifying = () => new Proxy({}, {
+const auto-vivifying = () => new Proxy({}, {
   get: (target, key) =>
     Reflect.has(target, key)
       ? Reflect.get(target, key)
-      : target[key] = autoVivifying()
+      : target[key] = auto-vivifying()
 });
 
-const ah = autoVivifying();
+const ah = auto-vivifying();
 
 ah.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
 
@@ -423,6 +431,8 @@ But that being said, this particular post touches on various ways to build this 
 
 So here goes.
 
+---
+
 ### do we need a hash class?
 
 We began by writing a `Hash` class to imitate what Ruby provides "out-of-the-box:"
@@ -450,9 +460,9 @@ class Hash {
 And we still need to put auto-vivification on top of this:
 
 ```javascript
-class AutovivifyingHash extends Hash {
+class auto-vivifyingHash extends Hash {
   constructor () {
-    super((target, key) => target[key] = new AutovivifyingHash());
+    super((target, key) => target[key] = new auto-vivifyingHash());
   }
 }
 ```
@@ -460,13 +470,15 @@ class AutovivifyingHash extends Hash {
 This seems like overkill if all we want is auto-vivification. If that's all we need, better to write the simplest thing that could possibly work:
 
 ```javascript
-const autoVivifying = () => new Proxy({}, {
+const auto-vivifying = () => new Proxy({}, {
   get: (target, key) =>
     Reflect.has(target, key)
       ? Reflect.get(target, key)
-      : target[key] = autoVivifying()
+      : target[key] = auto-vivifying()
 });
 ```
+
+---
 
 ### the rule of three
 
@@ -474,13 +486,15 @@ When might it be sensible to write `Hash`? Well, in programming there is a [rule
 
 [rule of three]: https://en.wikipedia.org/wiki/Rule_of_three_(computer_programming)
 
-Why wait for the third use? And why do we even count the first use? Well, there is a cost to de-duplication, often in the form of generalization and/or abstraction. Take the `Hash` class. If we write the entire class but only use it to make the `AutovivivifyingHash` class, we are incurring the costs of de-duplication before we've even used it twice.
+Why wait for the third use? And why do we even count the first use? Well, there is a cost to de-duplication, often in the form of generalization and/or abstraction. Take the `Hash` class. If we write the entire class but only use it to make the `auto-vivivifyingHash` class, we are incurring the costs of de-duplication before we've even used it twice.
 
 In essence, we're deciding that at some point we will use `Hash` again, and at that time we can benefit from a single class multiple pieces of code can share, but we'd like to pay that cost **now**. This is called _Premature Abstraction_.
 
 Of ourse, it could be that we spot multiple uses for the `Hash` class. In that case, there is a benefit to bundling it up on its own. And the rule of three helps us with this decision. If there are two other pieces of code that would benefit from being written with (or refactored to use) `Hash`, just the way it is, then having a separate `Hash` class is a win.
 
 If not, we shouldn't bother. If and when we have another use for it, we can refactor. This isn't the kind of decision where we fear that if we fail to make the perfect choice today, we'll be stuck with our mistake forever.
+
+---
 
 ### but libraries
 
@@ -492,17 +506,64 @@ And there's another way in which libraries influence our choices. If we have som
 
 If we have to write our own `Hash` class, fine, but we need good reasons to add the abstraction and maintenance cost to our code. But if we can get it "for free," then of course we still need to understand how it works, but it's easier to justify building on it if we never have to worry about maintaining `Hash` itself.
 
+---
+
 ### does auto-vivification make sense in javascript?
 
-### why y? why !y?
+Now here's another question. `Hash` is part of Ruby's standard idioms, so an auto-vivifying hash isn't a big leap away from how Ruby already works. There is precedent for a hash to have default values, even dynamically generated default values.
+
+But JavaScript doesn't have anything like Ruby's `Hash` to begin with. So whether we're building a brand new `hash` class, or using the lightweight, idiomatic approach, we're taking *two* steps forward with auto-vivifying hashes, we're promoting the idea of a dictionary generating default values, and also promoting the idea that the entire process is recursive. Well, maybe one-and-a-half steps forward, a sequileap outside of the comfort zone.
+
+What do we get in return? We get to write:
+
+```javascript
+const h = auto-vivifying();
+
+h.a.b.c = "Poirot's Famous Case";
+```
+
+And we do so to avoid writing:
+
+```javascript
+const h = { a: { b: { c: "Poirot's Famous Case" } } };
+```
+
+It's not ginormously more compact, but there is some value in the auto-vivifying syntax if conceptually we are trying to think of a path to some data in a tree. And in all fairness, if we only look at initializing data (which is the normal case for working ina strongly functional style), we ignore the benefits of auto-vivification in a more imperative style.
+
+if we are given an existing auto-vivifying hash, we can easily add anything we want, anywhere in its tree, with `h.a.b.c = "Poirot's Famous Case";`. But we cannot write `h = { a: { b: { c: "Poirot's Famous Case" } } };` for an existing data structure, because we might overwrite existing hashes.
+
+An auto-vivifying hash might be a win, more-so if we expect to update existing hashes.
 
 ---
 
-The essays in this series on recursive combinators are: [To Grok a Mockingbird], and [Why Y? Deriving the Y Combinator in JavaScript]. Enjoy them both!
+### let's debate performance
 
-[To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
-[Why Y? Deriving the Y Combinator in JavaScript]: http://raganwald.com/2018/09/10/why-y.html
+*This space left intentionally blank.*
+
+Ok, seriously, it's important to know things like, "`Proxy` is dog-slow compared to ordinary object access." But after that, most things don't need to be fast. If something does need to be fast, you profile it.
+
+Wait! Stop!! We don't mean that we should run speed tests on the various snippets of code to determine which idiom is the fastest. We mean that in production, when we identify an honest-to-goodness bottleneck that has meaningful impact on outcomes like user experience, only then do we drill down and figure out which slow piece of code is holding things up.
+
+Until then, we prioritize ease of writing and maintaining code. And since we have confidence that we can refactor our code safely, we know that if and when we discover that `Proxy` is a problem, for example, we can easily rewrite our code then.
 
 ---
+
+[![Vulcan & two Lancasters formation ©2014 Alan Wilson](/assets/images/avro.jpg)](https://www.flickr.com/photos/ajw1970/14806884698)
+
+---
+
+## Looking Back
+
+We started with a Ruby data structure and idiom, the `Hash` class and its ability to customize the default value for missing keys. We implemented a version in JavaScript, and then following the suggestion of [implementing auto-vivification in Ruby hashes], we looked at a few ways to implement [auto-vivification], both on top of `Hash` and without it.
+
+Finally, we looked at some of the considerations before adopting these ideas:
+
+1. We should not abstract based on one or two applications, wait until we have three uses for an abstraction. That applies to `Hash` and `AutovivifyingHash`.
+2. It's slightly easier to adopt something like `Hash` is we can get it from a library.
+3. Our consideration around how the [rule of three] does not apply if we ourselves are writing a library: It's our job to guess that dozens or hundreds of downstream users will adopt our abstraction.
+4. Auto-vivification is not much of a win for immutable data, but may be useful if we are constantly adding data to tree-like structures.
+5. Premature optimization is the root of all evil, but it's not wrong to be aware of the performance of our implementation.
+
+----
 
 ## Notes
