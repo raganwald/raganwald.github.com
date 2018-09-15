@@ -478,7 +478,7 @@ That makes fairly obvious sense. Our architectural decisions around our applicat
 
 And there's another way in which libraries influence our choices. If we have something like the `Hash` class tucked away in a library, it's a lot easier to justify building on it. We have some idea that maintaining it is "free." Whereas, every line of code we write carries a cost of some kind.
 
-So if we have to write our own `Hash` class, fine, but we need good reasons to add the abstraction and maintenance cost to our code. But if we can get it "for free," then of course we still need to understand how it works, but it's easier to justify building on it.
+If we have to write our own `Hash` class, fine, but we need good reasons to add the abstraction and maintenance cost to our code. But if we can get it "for free," then of course we still need to understand how it works, but it's easier to justify building on it if we never have to worry about maintaining `Hash` itself.
 
 ### does auto-vivification make sense in javascript?
 
