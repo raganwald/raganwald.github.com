@@ -22,6 +22,10 @@ For a couple of reasons, auto-vivifying hashes are unlikely to become a standard
 
 ---
 
+![Bride of Frankenstein](/assets/images/bride-of-frankenstein.jpg)
+
+---
+
 ## One: How Do We Auto-Vivify Hashes?
 
 The Ruby programming language has the notion of a [Hash]. A `Hash` is a dictionary-like collection of unique keys and their values. Also called associative arrays, they are similar to Arrays, but where an Array uses integers as its index, a `Hash` allows you to use any object type.
@@ -402,6 +406,10 @@ ph.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
 ```
 
 Yowza, our code is not in Kansas any more.
+
+---
+
+[![Scottish Parliament ©2006 Martin Pettitt](/assets/images/scottish-parliament.jpg)](https://www.flickr.com/photos/mdpettitt/202698841)
 
 ---
 
