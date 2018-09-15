@@ -3,7 +3,7 @@ title: Auto-Vivifying Hashes in JavaScript (unfinished)
 tags: [recursion,allonge]
 ---
 
-*Note: This is an unfinished work. Feel free to read and/or share it, but please do not post it to discussion sites liek Hacker News or Reddit until this disclaimer has been removed. Thank you.*
+*Note: This is an unfinished work. Feel free to read and/or share it, but please do not post it to discussion sites like Hacker News or Reddit until this disclaimer has been removed. Thank you.*
 
 ---
 
