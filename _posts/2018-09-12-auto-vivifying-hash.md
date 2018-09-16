@@ -8,7 +8,7 @@ Recently ([here][Why Y? Deriving the Y Combinator in JavaScript], and [here][To 
 [Why Y? Deriving the Y Combinator in JavaScript]: http://raganwald.com/2018/09/10/why-y.html
 [To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
 
-[^z]: The formal [Y Combinator](https://en.wikipedia.org/wiki/Fixed-point_combinator) works in the Lambda Calculus and in Combinatory Logic. The translation of the Y Combinator from lazy to eager semantics (also called "strict" or "applicative" semantics) is formally called the "Z Combinator." It's the Y Combinator with an argument made explicit to prevent further expansion. As JavaScript is an eager language, the Why Bird implements the Z Combinator expansion and is adapted for variable numbers of parameters, to match JavaScript custom.
+[^z]: The formal [Y Combinator](https://en.wikipedia.org/wiki/Fixed-point_combinator) works in the Lambda Calculus and in Combinatory Logic. The translation of the Y Combinator from lazy to eager semantics (also called "strict" or "applicative" semantics) is formally called the "Z Combinator." It's the Y Combinator with an argument made explicit to prevent further expansion.<br/><br/>As JavaScript is an eager language, the Why Bird implements the Z Combinator expansion and is adapted for variable numbers of parameters, to match JavaScript custom.
 
 While important theoretically, the most practical application for recursive combinators "in the wild" is when we wish to decorate a recursive function, such as when memoizing it. Another interesting application, specific to Ruby programming, is [implementing autovivification in Ruby hashes].
 
@@ -28,7 +28,7 @@ The Ruby programming language has the notion of a [Hash]. A `Hash` is a dictiona
 
 [Hash]: https://ruby-doc.org/core-2.5.1/Hash.html
 
-[^namunamu]: Programming language libraries have an awful track record for naming things. A "Hash" is generally, of course, a way of implementing a "dictionary" or "associative array." But we generally use the word "Hash" to describe a dictionary, even if we don't particularly care how it's implemented.
+[^namunamu]: Programming language libraries have an awful track record for naming things. A "hash" is generally, of course, a way of implementing a "dictionary" or "associative array." But we generally use the word "Hash" to describe a dictionary, even if we don't particularly care how it's implemented.
 
 Ruby hash literals have several syntaxes, including:
 
@@ -552,7 +552,7 @@ hm.get(1).get(2).get(3)
 
 `HashMap` as given here delegates to an instance of `Map`, while allowing for a custom default value. The obvious advantage is that since it's based on `Map`, we can use arbitrary values as keys (including primitives and object references), not just strings. If you need that, you need `HashMap`, not `Map`, period.[^memoize]
 
-[^memoize]: For example, in this exact blog you can find A `memoize` function decorator. It uses an object-based dictionary to store a mapping from keys to result values. Quite obviously, a `Map`-based implementation would be more generally useful.
+[^memoize]: For example, in this exact blog you can find a `memoize` function decorator. It uses an object-based dictionary to store a mapping from keys to result values. Quite obviously, a `Map`-based implementation would be more generally useful.
 
 Its advantage from an architectural perspective is that there's no `Proxy` magic. We are not against metaprogramming of any kind, but sometimes in a code base we make the decision to prefer explicit to implicit. We can generally expect that if we call a `.get` method on a `HashMap` class, that it will decorate the basic functionality of `Map`. In JavaScript, we don't normally expect the behaviour of `[]` or `.foo` to be customized.
 
