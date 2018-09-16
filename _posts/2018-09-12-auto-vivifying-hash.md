@@ -1,5 +1,5 @@
 ---
-title: Auto-Vivifying Hashes in JavaScript
+title: Ruby-Style Hashes and Autovivification in JavaScript
 tags: [recursion,allonge]
 ---
 
