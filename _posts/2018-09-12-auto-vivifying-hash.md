@@ -622,12 +622,12 @@ We started with a Ruby data structure and idiom, the `Hash` class and its abilit
 
 Finally, we looked at some of the considerations before adopting these ideas:
 
-1. We should not abstract based on one or two applications, wait until we have three uses for an abstraction. That applies to `Hash` and `AutovivifyingHash`.
-2. It's slightly easier to adopt something like `Hash` is we can get it from a library.
-3. Our consideration around how the [rule of three] does not apply if we ourselves are writing a library: It's our job to guess that dozens or hundreds of downstream users will adopt our abstraction.
-4. If we need arbitrary objects as keys, or if we prefer a more pure OO approach, a `Map`-based approach may be preferred.
-5. Auto-vivification is not much of a win for immutable data, but may be useful if we are constantly adding data to tree-like structures.
-6. Premature optimization is the root of all evil, but it's not wrong to be aware of the performance of our implementation.
+* We should not abstract based on one or two applications, wait until we have three uses for an abstraction. That applies to `Hash` and `AutovivifyingHash`.
+* It's slightly easier to adopt something like `Hash` is we can get it from a library.
+* Our consideration around how the [rule of three] does not apply if we ourselves are writing a library: It's our job to guess that dozens or hundreds of downstream users will adopt our abstraction.
+* If we need arbitrary objects as keys, or if we prefer a more pure OO approach, a `Map`-based approach may be preferred.
+* Auto-vivification is not much of a win for immutable data, but may be useful if we are constantly adding data to tree-like structures.
+* Premature optimization is the root of all evil, but it's not wrong to be aware of the performance of our implementation.
 
 **ttfn!**
 
