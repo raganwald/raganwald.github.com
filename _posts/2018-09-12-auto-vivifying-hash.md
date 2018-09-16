@@ -319,7 +319,9 @@ We've been doing everything in an "OO" style so far, let's take things to their 
 ```javascript
 class AutovivifyingHash extends Hash {
   constructor () {
-    super((target, key) => target[key] = new AutovivifyingHash());
+    super(
+      (target, key) => target[key] = new AutovivifyingHash()
+    );
   }
 }
 
@@ -336,7 +338,10 @@ It works! We've introduced recursion by having our constructor use a reference t
 That being said, maybe we don't want a brand new class, maybe we want to use our `Hash`, but do something recursive with the function we use to generate default values. Something like:
 
 ```javascript
-const autovivifyingHash = () => new Hash(((target, key) => target[key] = autovivifyingHash()));
+const autovivifyingHash = () =>
+  new Hash(
+    (target, key) => target[key] = autovivifyingHash()
+  );
 
 const fh = autovivifyingHash();
 
