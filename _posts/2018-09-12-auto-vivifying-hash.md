@@ -311,13 +311,13 @@ But we can only type so much of that. How do we make it work for an arbitrary nu
 We've been doing everything in an "OO" style so far, let's take things to their natural OO conclusion:
 
 ```javascript
-class auto-vivifyingHash extends Hash {
+class AutoVivifyingHash extends Hash {
   constructor () {
-    super((target, key) => target[key] = new auto-vivifyingHash());
+    super((target, key) => target[key] = new AutoVivifyingHash());
   }
 }
 
-const avh = new auto-vivifyingHash();
+const avh = new AutoVivifyingHash();
 
 avh.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
 
@@ -330,9 +330,9 @@ It works! We've introduced recursion by having our constructor use a reference t
 That being said, maybe we don't want a brand new class, maybe we want to use our `Hash`, but do something recursive with the function we use to generate default values. Something like:
 
 ```javascript
-const auto-vivifyingHash = () => new Hash(((target, key) => target[key] = auto-vivifyingHash()));
+const autoVivifyingHash = () => new Hash(((target, key) => target[key] = autoVivifyingHash()));
 
-const fh = auto-vivifyingHash();
+const fh = autoVivifyingHash();
 
 fh.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
 
@@ -376,14 +376,14 @@ Of course, in Ruby the `Hash` class comes baked in, so there's a good incentive 
 If we pare things down to their essentials, we can drop the entire `Hash` class and just use a function. Here it is calling itself by name:
 
 ```javascript
-const auto-vivifying = () => new Proxy({}, {
+const autoVivifying = () => new Proxy({}, {
   get: (target, key) =>
     Reflect.has(target, key)
       ? Reflect.get(target, key)
-      : target[key] = auto-vivifying()
+      : target[key] = autoVivifying()
 });
 
-const ah = auto-vivifying();
+const ah = autoVivifying();
 
 ah.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 'alpha beta';
 
@@ -456,9 +456,9 @@ class Hash {
 And we still need to put auto-vivification on top of this:
 
 ```javascript
-class auto-vivifyingHash extends Hash {
+class AutoVivifyingHash extends Hash {
   constructor () {
-    super((target, key) => target[key] = new auto-vivifyingHash());
+    super((target, key) => target[key] = new AutoVivifyingHash());
   }
 }
 ```
@@ -466,11 +466,11 @@ class auto-vivifyingHash extends Hash {
 This seems like overkill if all we want is auto-vivification. If that's all we need, better to write the simplest thing that could possibly work:
 
 ```javascript
-const auto-vivifying = () => new Proxy({}, {
+const autoVivifying = () => new Proxy({}, {
   get: (target, key) =>
     Reflect.has(target, key)
       ? Reflect.get(target, key)
-      : target[key] = auto-vivifying()
+      : target[key] = autoVivifying()
 });
 ```
 
@@ -482,7 +482,7 @@ When might it be sensible to write `Hash`? Well, in programming there is a [rule
 
 [rule of three]: https://en.wikipedia.org/wiki/Rule_of_three_(computer_programming)
 
-Why wait for the third use? And why do we even count the first use? Well, there is a cost to de-duplication, often in the form of generalization and/or abstraction. Take the `Hash` class. If we write the entire class but only use it to make the `auto-vivivifyingHash` class, we are incurring the costs of de-duplication before we've even used it twice.
+Why wait for the third use? And why do we even count the first use? Well, there is a cost to de-duplication, often in the form of generalization and/or abstraction. Take the `Hash` class. If we write the entire class but only use it to make the `AutoVivivifyingHash` class, we are incurring the costs of de-duplication before we've even used it twice.
 
 In essence, we're deciding that at some point we will use `Hash` again, and at that time we can benefit from a single class multiple pieces of code can share, but we'd like to pay that cost **now**. This is called _Premature Abstraction_.
 
@@ -508,12 +508,12 @@ If we have to write our own `Hash` class, fine, but we need good reasons to add 
 
 Now here's another question. `Hash` is part of Ruby's standard idioms, so an auto-vivifying hash isn't a big leap away from how Ruby already works. There is precedent for a hash to have default values, even dynamically generated default values.
 
-But JavaScript doesn't have anything like Ruby's `Hash` to begin with. So whether we're building a brand new `hash` class, or using the lightweight, idiomatic approach, we're taking *two* steps forward with auto-vivifying hashes, we're promoting the idea of a dictionary generating default values, and also promoting the idea that the entire process is recursive. Well, maybe one-and-a-half steps forward, a sequileap outside of the comfort zone.
+But JavaScript doesn't have anything like Ruby's `Hash` to begin with. So whether we're building a brand new `Hash` class, or using the lightweight, idiomatic approach, we're taking *two* steps forward with auto-vivifying hashes, we're promoting the idea of a dictionary generating default values, and also promoting the idea that the entire process is recursive. Well, maybe one-and-a-half steps forward, a sesqui-leap outside of the comfort zone.
 
 What do we get in return? We get to write:
 
 ```javascript
-const h = auto-vivifying();
+const h = autoVivifying();
 
 h.a.b.c = "Poirot's Famous Case";
 ```
@@ -524,7 +524,7 @@ And we do so to avoid writing:
 const h = { a: { b: { c: "Poirot's Famous Case" } } };
 ```
 
-It's not ginormously more compact, but there is some value in the auto-vivifying syntax if conceptually we are trying to think of a path to some data in a tree. And in all fairness, if we only look at initializing data (which is the normal case for working ina strongly functional style), we ignore the benefits of auto-vivification in a more imperative style.
+It's not gi-normously more compact, but there is some value in the auto-vivifying syntax if conceptually we are trying to think of a path to some data in a tree. And in all fairness, if we only look at initializing data (which is the normal case for working ina strongly functional style), we ignore the benefits of auto-vivification in a more imperative style.
 
 if we are given an existing auto-vivifying hash, we can easily add anything we want, anywhere in its tree, with `h.a.b.c = "Poirot's Famous Case";`. But we cannot write `h = { a: { b: { c: "Poirot's Famous Case" } } };` for an existing data structure, because we might overwrite existing hashes.
 
@@ -554,7 +554,7 @@ We started with a Ruby data structure and idiom, the `Hash` class and its abilit
 
 Finally, we looked at some of the considerations before adopting these ideas:
 
-1. We should not abstract based on one or two applications, wait until we have three uses for an abstraction. That applies to `Hash` and `AutovivifyingHash`.
+1. We should not abstract based on one or two applications, wait until we have three uses for an abstraction. That applies to `Hash` and `AutoVivifyingHash`.
 2. It's slightly easier to adopt something like `Hash` is we can get it from a library.
 3. Our consideration around how the [rule of three] does not apply if we ourselves are writing a library: It's our job to guess that dozens or hundreds of downstream users will adopt our abstraction.
 4. Auto-vivification is not much of a win for immutable data, but may be useful if we are constantly adding data to tree-like structures.
