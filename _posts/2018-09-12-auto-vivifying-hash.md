@@ -484,9 +484,25 @@ It may come down to whether a particular code base leans towards OO or lightweig
 
 ---
 
+### the rule of three
+
+When might it be sensible to write `Hash`? Well, in programming there is a [rule of three]. It is usually applied to removing duplication: When you first write something, you obviously don't worry about duplication. If you rite it a second time, make a note of the duplication, but don't rush to refactor things. Only when you need to write it for the third time do you refactor everything to eliminate duplication.
+
+[rule of three]: https://en.wikipedia.org/wiki/Rule_of_three_(computer_programming)
+
+Why wait for the third use? And why do we even count the first use? Well, there is a cost to de-duplication, often in the form of generalization and/or abstraction. Take the `Hash` class. If we write the entire class but only use it to make the `AutovivivifyingHash` class, we are incurring the costs of de-duplication before we've even used it twice.
+
+In essence, we're deciding that at some point we will use `Hash` again, and at that time we can benefit from a single class multiple pieces of code can share, but we'd like to pay that cost **now**. This is called _Premature Abstraction_.
+
+Of ourse, it could be that we spot multiple uses for the `Hash` class. In that case, there is a benefit to bundling it up on its own. And the rule of three helps us with this decision. If there are two other pieces of code that would benefit from being written with (or refactored to use) `Hash`, just the way it is, then having a separate `Hash` class is a win.
+
+If not, we shouldn't bother. If and when we have another use for it, we can refactor. This isn't the kind of decision where we fear that if we fail to make the perfect choice today, we'll be stuck with our mistake forever.
+
+---
+
 ### should we be even more oo?
 
-And as long as we are not being fanatic about functions being superior to classes, we might want to consider whether a `Hash` based on `Map` is superior to one based on `Object`. Consider:
+And as long as we are not being fanatic about functions being superior to classes, we might want to also consider whether a `Hash` based on `Map` is superior to one based on `Object`. Consider:
 
 ```javascript
 const DEFAULT_KEY = Symbol("default-key");
@@ -526,33 +542,21 @@ class AutovivifyingHashMap extends HashMap {
     super((target, key) => target.set(key, new AutovivifyingHashMap()));
   }
 }
+
+const hm = new AutovivifyingHashMap();
+hm.get(1).get(2).set(3, 123);
+
+hm.get(1).get(2).get(3)
+  //=> 123;
 ```
 
-`HashMap` as given here delegates to an instance of `Map`, while allowing for a custom default value.
-
-The obvious advantage is that since it's based on `Map`, we can use arbitrary values as keys (including primitives and object references), not just strings. If you need that, you need `HashMap`, not `Map`, period.[^memoize]
+`HashMap` as given here delegates to an instance of `Map`, while allowing for a custom default value. The obvious advantage is that since it's based on `Map`, we can use arbitrary values as keys (including primitives and object references), not just strings. If you need that, you need `HashMap`, not `Map`, period.[^memoize]
 
 [^memoize]: For example, in this exact blog you can find A `memoize` function decorator. It uses an object-based dictionary to store a mapping from keys to result values. Quite obviously, a `Map`-based implementation would be more generally useful.
 
 Its advantage from an architectural perspective is that there's no `Proxy` magic. We are not against metaprogramming of any kind, but sometimes in a code base we make the decision to prefer explicit to implicit. We can generally expect that if we call a `.get` method on a `HashMap` class, that it will decorate the basic functionality of `Map`. In JavaScript, we don't normally expect the behaviour of `[]` or `.foo` to be customized.
 
-The idea of overriding methods is canon in OOP, so overriding `.get` to autovivify another dictionary is colouring well within the lines. A certain type of OO purist would prefer this approach. If the remainder of the code base leans towards this philosophy, a pragmatist may prefer the `HashMap` approach over `Hash`.
-
----
-
-### the rule of three
-
-When might it be sensible to write `Hash`? Well, in programming there is a [rule of three]. It is usually applied to removing duplication: When you first write something, you obviously don't worry about duplication. If you rite it a second time, make a note of the duplication, but don't rush to refactor things. Only when you need to write it for the third time do you refactor everything to eliminate duplication.
-
-[rule of three]: https://en.wikipedia.org/wiki/Rule_of_three_(computer_programming)
-
-Why wait for the third use? And why do we even count the first use? Well, there is a cost to de-duplication, often in the form of generalization and/or abstraction. Take the `Hash` class. If we write the entire class but only use it to make the `AutovivivifyingHash` class, we are incurring the costs of de-duplication before we've even used it twice.
-
-In essence, we're deciding that at some point we will use `Hash` again, and at that time we can benefit from a single class multiple pieces of code can share, but we'd like to pay that cost **now**. This is called _Premature Abstraction_.
-
-Of ourse, it could be that we spot multiple uses for the `Hash` class. In that case, there is a benefit to bundling it up on its own. And the rule of three helps us with this decision. If there are two other pieces of code that would benefit from being written with (or refactored to use) `Hash`, just the way it is, then having a separate `Hash` class is a win.
-
-If not, we shouldn't bother. If and when we have another use for it, we can refactor. This isn't the kind of decision where we fear that if we fail to make the perfect choice today, we'll be stuck with our mistake forever.
+The idea of overriding methods is canon in OOP, so overriding `.get` to autovivify another dictionary is colouring well within the lines. A certain type of OO purist would prefer this approach, even if it means giving up the `[]` and `[]=` syntax. If the remainder of the code base leans towards this philosophy, `HashMap` may be superior to `Hash`.
 
 ---
 
@@ -564,7 +568,7 @@ That makes fairly obvious sense. Our architectural decisions around our applicat
 
 And there's another way in which libraries influence our choices. If we have something like the `Hash` class tucked away in a library, it's a lot easier to justify building on it. We have some idea that maintaining it is "free." Whereas, every line of code we write carries a cost of some kind.
 
-If we have to write our own `Hash` class, fine, but we need good reasons to add the abstraction and maintenance cost to our code. But if we can get it "for free," then of course we still need to understand how it works, but it's easier to justify building on it if we never have to worry about maintaining `Hash` itself.
+If we have to write our own `Hash` or `HashMap` class, fine, but we need good reasons to add the abstraction and maintenance cost to our code. But if we can get it "for free," then of course we still need to understand how it works, but it's easier to justify building on it if we never have to worry about maintaining `Hash` or `HashMap` itself.
 
 ---
 
@@ -572,7 +576,7 @@ If we have to write our own `Hash` class, fine, but we need good reasons to add 
 
 Now here's another question. `Hash` is part of Ruby's standard idioms, so an autovivifying hash isn't a big leap away from how Ruby already works. There is precedent for a hash to have default values, even dynamically generated default values.
 
-But JavaScript doesn't have anything like Ruby's `Hash` to begin with. So whether we're building a brand new `Hash` class, or using the lightweight, idiomatic approach, we're taking *two* steps forward with autovivifying hashes, we're promoting the idea of a dictionary generating default values, and also promoting the idea that the entire process is recursive. Well, maybe one-and-a-half steps forward, a sesqui-leap outside of the comfort zone.
+But JavaScript doesn't have anything like Ruby's `Hash` to begin with. So whether we're building a brand new `Hash`/`HashMap` class, or using the lightweight, idiomatic approach, we're taking *two* steps forward with autovivifying hashes, we're promoting the idea of a dictionary generating default values, and also promoting the idea that the entire process is recursive. Well, maybe one-and-a-half steps forward, a sesqui-leap outside of the comfort zone.
 
 What do we get in return? We get to write:
 
@@ -621,8 +625,11 @@ Finally, we looked at some of the considerations before adopting these ideas:
 1. We should not abstract based on one or two applications, wait until we have three uses for an abstraction. That applies to `Hash` and `AutovivifyingHash`.
 2. It's slightly easier to adopt something like `Hash` is we can get it from a library.
 3. Our consideration around how the [rule of three] does not apply if we ourselves are writing a library: It's our job to guess that dozens or hundreds of downstream users will adopt our abstraction.
-4. Auto-vivification is not much of a win for immutable data, but may be useful if we are constantly adding data to tree-like structures.
-5. Premature optimization is the root of all evil, but it's not wrong to be aware of the performance of our implementation.
+4. If we need arbitrary objects as keys, or if we prefer a more pure OO approach, a `Map`-based approach may be preferred.
+5. Auto-vivification is not much of a win for immutable data, but may be useful if we are constantly adding data to tree-like structures.
+6. Premature optimization is the root of all evil, but it's not wrong to be aware of the performance of our implementation.
+
+**ttfn!**
 
 ----
 
