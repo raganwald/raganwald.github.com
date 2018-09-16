@@ -40,6 +40,9 @@ body {
 ol, ul {
 	list-style: none;
 }
+ol.a, ul.a {
+  list-style-position: outside;
+}
 blockquote, q {
 	quotes: none;
 	color: #6d6d6d;
