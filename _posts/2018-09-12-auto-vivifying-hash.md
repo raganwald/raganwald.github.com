@@ -480,6 +480,64 @@ const autovivifying = () => new Proxy({}, {
 });
 ```
 
+It may come down to whether a particular code base leans towards OO or lightweight FP. Both are fine approaches (as are mixed-paradigm approaches), so it could be that regardless of the number of lines of code, the approach that resembles the rest of the code base is most correct.
+
+---
+
+### should we be even more oo?
+
+And as long as we are not being fanatic about functions being superior to classes, we might want to consider whether a `Hash` based on `Map` is superior to one based on `Object`. Consider:
+
+```javascript
+const DEFAULT_KEY = Symbol("default-key");
+const MAP = Symbol("map");
+
+class HashMap {
+  constructor (defaultValue = undefined) {
+    this[MAP] = new Map();
+    this[DEFAULT_KEY] = defaultValue;
+  }
+
+  has(key) {
+    return this[MAP].has(key);
+  }
+
+  get (key) {
+    if (this[MAP].has(key)) {
+      return this[MAP].get(key);
+    } else {
+      const defaultValue = this[DEFAULT_KEY];
+
+      if (defaultValue instanceof Function) {
+        return defaultValue(this, key);
+      } else {
+        return defaultValue;
+      }
+    }
+  }
+
+  set (key, value) {
+    return this[MAP].set(key, value);
+  }
+}
+
+class AutovivifyingHashMap extends HashMap {
+  constructor () {
+    super((target, key) => target.set(key, new AutovivifyingHashMap()));
+  }
+}
+```
+
+`HashMap` as given here delegates to an instance of `Map`, while allowing for a custom default value.
+
+The obvious advantage is that since it's based on `Map`, we can use arbitrary values as keys (including primitives and object references), not just strings. If you need that, you need `HashMap`, not `Map`, period.[^memoize]
+
+[^memoize]: For example, in this exact blog you can find A `memoize` function decorator. It uses an object-based dictionary to store a mapping from keys to result values. Quite obviously, a `Map`-based implementation would be more generally useful.
+
+Its advantage from an architectural perspective is that there's no `Proxy` magic. We are not against metaprogramming of any kind, but sometimes in a code base we make the decision to prefer explicit to implicit. We can generally expect that if we call a `.get` method on a `HashMap` class, that it will decorate the basic functionality of `Map`. In JavaScript, we don't normally expect the behaviour of `[]` or `.foo` to be customized.
+
+The idea of overriding methods is canon in OOP, so overriding `.get` to autovivify another dictionary is colouring well within the lines. A certain type of OO purist would prefer this approach. If the remainder of the code base leans towards this philosophy, a pragmatist may prefer the `HashMap` approach over `Hash`.
+
 ---
 
 ### the rule of three
