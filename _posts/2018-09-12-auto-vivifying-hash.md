@@ -80,7 +80,7 @@ JavaScript objects do not have any notion of a default value that we can set. It
 
 Given that JavaScript already has `Object` and `Map`, the only motivation to snarf any of `Hash`'s behaviour is going to be the ability to set our own default values. This is rather handy in Ruby, and it might be handy in JavaScrip too. So let's come up with a toy implementation we can play with.
 
-The first thing we have to decide is whether we'll base our implementation on `Object` or `Map`. For the purposes of this essay, `Object` has the nicer syntax, and using objects as dictionaries is the usual case in JavaScript. And a `Map` implementation will be trivial once the basic pattern is articulated.
+The first thing we have to decide is whether we'll base our implementation on `Object` or `Map`. For the purposes of this essay, `Object` has the nicer syntax, and using objects as dictionaries is the usual case in JavaScript. And a `Map` implementation will be trivial once the basic pattern is articulated. (The `HashMap` implementation based on delegating to a `Map`, is <a href="#HashMap">below</a>.)
 
 When we create an instance of `Hash`, we'll wrap it in a `Proxy`[^proxy] to handle access.
 
@@ -507,7 +507,7 @@ If not, we shouldn't bother. If and when we have another use for it, we can refa
 
 ### should we be even more oo?
 
-And as long as we are not being fanatic about functions being superior to classes, we might want to also consider whether a `Hash` based on `Map` is superior to one based on `Object`. Consider:
+<a NAME="HashMap"/>And as long as we are not being fanatic about functions being superior to classes, we might want to also consider whether a `Hash` based on `Map` is superior to one based on `Object`. Consider:
 
 ```javascript
 const DEFAULT_KEY = Symbol("default-key");
