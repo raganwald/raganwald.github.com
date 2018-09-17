@@ -3,18 +3,13 @@ title: Ruby-Style Hashes and Autovivification in JavaScript
 tags: [recursion,allonge]
 ---
 
-Recently ([here][Why Y? Deriving the Y Combinator in JavaScript], and [here][To Grok a Mockingbird]), we derived the Why Bird, a recursive combinator that decouples a recursive function from itself. The Why Bird is an idiomatic JavaScript implementation of the Y Combinator.[^z]
+The Ruby programming language has the notion of a [Hash]. A `Hash` is a dictionary-like collection of unique keys and their values. Ruby hashes have most of the semantics of an ES6 `Map`, but also have the syntactic conveniences of Plain-Old-JavaScript-Objects ("POJOs").
 
-[Why Y? Deriving the Y Combinator in JavaScript]: http://raganwald.com/2018/09/10/why-y.html
-[To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+[Hash]: https://ruby-doc.org/core-2.5.1/Hash.html
 
-[^z]: The formal [Y Combinator](https://en.wikipedia.org/wiki/Fixed-point_combinator) works in the Lambda Calculus and in Combinatory Logic. The translation of the Y Combinator from lazy to eager semantics (also called "strict" or "applicative" semantics) is formally called the "Z Combinator." It's the Y Combinator with an argument made explicit to prevent further expansion.<br/><br/>As JavaScript is an eager language, the Why Bird implements the Z Combinator expansion and is adapted for variable numbers of parameters, to match JavaScript custom.
+Interestingly, Ruby hashes also have the notion of programmatically determine a default value to be returned when accessing keys that have not been set. In JavaScript, the default value is always `undefined`. In this essay we will look at rolling our own `Hash` class with Ruby-like semantics, and then we'll examine one of the most interesting things that can be built on top of a `Hash`: [Autovivification][autovivification].
 
-While important theoretically, the most practical application for recursive combinators "in the wild" is when we wish to decorate a recursive function, such as when memoizing it. Another interesting application, specific to Ruby programming, is [implementing autovivification in Ruby hashes].
-
-[implementing autovivification in Ruby hashes]: https://www.sbf5.com/~cduan/technical/ruby/ycombinator.shtml
-
-In this essay we'll look at Ruby hashes, which are interesting in their own right. We'll examine autovivification and see how to implement autovivification both on top of a Ruby-style hash as well as using more idiomatic JavaScript functions. And then we'll wrap up with a discussion of general architectural caveats when considering the use of a new paradigm like Ruby-style hashes or autovivification.
+We'll go into a more thorough explanation below, but autovivifying hashes can be summed up as "Hashes that are recursively hashes, all the way down." If that doesn't whet our curiosities, nothing will.
 
 ---
 
@@ -24,9 +19,7 @@ In this essay we'll look at Ruby hashes, which are interesting in their own righ
 
 ## Ruby Hashes
 
-The Ruby programming language has the notion of a [Hash]. A `Hash` is a dictionary-like collection of unique keys and their values. Also called associative arrays, they are similar to Arrays, but where an Array uses integers as its index, a `Hash` allows you to use any object type.[^namunamu]
-
-[Hash]: https://ruby-doc.org/core-2.5.1/Hash.html
+As noted, the Ruby programming language has the notion of a [Hash]. A `Hash` is a dictionary-like collection of unique keys and their values.[^namunamu]
 
 [^namunamu]: Programming language libraries have an awful track record for naming things. A "hash" is generally, of course, a way of implementing a "dictionary" or "associative array." But we generally use the word "Hash" to describe a dictionary, even if we don't particularly care how it's implemented.
 
@@ -208,6 +201,7 @@ As noted, we can make a `Map`-like Hash with even less hackery, we don't need a 
 The Perl language also has hashes, and they have an interesting feature called [autovivification]. As explained in [implementing autovivification in Ruby hashes]:
 
 [autovivification]: https://en.m.wikipedia.org/wiki/autovivification
+[implementing autovivification in Ruby hashes]: https://www.sbf5.com/~cduan/technical/ruby/ycombinator.shtml
 
 > In Perl, the following line will successfully run:
 >
@@ -555,13 +549,17 @@ hm.get(1).get(2).get(3)
   //=> 123;
 ```
 
-`HashMap` as given here delegates to an instance of `Map`, while allowing for a custom default value. The obvious advantage is that since it's based on `Map`, we can use arbitrary values as keys (including primitives and object references), not just strings. If you need that, you need `HashMap`, not `Map`, period.[^memoize]
+`HashMap` as given here delegates to an instance of `Map`, while allowing for a custom default value. The obvious advantage is that since it's based on `Map`, we can use arbitrary values as keys (including primitives and object references), not just strings. If you need that, you need `HashMap`, not `Map`, period.[^memoize][^delegate]
 
 [^memoize]: For example, in this exact blog you can find a `memoize` function decorator. It uses an object-based dictionary to store a mapping from keys to result values. Quite obviously, a `Map`-based implementation would be more generally useful.
+
+[^delegate]: In general, we prefer delegation/composition to extension (aka "inheritance"). This is discussed at length in [Mixins, Forwarding, and Delegation in JavaScript](http://raganwald.com/2014/04/10/mixins-forwarding-delegation.html). But it should be noted that with respect to the built-in `Map` class, JavaScript's OO is broken: At this time, it is not possible to `extend Map`. So you have to use composition to make a thing that is-a or was-a `Map`.
 
 Its advantage from an architectural perspective is that there's no `Proxy` magic. We are not against metaprogramming of any kind, but sometimes in a code base we make the decision to prefer explicit to implicit. We can generally expect that if we call a `.get` method on a `HashMap` class, that it will decorate the basic functionality of `Map`. In JavaScript, we don't normally expect the behaviour of `[]` or `.foo` to be customized.
 
 The idea of overriding methods is canon in OOP, so overriding `.get` to autovivify another dictionary is colouring well within the lines. A certain type of OO purist would prefer this approach, even if it means giving up the `[]` and `[]=` syntax. If the remainder of the code base leans towards this philosophy, `HashMap` may be superior to `Hash`.
+
+On the other hand, if the code base leans heavily on using POJOs as dictionaries, and using `[]` and `[]=` to access them, `Hash` may be the better choice.
 
 ---
 
