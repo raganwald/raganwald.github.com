@@ -45,7 +45,7 @@ grades["jane doe"]
 options[:font_family]
   #=> "Arial"
 ```
-That's more like a JavaScript object. With a JavaScript `Map`, we have to use `.at` to access values by key.
+That's more like a JavaScript object. With a JavaScript `Map`, we have to use `.get` and `.set`, instead of `[]` and `[]=`.
 
 Ruby hashes have a default value that is returned when accessing keys that do not exist in the hash. If no default is set, `nil` is used. That is like JavaScript objects, which return `undefined` when we access a key that was not set. But in Ruby, you can set a different default value by sending it as an argument to `#new`:
 
