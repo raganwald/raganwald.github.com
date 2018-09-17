@@ -1,5 +1,5 @@
 ---
-title: Ruby-Style Hashes and Autovivification in JavaScript
+title: "Ruby's Hashes and Perl's Autovivification, in JavaScript"
 tags: [recursion,allonge]
 ---
 
