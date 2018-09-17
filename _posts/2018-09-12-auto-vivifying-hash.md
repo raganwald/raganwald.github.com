@@ -200,10 +200,10 @@ As noted, we can make a `Map`-like Hash with even less hackery, we don't need a 
 
 ## Autovivifying Hashes
 
-The Perl language also has hashes, and they have an interesting feature called [autovivification]. As explained in [implementing autovivification in Ruby hashes]:
+The Perl language also has hashes, and they have an interesting feature called [autovivification]. As explained in [Implementing autovivification in Ruby hashes]:
 
 [autovivification]: https://en.m.wikipedia.org/wiki/autovivification
-[implementing autovivification in Ruby hashes]: https://www.sbf5.com/~cduan/technical/ruby/ycombinator.shtml
+[Implementing autovivification in Ruby hashes]: https://www.sbf5.com/~cduan/technical/ruby/ycombinator.shtml
 
 > In Perl, the following line will successfully run:
 >
@@ -230,7 +230,7 @@ And having the interpreter execute it as if we had written:
 const h = { a: { b: { c: 1 } } };
 ```
 
-Can we do this? Almost. We can't autovivify a new variable as a hash, but given a hash, we can autovivify its values. Certainly. And we can tear a page out of Ruby's book, as inspired by [implementing autovivification in Ruby hashes].
+Can we do this? Almost. We can't autovivify a new variable as a hash, but given a hash, we can autovivify its values. Certainly. And we can tear a page out of Ruby's book, as inspired by [Implementing autovivification in Ruby hashes].
 
 ---
 
@@ -374,7 +374,7 @@ yh.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z
   //=> "alpha beta"
 ```
 
-This style allows us to make autovivifying hashes wherever we like, without having to set up a new class and a new module. This is exactly the approach explained in [implementing autovivification in Ruby hashes].
+This style allows us to make autovivifying hashes wherever we like, without having to set up a new class and a new module. This is exactly the approach explained in [Implementing autovivification in Ruby hashes].
 
 Of course, in Ruby the `Hash` class comes baked in, so there's a good incentive to build upon a standard and very common data structure. In JavaScript, we have to build our own. If we're not that interested in classical OO, maybe we can back up and strip things down to their essentials?
 
@@ -623,7 +623,7 @@ Until then, we prioritize ease of writing and maintaining code. And since we hav
 
 ## Looking Back
 
-We started with a Ruby data structure and idiom, the `Hash` class and its ability to customize the default value for missing keys. We implemented a version in JavaScript, and then following the suggestion of [implementing autovivification in Ruby hashes], we looked at a few ways to implement [autovivification], both on top of `Hash` and without it.
+We started with a Ruby data structure and idiom, the `Hash` class and its ability to customize the default value for missing keys. We implemented a version in JavaScript, and then following the suggestion of [Implementing autovivification in Ruby hashes], we looked at a few ways to implement [autovivification], both on top of `Hash` and without it.
 
 Finally, we looked at some of the considerations before adopting these ideas:
 
