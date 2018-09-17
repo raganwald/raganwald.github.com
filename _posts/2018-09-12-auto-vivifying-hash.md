@@ -636,7 +636,7 @@ Finally, we looked at some of the considerations before adopting these ideas:
 
 **ttfn!**
 
-(discuss on [Hacker News](https://news.ycombinator.com/item?id=18005008))
+(discuss on [/r/javascript](https://www.reddit.com/r/javascript/comments/9gld36/rubystyle_hashes_and_autovivification_in/) and [Hacker News](https://news.ycombinator.com/item?id=18005008))
 
 ----
 
