@@ -555,7 +555,7 @@ hm.get(1).get(2).get(3)
 
 [^memoize]: For example, in this exact blog you can find a `memoize` function decorator. It uses an object-based dictionary to store a mapping from keys to result values. Quite obviously, a `Map`-based implementation would be more generally useful.
 
-[^delegate]: In general, we prefer delegation/composition to extension (aka "inheritance"). This is discussed at length in [Mixins, Forwarding, and Delegation in JavaScript](http://raganwald.com/2014/04/10/mixins-forwarding-delegation.html). But it should be noted that with respect to the built-in `Map` class, JavaScript's OO is broken: At this time, it is not possible to `extend Map`. So you have to use composition to make a thing that is-a or was-a `Map`.
+[^delegate]: In general, we prefer delegation/composition to extension (aka "inheritance"). This is discussed at length in [Mixins, Forwarding, and Delegation in JavaScript](http://raganwald.com/2014/04/10/mixins-forwarding-delegation.html). But it should be noted that with respect to the built-in `Map` class, we should be careful. Extending `Map` generally works in environments that provide a native `Map` class, but can break when transpiling ES6 to ES5 for compatibility.
 
 Its advantage from an architectural perspective is that there's no `Proxy` magic. We are not against metaprogramming of any kind, but sometimes in a code base we make the decision to prefer explicit to implicit. We can generally expect that if we call a `.get` method on a `HashMap` class, that it will decorate the basic functionality of `Map`. In JavaScript, we don't normally expect the behaviour of `[]` or `.foo` to be customized.
 
