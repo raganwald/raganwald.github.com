@@ -7,9 +7,11 @@ The Ruby programming language has the notion of a [Hash]. A `Hash` is a dictiona
 
 [Hash]: https://ruby-doc.org/core-2.5.1/Hash.html
 
-Interestingly, Ruby hashes also have the notion of programmatically determine a default value to be returned when accessing keys that have not been set. In JavaScript, the default value is always `undefined`. In this essay we will look at rolling our own `Hash` class with Ruby-like semantics, and then we'll examine one of the most interesting things that can be built on top of a `Hash`: [Autovivification][autovivification].
+Interestingly, Ruby hashes also have the notion of programmatically determine a default value to be returned when accessing keys that have not been set. In JavaScript, the default value is always `undefined`.
 
-We'll go into a more thorough explanation below, but autovivifying hashes can be summed up as "Hashes that are recursively hashes, all the way down." If that doesn't whet our curiosities, nothing will.
+In this essay we will look at rolling our own `Hash` class with Ruby-like semantics, and then we'll examine one of the most interesting things that can be built on top of a `Hash`: [Autovivification][autovivification]. We'll go into a more thorough explanation below, but autovivifying hashes can be summed up as, *Hashes that are recursively hashes, all the way down*.
+
+If that doesn't whet our curiosity, nothing will!
 
 ---
 
