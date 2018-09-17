@@ -634,6 +634,8 @@ Finally, we looked at some of the considerations before adopting these ideas:
 
 **ttfn!**
 
+(discuss on [Hacker News](https://news.ycombinator.com/item?id=18005008))
+
 ----
 
 ## Notes
