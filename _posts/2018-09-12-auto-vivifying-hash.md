@@ -167,17 +167,16 @@ Our third use case involves checking whether the defaultValue is an ordinary val
 class Hash {
   constructor (defaultValue = undefined) {
     return new Proxy(this, {
-      get (target, key) {
-        if (defaultValue instanceof Function) {
-          return Reflect.has(target, key)
-            ? Reflect.get(target, key)
-            : defaultValue(target, key);
-        } else {
-          return Reflect.has(target, key)
-            ? Reflect.get(target, key)
-            : defaultValue;
-        }
-      }
+      get:
+        (defaultValue instanceof Function)
+          ? ((target, key) =>
+              Reflect.has(target, key)
+                ? Reflect.get(target, key)
+                : defaultValue(target, key))
+          : ((target, key) =>
+              Reflect.has(target, key)
+                ? Reflect.get(target, key)
+                : defaultValue)
     });
   }
 }
@@ -444,17 +443,16 @@ We began by writing a `Hash` class to imitate what Ruby provides "out-of-the-box
 class Hash {
   constructor (defaultValue = undefined) {
     return new Proxy(this, {
-      get (target, key) {
-        if (defaultValue instanceof Function) {
-          return Reflect.has(target, key)
-            ? Reflect.get(target, key)
-            : defaultValue(target, key);
-        } else {
-          return Reflect.has(target, key)
-            ? Reflect.get(target, key)
-            : defaultValue;
-        }
-      }
+      get:
+        (defaultValue instanceof Function)
+          ? ((target, key) =>
+              Reflect.has(target, key)
+                ? Reflect.get(target, key)
+                : defaultValue(target, key))
+          : ((target, key) =>
+              Reflect.has(target, key)
+                ? Reflect.get(target, key)
+                : defaultValue)
     });
   }
 }
