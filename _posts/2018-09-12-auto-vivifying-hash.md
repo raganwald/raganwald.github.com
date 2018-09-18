@@ -143,11 +143,10 @@ Use case two allows us to pass a non-function value as a default. We'll make a c
 class Hash {
   constructor (defaultValue = undefined) {
     return new Proxy(this, {
-      get (target, key) {
-            return Reflect.has(target, key)
-                 ? Reflect.get(target, key)
-                 : defaultValue;
-          }
+      get: (target, key) =>
+        Reflect.has(target, key)
+          ? Reflect.get(target, key)
+          : defaultValue
     });
   }
 }
@@ -169,16 +168,15 @@ Our third use case involves checking whether the defaultValue is an ordinary val
 class Hash {
   constructor (defaultValue = undefined) {
     return new Proxy(this, {
-      get:
-        (defaultValue instanceof Function)
-          ? ((target, key) =>
-              Reflect.has(target, key)
-                ? Reflect.get(target, key)
-                : defaultValue(target, key))
-          : ((target, key) =>
-              Reflect.has(target, key)
-                ? Reflect.get(target, key)
-                : defaultValue)
+      get: (defaultValue instanceof Function)
+        ? ((target, key) =>
+            Reflect.has(target, key)
+              ? Reflect.get(target, key)
+              : defaultValue(target, key))
+        : ((target, key) =>
+            Reflect.has(target, key)
+              ? Reflect.get(target, key)
+              : defaultValue)
     });
   }
 }
