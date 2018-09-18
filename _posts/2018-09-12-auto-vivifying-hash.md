@@ -137,7 +137,7 @@ ages["Dorothy Doe"]
   //=> 23
 ```
 
-Use case two allows us to pass a non-function value as a default. We'll make a constructor function, and incorporate a `Proxy`. Note that JavaScript allows us to return something other than the object created from a constructor. That is ripe for abuse, but returning decorated instances form a constructor is perfectly cromulant.
+Use case two allows us to pass a non-function value as a default. We'll make a constructor function, and incorporate a `Proxy`. Note that JavaScript allows us to return something other than the object created from a constructor. That is ripe for abuse, but returning decorated instances from a constructor is perfectly cromulant.
 
 ```javascript
 class Hash {
@@ -160,7 +160,11 @@ grades["Dorothy Doe"]
   //=> 9
 ```
 
-Our third use case involves checking whether the defaultValue is an ordinary value or a function. We could check every time it's accessed, but instead we'll assign different function bodies to the proxy's `get` key. That way, it's only checked at (open air quotes) compile time (close air quotes):[^questionable]
+Our third use case involves checking whether the defaultValue is an ordinary value or a function.[^but]
+
+[^but]: We are hand-waving over the possibility that we'd ever want a hash that returns a function by default. This design is fine for the purposes of exposition, but if we ever consider shipping such a thing to the world in a library, we might reconsider our design choices.
+
+We could check every time it's accessed, but instead we'll assign different function bodies to the proxy's `get` key. That way, it's only checked at (open air quotes) compile time (close air quotes):[^questionable]
 
 [^questionable]: This is a questionable optimization. It's not excessively clever code, but the performance benefit is negligible given the costs of using a proxy for these instances, and it precludes us from implementing another feature of Ruby's hashes, the ability to mutate the default value of an existing instance.
 
