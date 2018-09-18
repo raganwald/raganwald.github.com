@@ -161,7 +161,9 @@ grades["Dorothy Doe"]
   //=> 9
 ```
 
-Our third use case involves checking whether the defaultValue is an ordinary value or a function. We could check every time it's accessed, but instead we'll assign different function bodies to the proxy's `get` key. That way, it's only checked at (open air quotes) compile time (close air quotes):
+Our third use case involves checking whether the defaultValue is an ordinary value or a function. We could check every time it's accessed, but instead we'll assign different function bodies to the proxy's `get` key. That way, it's only checked at (open air quotes) compile time (close air quotes):[^questionable]
+
+[^questionable]: This is a questionable optimization. It's not excessively clever code, but the performance benefit is negligible given the costs of using a proxy for these instances, and it precludes us from implementing another feature of Ruby's hashes, the ability to mutate the default value of an existing instance.
 
 ```javascript
 class Hash {
