@@ -489,7 +489,7 @@ It may come down to whether a particular code base leans towards OO or lightweig
 
 ### the rule of three
 
-When might it be sensible to write `Hash`? Well, in programming there is a [rule of three]. It is usually applied to removing duplication: When you first write something, you obviously don't worry about duplication. If you rite it a second time, make a note of the duplication, but don't rush to refactor things. Only when you need to write it for the third time do you refactor everything to eliminate duplication.
+When might it be sensible to write `Hash`? Well, in programming there is a [rule of three]. It is usually applied to removing duplication: When you first write something, you obviously don't worry about duplication. If you write it a second time, make a note of the duplication, but don't rush to refactor things. Only when you need to write it for the third time do you refactor everything to eliminate duplication.
 
 [rule of three]: https://en.wikipedia.org/wiki/Rule_of_three_(computer_programming)
 
