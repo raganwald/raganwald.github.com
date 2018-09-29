@@ -160,7 +160,7 @@ grades["Dorothy Doe"]
   //=> 9
 ```
 
-Our third use case involves checking whether the defaultValue is an ordinary value or a function.[^but]
+Our third use case involves checking whether `defaultValue` is an ordinary value, or a function.[^but]
 
 [^but]: We are hand-waving over the possibility that we'd ever want a hash that returns a function by default. This design is fine for the purposes of exposition, but if we ever consider shipping such a thing to the world in a library, we might reconsider our design choices.
 
@@ -193,7 +193,7 @@ h["d"]
   //=> "Go Fish: d"
 ```
 
-As noted, we can make a `Map`-like Hash with even less hackery, we don't need a proxy! But most idiomatic JavaScript uses objects, so that's what we'll use. this is enough to set the stage for the next bit of snarfing.
+As noted, we can make a `Map`-like Hash with even less hackery, we don't need a proxy! But most idiomatic JavaScript uses objects, so that's what we'll use. This is enough to set the stage for the next bit of snarfing.
 
 ---
 
@@ -227,7 +227,7 @@ This would be like writing this JavaScript:
 const h['a']['b']['c'] = 1;
 ```
 
-And having the interpreter execute it as if we had written:
+And having the interpreter execute the code as if we had written:
 
 ```javascript
 const h = { a: { b: { c: 1 } } };
