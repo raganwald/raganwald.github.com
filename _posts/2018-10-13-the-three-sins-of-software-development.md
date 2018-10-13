@@ -1,5 +1,5 @@
 ---
-tags: [recursion,allonge]
+tags: [recursion,allonge,noindex]
 ---
 
 Alice, Bob, and Carol decided to solve a short programming problem as an exercise. They agreed that each would pursue a different solution to the same requirements. The problem they chose was as follows:
@@ -9,10 +9,10 @@ Alice, Bob, and Carol decided to solve a short programming problem as an exercis
 After a short discussion, they agreed on the following examples:
 
 |Input|Output|Comment|
-|:----|-----:|:------|
+|:----|:-----|:------|
 |`''` |true  |The degenerate case|
 |`()` |true  ||
-| `(())`|true|parentheses can nest|
+|`(())`|true|parentheses can nest|
 |`()()`|true|multiple pairs are acceptable|
 |`((()`|false|missing closing parentheses|
 |`()))`|false|missing opening parentheses|
