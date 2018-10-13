@@ -10,10 +10,10 @@ After a short discussion, they agreed on the following examples:
 
 |Input|Output|Comment|
 |:----|:-----|:------|
-|`''` |true  |The degenerate case|
-|`()` |true  ||
-|`(())`|true|parentheses can nest|
-|`()()`|true|multiple pairs are acceptable|
-|`((()`|false|missing closing parentheses|
-|`()))`|false|missing opening parentheses|
-|`)(`|false|close before open|
+|`''` |'true'  |The degenerate case|
+|`'()'` |'true'  ||
+|`'(())'`|'true'|parentheses can nest|
+|`'()()'`|'true'|multiple pairs are acceptable|
+|`'((()'`|'false'|missing closing parentheses|
+|`'()))'`|'false'|missing opening parentheses|
+|`')('`|'false'|close before open|
