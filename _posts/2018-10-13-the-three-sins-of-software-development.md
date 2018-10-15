@@ -10,10 +10,57 @@ After a short discussion, they agreed on the following examples:
 
 |Input|Output|Comment|
 |:----|:-----|:------|
-|`''` |'true'  |The degenerate case|
+|`''` |'true'  |the degenerate case|
 |`'()'` |'true'  ||
 |`'(())'`|'true'|parentheses can nest|
 |`'()()'`|'true'|multiple pairs are acceptable|
 |`'((()'`|'false'|missing closing parentheses|
 |`'()))'`|'false'|missing opening parentheses|
 |`')('`|'false'|close before open|
+
+They got to work. After some furious work, Alice was first to present her solution to the others.
+
+---
+
+### alice's solution
+
+function balance
+
+```javascript
+function balanced (str) {
+  const [balanced, unbalanced] = balancedUnbalanced(str);
+
+  return unbalanced === '';
+}
+
+const parentheses = {
+  '(': ')'
+};
+
+function headTail (htStr) {
+  return [(htStr[0] || ''), htStr.slice(1)];
+}
+
+function balancedUnbalanced (str) {
+  const [openingParenthesis, tail] = headTail(str);
+
+  if (!parentheses.hasOwnProperty(openingParenthesis)) return ['', str];
+
+  const [balanced, unbalanced] = balancedUnbalanced(tail);
+  const [closingParenthesis, tailOfUnbalanced] = headTail(unbalanced);
+
+  if (closingParenthesis !== parentheses[openingParenthesis]) return ['', str];
+
+  const [balancedTailOfUnbalanced, unbalancedTailOfUnbalanced] = balancedUnbalanced(tailOfUnbalanced);
+
+  return [
+    (openingParenthesis +
+      balanced +
+      closingParenthesis +
+      balancedTailOfUnbalanced),
+    unbalancedTailOfUnbalanced
+  ];
+}
+
+console.log(balanced('(()())'))
+```
