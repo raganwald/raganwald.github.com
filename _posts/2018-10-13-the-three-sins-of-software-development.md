@@ -18,7 +18,7 @@ After a short discussion, they agreed on the following examples:
 |`'()))'`|`false`|missing opening parentheses|
 |`')('`|`false`|close before open|
 
-They got to work. After some furious work, Alice was first to present her solution to the others.
+After some furious work, Alice was first to present her solution to the others.
 
 ---
 
