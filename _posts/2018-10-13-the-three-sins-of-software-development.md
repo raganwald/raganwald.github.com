@@ -24,8 +24,6 @@ They got to work. After some furious work, Alice was first to present her soluti
 
 ### alice's solution
 
-function balance
-
 ```javascript
 function isBalanced (str) {
   const [_, unbalanced] = balancedUnbalanced(str);
