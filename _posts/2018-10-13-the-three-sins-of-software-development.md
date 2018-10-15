@@ -27,39 +27,45 @@ They got to work. After some furious work, Alice was first to present her soluti
 function balance
 
 ```javascript
-function balanced (str) {
-  const [balanced, unbalanced] = balancedUnbalanced(str);
+function isBalanced (str) {
+  const [_, unbalanced] = balancedUnbalanced(str);
 
   return unbalanced === '';
 }
 
-const parentheses = {
+function balancedUnbalanced (str) {
+
+  const [open, tail] = headTail(str);
+
+  if (notAnOpen(open)) return ['', str];
+
+  const [balanced, unbalanced] = balancedUnbalanced(tail);
+  const [close, tail2] = headTail(unbalanced);
+
+  if (!isOpenClosePair(open, close)) return ['', str];
+
+  const [balanced2, unbalanced2] = balancedUnbalanced(tail2);
+
+  return [
+    open + balanced + close + balanced2,
+    unbalanced2
+  ];
+}
+
+function headTail (ht) {
+  return [(ht[0] || ''), ht.slice(1)];
+}
+
+const parenDict = {
   '(': ')'
 };
 
-function headTail (htStr) {
-  return [(htStr[0] || ''), htStr.slice(1)];
+function notAnOpen (p) {
+  return !parenDict.hasOwnProperty(p);
 }
 
-function balancedUnbalanced (str) {
-  const [openingParenthesis, tail] = headTail(str);
-
-  if (!parentheses.hasOwnProperty(openingParenthesis)) return ['', str];
-
-  const [balanced, unbalanced] = balancedUnbalanced(tail);
-  const [closingParenthesis, tailOfUnbalanced] = headTail(unbalanced);
-
-  if (closingParenthesis !== parentheses[openingParenthesis]) return ['', str];
-
-  const [balancedTailOfUnbalanced, unbalancedTailOfUnbalanced] = balancedUnbalanced(tailOfUnbalanced);
-
-  return [
-    (openingParenthesis +
-      balanced +
-      closingParenthesis +
-      balancedTailOfUnbalanced),
-    unbalancedTailOfUnbalanced
-  ];
+function isOpenClosePair (o, c) {
+  return parenDict[o] === c;
 }
 
 console.log(balanced('(()())'))
