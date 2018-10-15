@@ -32,18 +32,19 @@ function isBalanced (str) {
 }
 
 function balancedUnbalanced (str) {
+  if (str === '') return ['', str]; // optional
 
   const [open, tail] = headTail(str);
-
   if (notAnOpen(open)) return ['', str];
+  if (tail === '') return ['', str]; // optional
 
   const [balanced, unbalanced] = balancedUnbalanced(tail);
-  const [close, tail2] = headTail(unbalanced);
+  if (unbalanced === '') return ['', str]; // optional
 
-  if (!isOpenClosePair(open, close)) return ['', str];
+  const [close, tail2] = headTail(unbalanced);
+  if (notPaired(open, close)) return ['', str];
 
   const [balanced2, unbalanced2] = balancedUnbalanced(tail2);
-
   return [
     open + balanced + close + balanced2,
     unbalanced2
@@ -62,8 +63,8 @@ function notAnOpen (p) {
   return !parenDict.hasOwnProperty(p);
 }
 
-function isOpenClosePair (o, c) {
-  return parenDict[o] === c;
+function notPaired (o, c) {
+  return parenDict[o] !== c;
 }
 
 console.log(balanced('(()())'))
