@@ -1,5 +1,5 @@
 ---
-tags: [recursion,allonge,noindex]
+tags: [recursion,allonge]
 ---
 
 A  popular programming "problem" is to determine whether a string of parentheses is "balanced:"
