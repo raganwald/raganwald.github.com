@@ -553,7 +553,7 @@ That is very fast, but is certainly not optimizing for understandability. Beside
 
 That being said, we'll never get to that "optimization" if we begin with pattern matching. Is that a bad thing? Probably not. It's easy to construct code that does a good job of explaining that we are counting parentheses, but that doesn't mean it's easy to guess--from the code--what kinds of strings will match, and what kinds of strings won't match.
 
-Counting parentheses does a great job of maximizing performance, but a terrible job of communicating why we're counting parentheses.
+Counting parentheses does a great job of maximizing performance, but a terrible job of communicating *why* we're counting parentheses.
 
 ---
 
