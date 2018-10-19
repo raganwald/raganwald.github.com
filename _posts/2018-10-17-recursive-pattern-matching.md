@@ -551,7 +551,7 @@ Form there, we can write a very fast solution that executes in constant space wi
 
 That is very fast, but is certainly not optimizing for understandability. Besides studying commonly asked interview questions, the usual road to this optimization is greenspunning our own stack of parentheses, and then noticing that all we care about is whether the we ever try to pop a non-existant character off the stack. A counter is equivalent for the simple case where we only have one type of parenthesis to manage.
 
-That being said, we'll never get to that "optimization" if we begin with pattern matching. Is that a bad thing? Probably not.
+That being said, we'll never get to that "optimization" if we begin with pattern matching. Is that a bad thing? Probably not. It's easy to construct code that does a good job of explaining that we are counting parentheses, but that doesn't mean it's easy to guess--from the code--what kinds of strings will match, and what kinds of strings won't match.
 
 ---
 
