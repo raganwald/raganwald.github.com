@@ -81,7 +81,6 @@ We'll start with the idea of a function that matches a string based on the begin
 ```javascript
 const isGreeting =
   input =>
-    typeof input === 'string' &&
     input.startsWith('hello') &&
     'hello';
 
