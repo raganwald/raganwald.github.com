@@ -537,6 +537,8 @@ At the end of the day, when we have a problem that looks like a pattern, we shou
 
 *the end*
 
+(discuss on [reddit](https://www.reddit.com/r/javascript/comments/9pmabr/pattern_matching_and_recursion/))
+
 ---
 
 [![Image taken from page 161 of 'The Odyssey of Homer'](/assets/images/balanced/ps.jpg)](https://www.flickr.com/photos/mechanicalcuratorcuttings/10410067513)
