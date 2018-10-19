@@ -375,6 +375,8 @@ When we write an abstraction layer that is used by many pieces of code, and it i
 
 At the end of the day, when we have a problem that looks like a pattern, we should at least consider writing a solution structured to match the structure of the pattern. And if the structure of the problem is recursive, then we should likewise consider making the structure of our solution recursive.
 
+*the end*
+
 ---
 
 # Notes
