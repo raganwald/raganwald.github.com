@@ -22,7 +22,7 @@ There are a number of approaches to solving this problem. Some optimize for brev
 
 Naturally, everyone also attempts to optimize for understandability. Most of the time, this means optimizing for understanding what the code does and how it does it. But an interesting approach to writing code is to attempt to make the "shape" of the solution match the "shape" of the problem.
 
-Let's consider this approach for balanced parentheses.
+Let's consider this approach--matching the shape of the solution to the shape of the problem--for balanced parentheses.
 
 ---
 
@@ -35,7 +35,7 @@ If we take a certain kind of "mathematical" approach to defining the problem we'
 3. `(`, followed by a balanced string, followed by `)`, is balanced.
 4. `(`, followed by a balanced string, followed by `)`, followed by a balanced string, is balanced.
 
-The "shape" of this definition is that there are four cases. The first is a "base" or "irreducuble" case. The second, third, and fourth cases are self-referential: They define ways to build more complex balanced strings from simpler balanced strings.
+The "shape" of this definition is that there are four cases. The first is a "base" or "irreducible" case. The second, third, and fourth cases are self-referential: They define ways to build more complex balanced strings from simpler balanced strings.
 
 Definitions like this are *declarative*: They describe rules or patterns for recognizing a balanced string, not a step-by-step algorithm for determining whether a string is balanced.
 
@@ -135,7 +135,7 @@ case1('()')
   //=> '()'
 ```
 
-Writing the second case involves two new ideas. First, we need to have a way of describing a pattern that matches two or more other patterns in sucession:
+Writing the second case involves two new ideas. First, we need to have a way of describing a pattern that matches two or more other patterns in succession:
 
 ```javascript
 const follows =
@@ -189,7 +189,7 @@ badNews('snafu')
   //=> '()'
 ```
 
-And now to decribe the second case. We'll use `cases` to define `balanced` from the first two cases, and we'll reply on JavaScript's name binding to implement recursion in the second case:
+And now to describe the second case. We'll use `cases` to define `balanced` from the first two cases, and we'll reply on JavaScript's name binding to implement recursion in the second case:
 
 ```javascript
 const balanced =
@@ -205,7 +205,7 @@ balanced('()()()')
   //=> '()()()'
 ```
 
-We now have all we need to implement the third and fourth cases:
+Adding support for the third and fourth cases is straightforward:
 
 ```javascript
 const balanced =
@@ -222,6 +222,134 @@ balanced('(())(')
 balanced('(()())()')
   //=> '(()())()'
 ```
+
+Before we go on, a digression about recursion.
+
+---
+
+### recursion vs iteration
+
+The snippets `follows(just('()'), balanced)` and `follows(just('('), balanced, just(')'), balanced)` are very interesting. they handle cases like `()`, `()()`, `()()()`, and so forth, without any need for a special higher-order pattern meaning "match one or more of this pattern."
+
+Our code does this using recursion. Which is not surprising, recursion is a way to implement what most programming languages implement with iteration and repetition. What's intersting is that repeating patterns are very common, and yet regular expressions can't implement recursion. So how do they handle repeating patterns?
+
+Standard regular expressions use the postfix operators, `*` and `+` to handle the cases where we need zero or more of a pattern, or one or more of a pattern. So in a regular expression, we would write `(?:\(\))+` to define a patterns matching one or more instances of `()` in succession.
+
+Although it's not strictly necessary, we could write such pattern modifiers ourselves. For example, here's "one or more" (equivalent to `+`):
+
+```javascript
+const oneOrMore =
+  pattern =>
+    input => {
+      let matchedLength = 0;
+      let remaining = input;
+
+      while (remaining.length > 0) {
+        const matched = pattern(remaining);
+
+        if (matched === false || matched.length === 0) break;
+
+        matchedLength = matchedLength + matched.length;
+        remaining = remaining.slice(matched.length);
+      }
+
+      return matchedLength > 0 && input.slice(0, matchedLength);
+    };
+```
+
+"Zero or more" is almost exactly the same, only the last line changes:
+
+```javascript
+const zeroOrMore =
+  pattern =>
+    input => {
+      let matchedLength = 0;
+      let remaining = input;
+
+      while (remaining.length > 0) {
+        const matched = pattern(remaining);
+
+        if (matched === false || matched.length === 0) break;
+
+        matchedLength = matchedLength + matched.length;
+        remaining = remaining.slice(matched.length);
+      }
+
+      return input.slice(0, matchedLength);
+    };
+```
+
+If we want to use `oneOrMore`, instead of writing:
+
+```javascript
+const balanced =
+  input => cases(
+    just('()'),
+    follows(just('()'), balanced),
+    follows(just('('), balanced, just(')')),
+    follows(just('('), balanced, just(')'), balanced)
+  )(input);
+```
+
+We can write:
+
+```javascript
+const balanced =
+  input =>
+    oneOrMore(
+      cases(
+        just('()'),
+        follows(just('('), balanced, just(')'))
+      )
+    )(input);
+```
+
+This is more compact. Is it better? Perhaps. It does change our definition. Instead of saying that a balanced string conforms to one of four cases, we're now saying: *A balanced string conforms to one of two cases, repeated one or more times.* If, in our opinion, this is equally understandable, or even superior, that's what we should use.
+
+---
+
+### extending our pattern to handle multiple types of parentheses
+
+A common extension to the problem is to match multiple types of parentheses. We can handle this requirement with both the recursive and "oneOrMore" implementations:
+
+```javascript
+const balanced =
+  input => cases(
+    just('()'),
+    follows(just('()'), balanced),
+    follows(just('('), balanced, just(')')),
+    follows(just('('), balanced, just(')'), balanced),
+    just('[]'),
+    follows(just('[]'), balanced),
+    follows(just('['), balanced, just(']')),
+    follows(just('['), balanced, just(']'), balanced),
+    just('{}'),
+    follows(just('{}'), balanced),
+    follows(just('{'), balanced, just('}')),
+    follows(just('{'), balanced, just('}'), balanced)
+  )(input);
+```
+
+It's a little wordy,[^wordy] but the code clearly describes what kinds of patterns it matches. And here's the `oneOrMore` implementation:
+
+[^wordy]: It's just JavaScript, so it's easy enough to make this more compact using functions that write patterns for us.
+
+```javascript
+const balanced =
+  input =>
+    oneOrMore(
+      cases(
+        just('()'),
+        follows(just('('), balanced, just(')')),
+        just('[]'),
+        follows(just('['), balanced, just(']')),
+        just('{}'),
+        follows(just('{'), balanced, just('}'))
+      )
+    )(input);
+```
+
+We'll need one more thing to complete our solution: We need to match strings that are entirely balanced, not just strings that have a balanced prefix:
 
 To complete the problem we need to match strings that are entirely balanced, not just starting with balanced:
 
@@ -250,38 +378,14 @@ And putting it all together:
 ```javascript
 const entirelyBalanced = entirely(balanced);
 
-entirelyBalanced('((()))')
-  //=> '((()))'
-
-entirelyBalanced('((()()))()((')
+entirelyBalanced('({}(()))(()')
   //=> false
+
+entirelyBalanced('({()[]})[[(){}]]')
+  //=> ({()[]})[[(){}]]
 ```
 
 Success!
-
-And although it does make things longer, we can extend our code to handle multiple types of parentheses by expanding our pattern:
-
-```javascript
-const balanced =
-  input => cases(
-    just('()'),
-    follows(just('()'), balanced),
-    follows(just('('), balanced, just(')')),
-    follows(just('('), balanced, just(')'), balanced),
-    just('[]'),
-    follows(just('[]'), balanced),
-    follows(just('['), balanced, just(']')),
-    follows(just('['), balanced, just(']'), balanced),
-    just('{}'),
-    follows(just('{}'), balanced),
-    follows(just('{'), balanced, just('}')),
-    follows(just('{'), balanced, just('}'), balanced)
-  )(input);
-```
-
-Wordy,[^wordy] but the code clearly describes what kinds of patterns it matches.
-
-[^wordy]: It's just JavaScript, so it's easy enough to make this more compact using functions that write patterns for us.
 
 ---
 
@@ -326,6 +430,24 @@ const follows =
       return input.slice(0, matchLength);
     };
 
+const zeroOrMore =
+  pattern =>
+    input => {
+      let matchedLength = 0;
+      let remaining = input;
+
+      while (remaining.length > 0) {
+        const matched = pattern(remaining);
+
+        if (matched === false || matched.length === 0) break;
+
+        matchedLength = matchedLength + matched.length;
+        remaining = remaining.slice(matched.length);
+      }
+
+      return input.slice(0, matchedLength);
+    };
+
 const entirely =
   pattern =>
     input => {
@@ -337,7 +459,7 @@ const entirely =
     };
 ```
 
-With these in hand, we can implement our solution with:
+With these in hand, we can implement our solution with either:
 
 ```javascript
 const balanced =
@@ -359,13 +481,32 @@ const balanced =
 const entirelyBalanced = entirely(balanced);
 ```
 
-Is this good? Bad? Terrible?
+Or:
+
+```javascript
+const balanced =
+  input =>
+    oneOrMore(
+      cases(
+        just('()'),
+        follows(just('('), balanced, just(')')),
+        just('[]'),
+        follows(just('['), balanced, just(']')),
+        just('{}'),
+        follows(just('{'), balanced, just('}'))
+      )
+    )(input);
+
+const entirelyBalanced = entirely(balanced);
+```
+
+Are these good? Bad? Terrible?
 
 ---
 
 ### the good, the bad, and the ugly
 
-The very good news about this solution is that the form of the solution exactly replicates the form of the problem statement as we defined it.
+The very good news about our solution is that the form of the solution exactly replicates the form of the problem statement as we defined it.
 
 The bad news is that we require much more supporting code for our abstraction than code describing the solution. This is generally thought to be fine when we reuse this abstraction multiple times, amortizing the cost of the implementation across multiple uses. But for a one-off, it requires the reader of the code to grok our solution and the implementation of pattern-matching. That can be a bit much.
 
@@ -376,6 +517,21 @@ When we write an abstraction layer that is used by many pieces of code, and it i
 At the end of the day, when we have a problem that looks like a pattern, we should at least consider writing a solution structured to match the structure of the pattern. And if the structure of the problem is recursive, then we should likewise consider making the structure of our solution recursive.
 
 *the end*
+
+---
+
+### postscript
+
+When this puzzle is given as an interview question, interviewers are often looking for insights such as "The given requirements for balancing one type of parenthesis is functionally equivalent to the following definition: A string is balanced if:"
+
+1. The number of opening parentheses is exactly equal to the number of closed parentheses, **and**;
+2. For every prefix of a balanced string, the number of opening parentheses is equal to or greater than the number of closing parentheses.
+
+Form there, we can write a very fast solution that executes in constant space with linear time, simply by iterating through the string while incrementing a counter for each opening parenthesis, and decrementing it for each closing parenthesis. If the counter ever goes negative, the string is not balanced. If it stays zero or positive up to the penultimate character, and is zero at the end, then the string is balanced.
+
+That is very fast, but is certainly not optimizing for understandability. Besides studying commonly asked interview questions, the usual road to this optimization is greenspunning our own stack of parentheses, and then noticing that all we care about is whether the we ever try to pop a non-existant character off the stack. A counter is equivalent for the simple case where we only have one type of parenthesis to manage.
+
+That being said, we'll never get to that "optimization" if we begin with pattern matching. Is that a bad thing? Probably not.
 
 ---
 
