@@ -18,6 +18,8 @@ For example:
 |`'()))'`|`false`|missing opening parentheses|
 |`')('`|`false`|close before open|
 
+<br/>
+
 There are a number of approaches to solving this problem. Some optimize for brevity of the solution, others optimize for space and/or running time.
 
 Naturally, everyone also attempts to optimize for understandability. Most of the time, this means optimizing for understanding what the code does and how it does it. But an interesting approach to writing code is to attempt to make the "shape" of the solution match the "shape" of the problem.
@@ -25,6 +27,8 @@ Naturally, everyone also attempts to optimize for understandability. Most of the
 Let's consider this approach--matching the shape of the solution to the shape of the problem--for balanced parentheses.
 
 ---
+
+[![helvetica Parentheses](/assets/images/balanced/helvetica.jpg)](https://www.flickr.com/photos/veganstraightedge/5533215141)
 
 ### the shape of the balanced parentheses problem
 
@@ -48,6 +52,8 @@ Of course, there's one obvious way to implement a pattern that recognizes partic
 
 ---
 
+[![regex, because a computer is a terrible thing to waste](/assets/images/balanced/waste.jpg)](https://www.flickr.com/photos/lugola/1424686646)
+
 ### regular expressions
 
  > Some people, when confronted with a problem, think "I know, I'll use regular expressions." Now they have two problems.—Jamie Zawinski
@@ -69,6 +75,8 @@ But even if it was, regular expressions optimize for compactness, but aren't alw
 [Greenspun]: https://en.wikipedia.org/wiki/Greenspun's_tenth_rule
 
 ---
+
+[![Bletchley Quilt](/assets/images/balanced/quilt.jpg)](https://www.flickr.com/photos/inkyswot/6454615343)
 
 ### greenspunning our own pattern-matching
 
@@ -110,6 +118,8 @@ just(')')('((()))')
 This is not enough, of course.
 
 ---
+
+[![2222 holes](/assets/images/balanced/holes.jpg)](https://www.flickr.com/photos/generated/1279482588)
 
 ### composing patterns
 
@@ -227,6 +237,8 @@ Before we go on, a digression about recursion.
 
 ---
 
+[![children's choice](/assets/images/balanced/carts.jpg)](https://www.flickr.com/photos/thadz/26640191682)
+
 ### recursion vs iteration
 
 The snippets `follows(just('()'), balanced)` and `follows(just('('), balanced, just(')'), balanced)` are very interesting. they handle cases like `()`, `()()`, `()()()`, and so forth, without any need for a special higher-order pattern meaning "match one or more of this pattern."
@@ -308,6 +320,8 @@ This is more compact. Is it better? Perhaps. It does change our definition. Inst
 
 ---
 
+[![construction](/assets/images/balanced/construction.jpg)](https://www.flickr.com/photos/erh1103/7173288223)
+
 ### extending our pattern to handle multiple types of parentheses
 
 A common extension to the problem is to match multiple types of parentheses. We can handle this requirement with both the recursive and "oneOrMore" implementations:
@@ -388,6 +402,8 @@ entirelyBalanced('({()[]})[[(){}]]')
 Success!
 
 ---
+
+[![Finish](/assets/images/balanced/finish.jpg)](https://www.flickr.com/photos/craigmoulding/8532680078)
 
 ### the complete solution
 
@@ -504,6 +520,8 @@ Are these good? Bad? Terrible?
 
 ---
 
+[![In the balance](/assets/images/balanced/balance.jpg)](https://www.flickr.com/photos/58827557@N06/37056877150)
+
 ### the good, the bad, and the ugly
 
 The very good news about our solution is that the form of the solution exactly replicates the form of the problem statement as we defined it.
@@ -519,6 +537,8 @@ At the end of the day, when we have a problem that looks like a pattern, we shou
 *the end*
 
 ---
+
+[![Image taken from page 161 of 'The Odyssey of Homer'](/assets/images/balanced/ps.jpg)](https://www.flickr.com/photos/mechanicalcuratorcuttings/10410067513)
 
 ### postscript
 
