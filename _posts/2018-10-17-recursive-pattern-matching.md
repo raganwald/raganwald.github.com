@@ -23,9 +23,40 @@ For example:
 
 There are a number of approaches to solving this problem. Some optimize for brevity of the solution, others optimize for space and/or running time.
 
-Naturally, everyone also attempts to optimize for understandability. Most of the time, this means optimizing for understanding what the code does and how it does it. But an interesting approach to writing code is to attempt to make the "shape" of the solution match the "shape" of the problem.
+Naturally, everyone also attempts to optimize for understandability. Most of the time, this means optimizing for understanding what the code does and how it does it. For example, this code is quite readable in the sense of understanding what the code does:
 
-Let's consider this approach--matching the shape of the solution to the shape of the problem--for balanced parentheses.
+```javascript
+const balanced2 =
+  input => {
+    let openParenthesesCount = 0;
+    let closeParenthesesCount = 0;
+
+    for (let i = 0; i < input.length; ++i) {
+      const c = input[i];
+
+      if (c === '(') {
+        ++openParenthesesCount;
+      } else if (c === ')') {
+        ++closeParenthesesCount;
+      } else return false;
+
+      if (closeParenthesesCount > openParenthesesCount) return false;
+    }
+
+    return closeParenthesesCount === openParenthesesCount;
+  };
+```
+
+There's a small optimization available to use just one counter that increments and decrements, but it is not to difficult to understand what this code *does*, and from there we might be able to deduce that a balanced string is one where:
+
+1. There are an equal number of open and closed parentheses, and;
+2. For any prefix (i.e. a substring that includes the first character), there are at least as many open as closed parentheses.
+
+But even if we make this deduction, does that really help us understand that the problem we're trying to solve is handling well-formed parenthetical expressions? These facts about the counts of parentheses are true of balanced strings, but they aren't what we're trying to communicate.
+
+The "shape" of the problem does not really represent the shape of the solution presented.
+
+Let's consider a different approach--matching the shape of the solution to the shape of the problem--for balanced parentheses.
 
 ---
 
@@ -47,7 +78,7 @@ Definitions like this are *declarative*: They describe rules or patterns for rec
 So what would a solution look like if we tried to make it the same shape as this definition? It would:
 
 1. Describe a pattern, not a step-by-step algorithm, and;
-2. It would have two cases, one recursive, one repeated.
+2. It would have four cases.
 
 Of course, there's one obvious way to implement a pattern that recognizes particular strings.
 
@@ -538,25 +569,6 @@ At the end of the day, when we have a problem that looks like a pattern, we shou
 *the end*
 
 (discuss on [reddit](https://www.reddit.com/r/javascript/comments/9pmabr/pattern_matching_and_recursion/))
-
----
-
-[![Image taken from page 161 of 'The Odyssey of Homer'](/assets/images/balanced/ps.jpg)](https://www.flickr.com/photos/mechanicalcuratorcuttings/10410067513)
-
-### postscript
-
-When this puzzle is given as an interview question, interviewers are often looking for insights such as "The given requirements for balancing one type of parenthesis is functionally equivalent to the following definition: A string is balanced if:"
-
-1. The number of opening parentheses is exactly equal to the number of closed parentheses, **and**;
-2. For every prefix of a balanced string, the number of opening parentheses is equal to or greater than the number of closing parentheses.
-
-Form there, we can write a very fast solution that executes in constant space with linear time, simply by iterating through the string while incrementing a counter for each opening parenthesis, and decrementing it for each closing parenthesis. If the counter ever goes negative, the string is not balanced. If it stays zero or positive up to the penultimate character, and is zero at the end, then the string is balanced.
-
-That is very fast, but is certainly not optimizing for understandability. Besides studying commonly asked interview questions, the usual road to this optimization is greenspunning our own stack of parentheses, and then noticing that all we care about is whether the we ever try to pop a non-existant character off the stack. A counter is equivalent for the simple case where we only have one type of parenthesis to manage.
-
-That being said, we'll never get to that "optimization" if we begin with pattern matching. Is that a bad thing? Probably not. It's easy to construct code that does a good job of explaining that we are counting parentheses, but that doesn't mean it's easy to guess--from the code--what kinds of strings will match, and what kinds of strings won't match.
-
-Counting parentheses does a great job of maximizing performance, but a terrible job of communicating *why* we're counting parentheses.
 
 ---
 
