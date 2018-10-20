@@ -380,11 +380,7 @@ But why do we assume that? It isn't one of the cases given at the top of the ess
 
 In a production environment, sometimes we are given all of the requirements and have no flexibility. If we aren't told how to handle something like the empty string, we ask and have to implement whatever answer we are given. Of course, sometimes the missing requirement is entirely up to us to implement as we see fit.
 
-Undocumented behaviour is actually the usual case. Every time we implement something non-trivial, we implement the stated requirements, and then there are a bunch of "undocumented behaviours" outside of the requirements. Behaviours we may not even be aware that we have created.[^conspiracy]
-
-[^conspiracy]: That undocumented behaviour becomes the source of headaches when the code evolves and changes the undocumented behaviour while remaining compatible with the documented requirements. For decades, one of the reasons that it was very difficult to emulate the Windows environment on on-Windows platforms was that even if the implementation replicated the documented API in every respect, production applications had become dependent upon undocumented behaviour, to the point that the only real specification for Windows was Windows. Did Microsoft encourage application developers to depend on undocumented behaviour, because it was a competitive advantage preventing competition from making Windows-compatible platforms? Hmmm...
-
-But getting back to this decidedly trivial example, let's consider the possibility that we can unilaterally declare that the empty string is balanced (it certainly isn't unbalanced!). If the empty string is balanced, we can actually make an even more compact rule:
+Let's consider the possibility that we can unilaterally declare that the empty string is balanced (it certainly isn't unbalanced!). If the empty string is balanced, we can actually make an even more compact rule:
 
 1. A balanced string is a sequence of **zero** or more strings conforming to the following rule:
   1. . `(`, followed by a balanced string, followed by `)`
