@@ -14,7 +14,7 @@ For example:
 |`'()'`|`true`||
 |`'(())'`|`true`|parentheses can nest|
 |`'()()'`|`true`|multiple pairs are acceptable|
-|`'()()())()'`|`true`|multiple pairs can nest|
+|`'(()()())()'`|`true`|multiple pairs can nest|
 |`'((()'`|`false`|missing closing parentheses|
 |`'()))'`|`false`|missing opening parentheses|
 |`')('`|`false`|close before open|
@@ -231,7 +231,7 @@ badNews('snafu')
   //=> '()'
 ```
 
-And now to describe the second case. We'll use `cases` to define `balanced` from the first two cases, and we'll reply on JavaScript's name binding to implement recursion in the second case:
+And now to describe the second case. We'll use `cases` to define `balanced` from the first two cases, and we'll rely on JavaScript's name binding to implement recursion in the second case:
 
 ```javascript
 const balanced =
@@ -356,7 +356,7 @@ This is more compact. Is it better? Perhaps. It does change our definition. Inst
 
 ### extending our pattern to handle multiple types of parentheses
 
-A common extension to the problem is to match multiple types of parentheses. We can handle this requirement with both the recursive and "oneOrMore" implementations:
+A common extension to the problem is to match multiple types of parentheses. We can handle this requirement with both the recursive and `oneOrMore` implementations:
 
 ```javascript
 const balanced =
