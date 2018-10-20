@@ -374,9 +374,9 @@ The same is true of composing patterns. Sometimes, the most compact form is most
 
 Both the original and "compact" implementation included the "base" case of `just('()')`. With recursive problems, there's always some kind of base case that is irreducible, and if we presume that an empty string is not balanced, `()` is our irreducible case.
 
-But why do we assume that? It isn't one of the cases given at the top of the essay, and when this problem is posed in contexts such as job interviews, what to do with an empty string is usually not mentioned one way or the other.[^interview]
+But why do we assume that? It isn't one of the cases given at the top of the essay, and as this problem is usually presented, what to do with an empty string is usually not mentioned one way or the other.[^pizzarollexpert]
 
-[^interview]: This essay has nothing to say about whether programming puzzles are an effective tool for any job interviews, and even if they are, whether "balanced parentheses" is an effective choice. It is enough to point out that some such interviews exist, as a few minutes with one of the sites dedicated to gaming the job interview process will readily validate.
+[^pizzarollexpert]: This discussion of treating the empty string as balanced was provoked by [pizzarollexpert](https://www.reddit.com/user/PizzaRollExpert)'s excellent comment on Reddit.
 
 In a production environment, sometimes we are given all of the requirements and have no flexibility. If we aren't told how to handle something like the empty string, we ask and have to implement whatever answer we are given. Of course, sometimes the missing requirement is entirely up to us to implement as we see fit. This is actually the usual case. Every time we implement something non-trivial, it implements its stated requirements, and then there are a bunch of "undocumented behaviours" outside of the requirements.[^conspiracy]
 
