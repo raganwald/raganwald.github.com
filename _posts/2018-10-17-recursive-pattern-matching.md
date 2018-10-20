@@ -26,7 +26,7 @@ There are a number of approaches to solving this problem. Some optimize for brev
 Naturally, everyone also attempts to optimize for understandability. Most of the time, this means optimizing for understanding what the code does and how it does it. For example, this code is quite readable in the sense of understanding what the code does:
 
 ```javascript
-const balanced2 =
+const balanced =
   input => {
     let openParenthesesCount = 0;
     let closeParenthesesCount = 0;
@@ -265,7 +265,7 @@ balanced('(()())()')
   //=> '(()())()'
 ```
 
-Before we go on, a digression about recursion.
+And here we come to a place to evaluate the way we've formulated our rules.
 
 ---
 
@@ -323,7 +323,14 @@ const zeroOrMore =
     };
 ```
 
-If we want to use `oneOrMore`, instead of writing:
+The original depiction of the problem requirements was the following four rules:
+
+1. `()` is balanced.
+2. `()`, followed by a balanced string, is balanced.
+3. `(`, followed by a balanced string, followed by `)`, is balanced.
+4. `(`, followed by a balanced string, followed by `)`, followed by a balanced string, is balanced.
+
+That led to this implementation:
 
 ```javascript
 const balanced =
@@ -334,8 +341,13 @@ const balanced =
     follows(just('('), balanced, just(')'), balanced)
   )(input);
 ```
+If we change the problem statement such that a balanced string is:
 
-We can write:
+1. A balanced string is a sequence of one or more strings conforming to either of the following cases:
+  1. `()`
+  2. `(`, followed by a balanced string, followed by `)`
+
+That leads to this compact implementation:
 
 ```javascript
 const balanced =
@@ -348,7 +360,44 @@ const balanced =
     )(input);
 ```
 
-This is more compact. Is it better? Perhaps. It does change our definition. Instead of saying that a balanced string conforms to one of four cases, we're now saying: *A balanced string conforms to one of two cases, repeated one or more times.* If, in our opinion, this is equally understandable, or even superior, that's what we should use.
+Is this better? Sometimes a more compact definition is considerably better. Sometimes, as with playing code golf, the code is correct, but actually harder to understand. This general problem--how compact is too compact--crops up with recursion all the time. It is mathematically advantageous to be able to implement things like iteration with recursion, and even to [implement recursion without name binding][ToGrokAMockingbird], but in practice, our code is clearer with name binding and looping constructs.
+
+[ToGrokAMockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html "To Grok a Mockingbird"
+
+The same is true of composing patterns. Sometimes, the most compact form is most elegant, but less readable than one that lists more cases explicitly. Since most of us are familiar with regular expressions, we'll continue this essay presuming that using `oneOrMore` or `zeroOrMore` is advantageous.
+
+---
+
+[![nothing is nothing](/assets/images/balanced/nothing.jpg)](https://www.flickr.com/photos/darwinbell/272818496)
+
+### another look at the degenerate case
+
+Both the original and "compact" implementation included the "base" case of `just('()')`. With recursive problems, there's always some kind of base case that is irreducible, and if we presume that an empty string is not balanced, `()` is our irreducible case.
+
+But why do we assume that? It isn't one of the cases given at the top of the essay, and when this problem is posed in contexts such as job interviews, what to do with an empty string is usually not mentioned one way or the other.[^interview]
+
+[^interview]: This essay has nothing to say about whether programming puzzles are an effective tool for any job interviews, and even if they are, whether "balanced parentheses" is an effective choice. It is enough to point out that some such interviews exist, as a few minutes with one of the sites dedicated to gaming the job interview process will readily validate.
+
+In a production environment, sometimes we are given all of the requirements and have no flexibility. If we aren't told how to handle something like the empty string, we ask and have to implement whatever answer we are given. Of course, sometimes the missing requirement is entirely up to us to implement as we see fit. This is actually the usual case. Every time we implement something non-trivial, it implements its stated requirements, and then there are a bunch of "undocumented behaviours" outside of the requirements.[^conspiracy]
+
+[^conspiracy]: That undocumented behaviour becomes the source of headaches when the code evolves and changes the undocumented behaviour while remaining compatible with the documented requirements. For decades, one of the reasons that it was very difficult to emulate the Windows environment on on-Windows platforms was that even if the implementation replicated the documented API in every respect, production applications had become dependent upon undocumented behaviour, to the point that the only real specification for Windows was Windows. Did Microsoft encourage application developers to depend on undocumented behaviour, because it was a competitive advantage preventing competition from making Windows-compatible platforms? Hmmm...
+
+But let's consider the possibility that we can unilaterally declare that the empty string is balanced. It certainly isn't unbalanced! If the empty string is balanced, we can actually make an even more compact rule:
+
+1. A balanced string is a sequence of **zero** or more strings conforming to the following rule:
+  1. . `(`, followed by a balanced string, followed by `)`
+
+And our implementation is:
+
+```javascript
+const balanced =
+  input =>
+    zeroOrMore(
+      follows(just('('), balanced, just(')'))
+    )(input);
+```
+
+Notice that although we introduced the `oneOrMore` and `zeroOrMore` higher-order-patterns, and although we interpreted an unstated requirement requirements in such a way to produce a more compact implementation, we are still employing the same approach of determining the shape of the problem and then creating an implementation that matches the shape of the problem as we understand it.
 
 ---
 
@@ -356,40 +405,15 @@ This is more compact. Is it better? Perhaps. It does change our definition. Inst
 
 ### extending our pattern to handle multiple types of parentheses
 
-A common extension to the problem is to match multiple types of parentheses. We can handle this requirement with both the recursive and `oneOrMore` implementations:
-
-```javascript
-const balanced =
-  input => cases(
-    just('()'),
-    follows(just('()'), balanced),
-    follows(just('('), balanced, just(')')),
-    follows(just('('), balanced, just(')'), balanced),
-    just('[]'),
-    follows(just('[]'), balanced),
-    follows(just('['), balanced, just(']')),
-    follows(just('['), balanced, just(']'), balanced),
-    just('{}'),
-    follows(just('{}'), balanced),
-    follows(just('{'), balanced, just('}')),
-    follows(just('{'), balanced, just('}'), balanced)
-  )(input);
-```
-
-It's a little wordy,[^wordy] but the code clearly describes what kinds of patterns it matches. And here's the `oneOrMore` implementation:
-
-[^wordy]: It's just JavaScript, so it's easy enough to make this more compact using functions that write patterns for us.
+A common extension to the problem is to match multiple types of parentheses. We can handle this requirement with two more cases:
 
 ```javascript
 const balanced =
   input =>
-    oneOrMore(
+    zeroOrMore(
       cases(
-        just('()'),
         follows(just('('), balanced, just(')')),
-        just('[]'),
         follows(just('['), balanced, just(']')),
-        just('{}'),
         follows(just('{'), balanced, just('}'))
       )
     )(input);
@@ -496,6 +520,24 @@ const zeroOrMore =
       return input.slice(0, matchedLength);
     };
 
+const oneOrMore =
+  pattern =>
+    input => {
+      let matchedLength = 0;
+      let remaining = input;
+
+      while (remaining.length > 0) {
+        const matched = pattern(remaining);
+
+        if (matched === false || matched.length === 0) break;
+
+        matchedLength = matchedLength + matched.length;
+        remaining = remaining.slice(matched.length);
+      }
+
+      return matchedLength > 0 && input.slice(0, matchedLength);
+    };
+
 const entirely =
   pattern =>
     input => {
@@ -507,40 +549,15 @@ const entirely =
     };
 ```
 
-With these in hand, we can implement our solution with either:
-
-```javascript
-const balanced =
-  input => cases(
-    just('()'),
-    follows(just('()'), balanced),
-    follows(just('('), balanced, just(')')),
-    follows(just('('), balanced, just(')'), balanced),
-    just('[]'),
-    follows(just('[]'), balanced),
-    follows(just('['), balanced, just(']')),
-    follows(just('['), balanced, just(']'), balanced),
-    just('{}'),
-    follows(just('{}'), balanced),
-    follows(just('{'), balanced, just('}')),
-    follows(just('{'), balanced, just('}'), balanced)
-  )(input);
-
-const entirelyBalanced = entirely(balanced);
-```
-
-Or:
+With these in hand, we implement our solution with:
 
 ```javascript
 const balanced =
   input =>
-    oneOrMore(
+    zeroOrMore(
       cases(
-        just('()'),
         follows(just('('), balanced, just(')')),
-        just('[]'),
         follows(just('['), balanced, just(']')),
-        just('{}'),
         follows(just('{'), balanced, just('}'))
       )
     )(input);
@@ -548,7 +565,7 @@ const balanced =
 const entirelyBalanced = entirely(balanced);
 ```
 
-Are these good? Bad? Terrible?
+Is this good? Bad? Terrible?
 
 ---
 
