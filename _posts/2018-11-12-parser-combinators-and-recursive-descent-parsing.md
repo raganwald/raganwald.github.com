@@ -22,8 +22,60 @@ In this essay, we're going to take a closer look at this approach, starting with
 
 ---
 
-### ?
+### from recognizers to parsers
 
+The idea of embedding pattern matching in a language otherwise mostly concerned with imperative programming is not new, and neither is the idea of patterns being first-class entities in the language, or of composing patterns to create new patterns. Although all of these ideas have been recently popularized by the functional programming community in the form of [Parser Combinators], they were first introduced to mainstream programming by the [SNOBOL4] programming in 1967, over fifty years ago!
+
+[Parser Combinators]: https://en.wikipedia.org/wiki/Parser_combinator
+[SNOBOL4]: https://en.wikipedia.org/wiki/SNOBOL
+
+Because SNOBOL allowed patterns to be bound to names, and for patterns to be composed from other patterns, it was possible and in fact desirable to create self-referential patterns. As we briefly touched on earlier, self-referential patterns can recognize certain types of strings that standard regular expressions cannot recognize.
+
+Our pattern matchers have a similar quality, however they were written to solve a single problem--recognizing a particular type of string--and SNOBOL patterns can do so much more. In one area, so can regular expressions. Consider, for example, the problem of extracting data from strings. Both SNOBOL patterns and regular expressions allow us to name or otherwise reference subexpressions, and extract matching values from them, e.g.:
+
+```javascript
+const p = /^{(?<bracketed>.*)}$/;
+const matchData = p.exec('{my goodness}');
+const bracketed = matchData && matchData.groups.bracketed;
+
+bracketed
+  // 'my goodness'
+```
+
+Once we go beyond simply recognizing whether a string matches certain rules or not, to inspecting its structure and extracting values, we have transitioned from writing _recognizers_ to writing _parsers_. Sounds like fun, let's have at it!
+
+---
+
+### parsers, from the beginning
+
+When we started writing pattern matchers, we started with:
+
+```javascript
+const just =
+  target =>
+    input =>
+      input.startsWith(target) &&
+      target;
+```
+
+Note that `just` expects to match a string, from the beginning. This was simple to understand, but a consequence of this design choice was that when we wrote our  "pattern combinators," we were obliged to do a lot of string slicing. That's a performance problem, and it also doesn't generalize very well.
+
+Let's rewrite it in a more flexible way;
+
+```javascript
+const just =
+  target =>
+    (input, cursor = 0) => {
+      let newCursor = cursor;
+
+      for (let iTarget = 0; i < iTarget.length; ++i, ++newCursor) {
+        if (newCursor >= input.length) return false;
+        if (input[newCursor] !== target[newCursor]) return false;
+      }
+
+      return newCursor;
+    }
+```
 
 
 ---
