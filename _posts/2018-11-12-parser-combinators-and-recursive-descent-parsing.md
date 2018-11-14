@@ -68,14 +68,45 @@ const just =
     (input, cursor = 0) => {
       let newCursor = cursor;
 
-      for (let iTarget = 0; i < iTarget.length; ++i, ++newCursor) {
+      for (let iTarget = 0; iTarget < target.length; ++iTarget, ++newCursor) {
         if (newCursor >= input.length) return false;
-        if (input[newCursor] !== target[newCursor]) return false;
+        if (input[newCursor] !== target[iTarget]) return false;
       }
 
-      return newCursor;
-    }
+      return [target, newCursor];
+    };
+
+just('foo')('snafu')
+  //=> false
+
+just('foo')('foobar')
+  //=> ['foo', 3]
 ```
+
+Now we have a new protocol: We keep track of where we are with a `cursor`, and when we find a match, we return a tuple of the matched substring and an updated cursor. We can recreate our combinators to work with cursors, like this:
+
+```javascript
+const follows =
+  (...patterns) =>
+    (input, originalCursor) => {
+      let cursor = originalCursor;
+
+      for (const pattern of patterns) {
+        const matched = pattern(input, cursor);
+
+        if (matched === false) return false;
+
+        const [, newCursor] = matched;
+        cursor = newCursor;
+      }
+
+      return [input.slice(originalCursor, cursor), cursor];
+    };
+
+follows(just('fu'), just('bar'))('fubar is the last thing anybody wants to hear.')
+  //=> ['fubar', 5]
+```
+
 
 
 ---
