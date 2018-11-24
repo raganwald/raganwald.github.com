@@ -18,7 +18,7 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 * books: <a href="https://leanpub.com/u/raganwald/">https://leanpub.com/u/raganwald/</a>
 * talks: <a href="http://braythwayt.com/talks.html">http://braythwayt.com/talks.html</a>
 
-<p>🆕 I'm working on a new book, <a href="https://leanpub.com/recursion">Functions all the way down</a>, a recreational exploration of recursion <i>...in JavaScript</i>. <a href="https://leanpub.com/recursion">Sign up here</a> to be notified when it's available to read online for free.</p>
+<p>🆕 I'm working on a new book, <a href="https://leanpub.com/recursion"><strong>Functions all the way down</strong></a>, a recreational exploration of recursion <i>...in JavaScript</i>. <a href="https://leanpub.com/recursion">Sign up here</a> to be notified when it's available to read online for free.</p>
 
 ---
 
