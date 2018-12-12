@@ -4,4 +4,4 @@ This is the full source for [raganwald.com]. Individual posts are in the `_posts
 
 [raganwald.com]: http://raganwald.com "Reg Braithwaite's Technical Blog"
 
-Pull requests and issues are welcome!
+Pull requests are welcome!
