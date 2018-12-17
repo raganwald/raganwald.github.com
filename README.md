@@ -4,4 +4,4 @@ This is the `jekyll/markdown` source for [raganwald.com]. Individual essays are 
 
 [raganwald.com]: http://raganwald.com "Reg Braithwaite's Blog"
 
-Pull requests are welcome!
+Pull requests are welcome.
