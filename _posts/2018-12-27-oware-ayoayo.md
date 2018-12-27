@@ -16,7 +16,7 @@ tags: [recursion,allonge,noindex]
 
 ### ayoayo
 
-The Yoruba people of Nigeria call their version of the game [**Ayoayo**]. Ayoayo is played on the most common layout, a board with two rows of six pits. Many boards also provide with a pit on each side of the board for "captured" seeds, but this is optional.
+The Yoruba people of Nigeria call their version of the game **[Ayoayo]**. Ayoayo is played on the most common layout, a board with two rows of six pits. Many boards also provide with a pit on each side of the board for "captured" seeds, but this is optional.
 
 [Ayoayo]: https://en.wikipedia.org/wiki/Ayoayo
 
