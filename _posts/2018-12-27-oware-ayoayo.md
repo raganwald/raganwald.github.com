@@ -3,7 +3,7 @@ title: "Playing Ayoayo/Oware in JavaScript"
 tags: [recursion,allonge,noindex]
 ---
 
-[![]()](https://www.flickr.com/photos/candiedwomanire/104320826)
+[![Natural Mancala Game](/assets/images/ayoayo/1.jpg)](https://www.flickr.com/photos/candiedwomanire/104320826)
 
 > [Oware] is an abstract strategy game among the [Mancala] family of board games (pit and pebble games) played worldwide with slight variations as to the layout of the game, number of players and strategy of play. Its origin is uncertain[2] but it is widely believed to be of Ashanti origin. Played in the Ashanti Region and throughout the Caribbean, Oware and its variants have many names.
 
@@ -12,7 +12,7 @@ tags: [recursion,allonge,noindex]
 
 ---
 
-[![Mancala / Awale](https://www.flickr.com/photos/elpadawan/8479297425)](https://www.flickr.com/photos/elpadawan/8479297425/)
+[![Mancala / Awale](/assets/images/ayoayo/2.jpg)](https://www.flickr.com/photos/elpadawan/8479297425/)
 
 ### ayoayo
 
