@@ -20,7 +20,7 @@ The Yoruba people of Nigeria call their version of the game **[Ayoayo]**. Ayoayo
 
 [Ayoayo]: https://en.wikipedia.org/wiki/Ayoayo
 
-The players face each other with the board between them, such that each player has a row of six pits in front of them. These pits "belong" to that player. If extra pits are provided for captured seeds, each player takes one for themselves, but the extra pits are not in play. (In some other games in the same family, pits for captured stones are used in play.)
+The players face each other with the board between them, such that each player has a row of six pits in front of them. These pits "belong" to that player. If extra pits are provided for captured seeds, each player takes one for themselves, but the extra pits are not in play. (In some other games in the same family, pits for captured seeds are used in play.)
 
 We've mentioned capturing seeds several times, and for good reason: The game play consists of capturing seeds, and when the game is completed, the player who has captured the most seeds, wins.
 
@@ -106,29 +106,39 @@ And after sowing once, it looks like this:
 
 ![position after sowing from position zero](/assets/images/ayoayo/5.jpg)
 
-Our hands and program agree!
-
-We can write a little loop to keep on sowing until the last seed lands in an empty pit, ignoring position `0`, since that's where we started:
+Now, there were five seeds in the last pit. If there are two or more seeds in the last pit, it wasn't empty before we sowed the last seed into it. So when relay sowing, we'd sow again, only this time we'll tell our function to keep ignoring pit `0`, like this:
 
 ```javascript
-const startPit = 0;
-let pitToSow = startPit;
-let pitsInLastPit;
+sow(4, 0)
+  //=> [9, 5]
+```
 
-do {
-  [pitToSow, pitsInLastPit] = sow(pitToSow, startPit);
-} while (pitsInLastPit > 1)
+Five seeds in the last pit, Let's do it again:
 
-let lastPit = pitToSow;
+```javascript
+sow(9, 0)
+  //=> [3, 6]
+```
 
-lastPit
-  //=> 9
+Six seeds! Again:
+
+```javascript
+sow(6, 0)
+  //=> [9, 1]
+
 pits
   //=> [0, 6, 6, 0, 1, 6, 6, 6, 6, 1, 5, 5]
 ```
 
-Let's try it by hand, remembering to skip pit `0`:
+Aha, we're done. Let's try it by hand,  remembering to skip pit `0`, and compare:
 
 ![position after relay sowing from position zero](/assets/images/ayoayo/6.jpg)
 
-Our hands and code agree again!
+
+We're off to a reasonable start.
+
+---
+
+[![The boardgame they are playing is a game in the mancala family called Toghiz Qumalaq (Тоғыз құмалақ), which roughly translates as "nine pieces of sheep shit."](/assets/images/ayoayo/toghiz-qumalaq.jpg)](https://www.flickr.com/photos/upyernoz/5662602383)
+
+### some practical considerations
