@@ -1,11 +1,13 @@
 ---
-title: "Playing Ayoayo/Oware in JavaScript"
+title: "Playing Ayoayo"
 tags: [recursion,allonge,noindex]
 ---
 
 [![Natural Mancala Game](/assets/images/ayoayo/1.jpg)](https://www.flickr.com/photos/candiedwomanire/104320826)
 
-> [Oware] is an abstract strategy game among the [Mancala] family of board games (pit and pebble games) played worldwide with slight variations as to the layout of the game, number of players and strategy of play. Its origin is uncertain[2] but it is widely believed to be of Ashanti origin. Played in the Ashanti Region and throughout the Caribbean, Oware and its variants have many names.
+> [Oware] is an abstract strategy game among the [Mancala] family of board games (pit and pebble games) played worldwide with slight variations as to the layout of the game, number of players and strategy of play.
+>
+> Its origin is uncertain, but it is widely believed to be of Ashanti origin. Played in the Ashanti Region and throughout the Caribbean, Oware and its variants have many names.
 
 [Oware]: https://en.wikipedia.org/wiki/Oware
 [Mancala]: https://en.wikipedia.org/wiki/Mancala
@@ -16,7 +18,7 @@ tags: [recursion,allonge,noindex]
 
 ### ayoayo
 
-The Yoruba people of Nigeria call their version of the game **[Ayoayo]**. Ayoayo is played on the most common layout, a board with two rows of six pits. Many boards also provide with a pit on each side of the board for "captured" seeds, but this is optional.
+The Yoruba people of Nigeria call their version of the game **[Ayoayo]**. Ayoayo is played on the most common layout, a board with two rows of six pits. Many boards also provide with a pit on each side of the board for "captured" seeds, but this is optional when playing Ayoayo.
 
 [Ayoayo]: https://en.wikipedia.org/wiki/Ayoayo
 
