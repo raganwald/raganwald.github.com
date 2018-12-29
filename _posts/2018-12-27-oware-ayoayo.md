@@ -20,13 +20,13 @@ The Yoruba people of Nigeria call their version of the game **[Ayoayo]**. Ayoayo
 
 [Ayoayo]: https://en.wikipedia.org/wiki/Ayoayo
 
-The players face each other with the board between them, such that each player has a row of six pits in front of them. These pits "belong" to that player. If an extra pit is provided for captured seeds, each player takes one for themselves. If nbot, captured seeds are placed in front of the player who captured them.
+The players face each other with the board between them, such that each player has a row of six pits in front of them. These pits "belong" to that player. If extra pits are provided for captured seeds, each player takes one for themselves, but the extra pits are not in play. (In some other games in the same family, pits for captured stones are used in play.)
 
-We've mentioned capturing seeds several times, and for good reason: The game play consists of caturing seeds, and when the game is completed, the player who has captured the most seeds, wins.
+We've mentioned capturing seeds several times, and for good reason: The game play consists of capturing seeds, and when the game is completed, the player who has captured the most seeds, wins.
 
 The rules are simple:
 
-The game begins with four seeds in each of the twelve pits. Thus, the game requires 48 seeds. Pebbles, marbles, or even lego pieces can be used to represent the seeds. A wooden board is nice, but pits can be scooped out of earth or sand to make a board. This extreme simplicity is part of the game's charm, much as tic-tac-toe's popularity stems in prt from the fact that you can play a game with little more than a stick and a piece of flat earth.
+The game begins with four seeds in each of the twelve pits. Thus, the game requires 48 seeds. Pebbles, marbles, or even lego pieces can be used to represent the seeds. A wooden board is nice, but pits can be scooped out of earth or sand to make a board. This extreme simplicity is part of the game's charm, much as tic-tac-toe's popularity stems in part from the fact that you can play a game with little more than a stick and a piece of flat earth.
 
 The players alternate turns, as in may games.
 
@@ -39,9 +39,9 @@ The players alternate turns, as in may games.
 - They always skip the starting pit on their row.
 - The sowing pauses when they have sowed the last seed in their hand.
 
-*If the last seed lands in a pit on either sde of the board that contains one or more seeds, they scoop the seeds up (including that last seed), and continue sowing. They continue to skip their original starting pit only, but can sow into any pits that get scooped up in this manner. This is called **relay sowing**.*
+*If the last seed lands in a pit on either side of the board that contains one or more seeds, they scoop the seeds up (including that last seed), and continue sowing. They continue to skip their original starting pit only, but can sow into any pits that get scooped up in this manner. This is called **relay sowing**.*
 
-*If the last seed lands in an empty pit, the player "captures" any seeds that are in the pit on the opposite side of the board from their last pit.*
+*If the last seed lands in an empty pit **on that player's own side**, the player "captures" any seeds that are in the pit on the opponent's side of the board from their last pit.*
 
 *If a player has no move on their turn, the game ends, and their opponent captures any remaining seeds (which will--of course--be on their side)*.
 
@@ -63,5 +63,72 @@ We'll associate the elements of the array with the pits belonging to the players
 
 [![Associating array elements with pits](/assets/images/ayoayo/3.jpg)](https://www.flickr.com/photos/narasclicks/4654106883/)
 
-There are lots of places to go from here, but for the sake of argument, let's begin with a function that scoops any pit and sows the seeds counter-clockwise.
+There are lots of places to go from here, but for the sake of argument, let's begin with a function that scoops any pit and sows the seeds counter-clockwise. In Ayoayo, a full turn involves relay sowing as described above:
 
+> When relay sowing, if the last seed during sowing lands in an occupied hole, all the contents of that hole, including the last sown seed, are immediately re-sown from the hole.
+
+The other kind of sowing, as used in other games from the same family, is just called _sowing_. The sowing stops when the last seed is sown, regardless of whether the last seed lands in an occupied or unoccupied pit. It's fairly obvious that if we make a function for sowing, we can use that to make a function for relay sowing, so let's start with a sowing function:
+
+```javascript
+function sow(fromPit, skipPit = fromPit) {
+  // empty the pit into the hand
+  let seedsInHand = pits[fromPit];
+  pits[fromPit] = 0;
+
+  // an unexpected condition
+  if (seedsInHand === 0) return;
+
+  // let's go!
+  let pitToSow = fromPit;
+
+  while (seedsInHand > 0) {
+    pitToSow = ++pitToSow % pits.length;
+    if (pitToSow === skipPit) continue;
+
+    ++pits[pitToSow];
+    --seedsInHand;
+  }
+
+  return [pitToSow, pits[pitToSow]];
+}
+
+sow(0)
+  //=> [4, 5]
+pits
+  //=> [0, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4]
+```
+
+We can test it by hand. We start with the board looking like this:
+
+![initial position](/assets/images/ayoayo/4.jpg)
+
+And after sowing once, it looks like this:
+
+![position after sowing from position zero](/assets/images/ayoayo/5.jpg)
+
+Our hands and program agree!
+
+We can write a little loop to keep on sowing until the last seed lands in an empty pit, ignoring position `0`, since that's where we started:
+
+```javascript
+const startPit = 0;
+let pitToSow = startPit;
+let pitsInLastPit;
+
+do {
+  [pitToSow, pitsInLastPit] = sow(pitToSow, startPit);
+} while (pitsInLastPit > 1)
+
+let lastPit = pitToSow;
+
+lastPit
+  //=> 9
+pits
+  //=> [0, 6, 6, 0, 1, 6, 6, 6, 6, 1, 5, 5]
+```
+
+Let's try it by hand, remembering to skip pit `0`:
+
+![position after relay sowing from position zero](/assets/images/ayoayo/6.jpg)
+
+Our hands and code agree again!
