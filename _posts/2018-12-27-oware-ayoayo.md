@@ -28,9 +28,9 @@ We've mentioned capturing seeds several times, and for good reason: The game pla
 
 The rules are simple:
 
-The game begins with four seeds in each of the twelve pits. Thus, the game requires 48 seeds. Pebbles, marbles, or even lego pieces can be used to represent the seeds. A wooden board is nice, but pits can be scooped out of earth or sand to make a board. This extreme simplicity is part of the game's charm, much as tic-tac-toe's popularity stems in part from the fact that you can play a game with little more than a stick and a piece of flat earth.
+*The game begins with four seeds in each of the twelve pits. Thus, the game requires 48 seeds. Pebbles, marbles, or even lego pieces can be used to represent the seeds. A wooden board is nice, but pits can be scooped out of earth or sand to make a board. This extreme simplicity is part of the game's charm, much as tic-tac-toe's popularity stems in part from the fact that you can play a game with little more than a stick and a piece of flat earth.*
 
-The players alternate turns, as in may games.
+*The players alternate turns, as in may games.*
 
 *On a player's turn, they select one of their pits to "sow." There are some exceptions listed below, but in general if the player has more than one pit with seeds, they may select which one to sow. There are many variations on rules for how to sow the seeds amongst the Mancala family of games, but in Ayoayo, sowing works like this:*
 
@@ -141,6 +141,36 @@ We're off to a reasonable start.
 
 ---
 
-[![The boardgame they are playing is a game in the mancala family called Toghiz Qumalaq (Тоғыз құмалақ), which roughly translates as "nine pieces of sheep shit."](/assets/images/ayoayo/toghiz-qumalaq.jpg)](https://www.flickr.com/photos/upyernoz/5662602383)
+[![Toghiz Qumalaq](/assets/images/ayoayo/toghiz-qumalaq.jpg)](https://www.flickr.com/photos/upyernoz/5662602383)
 
-### some practical considerations
+*[Toguz korgool](https://en.wikipedia.org/wiki/Toguz_korgol) (Kyrgyz: тогуз коргоол - "nine sheep droppings") or toguz kumalak/toghiz qumalaq (Kazakh: тоғыз құмалақ), is a two-player game in the mancala family that is played in Central Asia.*
+
+### a most practical consideration
+
+Let's look at our calls to `sow` again:
+
+```javascript
+sow(0)
+sow(4, 0)
+sow(9, 0)
+sow(6, 0)
+ ```
+
+Shall we try it again?
+
+```javascript
+sow(0)
+  //=> undefined
+```
+
+D'oh! We forgot to reset the board. Our `sow` function relies upon a mutable value from outside of its body--`pits`--and indeed it mutates that value by changing the contents of the array. Thus, when you invoke `sow`, you don't know what you're going to get unless you already know the state of `pits`.
+
+We say that `sow` is *coupled* to `pits`. In order to test `sow`, we have to first carefully set up `pits` to align with our expectations. We see this kind of thing when writing production code for large systems: Many tests do more work setting up and tearing down all of the required initial conditions than they do actually testing functions and methods.
+
+So coupling a function to a mutable value requires us to keep track of that value in order to understand what `sow` will or won't do. That adds some complexity to understanding our system. And this coupling is *transitive*: Not only is `sow` coupled to `pits`, any other function we write that is coupled to `pits`, becomes coupled to `sow`. Running `sow` changes the behaviour of any  function coupled to `pits` because `sow` mutates `pits`.
+
+In fact, `sow` is coupled to itself! Even if we remember to correctly initialize `pits` before running `sow`, the order in which we invoke `sow` affects the results.
+
+Having a single variable, `pits` describing the state of the game in progress does feel intuitively sound. There is only one board in the game, and when we sow seeds, we change it. So why shouldn't we "model the real world accurately?"
+
+That question is easy to answer: I used to own a typewriter. It had no "undo." It had no "copy" or "paste," those functions were accomplished by making copies of pages and laboriously cutting sections of text out with an x-acto blade and gluing them onto other pieces of paper. The text editor I am using now is superior to my typewriter precisely because it does not insist on modelling the real world accurately.
