@@ -39,7 +39,7 @@ The players alternate turns, as in may games.
 - They always skip the starting pit on their row.
 - The sowing pauses when they have sowed the last seed in their hand.
 
-*If the last seed lands in a pit on either sde of the board that contains one or more seeds, they scoop the seeds up (including that last seed), and continue sowing. They continue to skip their original starting pit only, but can sow into any pits that get scooped up in this manner.*
+*If the last seed lands in a pit on either sde of the board that contains one or more seeds, they scoop the seeds up (including that last seed), and continue sowing. They continue to skip their original starting pit only, but can sow into any pits that get scooped up in this manner. This is called **relay sowing**.*
 
 *If the last seed lands in an empty pit, the player "captures" any seeds that are in the pit on the opposite side of the board from their last pit.*
 
@@ -47,11 +47,21 @@ The players alternate turns, as in may games.
 
 *If a player is able to make a move that leaves their opponent with one or more moves to make, they must make a move that leaves their opponent with one or more moves to make. If a player has several such moves (as is usually the case), the player may choose which move to make.*
 
-If we were going to make an Ayoayo program, what sort of functions would we need?
+If we were going to make an Ayoayo program, where would we start?
 
 ---
 
-### functional ayoayo
+### the first attempt at ayoayo
 
-[ja]: https://leanpub.com/javascriptallongesix
+Let's start with a simple idea: We'll have to represent the state of the game. We could use an array for the twelve pits of the game, with an integer representing the number of seeds in that put. We'll initialize it with four seeds in each pit:
+
+```javascript
+const pits = Array(12).fill(4);
+```
+
+We'll associate the elements of the array with the pits belonging to the players like this:
+
+[![Associating array elements with pits](/assets/images/ayoayo/3.jpg)](https://www.flickr.com/photos/narasclicks/4654106883/)
+
+There are lots of places to go from here, but for the sake of argument, let's begin with a function that scoops any pit and sows the seeds counter-clockwise.
 
