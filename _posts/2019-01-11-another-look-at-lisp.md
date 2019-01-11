@@ -45,7 +45,7 @@ oneToFive
   //=> [1,[2,[3,[4,[5,null]]]]]
 ```
 
-Notice that though JavaScript displays our list as if it is composed of arrays nested within each other like Russian Dolls, in reality the arrays refer to each other with references, so `[1,[2,[3,[4,[5,null]]]]]` is actually more like:
+Notice that though JavaScript displays our list as if it is composed of arrays nested within each other like Russian Dolls, in reality the arrays refer to each other with references, so `[1,[2,[3,[4,[5,null]]]]]` is our way to represent:
 
 <div class="mermaid">
   graph LR
@@ -60,6 +60,23 @@ Notice that though JavaScript displays our list as if it is composed of arrays n
     five-- car -->e["5"]
     five-- cdr -->null["fa:fa-ban null"];
 </div>
+
+
+This is a [Linked List](https://en.wikipedia.org/wiki/Linked_list), it's just that those early Lispers used the names `car` and `cdr` after the hardware instructions, whereas today we use words like `element` and `next`. But it works the same way: If we want the head of a list, we call `car` on it:
+
+```javascript
+car(oneToFive)
+  //=> 1
+```
+
+`car` is very fast, it simply extracts the first element of the cons cell. And what about the rest of the list? `cdr` does the trick:
+
+```javascript
+cdr(oneToFive)
+  //=> [2,[3,[4,[5,null]]]]
+```
+
+That's another linked list too:
 
 ---
 
