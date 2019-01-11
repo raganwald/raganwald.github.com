@@ -4,6 +4,49 @@ title: "Another Look at Lisp"
 tags: [allonge, recursion, mermaid]
 ---
 
+![The IBM 704](/assets/images/IBM704.jpg)
+
+---
+
+###  wherein we travel back in time to the dawn of functional programming
+
+Once upon a time, there was a programming language called [Lisp], an acronym for LISt Processing.[^lisp] Lisp was one of the very first high-level languages, the very first implementation was written for the [IBM 704] computer. (The very first FORTRAN implementation was also written for the 704).
+
+[Lisp]: https://en.wikipedia.org/wiki/Lisp_(programming_language)
+[IBM 704]: https://en.wikipedia.org/wiki/IBM_704
+[^lisp]: Lisp is still very much alive, and one of the most interesting and exciting programming languages in use today is [Clojure](http://clojure.org/), a Lisp dialect that runs on the JVM, along with its sibling [ClojureScript](https://github.com/clojure/clojurescript), Clojure that transpiles to JavaScript.
+
+The 704 had a 36-bit word, meaning that it was very fast to store and retrieve 36-bit values. The CPU's instruction set featured two important macros: `CAR` would fetch 15 bits representing the Contents of the Address part of the Register, while `CDR` would fetch the Contents of the Decrement part of the Register.
+
+In broad terms, this means that a single 36-bit word could store two separate 15-bit values and it was very fast to save and retrieve pairs of values. If you had two 15-bit values and wished to write them to the register, the `CONS` macro would take the values and write them to a 36-bit word.
+
+Thus, `CONS` put two values together, `CAR` extracted one, and `CDR` extracted the other. Lisp's basic data type is often said to be the list, but in actuality it was the "cons cell," the term used to describe two 15-bit values stored in one word. The 15-bit values were used as pointers that could refer to a location in memory, so in effect, a [cons cell][cons] was a little data structure with two pointers to other cons cells.
+
+[cons]: https://en.wikipedia.org/wiki/cons
+
+Lists were represented as linked lists of cons cells, with each cell's head pointing to an element and the tail pointing to another cons cell.
+
+> Having these instructions be very fast was important to those early designers: They were working on one of the first high-level languages (COBOL and FORTRAN being the others), and computers in the late 1950s were extremely small and slow by today's standards. Although the 704 used core memory, it still used vacuum tubes for its logic. Thus, the design of programming languages and algorithms was driven by what could be accomplished with limited memory and performance.
+
+Here's the scheme in JavaScript, using two-element arrays to represent cons cells:
+
+```javascript
+const cons = (a, d) => [a, d],
+      car  = ([a, d]) => a,
+      cdr  = ([a, d]) => d;
+```
+
+We can make a list by calling `cons` repeatedly, and terminating it with `null`:
+
+```javascript
+const oneToFive = cons(1, cons(2, cons(3, cons(4, cons(5, null)))));
+
+oneToFive
+  //=> [1,[2,[3,[4,[5,null]]]]]
+```
+
+Notice that though JavaScript displays our list as if it is composed of arrays nested within each other like Russian Dolls, in reality the arrays refer to each other with references, so `[1,[2,[3,[4,[5,null]]]]]` is actually more like:
+
 ---
 
 [![Symbolics "old style" keyboard](/assets/images/ayoayo/symbolics.jpg)](https://www.flickr.com/photos/mrbill/5336327890)
