@@ -37,7 +37,7 @@ Cons cells were used to make [linked lists][ll], so a list that we'd represent i
     two-- car -->b
     two-- cdr -->three(( ))
     three-- car -->c
-    three-- cdr -->null
+    three-- cdr -->null["fa:fa-ban null"]
 </div>
 
 [^well-actually-diagrams]: Well, actually, they used a slightly different kind of diagram to notate the relationship between cons cells,. They were little rectangles divided in half vertically, with the left-hand side the `car`, and the right-hand side the `cdr`, and they'd use a diagonal slash to denote `null`. But the diagramming tool I use for this blog doesn't do that, so let's move on. \
@@ -55,7 +55,7 @@ What about the rest of the list? Well, if we take the `cdr` of the list, we get:
     two(( ))-- car -->b
     two-- cdr -->three(( ))
     three-- car -->c
-    three-- cdr -->null
+    three-- cdr -->null["fa:fa-ban null"]
 </div>
 
 
