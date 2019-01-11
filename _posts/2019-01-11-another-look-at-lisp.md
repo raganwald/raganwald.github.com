@@ -184,7 +184,7 @@ at(oneToFive, 4)
   //=> 5
 ```
 
-Accessing arbitray elements of a linked list is the S"hlemiel The Painter" of the Computer Science universe:
+Accessing arbitray elements of a linked list is the "Shlemiel The Painter" of Computer Science:
 
 > Shlemiel gets a job as a street painter, painting the dotted lines down the middle of the road. On the first day he takes a can of paint out to the road and finishes 300 yards of the road. "That's pretty good!" says his boss, "you're a fast worker!" and pays him a kopeck.
 >
