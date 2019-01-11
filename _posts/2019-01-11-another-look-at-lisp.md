@@ -78,6 +78,22 @@ cdr(oneToFive)
 
 That's another linked list too:
 
+<div class="mermaid">
+  graph LR
+    two(( ))-- car -->b["2"]
+    two-- cdr -->three(( ))
+    three-- car -->c["3"]
+    three-- cdr -->four(( ))
+    four-- car -->d["4"]
+    four-- cdr -->five(( ))
+    five-- car -->e["5"]
+    five-- cdr -->null["fa:fa-ban null"];
+</div>
+
+Again, it's just extracting a reference from a cons cell, it's very fast. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed. In JavaScript, it's still much, much, much faster to get all the elements except the head from a linked list than from an array. Getting one reference to a structure that already exists is faster than copying a bunch of elements.
+
+So now we understand that in Lisp, a lot of things use linked lists, and they do that in part because it was what the hardware made possible.
+
 ---
 
 [![Symbolics "old style" keyboard](/assets/images/ayoayo/symbolics.jpg)](https://www.flickr.com/photos/mrbill/5336327890)
