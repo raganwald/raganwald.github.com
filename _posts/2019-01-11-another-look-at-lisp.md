@@ -4,105 +4,11 @@ title: "Another Look at Lisp"
 tags: [allonge, recursion, mermaid]
 ---
 
-[![Symbolics "old style" keyboard](/assets/images/ayoayo/symbolics.jpg)](https://www.flickr.com/photos/mrbill/5336327890)
-
-*[Symbolics, Inc.][Symbolics] was a computer manufacturer headquartered in Cambridge, Massachusetts, and later in Concord, Massachusetts, with manufacturing facilities in Chatsworth, California. Symbolics designed and manufactured a line of Lisp machines, single-user computers optimized to run the Lisp programming language.*
-
-[Symbolics]: https://en.wikipedia.org/wiki/Symbolics
+![The IBM 704](/assets/images/IBM704.jpg)
 
 ---
 
 ###  wherein we travel back in time to the dawn of functional programming
-
-A very long time ago, many of the functional tools we take for granted today--like `map` and `filter` functions--were first being explored with the [Lisp] programming language.
-
-[Lisp]: https://en.wikipedia.org/wiki/Lisp_(programming_language)
-
-Lisp grew to have a rich set of high-performance datatypes, but in its earliest incarnations, most of its data was built around something called a [cons] cell. A cons cell was a place in memory big enough to hold two pointers. The underlying hardware was such that operations on cons cells were very fast.
-
-[cons]: https://en.wikipedia.org/wiki/cons
-
-Cons cells had two parts, an _address register_, and a _decrement register_. You created a cons cell by _cons-ing_ two values together. You could access the individual parts with two functions, `car` ("contents of address register"), and `cdr` ("contents of decrement register").
-
-"Lisp" was actually spelled LISP in those days, because it wasn't a word, it was an acronym. It stood for "LISt Processing," because the central idea in Lisp was the manipulation of lists. Lists were Lisp's primary data type.
-
-Cons cells were used to make [linked lists][ll], so a list that we'd represent in JavaScript as `['a', 'b', 'c']` would look like this in Lisp:[^well-actually-diagrams]
-
-[ll]: https://en.wikipedia.org/wiki/Linked_list
-
-<div class="mermaid">
-  graph LR
-    one(( ))-- car -->a
-    one-- cdr -->two(( ))
-    two-- car -->b
-    two-- cdr -->three(( ))
-    three-- car -->c
-    three-- cdr -->null["fa:fa-ban null"]
-</div>
-
-[^well-actually-diagrams]: Well, actually, they used a slightly different kind of diagram to notate the relationship between cons cells,. They were little rectangles divided in half vertically, with the left-hand side the `car`, and the right-hand side the `cdr`, and they'd use a diagonal slash to denote `null`. But the diagramming tool I use for this blog doesn't do that, so let's move on. \
-
-The last cons cell in the list would have `null` for its `cdr`, and `null` was a shorthand for the empty list.
-
-Now, because every list was a linked list by default, some things were very fast, and some not-so-much so. The fastest thing in the world was to separate a list into the first element and a list containing the rest of the elements. The first element was always the `car` of the list.
-
-In our diagram above, the `car` of the list is a pointer to the letter `a`.
-
-What about the rest of the list? Well, if we take the `cdr` of the list, we get:
-
-<div class="mermaid">
-  graph LR
-    two(( ))-- car -->b
-    two-- cdr -->three(( ))
-    three-- car -->c
-    three-- cdr -->null["fa:fa-ban null"]
-</div>
-
-
-
-Thus, it was ridiculously fast to separate a list into the first and rest. And it was equally fast to compose a list by cons-ing a new element with an existing list. And therefore, plenty of textbooks used ot describe recursive algorithms just like the one in `possibleMoves`.
-
-They were mathematically elegant **and** fast. But today, we are working with arrays. And when we write something like `first, ...rest] = moves`, the system makes a copy of the rest of the array. And later, when we write something like `[first].concat(possibleMoves(pits, rest))`, the system again makes copies of the arrays.
-
-We're only working with six elements at a time, so we can afford to chuckle at the performance implications. But the important takeaway here is not that those old algorithms were slow. They weren't. The important takeaway is that it is important to match algorithms to data structures, because what is fast with one data structure may be slow with another.
-
-And most importantly, if there are two ways to do something, and one is more elegant, it may be possible to find a data structure that makes the elegant approach fast. We should never rush to trade elegance for performance without further investigation.
-
-## Garbage, Garbage Everywhere
-
-![Garbage Day](/assets/images/garbage.jpg)
-
-We have now seen how to use [Tail Calls](#tail) to execute `mapWith` in constant space:
-
-```javascript
-const mapWith = (fn, [first, ...rest], prepend = []) =>
-  first === undefined
-    ? prepend
-    : mapWith(fn, rest, [...prepend, fn(first)]);
-
-mapWith((x) => x * x, [1, 2, 3, 4, 5])
-  //=> [1,4,9,16,25]
-```
-
-But when we try it on very large arrays, we discover that it is *still* very slow. Much slower than the built-in `.map` method for arrays. The right tool to discover why it's still slow is a memory profiler, but a simple inspection of the program will reveal the following:
-
-Every time we call `mapWith`, we're calling `[...prepend, fn(first)]`. To do that, we take the array in `prepend` and push `fn(first)` onto the end, creating a new array that will be passed to the next invocation of `mapWith`.
-
-Worse, the JavaScript Engine actually copies the elements from `prepend` into the new array one at a time. That is very laborious.[^cow]
-
-[^cow]: It needn't always be so: Programmers have developed specialized data structures that make operations like this cheap, often by arranging for structures to share common elements by default, and only making copies when changes are made. But this is not how JavaScript's built-in arrays work.
-
-The array we had in `prepend` is no longer used. In GC environments, it is marked as no longer being used, and eventually the garbage collector recycles the memory it is using. Lather, rinse, repeat: Ever time we call `mapWith`, we're creating a new array, copying all the elements from `prepend` into the new array, and then we no longer use `prepend`.
-
-We may not be creating 3,000 stack frames, but we are creating three thousand new arrays and copying elements into each and every one of them. Although the maximum amount of memory does not grow, the thrashing as we create short-lived arrays is very bad, and we do a lot of work copying elements from one array to another.
-
-> **Key Point**: Our `[first, ...rest]` approach to recursion is slow because that it creates a lot of temporary arrays, and it spends an enormous amount of time copying elements into arrays that end up being discarded.
-
-So here's a question: If this is such a slow approach, why do some examples of "functional" algorithms work this exact way?
-
-![The IBM 704](/assets/images/IBM704.jpg)
-
-### some history
 
 Once upon a time, there was a programming language called [Lisp], an acronym for LISt Processing.[^lisp] Lisp was one of the very first high-level languages, the very first implementation was written for the [IBM 704] computer. (The very first FORTRAN implementation was also written for the 704).
 
@@ -139,26 +45,29 @@ oneToFive
 
 Notice that though JavaScript displays our list as if it is composed of arrays nested within each other like Russian Dolls, in reality the arrays refer to each other with references, so `[1,[2,[3,[4,[5,null]]]]]` is actually more like:
 
-```javascript
-const node5 = [5,null],
-      node4 = [4, node5],
-      node3 = [3, node4],
-      node2 = [2, node3],
-      node1 = [1, node2];
+<div class="mermaid">
+  graph LR
+    one(( ))-- car -->a["1"]
+    one-- cdr -->two(( ))
+    two-- car -->b["2"]
+    two-- cdr -->three(( ))
+    three-- car -->c["3"]
+    three-- cdr -->four(( ))
+    four-- car -->d["4"]
+    four-- cdr -->five(( ))
+    five-- car -->e["5"]
+    five-- cdr -->null["fa:fa-ban null"]
+</div>
 
-const oneToFive = node1;
-```
 
-This is a [Linked List](https://en.wikipedia.org/wiki/Linked_list), it's just that those early Lispers used the names `car` and `cdr` after the hardware instructions, whereas today we use words like `data` and `reference`. But it works the same way: If we want the head of a list, we call `car` on it:
+This is a [Linked List](https://en.wikipedia.org/wiki/Linked_list), it's just that those early Lispers used the names `car` and `cdr` after the hardware instructions, whereas today we use words like `element` and `next`. But it works the same way: If we want the head of a list, we call `car` on it:
 
 ```javascript
 car(oneToFive)
   //=> 1
 ```
 
-`car` is very fast, it simply extracts the first element of the cons cell.
-
-But what about the rest of the list? `cdr` does the trick:
+`car` is very fast, it simply extracts the first element of the cons cell. And what about the rest of the list? `cdr` does the trick:
 
 ```javascript
 cdr(oneToFive)
@@ -184,6 +93,155 @@ We have avoided discussing rebinding and mutating values, but if we want to chan
 Arrays avoid this problem by pessimistically copying all the references whenever we extract an element or sequence of elements from them.
 
 For these and other reasons, almost all languages today make it possible to use a fast array or vector type that is optimized for iteration, and even Lisp now has a variety of data structures that are optimized for specific use cases.
+
+[![Symbolics "old style" keyboard](/assets/images/ayoayo/symbolics.jpg)](https://www.flickr.com/photos/mrbill/5336327890)
+
+*[Symbolics, Inc.][Symbolics] was a computer manufacturer headquartered in Cambridge, Massachusetts, and later in Concord, Massachusetts, with manufacturing facilities in Chatsworth, California. Symbolics designed and manufactured a line of Lisp machines, single-user computers optimized to run the Lisp programming language.*
+
+[Symbolics]: https://en.wikipedia.org/wiki/Symbolics
+
+---
+
+###  wherein we travel back in time to the dawn of functional programming
+
+A very long time ago, many of the functional tools we take for granted today--like `map` and `filter` functions--were first being explored with the [Lisp] programming language.
+
+[Lisp]: https://en.wikipedia.org/wiki/Lisp_(programming_language)
+
+Lisp grew to have a rich set of high-performance datatypes, but in its earliest incarnations, most of its data was built around something called a [cons] cell. A cons cell was a place in memory big enough to hold two pointers. The underlying hardware was such that operations on cons cells were very fast.
+
+[cons]: https://en.wikipedia.org/wiki/cons
+
+Cons cells had two parts, an _address register_, and a _decrement register_. You created a cons cell by _cons-ing_ two values together. You could access the individual parts with two functions, `car` ("contents of address register"), and `cdr` ("contents of decrement register").
+
+"Lisp" was actually spelled LISP in those days, because it wasn't a word, it was an acronym. It stood for "LISt Processing," because the central idea in Lisp was the manipulation of lists. Lists were Lisp's primary data type.
+
+Cons cells were used to make [linked lists][ll], so a list that we'd represent in JavaScript as `[1, 2, 3]` would look like this in Lisp:[^well-actually-diagrams]
+
+[ll]: https://en.wikipedia.org/wiki/Linked_list
+
+<div class="mermaid">
+  graph LR
+    one(( ))-- car -->a["1"]
+    one-- cdr -->two(( ))
+    two-- car -->b["2"]
+    two-- cdr -->three(( ))
+    three-- car -->c["3"]
+    three-- cdr -->null["fa:fa-ban null"]
+</div>
+
+[^well-actually-diagrams]: Well, actually, they used a slightly different kind of diagram to notate the relationship between cons cells,. They were little rectangles divided in half vertically, with the left-hand side the `car`, and the right-hand side the `cdr`, and they'd use a diagonal slash to denote `null`. But the diagramming tool I use for this blog doesn't do that, so let's move on.
+
+The last cons cell in the list would have `null` for its `cdr`, and `null` was a shorthand for the empty list.
+
+Now, because every list was a linked list by default, some things were very fast, and some not-so-much so. The fastest thing in the world was to separate a list into the first element and a list containing the rest of the elements. The first element was always the `car` of the list. In our diagram above, the `car` of the list is `1`.
+
+What about the rest of the list? Well, if we take the `cdr` of the list, we get:
+
+<div class="mermaid">
+  graph LR
+    two(( ))-- car -->b["2"]
+    two-- cdr -->three(( ))
+    three-- car -->c["3"]
+    three-- cdr -->null["fa:fa-ban null"]
+</div>
+
+That's a list containing `2` and `3`. So in Lisp, it was always fast to get the first element of a list and the rest of a list. Now, you could get any element of a list by traversing the list pointer by pointer. So if you wanted to do something with a list, like sum the elements of a list, you'd write a linearly recursive function like this:
+
+```javascript
+function sum (list, acc = 0) {
+  if (list == null) {
+    return acc;
+  } else {
+    const { car: first, cdr: rest } = list;
+
+    return sum(rest, acc + first);
+  }
+}
+
+const oneTwoThree = {
+  car: 1,
+  cdr: {
+    car: 2,
+    cdr: {
+      car: 3,
+      cdr: null
+    }
+  }
+};
+
+sum(oneTwoThree)
+  //=> 6
+```
+
+We've put it in slightly more idiomatic JavaScript by using a plain-old-JavaScript-object instead of a cons cell, and using fancy destructuring instead of a `car` and `cdr` function, but if we ignore the fact that the original cons cells were many many orders of magnitude faster than using objects with properties, we have the general idea:
+
+It was ridiculously fast to separate a list into the `first` and `rest`, and as a result, many linear algorithms that operated on lisps were organized around repeatedly (by recursion or looping) getting the first and rest of a list.
+
+## Garbage, Garbage Everywhere
+
+![Garbage Day](/assets/images/garbage.jpg)
+
+But what about today's JavaScript? Today, we can write a list with an array. And we can get the `first` and `rest` with destructuring:
+
+```javascript
+function sum (list, acc = 0) {
+  if (list.length === 0) {
+    return acc;
+  } else {
+    const [first, ...rest] = list;
+
+    return sum(rest, acc + first);
+  }
+}
+
+const oneTwoThree = [1, 2, 3];
+
+sum(oneTwoThree)
+  //=> 6
+```
+
+This is easier on the eyes, and just as mathematically elegant. But today, when we write something like `[first, ...rest] = list`, it's very fast to get `first`. But for `rest`, the system calls `.slice(1)`. That makes a new array that is a copy of the old array, omitting element `0`. That is much slower, and since these copies are temporary, hammers away at the garbage collector.
+
+We're only working with three elements at a time, so we can afford to chuckle at the performance implications. But the important takeaway is that it is important to match algorithms to data structures, because what is fast with one data structure may be slow with another.
+
+What is fast with a linked list is slow with an array.
+
+And most importantly, if there are two ways to do something, and one is more elegant, it may be possible to find a data structure that makes the elegant approach fast. We should never rush to trade elegance for performance without further investigation.
+
+
+
+We have now seen how to use [Tail Calls](#tail) to execute `mapWith` in constant space:
+
+```javascript
+const mapWith = (fn, [first, ...rest], prepend = []) =>
+  first === undefined
+    ? prepend
+    : mapWith(fn, rest, [...prepend, fn(first)]);
+
+mapWith((x) => x * x, [1, 2, 3, 4, 5])
+  //=> [1,4,9,16,25]
+```
+
+But when we try it on very large arrays, we discover that it is *still* very slow. Much slower than the built-in `.map` method for arrays. The right tool to discover why it's still slow is a memory profiler, but a simple inspection of the program will reveal the following:
+
+Every time we call `mapWith`, we're calling `[...prepend, fn(first)]`. To do that, we take the array in `prepend` and push `fn(first)` onto the end, creating a new array that will be passed to the next invocation of `mapWith`.
+
+Worse, the JavaScript Engine actually copies the elements from `prepend` into the new array one at a time. That is very laborious.[^cow]
+
+[^cow]: It needn't always be so: Programmers have developed specialized data structures that make operations like this cheap, often by arranging for structures to share common elements by default, and only making copies when changes are made. But this is not how JavaScript's built-in arrays work.
+
+The array we had in `prepend` is no longer used. In GC environments, it is marked as no longer being used, and eventually the garbage collector recycles the memory it is using. Lather, rinse, repeat: Ever time we call `mapWith`, we're creating a new array, copying all the elements from `prepend` into the new array, and then we no longer use `prepend`.
+
+We may not be creating 3,000 stack frames, but we are creating three thousand new arrays and copying elements into each and every one of them. Although the maximum amount of memory does not grow, the thrashing as we create short-lived arrays is very bad, and we do a lot of work copying elements from one array to another.
+
+> **Key Point**: Our `[first, ...rest]` approach to recursion is slow because that it creates a lot of temporary arrays, and it spends an enormous amount of time copying elements into arrays that end up being discarded.
+
+So here's a question: If this is such a slow approach, why do some examples of "functional" algorithms work this exact way?
+
+
+
+
 
 ### summary
 
