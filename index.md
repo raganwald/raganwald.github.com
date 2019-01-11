@@ -2,8 +2,8 @@
 title: Reginald Braithwaite
 layout: default
 tags: [allonge, recursion]
-years: ["2018", "2017", "2016", "2015", "2014", "2013"]
-older: ["2012", "2011", "2010", "2009", "2008"]
+years: ["2019", "2018", "2017", "2016", "2015", "2014"]
+older: ["2013", "2012", "2011", "2010", "2009", "2008"]
 ---
 
 *This is a repository of essays and presentations by [Reginald "Raganwald" Braithwaite](http://braythwayt.com)*
