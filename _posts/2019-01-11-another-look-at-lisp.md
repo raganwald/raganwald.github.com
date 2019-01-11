@@ -20,7 +20,9 @@ The 704 had a 36-bit word, meaning that it was very fast to store and retrieve 3
 
 In broad terms, this means that a single 36-bit word could store two separate 15-bit values and it was very fast to save and retrieve pairs of values. If you had two 15-bit values and wished to write them to the register, the `CONS` macro would take the values and write them to a 36-bit word.
 
-Thus, `CONS` put two values together, `CAR` extracted one, and `CDR` extracted the other. Lisp's basic data type is often said to be the list, but in actuality it was the "cons cell," the term used to describe two 15-bit values stored in one word. The 15-bit values were used as pointers that could refer to a location in memory, so in effect, a cons cell was a little data structure with two pointers to other cons cells.
+Thus, `CONS` put two values together, `CAR` extracted one, and `CDR` extracted the other. Lisp's basic data type is often said to be the list, but in actuality it was the "cons cell," the term used to describe two 15-bit values stored in one word. The 15-bit values were used as pointers that could refer to a location in memory, so in effect, a [cons cell][cons] was a little data structure with two pointers to other cons cells.
+
+[cons]: https://en.wikipedia.org/wiki/cons
 
 Lists were represented as linked lists of cons cells, with each cell's head pointing to an element and the tail pointing to another cons cell.
 
@@ -56,7 +58,7 @@ Notice that though JavaScript displays our list as if it is composed of arrays n
     four-- car -->d["4"]
     four-- cdr -->five(( ))
     five-- car -->e["5"]
-    five-- cdr -->null["fa:fa-ban null"]
+    five-- cdr -->null["fa:fa-ban null"];
 </div>
 
 
@@ -74,9 +76,107 @@ cdr(oneToFive)
   //=> [2,[3,[4,[5,null]]]]
 ```
 
+That's another linked list too:<div class="mermaid">
+  graph LR
+    two(( ))-- car -->b["2"]
+    two-- cdr -->three(( ))
+    three-- car -->c["3"]
+    three-- cdr -->four(( ))
+    four-- car -->d["4"]
+    four-- cdr -->five(( ))
+    five-- car -->e["5"]
+    five-- cdr -->null["fa:fa-ban null"];
+</div>
+
 Again, it's just extracting a reference from a cons cell, it's very fast. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed. In JavaScript, it's still much, much, much faster to get all the elements except the head from a linked list than from an array. Getting one reference to a structure that already exists is faster than copying a bunch of elements.
 
 So now we understand that in Lisp, a lot of things use linked lists, and they do that in part because it was what the hardware made possible.
+
+---
+
+[![Symbolics "old style" keyboard](/assets/images/ayoayo/symbolics.jpg)](https://www.flickr.com/photos/mrbill/5336327890)
+
+*[Symbolics, Inc.][Symbolics] was a computer manufacturer headquartered in Cambridge, Massachusetts, and later in Concord, Massachusetts, with manufacturing facilities in Chatsworth, California. Symbolics designed and manufactured a line of Lisp machines, single-user computers optimized to run the Lisp programming language.*
+
+[Symbolics]: https://en.wikipedia.org/wiki/Symbolics
+
+---
+
+### operating on lists
+
+As we can see, it was always fast to get the first element of a list and the rest of a list. Now, you could get every element of a list by traversing the list pointer by pointer. So if you wanted to do something with a list, like sum the elements of a list, you'd write a linearly recursive function like this:
+
+```javascript
+const cons = (a, d) => [a, d],
+      car  = ([a, d]) => a,
+      cdr  = ([a, d]) => d;
+
+function sum (list, acc = 0) {
+  if (list == null) {
+    return acc;
+  } else {
+    const first = car(list);
+    const rest = cdr(list);
+
+    return sum(rest, acc + first);
+  }
+}
+
+const oneToFive = cons(1, cons(2, cons(3, cons(4, cons(5, null)))));
+
+sum(oneToFive)
+  //=> 15
+```
+
+If we ignore the fact that the original cons cells were many many orders of magnitude faster than using arrays with two elements, we have the general idea:
+
+> It was ridiculously fast to separate a list into the `first` and `rest`, and as a result, many linear algorithms written in Lisp were organized around repeatedly (by recursion or looping) getting the first and rest of a list.
+
+---
+
+![Garbage Day](/assets/images/garbage.jpg)
+
+---
+
+## Garbage, Garbage Everywhere
+
+But what about today's JavaScript? Today, we can write a list with an array. And we can get the `first` and `rest` with destructuring:
+
+```javascript
+function sum (list, acc = 0) {
+  if (list.length === 0) {
+    return acc;
+  } else {
+    const [first, ...rest] = list;
+
+    return sum(rest, acc + first);
+  }
+}
+
+const oneTwoThree = [1, 2, 3];
+
+sum(oneTwoThree)
+  //=> 6
+```
+
+This is easier on the eyes, and just as mathematically elegant. But today, when we write something like `[first, ...rest] = list`, it's very fast to get `first`. But for `rest`, the system calls `.slice(1)`. That makes a new array that is a copy of the old array, omitting element `0`. That is much slower, and since these copies are temporary, hammers away at the garbage collector.
+
+We're only working with three elements at a time, so we can afford to chuckle at the performance implications. But the important takeaway is that it is important to match algorithms to data structures, because what is fast with one data structure may be slow with another.
+
+What is fast with a linked list is slow with an array.
+
+And most importantly, if there are two ways to do something, and one is more elegant, it may be possible to find a data structure that makes the elegant approach fast. We should never rush to trade elegance for performance without further investigation.
+
+
+---
+
+# IGNORE THE FOLLOWING
+
+---
+
+
+
+
 
 Getting back to JavaScript now, when we write `[first, ...rest]` to gather or spread arrays, we're emulating the semantics of `car` and `cdr`, but not the implementation. We're doing something laborious and memory-inefficient compared to using a linked list as Lisp did and as we can still do if we choose.
 
@@ -179,8 +279,6 @@ We've put it in slightly more idiomatic JavaScript by using a plain-old-JavaScri
 It was ridiculously fast to separate a list into the `first` and `rest`, and as a result, many linear algorithms that operated on lisps were organized around repeatedly (by recursion or looping) getting the first and rest of a list.
 
 ## Garbage, Garbage Everywhere
-
-![Garbage Day](/assets/images/garbage.jpg)
 
 But what about today's JavaScript? Today, we can write a list with an array. And we can get the `first` and `rest` with destructuring:
 
