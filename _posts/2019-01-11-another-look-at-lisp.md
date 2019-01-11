@@ -194,4 +194,6 @@ Accessing arbitray elements of a linked list is the S"hlemiel The Painter" of th
 
 _If only there was a way to have the elegance of Lisp, and the performance of Arrays when accessing arbitrary elements._
 
+---
 
+# Note(s)
