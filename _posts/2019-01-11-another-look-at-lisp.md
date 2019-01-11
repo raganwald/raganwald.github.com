@@ -47,6 +47,20 @@ oneToFive
 
 Notice that though JavaScript displays our list as if it is composed of arrays nested within each other like Russian Dolls, in reality the arrays refer to each other with references, so `[1,[2,[3,[4,[5,null]]]]]` is actually more like:
 
+<div class="mermaid">
+  graph LR
+    one(( ))-- car -->a["1"]
+    one-- cdr -->two(( ))
+    two-- car -->b["2"]
+    two-- cdr -->three(( ))
+    three-- car -->c["3"]
+    three-- cdr -->four(( ))
+    four-- car -->d["4"]
+    four-- cdr -->five(( ))
+    five-- car -->e["5"]
+    five-- cdr -->null["fa:fa-ban null"];
+</div>
+
 ---
 
 [![Symbolics "old style" keyboard](/assets/images/ayoayo/symbolics.jpg)](https://www.flickr.com/photos/mrbill/5336327890)
