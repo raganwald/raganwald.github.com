@@ -153,19 +153,44 @@ function sum (list, acc = 0) {
   }
 }
 
-const oneTwoThree = [1, 2, 3];
+const oneToFive = [1, 2, 3, 4, 5];
 
-sum(oneTwoThree)
-  //=> 6
+sum(oneToFive)
+  //=> 15
 ```
 
 This is easier on the eyes, and just as mathematically elegant. But today, when we write something like `[first, ...rest] = list`, it's very fast to get `first`. But for `rest`, the system calls `.slice(1)`. That makes a new array that is a copy of the old array, omitting element `0`. That is much slower, and since these copies are temporary, hammers away at the garbage collector.
 
-We're only working with three elements at a time, so we can afford to chuckle at the performance implications. But the important takeaway is that it is important to match algorithms to data structures, because what is fast with one data structure may be slow with another.
+We're only working with five elements at a time, so we can afford to chuckle at the performance implications. But if we start operating on long lists, all that copying is going to bury us under a mound of garbage. Of course, we could switch to linked lists in JavaScript. But the cure would be worse than the disease.
 
-What is fast with a linked list is slow with an array.
+Nobody wants to read code that lokks like `cons(1, cons(2, cons(3, cons(4, cons(5, null)))))`. And sometimes, we want to access arbitrary elements of an array. When we do, we have to traverse the list element by element to get it:
 
-And most importantly, if there are two ways to do something, and one is more elegant, it may be possible to find a data structure that makes the elegant approach fast. We should never rush to trade elegance for performance without further investigation.
+```javascript
+function at (list, index) {
+  if (list == null) {
+    return undefined;
+  } else if (index === 0) {
+    return car(list);
+  } else {
+    return at(cdr(list), index - 1);
+  }
+}
+
+const oneToFive = [1, 2, 3, 4, 5];
+
+at(oneToFive, 4)
+  //=> 5
+```
+
+Accessing arbitray elements of a linked list is the S"hlemiel The Painter" of the Computer Science universe:
+
+> Shlemiel gets a job as a street painter, painting the dotted lines down the middle of the road. On the first day he takes a can of paint out to the road and finishes 300 yards of the road. "That's pretty good!" says his boss, "you're a fast worker!" and pays him a kopeck.
+>
+> The next day Shlemiel only gets 150 yards done. "Well, that's not nearly as good as yesterday, but you're still a fast worker. 150 yards is respectable," and pays him a kopeck.
+>
+> The next day Shlemiel paints 30 yards of the road. "Only 30!" shouts his boss. "That's unacceptable! On the first day you did ten times that much work! What's going on?" "I can't help it," says Shlemiel. "Every day I get farther and farther away from the paint can!"
+
+_If only there was a way to have the elegance of Lisp, and the performance of Arrays when accessing arbitrary elements._
 
 
 ---
