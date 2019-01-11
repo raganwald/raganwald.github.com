@@ -24,19 +24,23 @@ Lisp grew to have a rich set of high-performance datatypes, but in its earliest 
 
 Cons cells had two parts, an _address register_, and a _decrement register_. You created a cons cell by _cons-ing_ two values together. You could access the individual parts with two functions, `car` ("contents of address register"), and `cdr` ("contents of decrement register").
 
-"Lisp" was actually spelled LISP in those days, because it wasn't a word, it was an acronym. It stood for "LISt Processing," because the central idea in Lisp was the manipulation of lists. Cons cells were used to make [linked lists][ll], so a list that we'd represent in JavaScript as `['a', 'b', 'c']` would look like this in Lisp:
+"Lisp" was actually spelled LISP in those days, because it wasn't a word, it was an acronym. It stood for "LISt Processing," because the central idea in Lisp was the manipulation of lists. Lists were Lisp's primary data type.
+
+Cons cells were used to make [linked lists][ll], so a list that we'd represent in JavaScript as `['a', 'b', 'c']` would look like this in Lisp:[^well-actually-diagrams]
 
 [ll]: https://en.wikipedia.org/wiki/Linked_list
 
 <div class="mermaid">
   graph LR
-    one[" "]-- car -->a
-    one-- cdr -->two[" "]
+    one(( ))-- car -->a
+    one-- cdr -->two(( ))
     two-- car -->b
-    two-- cdr -->three[" "]
+    two-- cdr -->three(( ))
     three-- car -->c
     three-- cdr -->null
 </div>
+
+[^well-actually-diagrams]: Well, actually, they used a slightly different kind of diagram to notate the relationship between cons cells,. They were little rectangles divided in half vertically, with the left-hand side the `car`, and the right-hand side the `cdr`, and they'd use a diagonal slash to denote `null`. But the diagramming tool I use for this blog doesn't do that, so let's move on.
 
 This is all very relevant to the style of programming where lists are broken into a "first" and "rest," because lists in those days were represented as singly linked lists of cons cells. A list was stored as a reference to the first cons cell. The `car` of that cell was a pointer to the first item in the list, and the `cdr` was a pointer to the next cons cell in the list, which was identically configured.
 
