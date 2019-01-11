@@ -40,11 +40,25 @@ Cons cells were used to make [linked lists][ll], so a list that we'd represent i
     three-- cdr -->null
 </div>
 
-[^well-actually-diagrams]: Well, actually, they used a slightly different kind of diagram to notate the relationship between cons cells,. They were little rectangles divided in half vertically, with the left-hand side the `car`, and the right-hand side the `cdr`, and they'd use a diagonal slash to denote `null`. But the diagramming tool I use for this blog doesn't do that, so let's move on.
-
-This is all very relevant to the style of programming where lists are broken into a "first" and "rest," because lists in those days were represented as singly linked lists of cons cells. A list was stored as a reference to the first cons cell. The `car` of that cell was a pointer to the first item in the list, and the `cdr` was a pointer to the next cons cell in the list, which was identically configured.
+[^well-actually-diagrams]: Well, actually, they used a slightly different kind of diagram to notate the relationship between cons cells,. They were little rectangles divided in half vertically, with the left-hand side the `car`, and the right-hand side the `cdr`, and they'd use a diagonal slash to denote `null`. But the diagramming tool I use for this blog doesn't do that, so let's move on. \
 
 The last cons cell in the list would have `null` for its `cdr`, and `null` was a shorthand for the empty list.
+
+Now, because every list was a linked list by default, some things were very fast, and some not-so-much so. The fastest thing in the world was to separate a list into the first element and a list containing the rest of the elements. The first element was always the `car` of the list.
+
+In our diagram above, the `car` of the list is a pointer to the letter `a`.
+
+What about the rest of the list? Well, if we take the `cdr` of the list, we get:
+
+<div class="mermaid">
+  graph LR
+    two(( ))-- car -->b
+    two-- cdr -->three(( ))
+    three-- car -->c
+    three-- cdr -->null
+</div>
+
+
 
 Thus, it was ridiculously fast to separate a list into the first and rest. And it was equally fast to compose a list by cons-ing a new element with an existing list. And therefore, plenty of textbooks used ot describe recursive algorithms just like the one in `possibleMoves`.
 
