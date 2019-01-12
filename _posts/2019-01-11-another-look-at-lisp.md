@@ -194,6 +194,20 @@ Accessing arbitray elements of a linked list is the "Shlemiel The Painter" of Co
 
 _If only there was a way to have the elegance of Lisp, and the performance of Arrays when accessing arbitrary elements._
 
+Let's work our way up to that. Where do we begin?
+
+---
+
+[![The Beginning](/assets/images/slice/begin.jpg)](https://www.flickr.com/photos/56218409@N03/15332717763)
+
+---
+
+### the beginning: slice
+
+Let's start with a couple of very modest requirements. First, what we're building is for the case when we want to process lists in a `[frist, ...rest]` style, usually recursively. Lots of times we don't want to do that, maybe almost all of the time we don't want to do that, but when we do--perhaps we are playing with a recursive algorithm we read about in a book like [SICP], perhaps we want to refactor such an algorithm setp-by-step--we want the performance to be not embarrassing.
+
+[SICP]: https://mitpress.mit.edu/sites/default/files/sicp/index.html "Structure and Interpretation of Computer Programs"
+
 ---
 
 # Note(s)
