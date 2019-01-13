@@ -250,7 +250,7 @@ As long as we don't want to destructively modify any part of a list that is bein
 
 We are not going to use cons cells or two-element arrays, but we are going to share structure, and as noted, we are going to have to avoid any kind of operation that modifies an existing list in such a way that it affects other variables that are sharing its structure.
 
-So what will our technique be? Well, we are going to create a data structure that behaves enough like an array that we can write things like `const first = arrayLikeDataStructure[0];` and `const rest = arrayLikeDataStructure.slice(1)`, and they will work. But of course, our implementation won't copy arrays.
+So what will our technique be? Well, we are going to create a data structure that behaves enough like an array that we can write things like `const first = arrayLikeDataStructure[0];` and `const rest = arrayLikeDataStructure.slice(1)`, and they will work. But of course, our implementation won't copy arrays. Instead, it will share the array.
 
 We'll begin with a class representing a slice of an array. Although we don't need them directly for our purposes, we'll implement an iterator and a `.toString()` method for debugging purpose:[^strict]
 
@@ -500,6 +500,84 @@ sum(oneToFive)
   //=> 15
 ```
 No more copies!
+
+---
+
+[![List (2007)](/assets/images/slice/list.jpg)](https://www.flickr.com/photos/liste1/3030809956)
+
+---
+
+### more list-like behaviour
+
+We did't need to implement an iterator, but it should be noted that since it has an iterator, we get a lot of JavaScript list-like behaviour. For example, in struct mode the iterator is used when destructuring. So if we want to, we _can_ write:
+
+```javascript
+const a1to5 = [1, 2, 3, 4, 5];
+const oneToFive = Slice.from(a1to5);
+const [first, ...rest] = oneToFive;
+
+first
+  //=> 1
+rest
+  //=> [2, 3, 4, 5]
+```
+
+Unfortunately, destructuring an iterable with the spread operator always creates a new array in JavaScript, so our `Slice` class can't help us make `const [first, ...rest] = someSlice;` not embarrassing. Iterators work with the spread operator in expressions as well:
+
+```javascript
+const abc = ['a', 'b', 'c'];
+const oneTwoThree = Slice.from([1, 2, 3]);
+
+[...abc, ...oneTwoThree]
+  //=> ["a", "b", "c", 1, 2, 3]
+```
+
+And they get us `for... of` loops:
+
+```javascript
+const abc = ['a', 'b', 'c'];
+
+const alphabet = {};
+
+for (const letter of Slice.from(abc)) {
+  alphabet[letter] = letter;
+}
+
+alphabet
+  /=> {a: "a", b: "b", c: "c"}
+```
+
+When we dive deeply into the spec, we uncover `Symbol.isConcatSpreadable`. Forcing it to be `true` gets us array spread concatenation behaviour. While we're at it, we can implement `.concat`:
+
+```javascript
+class Slice {
+
+  /// ...
+
+  concat(...args) {
+  }
+
+  get [Symbol.isConcatSpreadable]() {
+    return true;
+  }
+}
+
+const abc = ['a', 'b', 'c'];
+const oneTwoThree = Slice.from([1, 2, 3]);
+
+abc.concat(oneTwoThree)
+  //=> ["a", "b", "c", 1, 2, 3]
+```
+
+Of course, the biggest array-like behaviour our slices are missing is that we haven't implemented any of the methods for modifying an array.
+
+---
+
+[![renovations](/assets/images/slice/renovations.jpg)](https://www.flickr.com/photos/rubygoes/28173260477)
+
+---
+
+### mutable slices
 
 ---
 
