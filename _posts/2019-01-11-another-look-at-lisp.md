@@ -202,7 +202,7 @@ Let's work our way up to that. Where do we begin?
 
 ---
 
-### the beginning: slice
+### slicing and structural sharing
 
 Let's start with a couple of very modest requirements. First, what we're building is for the case when we want to process lists in a `[first, ...rest]` style, usually recursively.
 
@@ -221,7 +221,36 @@ const rest = someArray.slice(1);
 
 And `.slice(1)` is expensive. Imagine an array with 10,000 elements!!! The first slice creates another array with 9,999 elements, the next with 9,998 elements, and so on.
 
-So our beginning step will be to make `.slice` less expensive.
+So: *Our beginning step will be to make `.slice` less expensive.*
+
+The technique we are going to use is called *structural sharing*. Let's review our two-element array implementation of lionked lists from above:
+
+```javascript
+const cons = (a, d) => [a, d],
+      car  = ([a, d]) => a,
+      cdr  = ([a, d]) => d;
+
+const oneToFive = cons(1, cons(2, cons(3, cons(4, cons(5, null)))));
+const twoToFive = cdr(oneToFive);
+```
+
+The variable `twoToFive` points to the second element in `oneToFive`'s list, and both of these lists _share the same four elements_:
+
+<div class="mermaid">
+  graph LR
+    (oneToFive)-->one(( ))
+    (twoToFive)-->two(( ))
+    one-- car -->a["1"]
+    one-- cdr -->two
+    two-- car -->b["2"]
+    two-- cdr -->three(( ))
+    three-- car -->c["3"]
+    three-- cdr -->four(( ))
+    four-- car -->d["4"]
+    four-- cdr -->five(( ))
+    five-- car -->e["5"]
+    five-- cdr -->null["fa:fa-ban null"];
+</div>
 
 ---
 
