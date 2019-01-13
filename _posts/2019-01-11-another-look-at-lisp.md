@@ -252,6 +252,37 @@ graph LR
     five-- 1 -->null["fa:fa-ban null"];
 </div>
 
+As long as we don't want to destructively modify any part of a list that is being shared, this scheme works beautifully. If we follow Lisp's standard convention, we make new lists by cons-ing new elements with existing lists. So if we write:
+
+```javascript
+const cons = (a, d) => [a, d],
+      car  = ([a, d]) => a,
+      cdr  = ([a, d]) => d;
+
+const zeroToFive = cons(0, oneToFive);
+```
+
+We're creating a new list that shares structure with our existing two lists:
+
+<div class="mermaid">
+graph LR
+    R0(zeroToFive)-->zero(("[...]"))
+    R1(oneToFive)-->one(("[...]"))
+    R2(twoToFive)-->two(("[...]"))
+    zero-- 0 -->aa["0"]
+    zero-- 1 -->one
+    one-- 0 -->a["1"]
+    one-- 1 -->two
+    two-- 0 -->b["2"]
+    two-- 1 -->three(("[...]"))
+    three-- 0 -->c["3"]
+    three-- 1 -->four(("[...]"))
+    four-- 0 -->d["4"]
+    four-- 1 -->five(("[...]"))
+    five-- 0 -->e["5"]
+    five-- 1 -->null["fa:fa-ban null"];
+</div>
+
 ---
 
 # Note(s)
