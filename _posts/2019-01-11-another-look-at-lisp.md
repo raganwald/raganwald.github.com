@@ -42,7 +42,7 @@ We can make a list by calling `cons` repeatedly, and terminating it with `null`:
 const oneToFive = cons(1, cons(2, cons(3, cons(4, cons(5, null)))));
 
 oneToFive
-  //=> [1,[2,[3,[4,[5,null]]]]]
+  //=> [1,[2,[3,[4,[5, null]]]]]
 ```
 
 Notice that though JavaScript displays our list as if it is composed of arrays nested within each other like Russian Dolls, in reality the arrays refer to each other with references, so `[1,[2,[3,[4,[5,null]]]]]` is our way to represent:
@@ -73,7 +73,7 @@ car(oneToFive)
 
 ```javascript
 cdr(oneToFive)
-  //=> [2,[3,[4,[5,null]]]]
+  //=> [2,[3,[4,[5, null]]]]
 ```
 
 That's another linked list too:
@@ -113,14 +113,14 @@ const cons = (a, d) => [a, d],
       car  = ([a, d]) => a,
       cdr  = ([a, d]) => d;
 
-function sum (list, acc = 0) {
-  if (list == null) {
-    return acc;
+function sum (linkedList, runningTotal = 0) {
+  if (linkedList == null) {
+    return runningTotal;
   } else {
-    const first = car(list);
-    const rest = cdr(list);
+    const first = car(linkedList);
+    const rest = cdr(linkedList);
 
-    return sum(rest, acc + first);
+    return sum(rest, runningTotal + first);
   }
 }
 
@@ -142,16 +142,17 @@ If we ignore the fact that the original cons cells were many many orders of magn
 
 ## Garbage, Garbage Everywhere
 
-But what about today's JavaScript? Today, we can write a list with an array. And we can get the `first` and `rest` with destructuring:
+But what about today's JavaScript? Today, we can write a list with an array. And we can get the `first` and `rest` with `[0]` and `.slice(1)`:
 
 ```javascript
-function sum (list, acc = 0) {
-  if (list.length === 0) {
-    return acc;
+function sum (array, runningTotal = 0) {
+  if (array.length === 0) {
+    return runningTotal;
   } else {
-    const [first, ...rest] = list;
+    const first = array[0];
+    const rest = array.slice(1);
 
-    return sum(rest, acc + first);
+    return sum(rest, runningTotal + first);
   }
 }
 
@@ -161,20 +162,20 @@ sum(oneToFive)
   //=> 15
 ```
 
-This is easier on the eyes, and just as mathematically elegant. But today, when we write something like `[first, ...rest] = list`, it's very fast to get `first`. But for `rest`, the system calls `.slice(1)`. That makes a new array that is a copy of the old array, omitting element `0`. That is much slower, and since these copies are temporary, hammers away at the garbage collector.
+Like `car`, calling `array[0]` is fast. But when we invoke `array.slice(1)`, JavaScript makes a new array that is a copy of the old array, omitting element `0`. That is much slower, and since these copies are temporary, hammers away at the garbage collector.
 
 We're only working with five elements at a time, so we can afford to chuckle at the performance implications. But if we start operating on long lists, all that copying is going to bury us under a mound of garbage. Of course, we could switch to linked lists in JavaScript. But the cure would be worse than the disease.
 
-Nobody wants to read code that lokks like `cons(1, cons(2, cons(3, cons(4, cons(5, null)))))`. And sometimes, we want to access arbitrary elements of an array. When we do, we have to traverse the list element by element to get it:
+Nobody wants to read code that looks like `cons(1, cons(2, cons(3, cons(4, cons(5, null)))))`. And sometimes, we want to access arbitrary elements of a list. With a linked list, we have to traverse the list element by element to get it:
 
 ```javascript
-function at (list, index) {
-  if (list == null) {
+function at (linkedList, index) {
+  if (linkedList == null) {
     return undefined;
   } else if (index === 0) {
-    return car(list);
+    return car(linkedList);
   } else {
-    return at(cdr(list), index - 1);
+    return at(cdr(linkedList), index - 1);
   }
 }
 
@@ -204,26 +205,19 @@ Let's work our way up to that. Where do we begin?
 
 ### slicing and structural sharing
 
-Let's start with a couple of very modest requirements. First, what we're building is for the case when we want to process lists in a `[first, ...rest]` style, usually recursively.
+Let's start with a couple of very modest requirements. First, what we're building is for the case when we want to process arrays in a `[0]` and `.slice(1)`, style, usually recursively.
 
-(Most of the time, we don't want to do process lists in a `[first, ...rest]` style. But when we do--perhaps we are playing with a recursive algorithm we read about in a book like [SICP], perhaps we want to refactor such an algorithm setp-by-step--we want the performance to be "not embarrassing.")
+(Most of the time, we don't want to do process lists in this style. But when we do--perhaps we are playing with a recursive algorithm we read about in a book like [SICP], perhaps we want to refactor such an algorithm step-by-step--we want the performance to be "not embarrassing.")
 
 [SICP]: https://mitpress.mit.edu/sites/default/files/sicp/index.html "Structure and Interpretation of Computer Programs"
 
-Second, we are going to presume that the array or list we're dealing with will not be mutated, at least not while we're working with it. That's certainly the case when writing functions that fold a list, like `sum`.
+Second, we are going to presume that the array we're dealing with will not be mutated, at least not while we're working with it. That's certainly the case when writing functions that fold a list, like `sum`.
 
-Given those two constraints, what problem are we trying to solve? As we noted, `const [first, ...rest] = someArray;` is expensive because it is implemented roughly as:
-
-```javascript
-const first = someArray[0];
-const rest = someArray.slice(1);
-```
-
-And `.slice(1)` is expensive. Imagine an array with 10,000 elements!!! The first slice creates another array with 9,999 elements, the next with 9,998 elements, and so on.
+Given those two constraints, what problem are we trying to solve? As we noted, `.slice(1)` is expensive because it is implemented by copying arrays. Imagine an array with 10,000 elements!!! The first slice creates another array with 9,999 elements, the next with 9,998 elements, and so on.
 
 So: *Our beginning step will be to make `.slice` less expensive.*
 
-The technique we are going to use is called *structural sharing*. Let's review our two-element array implementation of lionked lists from above:
+The technique we are going to use is called *structural sharing*. Let's review our two-element array implementation of linked lists from above:
 
 ```javascript
 const cons = (a, d) => [a, d],
@@ -254,34 +248,258 @@ graph LR
 
 As long as we don't want to destructively modify any part of a list that is being shared, this scheme works beautifully. If we follow Lisp's standard convention, we make new lists by cons-ing new elements with existing lists. So if we write:
 
-```javascript
-const cons = (a, d) => [a, d],
-      car  = ([a, d]) => a,
-      cdr  = ([a, d]) => d;
+We are not going to use cons cells or two-element arrays, but we are going to share structure, and as noted, we are going to have to avoid any kind of operation that modifies an existing list in such a way that it affects other variables that are sharing its structure.
 
-const zeroToFive = cons(0, oneToFive);
+So what will our technique be? Well, we are going to create a data structure that behaves enough like an array that we can write things like `const first = arrayLikeDataStructure[0];` and `const rest = arrayLikeDataStructure.slice(1)`, and they will work. But of course, our implementation won't copy arrays.
+
+We'll begin with a class representing a slice of an array. Although we don't need them directly for our purposes, we'll implement an iterator and a `.toString()` method for debugging purpose:[^strict]
+
+[^strict]: ALl of this code requires the engine to implement strict JavaScript semantics. Some engines can be configured in "loose" mode, where their implementation of things like destructuring may vary from the standard.
+
+```javascript
+class Slice {
+  constructor(array, from = 0, length = array.length) {
+    if (from < 0) {
+      from = from + array.length;
+    }
+    from = Math.max(from, 0);
+    from = Math.min(from, array.length);
+
+    length = Math.max(length, 0);
+    length = Math.min(length, array.length - from);
+
+    this.array = array;
+    this.from = normalizedFrom(array, from, length);
+    this.length = normalizedLength(array, from, length);
+  }
+
+  * [Symbol.iterator]() {
+    const { array, from, length } = this;
+
+    for (let i = 0; i < length; i++) {
+      yield array[i + from];
+    }
+  }
+
+  toString() {
+    return [...this].join(',');
+  }
+}
+
+const a1to5 = [1, 2, 3, 4, 5];
+const fromTwo = new Slice(a1to5, 2);
+
+fromTwo.toString()
+  //=> "3,4,5"
+
+[...fromTwo]
+  //=> [3, 4, 5]
 ```
 
-We're creating a new list that shares structure with our existing two lists:
+To make it work with `[0]` and `.slice(1)`, we need to implement `[]` and `.slice(...)`. Implementing `[]` just for `0` is easy, but if you implement `[0]`, you're begging for a bug later when somebody thinks they can use `[1]`. So we'll use a `Proxy` to handle indexed access:
 
-<div class="mermaid">
-graph LR
-    R0(zeroToFive)-->zero(("[...]"))
-    R1(oneToFive)-->one(("[...]"))
-    R2(twoToFive)-->two(("[...]"))
-    zero-- 0 -->aa["0"]
-    zero-- 1 -->one
-    one-- 0 -->a["1"]
-    one-- 1 -->two
-    two-- 0 -->b["2"]
-    two-- 1 -->three(("[...]"))
-    three-- 0 -->c["3"]
-    three-- 1 -->four(("[...]"))
-    four-- 0 -->d["4"]
-    four-- 1 -->five(("[...]"))
-    five-- 0 -->e["5"]
-    five-- 1 -->null["fa:fa-ban null"];
-</div>
+```javascript
+const SliceProxy = {
+  has (slice, property) {
+    if (property in slice) {
+      return true;
+    }
+
+    if (typeof property === 'symbol') {
+      return false;
+    }
+
+    const matchInt = property.match(/^\d+$/);
+    if (matchInt != null) {
+      const i = parseInt(property);
+
+      return slice.has(i);
+    }
+  },
+
+  get (slice, property) {
+    if (property in slice) {
+      return slice[property];
+    }
+
+    if (typeof property === 'symbol') {
+      return;
+    }
+
+    const matchInt = property.match(/^\d+$/);
+    if (matchInt != null) {
+      const i = parseInt(property);
+      return slice.at(i);
+    }
+  }
+};
+
+class Slice {
+  constructor(array, from = 0, length = array.length) {
+    if (from < 0) {
+      from = from + array.length;
+    }
+    from = Math.max(from, 0);
+    from = Math.min(from, array.length);
+
+    length = Math.max(length, 0);
+    length = Math.min(length, array.length - from);
+
+    this.array = array;
+    this.from = normalizedFrom(array, from, length);
+    this.length = normalizedLength(array, from, length);
+
+    return new Proxy(this, SliceProxy);
+  }
+
+  * [Symbol.iterator]() {
+    const { array, from, length } = this;
+
+    for (let i = 0; i < length; i++) {
+      yield array[i + from];
+    }
+  }
+
+  toString() {
+    return [...this].join(',');
+  }
+
+  has(i) {
+    if (i >= 0 && i < this.length) {
+      return (this.from + i) in this.array;
+    } else {
+      return false;
+    }
+  }
+
+  at(i) {
+    if (i >= 0 && i < this.length) {
+      return this.array[this.from + i];
+    }
+  }
+}
+
+const a1to5 = [1, 2, 3, 4, 5];
+const fromZero = new Slice(a1to5, 0);
+const fromLast = new Slice(a1to5, -1);
+
+fromZero[0]
+  //=> 1
+fromLast[0]
+  //=> 5
+```
+
+What about `.slice`? That's easy in comparison. We'll extract some duplication from the constructor while we're at it:
+
+```javascript
+function normalizedFrom(arrayIsh, from = 0) {
+    if (from < 0) {
+      from = from + arrayIsh.length;
+    }
+    from = Math.max(from, 0);
+    from = Math.min(from, arrayIsh.length);
+
+    return from;
+}
+
+function normalizedLength(arrayIsh, from, length = arrayIsh.length) {
+    from = normalizedFrom(arrayIsh, from);
+
+    length = Math.max(length, 0);
+    length = Math.min(length, arrayIsh.length - from);
+
+    return length;
+}
+
+class Slice {
+  constructor(array, from, length) {
+    this.array = array;
+    this.from = normalizedFrom(array, from, length);
+    this.length = normalizedLength(array, from, length);
+
+    return new Proxy(this, SliceProxy);
+  }
+
+  * [Symbol.iterator]() {
+    const { array, from, length } = this;
+
+    for (let i = 0; i < length; i++) {
+      yield array[i + from];
+    }
+  }
+
+  toString() {
+    return [...this].join(',');
+  }
+
+  has(i) {
+    if (i >= 0 && i < this.length) {
+      return (this.from + i) in this.array;
+    } else {
+      return false;
+    }
+  }
+
+  at(i) {
+    if (i >= 0 && i < this.length) {
+      return this.array[this.from + i];
+    }
+  }
+
+  slice(from, length) {
+    from = normalizedFrom(this, from, length);
+    length = normalizedLength(this, from, length);
+
+    return new Slice(this.array, this.from + from, length);
+  }
+}
+
+const a1to5 = [1, 2, 3, 4, 5];
+const fromZero = new Slice(a1to5, 0);
+const fromOne = fromZero.slice(1);
+
+[...fromOne]
+  //=> [2, 3, 4, 5]
+```
+
+And now we can implement one last thing, a static factory method for making `Slice` objects out of other things. Now we can use `Slice` to make our recursive functions "not embarrassing:"
+
+```javascript
+class Slice {
+  static from(object) {
+    if (object instanceof this) {
+      return object;
+    }
+    if (object instanceof Array) {
+      return new this(object);
+    }
+    if (typeof object[Symbol.iterator] === 'function') {
+      return new this([...object]);
+    }
+  }
+
+  /// remainder of the class
+}
+
+function sum (array, runningTotal = 0) {
+  array = Slice.from(array);
+
+  if (array.length === 0) {
+    return runningTotal;
+  } else {
+    const first = array[0];
+    const rest = array.slice(1);
+
+    return sum(rest, runningTotal + first);
+  }
+}
+
+const oneToFive = [1, 2, 3, 4, 5];
+
+sum(oneToFive)
+  //=> 15
+```
+No more copies!
 
 ---
 
