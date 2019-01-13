@@ -184,7 +184,7 @@ at(oneToFive, 4)
   //=> 5
 ```
 
-Accessing arbitray elements of a linked list is the "Shlemiel The Painter" of Computer Science:
+Accessing arbitrary elements of a linked list is the "Shlemiel The Painter" of Computer Science:
 
 > Shlemiel gets a job as a street painter, painting the dotted lines down the middle of the road. On the first day he takes a can of paint out to the road and finishes 300 yards of the road. "That's pretty good!" says his boss, "you're a fast worker!" and pays him a kopeck.
 >
@@ -204,9 +204,24 @@ Let's work our way up to that. Where do we begin?
 
 ### the beginning: slice
 
-Let's start with a couple of very modest requirements. First, what we're building is for the case when we want to process lists in a `[frist, ...rest]` style, usually recursively. Lots of times we don't want to do that, maybe almost all of the time we don't want to do that, but when we do--perhaps we are playing with a recursive algorithm we read about in a book like [SICP], perhaps we want to refactor such an algorithm setp-by-step--we want the performance to be not embarrassing.
+Let's start with a couple of very modest requirements. First, what we're building is for the case when we want to process lists in a `[first, ...rest]` style, usually recursively.
+
+(Most of the time, we don't want to do process lists in a `[first, ...rest]` style. But when we do--perhaps we are playing with a recursive algorithm we read about in a book like [SICP], perhaps we want to refactor such an algorithm setp-by-step--we want the performance to be "not embarrassing.")
 
 [SICP]: https://mitpress.mit.edu/sites/default/files/sicp/index.html "Structure and Interpretation of Computer Programs"
+
+Second, we are going to presume that the array or list we're dealing with will not be mutated, at least not while we're working with it. That's certainly the case when writing functions that fold a list, like `sum`.
+
+Given those two constraints, what problem are we trying to solve? As we noted, `const [first, ...rest] = someArray;` is expensive because it is implemented roughly as:
+
+```javascript
+const first = someArray[0];
+const rest = someArray.slice(1);
+```
+
+And `.slice(1)` is expensive. Imagine an array with 10,000 elements!!! The first slice creates another array with 9,999 elements, the next with 9,998 elements, and so on.
+
+So our beginning step will be to make `.slice` less expensive.
 
 ---
 
