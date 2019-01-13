@@ -579,6 +579,51 @@ Of course, the biggest array-like behaviour our slices are missing is that we ha
 
 ### mutable slices
 
+As we noted, our slices depend upon the underlying array not mutating out from underneath them. Which implies that the Slices themselves have to be immutable. But not so: The slices do not depend upon each other, but upon the underlying array. Which makes the following possible:
+
+```javascript
+const SliceProxy = {
+
+  // ...
+
+  set (slice, property, value) {
+    if (typeof property === 'string') {
+      const matchInt = property.match(/^\d+$/);
+      if (matchInt != null) {
+        const i = parseInt(property);
+        return slice.atPut(i, value);
+      }
+  	}
+
+    return slice[property] = value;
+  }
+}
+
+class Slice {
+
+  // ...
+
+  atPut(i, value) {
+    this.array = this.array.slice(this.from, this.length);
+    this.from = 0;
+    this.length = this.array.length;
+
+    return this.array[i] = value;
+  }
+}
+
+const a1to5 = [1, 2, 3, 4, 5];
+const oneToFive = Slice.from(a1to5);
+
+oneToFive.atPut(2, "three");
+oneToFive[0] = "uno";
+
+a1to5
+  //=> [1, 2, 3, 4, 5]
+oneToFive
+  //=> ["uno", 2, "three", 4, 5]
+```
+
 ---
 
 # Note(s)
