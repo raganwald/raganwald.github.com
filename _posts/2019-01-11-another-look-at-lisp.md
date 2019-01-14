@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Another Look at Lisp"
-tags: [allonge, recursion, mermaid]
+tags: [allonge, recursion, mermaid, noindex]
 ---
 
 ![The IBM 704](/assets/images/IBM704.jpg)
