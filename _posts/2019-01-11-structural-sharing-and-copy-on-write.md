@@ -4,6 +4,12 @@ title: "Structural Sharing and Copy-on-Write Semantics"
 tags: [allonge, recursion, mermaid]
 ---
 
+In this essay, we're going to take a look at two related techniques for achieving high performance when using large data structures: _Structural Sharing_, and _Copy-on-Write Semantics_. To give us some context for exploring these techniques, we're going to solve a very simple problem: Programming in a Lisp-like recursive style, while using JavaScript arrays.
+
+We'll start at the beginning. The beginning of functional programming, in fact.
+
+---
+
 ![The IBM 704](/assets/images/IBM704.jpg)
 
 ---
