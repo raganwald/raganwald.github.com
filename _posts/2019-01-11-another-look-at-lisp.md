@@ -246,7 +246,7 @@ graph LR
     five-- 1 -->null["fa:fa-ban null"];
 </div>
 
-As long as we don't want to destructively modify any part of a list that is being shared, this scheme works beautifully. If we follow Lisp's standard convention, we make new lists by cons-ing new elements with existing lists. So if we write:
+As long as we don't want to destructively modify any part of a list that is being shared, this scheme works beautifully.
 
 We are not going to use cons cells or two-element arrays, but we are going to share structure, and as noted, we are going to have to avoid any kind of operation that modifies an existing list in such a way that it affects other variables that are sharing its structure.
 
@@ -296,10 +296,87 @@ fromTwo.toString()
   //=> [3, 4, 5]
 ```
 
-To make it work with `[0]` and `.slice(1)`, we need to implement `[]` and `.slice(...)`. Implementing `[]` just for `0` is easy, but if you implement `[0]`, you're begging for a bug later when somebody thinks they can use `[1]`. So we'll use a `Proxy` to handle indexed access:
+We'll now want to add support for `[0]` and `.slice(1)`. Slice is straightforward, so we'll do it first. And e'll extract some duplication from the constructor while we're at it:
 
 ```javascript
-const SliceProxy = {
+function normalizedFrom(arrayIsh, from = 0) {
+    if (from < 0) {
+      from = from + arrayIsh.length;
+    }
+    from = Math.max(from, 0);
+    from = Math.min(from, arrayIsh.length);
+
+    return from;
+}
+
+function normalizedLength(arrayIsh, from, length = arrayIsh.length) {
+    from = normalizedFrom(arrayIsh, from);
+
+    length = Math.max(length, 0);
+    length = Math.min(length, arrayIsh.length - from);
+
+    return length;
+}
+
+class Slice {
+  constructor(array, from, length) {
+    this.array = array;
+    this.from = normalizedFrom(array, from, length);
+    this.length = normalizedLength(array, from, length);
+  }
+
+  // ...
+
+  slice(from, length) {
+    from = normalizedFrom(this, from, length);
+    length = normalizedLength(this, from, length);
+
+    return new Slice(this.array, this.from + from, length);
+  }
+}
+
+const a1to5 = [1, 2, 3, 4, 5];
+const fromZero = new Slice(a1to5, 0);
+const fromOne = fromZero.slice(1);
+
+[...fromOne]
+  //=> [2, 3, 4, 5]
+```
+
+To make it work with `[0]`, we need to implement `[]`. Implementing `[]` just for `0` is easy, but if we implement just `[0]`, we're begging for a bug later when somebody thinks they can use `[1]`. What we want instead is a way to allow any indexed access, and properly access the correct element of the underlying array, and without allowing access beyond our slice's dimension.
+
+To do that, we'll use a [Proxy] to handle indexed access.
+
+[Proxy]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
+
+---
+
+[![remote-control-locomotives-sign](/assets/images/slice/remote-control.jpg)](https://www.flickr.com/photos/mobikefed/320810615)
+
+---
+
+### meta-programming with proxies
+
+A [Proxy] is an object that "stands in" for another object, called the _target_ in JavaScript's documentation. The idea is that the proxy implements the desired behaviour of the object, so we can interact with the proxy as if it was the original.
+
+Proxies have a number of interesting uses. One is to decorate functionality. If we wanted to log changes to a model object, one way to do that is to decorate the model's methods with logging code. That's the "aspect-oriented programming" approach: Add functionality to the target in a structured way.
+
+A proxy approach would be to create a proxy for the target model, and the proxy object could implement the logging while forwarding the method invocations to the target. That separates concerns in a different way than decorating methods separates concerns. The decoration is aggregated in the proxy.
+
+Proxies in JavaScript also provide the only way to perform dynamic method dispatch. Famously, the Ruby programming language provides a `method_missing` hook that allows any class to define code to handle methods that do not have concrete implementations. JavaScript does not bake that into every object. Instead, it makes this type of functionality available in proxies via specific hooks for getting and setting properties.
+
+A proxy associates a target object with a _handler_ object that contains—surprise—handlers for various hooks. Each hook controls a specific type of behaviour.
+
+Initially, we'll add a `has` hook and a `get` hook to our `Slice` objects. The net effect of the `has` hook is that every time another piece of code tries to determine whether our slice instances have a particular property, the handler intercepts the detection and can return `true` or `false` itself.
+
+The `get` hook works similarly, only it is responsible for returning a value whenever another piece of code performs a property access. As a rule, it makes sense to implement these two methods in tandem.
+
+In our case, our `Slice` instances do not have any properties for `0`, `1`, `2`, &c. So if we want to be able to access the elements of the underlying array with code like `someSlice[3]`, we need to handle the attempt to `get(slice, '3')` and forward it to a method we'll write on `Slice`, `at(...)`.
+
+Of course, methods in JavaScript are functions bound to properties, so our `has` and `get` handlers always check to see if the target slice already has a property. If so, it delegates the access back to the target.
+
+```javascript
+const SliceHandler = {
   has (slice, property) {
     if (property in slice) {
       return true;
@@ -333,7 +410,11 @@ const SliceProxy = {
     }
   }
 };
+```
 
+We also modify the `Slice` class. We implement `has` and `at` methods that understand the way indexes work relative to the slice's boundaries, and we also modify the constructor to return a proxy that uses our handler to mediate access to the slice.
+
+```javascript
 class Slice {
   constructor(array, from = 0, length = array.length) {
     if (from < 0) {
@@ -349,75 +430,7 @@ class Slice {
     this.from = normalizedFrom(array, from, length);
     this.length = normalizedLength(array, from, length);
 
-    return new Proxy(this, SliceProxy);
-  }
-
-  * [Symbol.iterator]() {
-    const { array, from, length } = this;
-
-    for (let i = 0; i < length; i++) {
-      yield array[i + from];
-    }
-  }
-
-  toString() {
-    return [...this].join(',');
-  }
-
-  has(i) {
-    if (i >= 0 && i < this.length) {
-      return (this.from + i) in this.array;
-    } else {
-      return false;
-    }
-  }
-
-  at(i) {
-    if (i >= 0 && i < this.length) {
-      return this.array[this.from + i];
-    }
-  }
-}
-
-const a1to5 = [1, 2, 3, 4, 5];
-const fromZero = new Slice(a1to5, 0);
-const fromLast = new Slice(a1to5, -1);
-
-fromZero[0]
-  //=> 1
-fromLast[0]
-  //=> 5
-```
-
-What about `.slice`? That's easy in comparison. We'll extract some duplication from the constructor while we're at it:
-
-```javascript
-function normalizedFrom(arrayIsh, from = 0) {
-    if (from < 0) {
-      from = from + arrayIsh.length;
-    }
-    from = Math.max(from, 0);
-    from = Math.min(from, arrayIsh.length);
-
-    return from;
-}
-
-function normalizedLength(arrayIsh, from, length = arrayIsh.length) {
-    from = normalizedFrom(arrayIsh, from);
-
-    length = Math.max(length, 0);
-    length = Math.min(length, arrayIsh.length - from);
-
-    return length;
-}
-
-class Slice {
-  constructor(array, from, length) {
-    this.array = array;
-    this.from = normalizedFrom(array, from, length);
-    this.length = normalizedLength(array, from, length);
-
-    return new Proxy(this, SliceProxy);
+    return new Proxy(this, SliceHandler);
   }
 
   * [Symbol.iterator]() {
@@ -456,11 +469,17 @@ class Slice {
 
 const a1to5 = [1, 2, 3, 4, 5];
 const fromZero = new Slice(a1to5, 0);
-const fromOne = fromZero.slice(1);
+const fromLast = new Slice(a1to5, -1);
 
-[...fromOne]
-  //=> [2, 3, 4, 5]
+fromZero[0]
+  //=> 1
+fromLast[0]
+  //=> 5
 ```
+
+In effect, our slice is a proxy (lower-case "p") for the underlying array, and we are now returning a `Proxy` (upper-case "P") for the slice. That's two layers of proxies, and doubtless we are all thinking of the famous aphorism "All problems in computer engineering can be solved by another level of indirection, except for the problem of too many layers of indirection."[^indirection]
+
+[^indirection]: David Wheeler is credited with what is often called [The Fundamental Theorem of Software Engineering](https://en.wikipedia.org/wiki/Fundamental_theorem_of_software_engineering), "We can solve any problem by introducing an extra level of indirection." The wording has evolved over time, and the corollary "...except for the problem of too many layers of indirection" is almost always quoted at the same time.
 
 And now we can implement one last thing, a static factory method for making `Slice` objects out of other things. Now we can use `Slice` to make our recursive functions "not embarrassing:"
 
@@ -507,9 +526,9 @@ No more copies!
 
 ---
 
-### more list-like behaviour
+### more array-ish behaviour
 
-We did't need to implement an iterator, but it should be noted that since it has an iterator, we get a lot of JavaScript list-like behaviour. For example, in struct mode the iterator is used when destructuring. So if we want to, we _can_ write:
+We did't need to implement an iterator, but it should be noted that since it has an iterator, we get a lot of JavaScript array-ish behaviour. For example, in strict mode, the iterator is used when destructuring. So if we want to, we _can_ write:
 
 ```javascript
 const a1to5 = [1, 2, 3, 4, 5];
@@ -569,7 +588,7 @@ abc.concat(oneTwoThree)
   //=> ["a", "b", "c", 1, 2, 3]
 ```
 
-Of course, the biggest array-like behaviour our slices are missing is that we haven't implemented any of the methods for modifying an array.
+Of course, the biggest array-like behaviour our slices are missing is that we haven't implemented any of the methods for modifying our slices.
 
 ---
 
@@ -577,12 +596,12 @@ Of course, the biggest array-like behaviour our slices are missing is that we ha
 
 ---
 
-### mutable slices
+### copy on write
 
 As we noted, our slices depend upon the underlying array not mutating out from underneath them. Which implies that the Slices themselves have to be immutable. But not so: The slices do not depend upon each other, but upon the underlying array. Which makes the following possible:
 
 ```javascript
-const SliceProxy = {
+const SliceHandler = {
 
   // ...
 
@@ -604,6 +623,7 @@ class Slice {
   // ...
 
   atPut(i, value) {
+    if ( value !== )
     this.array = this.array.slice(this.from, this.length);
     this.from = 0;
     this.length = this.array.length;
@@ -622,6 +642,201 @@ a1to5
   //=> [1, 2, 3, 4, 5]
 oneToFive
   //=> ["uno", 2, "three", 4, 5]
+```
+
+When an element of the slice is modified, the slice actually takes a slice of the underlying array and switches to using the slice as its new underlying array. It then performs the modification of the new array.
+
+This prevents the modification from affecting the original array, which may be shared by other slices, or by other code that expected it not to change.
+
+This pattern is called [copy on write]. In effect, when we took a slice of the original array, we delayed making an actual copy until such time as we needed to make a copy to preserve the original array's values. When do we actually _need_ the copy? When we write to it, instead of reading from it.
+
+[copy on write]: https://en.wikipedia.org/wiki/Copy-on-write
+
+And if we never write to it, we win "bigly" by never making copies. Before we go on to implement other methods like `push`, `pop`, `unshift`, and `shift`, let's make an optimization. Once we make a copy, must we keep making copies on every write?
+
+Well, the first time we write something, we *have* to make a copy. The array that was passed to `Slice` in the constructor belonged to someone else. Absent a type system that understands mutable and immutable arrays, we must be conservative and assume that we should not modify the original.
+
+So the first time we write, we must copy.
+
+What about after that? Well, after the first write, we have a new array that no other code shares (yet). So we can actually mutate it with abandon. Only when we share it with another piece of code must we revert to making a copy on writes. When do we share that array? When `.slice` is called.
+
+We need to mediate other objects accessing our array with this scheme, so we'll store it in a symbol property. That's private enough to prevent accidental access. And if someone deliberately wants to break our encapsulation, there's nothing we can do about a determined programmer with a commit bit anyways.
+
+So here is an updated version that only makes copies when necessary:
+
+```javascript
+const unsafeSymbol = Symbol('unsafe');
+const arraySymbol = Symbol('array');
+
+class Slice {
+  static from(object) {
+    if (object instanceof this) {
+      return object;
+    }
+    if (object instanceof Array) {
+      return new this(object);
+    }
+    if (typeof object[Symbol.iterator] === 'function') {
+      return new this([...object]);
+    }
+  }
+
+  constructor(array, from, length) {
+    this[arraySymbol] = array;
+    this.from = normalizedFrom(array, from, length);
+    this.length = normalizedLength(array, from, length);
+    this.makeUnsafe();
+
+    return new Proxy(this, SliceProxy);
+  }
+
+  * [Symbol.iterator]() {
+    const { [arraySymbol]: array, from, length } = this;
+
+    for (let i = 0; i < length; i++) {
+      yield array[i + from];
+    }
+  }
+
+  toString() {
+    return [...this].join(',');
+  }
+
+  has(i) {
+    if (i >= 0 && i < this.length) {
+      return (this.from + i) in this[arraySymbol];
+    } else {
+      return false;
+    }
+  }
+
+  get array() {
+    this.unsafe = true;
+
+    return this[arraySymbol];
+  }
+
+  at(i) {
+    if (i >= 0 && i < this.length) {
+      return this[arraySymbol][this.from + i];
+    }
+  }
+
+  makeSafe () {
+    if (this.unsafe) {
+      this[arraySymbol] = this[arraySymbol].slice(this.from, this.length);
+      this.from = 0;
+      this.length = this[arraySymbol].length;
+      this.unsafe = false;
+    }
+  }
+
+  makeUnsafe () {
+    this.unsafe = true;
+  }
+
+  atPut(i, value) {
+    this.makeSafe();
+
+    return this[arraySymbol][i] = value;
+  }
+
+  slice(from, length) {
+    this.makeUnsafe();
+
+    from = normalizedFrom(this, from, length);
+    length = normalizedLength(this, from, length);
+
+    return new Slice(this[arraySymbol], this.from + from, length);
+  }
+
+  get [Symbol.isConcatSpreadable]() {
+    return true;
+  }
+}
+
+const oneToFive = Slice.from([1, 2, 3, 4, 5]);
+
+oneToFive[0] = "uno";
+oneToFive[1] = "zwei";
+oneToFive[2] = "three";
+
+const subSlice = oneToFive.slice(3);
+
+oneToFive[3] = "for";
+oneToFive[4] = "marun";
+
+[...oneToFive]
+  //=> ["uno", "zwei", "three", "for", "marun"]
+[...fourAndFive]
+  //=> [4, 5]
+```
+
+If we trace the code, we see that we made a copy when we invoked `oneToFive[0] = "uno"`, because we can't make assumptions about the array provided to the constructor. We did not make a copy after `oneToFive[1] = "zwei"` or `oneToFive[2] = "three"`, because we knew that we had our copy all to ourselves.
+
+We then invoked `oneToFive.slice(3)`. We didn't make a copy, but we noted that we were no longer safe, so then when we called `oneToFive[3] = "for"`, we made another copy. We then were safe again, so invoking `oneToFive[4] = "marun"` did not make a third copy.
+
+The behaviour is identical to the behaviour of making a copy every time we slice, or every time we write, but we're stingier about making copies when we don't need them.
+
+And now, other destructive methods are literally a doddle:
+
+```javascript
+class Slice {
+
+  // ...
+
+  push(element) {
+    this.makeSafe();
+
+    cont value = this[arraySymbol].push(element);
+    this.length = this[arraySymbol].length;
+
+    return value;
+  }
+
+  pop() {
+    this.makeSafe();
+
+    cont value = this[arraySymbol].pop();
+    this.length = this[arraySymbol].length;
+
+    return value;
+  }
+
+  unshift(element) {
+    this.makeSafe();
+
+    cont value = this[arraySymbol].unshift(element);
+    this.length = this[arraySymbol].length;
+
+    return value;
+  }
+
+  shift() {
+    this.makeSafe();
+
+    cont value = this[arraySymbol].shift();
+    this.length = this[arraySymbol].length;
+
+    return value;
+  }
+}
+
+const oneToFive = Slice.from([1, 2, 3, 4, 5]);
+
+oneToFive[0] = "uno";
+oneToFive[1] = "zwei";
+oneToFive[2] = "three";
+
+const subSlice = oneToFive.slice(3);
+
+oneToFive[3] = "for";
+oneToFive[4] = "marun";
+
+[...oneToFive]
+  //=> ["uno", "zwei", "three", "for", "marun"]
+[...fourAndFive]
+  //=> [4, 5]
 ```
 
 ---
