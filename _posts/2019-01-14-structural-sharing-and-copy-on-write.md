@@ -16,7 +16,7 @@ We'll start at the beginning. The beginning of functional programming, in fact.
 
 ###  wherein we travel back in time to the dawn of functional programming
 
-Once upon a time, there was a programming language called [Lisp], an acronym for LISt Processing.[^lisp] Lisp was one of the very first high-level languages, the very first implementation was written for the [IBM 704] computer. (The very first FORTRAN implementation was also written for the 704).
+Once upon a time, there was a programming language called [Lisp], an acronym for LIS(t) P(rocessing).[^lisp] Lisp was one of the very first high-level languages, the very first implementation was written for the [IBM 704] computer. (The very first FORTRAN implementation was also written for the 704).
 
 [Lisp]: https://en.wikipedia.org/wiki/Lisp_(programming_language)
 [IBM 704]: https://en.wikipedia.org/wiki/IBM_704
