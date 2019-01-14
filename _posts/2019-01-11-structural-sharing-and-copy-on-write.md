@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Greenspunning Structural Sharing and Copy-on-Write Semantics"
+title: "Structural Sharing and Copy-on-Write Semantics"
 tags: [allonge, recursion, mermaid]
 ---
 
