@@ -60,16 +60,16 @@ Notice that though JavaScript displays our list as if it is composed of arrays n
 
 <div class="mermaid">
   graph LR
-    one(( ))-->|car()|a["1"]
-    one-->|cdr()|two(( ))
-    two-->|car()|b["2"]
-    two-->|cdr()|three(( ))
-    three-->|car()|c["3"]
-    three-->|cdr()|four(( ))
-    four-->|car()|d["4"]
-    four-->|cdr()|five(( ))
-    five-->|car()|e["5"]
-    five-->|cdr()|null["fa:fa-ban null"];
+    one(( ))-->|car|a["1"]
+    one-->|cdr|two(( ))
+    two-->|car|b["2"]
+    two-->|cdr|three(( ))
+    three-->|car|c["3"]
+    three-->|cdr|four(( ))
+    four-->|car|d["4"]
+    four-->|cdr|five(( ))
+    five-->|car|e["5"]
+    five-->|cdr|null["fa:fa-ban null"];
 </div>
 
 
@@ -249,16 +249,16 @@ The variable `twoToFive` points to the second element in `oneToFive`'s list, and
 graph LR
     R1(oneToFive)-->one(("[...]"))
     R2(twoToFive)-->two(("[...]"))
-    one-->|[0]|a["1"]
-    one-->|[1]|two
-    two-->|[0]|b["2"]
-    two-->|[1]|three(("[...]"))
-    three-->|[0]|c["3"]
-    three-->|[1]|four(("[...]"))
-    four-->|[0]|d["4"]
-    four-->|[1]|five(("[...]"))
-    five-->|[0]|e["5"]
-    five-->|[1]|null["fa:fa-ban null"];
+    one-->|0|a["1"]
+    one-->|1|two
+    two-->|0|b["2"]
+    two-->|1|three(("[...]"))
+    three-->|0|c["3"]
+    three-->|1|four(("[...]"))
+    four-->|0|d["4"]
+    four-->|1|five(("[...]"))
+    five-->|0|e["5"]
+    five-->|1|null["fa:fa-ban null"];
 </div>
 
 As long as we don't want to destructively modify any part of a list that is being shared, this scheme works beautifully.
