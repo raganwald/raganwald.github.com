@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Greenspunning Structural Sharing and Copy-on-Write Semantics in JavaScript"
+title: "Greenspunning Structural Sharing and Copy-on-Write Semantics"
 tags: [allonge, recursion, mermaid]
 ---
 
