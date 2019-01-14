@@ -845,7 +845,11 @@ We set out with the purpose of writing some code that would allow us to use Java
 
 While these techniques are far too heavyweight for a simple task like writing a `sum` function in the style favoured by Lisp programmers of the 1960s and 1970s, that task was small enough and simple enough to allow us to focus on the implementation of these techniques, rather than on the problem of the domain.
 
-These techniques may seem exotic at first, but they form the basis for high-performance implementation of large data structures.
+These techniques may seem exotic at first, but they form the basis for high-performance implementation of large data structures. And many other languages, such as [Clojure], bake these semantics right in. If JavaScript worked like Clojure, there would be no need to implement a `Slice` class, because arrays would already have structural sharing and copy-on-write semantics. So calling `.slice` would be inexpensive, right out of the box.
+
+Until the day that JavaScript gets such data structures in its standard library, we'll have to Greenspun the functionality ourselves, or use a library such as David Nolen's [Mori].
+
+[Mori]: http://swannodette.github.io/mori/
 
 *(portions of this essay have previously appeared in the book [JavaScript Allongé][ja])*
 
