@@ -306,7 +306,7 @@ fromTwo.toString()
   //=> [3, 4, 5]
 ```
 
-We'll now want to add support for `[0]` and `.slice(1)`. Slice is straightforward, so we'll do it first. And e'll extract some duplication from the constructor while we're at it:
+We'll now want to add support for `[0]` and `.slice(1)`. Slice is straightforward, so we'll do it first. And we'll extract some duplication from the constructor while we're at it:
 
 ```javascript
 function normalizedFrom(arrayIsh, from = 0) {
@@ -869,11 +869,13 @@ Until the day that JavaScript gets such data structures in its standard library,
 
 # Bonus Hack!
 
-Lisp programmers didn't just use `car` and `cdr` functions, Lisp had a system where any function name that started with `c`, ended with `r`, and had one or more `a`s or `d`s in between was a function, and it was implemented as if the functions `car` and `cdr` were composed in order.
+Lisp programmers used `car` and `cdr` in intricate ways. Although we've only looked at simple lists, cons cells could be used to make trees of arbitrary complexity, and the right sequence of `car` and `cdr` invocations could navigate a path to any element or sub-tree.
 
-So where `(car list)` provided the first element of the list, `(cadr list)` was equivalent to `(car (cdr list))`, which is the second element. If we wanted to really get Lisp-y, we would implement the same scheme... Perhaps with properties we could destructure rather than with functions, like this:
+To facilitate this, Lisp had a system where any function name that started with `c`, ended with `r`, and had one or more `a` or `d` characters in between was automatically also a function, and it was implemented as if the functions `car` and `cdr` were composed in order.
 
-Something like this:
+For example, `(cadr list)` was equivalent to `(car (cdr list))`, which is the second element. If we wanted to really get Lisp-y, we would implement the same scheme...
+
+This being JavaScript, we'll hack this idea with a proxy and synthetic properties. That way, we can destructure slices, like this:
 
 ```javascript
 const SliceHandler = {
