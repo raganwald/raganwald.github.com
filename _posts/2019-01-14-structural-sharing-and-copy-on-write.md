@@ -4,9 +4,13 @@ title: "An Informal Exploration of Structural Sharing and Copy-on-Write Semantic
 tags: [allonge, recursion, mermaid]
 ---
 
-Today, we're going to take highly informal look at two related techniques for achieving high performance when using large data structures: _Structural Sharing_, and _Copy-on-Write Semantics_. To give us some context for exploring these techniques, we're going to solve a very simple problem: Programming in a Lisp-like recursive style, while using JavaScript arrays.
+Today, we're going to take highly informal look at two related techniques for achieving high performance when using large data structures: _Structural Sharing_, and _Copy-on-Write Semantics_.
 
-We'll start at the beginning. The beginning of functional programming, in fact.
+To give us some context for exploring these techniques, we're going to solve a very simple problem: *Programming in a Lisp-like recursive style, but using JavaScript arrays.* Although not the most practical use case, it's interesting because even a small function written in Lisp style (like summing a list of integers) can create and recycle a lot of temporary objects.
+
+Fixing that problem gives us an excuse to look at ways to use memory efficiently, minimizing the data we have to copy. Although we're unlikely to use recursion gratuitously to sum a list of integers, the techniques we'll use here to make it "not embarrassing" are the exact same techniques needed to make working with large data structures performant.
+
+And now, let's start at the beginning. The beginning of functional programming, in fact.
 
 ---
 
