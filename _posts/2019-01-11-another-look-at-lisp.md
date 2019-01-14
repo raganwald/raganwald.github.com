@@ -626,7 +626,6 @@ class Slice {
   // ...
 
   atPut(i, value) {
-    if ( value !== )
     this.array = this.array.slice(this.from, this.length);
     this.from = 0;
     this.length = this.array.length;
