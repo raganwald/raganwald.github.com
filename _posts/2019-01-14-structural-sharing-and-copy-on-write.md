@@ -91,14 +91,14 @@ That's another linked list too:
 
 <div class="mermaid">
   graph LR
-    two(( ))-->|car()|b["2"]
-    two-->|cdr()|three(( ))
-    three-->|car()|c["3"]
-    three-->|cdr()|four(( ))
-    four-->|car()|d["4"]
-    four-->|cdr()|five(( ))
-    five-->|car()|e["5"]
-    five-->|cdr()|null["fa:fa-ban null"];
+    two(( ))-->|car|b["2"]
+    two-->|cdr|three(( ))
+    three-->|car|c["3"]
+    three-->|cdr|four(( ))
+    four-->|car|d["4"]
+    four-->|cdr|five(( ))
+    five-->|car|e["5"]
+    five-->|cdr|null["fa:fa-ban null"];
 </div>
 
 By extracting references from cons cells, it achieves high performance. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed.
