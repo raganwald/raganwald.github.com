@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Structural Sharing and Copy-on-Write Semantics"
+title: "An Informal Exploration of Structural Sharing and Copy-on-Write Semantics"
 tags: [allonge, recursion, mermaid]
 ---
 
@@ -101,7 +101,9 @@ That's another linked list too:
     five-- cdr -->null["fa:fa-ban null"];
 </div>
 
-Again, it's just extracting a reference from a cons cell, it's very fast. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed. In JavaScript, it's still much, much, much faster to get all the elements except the head from a linked list than from an array. Getting one reference to a structure that already exists is faster than copying a bunch of elements.
+By extracting references from cons cells, it achieves high performance. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed.
+
+In JavaScript, even without the low-level support, it's still much, much, much faster to get all the elements except the head from a linked list than from an array. Getting one reference to a structure that already exists is faster than copying a bunch of elements.
 
 So now we understand that in Lisp, a lot of things use linked lists, and they do that in part because it was what the hardware made possible.
 
@@ -177,7 +179,9 @@ Like `car`, calling `array[0]` is fast. But when we invoke `array.slice(1)`, Jav
 
 We're only working with five elements at a time, so we can afford to chuckle at the performance implications. But if we start operating on long lists, all that copying is going to bury us under a mound of garbage. Of course, we could switch to linked lists in JavaScript. But the cure would be worse than the disease.
 
-Nobody wants to read code that looks like `cons(1, cons(2, cons(3, cons(4, cons(5, null)))))`. And sometimes, we want to access arbitrary elements of a list. With a linked list, we have to traverse the list element by element to get it:
+Nobody wants to read code that looks like `cons(1, cons(2, cons(3, cons(4, cons(5, null)))))`. And sometimes, we want to access arbitrary elements of a list. With a linked list, we have to traverse the list element by element to get it:[^nobody]
+
+[^nobody]: When we say, _Nobody wants to read code that looks like `cons(1, cons(2, cons(3, cons(4, cons(5, null)))))`_, we mean it. Even the Lisp gurus of old didn't want to deal with that, so in Lisp when you write `'(1 2 3 4 5)`, it is translated directly into a linked list of cons cells.
 
 ```javascript
 function at (linkedList, index) {
@@ -511,7 +515,7 @@ And now we can implement one last thing, a static factory method for making `Sli
 class Slice {
   static from(object) {
     if (object instanceof this) {
-      return object;
+      return new this(object.array, object.from, object.length);
     }
     if (object instanceof Array) {
       return new this(object);
@@ -524,16 +528,18 @@ class Slice {
   /// remainder of the class
 }
 
-function sum (array, runningTotal = 0) {
-  array = Slice.from(array);
+function sum (array) {
+  return sumOfSlice(Slice.from(array), 0);
 
-  if (array.length === 0) {
-    return runningTotal;
-  } else {
-    const first = array[0];
-    const rest = array.slice(1);
+  function sumOfSlice (slice, runningTotal) {
+    if (slice.length === 0) {
+      return runningTotal;
+    } else {
+      const first = slice[0];
+      const rest = slice.slice(1);
 
-    return sum(rest, runningTotal + first);
+      return sumOfSlice(rest, runningTotal + first);
+    }
   }
 }
 
@@ -713,7 +719,7 @@ const arraySymbol = Symbol('array');
 class Slice {
   static from(object) {
     if (object instanceof this) {
-      return object;
+      return new this(object.array, object.from, object.length);
     }
     if (object instanceof Array) {
       return new this(object);
