@@ -633,7 +633,7 @@ Of course, the biggest array-like behaviour our slices are missing is that we ha
 
 As we noted, our slices depend upon the underlying array not mutating out from underneath them. Which _seems_ to imply that the Slices themselves have to be immutable. But not so: The slices do not depend upon each other, but upon the underlying array.
 
-This makes it possible for us to modify a slice without modifying any other slices that depend upon the slice's original array... By making a copy of the slice's array before we modify it:
+This makes it possible for us to modify a slice without modifying any other slices that depend upon the slice's original array... by making a copy of the slice's array before we write to it:
 
 ```javascript
 const SliceHandler = {
