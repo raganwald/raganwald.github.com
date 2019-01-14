@@ -16,10 +16,11 @@ We'll start at the beginning. The beginning of functional programming, in fact.
 
 ###  wherein we travel back in time to the dawn of functional programming
 
-Once upon a time, there was a programming language called [Lisp], an acronym for LIS(t) P(rocessing).[^lisp] Lisp was one of the very first high-level languages, the very first implementation was written for the [IBM 704] computer. (The very first FORTRAN implementation was also written for the 704).
+Once upon a time, there was a programming language called [Lisp], an acronym for LIS(t) P(rocessing).[^lisp] Lisp was one of the very first high-level languages, the very first implementation was written for the [IBM 704] computer.[^fortran]
 
 [Lisp]: https://en.wikipedia.org/wiki/Lisp_(programming_language)
 [IBM 704]: https://en.wikipedia.org/wiki/IBM_704
+[^fortran]: Fun fact: The very first FORTRAN implementation was also written for the [IBM 704].
 
 [^lisp]: [Lisp] is still very much alive, and one of the most interesting and exciting programming languages in use today is [Clojure], a Lisp dialect that runs on the JVM, along with its sibling [ClojureScript], Clojure that transpiles to JavaScript. Clojure and ClojureScript both make extensive use of structural sharing and copy-on-write semantics to achieve high performance. By default.
 
