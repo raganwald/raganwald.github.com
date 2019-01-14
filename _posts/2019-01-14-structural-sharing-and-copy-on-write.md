@@ -284,8 +284,8 @@ class Slice {
     length = Math.min(length, array.length - from);
 
     this.array = array;
-    this.from = normalizedFrom(array, from, length);
-    this.length = normalizedLength(array, from, length);
+    this.from = from;
+    this.length = length;
   }
 
   * [Symbol.iterator]() {
