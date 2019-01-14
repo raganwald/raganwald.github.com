@@ -624,7 +624,9 @@ Of course, the biggest array-like behaviour our slices are missing is that we ha
 
 ### copy on write
 
-As we noted, our slices depend upon the underlying array not mutating out from underneath them. Which implies that the Slices themselves have to be immutable. But not so: The slices do not depend upon each other, but upon the underlying array. Which makes the following possible:
+As we noted, our slices depend upon the underlying array not mutating out from underneath them. Which implies that the Slices themselves have to be immutable. But not so: The slices do not depend upon each other, but upon the underlying array.
+
+This makes it possible for us to modify a slice without modifying any other slices that depend upon the slice's original array... By making a copy of the slice's array before we modify it:
 
 ```javascript
 const SliceHandler = {
@@ -670,6 +672,12 @@ oneToFive
 ```
 
 When an element of the slice is modified, the slice actually takes a slice of the underlying array and switches to using the slice as its new underlying array. It then performs the modification of the new array.
+
+<div class="mermaid">
+  graph TD
+    a["a1to5: [1, 2, 3, 4, 5]"]
+    c["oneToFive { from: 0, length: 5 }"]-- array -->b["["uno", 2, "three", 4, 5]"];
+</div>
 
 This prevents the modification from affecting the original array, which may be shared by other slices, or by other code that expected it not to change.
 
