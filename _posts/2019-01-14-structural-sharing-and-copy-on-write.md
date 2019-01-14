@@ -662,21 +662,21 @@ class Slice {
 const a1to5 = [1, 2, 3, 4, 5];
 const oneToFive = Slice.from(a1to5);
 
-oneToFive.atPut(2, "three");
-oneToFive[0] = "uno";
+oneToFive.atPut(2, 'three');
+oneToFive[0] = 'uno';
 
 a1to5
   //=> [1, 2, 3, 4, 5]
 oneToFive
-  //=> ["uno", 2, "three", 4, 5]
+  //=> ['uno', 2, 'three', 4, 5]
 ```
 
-When an element of the slice is modified, the slice actually takes a slice of the underlying array and switches to using the slice as its new underlying array. It then performs the modification of the new array.
+When an element of the slice is modified, the slice invokes `.slice(...)` on the underlying array, and switches to using the value returned as its new underlying array. It then performs the modification of the new array.
 
 <div class="mermaid">
   graph TD
     a["a1to5: [1, 2, 3, 4, 5]"]
-    c["oneToFive { from: 0, length: 5 }"]-- array -->b["["uno", 2, "three", 4, 5]"];
+    c["oneToFive { from: 0, length: 5 }"]-- array -->b["['uno', 2, 'three', 4, 5]"];
 </div>
 
 This prevents the modification from affecting the original array, which may be shared by other slices, or by other code that expected it not to change.
@@ -796,9 +796,9 @@ class Slice {
 
 const oneToFive = Slice.from([1, 2, 3, 4, 5]);
 
-oneToFive[0] = "uno";
+oneToFive[0] = 'uno';
 oneToFive[1] = "zwei";
-oneToFive[2] = "three";
+oneToFive[2] = 'three';
 
 const subSlice = oneToFive.slice(3);
 
@@ -806,12 +806,12 @@ oneToFive[3] = "for";
 oneToFive[4] = "marun";
 
 [...oneToFive]
-  //=> ["uno", "zwei", "three", "for", "marun"]
+  //=> ['uno', "zwei", 'three', "for", "marun"]
 [...fourAndFive]
   //=> [4, 5]
 ```
 
-If we trace the code, we see that we made a copy when we invoked `oneToFive[0] = "uno"`, because we can't make assumptions about the array provided to the constructor. We did not make a copy after `oneToFive[1] = "zwei"` or `oneToFive[2] = "three"`, because we knew that we had our copy all to ourselves.
+If we trace the code, we see that we made a copy when we invoked `oneToFive[0] = 'uno'`, because we can't make assumptions about the array provided to the constructor. We did not make a copy after `oneToFive[1] = "zwei"` or `oneToFive[2] = 'three'`, because we knew that we had our copy all to ourselves.
 
 We then invoked `oneToFive.slice(3)`. We didn't make a copy, but we noted that we were no longer safe, so then when we called `oneToFive[3] = "for"`, we made another copy. We then were safe again, so invoking `oneToFive[4] = "marun"` did not make a third copy.
 
