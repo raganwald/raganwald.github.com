@@ -700,7 +700,7 @@ This pattern is called [copy on write]. In effect, when we took a slice of the o
 
 [copy on write]: https://en.wikipedia.org/wiki/Copy-on-write
 
-And if we never write to it, we win "bigly" by never making copies. Before we go on to implement other methods like `push`, `pop`, `unshift`, and `shift`, let's make ask a question: Once we make a copy, must we keep making copies on every write?
+And if we never write to it, we win "bigly" by never making copies. Before we go on to implement other methods like `push`, `pop`, `unshift`, and `shift`, let's ask ourselves a question: *Must we always make a fresh copy on every write?*
 
 Well, the first time we write something, we *have* to make a copy. The array that was passed to `Slice` in the constructor belonged to someone else. Absent a type system that understands mutable and immutable arrays, we must be conservative and assume that we should not modify the original.
 
