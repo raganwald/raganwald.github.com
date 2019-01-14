@@ -867,7 +867,7 @@ Until the day that JavaScript gets such data structures in its standard library,
 
 ---
 
-# Bonus Hack
+# Bonus Hack!
 
 Lisp programmers didn't just use `car` and `cdr` functions, Lisp had a system where any function name that started with `c`, ended with `r`, and had one or more `a`s or `d`s in between was a function, and it was implemented as if the functions `car` and `cdr` were composed in order.
 
@@ -953,4 +953,4 @@ second
 
 ---
 
-# Note(s)
+# End Notes
