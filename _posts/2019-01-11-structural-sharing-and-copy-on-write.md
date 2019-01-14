@@ -14,7 +14,11 @@ Once upon a time, there was a programming language called [Lisp], an acronym for
 
 [Lisp]: https://en.wikipedia.org/wiki/Lisp_(programming_language)
 [IBM 704]: https://en.wikipedia.org/wiki/IBM_704
-[^lisp]: Lisp is still very much alive, and one of the most interesting and exciting programming languages in use today is [Clojure](http://clojure.org/), a Lisp dialect that runs on the JVM, along with its sibling [ClojureScript](https://github.com/clojure/clojurescript), Clojure that transpiles to JavaScript. Clojure and ClojureScript both make extensive use of structural sharing and copy-on-write semantics to achieve high performance. By default.
+
+[^lisp]: [Lisp] is still very much alive, and one of the most interesting and exciting programming languages in use today is [Clojure], a Lisp dialect that runs on the JVM, along with its sibling [ClojureScript], Clojure that transpiles to JavaScript. Clojure and ClojureScript both make extensive use of structural sharing and copy-on-write semantics to achieve high performance. By default.
+
+[Clojure]: http://clojure.org/
+[ClojureScript]: https://github.com/clojure/clojurescript
 
 The 704 had a 36-bit word, meaning that it was very fast to store and retrieve 36-bit values. The CPU's instruction set featured two important macros: `CAR` would fetch 15 bits representing the Contents of the Address part of the Register, while `CDR` would fetch the Contents of the Decrement part of the Register.
 
