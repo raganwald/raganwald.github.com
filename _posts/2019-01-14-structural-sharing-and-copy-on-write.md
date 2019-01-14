@@ -310,7 +310,7 @@ Instances of `Slice` encapsulates the idea of a slice of an array, without makin
 
 <div class="mermaid">
   graph TD
-    b["fromTwo: { from: 2, length: 3 }"]-- array -->a["a1to5: [1, 2, 3, 4, 5]"];
+    b["fromTwo: { from: 2, length: 3 }"]-- .array -->a["a1to5: [1, 2, 3, 4, 5]"];
 </div>
 
 We'll now add support for `[0]` and `.slice(1)`. Slicing is straightforward, so we'll do that first. And we'll extract some duplication from the constructor while we're at it:
@@ -362,8 +362,8 @@ const fromOne = fromZero.slice(1);
 
 <div class="mermaid">
   graph TD
-    b["fromZero: { from: 0, length: 5 }"]-- array -->a["a1to5: [1, 2, 3, 4, 5]"]
-    c["fromOne { from: 1, length: 4 }"]-- array -->a;
+    b["fromZero: { from: 0, length: 5 }"]-- .array -->a["a1to5: [1, 2, 3, 4, 5]"]
+    c["fromOne { from: 1, length: 4 }"]-- .array -->a;
 </div>
 
 To make it work with `[0]`, we need to implement `[]`. Implementing `[]` just for `0` is easy, but if we implement just `[0]`, we're begging for a bug later when somebody thinks they can use `[1]`. What we want instead is a way to allow any indexed access, and properly access the correct element of the underlying array, and without allowing access beyond our slice's dimension.
@@ -676,7 +676,7 @@ When an element of the slice is modified, the slice invokes `.slice(...)` on the
 <div class="mermaid">
   graph TD
     a["a1to5: [1, 2, 3, 4, 5]"]
-    c["oneToFive { from: 0, length: 5 }"]-- array -->b["['uno', 2, 'three', 4, 5]"];
+    c["oneToFive { from: 0, length: 5 }"]-- .array -->b["['uno', 2, 'three', 4, 5]"];
     b-. copy of .->a
 </div>
 
@@ -801,20 +801,36 @@ oneToFive[0] = 'uno';
 oneToFive[1] = "zwei";
 oneToFive[2] = 'three';
 
-const subSlice = oneToFive.slice(3);
+const fourAndFive = oneToFive.slice(3);
 
-oneToFive[3] = "for";
-oneToFive[4] = "marun";
+oneToFive[3] = 'for';
+oneToFive[4] = 'marun';
 
 [...oneToFive]
-  //=> ['uno', "zwei", 'three', "for", "marun"]
+  //=> ['uno', "zwei", 'three', 'for', 'marun']
 [...fourAndFive]
   //=> [4, 5]
 ```
 
 If we trace the code, we see that we made a copy when we invoked `oneToFive[0] = 'uno'`, because we can't make assumptions about the array provided to the constructor. We did not make a copy after `oneToFive[1] = "zwei"` or `oneToFive[2] = 'three'`, because we knew that we had our copy all to ourselves.
 
-We then invoked `oneToFive.slice(3)`. We didn't make a copy, but we noted that we were no longer safe, so then when we called `oneToFive[3] = "for"`, we made another copy. We then were safe again, so invoking `oneToFive[4] = "marun"` did not make a third copy.
+<div class="mermaid">
+  graph TD
+    a["[1, 2, 3, 4, 5]"]
+    b["['uno', 'zwei', 'three', 4, 5]"]
+    c["['uno', 'zwei', 'three', 'for', 'marun']"]
+
+    b-. copy of .->a
+    c-. copy of .->b
+
+    d["oneToFive: { from: 0, length: 5 }"]
+    e["fourAndFive: { from: 3, length: 2 }"]
+
+    d-- .array -->c
+    e-- .array -->b
+</div>
+
+We then invoked `oneToFive.slice(3)`. We didn't make a copy, but we noted that we were no longer safe, so then when we called `oneToFive[3] = 'for'`, we made another copy. We then were safe again, so invoking `oneToFive[4] = 'marun'` did not make a third copy.
 
 The behaviour is identical to the behaviour of making a copy every time we slice, or every time we write, but we're stingier about making copies when we don't need them.
 
