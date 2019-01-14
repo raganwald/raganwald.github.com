@@ -847,7 +847,7 @@ While these techniques are far too heavyweight for a simple task like writing a 
 
 These techniques may seem exotic at first, but they form the basis for high-performance implementation of large data structures.
 
-*(portions of this essay have previously appeared in the book [JavaScript Allongé])*
+*(portions of this essay have previously appeared in the book [JavaScript Allongé][ja])*
 
 [ja]: https://leanpub.com/javascriptallongesix
 
