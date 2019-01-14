@@ -1,7 +1,7 @@
 ---
 layout: default
-title: "Another Look at Lisp"
-tags: [allonge, recursion, mermaid, noindex]
+title: "Greenspunning Structural Sharing nd Copy-on-Write Semantics in JavaScript"
+tags: [allonge, recursion, mermaid]
 ---
 
 ![The IBM 704](/assets/images/IBM704.jpg)
@@ -574,6 +574,9 @@ class Slice {
   /// ...
 
   concat(...args) {
+    const { array, from, length } = this;
+
+    return Slice.from(array.slice(from, length).concat(...args));
   }
 
   get [Symbol.isConcatSpreadable]() {
@@ -750,6 +753,12 @@ class Slice {
     return new Slice(this[arraySymbol], this.from + from, length);
   }
 
+  concat(...args) {
+    const { [arraySymbol]: array, from, length } = this;
+
+    return Slice.from(array.slice(from, length).concat(...args));
+  }
+
   get [Symbol.isConcatSpreadable]() {
     return true;
   }
@@ -815,29 +824,29 @@ class Slice {
   shift() {
     this.makeSafe();
 
-    cont value = this[arraySymbol].shift();
+    const value = this[arraySymbol].shift();
     this.length = this[arraySymbol].length;
 
     return value;
   }
 }
-
-const oneToFive = Slice.from([1, 2, 3, 4, 5]);
-
-oneToFive[0] = "uno";
-oneToFive[1] = "zwei";
-oneToFive[2] = "three";
-
-const subSlice = oneToFive.slice(3);
-
-oneToFive[3] = "for";
-oneToFive[4] = "marun";
-
-[...oneToFive]
-  //=> ["uno", "zwei", "three", "for", "marun"]
-[...fourAndFive]
-  //=> [4, 5]
 ```
+
+We could go on implementing other array-ish methods for our `Slice` class, but we've implemented a few major concepts that are worth revisiting.
+
+---
+
+[![ideas](/assets/images/slice/ideas.jpg)](https://www.flickr.com/photos/lilivanili/6182926356)
+
+---
+
+### wrapping up
+
+We set out with the purpose of writing some code that would allow us to use JavaScript arrays in a Lisp-like style, without the heavy penalty of making lots and lots of copies. To do that, we implemented structural sharing. We added a `Proxy` to give our new class indexed access to the elements of our `Slice` class, and then we then moved on the implement copy-on-write semantics, with an optimization of only performing the copy when our underlying array is "unsafe."
+
+While these techniques are far too heavyweight for a simple task like writing a `sum` function in the style favoured by Lisp programmers of the 1960s and 1970s, that task was small enough and simple enough to allow us to focus on the implementation of these techniques, rather than on the problem of the domain.
+
+These techniques may seem exotic at first, but they form the basis for high-performance implementation of large data structures.
 
 ---
 
