@@ -913,6 +913,8 @@ Until the day that JavaScript gets such data structures in its standard library,
 
 [Mori]: http://swannodette.github.io/mori/
 
+(discuss on [reddit](https://www.reddit.com/r/javascript/comments/afw0wu/structural_sharing_and_copyonwrite_semantics_in/))
+
 *(portions of this essay have previously appeared in the book [JavaScript Allongé][ja])*
 
 [ja]: https://leanpub.com/javascriptallongesix
