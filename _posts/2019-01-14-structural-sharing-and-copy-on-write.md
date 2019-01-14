@@ -105,11 +105,11 @@ That's another linked list too:
     five-->|cdr|null["fa:fa-ban null"];
 </div>
 
-By extracting references from cons cells, it achieves high performance. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to `cdr` a list with five elements is the same as the time to `cdr` a list with 5,000 elements, and no temporary arrays are needed.
+By extracting references from cons cells, it achieves high performance. In Lisp, it's blazingly fast because it happens in hardware. There's no making copies of arrays, the time to get the `cdr` of a list with five elements is the same as the time to get the `cdr` pf a list with 5,000 elements. In each case, we have a reference to the first cell, and we get a reference to the next cell in one step. No elements need to be copied and the list does not need to be traversed.
 
 In JavaScript, even without the low-level support, it's still much, much, much faster to get all the elements except the head from a linked list than from an array. Getting one reference to a structure that already exists is faster than copying a bunch of elements.
 
-So now we understand that in Lisp, a lot of things use linked lists, and they do that in part because it was what the hardware made possible.
+So now we understand that in Lisp, a lot of things use linked lists, and they do that in part because it was what the hardware made fast.
 
 ---
 
