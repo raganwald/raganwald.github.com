@@ -841,7 +841,7 @@ We could go on implementing other array-ish methods for our `Slice` class, but w
 
 ### wrapping up
 
-We set out with the purpose of writing some code that would allow us to use JavaScript arrays in a Lisp-like style, without the heavy penalty of making lots and lots of copies. To do that, we implemented structural sharing. We added a `Proxy` to give our new class indexed access to the elements of our `Slice` class, and then we then moved on the implement copy-on-write semantics, with an optimization of only performing the copy when our underlying array is "unsafe."
+We set out with the purpose of writing some code that would allow us to use JavaScript arrays in a Lisp-like style, without the heavy penalty of making lots and lots of copies. To do that, we implemented **structural sharing**. We added a `Proxy` to give our new class indexed access to the elements of our `Slice` class, and then we then moved on the implement **[copy on write]** semantics, with an optimization of only performing the copy when our underlying array is "unsafe."
 
 While these techniques are far too heavyweight for a simple task like writing a `sum` function in the style favoured by Lisp programmers of the 1960s and 1970s, that task was small enough and simple enough to allow us to focus on the implementation of these techniques, rather than on the problem of the domain.
 
