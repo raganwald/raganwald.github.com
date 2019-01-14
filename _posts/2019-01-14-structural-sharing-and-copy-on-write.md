@@ -708,7 +708,7 @@ Well, the first time we write something, we *have* to make a copy. The array tha
 
 So the first time we write, we must copy.
 
-What about after that? Well, after the first write, we have a new array that no other code shares (yet). So we can actually mutate it with abandon. Only when we share it with another piece of code must we revert to making a copy on writes. When do we share that array? When `.slice` is called.
+What about after that? Well, after the first write, we have a new array that no other code shares (yet). So we can actually mutate it with abandon. Only when we share it with another piece of code must we revert to making a copy on writes. When do we share that array? When `.slice` is called, and if another object does a `get` on our `array` property.
 
 We need to mediate other objects accessing our array with this scheme, so we'll store it in a symbol property. That's private enough to prevent accidental access. And if someone deliberately wants to break our encapsulation, there's nothing we can do about a determined programmer with a commit bit anyways.
 
@@ -761,7 +761,7 @@ class Slice {
   }
 
   get array() {
-    this.unsafe = true;
+    this.makeUnsafe();
 
     return this[arraySymbol];
   }
