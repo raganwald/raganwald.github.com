@@ -821,6 +821,8 @@ oneToFive[4] = 'marun';
 
 If we trace the code, we see that we made a copy when we invoked `oneToFive[0] = 'uno'`, because we can't make assumptions about the array provided to the constructor. We did not make a copy after `oneToFive[1] = "zwei"` or `oneToFive[2] = 'three'`, because we knew that we had our copy all to ourselves.
 
+We then invoked `oneToFive.slice(3)`. We didn't make a copy, but we noted that we were no longer safe, so then when we called `oneToFive[3] = 'for'`, we made another copy. We then were safe again, so invoking `oneToFive[4] = 'marun'` did not make a third copy.
+
 <div class="mermaid">
   graph TD
     a["[1, 2, 3, 4, 5]"]
@@ -837,9 +839,7 @@ If we trace the code, we see that we made a copy when we invoked `oneToFive[0] =
     e-- .array -->b
 </div>
 
-We then invoked `oneToFive.slice(3)`. We didn't make a copy, but we noted that we were no longer safe, so then when we called `oneToFive[3] = 'for'`, we made another copy. We then were safe again, so invoking `oneToFive[4] = 'marun'` did not make a third copy.
-
-The behaviour is identical to the behaviour of making a copy every time we slice, or every time we write, but we're stingier about making copies when we don't need them.
+The result is identical to the behaviour of making a copy every time we slice, or every time we write, but we're stingier about making copies when we don't need them.
 
 And now, other destructive methods are literally a doddle:
 
