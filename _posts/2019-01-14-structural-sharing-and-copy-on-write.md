@@ -306,7 +306,14 @@ fromTwo.toString()
   //=> [3, 4, 5]
 ```
 
-We'll now want to add support for `[0]` and `.slice(1)`. Slice is straightforward, so we'll do it first. And we'll extract some duplication from the constructor while we're at it:
+Instances of `Slice` encapsulates the idea of a slice of an array, without making another array:
+
+<div class="mermaid">
+  graph TD
+    b["fromTwo: { from: 2, length: 3 }"]-- array -->a["a1to5: [1, 2, 3, 4, 5]"];
+</div>
+
+We'll now add support for `[0]` and `.slice(1)`. Slicing is straightforward, so we'll do that first. And we'll extract some duplication from the constructor while we're at it:
 
 ```javascript
 function normalizedFrom(arrayIsh, from = 0) {
@@ -352,6 +359,12 @@ const fromOne = fromZero.slice(1);
 [...fromOne]
   //=> [2, 3, 4, 5]
 ```
+
+<div class="mermaid">
+  graph TD
+    b["fromZero: { from: 0, length: 5 }"]-- array -->a["a1to5: [1, 2, 3, 4, 5]"]
+    c["fromOne { from: 1, length: 4 }"]-- array -->a;
+</div>
 
 To make it work with `[0]`, we need to implement `[]`. Implementing `[]` just for `0` is easy, but if we implement just `[0]`, we're begging for a bug later when somebody thinks they can use `[1]`. What we want instead is a way to allow any indexed access, and properly access the correct element of the underlying array, and without allowing access beyond our slice's dimension.
 
