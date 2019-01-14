@@ -699,7 +699,7 @@ class Slice {
     this.length = normalizedLength(array, from, length);
     this.makeUnsafe();
 
-    return new Proxy(this, SliceProxy);
+    return new Proxy(this, SliceHandler);
   }
 
   * [Symbol.iterator]() {
@@ -864,6 +864,92 @@ Until the day that JavaScript gets such data structures in its standard library,
 *(portions of this essay have previously appeared in the book [JavaScript Allongé][ja])*
 
 [ja]: https://leanpub.com/javascriptallongesix
+
+---
+
+# Bonus Hack
+
+Lisp programmers didn't just use `car` and `cdr` functions, Lisp had a system where any function name that started with `c`, ended with `r`, and had one or more `a`s or `d`s in between was a function, and it was implemented as if the functions `car` and `cdr` were composed in order.
+
+So where `(car list)` provided the first element of the list, `(cadr list)` was equivalent to `(car (cdr list))`, which is the second element. If we wanted to really get Lisp-y, we would implement the same scheme... Perhaps with properties we could destructure rather than with functions, like this:
+
+Something like this:
+
+```javascript
+const SliceHandler = {
+  has (slice, property) {
+    if (property in slice) {
+      return true;
+    }
+
+    if (typeof property === 'symbol') {
+      return false;
+    }
+
+    const matchInt = property.match(/^\d+$/);
+    if (matchInt != null) {
+      const i = parseInt(property);
+
+      return slice.has(i);
+    }
+
+    const matchCarCdr = property.match(/^c([ad]+)r$/);
+    if (matchCarCdr != null) {
+      return true;
+    }
+  },
+
+  get (slice, property) {
+    if (property in slice) {
+      return slice[property];
+    }
+
+    if (typeof property === 'symbol') {
+      return;
+    }
+
+    const matchInt = property.match(/^\d+$/);
+    if (matchInt != null) {
+      const i = parseInt(property);
+      return slice.at(i);
+    }
+
+    const matchCarCdr = property.match(/^c([ad]+)r$/);
+    if (matchCarCdr != null) {
+      const [, accessorString] = matchCarCdr;
+      const accessors = accessorString.split('').map(ad => `c${ad}r`);
+      return accessors.reduceRight(
+        (value, accessor) => Slice.from(value)[accessor],
+        slice);
+    }
+  }
+};
+
+class Slice {
+
+  // ...
+
+  get car() {
+    return this.at(0);
+  }
+
+  get cdr() {
+    return this.slice(1);
+  }
+
+}
+
+const oneToFive = Slice.from([1, 2, 3, 4, 5]);
+
+const { car: first, cadr: second, cddr: rest } = oneToFive;
+
+first
+  //=> 1
+second
+  //=> 2
+[...rest]
+  //=> [3, 4, 5]
+```
 
 ---
 
