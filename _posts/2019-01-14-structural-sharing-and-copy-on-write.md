@@ -864,7 +864,7 @@ class Slice {
   push(element) {
     this.makeSafe();
 
-    cont value = this[arraySymbol].push(element);
+    const value = this[arraySymbol].push(element);
     this.length = this[arraySymbol].length;
 
     return value;
@@ -873,7 +873,7 @@ class Slice {
   pop() {
     this.makeSafe();
 
-    cont value = this[arraySymbol].pop();
+    const value = this[arraySymbol].pop();
     this.length = this[arraySymbol].length;
 
     return value;
@@ -882,7 +882,7 @@ class Slice {
   unshift(element) {
     this.makeSafe();
 
-    cont value = this[arraySymbol].unshift(element);
+    const value = this[arraySymbol].unshift(element);
     this.length = this[arraySymbol].length;
 
     return value;
@@ -1010,6 +1010,12 @@ second
 [...rest]
   //=> [3, 4, 5]
 ```
+
+---
+
+# The Complete Code
+
+<script src="https://gist.github.com/raganwald/373af7dfbcc43862b088094af2cbbc7f.js"></script>
 
 ---
 
