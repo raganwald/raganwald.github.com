@@ -513,19 +513,22 @@ In effect, our slice is a proxy (lower-case "p") for the underlying array, and w
 
 [^indirection]: David Wheeler is credited with what is often called [The Fundamental Theorem of Software Engineering](https://en.wikipedia.org/wiki/Fundamental_theorem_of_software_engineering), "We can solve any problem by introducing an extra level of indirection." The wording has evolved over time, and the corollary "...except for the problem of too many layers of indirection" is almost always quoted at the same time.
 
-And now we can implement one last thing, a static factory method for making `Slice` objects out of other things. Now we can use `Slice` to make our recursive functions "not embarrassing:"
+And now we can implement one last thing, a static factory method for making `Slice` objects out of other things. With `of`, we can to use `Slice` to make our recursive functions "not embarrassing:"
 
 ```javascript
 class Slice {
-  static from(object) {
+  static of(object, from = 0, length = Infinity) {
     if (object instanceof this) {
-      return new this(object.array, object.from, object.length);
+      const adjustedFrom = normalizedFrom(object, from);
+      const adjustedLength = normalizedLength(object, from, length);
+
+      return new this(object.array, object.from + adjustedFrom, adjustedLength);
     }
     if (object instanceof Array) {
-      return new this(object);
+      return new this(object, from, length);
     }
     if (typeof object[Symbol.iterator] === 'function') {
-      return new this([...object]);
+      return this.of([...object], from, length);
     }
   }
 
@@ -533,7 +536,7 @@ class Slice {
 }
 
 function sum (array) {
-  return sumOfSlice(Slice.from(array), 0);
+  return sumOfSlice(Slice.of(array), 0);
 
   function sumOfSlice (slice, runningTotal) {
     if (slice.length === 0) {
@@ -547,10 +550,10 @@ function sum (array) {
   }
 }
 
-const oneToFive = [1, 2, 3, 4, 5];
+const oneToSix = [1, 2, 3, 4, 5, 6];
 
-sum(oneToFive)
-  //=> 15
+sum(oneToSix)
+  //=> 21
 ```
 No more copies!
 
@@ -566,7 +569,7 @@ We did't need to implement an iterator, but it should be noted that since it has
 
 ```javascript
 const a1to5 = [1, 2, 3, 4, 5];
-const oneToFive = Slice.from(a1to5);
+const oneToFive = Slice.of(a1to5);
 const [first, ...rest] = oneToFive;
 
 first
@@ -579,7 +582,7 @@ Unfortunately, destructuring an iterable with the spread operator always creates
 
 ```javascript
 const abc = ['a', 'b', 'c'];
-const oneTwoThree = Slice.from([1, 2, 3]);
+const oneTwoThree = Slice.of([1, 2, 3]);
 
 [...abc, ...oneTwoThree]
   //=> ["a", "b", "c", 1, 2, 3]
@@ -592,7 +595,7 @@ const abc = ['a', 'b', 'c'];
 
 const alphabet = {};
 
-for (const letter of Slice.from(abc)) {
+for (const letter of Slice.of(abc)) {
   alphabet[letter] = letter;
 }
 
@@ -610,7 +613,7 @@ class Slice {
   concat(...args) {
     const { array, from, length } = this;
 
-    return Slice.from(array.slice(from, length).concat(...args));
+    return Slice.of(array.slice(from, length).concat(...args));
   }
 
   get [Symbol.isConcatSpreadable]() {
@@ -619,7 +622,7 @@ class Slice {
 }
 
 const abc = ['a', 'b', 'c'];
-const oneTwoThree = Slice.from([1, 2, 3]);
+const oneTwoThree = Slice.of([1, 2, 3]);
 
 abc.concat(oneTwoThree)
   //=> ["a", "b", "c", 1, 2, 3]
@@ -671,7 +674,7 @@ class Slice {
 }
 
 const a1to5 = [1, 2, 3, 4, 5];
-const oneToFive = Slice.from(a1to5);
+const oneToFive = Slice.of(a1to5);
 
 oneToFive.atPut(2, 'three');
 oneToFive[0] = 'uno';
@@ -807,7 +810,7 @@ class Slice {
   concat(...args) {
     const { [arraySymbol]: array, from, length } = this;
 
-    return Slice.from(array.slice(from, length).concat(...args));
+    return Slice.of(array.slice(from, length).concat(...args));
   }
 
   get [Symbol.isConcatSpreadable]() {
@@ -815,7 +818,7 @@ class Slice {
   }
 }
 
-const oneToFive = Slice.from([1, 2, 3, 4, 5]);
+const oneToFive = Slice.of([1, 2, 3, 4, 5]);
 
 oneToFive[0] = 'uno';
 oneToFive[1] = "zwei";
@@ -979,7 +982,7 @@ const SliceHandler = {
       const [, accessorString] = matchCarCdr;
       const accessors = accessorString.split('').map(ad => `c${ad}r`);
       return accessors.reduceRight(
-        (value, accessor) => Slice.from(value)[accessor],
+        (value, accessor) => Slice.of(value)[accessor],
         slice);
     }
   }
@@ -999,7 +1002,7 @@ class Slice {
 
 }
 
-const oneToFive = Slice.from([1, 2, 3, 4, 5]);
+const oneToFive = Slice.of([1, 2, 3, 4, 5]);
 
 const { car: first, cadr: second, cddr: rest } = oneToFive;
 
