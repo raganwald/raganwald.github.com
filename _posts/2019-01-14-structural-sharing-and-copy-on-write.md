@@ -538,12 +538,12 @@ class Slice {
 function sum (array) {
   return sumOfSlice(Slice.of(array), 0);
 
-  function sumOfSlice (slice, runningTotal) {
-    if (slice.length === 0) {
+  function sumOfSlice (remaining, runningTotal) {
+    if (remaining.length === 0) {
       return runningTotal;
     } else {
-      const first = slice[0];
-      const rest = slice.slice(1);
+      const first = remaining[0];
+      const rest = remaining.slice(1);
 
       return sumOfSlice(rest, runningTotal + first);
     }
@@ -556,7 +556,27 @@ sum(oneToSix)
   //=> 21
 ```
 
-No more copying entire arrays!
+No more copying entire arrays! And because our `.of` static method allows us to create a new slice of something and specify the range being sliced, we can also write our function like this:[^sliceof]
+
+```javascript
+function simpleSum (remaining, runningTotal = 0) {
+  if (remaining.length === 0) {
+    return runningTotal;
+  } else {
+    const first = remaining[0];
+    const rest = Slice.of(remaining, 1);
+
+    return simpleSum(rest, runningTotal + first);
+  }
+}
+
+const oneToSeven = [1, 2, 3, 4, 5, 6, 7];
+
+simpleSum(oneToSeven)
+  //=> 28
+```
+
+[^sliceof]:The version using `remaining.slice(1)` is going to be more familiar to other programmers, but we will see in a later essay how `Slice.of(remaining, 1)` leads us towards a better understanding of resource ownership.
 
 ---
 
