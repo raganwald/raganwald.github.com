@@ -555,7 +555,8 @@ const oneToSix = [1, 2, 3, 4, 5, 6];
 sum(oneToSix)
   //=> 21
 ```
-No more copies!
+
+No more copying entire arrays!
 
 ---
 
@@ -726,15 +727,18 @@ const unsafeSymbol = Symbol('unsafe');
 const arraySymbol = Symbol('array');
 
 class Slice {
-  static from(object) {
+  static of(object, from = 0, length = Infinity) {
     if (object instanceof this) {
-      return new this(object.array, object.from, object.length);
+      const adjustedFrom = normalizedFrom(object, from);
+      const adjustedLength = normalizedLength(object, from, length);
+
+      return new this(object.array, object.from + adjustedFrom, adjustedLength);
     }
     if (object instanceof Array) {
-      return new this(object);
+      return new this(object, from, length);
     }
     if (typeof object[Symbol.iterator] === 'function') {
-      return new this([...object]);
+      return this.of([...object], from, length);
     }
   }
 
