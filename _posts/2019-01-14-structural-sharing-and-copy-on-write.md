@@ -558,6 +558,8 @@ sum(oneToSix)
 
 No more copying entire arrays! And because our `.of` static method allows us to create a new slice of something and specify the range being sliced, we can also write our function like this:[^sliceof]
 
+[^sliceof]:The version using `remaining.slice(1)` is going to be more familiar to other programmers, but we will see in a later essay how `Slice.of(remaining, 1)` leads us towards a better understanding of resource ownership.
+
 ```javascript
 function simpleSum (remaining, runningTotal = 0) {
   if (remaining.length === 0) {
@@ -576,7 +578,7 @@ simpleSum(oneToSeven)
   //=> 28
 ```
 
-[^sliceof]:The version using `remaining.slice(1)` is going to be more familiar to other programmers, but we will see in a later essay how `Slice.of(remaining, 1)` leads us towards a better understanding of resource ownership.
+Naturally, it's called `of` because we use it to take a slice of some list-like object.
 
 ---
 
@@ -647,6 +649,8 @@ const oneTwoThree = Slice.of([1, 2, 3]);
 
 abc.concat(oneTwoThree)
   //=> ["a", "b", "c", 1, 2, 3]
+oneTwoThree.concat(abc)
+  //=> [ 1, 2, 3, "a", "b", "c"]
 ```
 
 Of course, the biggest array-like behaviour our slices are missing is that we haven't implemented any of the methods for modifying our slices.
