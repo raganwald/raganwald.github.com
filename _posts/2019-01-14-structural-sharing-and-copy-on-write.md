@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "An Informal Exploration of Structural Sharing and Copy-on-Write Semantics, Part I"
+title: "Exploring Structural Sharing and Copy-on-Write Semantics, Part I"
 tags: [allonge, recursion, mermaid]
 ---
 
