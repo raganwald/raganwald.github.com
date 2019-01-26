@@ -6,7 +6,7 @@ tags: [allonge, recursion, mermaid, noindex]
 
 [Part I], we used recursive functions that operate on lists to explore how we could use _Structural Sharing_ to write code that avoids making copies of objects while still retaining the semantics of code that makes copies.
 
-[Part I]: http:2019-01-14-structural-sharing-and-copy-on-write.html "An Informal Exploration of Structural Sharing and Copy-on-Write Semantics, Part I"
+[Part I]: /2019/01/14/structural-sharing-and-copy-on-write.html "An Informal Exploration of Structural Sharing and Copy-on-Write Semantics, Part I"
 
 Here in Part II, we'll consider **resource ownership**, starting with using copy-on-write semantics to implement safe mutation while still reserving structural sharing.
 

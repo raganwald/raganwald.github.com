@@ -6,7 +6,7 @@ tags: [allonge, recursion, mermaid]
 
 This essay takes a highly informal look at two related techniques for achieving high performance when using large data structures: _Structural Sharing_, and _Copy-on-Write Semantics_. In Part I, we'll look at the background of Structural Sharing and start making a `Slice` class that abstracts the concept of a slice of an array. In [Part II], we'll consider the problem of resource ownership when mutating objects.
 
-[Part II]: 2019-01-26-reduce-reuse-recycle.html "Structural Sharing and Copy-on-Write Semantics, Part II: Reduce-Reuse-Recycle"
+[Part II]: /2019/01/26/reduce-reuse-recycle.html "Structural Sharing and Copy-on-Write Semantics, Part II: Reduce-Reuse-Recycle"
 
 To give us some context for exploring these techniques, we're going to solve a very simple problem: *Programming in a Lisp-like recursive style, but using JavaScript arrays.* Although not the most practical use case, it's interesting because even a small function written in Lisp style (like summing a list of integers) can create and recycle a lot of temporary objects.
 
