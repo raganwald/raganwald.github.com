@@ -20,7 +20,40 @@ Here in Part II, we'll consider **resource ownership**, starting with using copy
 
 This is a brief review of what we convered in [Part I] for those who read it recently. If you haven't read it yet, consioder readinbg it in its entirety rather than trying to build on this incomplete explanation.
 
+(*coming soon*)
 
+Now that we've covered the basics, let's step back for a moment. In pure functional programming, data is [immutable]. This makes it much easier for humans and machines to reason about programs. We never have a pesky problem like passing an array to a `sum` function and having `sum` modify the array out from under us.
+
+[immutable]: https://en.wikipedia.org/wiki/Immutable_object
+
+But when programming in a multi-paradigm environment, we need to accomodate code that is written around mutable data structures. In JavaScript, we can write:
+
+```javascript
+const abasement = ['a', 'b', 'a', 's', 'e', 'm', 'e', 'n', 't'];
+
+const bade = abasement.slice(1, 5);
+bade[2] = 'd';
+
+bade.join('')
+  //=> "bade"
+
+const bad = bade.slice(0, 3);
+
+bad.join('')
+  //=> "bad"
+```
+
+Modifying a slice of `abasement` does not modify the original array. But what happens with our `Slice` class? We haven't done anything to handle modifying elements, so as it turns out, we can set properties but they don't affect the underlying array that we use for things like further slices or joiining:
+
+```javascript
+let slice = Slice.of(abasement, 1, 5);
+slice[2] = 'd';
+
+slice.join('')
+  //=> "base"
+```
+
+Just as we needed our proxy to mediate `[...]`, we also need our proxy to mediate `[...] =`. Let's make it so.
 
 ---
 
@@ -31,7 +64,7 @@ This is a brief review of what we convered in [Part I] for those who read it rec
 ### copy on write
 
 
-As we noted, our slices depend upon the underlying array not mutating out from underneath them. Which _seems_ to imply that the Slices themselves have to be immutable. But not so: The slices do not depend upon each other, but upon the underlying array.
+In our structural sharing implementation, our slices depend upon the underlying array not mutating out from underneath them. Which _seems_ to imply that the Slices themselves have to be immutable. But not so: The slices do not depend upon each other, but upon the underlying array.
 
 This makes it possible for us to modify a slice without modifying any other slices that depend upon the slice's original array... by making a copy of the slice's array before we write to it:
 
