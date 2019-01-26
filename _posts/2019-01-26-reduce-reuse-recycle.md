@@ -18,7 +18,7 @@ Here in Part II, we'll consider **resource ownership**, starting with using copy
 
 ---
 
-This is a brief review of what we convered in [Part I] for those who read it recently. If you haven't read it yet, consioder readinbg it in its entirety rather than trying to build on this incomplete explanation.
+This is a brief review of what we covered in [Part I] for those who read it recently. If you haven't read it yet, consider reading it in its entirety rather than trying to build on this incomplete explanation.
 
 (*coming soon*)
 
@@ -43,7 +43,7 @@ bad.join('')
   //=> "bad"
 ```
 
-Modifying a slice of `abasement` does not modify the original array. But what happens with our `Slice` class? We haven't done anything to handle modifying elements, so as it turns out, we can set properties but they don't affect the underlying array that we use for things like further slices or joiining:
+Modifying a slice of `abasement` does not modify the original array. But what happens with our `Slice` class? We haven't done anything to handle modifying elements, so as it turns out, we can set properties but they don't affect the underlying array that we use for things like further slices or joining:
 
 ```javascript
 let slice = Slice.of(abasement, 1, 5);
