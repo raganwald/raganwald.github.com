@@ -306,10 +306,10 @@ class Slice {
     if (this.length === 0) {
       return '';
     } else {
-      let joined = array[this.from];
+      let joined = this.array[this.from];
 
       for (let i = 1; i < this.length; ++i) {
-        joined = joined + separator + array[this.from + i];
+        joined = joined + separator + this.array[this.from + i];
       }
 
       return joined;
@@ -338,7 +338,7 @@ Instances of `Slice` encapsulate the idea of a slice of an array, without making
     b["fromTwo: { from: 2, length: 3 }"]-->|array:|a["a1to5: [1, 2, 3, 4, 5]"];
 </div>
 
-We'll now add support for `[0]` and `.slice(1)`. Slicing is straightforward, so we'll do that first. And we'll extract some duplication from the constructor while we're at it:
+We'll now add support for `[0]` and `.slice(1)`. The function `.slice` is a little different from the constructor, because the constructor is concerned with initializing the object's properties, while `.slice` mimics the semantics of `Array.prototype.slice`. And we'll extract some duplication while we're at it:
 
 ```javascript
 function normalizedFrom(arrayIsh, from = 0) {
@@ -360,6 +360,15 @@ function normalizedLength(arrayIsh, from, length = arrayIsh.length) {
     return length;
 }
 
+function normalizedTo(arrayIsh, from, to) {
+    from = normalizedFrom(arrayIsh, from);
+
+    to = Math.max(to, 0);
+    to = Math.min(arrayIsh.length, to);
+
+    return to;
+}
+
 class Slice {
   constructor(array, from, length) {
     this.array = array;
@@ -367,22 +376,49 @@ class Slice {
     this.length = normalizedLength(array, from, length);
   }
 
-  // ...
+  * [Symbol.iterator]() {
+    const { array, from, length } = this;
 
-  slice(from, length) {
+    for (let i = 0; i < length; i++) {
+      yield array[i + from];
+    }
+  }
+
+  join(separator = ",") {
+    if (this.length === 0) {
+      return '';
+    } else {
+      let joined = this.array[this.from];
+
+      for (let i = 1; i < this.length; ++i) {
+        joined = joined + separator + this.array[this.from + i];
+      }
+
+      return joined;
+    }
+  }
+
+  toString() {
+    return this.join();
+  }
+
+  slice(from, to = Infinity) {
     from = normalizedFrom(this, from, length);
-    length = normalizedLength(this, from, length);
+    to = normalizedTo(this, from, to);
 
-    return new Slice(this.array, this.from + from, length);
+    return new Slice(this.array, this.from + from, to - from);
   }
 }
 
 const a1to5 = [1, 2, 3, 4, 5];
 const fromZero = new Slice(a1to5, 0);
 const fromOne = fromZero.slice(1);
+const twoToFour = fromZero.slice(2, 4);
 
 [...fromOne]
   //=> [2, 3, 4, 5]
+[...twoToFour]
+  //=> [3, 4]
 ```
 
 <div class="mermaid">
@@ -464,16 +500,7 @@ We also modify the `Slice` class. We implement `has` and `at` methods that under
 
 ```javascript
 class Slice {
-  constructor(array, from = 0, length = array.length) {
-    if (from < 0) {
-      from = from + array.length;
-    }
-    from = Math.max(from, 0);
-    from = Math.min(from, array.length);
-
-    length = Math.max(length, 0);
-    length = Math.min(length, array.length - from);
-
+  constructor(array, from, length) {
     this.array = array;
     this.from = normalizedFrom(array, from, length);
     this.length = normalizedLength(array, from, length);
@@ -481,31 +508,7 @@ class Slice {
     return new Proxy(this, SliceHandler);
   }
 
-  * [Symbol.iterator]() {
-    const { array, from, length } = this;
-
-    for (let i = 0; i < length; i++) {
-      yield array[i + from];
-    }
-  }
-
-  join(separator = ",") {
-    if (this.length === 0) {
-      return '';
-    } else {
-      let joined = array[this.from];
-
-      for (let i = 1; i < this.length; ++i) {
-        joined = joined + separator + array[this.from + i];
-      }
-
-      return joined;
-    }
-  }
-
-  toString() {
-    return this.join();
-  }
+  // ...
 
   has(i) {
     if (i >= 0 && i < this.length) {
@@ -519,13 +522,6 @@ class Slice {
     if (i >= 0 && i < this.length) {
       return this.array[this.from + i];
     }
-  }
-
-  slice(from, length) {
-    from = normalizedFrom(this, from, length);
-    length = normalizedLength(this, from, length);
-
-    return new Slice(this.array, this.from + from, length);
   }
 }
 
@@ -543,26 +539,29 @@ In effect, our slice is a proxy (lower-case "p") for the underlying array, and w
 
 [^indirection]: David Wheeler is credited with what is often called [The Fundamental Theorem of Software Engineering](https://en.wikipedia.org/wiki/Fundamental_theorem_of_software_engineering), "We can solve any problem by introducing an extra level of indirection." The wording has evolved over time, and the corollary "...except for the problem of too many layers of indirection" is almost always quoted at the same time.
 
-And now we can implement one last thing, a static factory method for making `Slice` objects out of other things. With `of`, we can to use `Slice` to make our recursive functions "not embarrassing:"
+And now we can implement one last thing, a static factory method for making `Slice` objects out of other things. With `of`, we can to use `Slice` to make our recursive functions "not embarrassing."
 
 ```javascript
 class Slice {
-  static of(object, from = 0, length = Infinity) {
+  static of(object, from = 0, to = Infinity) {
     if (object instanceof this) {
-      const adjustedFrom = normalizedFrom(object, from);
-      const adjustedLength = normalizedLength(object, from, length);
+      from = normalizedFrom(this, from, length);
+      to = normalizedTo(this, from, to);
 
-      return new this(object.array, object.from + adjustedFrom, adjustedLength);
+      return new Slice(object.array, object.from + from, to - from);
     }
     if (object instanceof Array) {
-      return new this(object, from, length);
+      from = normalizedFrom(object, from, length);
+      to = normalizedTo(object, from, to);
+
+      return new this(object, from, to - from);
     }
     if (typeof object[Symbol.iterator] === 'function') {
-      return this.of([...object], from, length);
+      return this.of([...object], from, to);
     }
   }
 
-  /// remainder of the class
+  // ...
 }
 
 function sum (array) {
@@ -588,7 +587,7 @@ sum(oneToSix)
 
 No more copying entire arrays! And because our `.of` static method allows us to create a new slice of something and specify the range being sliced, we can also write our function like this:[^sliceof]
 
-[^sliceof]:The version using `remaining.slice(1)` is going to be more familiar to other programmers, but we will see in a later essay how `Slice.of(remaining, 1)` leads us towards a better understanding of resource ownership.
+[^sliceof]:The version using `remaining.slice(1)` is going to be more familiar to other programmers, but we will see in [Part II] how `Slice.of(remaining, 1)` leads us towards a better understanding of resource ownership.
 
 ```javascript
 function simpleSum (remaining, runningTotal = 0) {
@@ -608,7 +607,7 @@ simpleSum(oneToSeven)
   //=> 28
 ```
 
-Naturally, it's called `of` because we use it to take a slice of some list-like object.
+Naturally, it's called `of`, because we use it to take a slice of some list-like object.
 
 ---
 
@@ -617,11 +616,6 @@ Naturally, it's called `of` because we use it to take a slice of some list-like 
 ---
 
 ### more array-ish behaviour
-
-We can, if we wish, implement lots of array methods by hand. For example, `.join`:
-
-```javascript
-```
 
 We did't need to implement an iterator, but it should be noted that since it has an iterator, we get a lot of JavaScript array-ish behaviour. For example, in strict mode, the iterator is used when destructuring. So if we want to, we _can_ write:
 
@@ -666,7 +660,7 @@ When we dive deeply into the spec, we uncover `Symbol.isConcatSpreadable`. Forci
 ```javascript
 class Slice {
 
-  /// ...
+  // ...
 
   concat(...args) {
     const { array, from, length } = this;
