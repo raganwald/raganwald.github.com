@@ -617,7 +617,7 @@ Naturally, it's called `of`, because we use it to take a slice of some list-like
 
 ### more array-ish behaviour
 
-We did't need to implement an iterator, but it should be noted that since it has an iterator, we get a lot of JavaScript array-ish behaviour. For example, in strict mode, the iterator is used when destructuring. So if we want to, we _can_ write:
+We didn't need to implement an iterator, but it should be noted that since it has an iterator, we get a lot of JavaScript array-ish behaviour. For example, in strict mode, the iterator is used when destructuring. So if we want to, we _can_ write:
 
 ```javascript
 const a1to5 = [1, 2, 3, 4, 5];
