@@ -273,7 +273,7 @@ We are not going to use cons cells or two-element arrays, but we are going to sh
 
 So what will our technique be? Well, we are going to create a data structure that behaves enough like an array that we can write things like `const first = arrayLikeDataStructure[0];` and `const rest = arrayLikeDataStructure.slice(1)`, and they will work. But of course, our implementation won't copy arrays. Instead, it will share the array.
 
-We'll begin with a class representing a slice of an array. Although we don't need them directly for our purposes, we'll implement an iterator and a `.toString()` method for debugging purpose:[^strict]
+We'll begin with a class representing a slice of an array. Although we don't need them directly for our purposes, we'll implement an iterator, a `.join` method, and a `.toString()` method, for debugging purpose:[^strict]
 
 [^strict]: All of this code requires the engine to implement strict JavaScript semantics. Some engines can be configured in "loose" mode, where their implementation of things like destructuring may vary from the standard.
 
@@ -302,8 +302,22 @@ class Slice {
     }
   }
 
+  join(separator = ",") {
+    if (this.length === 0) {
+      return '';
+    } else {
+      let joined = array[this.from];
+
+      for (let i = 1; i < this.length; ++i) {
+        joined = joined + separator + array[this.from + i];
+      }
+
+      return joined;
+    }
+  }
+
   toString() {
-    return [...this].join(',');
+    return this.join();
   }
 }
 
@@ -475,8 +489,22 @@ class Slice {
     }
   }
 
+  join(separator = ",") {
+    if (this.length === 0) {
+      return '';
+    } else {
+      let joined = array[this.from];
+
+      for (let i = 1; i < this.length; ++i) {
+        joined = joined + separator + array[this.from + i];
+      }
+
+      return joined;
+    }
+  }
+
   toString() {
-    return [...this].join(',');
+    return this.join();
   }
 
   has(i) {
@@ -590,6 +618,11 @@ Naturally, it's called `of` because we use it to take a slice of some list-like 
 
 ### more array-ish behaviour
 
+We can, if we wish, implement lots of array methods by hand. For example, `.join`:
+
+```javascript
+```
+
 We did't need to implement an iterator, but it should be noted that since it has an iterator, we get a lot of JavaScript array-ish behaviour. For example, in strict mode, the iterator is used when destructuring. So if we want to, we _can_ write:
 
 ```javascript
@@ -655,7 +688,7 @@ oneTwoThree.concat(abc)
   //=> [ 1, 2, 3, "a", "b", "c"]
 ```
 
-Of course, the biggest array-like behaviour our slices are missing is that we haven't implemented any of the methods for modifying our slices. We'll do that in [Part II]. But before moving on, let's summarize what we've don so far.
+Of course, the biggest array-like behaviour our slices are missing is that we haven't implemented any of the methods for modifying our slices. We'll do that in [Part II]. But before moving on, let's summarize what we've done so far.
 
 ---
 
