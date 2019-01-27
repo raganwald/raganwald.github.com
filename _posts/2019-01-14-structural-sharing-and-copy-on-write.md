@@ -598,20 +598,24 @@ No more copying entire arrays! And because our `.of` static method allows us to 
 [^sliceof]:The version using `remaining.slice(1)` is going to be more familiar to other programmers, but we will see in [Part II] how `Slice.of(remaining, 1)` leads us towards a better understanding of resource ownership.
 
 ```javascript
-function simpleSum (remaining, runningTotal = 0) {
-  if (remaining.length === 0) {
-    return runningTotal;
-  } else {
-    const first = remaining[0];
-    const rest = Slice.of(remaining, 1);
+function sum (array) {
+  return sumOfSlice(Slice.of(array), 0);
 
-    return simpleSum(rest, runningTotal + first);
+  function sumOfSlice (remaining, runningTotal) {
+    if (remaining.length === 0) {
+      return runningTotal;
+    } else {
+      const first = remaining[0];
+      const rest = Slice.of(remaining, 1);
+
+      return sumOfSlice(rest, runningTotal + first);
+    }
   }
 }
 
 const oneToSeven = [1, 2, 3, 4, 5, 6, 7];
 
-simpleSum(oneToSeven)
+sum(oneToSeven)
   //=> 28
 ```
 

@@ -203,12 +203,17 @@ function sum (array) {
       return runningTotal;
     } else {
       const first = remaining[0];
-      const rest = remaining.slice(1);
+      const rest = Slice.of(remaining, 1);
 
       return sumOfSlice(rest, runningTotal + first);
     }
   }
 }
+
+const oneToSeven = [1, 2, 3, 4, 5, 6, 7];
+
+sum(oneToSeven)
+  //=> 28
 ```
 This covers the basics, but let's step back for a moment. In pure functional programming, data is [immutable]. This makes it much easier for humans and machines to reason about programs. We never have a pesky problem like passing an array to a `sum` function and having `sum` modify the array out from under us.
 
@@ -715,11 +720,53 @@ givenSafeTen === safeTen
 
 ---
 
-# The Complete Code
+### given in action
+
+The recursive function `sum` was given above. It looks like this:
 
 ```javascript
+function sum (array) {
+  return sumOfSlice(Slice.of(array), 0);
 
+  function sumOfSlice (remaining, runningTotal) {
+    if (remaining.length === 0) {
+      return runningTotal;
+    } else {
+      const first = remaining[0];
+      const rest = Slice.given(remaining, 1);
+
+      return sumOfSlice(rest, runningTotal + first);
+    }
+  }
+}
 ```
+
+When we invoke `sum([1, 2, 3, 4, 5, 6, 7])`, the outer function creates a new slice out of the original array, and then it calls `someOfSlice`, which calls itself 7 times, each time invoking `Slice.of` and creating a new instance of `Slice`. The net result is that eight slices are created. This may be much less memory than copying slices out of a long array, but it's unnecessary.
+
+In this formulation, `sumOfSlice` invokes `Slice.given` instead of `Slice.of`. The only objects passed to `sumOfSlice` are slices created for this function. And having created a slice, it is not used again after being passed to `sumOfSlice`. Therefore, we can use `.given`, and the code recycles the same slice over and over again.
+
+```javascript
+function sum (array) {
+  return sumOfSlice(Slice.of(array), 0);
+
+  function sumOfSlice (remaining, runningTotal) {
+    if (remaining.length === 0) {
+      return runningTotal;
+    } else {
+      const first = remaining[0];
+      const rest = Slice.given(remaining, 1);
+
+      return sumOfSlice(rest, runningTotal + first);
+    }
+  }
+}
+```
+
+Now when we invoke `sum([1, 2, 3, 4, 5, 6, 7])`, the outer function creates a new slice out of the original array as before, and then it calls `someOfSlice`, which calls itself 7 times as before. But now, each time it is called, it invokes `Slice.given`. That reuses the existing slice. The net result is that only one slice is created.
+
+---
+
+# The Complete Code
 
 <script src="https://gist.github.com/raganwald/373af7dfbcc43862b088094af2cbbc7f.js"></script>
 
