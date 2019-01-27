@@ -344,13 +344,13 @@ The first time we write something, we *have* to make a copy. The array that was 
 
 [^freeze]: JavaScript has the notion of a frozen object, so if we're passed a frozen array, we certainly don't need to worry about anyone else modifying the array ot from under us. but likewise, we can't modify a frozen array ourselves, so it doesn't help us know whether the array that is used to construct the slice is safe to modify or not. So we'll be paranoid and assume that it is not safe to modify.
 
-Absent any other finformation, the the first time we write to the array, we must make ourselves a copy.
+The first time we write to the array, we must make ourselves a copy.
 
-What about after that? Well, after the first write, we have a new array that no other code shares (yet). So we can actually mutate it with abandon. Only when we share it with another piece of code must we revert to making a copy on writes. When do we share that array? When `.slice` is called, and if another object does a `get` on our `array` property.
+What about after that? Well, after the first write, we have a new array that no other code shares (yet). So we can actually mutate it with abandon. Only when we share it with another piece of code must we revert to making a copy on writes. When do we share that array? When `.slice` is called, or if another object does a `get` on our `array` property.
 
 We need to mediate other objects accessing our array with this scheme, so we'll store it in a symbol property. That's private enough to prevent accidental access. And if someone deliberately wants to break our encapsulation, there's nothing we can do about a determined programmer with a commit bit anyways.
 
-So here is an updated version that only makes copies when necessary:
+An updated version that only makes copies when necessary:
 
 ```javascript
 const arraySymbol = Symbol('array');
